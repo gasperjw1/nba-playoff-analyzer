@@ -1,0 +1,503 @@
+  :root {
+    --bg: #0a0e1a;
+    --card: #131829;
+    --card-hover: #1a2038;
+    --accent: #4f8cff;
+    --accent2: #ff6b4f;
+    --green: #3dd68c;
+    --yellow: #ffc73a;
+    --red: #ff4f5e;
+    --text: #e8eaf0;
+    --text-dim: #8a8fa8;
+    --border: #262d45;
+    --glass: rgba(19,24,41,0.85);
+    /* Semantic tier colors — used across rating pills, adv stats, confidence badges, risk tiers */
+    --tier-elite: var(--green);
+    --tier-high: var(--accent);
+    --tier-mid: var(--yellow);
+    --tier-low: var(--red);
+    --purple: #a78bfa;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height:100vh; }
+
+  .header { background: linear-gradient(135deg, #131829 0%, #1a2545 100%); border-bottom: 1px solid var(--border); padding: 20px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:10px; }
+  .header h1 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+  .header h1 span { color: var(--accent); }
+  .header-sub { font-size:11px; color:var(--text-dim); margin-left:8px; }
+  .header-right { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  .legend { display:flex; gap:14px; font-size:11px; color:var(--text-dim); }
+  .legend-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:3px; vertical-align:middle; }
+
+  .tabs { display:flex; flex-direction:column; gap:0; background: var(--bg); overflow-x:auto; }
+  .tab { padding:10px 18px; border-radius:8px 8px 0 0; cursor:pointer; font-size:12px; font-weight:600; background: var(--card); color:var(--text-dim); border:1px solid var(--border); border-bottom:none; transition:all 0.2s; white-space:nowrap; }
+  .tab:hover { background: var(--card-hover); color:var(--text); }
+  .tab.active { background: var(--accent); color:#fff; border-color:var(--accent); }
+
+  .main { padding:0 32px 32px; }
+
+  .series-header { display:flex; align-items:center; justify-content:space-between; padding:24px 0 16px; flex-wrap:wrap; gap:16px; }
+
+  .g1-confidence { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; margin-top:8px; }
+  .g1-confidence.high { background:rgba(61,214,140,0.15); color:var(--green); }
+  .g1-confidence.medium { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .g1-confidence.low { background:rgba(255,79,94,0.15); color:var(--red); }
+
+  /* Win prob */
+  .win-prob-container { background: var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:20px; }
+  .win-prob-bar { display:flex; height:40px; border-radius:8px; overflow:hidden; }
+  .win-prob-side { display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; transition:width 0.5s ease; }
+
+  /* Team Advanced Stats */
+  .team-adv { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  .team-adv-card { background: var(--card); border-radius:12px; padding:18px; border:1px solid var(--border); }
+  .team-adv-card .team-name { font-size:14px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .team-adv-card .team-color-bar { width:4px; height:18px; border-radius:2px; }
+  .adv-stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(90px,1fr)); gap:8px; }
+  .adv-stat { text-align:center; padding:8px 4px; border-radius:8px; background:rgba(0,0,0,0.15); }
+  .adv-stat .s-label { font-size:9px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.3px; }
+  .adv-stat .s-val { font-size:16px; font-weight:700; margin-top:2px; }
+  .adv-stat .s-rank { font-size:10px; color:var(--text-dim); }
+  .adv-stat.elite .s-val { color:var(--tier-elite); }
+  .adv-stat.good .s-val { color:var(--tier-high); }
+  .adv-stat.avg .s-val { color:var(--tier-mid); }
+  .adv-stat.poor .s-val { color:var(--tier-low); }
+
+  /* Rating cards */
+  .rating-breakdown { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:20px; }
+  .rating-card { background: var(--card); border-radius:10px; padding:16px; border:1px solid var(--border); }
+  .rating-card .label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .rating-card .value { font-size:22px; font-weight:700; }
+  .rating-card .sub { font-size:11px; color:var(--text-dim); margin-top:4px; }
+
+  /* Player tables */
+  .roster-section { margin-bottom:24px; }
+  .roster-title { font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .roster-title .team-color { width:4px; height:20px; border-radius:2px; }
+  table { width:100%; border-collapse:collapse; background: var(--card); border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+  th { padding:8px 10px; text-align:left; font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.4px; background:rgba(0,0,0,0.2); font-weight:600; white-space:nowrap; }
+  td { padding:8px 10px; font-size:12px; border-top:1px solid var(--border); }
+  tr:hover td { background:rgba(79,140,255,0.05); }
+  .player-name { font-weight:600; white-space:nowrap; }
+  .pos-badge { font-size:9px; padding:2px 5px; border-radius:4px; background:rgba(79,140,255,0.15); color:var(--accent); font-weight:600; margin-left:4px; }
+  .rating-pill { display:inline-block; padding:2px 8px; border-radius:10px; font-weight:700; font-size:12px; min-width:36px; text-align:center; }
+  .rating-elite { background:rgba(61,214,140,0.15); color:var(--tier-elite); }
+  .rating-high { background:rgba(79,140,255,0.15); color:var(--tier-high); }
+  .rating-mid { background:rgba(255,199,58,0.15); color:var(--tier-mid); }
+  .rating-low { background:rgba(255,79,94,0.15); color:var(--tier-low); }
+  .injury-tag { font-size:9px; padding:2px 5px; border-radius:4px; background:rgba(255,79,94,0.15); color:var(--red); font-weight:600; margin-left:4px; }
+  .factor-cell { max-width:180px; }
+  .factor-note { font-size:11px; color:var(--text-dim); font-style:italic; }
+  .adv-cell { font-size:11px; font-family:'Courier New',monospace; }
+
+  /* Synergy */
+  .synergy-section { background: var(--card); border-radius:12px; padding:18px; border:1px solid var(--border); margin-bottom:20px; }
+  .synergy-title { font-size:14px; font-weight:700; margin-bottom:14px; }
+  .lineup-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .lineup-row:last-child { border-bottom:none; }
+  .lineup-players { display:flex; gap:4px; flex-wrap:wrap; flex:1; }
+  .lineup-player-chip { font-size:10px; padding:3px 7px; border-radius:5px; background:rgba(79,140,255,0.1); color:var(--accent); font-weight:500; }
+  .synergy-score { font-weight:700; font-size:14px; min-width:36px; text-align:center; }
+  .synergy-note { font-size:11px; color:var(--text-dim); max-width:300px; }
+
+  /* SPM Chemistry (Maymin et al.) */
+  .spm-section { background: linear-gradient(135deg, var(--card) 0%, #1a1a2e 100%); border-radius:12px; padding:20px; border:1px solid rgba(79,140,255,0.25); margin-bottom:20px; }
+  .spm-title { font-size:14px; font-weight:700; margin-bottom:4px; color:var(--accent); }
+  .spm-subtitle { font-size:10px; color:var(--text-dim); margin-bottom:14px; font-style:italic; }
+  .spm-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .spm-team-card { background:rgba(0,0,0,0.2); border-radius:10px; padding:14px; }
+  .spm-team-name { font-size:12px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .spm-meter { height:8px; border-radius:4px; background:rgba(255,255,255,0.05); margin-bottom:6px; overflow:hidden; position:relative; }
+  .spm-meter-fill { height:100%; border-radius:4px; transition:width 0.5s ease; }
+  .spm-skill-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .spm-skill-label { font-size:10px; color:var(--text-dim); min-width:80px; }
+  .spm-skill-val { font-size:11px; font-weight:600; min-width:30px; text-align:right; }
+  .spm-chem-score { text-align:center; padding:10px; margin-top:8px; border-radius:8px; background:rgba(0,0,0,0.15); }
+  .spm-chem-score .label { font-size:9px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px; }
+  .spm-chem-score .val { font-size:20px; font-weight:800; }
+  .spm-verdict { font-size:10px; margin-top:4px; font-style:italic; }
+  .spm-synergy-bar { display:flex; gap:4px; margin-top:6px; }
+  .spm-synergy-chip { font-size:9px; padding:2px 6px; border-radius:4px; font-weight:600; }
+  .spm-synergy-chip.positive { background:rgba(61,214,140,0.15); color:var(--green); }
+  .spm-synergy-chip.negative { background:rgba(255,79,94,0.15); color:var(--red); }
+  .spm-synergy-chip.neutral { background:rgba(255,199,58,0.15); color:var(--yellow); }
+
+  /* On/Off Impact Section */
+  .onoff-section { background: var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:20px; }
+  .onoff-title { font-size:14px; font-weight:700; margin-bottom:14px; }
+  .onoff-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .onoff-team { background:rgba(0,0,0,0.15); border-radius:10px; padding:14px; }
+  .onoff-team-name { font-size:12px; font-weight:700; margin-bottom:10px; }
+  .onoff-player { display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
+  .onoff-player:last-child { border-bottom:none; }
+  .onoff-name { font-size:11px; }
+  .onoff-val { font-size:12px; font-weight:700; min-width:50px; text-align:right; }
+  .onoff-bar { width:60px; height:6px; border-radius:3px; background:rgba(255,255,255,0.05); overflow:hidden; margin-left:8px; }
+  .onoff-bar-fill { height:100%; border-radius:3px; }
+
+  /* External factors */
+  .ext-factors { background: var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:20px; }
+  .ext-factors-title { font-size:14px; font-weight:700; margin-bottom:14px; }
+  .ext-factor-item { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+  .ext-factor-item:last-child { border-bottom:none; }
+  .ext-impact { font-size:11px; padding:3px 8px; border-radius:6px; font-weight:700; white-space:nowrap; }
+  .ext-impact.negative { background:rgba(255,79,94,0.15); color:var(--red); }
+  .ext-impact.positive { background:rgba(61,214,140,0.15); color:var(--green); }
+  .ext-impact.neutral { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .ext-desc { font-size:12px; line-height:1.5; }
+  .ext-desc strong { color:var(--text); }
+  .add-factor-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:8px; background:rgba(255,199,58,0.1); color:var(--yellow); border:1px dashed rgba(255,199,58,0.3); cursor:pointer; font-size:12px; font-weight:600; margin-top:10px; transition:all 0.2s; }
+  .add-factor-btn:hover { background:rgba(255,199,58,0.2); }
+
+  /* Game log */
+
+  /* Methodology */
+  .methodology { background: var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:20px; }
+  .methodology summary { font-size:14px; font-weight:700; cursor:pointer; padding:4px 0; }
+  .methodology .content { margin-top:14px; font-size:12px; line-height:1.7; color:var(--text-dim); }
+  .methodology .content strong { color:var(--text); }
+  .formula { background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px; font-family:'Courier New',monospace; font-size:11px; margin:8px 0; color:var(--accent); overflow-x:auto; }
+
+  /* Modal */
+  .modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--card); border-radius:16px; padding:24px; max-width:560px; width:90%; max-height:85vh; overflow-y:auto; border:1px solid var(--border); }
+  .modal h2 { font-size:17px; margin-bottom:14px; }
+  .modal label { display:block; font-size:11px; color:var(--text-dim); margin-bottom:4px; margin-top:10px; text-transform:uppercase; }
+  .modal input, .modal select, .modal textarea { width:100%; padding:9px 11px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13px; }
+  .modal textarea { min-height:50px; resize:vertical; }
+  .modal-btns { display:flex; gap:10px; margin-top:16px; }
+  .btn { padding:9px 18px; border-radius:8px; font-weight:600; font-size:13px; cursor:pointer; border:none; transition:all 0.2s; }
+  .btn-primary { background:var(--accent); color:#fff; }
+  .btn-primary:hover { background:#3a7aee; }
+  .btn-secondary { background:var(--border); color:var(--text); }
+
+  .data-sources { font-size:11px; color:var(--text-dim); padding:16px 0; border-top:1px solid var(--border); margin-top:16px; line-height:1.6; }
+  .data-sources a { color:var(--accent); text-decoration:none; }
+
+  /* Evidence Log */
+  .ev-verified { background:rgba(61,214,140,0.15); color:var(--green); }
+  .ev-partial { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .ev-uncertain { background:rgba(255,79,94,0.15); color:var(--red); }
+
+  /* Model Lessons */
+  .lessons-banner { background:linear-gradient(135deg, #1a1a2e 0%, #2d1b3d 100%); border-radius:12px; padding:18px; border:1px solid rgba(167,139,250,0.3); margin-bottom:20px; }
+  .lessons-title { font-size:13px; font-weight:700; color:var(--purple); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .lesson-item { font-size:12px; color:var(--text-dim); line-height:1.6; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .lesson-item:last-child { border-bottom:none; }
+  .lesson-item strong { color:var(--text); }
+  .lesson-label { font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:6px; }
+  /* Case-insensitive via lowercase classes — data normalized in JS */
+  .lesson-label.overweighted { background:rgba(255,79,94,0.15); color:var(--red); }
+  .lesson-label.underweighted { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .lesson-label.missed { background:rgba(79,140,255,0.15); color:var(--accent); }
+  .lesson-label.correct { background:rgba(61,214,140,0.15); color:var(--green); }
+
+  /* Game 2 Prediction Banner */
+
+  /* Game History Section */
+
+  /* Coaching & Lineup Intelligence */
+  .coaching-section { background: linear-gradient(135deg, var(--card) 0%, #2d2210 100%); border-radius:12px; padding:20px; border:1px solid rgba(255,199,58,0.25); margin-bottom:20px; }
+  .coaching-title { font-size:14px; font-weight:700; margin-bottom:4px; color:var(--yellow); }
+  .coaching-subtitle { font-size:10px; color:var(--text-dim); margin-bottom:14px; font-style:italic; }
+  .coaching-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+  .coach-card { background:rgba(0,0,0,0.2); border-radius:10px; padding:14px; }
+  .coach-name { font-size:15px; font-weight:800; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .coach-name .coach-label { font-size:9px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px; }
+  .coach-record { font-size:11px; color:var(--text-dim); margin-bottom:10px; }
+  .coach-record strong { color:var(--yellow); }
+  .coach-tendency { font-size:12px; color:var(--text-dim); line-height:1.6; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,0.15); margin-bottom:8px; }
+  .coach-tendency strong { color:var(--text); }
+  .coach-detail { font-size:11px; color:var(--text-dim); line-height:1.5; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .coach-detail:last-child { border-bottom:none; }
+  .coach-detail-label { font-size:9px; text-transform:uppercase; letter-spacing:0.4px; color:var(--yellow); font-weight:700; margin-bottom:2px; }
+  .lineup-data-section { background:rgba(0,0,0,0.15); border-radius:10px; padding:14px; margin-bottom:16px; }
+  .lineup-data-title { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--yellow); }
+  .lineup-stat-row { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; background:rgba(0,0,0,0.2); margin-bottom:6px; flex-wrap:wrap; }
+  .lineup-stat-row:last-child { margin-bottom:0; }
+  .lineup-stat-row .team-label { font-size:11px; font-weight:700; min-width:40px; }
+  .lineup-stat-row .lineup-players-list { display:flex; gap:3px; flex-wrap:wrap; flex:1; }
+  .lineup-stat-row .lineup-player-chip { font-size:10px; padding:2px 6px; border-radius:4px; background:rgba(255,199,58,0.1); color:var(--yellow); font-weight:500; }
+  .lineup-stat-row .lineup-stats { display:flex; gap:12px; font-size:11px; flex-wrap:wrap; }
+  .lineup-stat-row .lineup-stats .ls { text-align:center; }
+  .lineup-stat-row .lineup-stats .ls .ls-label { font-size:8px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.3px; }
+  .lineup-stat-row .lineup-stats .ls .ls-val { font-weight:700; }
+  .lineup-stat-row .lineup-note { font-size:10px; color:var(--text-dim); font-style:italic; width:100%; margin-top:4px; }
+  .role-change-section { background:rgba(0,0,0,0.15); border-radius:10px; padding:14px; }
+  .role-change-title { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--yellow); }
+  .role-change-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,0.2); margin-bottom:6px; flex-wrap:wrap; }
+  .role-change-item:last-child { margin-bottom:0; }
+  .role-change-item .rc-player { font-size:12px; font-weight:700; min-width:100px; }
+  .role-change-item .rc-team { font-size:9px; padding:2px 5px; border-radius:4px; background:rgba(255,199,58,0.15); color:var(--yellow); font-weight:600; margin-left:4px; }
+  .role-change-item .rc-arrow { font-size:14px; min-width:20px; text-align:center; }
+  .role-change-item .rc-arrow.up { color:var(--green); }
+  .role-change-item .rc-arrow.down { color:var(--red); }
+  .role-change-item .rc-arrow.same { color:var(--yellow); }
+  .role-change-item .rc-roles { flex:1; min-width:200px; }
+  .role-change-item .rc-from { font-size:11px; color:var(--text-dim); }
+  .role-change-item .rc-to { font-size:11px; color:var(--text); font-weight:600; }
+  .role-change-item .rc-reason { font-size:10px; color:var(--text-dim); font-style:italic; margin-top:2px; }
+
+  /* Page Navigation (top-level) */
+  .page-nav { display:flex; gap:0; padding:16px 32px 0; background:var(--bg); border-bottom:2px solid var(--border); }
+  .page-nav-btn { padding:10px 22px; cursor:pointer; font-size:13px; font-weight:700; background:transparent; color:var(--text-dim); border:none; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px; }
+  .page-nav-btn:hover { color:var(--text); background:rgba(255,255,255,0.03); }
+  .page-nav-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+  /* Learnings & Definitions Pages */
+  .page-content { padding:24px 32px 32px; }
+  .page-header { font-size:22px; font-weight:800; margin-bottom:6px; }
+  .page-subheader { font-size:13px; color:var(--text-dim); margin-bottom:24px; line-height:1.6; }
+
+  .learning-timeline { position:relative; padding-left:0; }
+  .learning-entry { position:relative; margin-bottom:16px; padding:0 16px; }
+  .learning-phase { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--accent); margin-bottom:4px; }
+  .learning-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .learning-body { font-size:12px; color:var(--text-dim); line-height:1.7; }
+  .learning-body strong { color:var(--text); }
+  .learning-tag { display:inline-block; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; margin-right:4px; margin-top:6px; }
+  .learning-tag.model { background:rgba(79,140,255,0.15); color:var(--accent); }
+  .learning-tag.data { background:rgba(61,214,140,0.15); color:var(--green); }
+  .learning-tag.bug { background:rgba(255,79,94,0.15); color:var(--red); }
+  .learning-tag.backtest { background:rgba(167,139,250,0.15); color:var(--purple); }
+  /* Phase box — collapsible */
+  .phase-box { background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:12px; overflow:hidden; }
+  .phase-box[open] { border-color:rgba(155,135,245,0.4); }
+  .phase-box summary { padding:14px 18px; cursor:pointer; display:flex; align-items:center; gap:12px; user-select:none; list-style:none; }
+  .phase-box summary::-webkit-details-marker { display:none; }
+  .phase-box summary::before { content:'▸'; font-size:14px; color:var(--accent); transition:transform 0.2s; min-width:14px; }
+  .phase-box[open] summary::before { transform:rotate(90deg); }
+  .phase-summary-title { font-size:14px; font-weight:800; color:var(--text); }
+  .phase-summary-count { font-size:10px; padding:2px 8px; border-radius:10px; background:rgba(79,140,255,0.15); color:var(--accent); font-weight:700; }
+  .phase-summary-desc { font-size:11px; color:var(--text-dim); margin-left:auto; max-width:50%; text-align:right; }
+  .phase-box-content { padding:4px 8px 12px; border-top:1px solid var(--border); }
+  @media (max-width:700px) { .phase-summary-desc { display:none; } }
+
+  .def-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:14px; }
+  .def-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; transition:border-color 0.2s; }
+  .def-card:hover { border-color:var(--accent); }
+  .def-term { font-size:15px; font-weight:800; color:var(--accent); margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+  .def-term .def-abbr { font-size:10px; padding:2px 6px; border-radius:4px; background:rgba(79,140,255,0.15); color:var(--accent); font-weight:700; }
+  .def-formula { font-size:11px; font-family:monospace; color:var(--yellow); background:rgba(0,0,0,0.3); padding:6px 10px; border-radius:6px; margin:8px 0; display:block; overflow-x:auto; }
+  .def-desc { font-size:12px; color:var(--text-dim); line-height:1.6; }
+  .def-desc strong { color:var(--text); }
+  .def-category { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .def-category.player { color:var(--green); border-color:rgba(61,214,140,0.3); }
+  .def-category.team { color:var(--accent); border-color:rgba(79,140,255,0.3); }
+  .def-category.model { color:var(--purple); border-color:rgba(167,139,250,0.3); }
+  .def-category.backtest { color:var(--yellow); border-color:rgba(255,199,58,0.3); }
+
+  /* Bets Page */
+  .parlay-featured { background:linear-gradient(135deg, #1a2a1a 0%, #1a2e3a 100%); border:2px solid var(--green); border-radius:14px; padding:20px; margin-bottom:20px; }
+  .parlay-card { background:rgba(0,0,0,0.25); border:1px solid rgba(61,214,140,0.2); border-radius:12px; padding:16px; margin-bottom:12px; }
+  .parlay-card.best { border-color:var(--green); box-shadow:0 0 20px rgba(61,214,140,0.1); }
+  .parlay-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+  .parlay-name { font-size:14px; font-weight:700; color:var(--text); }
+  .parlay-odds { font-size:14px; font-weight:800; padding:4px 12px; border-radius:6px; }
+  .parlay-odds.plus { background:rgba(61,214,140,0.15); color:var(--green); }
+  .parlay-legs { display:flex; flex-direction:column; gap:8px; }
+  .parlay-leg { display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:8px; }
+  .parlay-leg-num { font-size:10px; font-weight:800; color:var(--accent); min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; background:rgba(79,140,255,0.15); border-radius:50%; }
+  .parlay-leg-pick { font-size:12px; font-weight:600; color:var(--text); flex:1; }
+  .parlay-leg-odds { font-size:11px; color:var(--text-dim); }
+  .parlay-leg-conf { font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600; }
+  .parlay-reasoning { font-size:11px; color:var(--text-dim); line-height:1.6; margin-top:10px; padding:10px; background:rgba(0,0,0,0.15); border-radius:8px; border-left:3px solid var(--green); }
+
+  .risk-tier { margin-bottom:24px; }
+  .risk-tier-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .risk-tier-badge { font-size:11px; font-weight:800; padding:4px 12px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px; }
+  .risk-tier-badge.high-conf { background:rgba(61,214,140,0.15); color:var(--green); }
+  .risk-tier-badge.med-conf { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .risk-tier-badge.low-conf { background:rgba(255,79,94,0.15); color:var(--red); }
+
+  .bet-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; }
+  .bet-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; transition:border-color 0.2s; }
+  .bet-card:hover { border-color:var(--accent); }
+  .bet-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .bet-type.moneyline { color:var(--accent); }
+  .bet-type.spread { color:var(--purple); }
+  .bet-type.total { color:var(--yellow); }
+  .bet-type.prop { color:var(--green); }
+  .bet-type.series { color:var(--accent2); }
+  .bet-pick { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .bet-line { font-size:12px; color:var(--text-dim); margin-bottom:8px; }
+  .bet-reasoning { font-size:11px; color:var(--text-dim); line-height:1.5; }
+  .bet-reasoning strong { color:var(--text); }
+  .bet-edge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:700; margin-top:6px; }
+  .bet-edge.model { background:rgba(167,139,250,0.15); color:var(--purple); }
+  .bet-edge.historical { background:rgba(79,140,255,0.15); color:var(--accent); }
+  .bet-edge.matchup { background:rgba(61,214,140,0.15); color:var(--green); }
+
+  .bets-disclaimer { font-size:10px; color:rgba(255,255,255,0.3); text-align:center; margin-top:24px; padding:12px; border-top:1px solid rgba(255,255,255,0.05); line-height:1.5; }
+
+  /* Backtest Methodology Panel */
+  .backtest-panel { background: linear-gradient(135deg, #1a1e2e 0%, #2a1a2e 100%); border-radius:14px; padding:20px; border:1px solid rgba(167,139,250,0.3); margin-bottom:20px; }
+  .backtest-title { font-size:15px; font-weight:700; color:var(--purple); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .backtest-subtitle { font-size:11px; color:var(--text-dim); margin-bottom:14px; }
+  .backtest-accuracy { display:inline-block; font-size:12px; font-weight:700; padding:3px 10px; border-radius:6px; background:rgba(167,139,250,0.15); color:var(--purple); }
+  .backtest-stats { display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; padding:12px; background:rgba(0,0,0,0.15); border-radius:10px; }
+  .backtest-stat { text-align:center; }
+  .backtest-stat .bs-label { font-size:9px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px; }
+  .backtest-stat .bs-val { font-size:18px; font-weight:800; }
+  .model-factors { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .model-factor-chip { font-size:10px; padding:4px 10px; border-radius:6px; background:rgba(79,140,255,0.1); color:var(--accent); font-weight:600; border:1px solid rgba(79,140,255,0.2); }
+
+  /* Scenario Builder */
+  .scenario-builder { background: linear-gradient(135deg, #1a2030 0%, #1e2a1e 100%); border-radius:14px; padding:20px; border:1px solid rgba(61,214,140,0.3); margin-bottom:20px; }
+  .scenario-title { font-size:15px; font-weight:700; color:var(--green); margin-bottom:4px; }
+  .scenario-subtitle { font-size:11px; color:var(--text-dim); margin-bottom:16px; }
+  .scenario-comparison { display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; }
+  .scenario-col { text-align:center; }
+  .scenario-col .label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .scenario-col .prob { font-size:28px; font-weight:800; }
+  .scenario-col .spread { font-size:13px; color:var(--text-dim); margin-top:4px; }
+  .scenario-col .team-name { font-size:12px; font-weight:600; margin-bottom:4px; }
+  .scenario-vs { font-size:14px; color:var(--text-dim); font-weight:600; }
+  .scenario-delta { margin-top:14px; padding:12px; background:rgba(0,0,0,0.2); border-radius:10px; }
+  .scenario-delta .delta-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; }
+  .scenario-delta .delta-items { display:flex; flex-wrap:wrap; gap:6px; }
+  .scenario-delta .delta-chip { font-size:11px; padding:4px 10px; border-radius:6px; font-weight:600; }
+  .scenario-delta .delta-chip.out { background:rgba(255,79,94,0.15); color:var(--red); }
+  .scenario-delta .delta-chip.gtd { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .scenario-delta .delta-chip.in { background:rgba(61,214,140,0.15); color:var(--green); }
+
+  /* Player toggle in roster table */
+  .player-toggle { cursor:pointer; width:18px; height:18px; border-radius:4px; border:1px solid var(--border); background:rgba(61,214,140,0.15); display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--green); margin-right:6px; vertical-align:middle; transition:all 0.2s; }
+  .player-toggle.toggled-out { background:rgba(255,79,94,0.15); color:var(--red); border-color:rgba(255,79,94,0.3); }
+  .player-toggle:hover { transform:scale(1.1); }
+  .player-row-out td { opacity:0.4; }
+  .player-row-out .player-toggle { opacity:1; }
+  .hist-impact-section { margin-top:12px; padding:12px; background:rgba(0,200,255,0.05); border:1px solid rgba(0,200,255,0.15); border-radius:8px; }
+  .hist-impact-title { font-size:13px; font-weight:600; color:var(--accent); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .hist-impact-card { margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px; border-left:3px solid var(--accent); }
+  .hist-player-header { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .hist-player-header .player-name { font-weight:600; font-size:14px; }
+  .hist-record { font-size:12px; font-weight:600; padding:2px 8px; background:rgba(0,0,0,0.3); border-radius:4px; }
+  .hist-netrtg { font-size:12px; font-weight:600; padding:2px 8px; background:rgba(0,0,0,0.3); border-radius:4px; }
+  .hist-detail { font-size:12px; color:var(--text-dim); margin-bottom:4px; line-height:1.5; }
+  .hist-detail strong { color:var(--text); }
+  .hist-sources { font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; font-style:italic; }
+
+
+  /* Round / Series / Game Sub-Tab Navigation */
+  .round-tabs { display:flex; gap:2px; padding:12px 32px 0; background:var(--bg); }
+  .round-tab { padding:10px 24px; border-radius:10px 10px 0 0; cursor:pointer; font-size:13px; font-weight:700; background:var(--card); color:var(--text-dim); border:1px solid var(--border); border-bottom:none; transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px; }
+  .round-tab:hover { background:var(--card-hover); color:var(--text); }
+  .round-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  .series-tabs { display:flex; gap:2px; padding:4px 32px; background:var(--bg); }
+  .series-tab { padding:8px 18px; border-radius:8px 8px 0 0; cursor:pointer; font-size:12px; font-weight:600; background:rgba(0,0,0,0.15); color:var(--text-dim); border:1px solid transparent; border-bottom:none; transition:all 0.2s; }
+  .series-tab:hover { background:var(--card-hover); color:var(--text); }
+  .series-tab.active { background:var(--card); color:var(--text); border-color:var(--border); }
+  .series-tab .series-tab-seed { font-size:9px; opacity:0.5; margin-right:2px; }
+
+  .game-tabs { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+  .game-tab { padding:8px 16px; border-radius:8px; cursor:pointer; font-size:11px; font-weight:600; background:var(--card); color:var(--text-dim); border:1px solid var(--border); transition:all 0.2s; min-width:70px; text-align:center; }
+  .game-tab:hover { background:var(--card-hover); color:var(--text); }
+  .game-tab.active { background:var(--purple); color:#fff; border-color:var(--purple); }
+  .game-tab.played { border-color:rgba(61,214,140,0.3); }
+  .game-tab.played .game-tab-result { font-size:9px; display:block; margin-top:2px; color:var(--green); }
+  .game-tab .game-tab-result { display:none; }
+  .game-tab-game { border-color:rgba(155,135,245,0.35); }
+  .game-tab-game:hover { border-color:rgba(155,135,245,0.55); }
+  .game-tab-game.played { border-color:rgba(61,214,140,0.4); }
+  .game-tab-game.active { border-color:var(--purple); }
+
+  /* Two-column horizontal layout */
+  .series-body { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  @media (max-width:1100px) { .series-body { grid-template-columns:1fr; } }
+
+  /* Compact series header */
+  .series-header-compact { display:flex; align-items:center; justify-content:space-between; padding:16px 0 12px; gap:12px; flex-wrap:wrap; }
+  .series-header-compact .team-vs { display:flex; align-items:center; gap:16px; }
+  .series-header-compact .team-block { text-align:center; min-width:120px; }
+  .series-header-compact .team-block .seed { font-size:10px; color:var(--text-dim); }
+  .series-header-compact .team-block .name { font-size:18px; font-weight:700; }
+  .series-header-compact .team-block .record { font-size:11px; color:var(--text-dim); }
+  .series-header-compact .prob-compact { text-align:center; }
+  .series-header-compact .prob-compact .prob-num { font-size:26px; font-weight:800; }
+  .series-header-compact .prob-compact .prob-label { font-size:9px; color:var(--text-dim); text-transform:uppercase; }
+
+  /* Visual stat bars */
+  .stat-bar-container { display:flex; align-items:center; gap:6px; margin:2px 0; }
+  .stat-bar-label { font-size:10px; color:var(--text-dim); min-width:55px; text-align:right; }
+  .stat-bar { height:10px; border-radius:5px; background:rgba(255,255,255,0.05); flex:1; max-width:120px; overflow:hidden; position:relative; }
+  .stat-bar-fill { height:100%; border-radius:5px; transition:width 0.4s ease; }
+  .stat-bar-val { font-size:10px; font-weight:700; min-width:40px; }
+
+  /* Player stat viz panel */
+  .player-viz { background:var(--card); border-radius:12px; padding:16px; border:1px solid var(--border); margin-bottom:16px; }
+  .player-viz-title { font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .player-viz-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:900px) { .player-viz-grid { grid-template-columns:1fr; } }
+  .player-viz-card { background:rgba(0,0,0,0.15); border-radius:8px; padding:10px; }
+  .player-viz-card .pv-name { font-size:12px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+  .player-viz-card .pv-name .pv-rating { font-size:10px; padding:2px 6px; border-radius:10px; font-weight:700; }
+
+  /* Fatigue & Injury Monitor */
+  .fatigue-monitor { background:linear-gradient(135deg, var(--card) 0%, #2d2a1a 100%); border-radius:12px; padding:16px; border:1px solid rgba(212,160,74,0.3); margin-bottom:16px; }
+  .fatigue-title { font-size:13px; font-weight:700; color:#d4a04a; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .fatigue-subtitle { font-size:10px; color:var(--text-dim); margin-bottom:12px; font-style:italic; }
+  .fatigue-badge { font-size:9px; padding:2px 8px; border-radius:10px; font-weight:700; background:rgba(212,160,74,0.15); color:#d4a04a; }
+  .fatigue-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:900px) { .fatigue-grid { grid-template-columns:1fr; } }
+  .fatigue-team-card { background:rgba(0,0,0,0.2); border-radius:10px; padding:12px; }
+  .fatigue-team-name { font-size:12px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .fatigue-team-index { font-size:11px; padding:2px 8px; border-radius:6px; font-weight:700; }
+  .fatigue-player-row { display:flex; align-items:center; gap:8px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px; }
+  .fatigue-player-row:last-child { border-bottom:none; }
+  .fatigue-player-name { min-width:100px; font-weight:500; }
+  .fatigue-bar { height:8px; flex:1; max-width:80px; border-radius:4px; background:rgba(255,255,255,0.05); overflow:hidden; }
+  .fatigue-bar-fill { height:100%; border-radius:4px; }
+  .fatigue-val { min-width:32px; text-align:right; font-weight:600; }
+  .fatigue-tags { display:flex; gap:3px; flex-wrap:wrap; }
+  .fatigue-tag { font-size:8px; padding:1px 5px; border-radius:3px; font-weight:600; }
+  .fatigue-tag.age { background:rgba(167,139,250,0.15); color:var(--purple); }
+  .fatigue-tag.minutes { background:rgba(79,140,255,0.15); color:var(--accent); }
+  .fatigue-tag.injury { background:rgba(255,79,94,0.15); color:var(--red); }
+  .fatigue-tag.mental { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .fatigue-tag.role { background:rgba(61,214,140,0.15); color:var(--green); }
+
+  /* Roster team toggle tabs */
+  .roster-team-tabs { display:flex; gap:0; margin-bottom:12px; }
+  .roster-team-tab { flex:1; padding:10px 16px; cursor:pointer; font-size:13px; font-weight:700; text-align:center; background:var(--card); color:var(--text-dim); border:1px solid var(--border); transition:all 0.2s; }
+  .roster-team-tab:first-child { border-radius:8px 0 0 8px; }
+  .roster-team-tab:last-child { border-radius:0 8px 8px 0; }
+  .roster-team-tab.active { color:#fff; border-color:transparent; }
+  .roster-team-tab .rtt-record { font-size:10px; font-weight:400; opacity:0.7; margin-left:6px; }
+
+  /* Compact game prediction panel */
+  .game-panel { background:var(--card); border-radius:12px; padding:16px; border:1px solid var(--border); margin-bottom:16px; }
+  .game-panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+  .game-panel-title { font-size:14px; font-weight:700; }
+  .game-panel-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+  .game-panel-grid .gp-stat { text-align:center; }
+  .game-panel-grid .gp-stat .label { font-size:9px; color:var(--text-dim); text-transform:uppercase; }
+  .game-panel-grid .gp-stat .val { font-size:18px; font-weight:800; }
+
+  /* Game Character & Margin Variance */
+  .game-character { display:inline-block; padding:3px 10px; border-radius:8px; font-size:10px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; }
+  .game-character.blowout { background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); }
+  .game-character.separation { background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+  .game-character.competitive { background:rgba(59,130,246,0.15); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+  .game-character.grind { background:rgba(139,92,246,0.15); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+  .game-character.coinflip { background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+  .margin-bar-container { display:flex; align-items:center; gap:8px; margin:8px 0 4px; }
+  .margin-bar { flex:1; height:6px; border-radius:3px; background:var(--border); overflow:hidden; position:relative; }
+  .margin-bar-fill { height:100%; border-radius:3px; transition:width 0.3s; }
+  .margin-range { font-size:10px; color:var(--text-dim); }
+  .proj-score-dynamic { font-size:16px; font-weight:800; margin-bottom:2px; }
+  .variance-pills { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px; }
+  .variance-pill { font-size:9px; padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.05); color:var(--text-dim); border:1px solid var(--border); }
+
+  @media (max-width:768px) {
+    .header { padding:14px 16px; }
+    .tabs { padding:10px 16px 0; }
+    .main { padding:0 16px 16px; }
+    .team-adv { grid-template-columns:1fr; }
+    .rating-breakdown { grid-template-columns:1fr 1fr; }
+    .coaching-grid { grid-template-columns:1fr; }
+    table { font-size:11px; }
+    th, td { padding:6px 8px; }
+  }
