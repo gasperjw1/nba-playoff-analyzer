@@ -18,7 +18,9 @@ function renderDefinitionsPage(el) {
       <div class="def-tab-btn" id="defTab-margins" onclick="switchDefTab('margins')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Margin Variance</div>
       <div class="def-tab-btn" id="defTab-fatigue" onclick="switchDefTab('fatigue')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Fatigue</div>
       <div class="def-tab-btn" id="defTab-research" onclick="switchDefTab('research')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Phase 17 Research</div>
-      <div class="def-tab-btn" id="defTab-xfactors" onclick="switchDefTab('xfactors')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">X-Factors</div>
+      <div class="def-tab-btn" id="defTab-xfactors" onclick="switchDefTab('xfactors')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">X-Factors</div>
+      <div class="def-tab-btn" id="defTab-turnovers" onclick="switchDefTab('turnovers')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">TOV & Fouls</div>
+      <div class="def-tab-btn" id="defTab-threepoint" onclick="switchDefTab('threepoint')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">3PT Variance</div>
     </div>
 
     <!-- PLAYER TAB -->
@@ -307,6 +309,169 @@ function renderDefinitionsPage(el) {
         <div class="def-desc"><strong>CLE — Max Strus (OFF):</strong> Bench scoring explosion — 24pts G1 (playoff career high after missing 67 games). Scored 11pts during CLE's 27-9 run. His microwave shooting off the bench is the depth weapon TOR can't match.<br><strong>CLE — Dean Wade (DEF):</strong> 2stl each game. Meeting Ingram at point of attack was key to CLE's scheme lock (Ingram 17pts→7pts). His versatile wing defense is CLE's glue.<br><strong>TOR — Collin Murray-Boyles (OFF):</strong> BREAKOUT rookie — 14pts G1 (7-8 FG), 17pts G2 (expanded to 25min). Averaging +7.0pts over 8.5 PPG baseline. The clearest offensive x-factor in any series — forced Rajakovic to bench Poeltl for him.<br><strong>TOR — Ja'Kobe Walter (DEF):</strong> Best POA defender on Mitchell assignment. Better shooter than Shead (.409 3PT) so his minutes don't hurt TOR's spacing while providing defensive resistance.</div>
       </div>
     </div>
+    </div>
+
+    <!-- TOV & Fouls Tab -->
+    <div id="defContent-turnovers" class="def-tab-content" style="display:none;">
+      <div class="def-card" style="border-left:3px solid #ff6b35;">
+        <div class="def-term">Turnover Modeling — How It Works</div>
+        <div class="def-desc">Each turnover swing between teams is worth approximately <strong>1.07 points</strong> (combining lost possession value + transition opportunity for the opponent). Our model calculates a <strong>TOV Differential</strong> per series, then applies a <strong>Pressure Multiplier</strong> based on historical playoff data — how much each star's turnover rate increases in high-pressure moments compared to their regular season baseline.
+        <br><br><strong>Formula:</strong> TOV Impact = (Away TOV/game − Home TOV/game) × 1.07 pts/TOV × Pressure Multiplier
+        <br><br><strong>Key insight:</strong> Turnovers are the most REPEATABLE stat in playoffs. Teams that turn it over a lot in G1 tend to keep turning it over — unlike shooting variance (which regresses), turnover tendencies are structural (ball-handling quality, defensive pressure, pace).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #ff6b35;">
+        <div class="def-term">2026 Playoff TOV Leaderboard</div>
+        <div class="def-desc"><strong>Best Ball Security (Team TOV%):</strong>
+        <br>1. OKC — 7.2% (8.0 TOV/game) — elite discipline
+        <br>2. BOS — 9.1% (10.0 TOV/game) — veteran composure
+        <br>3. SAS — 11.5% (12.0 TOV/game) — Pop's system
+        <br><br><strong>Worst Ball Security (Team TOV%):</strong>
+        <br>1. LAL — 20.5% (20.0 TOV/game) — decimated roster
+        <br>2. TOR — 18.4% (20.0 TOV/game) — no PG (Quickley OUT)
+        <br>3. PHX — 17.3% (19.0 TOV/game) — OKC's D forces mistakes
+        <br><br><strong>Individual TOV Leaders (2026 Playoffs):</strong>
+        <br>Marcus Smart: 5.0/game (G1 outlier) | Scottie Barnes: 4.5 | James Harden: 4.5 | Jokic: 4.0 | KAT: 4.0 | Wemby: 4.0 | CJ McCollum: 3.5</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #ff6b35;">
+        <div class="def-term">Historical Pressure Patterns — Star TOV Under Pressure</div>
+        <div class="def-desc"><strong>LeBron James (293 playoff games):</strong> Career 3.58 TOV/game. At age 41, shifted to facilitator role = FEWER turnovers (G1: only 2 TOV with 13 assists). His playoff TOV rate has actually DECREASED as he ages. Finals average: 4.2 TOV but compensated by 8.5 AST.
+        <br><br><strong>Nikola Jokic (96 playoff games):</strong> Career 3.32 TOV/game but SPIKES in crunch time. When Jokic has 5+ TOV, DEN is 5-12. Peak pressure games: 8 TOV (OKC G3 2025), 7 TOV (OKC G1 2025, LAL G5 2024). His high-volume passing (8+ APG) creates inherent TOV risk — it's the trade-off for his playmaking brilliance.
+        <br><br><strong>Anthony Edwards (44 playoff games):</strong> Career 2.70 TOV/game. ELIMINATION GAME PATTERN: TOV spikes to 4.2 avg (vs 2.7 career). When Ant has 4+ TOV, MIN is 3-6. Notable: 7 TOV in GSW G5 2025, 5 TOV in OKC G4 2025. Young star who forces shots when frustrated.
+        <br><br><strong>Donovan Mitchell (69 playoff games):</strong> Career 2.8 TOV/game. Steady — doesn't spike under pressure. His mid-range/iso game produces low live-ball TOV rates. One of the most reliable ball-security stars in the playoffs.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e53935;">
+        <div class="def-term">Foul Trouble Probability — How It Works</div>
+        <div class="def-desc">Foul trouble modeling estimates the <strong>probability that a key player picks up 4+ fouls by Q3</strong> (forcing the coach to manage minutes), then multiplies that by the team's <strong>DRtg degradation</strong> when that player sits.
+        <br><br><strong>Formula:</strong> Foul Impact = P(4+ fouls by Q3) × (Team DRtg without player − Team DRtg with player) × remaining minutes
+        <br><br><strong>Why it matters:</strong> A star picking up 2 fouls in Q1 creates a cascade: coach benches them → team plays 6-8 minutes without their anchor → opponent builds a lead → star returns in foul trouble and plays passively → reduced effectiveness even when on the floor.
+        <br><br><strong>Risk Tiers:</strong> LOW (&lt;10% chance of 5+ PF), MEDIUM (10-20%), HIGH (20-35%), EXTREME (&gt;35%)</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e53935;">
+        <div class="def-term">2026 Playoff Foul Trouble Watch List</div>
+        <div class="def-desc"><strong>EXTREME RISK:</strong>
+        <br>• Jalen Suggs (ORL) — 6.0 PF/game, FOULED OUT in G1. ORL's perimeter D collapses without him.
+        <br><br><strong>HIGH RISK:</strong>
+        <br>• Gobert (MIN) — 3.0 avg but 5 fouls in G2. MIN DRtg 7.9pts/100 worse without him. DEN targets him in P&R.
+        <br>• McDaniels (MIN) — 4.5 PF/game. MIN's best wing defender. Unsustainable rate.
+        <br>• KAT (MIN) — 4.5 PF/game. Jokic draws fouls in post. Losing KAT = losing secondary scorer.
+        <br>• Sengun (HOU) — 5.0 PF in G1. Smart's physical D draws fouls. HOU's only elite creator.
+        <br>• Shead (TOR) — 4.5 PF/game as the ONLY healthy PG. Foul trouble = no ballhandler.
+        <br><br><strong>MEDIUM RISK:</strong>
+        <br>• Nurkic (PHX) — 4.0 PF. PHX's only rim protector.
+        <br>• Okongwu (ATL) — 4.0 PF. ATL's rim protection + lob threat.
+        <br>• Drummond (PHI) — 3.0 PF. PHI's only center without Embiid.
+        <br><br><strong>ELITE FOUL DISCIPLINE:</strong>
+        <br>• LeBron — 2.27 PF/game career playoff (only 2 foul-outs in 293 games)
+        <br>• Wemby — 2.0 PF in G1. Blocks shots without fouling. DPOY-level discipline.
+        <br>• Mobley — 2.0 PF. Elite defensive technique = low foul rate.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e53935;">
+        <div class="def-term">Series-by-Series TOV & Foul Impact</div>
+        <div class="def-desc"><strong>Biggest TOV Edges:</strong>
+        <br>1. <strong>OKC-PHX:</strong> 11.0 TOV differential → ~11.8pts/game for OKC (nearly the G1 margin)
+        <br>2. <strong>CLE-TOR:</strong> 8.0 TOV differential → ~8.6pts/game. TOR's 18→22 TOV trend is WORSENING.
+        <br>3. <strong>HOU-LAL:</strong> 6.8 differential → ~7.3pts/game. LAL won G1 despite this — unsustainable.
+        <br>4. <strong>BOS-PHI:</strong> 6.0 differential → ~6.4pts/game. Maxey carrying entire load = turnovers.
+        <br><br><strong>Biggest Foul Trouble Risks:</strong>
+        <br>1. <strong>MIN (DEN-MIN):</strong> 27.5 team PF/game. Gobert, McDaniels, KAT ALL at risk. DEN's strategy is to draw Gobert fouls early.
+        <br>2. <strong>ORL (DET-ORL):</strong> Suggs fouled out G1. If he gets early fouls in G2, DET's guards feast.
+        <br>3. <strong>HOU (HOU-LAL):</strong> Sengun's 5 PF in G1. Smart's physical D is kryptonite.
+        <br>4. <strong>TOR (CLE-TOR):</strong> Shead at 4.5 PF as only PG. One foul trouble game = total breakdown.</div>
+      </div>
+    </div>
+
+    <!-- 3PT VARIANCE TAB (Phase 25) -->
+    <div id="defContent-threepoint" class="def-tab-content" style="display:none;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">3PT Regression Model (Phase 25)</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Core Principle:</strong> 3PT shooting is the most volatile aspect of NBA basketball. Teams hover around mid-30% over a full season but can swing ±10% over 1-5 game stretches.
+            <br><br><strong>Bayesian Blend Formula:</strong>
+            <br>Expected 3P% = (playoff_3PA × playoff_3P% + season_3PA × regWeight × season_3P%) / (playoff_3PA + season_3PA × regWeight)
+            <br><br><strong>Regression Weights:</strong>
+            <br>• 1-game sample: regWeight = 0.70 (heavy regression toward season baseline)
+            <br>• 2-game sample: regWeight = 0.55 (moderate regression)
+            <br>• 3+ game sample: regWeight = 0.40 (less regression, more trust in playoff data)
+            <br><br><strong>Impact Calculation:</strong>
+            <br>Point Swing = (expected_3P% - actual_3P%) × 3PA × 3
+            <br>Each 5% 3P% change on 35 3PA = ~5.25 points per game</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Unsustainability Flags</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Role-Player Inflation:</strong> Bench/role players shooting >15% above career avg from 3 — this is the #1 predictor of regression. (e.g., Kennard 1.000, Okongwu .667, Wemby .833)
+            <br><br><strong>Star Cold Streaks:</strong> Stars shooting >12% below season avg on 5+ 3PA — expect bounce-back. (e.g., SGA 0/4, Murray .273, Edwards .250, Bane .125)
+            <br><br><strong>Team Extremes:</strong> Any team 3P% deviation >8% from season baseline on 20+ 3PA is HIGH CONFIDENCE regression.
+            <br><br><strong>Shot Quality Filter:</strong> Not all regression is equal. Contested 3s regressing is less impactful than open-look misses. Teams generating open looks (BOS, OKC) will sustain higher 3P% than teams forcing contested 3s (PHX, POR).</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">2026 Playoff Team 3PT: Regular Season vs Playoffs</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong style="color:#ff6b6b;">REGRESSION DOWN (shooting hot):</strong>
+            <br>• LAL: .526 playoff vs .359 season (+16.7%) — EXTREME
+            <br>• SAS: .455 playoff vs .359 season (+9.6%) — HIGH
+            <br>• CLE: .403 playoff vs .360 season (+4.3%) — MODERATE
+            <br><br><strong style="color:#51cf66;">REGRESSION UP (shooting cold):</strong>
+            <br>• PHI: .174 playoff vs .349 season (-17.5%) — EXTREME
+            <br>• POR: .263 playoff vs .343 season (-8.0%) — HIGH
+            <br>• DEN: .325 playoff vs .396 season (-7.1%) — HIGH
+            <br>• OKC: .304 playoff vs .365 season (-6.1%) — MODERATE
+            <br>• ORL: .294 playoff vs .343 season (-4.9%) — MODERATE
+            <br>• DET: .313 playoff vs .356 season (-4.3%) — MODERATE
+            <br><br><strong style="color:#aaa;">AT BASELINE (sustainable):</strong>
+            <br>• BOS: .364 vs .367 (-0.3%), MIN: .368 vs .370 (-0.2%), NYK: .390 vs .373 (+1.7%)</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Top Individual Regression Candidates</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong style="color:#ff6b6b;">Most Likely to Cool Down:</strong>
+            <br>1. <strong>Kennard (LAL):</strong> 5/5 (1.000) vs .440 career — will crash hardest
+            <br>2. <strong>Wembanyama (SAS):</strong> 5/6 (.833) vs .359 season — ~7 pts of 3PT regression alone
+            <br>3. <strong>Okongwu (ATL):</strong> 3/4.5 (.667) vs sub-.200 career — ATL's G2 upset was built on this mirage
+            <br>4. <strong>Strus (CLE):</strong> 3/5 (.600) vs .370 season — G1 hero, won't sustain
+            <br>5. <strong>DiVincenzo (MIN):</strong> 4/7 (.571) vs .370 season — role player hot streak
+            <br><br><strong style="color:#51cf66;">Most Likely to Heat Up:</strong>
+            <br>1. <strong>Bane (ORL):</strong> 1/8 (.125) vs .380 season — biggest single-player regression UP candidate
+            <br>2. <strong>PHI team (4/23):</strong> .174 vs .349 — whole team due for correction
+            <br>3. <strong>SGA (OKC):</strong> 0/4 (.000) vs .387 season — best 3PT season, complete whiff G1
+            <br>4. <strong>Murray (DEN):</strong> 3/11 (.273) vs .380 season — DEN's offense hinges on Murray's shot
+            <br>5. <strong>Edwards (MIN):</strong> 2.5/10 (.250) vs .370 season — cold Ant masks MIN's ceiling
+            <br>6. <strong>Holiday (POR):</strong> 1/7 (.143) vs .350 season — veteran shooter's worst game</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Structural 3PT Edges (Not Variance)</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            Some 3PT performance isn't variance — it's <strong>structural</strong> (defense-driven and repeatable):
+            <br><br><strong>OKC's 3PT Defense:</strong> Opponents shot .333 from 3 in G1 (PHX). OKC's switching creates the most contested 3PT looks in the playoffs. This suppression is REPEATABLE — don't expect PHX to suddenly find open 3s.
+            <br><br><strong>BOS's 3PT Volume:</strong> Highest 3PAr in playoffs (48.9% of shots are 3s). BOS generates more open 3s through ball movement than any team. Their .364 3P% is sustainable because shot quality is elite.
+            <br><br><strong>BOS's 3PT Defense:</strong> Held PHI to .174 from 3 — the worst in playoffs. While some regression UP is expected, BOS's perimeter rotations are structural. PHI's ceiling vs BOS is ~.300, not .349.
+            <br><br><strong>LAL's Low Volume:</strong> Only 19 3PA (lowest in playoffs). LAL doesn't need 3s to win — they dominate the paint (48-30 in G1). Their .526 will regress but it matters LESS because they take so few.
+            <br><br><strong>POR's High Volume/Low Skill:</strong> 38 3PA at .263 — POR relies on volume to compensate for below-average shooting talent (.343 season). Even with regression UP, they'll stay below league average.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Series-by-Series 3PT Impact Summary</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>HIGH IMPACT:</strong>
+            <br>1. <strong>HOU-LAL:</strong> LAL's .526→~.375 regression = ~4.5 pts toward HOU. KD's return + 3PT regression could flip G2.
+            <br>2. <strong>SAS-POR:</strong> Double regression — SAS hot (.455→.370) and POR cold (.263→.320). G2 margin compresses 6-8 pts.
+            <br>3. <strong>DEN-MIN:</strong> Most volatile series. DEN cold (.325 vs .396 RS), Edwards cold (.250 vs .370). Whoever's shooters regress first wins.
+            <br><br><strong>MODERATE IMPACT:</strong>
+            <br>4. <strong>NYK-ATL:</strong> Okongwu's .667→.200 regression costs ATL ~5 pts. Bridges' cold .300→.370 partially offsets for NYK.
+            <br>5. <strong>DET-ORL:</strong> Both cold. Bane's .125→.350 is biggest single swing in East.
+            <br><br><strong>LOW IMPACT:</strong>
+            <br>6. <strong>CLE-TOR:</strong> CLE hot but paint-dominant. 3PT regression won't change series trajectory.
+            <br>7. <strong>BOS-PHI:</strong> PHI's .174 will regress but BOS defense caps it at ~.300. Gap too large.
+            <br>8. <strong>OKC-PHX:</strong> OKC won by 35 WHILE shooting cold. SGA regression UP makes it worse for PHX.</div>
+        </div>
+
+      </div>
     </div>
 
   </div>`;

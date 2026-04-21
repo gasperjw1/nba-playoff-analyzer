@@ -635,6 +635,52 @@ function renderLearningsPage(el) {
         <span class="learning-tag data">Injury Data</span><span class="learning-tag model">Live Odds</span><span class="learning-tag milestone">Phase 23</span>
       </div>
 
+      <!-- Phase 24 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 24 — Turnover Modeling & Foul Trouble Probability</div>
+        <div class="learning-title">Deep Research: Career Playoff Game Logs + 2026 TOV/PF Analysis</div>
+        <div class="learning-body">Comprehensive turnover and foul trouble modeling based on Basketball Reference career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g, Mitchell 69g) plus 2026 playoff per-game stats for all 182 players.
+        <br><br><strong>Turnover Model:</strong>
+        <br>• Each turnover differential ≈ <strong>1.07 points</strong> (based on transition + possession value)
+        <br>• <strong>OKC has the best ball security</strong> in the 2026 playoffs: 7.2% TOV rate (8 TOV/game). PHX worst matchup opponent at 17.3%.
+        <br>• <strong>LAL's 20.5% TOV rate</strong> is the worst in the playoffs — costs them ~7.3 pts/game vs HOU. Won G1 DESPITE 20 turnovers.
+        <br>• <strong>CLE's turnover forcing</strong> is their biggest weapon: TOR averaging 20 TOV/game (18 G1, 22 G2) → 22+ CLE transition points per game. Barnes at 4.5 TOV/game (worst individual rate).
+        <br>• <strong>Pressure Multiplier</strong>: Stars' playoff TOV rates compared to regular season. Jokic +18% in playoffs, Edwards +25% in elimination games.
+        <br><br><strong>Foul Trouble Model:</strong>
+        <br>• <strong>MIN has the highest team PF rate</strong>: 27.5/game. Gobert (5 fouls G2), McDaniels (4.5/g), KAT (4.5/g) all at risk.
+        <br>• <strong>Gobert foul trouble = catastrophic</strong>: MIN's DRtg is 7.9 pts/100 worse without him. DEN specifically targets him in P&R.
+        <br>• <strong>Suggs fouled out G1</strong> (6 PF) — ORL's perimeter D collapses without him. DET should attack this.
+        <br>• <strong>Sengun 5 PF in G1</strong> — Smart's physical D draws fouls. If Sengun gets 2 early, HOU's offense flatlines.
+        <br>• <strong>LeBron's foul discipline is elite</strong>: Only 2 games with 6 PF in 293 career playoff games (0.7%).
+        <br><br><strong>Historical Patterns:</strong>
+        <br>• Jokic: 5+ TOV in games → DEN is 5-12. His TOV rate spikes in high-pressure moments (8 TOV vs OKC G3 2025).
+        <br>• Edwards: 4+ TOV → MIN is 3-6. Elimination game TOV average: 4.2 (vs 2.7 career).
+        <br>• LeBron at 41: shifted to facilitator role = LOWER TOV rate (2.0 in G1 vs 3.58 career). Age is actually helping ball security.
+        <br><br><strong>Model Integration:</strong> Added TURNOVER_FOUL_DATA object to series-data.js with per-series TOV differentials, individual risk profiles, foul-out probabilities, and DRtg degradation estimates.</div>
+        <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 24</span>
+      </div>
+
+      <!-- Phase 25 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 25 — 3-Point Variance & Regression Model</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Research:</strong> Built a comprehensive 3PT variance model using Basketball Reference 2026 Playoffs data (all 16 teams, 182 players) compared against 2025-26 regular season shooting baselines. Incorporated regression methodology from sports analytics research on Bayesian shooting expectation and shot-quality filtering.
+        <br><br><strong>Key Findings:</strong>
+        <br>• 3PT shooting is the single most volatile stat in the NBA — teams can swing ±10% over 1-5 game stretches
+        <br>• Role-player inflation is the strongest regression signal: bench players shooting >15% above career avg revert fastest (Kennard 1.000, Okongwu .667, Wemby .833)
+        <br>• Star cold streaks >12% below season avg on 5+ attempts are HIGH CONFIDENCE regression UP candidates (SGA 0/4, Murray .273, Edwards .250, Bane .125)
+        <br>• Team extremes: LAL .526 (17% above baseline) and PHI .174 (17.5% below) are the two most extreme cases
+        <br><br><strong>Biggest Model Impacts:</strong>
+        <br>• HOU-LAL: LAL's .526→~.375 regression = ~4.5 points toward HOU in G2. Combined with KD's return, this flips the spread.
+        <br>• SAS-POR: Wemby's .833→~.350 alone is worth ~7 points. POR's .263→~.320 adds ~6 pts. G2 should be 6-8 pts closer.
+        <br>• DEN-MIN: DEN (.325 vs .396 RS) has the most 3PT regression upside. Murray's shot falling in G3 = 4-6 extra points.
+        <br>• NYK-ATL: Okongwu's .667 from 3 (career sub-.200) is a mirage. When it regresses, ATL loses ~5 pts/game.
+        <br><br><strong>Structural vs Variance:</strong> Some suppression is NOT variance — OKC's defensive 3PT suppression (.333 opponent) and BOS's perimeter defense (.174 PHI) are REPEATABLE schematic edges, not random cold shooting.
+        <br><br><strong>Model Integration:</strong> Added THREE_POINT_VARIANCE_DATA to series-data.js with per-series Bayesian regression analysis, individual shooter flags, and impact estimates. Added "3PT Variance" tab to Definitions with methodology, team comparisons, individual regression candidates, and structural edges.</div>
+        <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 25</span>
+      </div>
+
     </div>
   </div>`;
 
@@ -662,7 +708,9 @@ function renderLearningsPage(el) {
     'Phase 20': 'G2 differentiation engine — momentum, regression, coaching compression',
     'Phase 21': 'CLE-TOR G2 results — margin prediction validated (+11 proj vs +10 actual)',
     'Phase 22': 'Per-player offensive outlook system — research-backed FG% differentiation for G2 (5 series) + G3 (3 series)',
-    'Phase 23': 'Injury/fatigue-adjusted G2 projections — CBS injury reports + ESPN live odds integrated (KD return, Tatum recovery, LeBron fatigue)'
+    'Phase 23': 'Injury/fatigue-adjusted G2 projections — CBS injury reports + ESPN live odds integrated (KD return, Tatum recovery, LeBron fatigue)',
+    'Phase 24': 'Turnover modeling & foul trouble probability — career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g), 2026 per-game TOV/PF analysis, pressure multipliers, DRtg degradation',
+    'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series'
   };
 
   // Collect all entries/cards

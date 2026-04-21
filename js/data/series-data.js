@@ -19,6 +19,10 @@
 //   + Stat Differential Model (Jones & Magel 2016 — FG%, 3PT%, ORB%, TOV differentials)
 //   + Series-Stage Pressure (Mateus et al. 2024 — pedigree amplified in later games)
 //   + Enhanced SPM Chemistry v2 (8 dimensions: added o3PT, oPass per Mateus et al.)
+//   + Turnover Modeling (Phase 24 — TOV differential × 1.07 pts/TOV, pressure multipliers)
+//   + Foul Trouble Probability (Phase 24 — star foul-out risk × DRtg degradation)
+//   + 3PT Variance Regression (Phase 25 — Bayesian blend: playoff 3P% × sample + season 3P% × regWeight)
+//   + Individual Shooter Regression (Phase 25 — flag unsustainable hot/cold streaks, role player inflation)
 //   Calibrated against 49 games in the 2025 NBA Playoffs (73.5% accuracy)
 // ============================================================
 
@@ -1945,3 +1949,411 @@ const SERIES_DATA = [
     games: [{num:1,result:"CLE",homeScore:126,awayScore:113,winner:"CLE",notes:"Mitchell 32pts (11/20 FG), Harden 22/10ast, Strus 24 off bench, Mobley 17/7. CLE dominated paint 48-30. TOR held to 1 fast-break point (league leader in transition). TOR: Barrett 24, Barnes 21/7ast, Ingram 17, Shead 17 (5 3s). Quickley OUT hamstring. Poeltl no-show 4pts/6reb. TOR 18 turnovers → 22 CLE points. CLE held TOR below 110 for first time all season (59 second-half pts). CLE 36-22 Q3 run broke it open. WPA: MVP Strus +16.6%, LVP Barnes -7.6%. Rebounds were CLE's biggest edge (+14.7% WPA, matching paint dominance 48-30). FG +19.4%, FT +7.7%, TOV +7.0%."},{num:2,result:"CLE",homeScore:115,awayScore:105,winner:"CLE",notes:"CLE wins 115-105, leads series 2-0. Mitchell 30pts (13/23 FG, 4/10 3PT), Harden 28pts/4ast/5stl (9/14 FG, role shifted to scorer from facilitator), Mobley 25pts on 11/13 FG (dominant efficiency). Allen 10/3/1 with 3blk in 25min. TOR: Barnes 26pts/5ast bounce-back (11/19 FG), Barrett 22/9reb (10/13 FG), but Ingram collapsed 7pts on 3/15 FG (CLE defensive scheme blanketed him). Murray-Boyles 17pts/7reb off bench, Mamukelashvili 12/10 double-double. Quickley still OUT. KEY STAT: TOR 22 turnovers vs CLE 12. CLE led 99% of game, largest lead 16. TOR shot 26.9% from 3 (7-26). Poeltl reduced to 9min. Model projected CLE +11, actual +10."},{num:3,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:4,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
   }
 ];
+
+// ============================================================
+// PHASE 24 — TURNOVER MODELING & FOUL TROUBLE PROBABILITY
+// ============================================================
+// Data sourced from: Basketball Reference 2026 Playoffs per-game stats,
+// career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g, Mitchell 69g),
+// CBS Sports injury reports, and team four-factors analysis.
+//
+// Model Integration:
+//   TOV Impact = (Team TOV differential × 1.07 pts/TOV) — each turnover swing ≈ 1.07 points
+//   Foul Trouble Risk = P(star 4+ fouls by Q3) × DRtg degradation when star sits
+//   Pressure Multiplier = historical playoff TOV rate / regular season TOV rate (>1.0 = chokes under pressure)
+// ============================================================
+
+const TURNOVER_FOUL_DATA = {
+  "HOU-LAL": {
+    turnover: {
+      home: { teamTOV: 13.2, tovPct: 12.8, keyRisks: [
+        { player: "Sengun", tovPG: 3.0, careerPlayoffTOV: null, pressureNote: "First playoff action — post-up TOs spike vs elite perimeter D. Smart hunts him in P&R" },
+        { player: "Sheppard", tovPG: 2.0, careerPlayoffTOV: null, pressureNote: "Rookie in first playoffs — turnover rate typically spikes 15-20% for first-time playoff guards" }
+      ]},
+      away: { teamTOV: 20.0, tovPct: 20.5, keyRisks: [
+        { player: "LeBron", tovPG: 2.0, careerPlayoffTOV: 3.58, pressureNote: "293 playoff games. G1: only 2 TOV (facilitator mode). Career: 3.58/game but trending DOWN at 41 — more careful, fewer drives. Foul distribution: 6 PF only 2x in 293 games." },
+        { player: "Smart", tovPG: 5.0, careerPlayoffTOV: 2.1, pressureNote: "G1 outlier: 5 TOV on aggressive gambling. Career playoff: 2.1 TOV. Expect regression to ~2.5" }
+      ]},
+      differential: 6.8, // LAL turns it over 6.8 more per game — MASSIVE
+      modelImpact: "LAL's 20.5% TOV rate is worst in playoffs. Without Luka/Reaves, ball-handling load falls on LeBron and Smart — both prone to high-assist/high-TOV games. Each TOV swing ≈ 1.07 points, so LAL's +6.8 TOV differential costs them ~7.3 points per game. This partially offsets their G1 win (which came despite 20 turnovers). HOU's young core should force more TOs with their athleticism."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Sengun", pfPG: 5.0, foulOutRisk: "HIGH", impactIfOut: "HOU loses its only elite creator. No backup C of similar caliber. Offense collapses to perimeter-only." }
+      ],
+      away: [
+        { player: "LeBron", pfPG: 3.0, foulOutRisk: "LOW", impactIfOut: "Only 2 games with 6 PF in 293 career playoff games. Elite foul avoidance." },
+        { player: "AD", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "AD in foul trouble = LAL rim protection vanishes. Critical for containing Sengun drives." }
+      ],
+      modelImpact: "Sengun's 5.0 PF in G1 is alarming — Smart's physical defense draws fouls. If Sengun picks up 2 early fouls, Udoka must bench him, and HOU's offense flatlines."
+    }
+  },
+  "OKC-PHX": {
+    turnover: {
+      home: { teamTOV: 8.0, tovPct: 7.2, keyRisks: [
+        { player: "SGA", tovPG: 1.0, careerPlayoffTOV: 2.8, pressureNote: "Elite ball security. Only 1 TOV in G1 blowout. Career playoff: 2.8 but trending down as he's matured." },
+        { player: "Jalen Williams", tovPG: 2.0, careerPlayoffTOV: 2.2, pressureNote: "Steady. 2 TOV in G1 is right at career average." }
+      ]},
+      away: { teamTOV: 19.0, tovPct: 17.3, keyRisks: [
+        { player: "Booker", tovPG: 3.0, careerPlayoffTOV: 3.2, pressureNote: "3 TOV in G1. Career playoff 3.2 — consistently turns it over under pressure. OKC's switching D creates confusion." },
+        { player: "Beal", tovPG: 4.0, careerPlayoffTOV: 2.9, pressureNote: "4 TOV in G1 — highest on team. OKC's length disrupts his driving lanes." }
+      ]},
+      differential: -11.0, // OKC turns it over 11 FEWER per game
+      modelImpact: "OKC's 7.2% TOV rate is the BEST in the 2026 playoffs. PHX's 17.3% is 3rd-worst. This 11-turnover differential is worth ~11.8 points — almost the entire G1 margin (OKC won by 18). OKC's ball security is a REPEATABLE structural edge."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Chet", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "Chet's rim protection is OKC's defensive anchor. If he sits, PHX can attack the paint." }
+      ],
+      away: [
+        { player: "Nurkic", pfPG: 4.0, foulOutRisk: "HIGH", impactIfOut: "Already foul-prone. Without Nurkic, PHX has no rim protection and OKC attacks the paint at will." }
+      ],
+      modelImpact: "Nurkic's foul trouble is PHX's Achilles heel — he's the only true rim protector and his 4.0 PF/game rate puts him at constant risk."
+    }
+  },
+  "DEN-MIN": {
+    turnover: {
+      home: { teamTOV: 14.0, tovPct: 13.5, keyRisks: [
+        { player: "Jokic", tovPG: 4.0, careerPlayoffTOV: 3.32, pressureNote: "96 career playoff games. G1: 5 TOV, G2: 3 TOV. Career: 3.32 but SPIKES in high-pressure games (8 TOV vs OKC G3 2025, 7 TOV vs OKC G1 2025). His playmaking volume (8+ APG) inherently creates TOV risk. When Jokic has 5+ TOV, DEN is 5-12." },
+        { player: "Murray", tovPG: 3.0, careerPlayoffTOV: 2.8, pressureNote: "Chronic knee affects ball-handling in extended minutes. G2 Q4 collapse: 2-of-12 FG with 4 TOV in crunch time." }
+      ]},
+      away: { teamTOV: 15.5, tovPct: 14.8, keyRisks: [
+        { player: "Edwards", tovPG: 2.5, careerPlayoffTOV: 2.70, pressureNote: "44 career playoff games. G1: 3 TOV/4 PF, G2: 2 TOV/2 PF. PATTERN: When Ant has 4+ TOV, team is 3-6. Elimination games: TOV spikes (7 in GSW G5 2025, 5 in OKC G4). Young star who forces when frustrated." },
+        { player: "KAT", tovPG: 4.0, careerPlayoffTOV: 2.5, pressureNote: "4 TOV in G1 — well above career 2.5 average. Jokic's physicality disrupts KAT's post moves. Also 4.5 PF/game — foul trouble risk." }
+      ]},
+      differential: -1.5, // roughly even
+      modelImpact: "Nearly even on turnovers, but the COMPOSITION matters. Jokic's TOVs are high-leverage (often in Q4 crunch time when he's gassed at 40+ MPG). Edwards' TOVs spike in must-win games. For G3 at DEN, pressure shifts to MIN — expect Edwards' TOV rate to climb to 3-4 range on the road."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Jokic", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "5+ fouls in 18.75% of career playoff games. DEN's DRtg drops ~5pts/100 without him. KAT/Edwards attack him in P&R to draw fouls." },
+        { player: "Gordon", pfPG: 3.5, foulOutRisk: "MEDIUM", impactIfOut: "Physical defender who picks up fouls contesting drives. DEN's wing defense suffers without him." }
+      ],
+      away: [
+        { player: "Gobert", pfPG: 3.0, foulOutRisk: "HIGH", impactIfOut: "5 fouls in G2 (nearly fouled out). MIN's DRtg is 7.9 pts/100 WORSE without Gobert. Jokic specifically targets him in P&R to draw fouls." },
+        { player: "McDaniels", pfPG: 4.5, foulOutRisk: "HIGH", impactIfOut: "4.5 PF/game is unsustainable. If he fouls out, MIN loses its best wing defender — Murray/Porter get open looks." },
+        { player: "KAT", pfPG: 4.5, foulOutRisk: "HIGH", impactIfOut: "4.5 PF through 2 games. Jokic draws fouls on KAT in the post. If KAT sits, MIN's offense loses its secondary scorer." }
+      ],
+      modelImpact: "MIN's foul trouble is CRITICAL. 27.5 team PF/game (highest in playoffs). Gobert (5 fouls G2), McDaniels (4.5/g), and KAT (4.5/g) are all at risk. DEN's strategy: attack Gobert in P&R to draw his 3rd foul early, then feast on MIN's weakened interior D. This is a repeatable, schematic edge for DEN."
+    }
+  },
+  "SAS-POR": {
+    turnover: {
+      home: { teamTOV: 12.0, tovPct: 11.5, keyRisks: [
+        { player: "Wemby", tovPG: 4.0, careerPlayoffTOV: null, pressureNote: "First career playoff game: 4 TOV in 35pts debut. High usage (30%+) with complex playmaking = TOV risk. Will improve as he adjusts to playoff physicality." },
+        { player: "Castle", tovPG: 3.0, careerPlayoffTOV: null, pressureNote: "Rookie PG in playoffs. 3 TOV in G1 — expect some growing pains." }
+      ]},
+      away: { teamTOV: 15.0, tovPct: 14.2, keyRisks: [
+        { player: "Scoot Henderson", tovPG: 3.0, careerPlayoffTOV: null, pressureNote: "Young PG, first playoffs. Athletic but decision-making under pressure is unproven." },
+        { player: "Sharpe", tovPG: 2.0, careerPlayoffTOV: null, pressureNote: "Explosive but raw. Turnover-prone in transition." }
+      ]},
+      differential: -3.0,
+      modelImpact: "SAS's disciplined ball movement limits TOs. POR's young backcourt (Scoot/Sharpe) is athletic but turnover-prone. Wemby's 4 TOV in G1 is the main concern for SAS — Pop will coach that down."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Wemby", pfPG: 2.0, foulOutRisk: "LOW", impactIfOut: "Only 2 PF in G1. Elite shot-blocking without fouling. DPOY-level discipline." }
+      ],
+      away: [
+        { player: "Ayton", pfPG: 4.0, foulOutRisk: "HIGH", impactIfOut: "Physical big who draws fouls contesting Wemby. If Ayton sits, POR has no one to match Wemby's size." }
+      ],
+      modelImpact: "Wemby's foul discipline is elite — he blocks shots without fouling. POR's bigs will accumulate fouls trying to contest him. Ayton's foul trouble is POR's biggest risk."
+    }
+  },
+  "DET-ORL": {
+    turnover: {
+      home: { teamTOV: 12.0, tovPct: 11.8, keyRisks: [
+        { player: "Cade", tovPG: 2.0, careerPlayoffTOV: null, pressureNote: "First real playoff action as a star. 2 TOV in G1 — poised. Should maintain low TOV rate." },
+        { player: "Duren", tovPG: 1.0, careerPlayoffTOV: null, pressureNote: "Limited ball-handling — low TOV risk." }
+      ]},
+      away: { teamTOV: 13.0, tovPct: 12.5, keyRisks: [
+        { player: "Banchero", tovPG: 3.0, careerPlayoffTOV: null, pressureNote: "High-usage scorer who forces in the post. 3 TOV in G1 — manageable but DET's swarming D can force more." },
+        { player: "Suggs", tovPG: 2.0, careerPlayoffTOV: null, pressureNote: "Aggressive defender but also aggressive with the ball. 6 PF in G1 (fouled out) — the real concern is fouls, not TOs." }
+      ]},
+      differential: -1.0,
+      modelImpact: "Relatively even. Both young teams with some playoff inexperience. The TOV battle isn't the swing factor here — it's foul trouble."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Duren", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "DET's rim protection hinges on Duren. If he sits, Banchero attacks the paint freely." }
+      ],
+      away: [
+        { player: "Suggs", pfPG: 6.0, foulOutRisk: "EXTREME", impactIfOut: "FOULED OUT in G1 (6 PF). ORL's best perimeter defender. When Suggs sits, Cade gets clean looks." },
+        { player: "WCJ", pfPG: 4.0, foulOutRisk: "HIGH", impactIfOut: "Physical center who contests everything. Foul trouble limits ORL's interior D." }
+      ],
+      modelImpact: "Suggs fouling out in G1 is a MAJOR red flag. ORL's perimeter D collapses without him. If Suggs picks up 2 early fouls in G2, DET's guards feast. This is an exploitable edge for DET."
+    }
+  },
+  "BOS-PHI": {
+    turnover: {
+      home: { teamTOV: 10.0, tovPct: 9.1, keyRisks: [
+        { player: "Tatum", tovPG: 2.0, careerPlayoffTOV: 3.2, pressureNote: "Elite ball security for a high-usage wing. G1: only 2 TOV. Career playoff: 3.2 but improved significantly in 2024-2026." },
+        { player: "Brown", tovPG: 2.0, careerPlayoffTOV: 2.5, pressureNote: "Steady. 2 TOV in G1 — right at his improved career rate." }
+      ]},
+      away: { teamTOV: 16.0, tovPct: 15.8, keyRisks: [
+        { player: "Maxey", tovPG: 3.0, careerPlayoffTOV: 2.8, pressureNote: "3 TOV in G1 — White's defense disrupts his handle. Maxey is PHI's only reliable initiator without Embiid — every possession runs through him." },
+        { player: "Harden (PHI context)", tovPG: 4.5, careerPlayoffTOV: 3.8, pressureNote: "NOT ON PHI anymore but note: Harden-type high-usage PG TOV patterns apply to Maxey's current role — carrying entire offensive load with no Embiid." }
+      ]},
+      differential: -6.0,
+      modelImpact: "BOS's 9.1% TOV rate is 2nd-best in playoffs. PHI without Embiid has to funnel everything through Maxey, creating predictable possessions that BOS's elite switching D exploits. The 6-turnover differential ≈ 6.4 points — a huge structural edge for BOS."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Porzingis", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "BOS's rim protection. If he sits, PHI can attack the paint. But BOS has enough depth to survive." }
+      ],
+      away: [
+        { player: "Drummond", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "PHI's only real center without Embiid. If Drummond fouls out, PHI has zero interior presence." }
+      ],
+      modelImpact: "PHI's thin frontcourt without Embiid makes Drummond's foul management critical. If he picks up 3 fouls by halftime, PHI's interior D evaporates."
+    }
+  },
+  "NYK-ATL": {
+    turnover: {
+      home: { teamTOV: 14.0, tovPct: 13.2, keyRisks: [
+        { player: "Brunson", tovPG: 2.5, careerPlayoffTOV: 2.8, pressureNote: "Steady under pressure. 2.5 TOV/game — below career average. His mid-range game doesn't create many live-ball TOs." },
+        { player: "OG Anunoby", tovPG: 1.0, careerPlayoffTOV: 1.5, pressureNote: "Low usage, minimal TOV risk." }
+      ]},
+      away: { teamTOV: 12.0, tovPct: 11.5, keyRisks: [
+        { player: "Trae Young", tovPG: 3.0, careerPlayoffTOV: 3.5, pressureNote: "Turnover-prone under physical D. NYK will body him up — expect 3.5+ TOV in this series." },
+        { player: "McCollum", tovPG: 3.5, careerPlayoffTOV: 2.2, pressureNote: "3.5 TOV/game in 2026 playoffs is well above career 2.2. Aging guard forcing shots in a new system." }
+      ]},
+      differential: 2.0, // NYK turns it over slightly more (unexpected)
+      modelImpact: "ATL actually has FEWER turnovers than NYK through 2 games, which is surprising. McCollum's veteran poise and Trae's familiarity with playoff pressure explain it. But NYK's bench crisis (0-7 FG, 5 TOV from McBride/Shamet/Alvarado in G2) inflates their number. If NYK tightens rotation to 8 players, their TOV rate should improve."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Robinson", pfPG: 4.0, foulOutRisk: "HIGH", impactIfOut: "NYK's only true center. If he fouls out, Hartenstein lineups or small-ball — neither ideal vs Capela." }
+      ],
+      away: [
+        { player: "Okongwu", pfPG: 4.0, foulOutRisk: "HIGH", impactIfOut: "4.0 PF/game. ATL's rim protection depends on him. If he sits, NYK attacks the paint." },
+        { player: "Capela", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "Veteran big who manages fouls well but still at risk in physical series." }
+      ],
+      modelImpact: "Both teams' centers are foul-prone. The team that keeps their big out of foul trouble wins the paint battle. Okongwu's 4.0 PF/game is the bigger concern — ATL relies on his lob threat and rim protection."
+    }
+  },
+  "CLE-TOR": {
+    turnover: {
+      home: { teamTOV: 12.0, tovPct: 11.2, keyRisks: [
+        { player: "Mitchell", tovPG: 2.0, careerPlayoffTOV: 2.8, pressureNote: "69 career playoff games. G1: 2 TOV, G2: 2 TOV. Excellent ball security for a high-usage scorer. Historically: TOV spikes slightly in elimination games (3.5 avg) but CLE hasn't faced one yet." },
+        { player: "Harden", tovPG: 4.5, careerPlayoffTOV: 3.8, pressureNote: "4.5 TOV/game in 2026 playoffs — above career 3.8. High-usage facilitator creates TOV risk. But 22 CLE points off TOR turnovers means Harden's value as a FORCER of turnovers outweighs his own." }
+      ]},
+      away: { teamTOV: 20.0, tovPct: 18.4, keyRisks: [
+        { player: "Barnes", tovPG: 4.5, careerPlayoffTOV: null, pressureNote: "4.5 TOV/game — WORST individual rate in 2026 playoffs. Carrying too much creation load without Quickley. CLE's ball-hawking D (Mitchell-Harden backcourt) attacks his handles." },
+        { player: "Ingram", tovPG: 2.5, careerPlayoffTOV: 2.0, pressureNote: "5 TOV in G2 as CLE's scheme completely shut him down (3/15 FG). When his driving lanes close, he forces passes into traffic." }
+      ]},
+      differential: -8.0,
+      modelImpact: "CLE's turnover differential is their BIGGEST weapon. TOR had 18 TOV in G1 → 22 CLE points. Then 22 TOV in G2 → CLE won by 10. That's 8 more turnovers per game, worth ~8.6 points. With Quickley OUT, TOR has no reliable secondary ballhandler — Barnes is forced into a role that produces turnovers. This is a REPEATABLE, SCHEMATIC edge that won't go away until Quickley returns."
+    },
+    foulTrouble: {
+      home: [
+        { player: "Allen", pfPG: 2.5, foulOutRisk: "LOW", impactIfOut: "Manages fouls well despite physical play. Knee tendonitis is bigger concern than fouls." },
+        { player: "Mobley", pfPG: 2.0, foulOutRisk: "LOW", impactIfOut: "Elite defensive discipline — blocks shots without fouling." }
+      ],
+      away: [
+        { player: "Shead", pfPG: 4.5, foulOutRisk: "HIGH", impactIfOut: "Rookie PG with 4.5 PF/game. If he fouls out, TOR has NO point guard (Quickley OUT). Complete offensive breakdown." },
+        { player: "Poeltl", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "Already marginalized (9min G2). Foul trouble would end any chance of a Poeltl return to the rotation." }
+      ],
+      modelImpact: "TOR's foul situation compounds their turnover problem. Shead at 4.5 PF/game as the ONLY healthy PG is terrifying — one early foul trouble game and TOR literally has no ballhandler. CLE should attack Shead aggressively in P&R to draw fouls."
+    }
+  }
+};
+
+// ============================================================
+// PHASE 25 — 3-POINT VARIANCE & REGRESSION MODEL
+// ============================================================
+// Data sourced from: Basketball Reference 2026 Playoffs Summary (team & individual stats),
+// 2025-26 Regular Season team per-game stats, Core Sports Betting regression methodology,
+// and individual playoff per-game shooting logs for all 182 players.
+//
+// Model Integration:
+//   Expected 3P% = Bayesian blend of playoff sample + season baseline
+//   Regression Weight = 0.70 for 1-game samples, 0.55 for 2-game samples (heavy regression in small samples)
+//   Impact = (expected 3P% - actual playoff 3P%) × 3PA × 3 pts × game-relevance weight
+//   Unsustainability Flag: role players shooting >15% above career avg, or stars >12% below
+//   Shot Quality Filter: contested vs open 3s, corner 3PT%, transition vs halfcourt
+// ============================================================
+
+const THREE_POINT_VARIANCE_DATA = {
+  "HOU-LAL": {
+    home: {
+      team: { regSeason3Pct: .364, playoff3Pct: .333, threePA: 33, delta: -.031, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "Sheppard", playoff3: "5/14 (.357)", season3Pct: .387, verdict: "SLIGHTLY COLD — high volume, should regress UP to ~.375" },
+        { player: "Jabari Smith", playoff3: "3/9 (.333)", season3Pct: .361, verdict: "COLD — open catch-and-shoot looks weren't falling. Expect regression UP" },
+        { player: "Eason", playoff3: "2/2 (1.000)", season3Pct: .340, verdict: "UNSUSTAINABLE — tiny sample but can't maintain this" }
+      ],
+      modelNote: "HOU's 3PT shooting was slightly below baseline in G1. With KD returning for G2, he commands defensive attention that opens corner 3s for Sheppard/Smith. Expect HOU's 3P% to climb toward .360-.370."
+    },
+    away: {
+      team: { regSeason3Pct: .359, playoff3Pct: .526, threePA: 19, delta: +.167, verdict: "EXTREME REGRESSION DOWN" },
+      keyShooters: [
+        { player: "Kennard", playoff3: "5/5 (1.000)", season3Pct: .440, verdict: "MASSIVE regression incoming — 100% from 3 is the textbook unsustainable role-player hot streak" },
+        { player: "Hachimura", playoff3: "2/4 (.500)", season3Pct: .350, verdict: "HOT — 15% above season avg, likely cools" },
+        { player: "LeBron", playoff3: "1/2 (.500)", season3Pct: .330, verdict: "Tiny sample, not meaningful" },
+        { player: "Smart", playoff3: "1/5 (.200)", season3Pct: .340, verdict: "COLD — Smart is a streaky shooter but .200 on volume is below floor" }
+      ],
+      modelNote: "LAL shot 52.6% from 3 in G1 on just 19 attempts — the MOST unsustainable team 3P% in the playoffs. Kennard going 5/5 is a once-in-a-season event. Bayesian expected G2 3P%: ~.375 (still above season avg due to shot quality/open looks, but dramatic drop from .526). This alone could swing 6-8 points toward HOU. LAL's low 3PA (19 vs 33 league avg) means they're not volume-dependent, but the efficiency cliff is real."
+    },
+    seriesImpact: "LAL's G1 win was built on historically unsustainable 3PT shooting (.526). Regression model projects ~.375 for G2 — still good but worth ~4.5 fewer points than G1. Combined with KD's return for HOU, the 3PT regression alone nearly flips the spread. HIGH CONFIDENCE regression down for LAL."
+  },
+  "OKC-PHX": {
+    home: {
+      team: { regSeason3Pct: .365, playoff3Pct: .304, threePA: 46, delta: -.061, verdict: "COLD — regression UP expected" },
+      keyShooters: [
+        { player: "SGA", playoff3: "0/4 (.000)", season3Pct: .387, verdict: "EXTREME COLD — best 3PT season of career, 0/4 is pure variance. Expect strong regression UP" },
+        { player: "Dort", playoff3: "2/6 (.333)", season3Pct: .350, verdict: "AT BASELINE — sustainable" },
+        { player: "Isaiah Joe", playoff3: "3/8 (.375)", season3Pct: .380, verdict: "AT BASELINE — sustainable" },
+        { player: "Jalen Williams", playoff3: "2/5 (.400)", season3Pct: .370, verdict: "SLIGHTLY HOT — close to sustainable" }
+      ],
+      modelNote: "OKC won G1 by 35 DESPITE shooting .304 from 3. SGA going 0/4 from deep is a massive outlier given his .387 season. OKC's defense forced PHX into terrible shots. If OKC shoots closer to their .365 baseline, they could win by 40+. This is terrifying for PHX."
+    },
+    away: {
+      team: { regSeason3Pct: .361, playoff3Pct: .333, threePA: 39, delta: -.028, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "Booker", playoff3: "2/5 (.400)", season3Pct: .370, verdict: "SLIGHTLY HOT — close to season avg" },
+        { player: "Brooks", playoff3: "3/10 (.300)", season3Pct: .360, verdict: "COLD — volume shooter below baseline, slight regression UP" },
+        { player: "Green", playoff3: "2/7 (.286)", season3Pct: .350, verdict: "COLD — expect regression UP to ~.330" },
+        { player: "Fleming", playoff3: "3/3 (1.000)", season3Pct: .350, verdict: "UNSUSTAINABLE — bench player, tiny sample" }
+      ],
+      modelNote: "PHX shot slightly below baseline but the real problem was their 34.9% FG%. Even if PHX's 3PT shooting regresses UP to .361, OKC's suffocating defense (33.3% opponent 3P%) may cap PHX's ceiling at ~.340."
+    },
+    seriesImpact: "The 3PT variance story FAVORS OKC: they won G1 while cold, PHX lost while close to baseline. OKC's defensive 3PT suppression (.333 opponent 3P% in playoffs, driven by 15.4% opponent 3PAr — lowest in playoffs) is a STRUCTURAL edge, not variance. SGA regression UP alone could add 3-5 points to OKC's margin."
+  },
+  "DEN-MIN": {
+    home: {
+      team: { regSeason3Pct: .396, playoff3Pct: .325, threePA: 38.5, delta: -.071, verdict: "COLD — DEN led the league in RS 3P%, shooting way below" },
+      keyShooters: [
+        { player: "Murray", playoff3: "3/11 (.273)", season3Pct: .380, verdict: "COLD — 10.7% below season avg on high volume. Knee may be a factor but expect regression UP" },
+        { player: "Jokic", playoff3: "1.5/7 (.214)", season3Pct: .340, verdict: "COLD — Jokic isn't a volume 3PT shooter but .214 is below his floor" },
+        { player: "Gordon", playoff3: "1/4.5 (.222)", season3Pct: .330, verdict: "COLD — AG's 3PT shot is streaky but .222 is an outlier low" },
+        { player: "Braun", playoff3: "1.5/3 (.500)", season3Pct: .370, verdict: "HOT — slight regression down expected" }
+      ],
+      modelNote: "DEN led the NBA in regular season 3P% (.396) but is shooting .325 in the playoffs — a 7.1% drop. Murray's .273 on 11 attempts per game is the biggest factor. Bayesian expected G3 3P%: ~.365 (regression toward .396 baseline but playoff defense adjustment). If DEN gets just 2 more 3s to fall per game, that's 6 extra points."
+    },
+    away: {
+      team: { regSeason3Pct: .370, playoff3Pct: .368, threePA: 34, delta: -.002, verdict: "AT BASELINE — sustainable" },
+      keyShooters: [
+        { player: "DiVincenzo", playoff3: "4/7 (.571)", season3Pct: .370, verdict: "HOT — 20% above season avg. Role-player hot streak = high regression risk" },
+        { player: "Edwards", playoff3: "2.5/10 (.250)", season3Pct: .370, verdict: "COLD — Ant's 12% below season avg on 10 3PA/game is a major swing factor. Expect regression UP" },
+        { player: "Randle", playoff3: "1/3.5 (.286)", season3Pct: .340, verdict: "SLIGHTLY COLD — close to normal for Randle" },
+        { player: "McDaniels", playoff3: "0/3.5 (.000)", season3Pct: .350, verdict: "ICE COLD — 0-for-7 from 3 is extreme. Expect correction to ~.300" }
+      ],
+      modelNote: "MIN's team 3P% is right at baseline (.368 vs .370), but the COMPOSITION is unstable: DiVincenzo is running hot (+20%) while Edwards (-12%) and McDaniels (-35%) are ice cold. Bayesian model expects Edwards to regress UP toward .330 and DiVincenzo to cool to ~.400. Net effect: MIN's 3PT output stays similar but becomes more star-dependent (Edwards) rather than role-player-dependent."
+    },
+    seriesImpact: "DEN has massive 3PT regression UP potential — they're the best 3PT team in the league shooting 7% below their norm. Murray finding his shot in G3 at home could be worth 4-6 points. Edwards' cold shooting masks MIN's true offensive ceiling — if Ant hits at .350+, MIN's offense jumps 5+ points. This is the most volatile 3PT series in R1."
+  },
+  "SAS-POR": {
+    home: {
+      team: { regSeason3Pct: .359, playoff3Pct: .455, threePA: 33, delta: +.096, verdict: "VERY HOT — regression DOWN expected" },
+      keyShooters: [
+        { player: "Wembanyama", playoff3: "5/6 (.833)", season3Pct: .359, verdict: "EXTREME REGRESSION — .833 from 3 is utterly unsustainable for anyone, let alone a 7'4 center. Expect ~.350 going forward" },
+        { player: "Champagnie", playoff3: "2/3 (.667)", season3Pct: .370, verdict: "HOT — small sample, role player inflation" },
+        { player: "Vassell", playoff3: "4/9 (.444)", season3Pct: .380, verdict: "SLIGHTLY HOT — close to sustainable for an elite shooter" },
+        { player: "Castle", playoff3: "1/5 (.200)", season3Pct: .320, verdict: "COLD — young guard, but .200 is near his floor" }
+      ],
+      modelNote: "SAS shot .455 from 3 in G1, but Wemby going 5/6 accounts for most of the inflation. Remove Wemby's 3s: SAS is 10/27 (.370) — right at baseline. Wemby's 3PT regression alone is worth ~7 points (from 15pts on 3s to ~6pts). SAS's other shooters were close to sustainable."
+    },
+    away: {
+      team: { regSeason3Pct: .343, playoff3Pct: .263, threePA: 38, delta: -.080, verdict: "VERY COLD — regression UP expected" },
+      keyShooters: [
+        { player: "Holiday", playoff3: "1/7 (.143)", season3Pct: .350, verdict: "ICE COLD — veteran shooter 20% below baseline. Strong regression UP expected" },
+        { player: "Camara", playoff3: "2/5 (.400)", season3Pct: .340, verdict: "SLIGHTLY HOT — close to baseline" },
+        { player: "Clingan", playoff3: "0/3 (.000)", season3Pct: .280, verdict: "COLD — Clingan isn't a reliable 3PT threat regardless" },
+        { player: "Henderson", playoff3: "2/4 (.500)", season3Pct: .350, verdict: "HOT — young guard, small sample inflation" }
+      ],
+      modelNote: "POR shot .263 from 3 — 8% below their already-low season baseline (.343). Holiday going 1/7 is the biggest outlier. If POR regresses to even .320, that's ~2 extra 3s = 6 points. POR's volume (38 3PA) means regression has outsized impact. G2 should be significantly closer than G1."
+    },
+    seriesImpact: "DOUBLE REGRESSION: SAS hot (.455→~.370) and POR cold (.263→~.320). Net swing: SAS loses ~3 pts from 3PT regression, POR gains ~5 pts. Combined with Wemby's .833→~.350 regression, G2 projected margin should compress by 6-8 points vs G1's 13-point margin. HIGH CONFIDENCE."
+  },
+  "DET-ORL": {
+    home: {
+      team: { regSeason3Pct: .356, playoff3Pct: .313, threePA: 32, delta: -.043, verdict: "COLD — regression UP" },
+      keyShooters: [
+        { player: "Cunningham", playoff3: "3/8 (.375)", season3Pct: .370, verdict: "AT BASELINE — sustainable" },
+        { player: "Robinson", playoff3: "3/6 (.500)", season3Pct: .410, verdict: "SLIGHTLY HOT — Duncan Robinson can sustain high 3P% in bursts" },
+        { player: "Harris", playoff3: "1/7 (.143)", season3Pct: .350, verdict: "ICE COLD — veteran shooter with 20% gap. Strong regression UP" },
+        { player: "Jenkins", playoff3: "1/6 (.167)", season3Pct: .340, verdict: "COLD — rookie variability" }
+      ],
+      modelNote: "DET shot .313 from 3 in G1, driven by Harris (1/7) and Jenkins (1/6) going ice cold. Harris alone regressing to .350 would add ~4 pts. DET's problem wasn't shot creation — they generated open looks but missed. G2 correction likely."
+    },
+    away: {
+      team: { regSeason3Pct: .343, playoff3Pct: .294, threePA: 34, delta: -.049, verdict: "COLD — regression UP" },
+      keyShooters: [
+        { player: "Banchero", playoff3: "2/4 (.500)", season3Pct: .305, verdict: "HOT — Paolo is a career low-volume 3PT shooter; .500 won't last" },
+        { player: "Suggs", playoff3: "3/10 (.300)", season3Pct: .350, verdict: "SLIGHTLY COLD — Suggs is a streaky shooter, near floor" },
+        { player: "Bane", playoff3: "1/8 (.125)", season3Pct: .380, verdict: "EXTREME COLD — elite shooter 25% below baseline. Massive regression UP incoming" }
+      ],
+      modelNote: "Bane going 1/8 (.125) is the biggest single-player regression candidate in the East. His career 3P% is ~.400 — regression to even .350 adds ~6 points to ORL's offense. ORL won G1 despite cold shooting, which is bullish for their series chances."
+    },
+    seriesImpact: "Both teams shot cold from 3 in G1, which explains the low-scoring affair (112-101). Bane's .125 regression UP could flip G2 if DET's defense doesn't adjust. Harris (.143) regression UP gives DET a counter-boost. Net: ORL has more regression upside because Bane is the better shooter with more volume."
+  },
+  "BOS-PHI": {
+    home: {
+      team: { regSeason3Pct: .367, playoff3Pct: .364, threePA: 44, delta: -.003, verdict: "AT BASELINE — sustainable" },
+      keyShooters: [
+        { player: "Hauser", playoff3: "4/6 (.667)", season3Pct: .420, verdict: "HOT — Hauser can sustain hot streaks (elite shooter) but .667 is above his ceiling" },
+        { player: "Tatum", playoff3: "1/7 (.143)", season3Pct: .370, verdict: "COLD — Tatum's 3PT shot was off in G1 despite the blowout. Expect regression UP" },
+        { player: "White", playoff3: "2/7 (.286)", season3Pct: .380, verdict: "SLIGHTLY COLD — below baseline, expect correction" },
+        { player: "Pritchard", playoff3: "2/9 (.222)", season3Pct: .400, verdict: "COLD — Pritchard normally shoots .400+. Regression UP likely" }
+      ],
+      modelNote: "BOS's team 3P% (.364) was right at season baseline despite Tatum (1/7), White (2/7), and Pritchard (2/9) all shooting cold. Hauser (4/6) and Brown (2/2) masked the individual cold streaks. BOS won by 32 with BELOW-AVERAGE 3PT shooting from their stars — terrifying for PHI. If Tatum/White/Pritchard regress UP, BOS's offensive ceiling is even higher."
+    },
+    away: {
+      team: { regSeason3Pct: .349, playoff3Pct: .174, threePA: 23, delta: -.175, verdict: "HISTORIC COLD — most extreme regression UP candidate in all 8 series" },
+      keyShooters: [
+        { player: "Maxey", playoff3: "1/4 (.250)", season3Pct: .370, verdict: "COLD — Maxey is a career .370 3PT shooter, .250 is well below" },
+        { player: "Oubre", playoff3: "0/5 (.000)", season3Pct: .340, verdict: "ICE COLD — 0/5 is extreme. Even Oubre hits some 3s normally" },
+        { player: "George", playoff3: "1/2 (.500)", season3Pct: .370, verdict: "SLIGHTLY HOT — small sample, close to baseline" },
+        { player: "Edgecombe", playoff3: "0/5 (.000)", season3Pct: .310, verdict: "COLD — young player, pressure factor" }
+      ],
+      modelNote: "PHI shot .174 from 3 — the WORST team 3P% in the entire 2026 playoffs and 17.5% below their season baseline. This is historically anomalous. Even a bad team hits ~.280 on open looks. Bayesian expected G2 3P%: ~.300 (still below season avg due to BOS's elite perimeter defense, but a massive improvement). PHI hitting just 2 more 3s = 6 extra points, making G2 potentially competitive (91→~100). Without Embiid though, PHI's ceiling is capped."
+    },
+    seriesImpact: "PHI's .174 3P% is the most extreme regression candidate. However, BOS's elite perimeter defense (they held opponents to .256 3P% in G1 — best in playoffs) suggests PHI's true playoff ceiling vs BOS is ~.300, not their .349 season avg. Even with regression UP, PHI is still down 20+ pts of offensive firepower vs BOS. The 3PT gap is structural, not just variance. LOW IMPACT on series outcome."
+  },
+  "NYK-ATL": {
+    home: {
+      team: { regSeason3Pct: .373, playoff3Pct: .390, threePA: 29.5, delta: +.017, verdict: "SLIGHTLY HOT — close to sustainable" },
+      keyShooters: [
+        { player: "Brunson", playoff3: "3.5/7 (.500)", season3Pct: .370, verdict: "HOT — Brunson was unconscious from 3 in G1 (5/9) but cooled in G2 (2/5). Averaging out to ~baseline" },
+        { player: "KAT", playoff3: "2.5/4.5 (.556)", season3Pct: .380, verdict: "HOT — KAT's 3PT shot is running above season avg, mild regression expected" },
+        { player: "Bridges", playoff3: "1.5/5 (.300)", season3Pct: .370, verdict: "COLD — Bridges normally shoots .370. If he heats up, NYK's offense jumps a tier" },
+        { player: "Hart", playoff3: "0.5/3 (.167)", season3Pct: .340, verdict: "COLD — Hart's 3PT shot has been off. Minor regression UP" }
+      ],
+      modelNote: "NYK's team 3P% is close to baseline but the distribution shifted between games: G1 hot (Brunson 5/9), G2 cold. Bridges at .300 is the biggest upside — if he finds his .370 stroke for G3-G4, NYK's spacing improves dramatically."
+    },
+    away: {
+      team: { regSeason3Pct: .371, playoff3Pct: .343, threePA: 33.5, delta: -.028, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "McCollum", playoff3: "3.5/9.5 (.368)", season3Pct: .380, verdict: "AT BASELINE — CJ's shooting is sustainable and reliable" },
+        { player: "Okongwu", playoff3: "3/4.5 (.667)", season3Pct: .200, verdict: "EXTREME UNSUSTAINABLE — Okongwu is a career sub-.200 3PT shooter hitting .667. This is the most extreme individual regression candidate. Expect near-complete collapse to ~.200" },
+        { player: "Jalen Johnson", playoff3: "1.5/5 (.300)", season3Pct: .350, verdict: "SLIGHTLY COLD — slight regression UP expected" },
+        { player: "NAW", playoff3: "2.5/6.5 (.385)", season3Pct: .360, verdict: "AT BASELINE — sustainable" }
+      ],
+      modelNote: "ATL's 3PT story is dominated by Okongwu's .667 from 3 — a career sub-.200 shooter. He hit 3/4 in G1 and 3/5 in G2. This WILL regress hard. Without Okongwu's inflated 3PT production, ATL's team 3P% drops to ~.290 (20/69). ATL's G2 upset was partially built on this unsustainable shooting."
+    },
+    seriesImpact: "ATL's G2 upset at MSG was fueled by Okongwu's impossible .667 3P%. When (not if) this regresses, ATL loses ~5 points per game from 3PT alone. For G3-G4 at ATL, home court + McCollum's reliability could compensate, but the Okongwu 3PT mirage will fade. NYK's Bridges regression UP partially offsets. MODERATE IMPACT — favors NYK in games 3+."
+  },
+  "CLE-TOR": {
+    home: {
+      team: { regSeason3Pct: .360, playoff3Pct: .403, threePA: 36, delta: +.043, verdict: "HOT — regression DOWN expected" },
+      keyShooters: [
+        { player: "Mitchell", playoff3: "4/8.5 (.471)", season3Pct: .360, verdict: "HOT — Spida is 11% above season avg. Expect regression toward .380 (career playoff avg is ~.360)" },
+        { player: "Harden", playoff3: "3.5/7.5 (.467)", season3Pct: .360, verdict: "HOT — Harden's 3PT shot is running 10% hot. History shows Harden cools in mid-series" },
+        { player: "Strus", playoff3: "3/5 (.600)", season3Pct: .370, verdict: "VERY HOT — Strus was the G1 hero (8/10 FG) but .600 from 3 is role-player inflation" },
+        { player: "Shead (TOR)", playoff3: "3/5.5 (.545)", season3Pct: .360, verdict: "HOT — TOR's PG is shooting well above baseline from 3" }
+      ],
+      modelNote: "CLE's Big 3 (Mitchell/Harden/Strus) are ALL shooting 10%+ above season averages from 3. Bayesian blend for G3: CLE expected 3P% ~.375 (still good due to shot quality/TOR's weak perimeter D, but 3% below current rate). Mitchell and Harden both historically cool from 3 in the middle of series before heating up again in close-out games."
+    },
+    away: {
+      team: { regSeason3Pct: .354, playoff3Pct: .377, threePA: 26.5, delta: +.023, verdict: "SLIGHTLY HOT" },
+      keyShooters: [
+        { player: "Barnes", playoff3: "2/4 (.500)", season3Pct: .320, verdict: "HOT — Barnes is a career .320 3PT shooter; .500 won't sustain" },
+        { player: "Barrett", playoff3: "1.5/3.5 (.429)", season3Pct: .360, verdict: "SLIGHTLY HOT — close to sustainable" },
+        { player: "Walter", playoff3: "2/5.5 (.364)", season3Pct: .409, verdict: "SLIGHTLY COLD — Walter normally shoots .409; expect regression UP" },
+        { player: "Ingram", playoff3: "0.5/2 (.250)", season3Pct: .329, verdict: "COLD — below his already-low baseline" }
+      ],
+      modelNote: "TOR's 3PT story is mixed: Barnes hot (.500 vs .320 career), Walter cold (.364 vs .409), Ingram cold (.250). TOR's low volume (26.5 3PA vs 36 for CLE) means 3PT variance has less total impact on their scoring. TOR's path to competitiveness runs through the paint, not the arc."
+    },
+    seriesImpact: "CLE has more regression DOWN risk (Mitchell/Harden/Strus all hot) than TOR has regression UP potential (low 3PA volume). Net: CLE's G3 scoring may dip 3-4 points from 3PT regression alone. However, CLE's overall offensive machine is paint-dominant (48-30 paint advantage in G1), so 3PT regression is a secondary factor. LOW-MODERATE IMPACT."
+  }
+};
