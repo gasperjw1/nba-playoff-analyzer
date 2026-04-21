@@ -533,7 +533,7 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
       <div class="gp-stat"><div class="label">O/U</div><div class="val">${g.ou}</div></div>
     </div>
 
-    <div class="proj-score-dynamic">${g.pick} — ${dynScore}</div>
+    <div class="proj-score-dynamic">${g.projScore || (g.pick + ' — ' + dynScore)}</div>
     <div class="margin-bar-container">
       <div class="margin-bar"><div class="margin-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
       <span class="margin-range">${proj.marginRange}</span>

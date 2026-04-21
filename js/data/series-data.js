@@ -227,9 +227,9 @@ const SERIES_DATA = [
         // Bayesian: 0.55*0.357 + 0.45*0.462 = 0.404
         { player:"Jabari Smith Jr.", outlook:"neutral", projFgPct:0.40, ptsRange:[12,18], reason:"G1 cold shooting (35.7%) but grabbed 12 boards (5 offensive). Season 46.2% FG — expect bounce-back. 3PT regression likely (3-9 in G1, 36.8% season). Home game helps rhythm.", confidence:"medium" },
 
-        // KD: OUT G1. Game-time decision G2. If plays, transforms HOU offense entirely.
+        // KD: OUT G1. CBS injury report: "out until at least Apr 21" = G2 day. Line moved HOU -4.5→-5.5 (market pricing return).
         // Season 52.4% FG, 26.0 PPG. Knee limits explosiveness — project conservative FG%.
-        { player:"Kevin Durant", outlook:"neutral", projFgPct:0.48, ptsRange:[18,26], reason:"Game-time decision for G2 (right knee contusion). If plays, likely on minutes restriction (~28min). At 37, knee stiffness limits explosiveness but midrange game is matchup-proof. Transforms HOU from single-initiator to dual-threat. Conservative projection accounts for rust + limitation.", confidence:"low" },
+        { player:"Kevin Durant", outlook:"neutral-good", projFgPct:0.48, ptsRange:[20,28], reason:"CBS injury report lists return date as Apr 21 (today). ESPN line moved HOU -4.5→-5.5, strongly suggesting he plays. Likely on minutes restriction (~28-30min). At 37, knee stiffness limits explosiveness but midrange game is matchup-proof. Transforms HOU from single-initiator to dual-threat with Sengun. Even at 80% capacity, adds ~20pts and gravity that opens shots for Sheppard/Smith. Upgraded from 'neutral' to 'neutral-good' based on line movement signal.", confidence:"medium" },
 
         // Eason: G1 7-7 (100%!!) 16pts/10reb in 24min. Massive overperformance.
         // Season 48.7% FG. Bayesian: severe regression to ~0.50
@@ -241,7 +241,7 @@ const SERIES_DATA = [
       away: [ // LAL
         // LeBron: G1 9-15 (60.0%), 19pts/13ast. Season 52.1% FG. Facilitator mode.
         // Bayesian: 0.55*0.600 + 0.45*0.521 = 0.564. But road game = slight dip.
-        { player:"LeBron James", outlook:"good", projFgPct:0.54, ptsRange:[22,30], reason:"G1 facilitator mode (19pts/13ast on 60% FG) was deliberate choice. With HOU adjusting to Kennard, LeBron likely shifts to more scoring. Season 52.1% + playoff pedigree. Road game but LeBron historically excels on the road in playoffs (62.3% TS road playoff career).", confidence:"high" },
+        { player:"LeBron James", outlook:"good", projFgPct:0.52, ptsRange:[22,30], reason:"G1 facilitator mode (19pts/13ast on 60% FG) was deliberate choice. With HOU adjusting to Kennard, LeBron likely shifts to more scoring. Season 52.1% + playoff pedigree. FATIGUE FACTOR: LeBron is 41 years old on 2-day turnaround; G1 was high-usage (13ast requires constant decision-making load). If KD returns for HOU, game pace increases → more energy expenditure. FG% dipped from 0.54 to 0.52 to account for age-related fatigue. Still 'good' outlook — playoff LeBron doesn't rest. LAL still missing Luka (hamstring, out May 1) and Reaves (oblique, out May 1).", confidence:"high" },
 
         // Kennard: G1 9-13 (69.2%), 5-5 3PT!! 27pts career playoff high.
         // Season 45.5% FG. Bayesian: 0.55*0.692 + 0.45*0.455 = 0.585. HOU will scheme hard.
@@ -1386,7 +1386,7 @@ const SERIES_DATA = [
       home: [ // BOS
         // Tatum: G1 9-17 (52.9%), 1-7 3PT, 25pts/11reb/7ast in 32min. Season ~46% FG.
         // Bayesian: 0.55*0.529 + 0.45*0.460 = 0.498. Achilles return was strong.
-        { player:"Jayson Tatum", outlook:"good", projFgPct:0.48, ptsRange:[24,32], reason:"G1 Achilles return was emphatic (52.9% FG, near triple-double in 32min). Only 1-7 from 3 — regression UP expected there (season 37.7% 3PT). Health improving with each game. PHI has no defender for him. Home again. May play more minutes in G2 if closer game.", confidence:"high" },
+        { player:"Jayson Tatum", outlook:"good", projFgPct:0.47, ptsRange:[22,30], reason:"G1 Achilles return was emphatic (52.9% FG, near triple-double in 32min). Only 1-7 from 3 — regression UP expected there (season 37.7% 3PT). RECOVERY NOTE: NBA.com headline flags 'Tatum recovery crucial in Game 2' — Achilles workload management may cap minutes at ~30-32min again rather than full 36+. Not on injury report (will play), but BOS may manage load given 32pt G1 cushion. FG% dipped 0.48→0.47 to reflect potential conservative usage early. PHI has no defender for him. Home again.", confidence:"high" },
 
         // Brown: G1 11-21 (52.4%), 26pts (16 in Q3). Season ~49% FG.
         // Bayesian: 0.55*0.524 + 0.45*0.490 = 0.509. Right at star level.

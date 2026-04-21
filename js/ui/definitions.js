@@ -17,7 +17,8 @@ function renderDefinitionsPage(el) {
       <div class="def-tab-btn" id="defTab-g1lessons" onclick="switchDefTab('g1lessons')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">G1 Lessons</div>
       <div class="def-tab-btn" id="defTab-margins" onclick="switchDefTab('margins')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Margin Variance</div>
       <div class="def-tab-btn" id="defTab-fatigue" onclick="switchDefTab('fatigue')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Fatigue</div>
-      <div class="def-tab-btn" id="defTab-research" onclick="switchDefTab('research')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Phase 17 Research</div>
+      <div class="def-tab-btn" id="defTab-research" onclick="switchDefTab('research')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Phase 17 Research</div>
+      <div class="def-tab-btn" id="defTab-xfactors" onclick="switchDefTab('xfactors')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">X-Factors</div>
     </div>
 
     <!-- PLAYER TAB -->
@@ -168,7 +169,27 @@ function renderDefinitionsPage(el) {
       </div>
       <div class="def-card" style="border-left:3px solid #10b981;">
         <div class="def-term">Game Character Labels</div>
-        <div class="def-desc">Each projected game gets a character label based on expected margin: <strong>BLOWOUT RISK</strong> (18+), <strong>SEPARATION</strong> (12-17), <strong>COMPETITIVE</strong> (7-11), <strong>GRIND</strong> (4-6), <strong>COIN FLIP</strong> (0-3). Close Game % and Blowout % probabilities show the distribution of likely outcomes, not just the point estimate.</div>
+        <div class="def-desc">Each projected game gets a character label based on expected margin. The label describes the <strong>likely texture and flow</strong> of the game — not just the score, but how it will feel. Labels drive betting strategy: BLOWOUT RISK games favor spreads and unders on the losing side, while COIN FLIP games favor moneylines and player props.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #ef4444;">
+        <div class="def-term">BLOWOUT RISK <span class="def-abbr">18+ pts</span></div>
+        <div class="def-desc">The favorite is projected to win by 18 or more points. Expect early separation, bench players logging heavy Q4 minutes, and star rest. Betting implications: spreads are risky (favorites sometimes pull starters early, narrowing the margin), but star unders become valuable since they may only play 28-32 minutes. Game pace often slows in garbage time. 2025 examples: OKC-MEM G1 (+51), CLE-MIA G4 (+55).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #f59e0b;">
+        <div class="def-term">SEPARATION <span class="def-abbr">12-17 pts</span></div>
+        <div class="def-desc">The favorite has a clear structural edge and is expected to pull away, but the game stays competitive through the first half. Stars typically play full minutes. The losing team will make runs but can't sustain them — expect a decisive Q3 or early Q4 push that creates breathing room. Betting implications: star overs on the favorite are strong (full minutes + high usage in competitive stretches), and spreads are playable if the model margin aligns with the market line. Current examples: BOS-PHI (+11), SAS-POR (+12), OKC-PHX (+13).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #3b82f6;">
+        <div class="def-term">COMPETITIVE <span class="def-abbr">7-11 pts</span></div>
+        <div class="def-desc">Both teams have paths to winning but the favorite holds a meaningful edge — usually through superior star talent, depth, or home court. The game is likely decided in the final 6 minutes. Lead changes are common through Q3. Betting implications: moneylines on the favorite offer the best risk/reward, and player props are reliable since both stars will play maximum minutes in a contested game. Spread bets carry more risk due to the volatility window. Current example: HOU-LAL (+6).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #8b5cf6;">
+        <div class="def-term">GRIND <span class="def-abbr">4-6 pts</span></div>
+        <div class="def-desc">A game decided by execution, not talent. Both teams are closely matched and the margin comes down to which side makes fewer mistakes in crunch time. Expect a low-variance, physical contest — 4th-quarter slugfest with every possession mattering. Lead is unlikely to exceed 8 points at any time. Betting implications: moneylines are risky (too close to justify heavy chalk), totals/unders have value (grinding pace suppresses scoring), and assist/rebound props can be volatile due to defensive intensity. Example: DEN-MIN G2 (model +3, actual MIN won by 5).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #6b7280;">
+        <div class="def-term">COIN FLIP <span class="def-abbr">0-3 pts</span></div>
+        <div class="def-desc">The model has essentially no edge — the game is a true toss-up. Neither team's structural advantages are large enough to project a meaningful winner. The outcome depends on which stars have a great night and which team hits big shots in the final 2 minutes. Betting implications: avoid moneylines entirely (no model edge to exploit), look for player props where individual matchups provide an edge independent of the game outcome, and consider live betting as the game develops. These games are where the $1 upset parlays live.</div>
       </div>
       <div class="def-card" style="border-left:3px solid #8b5cf6;">
         <div class="def-term">Pace-Based Score Projection</div>
@@ -236,6 +257,54 @@ function renderDefinitionsPage(el) {
       <div class="def-card" style="border-left:3px solid #10b981;">
         <div class="def-term">Supporting Research</div>
         <div class="def-desc">Additional papers reviewed for validation: <strong>Terner &amp; Franks (2021)</strong> — 130 citations, validates RAPM-style framework. <strong>Huyghe et al. (2022)</strong> — 54 citations, systematic review confirms multi-factor approach. <strong>Stiles (2024)</strong> — validates D-LEBRON suppression methodology. <strong>Cristo (2025)</strong> — combines injury risk + clutch for game prediction (mirrors our approach). <strong>Singh et al. (2021)</strong> — 51 citations, sleep/recovery science for NBA.</div>
+      </div>
+    </div>
+    </div>
+
+    <!-- X-FACTORS TAB -->
+    <div id="defContent-xfactors" class="def-tab-content" style="display:none;">
+    <div class="def-category" style="background:linear-gradient(90deg,#3a1a3a,transparent);border-left:4px solid #e040c0;">Series X-Factors — Players Who Swing Outcomes</div>
+    <div style="color:var(--text-dim);font-size:12px;margin-bottom:16px;padding:0 4px;">X-factors are non-obvious players whose performance disproportionately swings the series outcome. They're typically role players exceeding expectations, defensive stoppers who change matchup dynamics, or bench scorers who tilt depth battles. Identified via g2PlayerOutlook data, G1/G2 results, and matchup analysis.</div>
+
+    <div style="color:#e040c0;font-weight:700;font-size:14px;margin:16px 0 8px;border-bottom:1px solid #333;padding-bottom:4px;">WEST</div>
+
+    <div class="def-grid">
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">HOU-LAL</div>
+        <div class="def-desc"><strong>HOU — Luke Kennard (OFF):</strong> Broke out for 27pts (5-5 3PT) in G1 with LeBron facilitating. His two-man game with LeBron (+8.7 NetRtg) makes him the #2 scoring option. Model flags him as "bad" for G2 — HOU will scheme against him, making his efficiency the key swing.<br><strong>HOU — Marcus Smart (DEF):</strong> DPOY-caliber switching across 2-4 positions. Hunted Sengun/Sheppard defensively in G1 while enabling LAL's man/zone hybrid.<br><strong>LAL — Alperen Sengun (OFF):</strong> All-Star anchor shot 31.6% G1 (worst of season). His regression to 46% FG determines whether HOU has a reliable second scorer alongside KD's return.<br><strong>LAL — Kevin Durant (RETURN):</strong> His rust level on return (minutes restriction, shooting efficiency) is the single biggest variable in the series.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">OKC-PHX</div>
+        <div class="def-desc"><strong>OKC — Ajay Mitchell (OFF):</strong> 9pts on 3-4 3PT with +22 net in 22min G1. Bench scorer who bridges SGA's rest minutes. His third-level creation maintains OKC's offensive rhythm when starters sit.<br><strong>OKC — Cason Wallace (DEF):</strong> Team-high +23, with 4ast/2stl/2blk in 21min. Switchable POA defender on Booker's actions. His composure in the backcourt reduces PHX's ball-pressure options.<br><strong>PHX — Jalen Green (OFF):</strong> Play-in hero (35 and 36pts). Athleticism was suppressed in G1 blowout but ceiling remains a legitimate scoring punch if PHX can keep games closer.<br><strong>PHX — Ryan Dunn (DEF):</strong> 6'8 defensive specialist designated as primary SGA stopper. PHX's only credible perimeter countermeasure to OKC's multi-threat attack.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">DEN-MIN</div>
+        <div class="def-desc"><strong>DEN — Christian Braun (OFF):</strong> Emerging 3rd option — 12pts/8reb G1, 16pts/5ast G2 on 36mpg starter minutes. Championship DNA (2023). His all-around game expands DEN's attack beyond Jokic-Murray.<br><strong>DEN — Bruce Brown (DEF):</strong> 5 steals G1. POA defensive pest who disrupts MIN's rhythm. Getting increased closing minutes. Changes games without box score impact.<br><strong>MIN — Donte DiVincenzo (OFF):</strong> 16pts/7reb/6ast G2 including late 3PT and game-sealing slam (4-7 3PT). Starting PG over Conley — his shooting/athleticism transformed MIN's spacing. +4.0 avgOverPerformance.<br><strong>MIN — Rudy Gobert (DEF):</strong> ESPN: "contains Jokic" as key to G2 win. G1 WPA MVP (+15.0%) with 17pts (8-9 FG). Held Jokic to 1-8 when matched up in G2. MIN's DRtg is 7.9pts/100 worse without him.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">SAS-POR</div>
+        <div class="def-desc"><strong>SAS — Stephon Castle (OFF/DEF):</strong> Sophomore two-way guard (D-LEBRON 0.908, 57.5% TS) who scored 17pts G1 while drawing the Avdija assignment. His defensive versatility helps the switchable scheme even when Avdija scores through him.<br><strong>SAS — Devin Vassell (OFF):</strong> Stretch wing whose spacing alongside Wemby and Fox creates open driving lanes. If his 3PT efficiency holds, SAS's offensive ceiling is elite.<br><strong>POR — Scoot Henderson (OFF):</strong> Breakout 3rd-year scorer (14.2 PPG in 30 starts). 18pts G1 off bench — his explosive athleticism and 3.7 APG adds offensive punch beyond Avdija/Holiday.<br><strong>POR — Donovan Clingan (DEF):</strong> Rim protector (D-LEBRON 3.407, 7.6 WAR) whose interior presence is POR's only answer to Wemby's drives. Was neutralized by SAS length G1, but his ability to avoid foul trouble is critical.</div>
+      </div>
+    </div>
+
+    <div style="color:#e040c0;font-weight:700;font-size:14px;margin:16px 0 8px;border-bottom:1px solid #333;padding-bottom:4px;">EAST</div>
+
+    <div class="def-grid">
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">BOS-PHI</div>
+        <div class="def-desc"><strong>BOS — Payton Pritchard (OFF):</strong> Starter-level production from the bench (17.0 PPG, 37.7% 3PT, 5.2 APG). In the closing lineup. Provides secondary creation and floor-spacing, especially critical during Tatum rest stretches (Achilles management).<br><strong>BOS — Derrick White (DEF):</strong> Elite perimeter stopper (D-LEBRON 2.324, 11.43 WAR). Full-time Maxey assignment held him to 8-20 FG G1. His 5.5 on/off defensive impact is the primary reason BOS can roam freely on help defense.<br><strong>PHI — Paul George (OFF):</strong> All-Star ceiling (41.5% 3PT post-suspension, 21.0 PPG in 10 games). Rhythm-finding after suspension rust is critical — PHI's only secondary creator who can generate off-ball alongside Maxey.<br><strong>PHI — VJ Edgecombe (DEF):</strong> Breakout rookie whose D-LEBRON of 0.08 makes him a mismatch liability against Brown. His defensive struggles are actually a BOS exploitation target — the anti-x-factor PHI must manage.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">DET-ORL</div>
+        <div class="def-desc"><strong>DET — Ausar Thompson (DEF):</strong> Elite perimeter stopper (D-LEBRON 2.93, #3 in NBA). His assignment on Banchero and 2.0 STL/game anchor DET's #1-rated defense (107.2 DRtg). DET's defensive identity runs through him.<br><strong>DET — Duncan Robinson (OFF):</strong> 41% 3PT spacing (9pts, 3-6 3PT G1). Forces ORL to stay attached on the perimeter, opening driving lanes for Cunningham and Duren in the paint.<br><strong>ORL — Jalen Suggs (DEF/OFF):</strong> Heartbeat of ORL — 16pts/3stl/1blk G1, ignited 18-5 opening run. 2024 playoff pedigree (7-game CLE series). Executes the "let Cade score, suffocate everyone else" strategy. His intensity sets the defensive tone.<br><strong>ORL — Anthony Black (OFF):</strong> Sophomore breakout (model corrected to 15.0 PPG). 6'7 combo guard whose secondary creation relieves Banchero's load and enables ORL's 5-player balanced attack.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">NYK-ATL</div>
+        <div class="def-desc"><strong>NYK — Josh Hart (OFF):</strong> 13pts/13.5reb/5.5ast average through G1-G2. Does everything — offensive boards, transition, playmaking. His hustle creates extra possessions that don't show up in traditional projections.<br><strong>NYK — Mitchell Robinson (DEF):</strong> Rim protector whose shot-blocking forced ATL into hack-a-Robinson (proving his impact). Minutes may increase as Brown deploys him more against ATL's frontcourt.<br><strong>ATL — CJ McCollum (OFF):</strong> 29.0 PPG average (26pts G1, 32pts G2 — hunted Brunson 1-on-1 in crunch time). Portland playoff pedigree activated. +10.3 avgOverPerformance — the single most impactful x-factor in R1. Snyder running more actions through him each game.<br><strong>ATL — Dyson Daniels (DEF):</strong> Steals leader (3stl G1, 2stl G2). MIP with D-LEBRON 1.907. His ball-hawking disrupts NYK's half-court rhythm even when his own offense struggles.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #e040c0;">
+        <div class="def-term">CLE-TOR</div>
+        <div class="def-desc"><strong>CLE — Max Strus (OFF):</strong> Bench scoring explosion — 24pts G1 (playoff career high after missing 67 games). Scored 11pts during CLE's 27-9 run. His microwave shooting off the bench is the depth weapon TOR can't match.<br><strong>CLE — Dean Wade (DEF):</strong> 2stl each game. Meeting Ingram at point of attack was key to CLE's scheme lock (Ingram 17pts→7pts). His versatile wing defense is CLE's glue.<br><strong>TOR — Collin Murray-Boyles (OFF):</strong> BREAKOUT rookie — 14pts G1 (7-8 FG), 17pts G2 (expanded to 25min). Averaging +7.0pts over 8.5 PPG baseline. The clearest offensive x-factor in any series — forced Rajakovic to bench Poeltl for him.<br><strong>TOR — Ja'Kobe Walter (DEF):</strong> Best POA defender on Mitchell assignment. Better shooter than Shead (.409 3PT) so his minutes don't hurt TOR's spacing while providing defensive resistance.</div>
       </div>
     </div>
     </div>

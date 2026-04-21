@@ -6,7 +6,7 @@ function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 9/13 (69.2%) | G2 CLE-TOR: 1/2 (ML ✓, Harden ast ✗) | G3 projections live | Phase 22: Per-player outlook system for G2+G3 — Bayesian FG% regression across all remaining series</p>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 9/13 (69.2%) | G2 CLE-TOR: 1/2 (ML ✓, Harden ast ✗) | G3 projections live | Phase 23: Injury/fatigue-adjusted G2 projections — KD return, Tatum recovery, LeBron fatigue</p>
 
     <!-- BET TABS -->
     <div style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -23,34 +23,66 @@ function renderBetsPage(el) {
       <!-- ===== HEADLINE: $100 BEST BET ===== -->
       <div class="parlay-card headline">
         <div class="parlay-header">
-          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — Highest-Confidence Parlay (3-Leg)</span>
-          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+546</span>
+          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — Today's Highest-Confidence Parlay (3-Leg)</span>
+          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+517</span>
         </div>
         <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → $646 return</span>
-          <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">ALL LEGS HIGH CUSHION</span>
+          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → $617 return</span>
+          <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">ALL LEGS TODAY — Apr 21</span>
         </div>
         <div class="parlay-legs">
           <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">Ingram Under 18.5 pts ★</span>
-            <span class="parlay-leg-odds">-120</span>
+            <span class="parlay-leg-pick">Wemby Over 25.5 pts (SAS-POR)</span>
+            <span class="parlay-leg-odds">-125</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
           <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Jokic Over 21.5 reb+ast</span>
-            <span class="parlay-leg-odds">-110</span>
+            <span class="parlay-leg-pick">Brown Over 24.5 pts (BOS-PHI)</span>
+            <span class="parlay-leg-odds">-120</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
           <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">NYK +1.5 @ ATL</span>
-            <span class="parlay-leg-odds">-118</span>
+            <span class="parlay-leg-pick">Fox Over 6.5 ast (SAS-POR)</span>
+            <span class="parlay-leg-odds">-115</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
         </div>
-        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Every leg was selected for maximum cushion between model projection and line. <strong>Ingram Under 18.5</strong> (proj 13.0, 5.5pt cushion) — CLE's switching defense has scheme-locked Ingram across two games (17→7pts), and Phase 22 "bad" outlook confirms the trend is structural, not random. <strong>Jokic Over 21.5 reb+ast</strong> (G1: 24, G2: 23) — he's cleared this line by 1.5-2.5 in every game regardless of whether DEN won or lost; his floor is above the line. <strong>NYK +1.5 @ ATL</strong> (model: NYK by 6, 7.5pt cushion) — the single largest model-to-line gap on the G3 board. ATL's G2 win at MSG shifted the line in their favor, but the model's structural edges (NYK 1.25x talent, four 76+ rated players, elite road record) haven't changed. Three uncorrelated legs across two different games and stat types.</div>
+        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Phase 23 today-only parlay — all three games on Apr 21. <strong>Wemby Over 25.5</strong> (proj 28.2, 2.7pt cushion) — DPOY just announced, "good" outlook at 52% FG, POR has no answer for his length, home court. Highest cushion on the board. <strong>Brown Over 24.5</strong> (proj 26.8, 2.3pt cushion) — UPGRADED in Phase 23 because Tatum's Achilles minutes management (~30-32min) pushes more usage to Brown. G1: 26pts at 52.4% FG was baseline, not ceiling. Edgecombe mismatch (D-LEBRON 0.08). <strong>Fox Over 6.5 ast</strong> (proj 7.8, 1.3pt cushion) — G1: 8ast at 46.7% FG is sustainable. PnR with Wemby creates binary decisions for POR defense. SEPARATION game = structured half-court sets = consistent assists. Three uncorrelated legs across two games and two stat types.</div>
+      </div>
+
+      <div class="parlay-card headline" style="border:1px solid #f44336;">
+        <div class="parlay-header">
+          <span class="parlay-name" style="font-size:16px;color:#f44336;">The $1 Chaos Ticket — Upset Parlay (3-Leg)</span>
+          <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1003</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+          <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 → $11.03 return</span>
+          <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Apr 21</span>
+        </div>
+        <div class="parlay-legs">
+          <div class="parlay-leg" style="border-left:3px solid #f44336;">
+            <span class="parlay-leg-num">1</span>
+            <span class="parlay-leg-pick">LAL ML vs HOU (UPSET)</span>
+            <span class="parlay-leg-odds">+175</span>
+            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+          </div>
+          <div class="parlay-leg" style="border-left:3px solid #f44336;">
+            <span class="parlay-leg-num">2</span>
+            <span class="parlay-leg-pick">POR +11.5 vs SAS (COVER)</span>
+            <span class="parlay-leg-odds">+110</span>
+            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+          </div>
+          <div class="parlay-leg" style="border-left:3px solid #f44336;">
+            <span class="parlay-leg-num">3</span>
+            <span class="parlay-leg-pick">Maxey Over 24.5 pts (BOS-PHI)</span>
+            <span class="parlay-leg-odds">-110</span>
+            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+          </div>
+        </div>
+        <div class="parlay-reasoning" style="border-left-color:#f44336;">The underdogs-fight-back parlay. <strong>LAL ML +175</strong> — the anchor upset. Pre-KD return, model had HOU-LAL as a COIN FLIP (+2). KD is back today but first game in weeks = rust, minutes restriction (~28-30min), and unfamiliar rhythm with teammates. If KD shoots under 40% (common in return games), this reverts to a toss-up — and LeBron at home in the playoffs with a desperate crowd tilts it. <strong>POR +11.5</strong> — model +12 vs line -11.5 is the thinnest cover on the board (0.5pt cushion). Holiday's "neutral-good" bounce-back from 26.7% → 40% FG is the swing factor. Avdija scored 30 in G1 — even if he regresses to 24-25 instead of the modeled 22, POR covers. Road teams in Game 2 often adjust after seeing the playbook. <strong>Maxey Over 24.5</strong> — the safest leg and the parlay's foundation. Model projects 26.0, bounce-back from 40% FG G1. With Embiid out, Maxey IS the offense — he has to cook for PHI to stay competitive. Even in a BOS blowout, Maxey's usage rate guarantees volume.</div>
       </div>
 
       <!-- ===== GRID: G3 PARLAYS ===== -->
@@ -145,10 +177,10 @@ function renderBetsPage(el) {
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">NYK ML vs ATL ✓</span><span class="parlay-leg-odds">-250</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">NYK ML vs ATL ✗</span><span class="parlay-leg-odds">-250</span><span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">DEN ML vs MIN ✓</span><span class="parlay-leg-odds">-180</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
           </div>
-          <div class="parlay-reasoning">NYK ✓ and DEN ✓ cashed. Effectively a single SAS -700 leg now. If SAS wins, parlay pays ~2.5x original stake.</div>
+          <div class="parlay-reasoning">NYK ML ✗ — ATL upset at MSG (107-106). Parlay busted on leg 2 despite DEN ✓ cashing. CJ McCollum's 32pts was the model's blind spot.</div>
         </div>
 
         <!-- ===== G2 PROPS PARLAYS ===== -->
@@ -165,7 +197,7 @@ function renderBetsPage(el) {
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Brown Over 24.5 pts</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">4</span><span class="parlay-leg-pick">Wemby Over 25.5 pts</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-reasoning">Four stars with Phase 22 "good" outlooks. SGA 31.5 (46% FG, bounce-back from 27.8% G1), Brown 26.1 (49% FG, Edgecombe mismatch), Wemby 28.2 (52% FG, POR no answer). Maxey 26.0 "neutral-good" (44% FG, bounce-back).</div>
+          <div class="parlay-reasoning">Phase 23 update: Brown UPGRADED to 26.8 (Tatum minutes management → more Brown usage). SGA 31.5 (bounce-back), Wemby 28.2 (DPOY momentum), Maxey 26.0 (bounce-back). All four have 1.5+ pt cushion over their lines.</div>
         </div>
 
         <div class="parlay-card">
@@ -178,7 +210,7 @@ function renderBetsPage(el) {
             <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 7.5 ast</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Fox Over 6.5 ast</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-reasoning">Three facilitators with Phase 22 outlooks. LeBron 10.3 ast ("good" — 13ast G1 facilitator mode). Cade 7.8 ("good" — Suggs suppression forces more passing). Fox 7.8 ("neutral-good" — Wemby PnR creates assists).</div>
+          <div class="parlay-reasoning">Phase 23 update: LeBron ast proj dipped 10.3→9.8 (fatigue + KD return = tighter game). Cade 7.8 ("good"), Fox 7.8 ("neutral-good"). LeBron leg now TIGHT (0.3pt cushion) — parlay weakened by its shakiest leg. Consider swapping LeBron for Harden assists if available.</div>
         </div>
 
         <div class="parlay-card">
@@ -191,7 +223,7 @@ function renderBetsPage(el) {
             <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Tatum Over 10.5 reb</span><span class="parlay-leg-odds">+105</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Duren Over 8.5 reb</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
           </div>
-          <div class="parlay-reasoning">Wemby 9.8 reb ("good" outlook, dominates POR interior — Clingan "bad"). Tatum 11.4 ("good" outlook, no Embiid = empty paint, Drummond "bad"). Duren 9.3 ("neutral" — WCJ limits volume but rebounding repeatable).</div>
+          <div class="parlay-reasoning">Phase 23: Tatum reb dipped 11.4→10.8 (Achilles minutes management) but per-minute rate (0.34/min) holds at G1 pace. Wemby 9.8 (DPOY, no fatigue). Duren 9.3 (Wed game). Tatum leg is now tightest — 0.3pt cushion at +105.</div>
         </div>
 
         <div class="parlay-card">
@@ -248,10 +280,10 @@ function renderBetsPage(el) {
       </div>
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">NYK ML vs ATL ✓</div>
-        <div class="bet-line">-260 | Model: NYK by 12</div>
-        <div class="bet-reasoning">Knicks controlled at MSG behind Brunson's scoring.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">NYK ML vs ATL ✗</div>
+        <div class="bet-line">-260 | Model: NYK by 12 | Actual: ATL 107-106</div>
+        <div class="bet-reasoning">ATL stole G2 at MSG — CJ McCollum's 32pts overwhelmed model projection. Model overrated NYK's home-court edge.</div>
+        <span class="bet-edge miss">Miss</span>
       </div>
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
@@ -322,12 +354,12 @@ function renderBetsPage(el) {
 
     <!-- ===== G2 BETS TAB ===== -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — Phase 22 Per-Player Outlook Projections</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 22: Per-player g2PlayerOutlook system — Bayesian FG% regression (55% model / 45% prior), outlook-driven scoring modifiers (good/bad/neutral), research-backed projFgPct overrides. All 5 remaining G2 series have individual player outlooks based on G1 box scores, season baselines, and coaching adjustments.</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — Phase 23 Injury + Fatigue Update</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 23: Injury/fatigue-adjusted G2 projections. CBS Sports injury report (Apr 21) + ESPN live odds integrated. KEY UPDATES: KD (HOU) likely returns today (line moved -4.5→-5.5), Tatum Achilles recovery management, LeBron fatigue (age 41, 2-day turnaround). LAL still missing Luka (hamstring) + Reaves (oblique). Embiid (PHI) remains OUT.</p>
 
-    <!-- SATURDAY GAMES -->
+    <!-- COMPLETED + SATURDAY/SUNDAY G2 GAMES -->
     <div class="bet-section">
-      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Saturday Games</h4>
+      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Completed G2 Games — Sun Apr 20 (+ HOU-LAL Tonight)</h4>
 
       <!-- CLE-TOR -->
       <div class="bet-card" style="border-left:3px solid #4caf50;">
@@ -346,19 +378,19 @@ function renderBetsPage(el) {
       </div>
 
       <!-- DEN-MIN -->
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">DEN ML vs MIN</div>
-        <div class="bet-line">-180 | Model: DEN 109-105 (+4) | GRIND</div>
-        <div class="bet-reasoning">G2 margin compressed from +8 to +4 — strongest coaching compression in the slate. MIN coach Finch (adjustment rating 8/10) studies film aggressively; expect defensive scheme changes on Murray after his historic 16/16 FT game. Jokic projects 25.0/13.5/10.7 (near triple-double via 45% Bayesian G1 update). Edwards gets bounce-back boost (23.1 proj, up from 22 G1 on a balky knee). GRIND character = expect a 4th-quarter slugfest. DEN's altitude advantage is the margin.</div>
-        <span class="bet-edge historical">Historical</span>
+        <div class="bet-pick">MIN ML @ DEN ✓</div>
+        <div class="bet-line">+160 | Model: MIN 112-109 (+3) | GRIND | Actual: MIN 119-114 ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: MIN wins 119-114. Model predicted MIN upset — CORRECT.</strong> Backtest-calibrated pick: Edwards' starCeiling:2 flagged G2 as the most likely "explosion game" spot. Edwards delivered 30pts/10reb double-double (+20 net rating), confirming knee is warming up (22pts G1 → 30pts G2). Randle bounce-back 24/9/6 on 50% FG. DiVincenzo 16/7/6 justified starting over Conley. MIN completed 19-point road comeback — trailed 39-25 after Q1, stormed back. Jokic-Murray Q4 collapse (combined 2-12) was the decisive swing. KEY X-FACTOR: Hyland 13pts in 10min off bench (3-4 3PT) sparked the comeback run.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jokic Over 12.5 rebounds</div>
-        <div class="bet-line">-110 | Model: 13.5 RPG | G1 Bayesian: 13reb actual</div>
-        <div class="bet-reasoning">Jokic had 13 rebounds in G1, and the 45% Bayesian update brings his G2 projection to 13.5 (down from 14.0 pre-G1 model). Still comfortably clears 12.5. Gobert's rim protection creates long rebounds that Jokic's elite positioning exploits. DEN's guards attack the paint, generating offensive rebound chances. At altitude, higher pace = more total rebounds available.</div>
-        <span class="bet-edge historical">Historical</span>
+        <div class="bet-pick">Jokic Over 12.5 rebounds ✓</div>
+        <div class="bet-line">-110 | Model: 13.5 RPG | Actual: 15 reb ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: Jokic had 15 rebounds — clears 12.5 by 2.5.</strong> Bayesian model projected 13.5 and Jokic exceeded it. MIN won the rebounding battle 49-43 overall, but Jokic individually dominated the glass (8-20 FG, 1-7 3PT = many long misses creating rebound opportunities). His positioning and anticipation remain elite regardless of shooting efficiency.</div>
+        <span class="bet-edge historical">Historical ✓</span>
       </div>
 
       <!-- NYK-ATL -->
@@ -377,62 +409,67 @@ function renderBetsPage(el) {
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
-      <!-- HOU-LAL -->
+      <!-- HOU-LAL (10:30pm ET) — KD LIKELY RETURNS -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">HOU ML vs LAL</div>
-        <div class="bet-line">-205 | Model: HOU 106-104 (+2) | COIN FLIP</div>
-        <div class="bet-reasoning">Phase 22 outlook adjustments: Sengun "neutral-good" (46% FG, bounce-back from 31.6% G1 via Bayesian regression), KD is a game-time decision (48% FG if he plays — transforms HOU offense entirely). LeBron "good" outlook (54% FG) but may shift from facilitator (13ast G1) to scoring mode. Kennard "bad" outlook (44% FG, heavy regression from 69.2% G1 — HOU WILL scheme against him). HOU's home court + Udoka adjustments vs LAL's LeBron ceiling. True COIN FLIP — KD's status is the swing factor.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">HOU ML @ LAL</div>
+        <div class="bet-line">-205 | Model: HOU 110-104 (+6) | COMPETITIVE</div>
+        <div class="bet-reasoning"><strong>PHASE 23 UPGRADE — KD RETURNS:</strong> CBS injury report lists KD target date as Apr 21 (today). ESPN spread moved HOU -4.5→-5.5, strongly signaling KD plays. Model upgraded from +2 COIN FLIP to +6 COMPETITIVE. KD adds ~20pts and transforms HOU from single-initiator to dual-threat with Sengun. Even on ~28-30min restriction, his midrange gravity opens shots for Sheppard/Smith. LAL missing Luka (hamstring, out May 1) + Reaves (oblique, out May 1) — their backcourt is skeletal. LeBron "good" outlook but FATIGUE FACTOR: age 41, 2-day turnaround from high-usage G1 (13ast = constant decision load). Kennard "bad" (HOU will scheme). Market: HOU -5.5. Model aligns with market now.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">LeBron James Over 9.5 assists</div>
-        <div class="bet-line">-110 | Model: 10.3 APG | Outlook: GOOD | G1: 13 ast</div>
-        <div class="bet-reasoning">LeBron's "good" outlook (54% FG, 22-30pts) + G1 facilitator masterclass (13ast) support continued playmaking dominance. Even if he shifts to more scoring in G2, Ayton (lob threat), Hachimura, and Kennard remain excellent targets. Bayesian blend tempers 13ast to ~10.3 projection. If KD returns for HOU, more competitive game = more possessions = more assist opportunities. Safe line with 0.8pt cushion.</div>
+        <div class="bet-line">-110 | Model: 9.8 APG | Outlook: GOOD | G1: 13 ast</div>
+        <div class="bet-reasoning">Phase 23 adjustment: LeBron's assist projection dipped from 10.3 to 9.8. G1 facilitator masterclass (13ast) supports playmaking, and Ayton/Hachimura/Kennard remain excellent targets. BUT: fatigue concern (41 years old, 2-day turnaround) + if KD returns, faster pace drains more energy. If LeBron shifts to more scoring mode (likely if Kennard gets schemed out), assist volume could dip. Line is now TIGHT — 0.3pt cushion down from 0.8. Still lean Over but confidence dropped from MEDIUM to LOW.</div>
         <span class="bet-edge historical">Historical</span>
       </div>
     </div>
 
-    <!-- SUNDAY GAMES -->
+    <!-- TODAY'S G2 GAMES (Tue Apr 21) -->
     <div class="bet-section">
-      <h4 style="color:#fff;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Sunday Games</h4>
+      <h4 style="color:#fff;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Today's G2 Games — Tue Apr 21 (Phase 23 Injury/Fatigue Update)</h4>
 
-      <!-- BOS-PHI -->
+      <!-- BOS-PHI (7:00pm ET) — Tatum recovery management -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
         <div class="bet-pick">BOS ML vs PHI</div>
-        <div class="bet-line">-850 | Model: BOS 112-100 (+12) | SEPARATION</div>
-        <div class="bet-reasoning">Phase 22 outlook: Tatum "good" (48% FG, 24-32pts — Achilles return emphatic), Brown "good" (49% FG, 22-30pts — Edgecombe mismatch), both stars project elite efficiency. Maxey "neutral-good" (44% FG, 22-30pts — bounce-back from 40% G1). But PHI's structural problems persist: Drummond "bad" outlook (can't space floor), no Embiid, PHI shot 4-23 from 3 in G1 (17.4%). Nurse's adjustments will narrow margin from 32 to ~12 but the talent gap is too wide. BOS's depth (6 players scored 10+ in G1) is unmatched.</div>
+        <div class="bet-line">-850 | Model: BOS 111-100 (+11) | SEPARATION</div>
+        <div class="bet-reasoning"><strong>PHASE 23:</strong> Tatum "good" (47% FG, 22-30pts) with Achilles recovery management — NBA.com flags workload monitoring, expect ~30-32min cap. Brown "good" (49% FG, 22-30pts — Edgecombe mismatch). Maxey "neutral-good" (44% FG — bounce-back from 40% G1). PHI structural problems unchanged: Embiid OUT (abdomen, Apr 24 target), Drummond "bad", PHI shot 4-23 3PT in G1. Model margin dipped 12→11 on Tatum minutes cap, but BOS depth (6 players scored 10+ in G1) covers easily. Ron Harper Jr. (ankle) may return for BOS today — minor bench depth boost. Market: BOS -14.5 (-110), wider than model.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">BOS -14.5 vs PHI</div>
-        <div class="bet-line">-110 | Model: +12 margin | Outlook-adjusted spread</div>
-        <div class="bet-reasoning">Phase 22 projects +12 margin (up from +8 pre-outlook). BOS -14.5 is tight — only 2.5pts under model projection. Tatum's "good" outlook (+48% FG) and Brown's "good" outlook (+49% FG) drive the upgrade, but Maxey's "neutral-good" bounce-back (44% FG, up from 40% G1) + PHI 3PT regression up partially offset. Nurse adjustments compress margin but PHI's structural hole (no Embiid, Drummond liability) persists. Slight lean toward BOS covering but line is close to edge.</div>
+        <div class="bet-pick">PHI +14.5 vs BOS</div>
+        <div class="bet-line">-110 | Model: +11 margin | ESPN line: BOS -14.5</div>
+        <div class="bet-reasoning"><strong>PHASE 23 FLIP:</strong> Model projects +11, market is -14.5 — 3.5pt gap FAVORS PHI SPREAD. Tatum minutes management (Achilles recovery) compresses BOS ceiling. Maxey bounce-back (44% FG) + PHI 3PT regression up from historic 4-23 G1. Nurse's adjustments should narrow margin from G1's 32pts. Even if BOS wins comfortably, +14.5 covers in the model. CHANGED from BOS -14.5 to PHI +14.5 — value shifted to the dog covering.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Jaylen Brown Over 24.5 points</div>
-        <div class="bet-line">-120 | Model: 26.1 pts | Outlook: GOOD (49% FG) | G1: 26pts</div>
-        <div class="bet-reasoning">Phase 22 "good" outlook at 49% FG (22-30pt range). Brown's G1 (26pts, 52.4% FG, 7-9 in Q3) was near-baseline — minimal regression needed. Edgecombe's D-LEBRON (0.08) is a massive defensive mismatch. Home court. Nurse will scheme harder but PHI lacks the wing talent to contain him. Clears 24.5 by 1.6pts with high confidence.</div>
+        <div class="bet-line">-120 | Model: 26.8 pts | Outlook: GOOD (49% FG) | G1: 26pts</div>
+        <div class="bet-reasoning"><strong>PHASE 23 UPGRADE:</strong> Brown's projection INCREASED from 26.1 to 26.8. If Tatum is on minutes management (~30-32min), Brown absorbs more touches and usage. G1: 26pts (52.4% FG, 7-9 in Q3) was near-baseline. Edgecombe's D-LEBRON (0.08) is a massive mismatch. Home court. Brown becomes BOS's primary option in Tatum-rest stretches. Clears 24.5 by 2.3pts — highest-confidence prop on the BOS-PHI slate.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Tatum Over 10.5 rebounds</div>
-        <div class="bet-line">+105 | Model: 11.4 RPG | Outlook: GOOD | No Embiid = empty paint</div>
-        <div class="bet-reasoning">Tatum's "good" outlook (48% FG, 24-32pts) means more aggressive drives → more offensive rebound chances. G1: 11reb in 32min — with potentially more minutes in G2 if game stays competitive, 11+ is expected. No Embiid = PHI's interior is a rebounding wasteland (Drummond "bad" outlook). Plus-odds on a projection comfortably over the line. BOS's 3PT-heavy offense generates long rebounds that Tatum's length gobbles up.</div>
+        <div class="bet-line">+105 | Model: 10.8 RPG | Outlook: GOOD | No Embiid = empty paint</div>
+        <div class="bet-reasoning">Phase 23 adjustment: Tatum rebound proj dipped from 11.4 to 10.8 on minutes management. If capped at ~30-32min (Achilles recovery), he needs 10.8/32 = 0.34 reb/min — G1 rate was 11/32 = 0.34. So per-minute production sustains even with cap. No Embiid = PHI interior is rebounding wasteland (Drummond "bad"). Plus-odds on a line that clears at his G1 rate. Tighter than before but still has value at +105.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
-      <!-- OKC-PHX -->
+      <!-- ═══ WEDNESDAY G2 GAMES (Apr 22) ═══ -->
+      <div style="margin:20px 0 12px;padding:8px 0;border-top:2px solid #444;border-bottom:1px solid #333;">
+        <span style="color:#f0c040;font-size:14px;font-weight:700;">WEDNESDAY — Apr 22</span>
+      </div>
+
+      <!-- OKC-PHX (9:30pm ET) -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
         <div class="bet-pick">OKC ML vs PHX</div>
-        <div class="bet-line">-2100 | Model: OKC 114-101 (+13) | SEPARATION</div>
+        <div class="bet-line">-2100 | Model: OKC 114-101 (+13) | SEPARATION | ESPN: OKC -17.5</div>
         <div class="bet-reasoning">Phase 22 outlook: SGA "good" (46% FG, 28-36pts — massive bounce-back from 27.8% G1 shooting, will play full game), J.Williams "good" (52% FG, 18-26pts — All-NBA form confirmed), Holmgren "neutral-good" (49% FG — PHX has no interior answer). PHX outlook is grim: Brooks "bad" (36% FG, chronic playoff chucker), Ighodaro "bad" (zero offense), Dunn "bad" (30% FG). Booker "neutral-good" (48% FG, 24-32pts) is PHX's only positive outlook. OKC's depth overwhelms PHX at every position.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
@@ -455,7 +492,7 @@ function renderBetsPage(el) {
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
         <div class="bet-pick">DET ML vs ORL</div>
-        <div class="bet-line">-455 | Model: DET 108-103 (+5) | GRIND</div>
+        <div class="bet-line">-410 | Model: DET 108-103 (+5) | GRIND | ESPN: DET -8.5</div>
         <div class="bet-reasoning">Phase 22 outlook: Cade "good" (46% FG, 28-36pts — All-Star sustains high efficiency), Harris "neutral-good" (42% FG, bounce-back from 33.3% G1). But ORL has TWO "good" outlooks: Banchero (49% FG, 22-30pts) and Wagner (48% FG, 16-24pts) + Bane "neutral-good" (42% FG, 3PT bounce-back from 1-8). ORL's multi-initiator attack (5 in double figures G1) vs DET's single-initiator dependence remains the structural problem. DET home crowd + Bickerstaff adjustments provide the slim edge. GRIND territory — tightest series in the bracket.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
@@ -467,33 +504,33 @@ function renderBetsPage(el) {
         <span class="bet-edge model">Model Edge</span>
       </div>
 
-      <!-- SAS-POR -->
+      <!-- SAS-POR (8:00pm ET) — No major injury changes -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
         <div class="bet-pick">SAS ML vs POR</div>
         <div class="bet-line">-700 | Model: SAS 112-100 (+12) | SEPARATION</div>
-        <div class="bet-reasoning">Phase 22 outlooks confirm SAS dominance: Wemby "good" (52% FG, 26-34pts — 3PT regression from 83.3% G1 but midrange/rim sustainable), Fox "neutral-good" (47% FG, 18-26pts — consistent). POR's Avdija "neutral" (47% FG, 20-28pts — regression from 57.1% G1), Holiday "neutral-good" (40% FG, 12-18pts — bounce-back from 26.7% G1), but Clingan "bad" (42% FG — SAS length is structural problem). Home again for SAS. Talent gap is real and outlooks confirm it at every position.</div>
+        <div class="bet-reasoning"><strong>PHASE 23:</strong> No significant injury changes for this series. SAS: Jordan McLaughlin OUT (ankle, minor backup PG). POR: Lillard OUT (season-ending Achilles, already modeled). Outlooks hold: Wemby "good" (52% FG), Fox "neutral-good" (47% FG), Avdija "neutral" (47% FG — regression from 57.1% G1). Wemby won DPOY (announced today per NBA.com) — confidence/momentum boost. ESPN market: SAS -11.5 (-110), ML -700. Model +12 aligns perfectly with market -11.5. Home again for SAS. Cleanest G2 on the board — no injury variance to factor.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type spread">SPR</span>
         <div class="bet-pick">SAS -11.5 vs POR</div>
-        <div class="bet-line">-115 | Model: +12 margin | Outlook-adjusted spread</div>
-        <div class="bet-reasoning">Phase 22 projects +12 margin — SAS -11.5 gives just 0.5pt cushion. Wemby's regression (52% FG from 61.9% G1) is offset by Fox/Castle bounce-back projections. Avdija's "neutral" outlook (47% FG) tempers his 30pt G1. SAS depth still overwhelming (Fox/Castle/Vassell all project 14+). Tight spread but model favors the cover. Holiday's "neutral-good" bounce-back is the biggest risk to the cover.</div>
+        <div class="bet-line">-110 | Model: +12 margin | ESPN line: SAS -11.5</div>
+        <div class="bet-reasoning">Phase 23 confirms: model +12 vs market -11.5 — tight 0.5pt cushion. No new injuries disrupt either side. Wemby DPOY momentum is a psychological boost but not model-quantifiable. Avdija's "neutral" regression from 30pt G1 is the key dynamic — if he reverts to ~22pts, SAS covers. Holiday "neutral-good" bounce-back (40% FG, up from 26.7% G1) is the biggest cover risk. Lean SAS covers but razor-thin edge.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Wembanyama Over 25.5 points</div>
         <div class="bet-line">-125 | Model: 28.2 pts | Outlook: GOOD (52% FG) | G1: 35pts</div>
-        <div class="bet-reasoning">Phase 22 "good" outlook at 52% FG (26-34pt range). 3PT regression expected (season ~37% vs G1's 83.3% from 3), but midrange/rim finishing (8-15 on 2PT in G1) is sustainable. POR still has no answer for his length + shooting combination. Home court. Even with 3PT regression, his scoring versatility projects 28+ points. Clears 25.5 by 2.7pts with high confidence.</div>
+        <div class="bet-reasoning">Phase 23 holds: "good" outlook at 52% FG (26-34pt range). 3PT regression expected (season ~37% vs G1's 83.3%), but midrange/rim finishing (8-15 on 2PT in G1) is sustainable. Fresh off DPOY win — expect high energy and aggression. POR still has no answer for his length. Home court. Clears 25.5 by 2.7pts. No injury or fatigue concerns for a 22-year-old on 2-day rest.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">De'Aaron Fox Over 6.5 assists</div>
         <div class="bet-line">-115 | Model: 7.8 APG | Outlook: NEUTRAL-GOOD (47% FG) | G1: 8ast</div>
-        <div class="bet-reasoning">Fox's "neutral-good" outlook (47% FG, 18-26pts) reflects his steady G1 baseline (46.7% FG, 8ast). His speed creates binary decisions for POR: help on Fox drives (Wemby/Vassell open for lobs/3s) or stay home (Fox scores). POR's switching puts smaller guards in disadvantageous PnR matchups. In a SEPARATION game, SAS runs structured half-court sets with consistent assist opportunities. 1.3pt cushion over 6.5 line.</div>
+        <div class="bet-reasoning">Phase 23 holds: Fox's G1 baseline (8ast, 46.7% FG) is sustainable. No fatigue concerns (30 years old, 2-day rest). His speed creates binary decisions for POR in PnR: help on drives (Wemby/Vassell open) or stay home (Fox scores). SEPARATION game = structured half-court sets = consistent assist opportunities. 1.3pt cushion over 6.5 line.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
     </div>

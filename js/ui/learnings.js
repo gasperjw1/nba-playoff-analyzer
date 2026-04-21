@@ -620,6 +620,21 @@ function renderLearningsPage(el) {
         <span class="learning-tag model">Engine Extension</span><span class="learning-tag data">G2 Outlook</span><span class="learning-tag milestone">Phase 22</span>
       </div>
 
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 23 — Injury/Fatigue G2 Update</div>
+        <div class="learning-title">Live Injury Reports + ESPN Odds Integrated for Today's G2 Games</div>
+        <div class="learning-body">CBS Sports injury report (Apr 21) and ESPN live odds cross-referenced to adjust G2 projections for today's 3 games: <strong>BOS-PHI, SAS-POR, HOU-LAL</strong>.
+        <br><br><strong>Key findings:</strong>
+        <br>• <strong>KD (HOU) likely returns:</strong> CBS target date = Apr 21 (today). ESPN line moved HOU -4.5→-5.5 confirming market expectation. Model upgraded HOU from +2 (COIN FLIP) to +6 (COMPETITIVE). KD outlook upgraded "neutral"→"neutral-good" (medium confidence).
+        <br>• <strong>Tatum Achilles recovery:</strong> NBA.com headline flags workload management. Not on injury report but minutes cap ~30-32min expected. FG% dipped 0.48→0.47, model margin 12→11. Brown UPGRADED to 26.8pts (absorbs Tatum-rest touches).
+        <br>• <strong>LeBron fatigue:</strong> Age 41, 2-day turnaround from high-usage G1 (13ast). FG% dipped 0.54→0.52. Assist proj dipped 10.3→9.8.
+        <br>• <strong>LAL still decimated:</strong> Luka (hamstring, May 1) + Reaves (oblique, May 1) both OUT. Confirmed already missing in G1.
+        <br>• <strong>Wemby DPOY:</strong> Announced today — momentum/confidence boost for SAS.
+        <br>• <strong>BOS-PHI spread FLIPPED:</strong> Model +11 vs market -14.5 = 3.5pt gap → changed from BOS -14.5 to PHI +14.5 (value shifted to dog).
+        <br><br><strong>Methodology:</strong> First integration of real-time injury data + live market odds into the model. Validated approach: when model and market disagree significantly (HOU-LAL), the injury report explains the gap (KD return).</div>
+        <span class="learning-tag data">Injury Data</span><span class="learning-tag model">Live Odds</span><span class="learning-tag milestone">Phase 23</span>
+      </div>
+
     </div>
   </div>`;
 
@@ -646,7 +661,8 @@ function renderLearningsPage(el) {
     'Phase 17': 'Google Scholar research — 16 papers, 7 model changes',
     'Phase 20': 'G2 differentiation engine — momentum, regression, coaching compression',
     'Phase 21': 'CLE-TOR G2 results — margin prediction validated (+11 proj vs +10 actual)',
-    'Phase 22': 'Per-player offensive outlook system — research-backed FG% differentiation for G2 (5 series) + G3 (3 series)'
+    'Phase 22': 'Per-player offensive outlook system — research-backed FG% differentiation for G2 (5 series) + G3 (3 series)',
+    'Phase 23': 'Injury/fatigue-adjusted G2 projections — CBS injury reports + ESPN live odds integrated (KD return, Tatum recovery, LeBron fatigue)'
   };
 
   // Collect all entries/cards
