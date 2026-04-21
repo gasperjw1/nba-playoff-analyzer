@@ -96,6 +96,38 @@ function calcGameProjection(series, seriesId, gameNum) {
   const fatigueDiff = (awayFat.index - homeFat.index) * 4.0; // max ~0.5 index → 2.0 pts
   baseMargin += fatigueDiff;
 
+  // --- STEP 5c: 3PT Variance Regression Adjustment (Phase 25) ---
+  // When teams are shooting significantly above/below their season 3P% baseline,
+  // adjust the margin to account for expected regression. Uses Bayesian blend:
+  // regWeight = 0.70 for 1-game samples, 0.55 for 2-game samples.
+  // Impact = (expected_3P% - actual_3P%) × 3PA × 3 pts per game.
+  if (typeof THREE_POINT_VARIANCE_DATA !== 'undefined') {
+    const tpvKey = seriesId || (series && series.id);
+    const tpv = tpvKey ? THREE_POINT_VARIANCE_DATA[tpvKey] : null;
+    if (tpv && tpv.home && tpv.away && gameNum > 1) {
+      const homeTeamData = tpv.home.team;
+      const awayTeamData = tpv.away.team;
+      // Regression weight: heavier for smaller playoff samples
+      const gPlayed = (series.games || []).filter(g => g && g.winner).length;
+      const regWeight = gPlayed <= 1 ? 0.70 : (gPlayed <= 2 ? 0.55 : 0.40);
+
+      // Expected 3P% via Bayesian blend
+      const homeExp3 = homeTeamData.playoff3Pct * (1 - regWeight) + homeTeamData.regSeason3Pct * regWeight;
+      const awayExp3 = awayTeamData.playoff3Pct * (1 - regWeight) + awayTeamData.regSeason3Pct * regWeight;
+
+      // Point swing from 3PT regression: (expected - actual) × 3PA × 3
+      // Positive = team expected to score MORE (regression UP)
+      // Negative = team expected to score LESS (regression DOWN)
+      const home3PSwing = (homeExp3 - homeTeamData.playoff3Pct) * homeTeamData.threePA * 3;
+      const away3PSwing = (awayExp3 - awayTeamData.playoff3Pct) * awayTeamData.threePA * 3;
+
+      // Net margin adjustment: home improvement - away improvement
+      // Cap at ±4 pts to prevent 3PT variance from dominating the model
+      const threePtAdj = Math.max(-4, Math.min(4, home3PSwing - away3PSwing));
+      baseMargin += threePtAdj;
+    }
+  }
+
   // --- STEP 6: Pre-compression cap ---
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
