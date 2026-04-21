@@ -1,3 +1,7 @@
+// PHASE 17 UPDATE (Morgulev et al. 2022): Analysis of one-sided elimination games shows
+// teams "with their back to the wall" produce measurably different performance.
+// Bühren & Krabel (2021, 10 citations): Performance after success/failure shows
+// context-dependent momentum effects in NBA play-by-play data.
 function calcBounceBackProb(series) {
   const round = series.round || 'R1';
   const roundMod = { 'R1': 1.0, 'R2': 0.7, 'CF': 0.5, 'Finals': 0.4 };
@@ -6,6 +10,12 @@ function calcBounceBackProb(series) {
   const awaySystem = series.awayTeam.systemBonus || 0;
   const homeSystem = series.homeTeam.systemBonus || 0;
   prob -= Math.max(0, awaySystem - homeSystem) * 0.05;
+  // Morgulev et al.: elimination pressure can OVERRIDE bounce-back tendency
+  // When a team is down 2-0 or 3-1, the trailing team's desperation partially
+  // cancels the leading team's "expected" bounce-back advantage
+  const score = getSeriesScore(series);
+  const seriesDiff = Math.abs(score.home - score.away);
+  if (seriesDiff >= 2) prob -= 0.05; // large series lead reduces bounce-back
   return Math.min(0.85, Math.max(0.35, prob));
 }
 
@@ -24,16 +34,4 @@ function calcDefMatchupSuppression(matchup, targetInitiators) {
   // 2 initiators = standard (1.0x), 3+ = diluted effect (0.7x)
   const initiatorPenalty = targetInitiators <= 1 ? 1.5 : (targetInitiators === 2 ? 1.0 : 0.7);
   return defQuality * targetDependency * initiatorPenalty * 0.3;
-}
-
-// Raw win prob without series score context (for planning purposes)
-function calcWinProbRaw(series) {
-  const hr = calcTeamRating(series.homeTeam, series);
-  const ar = calcTeamRating(series.awayTeam, series);
-  const round = series.round || 'R1';
-  const baseHCA = HCA_BY_ROUND[round] || 3.0;
-  const hca = series.homeCourtOverride === 'away' ? -baseHCA : baseHCA;
-  const diff = (hr + hca) - ar;
-  const prob = 1 / (1 + Math.pow(10, -diff / 15));
-  return { home: Math.round(prob * 100), away: Math.round((1 - prob) * 100) };
 }

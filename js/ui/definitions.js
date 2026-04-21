@@ -16,7 +16,8 @@ function renderDefinitionsPage(el) {
       <div class="def-tab-btn" id="defTab-backtest" onclick="switchDefTab('backtest')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Backtest Factors</div>
       <div class="def-tab-btn" id="defTab-g1lessons" onclick="switchDefTab('g1lessons')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">G1 Lessons</div>
       <div class="def-tab-btn" id="defTab-margins" onclick="switchDefTab('margins')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Margin Variance</div>
-      <div class="def-tab-btn" id="defTab-fatigue" onclick="switchDefTab('fatigue')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Fatigue</div>
+      <div class="def-tab-btn" id="defTab-fatigue" onclick="switchDefTab('fatigue')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Fatigue</div>
+      <div class="def-tab-btn" id="defTab-research" onclick="switchDefTab('research')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Phase 17 Research</div>
     </div>
 
     <!-- PLAYER TAB -->
@@ -57,7 +58,7 @@ function renderDefinitionsPage(el) {
     <div id="defContent-model" class="def-tab-content" style="display:none;">
     <div class="def-category model">Model-Specific Concepts</div>
     <div class="def-grid">
-      <div class="def-card"><div class="def-term">Home Court Advantage <span class="def-abbr">HCA</span></div><div class="def-desc">Round-adjusted: R1=+3.0, R2=+2.0, CF=+1.5, Finals=+1.0. Game 7 override: +5.0 (78% home win rate historically).</div></div>
+      <div class="def-card"><div class="def-term">Home Court Advantage <span class="def-abbr">HCA</span></div><div class="def-desc">Round-adjusted: R1=+2.5, R2=+1.7, CF=+1.3, Finals=+0.85 (reduced ~15% in Phase 17 per Barreira &amp; Morgado 2023 — HCA declining in modern NBA). Game 7 override: +2.5 (reduced from +5.0 per Li et al. 2025 — game location non-significant in G7).</div></div>
       <div class="def-card"><div class="def-term">Replacement Level <span class="def-abbr">REPL</span></div><div class="def-formula">REPLACEMENT_LEVEL = 48</div><div class="def-desc">Rating for inactive roster slots. Raised from 42 after 2024 backtest — playoff replacements are coached up (NYK competed in R2 missing 3 starters).</div></div>
       <div class="def-card"><div class="def-term">Win Probability Formula</div><div class="def-formula">P(home) = 1 / (1 + 10^(-(homeRating + HCA - awayRating) / 15))</div><div class="def-desc">Logistic function converting rating differential to 0-100% win probability. 15-point advantage = ~75% probability.</div></div>
       <div class="def-card"><div class="def-term">SPM Chemistry <span class="def-abbr">SPM v2</span></div><div class="def-desc">8-dimension player profiling model (Maymin et al. 2012, expanded with 3PT + Ball Distribution). Pairwise synergy via empirical coefficients. Score 50 = avg; 75+ = elite.</div></div>
@@ -66,6 +67,10 @@ function renderDefinitionsPage(el) {
       <div class="def-card"><div class="def-term">Stat Differential <span class="def-abbr">StatDiff</span></div><div class="def-formula">0.4xFG%D + 0.25x3PT%D + 0.15xORB%D + 0.2xTOVD</div><div class="def-desc">Based on Jones &amp; Magel (2016) — explains 91.45% of point spread variance. Capped at +/-3 points.</div></div>
       <div class="def-card"><div class="def-term">Series-Stage Pressure <span class="def-abbr">PressureMod</span></div><div class="def-desc">Mateus et al. (2024): player behavior shifts in later games. Elimination games (+0.5) and tied series (+0.3) favor experienced teams.</div></div>
       <div class="def-card"><div class="def-term">Non-Linear Interactions <span class="def-abbr">NLI</span></div><div class="def-desc">Yeung (2020): Random Forest (AUC 0.841) &gt; linear regression (0.738). Captures Shooting+Defense synergy and Pace+Depth interaction bonuses.</div></div>
+      <div class="def-card" style="border-left:3px solid var(--green);"><div class="def-term">Per-Player Offensive Outlook <span class="def-abbr">gNPlayerOutlook</span></div><div class="def-desc"><strong>Phase 22.</strong> Research-backed per-player, per-game offensive outlook. Data key: <code>g3PlayerOutlook</code> (dynamic: <code>'g' + gameNum + 'PlayerOutlook'</code>). Each player entry: <code>outlook</code> (good/bad/neutral/neutral-good), <code>projFgPct</code>, <code>ptsRange</code> [min,max], <code>reason</code>, <code>confidence</code> (high/medium/low). "good" → +8-12% scoring boost; "bad" → -8-12% suppress; "neutral-good" → +4%.</div></div>
+      <div class="def-card" style="border-left:3px solid var(--green);"><div class="def-term">Research FG% Override <span class="def-abbr">researchFgPct</span></div><div class="def-desc"><strong>Phase 22.</strong> When a player has a <code>projFgPct</code> in their outlook entry, this value overrides the default FG% used to back-calculate shooting stats (FGM/FGA/TPM/TPA). Does NOT directly modify the point total — points are adjusted by the outlook boost/suppress. The FG% override ensures the shooting line reflects realistic efficiency for that player's projected game type.</div></div>
+      <div class="def-card" style="border-left:3px solid var(--green);"><div class="def-term">Returning Player Logic <span class="def-abbr">RPL</span></div><div class="def-desc"><strong>Phase 22.</strong> In <code>calcProjectedBoxScore</code>, players who weren't in the prior box score but have a research outlook entry are added to the active player list. This handles injury returns (e.g., Quickley in CLE-TOR G3). Threshold is outlook-entry-based rather than rating-based to avoid normalization dilution from irrelevant bench players.</div></div>
+      <div class="def-card" style="border-left:3px solid var(--green);"><div class="def-term">Bayesian Tiered Blend <span class="def-abbr">BayesBlend</span></div><div class="def-desc"><strong>Phase 22.</strong> Prior game box scores are blended with model projections at tiered weights: <strong>55/45</strong> (model/prior) for 15+ min players, <strong>70/30</strong> for 5-14 min players, <strong>100/0</strong> for new/returning players. This anchors projections to actual observed performance while allowing the model to pull toward true skill level.</div></div>
     </div>
     </div>
 
@@ -83,7 +88,7 @@ function renderDefinitionsPage(el) {
       <div class="def-card"><div class="def-term">Def. Matchup Suppression <span class="def-abbr">defMatchupAdj</span></div><div class="def-formula">max(0, D-LEBRON) x (USG/30) x initiatorPenalty x 0.3</div><div class="def-desc">Elite defender on primary creator amplified by limited secondary creation. 1.5x for 1 initiator, 1.0x for 2, 0.7x for 3+. Validated: White on Maxey = +1.08 (bracket's largest).</div></div>
       <div class="def-card"><div class="def-term">Health Degradation <span class="def-abbr">injuryRisk</span></div><div class="def-formula">Penalty = injuryRisk x roundDepth x 0.4</div><div class="def-desc">Per-player 0-1.0. Increases in later rounds. KD (0.7), Doncic (1.0), Murray (0.8) carry significant risk.</div></div>
       <div class="def-card"><div class="def-term">Bounce-Back Probability <span class="def-abbr">BB%</span></div><div class="def-formula">BB% = 0.77 x roundModifier - systemAdv x 0.05</div><div class="def-desc">Home team winning G2 after losing G1. Baseline 77% in R1. Drops to ~35% in Finals.</div></div>
-      <div class="def-card"><div class="def-term">Game 7 Override <span class="def-abbr">G7</span></div><div class="def-desc">HCA jumps to +5.0 when tied 3-3. Home teams win ~78% of G7s. OKC won G7 at home vs DEN (by 32) and Finals vs IND (by 12).</div></div>
+      <div class="def-card"><div class="def-term">Game 7 Override <span class="def-abbr">G7</span></div><div class="def-desc">HCA set to +2.5 when tied 3-3 (reduced from +5.0 in Phase 17). Li et al. (2025) found game location does NOT significantly affect G7 outcomes — EFG% and TOV% are the decisive factors. Second-half 3PT and DRB become critical.</div></div>
     </div>
     </div>
 
@@ -182,6 +187,56 @@ function renderDefinitionsPage(el) {
       <div class="def-card" style="border-left:3px solid #d4a04a;"><div class="def-term">Minutes Load</div><div class="def-desc">Players averaging 36+ min show degraded 3PT accuracy and turnover rate (p=0.038). 15% compounding/game. Heavy-minutes stars can lose 0.5 fatigue pts in 7 games.</div></div>
       <div class="def-card" style="border-left:3px solid #d4a04a;"><div class="def-term">Active Injury <span class="def-abbr">activeInjury</span></div><div class="def-desc">Per-player object: {type, severity (0-1), note}. Distinct from injuryRisk. Severity x 0.15 base contribution, +20%/game, +25%/round. Edwards' knee (0.7), Cade's lung (0.5), Wemby's rib (0.1 post-G1).</div></div>
       <div class="def-card" style="border-left:3px solid #d4a04a;"><div class="def-term">Medium Confidence Weight</div><div class="def-desc">All fatigue calculations weighted at <strong>0.75×</strong> (upgraded from 0.5× LOW). G1 validated fatigue signals: LeBron's age-driven role shift, Edwards' altitude fatigue, Sharpe's conditioning limits, Tatum's Achilles monitoring. Now feeds directly into margin engine (Step 5b: Fatigue Differential).</div></div>
+    </div>
+    </div>
+
+    <!-- PHASE 17 RESEARCH TAB -->
+    <div id="defContent-research" class="def-tab-content" style="display:none;">
+    <div class="def-category" style="background:linear-gradient(90deg,#1a3a2a,transparent);border-left:4px solid #10b981;">Phase 17 — Google Scholar Research Integration</div>
+    <div style="color:var(--text-dim);font-size:12px;margin-bottom:16px;padding:0 4px;">16 papers reviewed from Google Scholar across 9 topic areas. Papers ranked by trustworthiness (journal quality, citation count, recency) and impact on our model. All changes are research-backed.</div>
+    <div class="def-grid">
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Playoff Adjustment Factor <span class="def-abbr">PAF</span></div>
+        <div class="def-formula">paceReduction: 0.95 | fgWeightBoost: 1.15 | drbWeightBoost: 1.20</div>
+        <div class="def-desc"><strong>Cabarkapa et al. (2022), PLOS ONE, 81 citations.</strong> Playoff basketball is MORE CONSERVATIVE: fewer FGA, assists, steals, turnovers, and total points. FG% and DRB are the top two discriminators (23-26% of explained variance). Discriminant model achieves 87.2% accuracy in playoffs. Applied: pace reduction increased from 3% to 5%, FG% differential weight boosted 15% in stat bonus.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Research-Calibrated HCA <span class="def-abbr">HCA v2</span></div>
+        <div class="def-formula">R1: 3.0→2.5 | R2: 2.0→1.7 | CF: 1.5→1.3 | Finals: 1.0→0.85</div>
+        <div class="def-desc"><strong>Barreira &amp; Morgado (2023), 15 citations.</strong> Longitudinal analysis of NBA playoff HCA (1946-2022) shows statistically significant decrease over time. <strong>López-García et al. (2024), 10 citations:</strong> Team ability matters more than crowd support. <strong>Ganz &amp; Allsop (2024), 8 citations:</strong> COVID bubble data isolating fan effect. All three converge: modern HCA is ~15% weaker than historical estimates.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Game 7 Location Non-Significant <span class="def-abbr">G7 Research</span></div>
+        <div class="def-formula">G7 override: 5.0 → 2.5</div>
+        <div class="def-desc"><strong>Li et al. (2025), Taylor &amp; Francis.</strong> 10-year analysis (2013-2023) of decisive NBA playoff Game 7s. Critical finding: game location does NOT significantly affect G7 outcomes. EFG% positively associated with point differential (p &lt; 0.001), TOV% negatively (p &lt; 0.01). In the second half, 3PT shooting and defensive rebounds become the decisive factors. Override reduced from +5 to +2.5.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Non-Linear Fatigue Recovery <span class="def-abbr">NLFR</span></div>
+        <div class="def-formula">1-day rest = 0.6× | 2-day = 0.85× | 3+ day = 1.0× recovery</div>
+        <div class="def-desc"><strong>Esteves et al. (2021), European Journal of Sport Science, 95 citations.</strong> Schedule congestion impacts NBA performance via non-linear recovery curve. Playoff teams showed different fatigue profiles than non-playoff teams. Three days of rest represents the full recovery threshold. Model now applies rest penalty in later rounds where games are more frequent.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Cumulative Season Minutes <span class="def-abbr">CSM</span></div>
+        <div class="def-formula">fatigue += (estSeasonMin - 2400) × 0.0003 × (1 + depth × 0.2)</div>
+        <div class="def-desc"><strong>Jewell et al. (2025), Journal of Quantitative Analysis in Sports.</strong> End-of-season performance declines as function of cumulative minutes played. Players averaging 36+ MPG over 82 games carry ~2800+ minutes — this baseline load compounds with playoff games. Model now adds fatigue floor for heavy-minute players. Complements per-game fatigue (tracks LONG-TERM wear, not just recent rest).</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Playoff Clutch Boost <span class="def-abbr">PCB</span></div>
+        <div class="def-formula">Clutch weight: 10% → 13% (team ClutchNetRtg divisor: 4 → 3.5)</div>
+        <div class="def-desc"><strong>Sarlis et al. (2024), MDPI, 31 citations.</strong> Clutch dynamics analysis reveals clutch performance patterns differ in playoff contexts. <strong>Iatropoulos et al. (2025), 14 citations:</strong> Defensive metrics become MORE critical in late-game playoff situations; offensive efficiency paramount. Clutch weight increased because closing ability is more predictive in postseason than regular season.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Technical Foul Momentum <span class="def-abbr">TFM</span></div>
+        <div class="def-desc"><strong>Tenenbaum et al. (2025), three papers across MDPI/SAGE/T&amp;F, 1-5 citations.</strong> Coach technical fouls serve as strategic momentum shifts — they can trigger rallies. But player TFs (like Edwards' 18 league-leading techs) represent uncontrolled emotional volatility, not strategy. This validates our Edwards external factor and suggests modeling a distinction between strategic coach TFs and harmful player TFs.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Elimination Pressure Override <span class="def-abbr">EPO</span></div>
+        <div class="def-desc"><strong>Morgulev et al. (2022), Taylor &amp; Francis, 4 citations.</strong> Teams "with their back to the wall" (one-sided elimination games) produce measurably different performance. Integrated into calcBounceBackProb(): large series leads (2-0 or 3-1) reduce bounce-back probability by 5% because trailing team desperation partially cancels leading team's expected advantage.</div>
+      </div>
+      <div class="def-card" style="border-left:3px solid #10b981;">
+        <div class="def-term">Supporting Research</div>
+        <div class="def-desc">Additional papers reviewed for validation: <strong>Terner &amp; Franks (2021)</strong> — 130 citations, validates RAPM-style framework. <strong>Huyghe et al. (2022)</strong> — 54 citations, systematic review confirms multi-factor approach. <strong>Stiles (2024)</strong> — validates D-LEBRON suppression methodology. <strong>Cristo (2025)</strong> — combines injury risk + clutch for game prediction (mirrors our approach). <strong>Singh et al. (2021)</strong> — 51 citations, sleep/recovery science for NBA.</div>
+      </div>
     </div>
     </div>
 

@@ -41,6 +41,7 @@
   .g1-confidence { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; margin-top:8px; }
   .g1-confidence.high { background:rgba(61,214,140,0.15); color:var(--green); }
   .g1-confidence.medium { background:rgba(255,199,58,0.15); color:var(--yellow); }
+  .g1-confidence.medium-high { background:rgba(61,214,140,0.1); color:var(--accent); }
   .g1-confidence.low { background:rgba(255,79,94,0.15); color:var(--red); }
 
   /* Win prob */
@@ -292,6 +293,11 @@
   .parlay-featured { background:linear-gradient(135deg, #1a2a1a 0%, #1a2e3a 100%); border:2px solid var(--green); border-radius:14px; padding:20px; margin-bottom:20px; }
   .parlay-card { background:rgba(0,0,0,0.25); border:1px solid rgba(61,214,140,0.2); border-radius:12px; padding:16px; margin-bottom:12px; }
   .parlay-card.best { border-color:var(--green); box-shadow:0 0 20px rgba(61,214,140,0.1); }
+  .parlay-card.headline { border:2px solid #f0c040; box-shadow:0 0 24px rgba(240,192,64,0.15); background:linear-gradient(135deg, rgba(240,192,64,0.08) 0%, rgba(0,0,0,0.25) 100%); }
+  .parlay-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .parlay-grid .parlay-card { margin-bottom:0; }
+  .parlay-grid-header { grid-column:1/-1; color:#f0c040; font-size:15px; font-weight:700; margin:8px 0 4px; padding-bottom:6px; border-bottom:1px solid rgba(240,192,64,0.25); }
+  @media (max-width:700px) { .parlay-grid { grid-template-columns:1fr; } }
   .parlay-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
   .parlay-name { font-size:14px; font-weight:700; color:var(--text); }
   .parlay-odds { font-size:14px; font-weight:800; padding:4px 12px; border-radius:6px; }
@@ -490,6 +496,27 @@
   .proj-score-dynamic { font-size:16px; font-weight:800; margin-bottom:2px; }
   .variance-pills { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px; }
   .variance-pill { font-size:9px; padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.05); color:var(--text-dim); border:1px solid var(--border); }
+
+  /* ============================================================ */
+  /* BOX SCORE TABLES                                            */
+  /* ============================================================ */
+  .box-score-section, .adv-comp-section, .series-avg-section { background:var(--card); border-radius:12px; padding:16px; border:1px solid var(--border); margin-bottom:16px; }
+  .box-score-title, .adv-comp-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:4px; }
+  .adv-comp-subtitle { font-size:10px; color:var(--text-dim); margin-bottom:12px; }
+  .box-team-section { margin-bottom:14px; }
+  .box-team-name { font-size:12px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .box-table { width:100%; border-collapse:collapse; font-size:11px; }
+  .box-table th { background:rgba(0,0,0,0.3); padding:6px 8px; text-align:center; font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; border-bottom:1px solid var(--border); }
+  .box-table td { padding:5px 8px; text-align:center; border-bottom:1px solid rgba(38,45,69,0.5); }
+  .box-table .box-player-name { text-align:left; font-weight:600; white-space:nowrap; }
+  .box-pct { font-size:9px; color:var(--text-dim); }
+  .box-totals-row { background:rgba(79,140,255,0.06); border-top:2px solid var(--border); }
+  .box-totals-row td { font-weight:600; }
+  .adv-comp-team { margin-bottom:14px; }
+  .adv-comp-table th { font-size:9px; }
+  .exp-modifiers-cell { text-align:left !important; min-width:160px; }
+  .exp-modifier-pill { display:inline-block; font-size:8px; padding:1px 5px; border-radius:4px; margin:1px 2px; white-space:nowrap; font-weight:600; }
+  .proj-box-table tr:hover { background:rgba(79,140,255,0.04); }
 
   @media (max-width:768px) {
     .header { padding:14px 16px; }

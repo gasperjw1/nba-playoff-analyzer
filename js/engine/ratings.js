@@ -158,7 +158,7 @@ function calcTeamRating(team, series, seriesId) {
   base += (bestSynergy - 70) / 5;
 
   // External factors
-  const teamFactors = series.externalFactors.filter(f => f.team === team.abbr);
+  const teamFactors = (series.externalFactors || []).filter(f => f.team === team.abbr);
   base += teamFactors.reduce((s, f) => s + f.impact, 0) / 3;
 
   // SPM Chemistry bonus (Maymin et al.) — only active players
@@ -192,7 +192,11 @@ function calcTeamRating(team, series, seriesId) {
   }).length;
   const advScale = Math.max(0.3, 1 - scenarioOutCount * 0.15);
   base += ((team.advStats.netRtg - 3) / 3) * advScale;
-  base += ((team.advStats.clutchNetRtg - 3) / 4) * advScale;
+  // PHASE 17 (Sarlis et al. 2024, Iatropoulos et al. 2025): Clutch performance is MORE
+  // predictive in playoffs. Defensive metrics become critical in late-game playoff situations.
+  // PLAYOFF_CLUTCH_WEIGHT (0.13) → clutch divisor = 4 * (1 - weight) = 3.48 ≈ 3.5
+  const clutchDiv = (typeof PLAYOFF_CLUTCH_WEIGHT !== 'undefined') ? 4 * (1 - PLAYOFF_CLUTCH_WEIGHT) : 4;
+  base += ((team.advStats.clutchNetRtg - 3) / clutchDiv) * advScale;
 
   // Compounding penalty for multiple SCENARIO-TOGGLED star absences
   // Only counts stars the USER removed — not already-injured players
@@ -265,12 +269,15 @@ function calcWinProb(series, seriesId) {
   const ar = calcTeamRating(series.awayTeam, series, seriesId);
 
   // BACKTEST LESSON 1: Round-adjusted HCA (replaces flat +3)
-  // R1=3.0, R2=2.0, CF=1.5, Finals=1.0 — road teams steal more games in later rounds
+  // PHASE 17 UPDATE: R1=2.5, R2=1.7, CF=1.3, Finals=0.85 (reduced ~15% per Barreira & Morgado 2023)
+  // Longitudinal analysis (1946-2022) shows significant declining trend in playoff HCA.
   const round = series.round || 'R1';
-  let baseHCA = HCA_BY_ROUND[round] || 3.0;
+  let baseHCA = HCA_BY_ROUND[round] || 2.5;
 
-  // BACKTEST LESSON 6: Game 7 override — home teams win ~78% of Game 7s
-  // Check if we're in a potential Game 7 scenario (series tied 3-3)
+  // BACKTEST LESSON 6 / PHASE 17 UPDATE: Game 7 override reduced from +5 to +2.5
+  // Li et al. (2025): 10-year analysis shows game location does NOT significantly affect
+  // Game 7 outcomes. EFG% positively associated with G7 point differential (p < 0.001),
+  // TOV% negatively (p < 0.01). Second half: 3PT and DRB are decisive, not venue.
   const score = getSeriesScore(series);
   if (score.home === 3 && score.away === 3) {
     baseHCA = HCA_GAME7_OVERRIDE;
@@ -288,11 +295,15 @@ function calcWinProb(series, seriesId) {
   const ceilingDiff = homeCeiling - awayCeiling;
 
   // RESEARCH: Team stat differentials (Jones & Magel 2016 — 91.45% variance explained)
+  // PHASE 17 (Cabarkapa et al. 2022): FG% and DRB are the top two discriminators in playoffs
+  // (23-26% of explained variance). FG% weight boosted 15%, TOV% added as negative factor.
+  // Li et al. (2025): EFG% is the strongest Game 7 predictor (p < 0.001).
   let statDiffBonus = 0;
   const hAdv = series.homeTeam.advStats;
   const aAdv = series.awayTeam.advStats;
   if (hAdv.fgPct && aAdv.fgPct) {
-    const fgDiff = (hAdv.fgPct - aAdv.fgPct) * 0.4;
+    const fgBoost = (typeof PLAYOFF_ADJUSTMENT !== 'undefined') ? PLAYOFF_ADJUSTMENT.fgWeightBoost : 1.0;
+    const fgDiff = (hAdv.fgPct - aAdv.fgPct) * 0.4 * fgBoost; // boosted for playoffs
     const threeDiff = ((hAdv.threePct||35) - (aAdv.threePct||35)) * 0.25;
     const orbDiff = ((hAdv.orbPct||25) - (aAdv.orbPct||25)) * 0.15;
     const tovDiff = ((aAdv.tov||13) - (hAdv.tov||13)) * 0.2;

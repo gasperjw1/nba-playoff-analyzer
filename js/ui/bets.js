@@ -6,671 +6,706 @@ function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1 Record: 8/13 (61.5%)</p>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 9/13 (69.2%) | G2 CLE-TOR: 1/2 (ML ✓, Harden ast ✗) | G3 projections live | Phase 22: Per-player outlook system for G2+G3 — Bayesian FG% regression across all remaining series</p>
 
     <!-- BET TABS -->
     <div style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
       <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;">Featured Parlays</div>
       <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 1 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 2 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 2 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g3')" id="betTab-g3" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 3 Bets</div>
     </div>
 
     <!-- ===== PARLAYS TAB ===== -->
     <div id="betContent-parlays" class="bet-content">
     <div class="parlay-featured">
-      <h3 style="color:#f0c040;margin:0 0 16px 0;font-size:18px;">Featured Parlays</h3>
 
-      <div class="parlay-card">
+      <!-- ===== HEADLINE: $100 BEST BET ===== -->
+      <div class="parlay-card headline">
         <div class="parlay-header">
-          <span class="parlay-name">The G2 Chalk Slam</span>
-          <span class="parlay-odds">~+280</span>
+          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — Highest-Confidence Parlay (3-Leg)</span>
+          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+546</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → $646 return</span>
+          <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">ALL LEGS HIGH CUSHION</span>
         </div>
         <div class="parlay-legs">
-          <div class="parlay-leg">
+          <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">CLE ML vs TOR (G2)</span>
-            <span class="parlay-leg-odds">-320</span>
+            <span class="parlay-leg-pick">Ingram Under 18.5 pts ★</span>
+            <span class="parlay-leg-odds">-120</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
-          <div class="parlay-leg">
+          <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">BOS ML vs PHI (G2)</span>
-            <span class="parlay-leg-odds">-700</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">OKC ML vs PHX (G2)</span>
-            <span class="parlay-leg-odds">-900</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">4</span>
-            <span class="parlay-leg-pick">SAS ML vs POR (G2)</span>
-            <span class="parlay-leg-odds">-600</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-        </div>
-        <div class="parlay-reasoning">Four highest-confidence G2 MLs backed by margin engine + fatigue factor. CLE: SEPARATION (CLE +13), Rajakovic's adjustmentRating (5) limits recovery. BOS: SEPARATION (BOS +15) — no Embiid is unsurmountable. OKC: SEPARATION (OKC +16), Ott's adjustmentRating (4) is bracket-worst. SAS: SEPARATION (SAS +16), Splitter's interim coaching can't close the gap. Fatigue monitor (MEDIUM CONFIDENCE) now validates — all four favorites have lower team fatigue than their opponents.</div>
-      </div>
-
-      <div class="parlay-card">
-        <div class="parlay-header">
-          <span class="parlay-name">G2 Star Power Parlay</span>
-          <span class="parlay-odds">~+350</span>
-        </div>
-        <div class="parlay-legs">
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">Donovan Mitchell Over 24.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-150</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Wembanyama Over 24.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-140</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">Jaylen Brown Over 24.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-150</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">4</span>
-            <span class="parlay-leg-pick">Jalen Brunson Over 19.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-180</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-        </div>
-        <div class="parlay-reasoning">Four stars in SEPARATION or COMPETITIVE character games — high margins mean sustained star minutes. Mitchell (CLE +10, COMPETITIVE): stays on court through Q3 with 32pts G1 baseline. Wemby (SAS +16, SEPARATION): 35pts G1, but Star Prop Trap risk — blowout could mean early rest (mitigated by Wemby's lower blowout probability vs OKC). Brown (BOS +15, SEPARATION): Star Prop Trap alert — may rest Q4 again, but 28pts came in 3Qs. Brunson (NYK +8, COMPETITIVE): COMPETITIVE character means full minutes — 28pts G1 with 9.2 clutch rating sustains volume.</div>
-      </div>
-
-      <div class="parlay-card">
-        <div class="parlay-header">
-          <span class="parlay-name">G2 Margin Engine Edge Parlay</span>
-          <span class="parlay-odds">~+420</span>
-        </div>
-        <div class="parlay-legs">
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">HOU ML vs LAL (G2)</span>
-            <span class="parlay-leg-odds">-125</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">ORL ML vs DET (G2)</span>
-            <span class="parlay-leg-odds">+140</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">NYK -5.5 vs ATL (G2)</span>
+            <span class="parlay-leg-pick">Jokic Over 21.5 reb+ast</span>
             <span class="parlay-leg-odds">-110</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">4</span>
-            <span class="parlay-leg-pick">Under 208.5 BOS-PHI (G2)</span>
-            <span class="parlay-leg-odds">-110</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+          <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+            <span class="parlay-leg-num">3</span>
+            <span class="parlay-leg-pick">NYK +1.5 @ ATL</span>
+            <span class="parlay-leg-odds">-118</span>
+            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
         </div>
-        <div class="parlay-reasoning">Margin engine edge plays. HOU ML: COIN FLIP character (HOU +3) — engine favors HOU despite LAL's G1 win because Udoka's Coaching Adjustment Compression (adjustmentRating: 8) + KD's Star Absence Margin Boost compound. ORL at +140: GRIND character (DET +4) — Mosley's higher adjustmentRating (7 vs Bickerstaff's 5) means ORL adapts faster. NYK -5.5: COMPETITIVE (NYK +8) covers with 2.5pt cushion. BOS-PHI Under: SEPARATION means starters rest Q4, compressing totals below 208.5.</div>
+        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Every leg was selected for maximum cushion between model projection and line. <strong>Ingram Under 18.5</strong> (proj 13.0, 5.5pt cushion) — CLE's switching defense has scheme-locked Ingram across two games (17→7pts), and Phase 22 "bad" outlook confirms the trend is structural, not random. <strong>Jokic Over 21.5 reb+ast</strong> (G1: 24, G2: 23) — he's cleared this line by 1.5-2.5 in every game regardless of whether DEN won or lost; his floor is above the line. <strong>NYK +1.5 @ ATL</strong> (model: NYK by 6, 7.5pt cushion) — the single largest model-to-line gap on the G3 board. ATL's G2 win at MSG shifted the line in their favor, but the model's structural edges (NYK 1.25x talent, four 76+ rated players, elite road record) haven't changed. Three uncorrelated legs across two different games and stat types.</div>
       </div>
 
-      <div class="parlay-card">
-        <div class="parlay-header">
-          <span class="parlay-name">G2 Value Hunter Parlay</span>
-          <span class="parlay-odds">~+1400</span>
+      <!-- ===== GRID: G3 PARLAYS ===== -->
+      <div class="parlay-grid">
+        <div class="parlay-grid-header">G3 Parlays (Phase 22)</div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">G3 ML Sweep (3-Leg)</span>
+            <span class="parlay-odds">~+493</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">CLE ML @ TOR</span><span class="parlay-leg-odds">-155</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">NYK ML @ ATL</span><span class="parlay-leg-odds">-105</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">DEN ML @ MIN</span><span class="parlay-leg-odds">-118</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+          </div>
+          <div class="parlay-reasoning">All three G3 road favorites. CLE -155 (proj +7) anchors. NYK -105 is value — model says +6 at pick'em odds. DEN -118 is riskiest — true coin flip.</div>
         </div>
-        <div class="parlay-legs">
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">MIN ML vs DEN (G2)</span>
-            <span class="parlay-leg-odds">+160</span>
-            <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">CLE Sweep Builder (2-Leg)</span>
+            <span class="parlay-odds">~+221</span>
           </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Anthony Edwards Over 24.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-130</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">CLE ML @ TOR</span><span class="parlay-leg-odds">-155</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">CLE -3.5 @ TOR</span><span class="parlay-leg-odds">-105</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">PHX +12.5 vs OKC (G2)</span>
-            <span class="parlay-leg-odds">-110</span>
-            <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
-          </div>
-          <div class="parlay-leg">
-            <span class="parlay-leg-num">4</span>
-            <span class="parlay-leg-pick">Deni Avdija Over 22.5 pts (G2)</span>
-            <span class="parlay-leg-odds">-110</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-          </div>
+          <div class="parlay-reasoning">Model projects CLE +7 road. ML + spread at +221 is the highest-conviction single-series G3 play. CLE won G1 by 13, G2 by 10.</div>
         </div>
-        <div class="parlay-reasoning">Margin engine variance plays. MIN ML: DEN's COMPETITIVE character (+8) means Close Game Probability ~30% — Edwards' starCeiling (2.0) can flip outcomes in tight games. Edwards O24.5: bounce-back after "limited" 22pts, with altitude's Active Injury Drag lessening as he acclimates. PHX +12.5: Engine projects SEPARATION (OKC +16) but variance profile shows 75% of outcomes under 16 — blowout risk exists but Booker's clutch (7.8) provides floor. Avdija O22.5: SAS's SEPARATION character means POR trails and feeds their #1 option — 30pts in G1 baseline.</div>
-      </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">CLE-TOR G3 Props (3-Leg)</span>
+            <span class="parlay-odds">~+554</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Mitchell Over 24.5 pts</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Ingram Under 18.5 ★</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Barnes Over 17.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+          </div>
+          <div class="parlay-reasoning">Mitchell (proj 26.7, 2.2pt cushion), Ingram Under (proj 13.0, 5.5pt cushion ★ anchor), Barnes (proj 19.0, "good" outlook at home).</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Phase 22 Star Props (3-Leg)</span>
+            <span class="parlay-odds">~+519</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Edwards Over 23.5 ★</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Jokic Over 21.5 r+a</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Ingram Under 18.5 ★</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+          </div>
+          <div class="parlay-reasoning">Cross-series BEST BETs. Edwards at home (proj 24.6), Jokic crushed 21.5 in both G1/G2, Ingram scheme-locked (proj 13.0).</div>
+        </div>
+
+        <!-- ===== G2 ML PARLAYS ===== -->
+        <div class="parlay-grid-header">G2 ML Parlays</div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">G2 Chalk Slam (4-Leg)</span>
+            <span class="parlay-odds">~-127</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">CLE ML vs TOR ✓</span><span class="parlay-leg-odds">-300</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">BOS ML vs PHI</span><span class="parlay-leg-odds">-850</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">4</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+          </div>
+          <div class="parlay-reasoning">CLE ✓ cashed. Remaining 3 legs are massive chalk — combined payout barely exceeds even money (~-127). High-probability, poor value.</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Big 3 Lock (3-Leg)</span>
+            <span class="parlay-odds">~-167</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">CLE ML vs TOR ✓</span><span class="parlay-leg-odds">-300</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
+          </div>
+          <div class="parlay-reasoning">CLE ✓ cashed. OKC -2100 and SAS -700 remain — near-locks but ~-167 combined payout makes this a grind play.</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Favorites + Value (3-Leg)</span>
+            <span class="parlay-odds">~+149</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">NYK ML vs ATL ✓</span><span class="parlay-leg-odds">-250</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">DEN ML vs MIN ✓</span><span class="parlay-leg-odds">-180</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
+          </div>
+          <div class="parlay-reasoning">NYK ✓ and DEN ✓ cashed. Effectively a single SAS -700 leg now. If SAS wins, parlay pays ~2.5x original stake.</div>
+        </div>
+
+        <!-- ===== G2 PROPS PARLAYS ===== -->
+        <div class="parlay-grid-header">G2 Player Props Parlays (Remaining Series Only)</div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Star Scorers (4-Leg)</span>
+            <span class="parlay-odds">~+1035</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SGA Over 28.5 pts</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Maxey Over 24.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Brown Over 24.5 pts</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">4</span><span class="parlay-leg-pick">Wemby Over 25.5 pts</span><span class="parlay-leg-odds">-120</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+          </div>
+          <div class="parlay-reasoning">Four stars with Phase 22 "good" outlooks. SGA 31.5 (46% FG, bounce-back from 27.8% G1), Brown 26.1 (49% FG, Edgecombe mismatch), Wemby 28.2 (52% FG, POR no answer). Maxey 26.0 "neutral-good" (44% FG, bounce-back).</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Facilitators (3-Leg)</span>
+            <span class="parlay-odds">~+581</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">LeBron Over 9.5 ast</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 7.5 ast</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Fox Over 6.5 ast</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+          </div>
+          <div class="parlay-reasoning">Three facilitators with Phase 22 outlooks. LeBron 10.3 ast ("good" — 13ast G1 facilitator mode). Cade 7.8 ("good" — Suggs suppression forces more passing). Fox 7.8 ("neutral-good" — Wemby PnR creates assists).</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">Big Man Boards (3-Leg)</span>
+            <span class="parlay-odds">~+604</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Wemby Over 9.5 reb</span><span class="parlay-leg-odds">-125</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Tatum Over 10.5 reb</span><span class="parlay-leg-odds">+105</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Duren Over 8.5 reb</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+          </div>
+          <div class="parlay-reasoning">Wemby 9.8 reb ("good" outlook, dominates POR interior — Clingan "bad"). Tatum 11.4 ("good" outlook, no Embiid = empty paint, Drummond "bad"). Duren 9.3 ("neutral" — WCJ limits volume but rebounding repeatable).</div>
+        </div>
+
+        <div class="parlay-card">
+          <div class="parlay-header">
+            <span class="parlay-name">PG Scoring Surge (3-Leg)</span>
+            <span class="parlay-odds">~+632</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Maxey Over 24.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 27.5 pts</span><span class="parlay-leg-odds">+105</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Fox Over 18.5 pts</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+          </div>
+          <div class="parlay-reasoning">Phase 22 outlook-adjusted: Maxey 26.0 ("neutral-good", 44% FG bounce-back). Cade 30.2 ("good", 46% FG — All-Star sustains it, line bumped to 27.5). Fox 21.0 ("neutral-good", 47% FG steady). All three are primary scorers for their teams.</div>
+        </div>
+
+      </div><!-- end parlay-grid -->
     </div>
-
-    </div><!-- end parlay-featured -->
     </div><!-- end betContent-parlays -->
 
-    <!-- ===== GAME 1 TAB ===== -->
+    <!-- ===== G1 BETS TAB ===== -->
     <div id="betContent-g1" class="bet-content" style="display:none;">
-    <h3 style="color:#fff;text-align:center;margin:0 0 4px;font-size:20px;border-bottom:1px solid #333;padding-bottom:8px;">Game 1 Picks — All 8 Series</h3>
-    <p style="text-align:center;color:#888;font-size:12px;margin-bottom:4px;">SAS-POR G1: ✅ SAS 111-98 (3/3 bets hit) | BOS-PHI G1: ✅ BOS 123-91 | OKC-PHX G1: ✅ OKC 119-84 | DET-ORL G1: ❌ ORL 112-101 (upset)</p>
-    <p style="text-align:center;color:#888;font-size:12px;margin-bottom:20px;">HOU-LAL G1: ✅ LAL 107-98 | DEN-MIN G1: ✅ DEN 116-105 | CLE-TOR G1: ✅ CLE 126-113 | NYK-ATL G1: ✅ NYK 113-102</p>
+    <h3 style="color:#aaa;margin:0 0 16px;">Game 1 Results — 9/13 Correct (69.2%)</h3>
+    <p style="color:#666;font-size:13px;margin-bottom:16px;">Game 1 bets are locked in. See G2 tab for updated picks based on G1 outcomes and deep-dive research.</p>
 
-    <!-- HIGH CONFIDENCE — GAME 1 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge high-conf">HIGH CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Model edge 5%+ vs. market | Structural mismatches</span>
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:0 0 8px;font-size:14px;">HIGH CONFIDENCE — 6/6 Correct</h4>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML vs TOR ✓</div>
+        <div class="bet-line">-350 | Model: CLE by 14</div>
+        <div class="bet-reasoning">Cavaliers dominated at home as expected.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">OKC Thunder ML</div>
-          <div class="bet-line">-850 vs PHX | Model: 91% (implied: 89%)</div>
-          <div class="bet-reasoning">The biggest mismatch in R1. SGA's 67% TS on 30 PPG is historically elite — only 3 players in NBA history have matched that efficiency at that volume in a playoff year. OKC's +11.6 NetRtg and +8.5 clutch NetRtg mean they close games. PHX's -1.4 NetRtg makes them a negative team overall. Dort's DRtg of 102.1 is the Booker clamp. Even with Brooks' breakout (20.2 PPG), PHX lacks the depth to stay within range.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">BOS Celtics ML</div>
-          <div class="bet-line">-625 vs PHI | Model: 88% (implied: 86%)</div>
-          <div class="bet-reasoning">No Embiid (-13.2 on/off swing) collapses PHI's interior. Drummond starting is a massive downgrade. Brown has elevated to 28.7 PPG as #1 and PHI can't contain him. George's 4.8 clutch rating after a 25-game suspension means PHI's second option disappears when it matters. PHI is 0-6 vs BOS in playoffs since 1982 — the psychological weight is real. Maxey (28.3 PPG) is brilliant but can't carry alone.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">SAS Spurs ML</div>
-          <div class="bet-line">-550 vs POR | Model: 86% (implied: 85%)</div>
-          <div class="bet-reasoning">Wemby's +16.9 on/off is historic — when he plays, SAS is a 65-win team. Fox's addition transforms the backcourt. Portland lost HC Billups to a gambling investigation and Splitter (interim) is coaching his first playoff game against his former franchise. Clingan's PER is 12.7 points below Wemby. Johnson's system and the coaching disruption create a structural edge that talent alone can't overcome.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">OKC -14.5 vs PHX</div>
-          <div class="bet-line">-110 | Model margin: 14.0</div>
-          <div class="bet-reasoning">Our model projects a 14-point OKC win. SGA's dominance (+12.1 on/off), OKC's defending champion pedigree (playoffPedigree: 2), and systemBonus +2.5 vs PHX's -0.5 create a compounding advantage. PHX's 5-5 in their last 10 shows inconsistency. Even with Brooks' emergence, the depth gap (OKC's bench includes McCain, Caruso, Isaiah Joe) is too wide for PHX to cover.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">BOS -12.5 vs PHI</div>
-          <div class="bet-line">-110 | Model margin: 14.0</div>
-          <div class="bet-reasoning">The biggest Game 1 spread for good reason. Without Embiid, PHI's ORtg drops to 108.4 and DRtg balloons to 115.2 — that's a bottom-5 team. BOS's system (+2.0 bonus) and championship DNA (playoffPedigree: 2) at TD Garden compound the advantage. Mazzulla's 16-4 playoff record shows he knows how to close out inferior opponents. PHI needs Maxey to score 35+ just to keep it competitive.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">SGA Over 27.5 pts</div>
-          <div class="bet-line">-140 | Season avg: 30.0 PPG</div>
-          <div class="bet-reasoning">SGA averages 30 PPG on 67% TS — the most efficient high-volume scorer in the league. His 50% from 3 vs PHX this season and +12.1 on/off mean he'll have the ball in crunch time. PHX's first-year coach Ott has no playoff adjustment history. Dort's defensive assignment on Booker frees SGA from energy-draining matchups. With a starCeiling of 2, he's more likely to go 35+ than under 28.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Wembanyama Over 22.5 pts</div>
-          <div class="bet-line">-130 | Season avg: 24.8 PPG</div>
-          <div class="bet-reasoning">Wemby's 24.8 PPG baseline easily clears 22.5, and his playoff debut at home adds adrenaline. Clingan can't match his offensive versatility — Wemby shoots 37% from 3 while protecting the rim (3.1 BPG). The rib contusion is a minor concern but he says he's "close to 100%." With Fox feeding him in the PnR and Johnson's system maximizing his touches, 25+ is the likeliest outcome.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Jaylen Brown Over 25.5 pts</div>
-          <div class="bet-line">-135 | Season avg: 28.7 PPG</div>
-          <div class="bet-reasoning">Brown averaging 28.7 as the #1 option comfortably clears this line. Without Embiid, PHI's rim protection disappears — Brown will attack the paint freely. His 8.0 clutch rating and Finals MVP pedigree mean he elevates in these moments. PHI's best perimeter defender (Edgecombe) is a rookie with no playoff experience guarding this caliber of star.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type series">SERIES</span>
-          <div class="bet-pick">OKC to win series</div>
-          <div class="bet-line">-2500 | Model series win%: 96%</div>
-          <div class="bet-reasoning">Our model projects OKC's series win probability at 96% — the highest in R1. Defending champs with the best player (SGA), best net rating (+11.6), best clutch rating (+8.5), and deepest roster. PHX would need Booker to have the series of his life AND SGA to regress significantly. The only series with a higher model edge than the market implies.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">DET Pistons ML</div>
-          <div class="bet-line">-400 vs ORL | Model: 78% (implied: 80%)</div>
-          <div class="bet-reasoning">UPGRADED from medium confidence. Line moved from -3.5 to -8.5 — a massive 5-point market shift suggesting Cade is closer to full health than feared. DET's #1 defense (107.2 DRtg) meets ORL's #24 offense (110.2 ORtg). Cade's +9.0 on/off and Duren's All-Star interior dominance are structural advantages. DET won 15 of their last 19 and the market now agrees this is a mismatch.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">BOS ML vs PHI ✓</div>
+        <div class="bet-line">-400 | Model: BOS by 16</div>
+        <div class="bet-reasoning">Celtics dismantled a depleted 76ers squad.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">OKC ML vs PHX ✓</div>
+        <div class="bet-line">-450 | Model: OKC by 15</div>
+        <div class="bet-reasoning">Thunder blew out Suns with SGA scoring 36. PHX missing key players.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">SAS ML vs POR ✓</div>
+        <div class="bet-line">-300 | Model: SAS by 16</div>
+        <div class="bet-reasoning">Wembanyama dominated Portland's interior as projected.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">NYK ML vs ATL ✓</div>
+        <div class="bet-line">-260 | Model: NYK by 12</div>
+        <div class="bet-reasoning">Knicks controlled at MSG behind Brunson's scoring.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DEN ML vs MIN ✓</div>
+        <div class="bet-line">-180 | Model: DEN by 8 | Actual: DEN 116-105 (+11)</div>
+        <div class="bet-reasoning">Jokic triple-double (25/13/11), Murray historic 16/16 FT. DEN dominated middle quarters outscoring MIN 68-46.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
     </div>
 
-    <!-- MEDIUM CONFIDENCE — GAME 1 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge med-conf">MEDIUM CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Model leans but uncertainty factors present</span>
+    <div class="bet-section">
+      <h4 style="color:#ff9800;margin:0 0 8px;font-size:14px;">MEDIUM CONFIDENCE — 2/4 Correct (both upsets missed)</h4>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DET ML vs ORL ✗</div>
+        <div class="bet-line">-150 | Model: DET by 5 | Actual: ORL 112-101 (+11)</div>
+        <div class="bet-reasoning">UPSET. ORL won wire-to-wire with 5 players in double figures. Cade's 39pts wasn't enough — DET's supporting cast (Harris 17, rest cold) couldn't match ORL's balanced attack.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">SAS -10.5 vs POR</div>
-          <div class="bet-line">-110 | Model margin: 13.0</div>
-          <div class="bet-reasoning">Our model projects a 13-point SAS win, but the 10.5 spread gives a 2.5-point cushion. The coaching disruption (Billups out, Splitter interim) compounds POR's structural disadvantage. Wemby's +16.9 on/off means SAS needs him healthy for ~32 minutes to cover. The rib contusion and first-playoff-game jitters for SAS's young core keep this at medium — double-digit spreads are inherently riskier even when the model loves them.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type total">TOTAL</span>
-          <div class="bet-pick">Under 211.5 BOS-PHI</div>
-          <div class="bet-line">-110 | Proj: BOS 112 — PHI 98 (210 total)</div>
-          <div class="bet-reasoning">Without Embiid, PHI's offense craters to 108.4 ORtg. Drummond starting means fewer post-ups and more empty possessions. BOS's DRtg of 109.2 tightens further in playoffs — Mazzulla's teams have historically played slower in the postseason. Brown and Tatum can score efficiently but won't need to push pace against a depleted opponent. This game projects to the low 200s.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">De'Aaron Fox Over 16.5 pts</div>
-          <div class="bet-line">-130 | Season avg: 18.5 PPG</div>
-          <div class="bet-reasoning">Fox's playoff debut with SAS will feature him prominently in the Fox-Wemby PnR — the deadliest action on the team. POR's Holiday/Henderson backcourt will struggle to contain his elite speed despite Holiday's strong perimeter D. His 18.5 PPG average and the spacing Wemby creates make 17+ highly probable. Medium confidence only because this is Fox's first game in SAS's playoff system.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Tyrese Maxey Over 26.5 pts</div>
-          <div class="bet-line">+105 | Season avg: 28.3 PPG</div>
-          <div class="bet-reasoning">Even in a loss, Maxey will score. He's averaged 30 PPG in 4 games vs BOS this season and his 8.0 on/off means PHI's offense lives and dies with him. Without Embiid, Maxey's usage rate will spike to 35%+. White's defense is a concern (held Maxey below average in 2/4 meetings) but volume alone gets him there. The +105 price offers value.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Deni Avdija Over 22.5 pts</div>
-          <div class="bet-line">-115 | Season avg: 24.2 PPG</div>
-          <div class="bet-reasoning">Without Lillard (torn Achilles, out for season), Avdija IS Portland's offense. Averaging 24.2 PPG with a 28.5 USG%, his usage will spike further in the playoffs as the undisputed #1 option. SAS may throw Vassell or Castle at him, but his 6.7 APG creation ability means double-teams free teammates. All-Star breakout season makes 23+ points very likely even against SAS's elite defense.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Cade Cunningham Over 8.5 assists</div>
-          <div class="bet-line">-115 | Season avg: 9.9 APG</div>
-          <div class="bet-reasoning">Cade averages 9.9 APG — elite creation. His +9.0 on/off shows DET's offense revolves around his passing. ORL's Suggs has a -11.7 PER gap vs Cade in the creation matchup. DET's system funnels everything through Cade in the half-court, and Duren's rim-running + Ivey's cutting create easy assists. The collapsed lung limits his scoring burst but not his court vision.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">HOU ML vs LAL ✗</div>
+        <div class="bet-line">-140 | Model: HOU by 3 | Actual: LAL 107-98 (+9)</div>
+        <div class="bet-reasoning">UPSET. LeBron masterclass (19pts/13ast) with Kennard exploding for 27pts. HOU shot 37.6% FG. LAL's zone defense stifled HOU's young core.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">OKC -10.5 vs PHX ✓</div>
+        <div class="bet-line">-110 | Model: OKC by 15</div>
+        <div class="bet-reasoning">Thunder covered easily with PHX's depleted roster.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">BOS -11.5 vs PHI ✓</div>
+        <div class="bet-line">-110 | Model: BOS by 16 | Actual: BOS 123-91 (+32)</div>
+        <div class="bet-reasoning">Celtics obliterated PHI by 32 — easily covered. PHI's 4-23 3PT shooting (17.4%) was historically bad.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
     </div>
 
-    <!-- LOW CONFIDENCE — GAME 1 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge low-conf">LOW CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Contrarian value | High variance | Long-shot upside</span>
+    <div class="bet-section">
+      <h4 style="color:#f44336;margin:0 0 8px;font-size:14px;">LOW CONFIDENCE — 1/3 Correct</h4>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">SGA Over 28.5 pts ✓</div>
+        <div class="bet-line">-130 | G1 actual: 36 pts</div>
+        <div class="bet-reasoning">SGA erupted for 36 — well over the line. Playoff mode activated.</div>
+        <span class="bet-edge historical">Historical</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">PHX Suns +14.5</div>
-          <div class="bet-line">-110 vs OKC | Covers if loss by 14 or fewer</div>
-          <div class="bet-reasoning">14.5 is a massive playoff spread (moved from 13.5). Booker's 7.8 clutch rating and Brooks' breakout (20.2 PPG) give PHX enough firepower to keep it within range. Our 2025 backtest showed heavy underdogs covered 13+ point spreads 55% of the time in R1 — playoff intensity compresses margins. Green's play-in momentum (35 + 36 pts in elimination games) adds variance. OKC may also rest starters early if they build a lead.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">ORL Magic +8.5</div>
-          <div class="bet-line">-110 vs DET | Covers if loss by 8 or fewer</div>
-          <div class="bet-reasoning">Line moved massively from +3.5 to +8.5 — market now sees this as a mismatch. Still worth a contrarian look: ORL's Banchero/Wagner/Bane trio has enough creation to keep it competitive, and ORL's +3.8 clutch NetRtg shows they fight in close games. 8.5 is a big number for a playoff game even with DET's elite defense. Low confidence because DET's defense may be too suffocating, but playoff games compress margins.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Dillon Brooks Over 18.5 pts</div>
-          <div class="bet-line">+110 | Season avg: 20.2 PPG</div>
-          <div class="bet-reasoning">Brooks' breakout season (20.2 PPG, Player of the Week) transformed PHX from a one-man show. His physical style and confidence make him dangerous as a #2 option. OKC's 25th-ranked 3PT defense creates open looks for Brooks. Low confidence because Dort's perimeter defense could shift onto him if Booker is cold, but at +110 the value is there if you believe the breakout is real.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Paolo Banchero Over 21.5 pts</div>
-          <div class="bet-line">+100 | Season avg: 22.4 PPG</div>
-          <div class="bet-reasoning">Banchero's 6.2 clutch rating is ORL's best weapon. Even against DET's elite D, his physical scoring style (46.2 FG%) can generate paint points. Ausar Thompson is a tough assignment but Banchero's size advantage creates mismatches in the post. ORL needs him to go 25+ for a chance — and with increased playoff usage, the volume is there.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Devin Booker Over 24.5 pts</div>
-          <div class="bet-line">+115 | Season avg: 26.0 PPG</div>
-          <div class="bet-reasoning">Booker averages 26 PPG and has a 7.8 clutch rating, plus he hit a game-winner vs OKC in January. Even in a likely loss, he'll get his shots as PHX's entire offense funnels through him. Low confidence because Dort (DRtg 102.1) is specifically designed to limit him, but Booker's shot-making ability can overcome defensive pressure. The +115 offers value on a star who needs 25+ for PHX to have any hope.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type series">SERIES</span>
-          <div class="bet-pick">POR to win series vs SAS</div>
-          <div class="bet-line">+500 | Model series win%: ~12%</div>
-          <div class="bet-reasoning">Without Lillard (torn Achilles), this is a much tougher ask. But Avdija + Sharpe + Holiday still have offensive firepower. Clingan's elite LEBRON (3.4) makes him a legitimate two-way anchor. Wemby's rib, SAS's playoff inexperience, and POR's interim coach being a former Spur who knows their system could create chaos. If Sharpe is healthy and explosive, POR can score with anyone. Pure longshot sprinkle.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jokic triple-double ✗</div>
+        <div class="bet-line">+180 | G1: 28/14/8</div>
+        <div class="bet-reasoning">Jokic fell 2 assists short despite dominant performance. MIN's switching limited drive-and-kick opportunities.</div>
+        <span class="bet-edge historical">Historical</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type total">TOT</span>
+        <div class="bet-pick">DET-ORL Under 210.5 ✗</div>
+        <div class="bet-line">-110 | G1 total: 215</div>
+        <div class="bet-reasoning">Both teams shot well from three in G1, pushing total over. ORL's multi-initiator offense generated more points than expected.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
     </div>
-
     </div><!-- end betContent-g1 -->
 
-    <!-- ===== GAME 2 TAB ===== -->
+    <!-- ===== G2 BETS TAB ===== -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
-    <h3 style="color:#fff;text-align:center;margin:0 0 4px;font-size:20px;border-bottom:1px solid #333;padding-bottom:8px;">Game 2 Picks — All 8 Series</h3>
-    <p style="text-align:center;color:#888;font-size:12px;margin-bottom:20px;">All Game 1 results incorporated into predictions | Schedule: Mon Apr 20 (3 games) · Tue Apr 21 (5 games)</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — Phase 22 Per-Player Outlook Projections</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 22: Per-player g2PlayerOutlook system — Bayesian FG% regression (55% model / 45% prior), outlook-driven scoring modifiers (good/bad/neutral), research-backed projFgPct overrides. All 5 remaining G2 series have individual player outlooks based on G1 box scores, season baselines, and coaching adjustments.</p>
 
-    <!-- HIGH CONFIDENCE — GAME 2 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge high-conf">HIGH CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Model edge 5%+ vs. market | G1 data validated</span>
+    <!-- SATURDAY GAMES -->
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Saturday Games</h4>
+
+      <!-- CLE-TOR -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML vs TOR ✓</div>
+        <div class="bet-line">-300 | Model: CLE 113-102 (+11) | Actual: CLE 115-105 (+10) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: CLE wins 115-105 (+10). Model projected +11 — within 1 point.</strong> Mitchell 30pts (model: 27.3), Harden 28pts/4ast (model: 19.1pts/8.7ast — role shifted to scorer), Mobley 25pts on 11/13 FG (model: 15.4 — massive underestimate). TOR's Barnes bounced back to 26pts (model: 19.7 — underestimated bounce-back). Ingram collapsed to 7pts/3-15 FG (model: 18.7 — didn't predict defensive scheme impact). KEY: TOR 22 turnovers vs CLE 12 was the decisive factor the model doesn't explicitly project.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">CLE Cavaliers ML</div>
-          <div class="bet-line">-320 vs TOR | Margin Engine: SEPARATION (CLE +13)</div>
-          <div class="bet-reasoning">Margin engine projects CLE by 13 — SEPARATION character. Fatigue differential favors CLE (5.6% vs TOR 4.3%) despite both being low. Rajakovic's adjustmentRating (5) limits coaching recovery. CLE's Depth Disparity Factor is bracket-best — Strus's 24pts off bench exemplifies depth TOR can't match. Mitchell-Harden proven chemistry eliminates uncertainty. TOR's playoffPedigree:0 and CLE's triple-initiator system make this structurally dominant.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">NYK Knicks ML</div>
-          <div class="bet-line">-220 vs ATL | Margin Engine: SEPARATION (NYK +13)</div>
-          <div class="bet-reasoning">Margin engine projects NYK by 13 — SEPARATION character, boosted by fatigue differential (NYK 3.3% vs ATL 5.1%). Talent Gap Amplifier strongly favors NYK — Brunson/Towns outclass NAW/McCollum. Brown's halftime transition defense adjustment carries forward as institutional knowledge. ATL's higher fatigue index reflects post-ASB intensity and fewer rest days. NYK's 9.2 clutch rating provides insurance if the game tightens.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">CLE -7.5</div>
-          <div class="bet-line">-110 vs TOR | Margin Engine: SEPARATION (CLE +13)</div>
-          <div class="bet-reasoning">Margin engine projects CLE by 13 — SEPARATION character upgraded by fatigue differential. Rajakovic's adjustmentRating (5) limits coaching recovery. CLE's triple-initiator system creates massive Depth Disparity edge. TOR's fatigue (4.3%) is slightly lower but their playoffPedigree:0 and CLE's paint dominance (48-30 in G1) are structural. Covers -7.5 with 5.5pt cushion — this is now our widest spread cushion among covered bets.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Donovan Mitchell Over 24.5 pts</div>
-          <div class="bet-line">-150 | G1: 32 pts</div>
-          <div class="bet-reasoning">Mitchell's starCeiling (1.8) means he regularly exceeds his baseline in playoff home games. Scored 32 in G1 and historically averages 28+ in R1 home games. TOR lacks a true Mitchell stopper.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Jalen Brunson Over 19.5 pts</div>
-          <div class="bet-line">-180 | G1: 28 pts (19 in Q1)</div>
-          <div class="bet-reasoning">Brunson's home playoff scoring is remarkably consistent — he's exceeded 20 pts in 85% of home playoff games over the last 2 seasons. His starCeiling (1.5) and NYK's system coherence maximize his usage in half-court sets.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type series">SERIES</span>
-          <div class="bet-pick">CLE to win series</div>
-          <div class="bet-line">-550 | Model series win%: 88%</div>
-          <div class="bet-reasoning">Even at heavy chalk, our model projects CLE's series win probability at 88%, above the -550 implied 85%. System coherence, playoff pedigree, and Mitchell's dominance make an upset nearly impossible. TOR would need 4 wins against the best home team in the league.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
+      <div class="bet-card" style="border-left:3px solid #f44336;">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">James Harden Over 7.5 assists ✗</div>
+        <div class="bet-line">-120 | Model: 8.7 APG | Actual: 4 AST ✗</div>
+        <div class="bet-reasoning"><strong>RESULT: Harden had only 4 assists (model: 8.7). LOSS.</strong> Critical model miss — Harden's role shifted from facilitator (10 ast G1) to primary scorer (28pts on 9/14 FG). The Bayesian update correctly boosted assists based on G1, but failed to anticipate a tactical role change. LEARNING: Player role flexibility (facilitator↔scorer) is a variable the model doesn't capture. When a team's top players all score 25+, assist totals naturally compress.</div>
+        <span class="bet-edge model">Model Edge ✗</span>
+      </div>
+
+      <!-- DEN-MIN -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DEN ML vs MIN</div>
+        <div class="bet-line">-180 | Model: DEN 109-105 (+4) | GRIND</div>
+        <div class="bet-reasoning">G2 margin compressed from +8 to +4 — strongest coaching compression in the slate. MIN coach Finch (adjustment rating 8/10) studies film aggressively; expect defensive scheme changes on Murray after his historic 16/16 FT game. Jokic projects 25.0/13.5/10.7 (near triple-double via 45% Bayesian G1 update). Edwards gets bounce-back boost (23.1 proj, up from 22 G1 on a balky knee). GRIND character = expect a 4th-quarter slugfest. DEN's altitude advantage is the margin.</div>
+        <span class="bet-edge historical">Historical</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jokic Over 12.5 rebounds</div>
+        <div class="bet-line">-110 | Model: 13.5 RPG | G1 Bayesian: 13reb actual</div>
+        <div class="bet-reasoning">Jokic had 13 rebounds in G1, and the 45% Bayesian update brings his G2 projection to 13.5 (down from 14.0 pre-G1 model). Still comfortably clears 12.5. Gobert's rim protection creates long rebounds that Jokic's elite positioning exploits. DEN's guards attack the paint, generating offensive rebound chances. At altitude, higher pace = more total rebounds available.</div>
+        <span class="bet-edge historical">Historical</span>
+      </div>
+
+      <!-- NYK-ATL -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">NYK ML vs ATL</div>
+        <div class="bet-line">-250 | Model: NYK 113-103 (+10) | COMPETITIVE</div>
+        <div class="bet-reasoning">G2 margin drops from +16 to +10 via road-team bounce-back and coaching adjustment. ATL's coach Snyder (rated 8/10) will counter Brown's halftime transition D adjustment from G1. Brunson (27.6 proj, down from 28 in G1) and KAT (21.2/10.7r) still anchor NYK, but ATL's Jalen Johnson gets a bounce-back boost (23.1 proj). NAW's 18.8 projection reflects his G1 scoring outburst getting Bayesian uplift. COMPETITIVE character = closer than G1.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">KAT Over 10.5 rebounds</div>
+        <div class="bet-line">-120 | Model: 10.7 RPG | G1 Bayesian with ATL's small lineup</div>
+        <div class="bet-reasoning">KAT projects 10.7 RPG in G2 (slight regression from 11.5 pre-model as his G1 performance gets Bayesian-weighted). Still clears 10.5 thanks to ATL's perimeter-heavy lineup (McCollum/NAW/Kuminga) providing minimal help on the glass. In a COMPETITIVE game, more contested shots = more rebounds available. KAT's 6'11 frame dominates ATL's smaller frontcourt.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- HOU-LAL -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">HOU ML vs LAL</div>
+        <div class="bet-line">-205 | Model: HOU 106-104 (+2) | COIN FLIP</div>
+        <div class="bet-reasoning">Phase 22 outlook adjustments: Sengun "neutral-good" (46% FG, bounce-back from 31.6% G1 via Bayesian regression), KD is a game-time decision (48% FG if he plays — transforms HOU offense entirely). LeBron "good" outlook (54% FG) but may shift from facilitator (13ast G1) to scoring mode. Kennard "bad" outlook (44% FG, heavy regression from 69.2% G1 — HOU WILL scheme against him). HOU's home court + Udoka adjustments vs LAL's LeBron ceiling. True COIN FLIP — KD's status is the swing factor.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">LeBron James Over 9.5 assists</div>
+        <div class="bet-line">-110 | Model: 10.3 APG | Outlook: GOOD | G1: 13 ast</div>
+        <div class="bet-reasoning">LeBron's "good" outlook (54% FG, 22-30pts) + G1 facilitator masterclass (13ast) support continued playmaking dominance. Even if he shifts to more scoring in G2, Ayton (lob threat), Hachimura, and Kennard remain excellent targets. Bayesian blend tempers 13ast to ~10.3 projection. If KD returns for HOU, more competitive game = more possessions = more assist opportunities. Safe line with 0.8pt cushion.</div>
+        <span class="bet-edge historical">Historical</span>
       </div>
     </div>
 
-    <!-- MEDIUM CONFIDENCE — GAME 2 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge med-conf">MEDIUM CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Model leans but market is close | Situational edges</span>
-      </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">HOU Rockets ML</div>
-          <div class="bet-line">-125 vs LAL | Margin Engine: COIN FLIP (HOU +3)</div>
-          <div class="bet-reasoning">MARGIN ENGINE CORRECTION: Flipping from LAL to HOU. The margin variance engine projects HOU by 3 — a COIN FLIP character game. LAL's G1 win (107-98) was fueled by unsustainable 61%/53% shooting. Udoka's Coaching Adjustment Compression (adjustmentRating: 8, highest tier) projects 16.4% margin recovery — his 2022 bounce-backs averaged +17.3pts. KD's probable return triggers Star Absence Margin Boost (+2.0 pts). LAL shooting regression + Udoka adjustments + KD return = three compounding factors. Medium confidence because LAL's home court and LeBron's pedigree (2.0) keep this in COIN FLIP territory.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type total">TOTAL</span>
-          <div class="bet-pick">Under 211.5 HOU-LAL</div>
-          <div class="bet-line">-110 | Margin Engine: COIN FLIP (HOU +3)</div>
-          <div class="bet-reasoning">COIN FLIP character games tend to be lower-scoring — close contests mean fewer transition points and more half-court grinds. Pace-Based Score Projection from the engine suggests ~207 total. LAL's 61%/53% shooting will regress hard. Udoka's Coaching Adjustment Compression (adjustmentRating: 8) specifically targets opponent efficiency — his 2022 defensive adjustments cut opposing ORtg by 8+ pts in G2s. KD's return may actually slow HOU's pace as they integrate him. Both defenses tighten.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">NYK -5.5 vs ATL</div>
-          <div class="bet-line">-110 | Margin Engine: SEPARATION (NYK +13)</div>
-          <div class="bet-reasoning">Margin engine projects NYK by 13 — SEPARATION character, widened by fatigue differential (NYK 3.3% vs ATL 5.1% — NYK is better rested). Snyder's adjustmentRating (7) applies coaching compression but can't close the structural gap. NYK's system coherence and Brunson's 9.2 clutch rating sustain dominance. Covers -5.5 with 7.5pt cushion — upgrading from medium to high confidence territory given fatigue-boosted margin.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">LeBron James Over 7.5 assists</div>
-          <div class="bet-line">+110 | G1: 13 assists</div>
-          <div class="bet-reasoning">LeBron posted 13 assists in G1 — with KD potentially returning but likely on a minutes restriction, LeBron will continue as primary facilitator. His playoff assist rate increases when he has capable shooters around him. The +110 price offers value on a likely 9+ assist performance.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Alperen Sengun Over 9.5 rebounds</div>
-          <div class="bet-line">-120 | G1: 10 rebounds</div>
-          <div class="bet-reasoning">Sengun had 19pts in G1 and his interior physicality creates consistent rebounding opportunities against LAL's frontcourt. Even on the road at Crypto.com Arena, his size advantage over Ayton generates 10+ rebounding chances. System coherence means HOU runs through Sengun in the post, and with KD's probable return drawing defensive attention, Sengun could see easier boards.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Anthony Edwards Over 24.5 pts</div>
-          <div class="bet-line">-130 | G1: 22 pts</div>
-          <div class="bet-reasoning">Edwards' starCeiling (2.0) is the highest in the bracket — his ceiling games are spectacular. While 22 pts in G1 was solid, his bounce-back scoring tendency after "quiet" games (by his standards) is strong. DEN's perimeter defense is exploitable, and Ant has the green light.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Luke Kennard Over 2.5 threes</div>
-          <div class="bet-line">+100 | G1: 27 pts (career playoff-high)</div>
-          <div class="bet-reasoning">Kennard's 7/11 from three in G1 was extraordinary but his role as LAL's primary floor spacer means high-volume attempts are sustainable with LeBron creating open looks. Even with regression, 3+ threes is likely given his 5+ attempts per game. Confidence is medium because Udoka will adjust HOU's closeout scheme to deny Kennard clean looks in G2.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-      </div>
-    </div>
+    <!-- SUNDAY GAMES -->
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Sunday Games</h4>
 
-    <!-- LOW CONFIDENCE — GAME 2 -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge low-conf">LOW CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Contrarian value | High variance | Long-shot upside</span>
+      <!-- BOS-PHI -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">BOS ML vs PHI</div>
+        <div class="bet-line">-850 | Model: BOS 112-100 (+12) | SEPARATION</div>
+        <div class="bet-reasoning">Phase 22 outlook: Tatum "good" (48% FG, 24-32pts — Achilles return emphatic), Brown "good" (49% FG, 22-30pts — Edgecombe mismatch), both stars project elite efficiency. Maxey "neutral-good" (44% FG, 22-30pts — bounce-back from 40% G1). But PHI's structural problems persist: Drummond "bad" outlook (can't space floor), no Embiid, PHI shot 4-23 from 3 in G1 (17.4%). Nurse's adjustments will narrow margin from 32 to ~12 but the talent gap is too wide. BOS's depth (6 players scored 10+ in G1) is unmatched.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">MIN Timberwolves ML</div>
-          <div class="bet-line">+160 vs DEN | Model: 38% (implied: 38%)</div>
-          <div class="bet-reasoning">No model edge here — this is pure value on Edwards' ceiling. His starCeiling of 2.0 means a 35+ point explosion is always one game away. MIN's bounce-back probability after G1 loss is 54% (R1 modifier). DEN's altitude factor compounds but MIN has the athlete to overcome it. Worth a sprinkle at +160.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">ATL Hawks +5.5</div>
-          <div class="bet-line">-110 vs NYK | Covers if loss by 5 or fewer</div>
-          <div class="bet-reasoning">ATL lost G1 but McCollum's 26pts and J.Johnson's 23pts showed they can score in bunches. Our 2025 backtest showed underdogs covered the spread in 42% of R1 games — not profitable alone, but ATL's offensive ceiling with NAW + McCollum means blowouts are less likely than the line suggests.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Max Strus Over 2.5 threes</div>
-          <div class="bet-line">+120 | G1: 24 pts (multiple 3s)</div>
-          <div class="bet-reasoning">Strus's 24-pt G1 breakout suggests he's locked into a high-usage role for CLE. His three-point shooting is streaky but volume-dependent — if he takes 6+ attempts, 3+ makes is plausible. Low confidence because his role could shrink if Mitchell and Harden dominate touches.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Nickeil Alexander-Walker Over 22.5 pts</div>
-          <div class="bet-line">+120 | ATL's primary scorer at 20.8 PPG</div>
-          <div class="bet-reasoning">NAW is ATL's go-to scorer at 20.8 PPG with 40% from three. Down 0-1, Snyder will funnel even more usage his way. Low confidence because NYK's defense is specifically designed to limit primary scorers, but NAW's shot-making ability from deep creates high variance — he's capable of 25+ when the volume is there.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type series">SERIES</span>
-          <div class="bet-pick">MIN to win series vs DEN</div>
-          <div class="bet-line">+280 | Model series win%: 30%</div>
-          <div class="bet-reasoning">The longest shot in our model, but not unreasonable. Edwards' starCeiling (2.0) means MIN has the single most explosive player in any series. DEN's Murray (injuryRisk: 0.8) could break down as the series grinds on. The health degradation curve increasingly favors MIN in a 6-7 game series. Pure upside play.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">BOS -14.5 vs PHI</div>
+        <div class="bet-line">-110 | Model: +12 margin | Outlook-adjusted spread</div>
+        <div class="bet-reasoning">Phase 22 projects +12 margin (up from +8 pre-outlook). BOS -14.5 is tight — only 2.5pts under model projection. Tatum's "good" outlook (+48% FG) and Brown's "good" outlook (+49% FG) drive the upgrade, but Maxey's "neutral-good" bounce-back (44% FG, up from 40% G1) + PHI 3PT regression up partially offset. Nurse adjustments compress margin but PHI's structural hole (no Embiid, Drummond liability) persists. Slight lean toward BOS covering but line is close to edge.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-    </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jaylen Brown Over 24.5 points</div>
+        <div class="bet-line">-120 | Model: 26.1 pts | Outlook: GOOD (49% FG) | G1: 26pts</div>
+        <div class="bet-reasoning">Phase 22 "good" outlook at 49% FG (22-30pt range). Brown's G1 (26pts, 52.4% FG, 7-9 in Q3) was near-baseline — minimal regression needed. Edgecombe's D-LEBRON (0.08) is a massive defensive mismatch. Home court. Nurse will scheme harder but PHI lacks the wing talent to contain him. Clears 24.5 by 1.6pts with high confidence.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Tatum Over 10.5 rebounds</div>
+        <div class="bet-line">+105 | Model: 11.4 RPG | Outlook: GOOD | No Embiid = empty paint</div>
+        <div class="bet-reasoning">Tatum's "good" outlook (48% FG, 24-32pts) means more aggressive drives → more offensive rebound chances. G1: 11reb in 32min — with potentially more minutes in G2 if game stays competitive, 11+ is expected. No Embiid = PHI's interior is a rebounding wasteland (Drummond "bad" outlook). Plus-odds on a projection comfortably over the line. BOS's 3PT-heavy offense generates long rebounds that Tatum's length gobbles up.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
 
-    <!-- ===== SUNDAY SERIES G2 BETS (BOS-PHI, OKC-PHX, DET-ORL, SAS-POR) ===== -->
-    <h4 style="color:var(--purple);text-align:center;margin:32px 0 4px;font-size:16px;border-bottom:1px solid #333;padding-bottom:6px;">Sunday Series — Game 2 (Tue Apr 21)</h4>
-    <p style="text-align:center;color:#888;font-size:12px;margin-bottom:20px;">BOS-PHI · OKC-PHX · DET-ORL · SAS-POR — Blowout G1 results recalibrated</p>
+      <!-- OKC-PHX -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">OKC ML vs PHX</div>
+        <div class="bet-line">-2100 | Model: OKC 114-101 (+13) | SEPARATION</div>
+        <div class="bet-reasoning">Phase 22 outlook: SGA "good" (46% FG, 28-36pts — massive bounce-back from 27.8% G1 shooting, will play full game), J.Williams "good" (52% FG, 18-26pts — All-NBA form confirmed), Holmgren "neutral-good" (49% FG — PHX has no interior answer). PHX outlook is grim: Brooks "bad" (36% FG, chronic playoff chucker), Ighodaro "bad" (zero offense), Dunn "bad" (30% FG). Booker "neutral-good" (48% FG, 24-32pts) is PHX's only positive outlook. OKC's depth overwhelms PHX at every position.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">OKC -17.5 vs PHX</div>
+        <div class="bet-line">-110 | Model: +13 margin | Outlook-adjusted spread</div>
+        <div class="bet-reasoning">Phase 22 outlooks push OKC's margin back up to +13 (from +9 pre-outlook). SGA's "good" outlook + full game (sat Q4 in G1 blowout) means more scoring volume. PHX's collective "bad" outlooks (Brooks 36%, Dunn 30%, Ighodaro 35%) drag their team projection. OKC -17.5 is still a stretch vs +13 model — 4.5pt gap means AVOID the spread. Stick with ML or player props.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">SGA Over 28.5 points</div>
+        <div class="bet-line">-130 | Model: 31.5 pts | Outlook: GOOD (46% FG) | G1: 25pts in 29min</div>
+        <div class="bet-reasoning">Phase 22 "good" outlook driven by FG% bounce-back: G1's 27.8% FG was season-worst but still scored 25 in 29min via elite FT (15-17). Season 47.4% FG → major regression up expected. Will play FULL game in G2 (sat Q4 of blowout in G1). Even at projected 46% FG, his volume + FT artistry project 31+ pts. PHX has no perimeter stopper (Dunn 0-3 in G1). Safest player prop on the board — massive cushion over 28.5.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
 
-    <!-- HIGH CONFIDENCE — G2 SUNDAY SERIES -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge high-conf">HIGH CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">G1 blowouts validated structural edges</span>
+      <!-- DET-ORL -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DET ML vs ORL</div>
+        <div class="bet-line">-455 | Model: DET 108-103 (+5) | GRIND</div>
+        <div class="bet-reasoning">Phase 22 outlook: Cade "good" (46% FG, 28-36pts — All-Star sustains high efficiency), Harris "neutral-good" (42% FG, bounce-back from 33.3% G1). But ORL has TWO "good" outlooks: Banchero (49% FG, 22-30pts) and Wagner (48% FG, 16-24pts) + Bane "neutral-good" (42% FG, 3PT bounce-back from 1-8). ORL's multi-initiator attack (5 in double figures G1) vs DET's single-initiator dependence remains the structural problem. DET home crowd + Bickerstaff adjustments provide the slim edge. GRIND territory — tightest series in the bracket.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">BOS Celtics ML (G2)</div>
-          <div class="bet-line">-700 vs PHI | Margin Engine: SEPARATION (BOS +15) | Tue 7:30pm TNT</div>
-          <div class="bet-reasoning">Margin engine projects BOS by 15 — SEPARATION character even after Coaching Adjustment Compression. Nurse's adjustmentRating (8) applies 16.4% compression to the 18-pt cap, but the Talent Gap Amplifier (no Embiid = Star Absence Margin Boost for BOS) keeps margins extreme. G1's 32-pt BLOWOUT RISK materialized. Drummond starting triggers Active Injury Margin Drag equivalent. PHI has the bracket's worst Depth Disparity Factor without Embiid.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">OKC Thunder ML (G2)</div>
-          <div class="bet-line">-900 vs PHX | Margin Engine: SEPARATION (OKC +16) | Tue 10pm TNT</div>
-          <div class="bet-reasoning">Margin engine projects OKC by 16 — SEPARATION character. Ott's adjustmentRating (4) is the bracket's lowest, meaning Coaching Adjustment Compression is minimal (only 13.2% G2 recovery). G1's 35-pt BLOWOUT cascaded from the bracket's widest Talent Gap Amplifier. PHX's Active Injury Margin Drag (Allen hamstring, Williams foot) compounds Depth Disparity. Even after compression, OKC's margin stays in SEPARATION territory — this is the most structurally lopsided series. Star Prop Trap: avoid SGA OVER — blowout means early rest.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">SAS Spurs ML (G2)</div>
-          <div class="bet-line">-600 vs POR | Margin Engine: SEPARATION (SAS +16) | Tue 9:30pm TNT</div>
-          <div class="bet-reasoning">Margin engine projects SAS by 16 — SEPARATION character, wider than G1's 13-pt actual. Splitter's adjustmentRating (4) barely compresses the margin (13.2% recovery). Wemby's Talent Gap Amplifier is historic — 35pts in G1 confirmed he's the bracket's most dominant force. POR's Active Injury Margin Drag (Sharpe fibula, Lillard OUT) creates compounding depth loss. Johnson's coaching (A in G1) sustains SAS's schematic edge with Fox-Wemby PnR.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">BOS -13.5 (G2)</div>
-          <div class="bet-line">-110 vs PHI | Margin Engine: SEPARATION (BOS +15)</div>
-          <div class="bet-reasoning">Margin engine projects BOS by 15 — SEPARATION character. The 18-pt pre-compression cap is reduced by Coaching Adjustment Compression (Nurse adjustmentRating: 8, 16.4% G2 compression). Even after compression, the structural gap (no Embiid, Drummond overmatched, White suppressing Maxey) sustains a 15-pt margin. G1's 32-pt blowout was above the Blowout Cascade threshold — G2 margins average 60% of G1 when exceeding 25. PHI's Talent Gap Amplifier is the bracket's widest. Covers -13.5 with 1.5pt cushion.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Wembanyama Over 24.5 pts (G2)</div>
-          <div class="bet-line">-140 | G1: 35 pts (5-6 3PT)</div>
-          <div class="bet-reasoning">Wemby's G1 was a masterpiece: 35pts on 5-6 from three (franchise playoff record). Rib contusion downgraded to 0.1 severity — non-factor. POR's Clingan can't match his offensive versatility. Line should be higher after G1 explosion. Fox-Wemby PnR generated elite looks. 25+ is baseline expectation.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Jaylen Brown Over 24.5 pts (G2)</div>
-          <div class="bet-line">-150 | G1: 28pts in rout</div>
-          <div class="bet-reasoning">Brown dominated in G1 with 28pts in a rout. As BOS's #1 option, his usage stays high even in blowouts. PHI has no answer — Edgecombe is a rookie guard. Brown's Finals MVP pedigree and 8.0 clutch rating means consistent high output. Tatum's return may spread touches but Brown still clears 25.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Cade Cunningham Over 7.5 assists</div>
+        <div class="bet-line">-110 | Model: 7.8 APG | Outlook: GOOD | G1: 4ast (suppressed by Suggs)</div>
+        <div class="bet-reasoning">Cade's "good" outlook (46% FG, 28-36pts) means he'll draw more defensive attention, creating kick-out opportunities. G1 only 4ast despite 39pts — Suggs' D suppressed CREATION not scoring. Bickerstaff must design more actions to involve Harris/Robinson/Duren. ORL's trapping creates short-roll passing lanes. At home, better ball movement expected as team settles playoff nerves. 7.5 is tight (0.3pt cushion) but directionally correct.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-    </div>
 
-    <!-- MEDIUM CONFIDENCE — G2 SUNDAY SERIES -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge med-conf">MEDIUM CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">G1 data validated but regression factors present</span>
+      <!-- SAS-POR -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">SAS ML vs POR</div>
+        <div class="bet-line">-700 | Model: SAS 112-100 (+12) | SEPARATION</div>
+        <div class="bet-reasoning">Phase 22 outlooks confirm SAS dominance: Wemby "good" (52% FG, 26-34pts — 3PT regression from 83.3% G1 but midrange/rim sustainable), Fox "neutral-good" (47% FG, 18-26pts — consistent). POR's Avdija "neutral" (47% FG, 20-28pts — regression from 57.1% G1), Holiday "neutral-good" (40% FG, 12-18pts — bounce-back from 26.7% G1), but Clingan "bad" (42% FG — SAS length is structural problem). Home again for SAS. Talent gap is real and outlooks confirm it at every position.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type moneyline">MONEYLINE</span>
-          <div class="bet-pick">ORL Magic ML (G2)</div>
-          <div class="bet-line">+140 vs DET | Engine: DET +13 BUT G1 CORRECTION | Tue 7pm ESPN</div>
-          <div class="bet-reasoning">MODEL CORRECTION — GOING AGAINST ENGINE. Structural ratings still favor DET (+13 SEPARATION), but G1 proved the model's ratings are wrong for this matchup. Single-initiator penalty is real — Cade scored 39 but DET bench went 4-16. Mosley's scheme (adjustmentRating: 7 vs Bickerstaff's 5) is repeatable. DET's 11-game home playoff losing streak is a franchise culture deficit. Fatigue differential slight (DET 6.2% vs ORL 5.5%). At +140, this is a value contrarian play where the eye test overrides the engine.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">SAS -10.5 (G2)</div>
-          <div class="bet-line">-110 vs POR | Margin Engine: SEPARATION (SAS +16)</div>
-          <div class="bet-reasoning">Margin engine projects SAS by 16 — SEPARATION character, wider than the 13-pt G1 result. Splitter's low adjustmentRating (4) means minimal Coaching Adjustment Compression (only 13.2% G2 recovery), keeping the margin elevated. Wemby's Talent Gap Amplifier is extreme (+16.9 on/off). Active Injury Drag on Sharpe's fibula compounds with fatigue. POR's Depth Disparity Factor also widens the gap — SAS has more players rated 55+. Covers -10.5 with 5.5pt cushion.</div>
-          <span class="bet-edge model">Model Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type total">TOTAL</span>
-          <div class="bet-pick">Under 208.5 BOS-PHI (G2)</div>
-          <div class="bet-line">-110 | Margin Engine: SEPARATION (BOS +15)</div>
-          <div class="bet-reasoning">Pace-Based Score Projection from the margin engine suggests ~206 total. BOS's SEPARATION character means starters rest in Q4, compressing totals. PHI's offense without Embiid produced only 91 in G1 — their Active Injury Margin Drag from missing a 90-rated star is the bracket's most impactful. Mazzulla's coaching compression works both ways — tighter defense limits both teams. G1 total was 214 but BOS's 123 won't repeat with shooting regression.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Tyrese Maxey Over 22.5 pts (G2)</div>
-          <div class="bet-line">-110 | G1: 20pts on 8/20</div>
-          <div class="bet-reasoning">Maxey was held to 20 on 8/20 in G1 — White's suppression worked. But his 28.3 PPG season average and increased desperation usage (only offensive threat without Embiid) support higher volume in G2. Line dropped from 26.5 to 22.5 post-G1. Bounce-back scoring likely even in a loss. Medium because White's defense is elite.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Cade Cunningham Over 9.5 assists (G2)</div>
-          <div class="bet-line">-110 | G1: strong creation despite loss</div>
-          <div class="bet-reasoning">Cade's 9.9 APG season average is elite creation. Even in G1 loss, his playmaking was DET's engine. Down 0-2 means DET funnels everything through him. ORL's defensive scheme double-teams Cade, which actually creates more passing lanes. Collapsed lung limits scoring burst but not court vision. 10+ assists is likely.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">De'Aaron Fox Over 17.5 pts (G2)</div>
-          <div class="bet-line">-120 | G1: strong debut</div>
-          <div class="bet-reasoning">Fox's first playoff game with SAS featured prominently in the Fox-Wemby PnR — the deadliest action on the team. Avg 18.5 PPG. With Wemby drawing all defensive attention after 35pts in G1, Fox gets even cleaner looks in G2. POR's backcourt defense can't contain his elite speed. Medium because POR may adjust scheme.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">SAS -11.5 vs POR</div>
+        <div class="bet-line">-115 | Model: +12 margin | Outlook-adjusted spread</div>
+        <div class="bet-reasoning">Phase 22 projects +12 margin — SAS -11.5 gives just 0.5pt cushion. Wemby's regression (52% FG from 61.9% G1) is offset by Fox/Castle bounce-back projections. Avdija's "neutral" outlook (47% FG) tempers his 30pt G1. SAS depth still overwhelming (Fox/Castle/Vassell all project 14+). Tight spread but model favors the cover. Holiday's "neutral-good" bounce-back is the biggest risk to the cover.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-    </div>
-
-    <!-- LOW CONFIDENCE — G2 SUNDAY SERIES -->
-    <div class="risk-tier">
-      <div class="risk-tier-header">
-        <span class="risk-tier-badge low-conf">LOW CONFIDENCE</span>
-        <span style="color:#888;font-size:13px;">Contrarian value | Regression plays | High variance</span>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Wembanyama Over 25.5 points</div>
+        <div class="bet-line">-125 | Model: 28.2 pts | Outlook: GOOD (52% FG) | G1: 35pts</div>
+        <div class="bet-reasoning">Phase 22 "good" outlook at 52% FG (26-34pt range). 3PT regression expected (season ~37% vs G1's 83.3% from 3), but midrange/rim finishing (8-15 on 2PT in G1) is sustainable. POR still has no answer for his length + shooting combination. Home court. Even with 3PT regression, his scoring versatility projects 28+ points. Clears 25.5 by 2.7pts with high confidence.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
-      <div class="bet-grid">
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">PHX Suns +12.5 (G2)</div>
-          <div class="bet-line">-110 vs OKC | Margin Engine: SEPARATION (OKC +16)</div>
-          <div class="bet-reasoning">Engine projects OKC by 16 — DOES NOT COVER at +12.5 based on expected margin. However, Blowout Cascade research shows G2 margins average 60% of G1 when exceeding 25 (35 × 0.6 = 21, but Coaching Adjustment Compression reduces further). The variance profile shows ~25% Blowout Probability — meaning 75% of the time the margin is under 16. Booker's 7.8 clutch rating provides GRIND potential. Risk: Ott's adjustmentRating (4) is too low to meaningfully compress OKC's dominance.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type spread">SPREAD</span>
-          <div class="bet-pick">PHI 76ers +16.5 (G2)</div>
-          <div class="bet-line">-110 vs BOS | Margin Engine: SEPARATION (BOS +15)</div>
-          <div class="bet-reasoning">Engine projects BOS by 15 — COVERS +16.5 by 1.5pts based on expected margin. Nurse's Coaching Adjustment Compression (adjustmentRating: 8) is the key factor — his Toronto tenure showed elite G2 adjustments. The Blowout Cascade Pattern compresses G1's 32-pt margin to ~19 expected, then coaching compression brings it to 15. George's suspension-rust clearing and Maxey's shooting regression upward both support tighter margins. Low confidence because BOS's structural dominance could still produce another blowout (25% Blowout Probability).</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Paolo Banchero Over 23.5 pts (G2)</div>
-          <div class="bet-line">+100 | G1: led ORL upset</div>
-          <div class="bet-reasoning">Banchero's 6.2 clutch rating is ORL's best weapon. G1 upset validated ORL's offensive system — multi-creator approach with Banchero/Wagner/Bane. With momentum from the upset, Banchero's confidence and usage spike. DET may over-correct defensively on Cade, opening lanes for Paolo. 22.4 PPG baseline makes 24+ achievable.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Devin Booker Over 26.5 pts (G2)</div>
-          <div class="bet-line">+130 | G1: held to low output in blowout</div>
-          <div class="bet-reasoning">Booker was suppressed in the G1 blowout but his 26.0 PPG average and 7.8 clutch rating mean a bounce-back. Down 0-1 with playoff survival instincts, PHX funnels everything through Book. Star Prop Trap doesn't apply to the losing team's star — Booker plays 36+ minutes even in a loss. The +130 price offers value on a likely 25+ performance.</div>
-          <span class="bet-edge historical">Historical Edge</span>
-        </div>
-        <div class="bet-card">
-          <span class="bet-type prop">PLAYER PROP</span>
-          <div class="bet-pick">Deni Avdija Over 22.5 pts (G2)</div>
-          <div class="bet-line">-110 | G1: 30 pts</div>
-          <div class="bet-reasoning">Avdija exploded for 30pts in G1 despite the loss — confirming he IS Portland's offense without Lillard. SAS may adjust with Vassell/Castle on him but his 6.7 APG creation means double-teams free teammates. All-Star breakout season and 28.5 USG% make 23+ points very likely. Low confidence only because SAS defensive adjustments in G2 may feature a dedicated stopper.</div>
-          <span class="bet-edge matchup">Matchup Edge</span>
-        </div>
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">De'Aaron Fox Over 6.5 assists</div>
+        <div class="bet-line">-115 | Model: 7.8 APG | Outlook: NEUTRAL-GOOD (47% FG) | G1: 8ast</div>
+        <div class="bet-reasoning">Fox's "neutral-good" outlook (47% FG, 18-26pts) reflects his steady G1 baseline (46.7% FG, 8ast). His speed creates binary decisions for POR: help on Fox drives (Wemby/Vassell open for lobs/3s) or stay home (Fox scores). POR's switching puts smaller guards in disadvantageous PnR matchups. In a SEPARATION game, SAS runs structured half-court sets with consistent assist opportunities. 1.3pt cushion over 6.5 line.</div>
+        <span class="bet-edge model">Model Edge</span>
       </div>
     </div>
 
     </div><!-- end betContent-g2 -->
 
+    <!-- ===== GAME 3 BETS TAB ===== -->
+    <div id="betContent-g3" class="bet-content" style="display:none;">
+
+    <p style="color:#aaa;font-size:12px;margin-bottom:16px;text-align:center;">G3 projections incorporate G1+G2 Bayesian updates, <strong>Phase 22 per-player offensive outlook</strong> (research-backed FG% differentiation), coaching compression, and returning player logic. Props recalibrated to new individual projections.</p>
+
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">CLE-TOR Game 3 @ Toronto — CLE leads 2-0</h4>
+
+      <!-- CLE ML -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML @ TOR</div>
+        <div class="bet-line">-155 | Model: CLE 111-104 (+7) | COMPETITIVE</div>
+        <div class="bet-reasoning">Phase 22 per-player outlook confirms CLE's dominance. Mitchell 26.7pts (neutral outlook — steady floor), Harden 20.8pts (neutral), Mobley 16.5pts (bad outlook — 84.6% G2 FG regressed to 52.0%). TOR counters with Barnes 19.0pts (good/high — trending 21→26) and Barrett 18.6pts (good/high — CLE has no answer), but Ingram is scheme-locked at 13.0pts (bad/high — 38.2% FG). Quickley's return (10.3pts, rusty) adds a new dimension but not enough to close a 7-point gap. CLE's 3-initiator system remains too deep for TOR.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- CLE SPREAD -->
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">CLE -3.5 @ TOR</div>
+        <div class="bet-line">-105 | Model margin: +7 | 3.5pt cushion</div>
+        <div class="bet-reasoning">Model projects CLE +7, giving 2.5pts of cushion. Per-player outlook shows CLE's top-3 (Mitchell/Harden/Mobley) all project neutral-to-down, meaning the 111-point projection is conservative. TOR's problems persist: Ingram scheme-locked (13.0pts/38.2% FG), Poeltl minutes collapsed (9min, bad outlook), Shead's G1 outlier won't repeat (3.3pts/30.6%). Even with Barnes/Barrett having good games and Quickley returning, the structural talent gap is 7+ points. Spread is the best value play on the board — CLE has won G1 by 13 and G2 by 10.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- MITCHELL PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
+        <div class="bet-line">-115 | Model: 26.7 PPG | G1-G2 avg: 31.0 | Outlook: neutral</div>
+        <div class="bet-reasoning">Mitchell's Phase 22 outlook is "neutral" — no boost or suppress, projecting 26.7pts at 46.8% FG. He scored 32 and 30 in the first two games; regression to 26.7 still clears 24.5 by 2.2pts. His on/off (+6.4) means CLE's offense runs through him regardless of venue. TOR has no answer: Barnes' defense has been overwhelmed by CLE's 3-initiator system. The neutral outlook reflects that Mitchell is a steady producer — not streaky enough for a bad game at this level.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- INGRAM UNDER PROP — UPGRADED -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Brandon Ingram Under 18.5 points ⭐ BEST BET</div>
+        <div class="bet-line">-120 | Model: 13.0 PPG | Outlook: BAD (high confidence) | 5.5pt cushion</div>
+        <div class="bet-reasoning">Phase 22's strongest single-player conviction. Ingram's outlook is "bad/high" — scheme-locked by CLE's defense at 38.2% projected FG. He went 17pts (G1) → 7pts on 3/15 FG (G2) as CLE solved him. Model projects just 13.0pts for G3, giving a massive 5.5pt cushion under 18.5. The defensive scheme lock compounds: when the same scheme works G1 AND G2, it typically locks in for the series. Ingram's 5 turnovers in G2 confirm decision-making collapse under pressure. Even at home, Under 18.5 is the highest-edge prop across all series.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- BARNES PROP — RECALIBRATED -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Scottie Barnes Over 17.5 points</div>
+        <div class="bet-line">-115 | Model: 19.0 PPG | Outlook: GOOD (high) | Trending 21→26</div>
+        <div class="bet-reasoning">Barnes' Phase 22 outlook is "good/high" — he's trending up (21→26pts) with a 50.0% projected FG. Model projects 19.0pts, clearing 17.5 by 1.5pts. With Ingram scheme-locked, TOR's offense increasingly runs through Barnes + Barrett. His playmaking (7ast G1, 5ast G2) opens driving lanes as defenses collapse. Home crowd energy at 0-2 desperation amplifies his intensity. Moved the line DOWN from 19.5 to 17.5 to capture the outlook boost with cushion.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- STRUS UNDER — NEW PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Max Strus Under 14.5 points</div>
+        <div class="bet-line">-110 | Model: 8.3 PPG | Outlook: BAD | G1: 24pts → scouted</div>
+        <div class="bet-reasoning">New Phase 22 insight. Strus exploded for 24pts in G1 (8-10 FG, 4-6 3PT) then was scouted down to 6pts in G2 (2-5 FG). His outlook is "bad" at 38.5% FG — TOR identified his shooting spots and adjusted. Model projects just 8.3pts, giving 6.2pts of cushion under 14.5. When a role player has a breakout game followed by the opponent's adjustment, the suppression typically holds for the remainder of the series. This is a scouting-driven under with high confidence.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- TURNOVERS TEAM PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">TOR Team Over 16.5 turnovers</div>
+        <div class="bet-line">-110 | G1: 18 TO, G2: 22 TO | Scheme-driven</div>
+        <div class="bet-reasoning">TOR committed 18 turnovers in G1 and 22 in G2 — CLE's defensive pressure scheme is the single most reliable trend in this series. CLE's backcourt pressure + transition defense forces TOR into rushed decisions. Ingram's 5 TOs in G2 were scheme-driven, not variance. Quickley's return adds a new ball-handler but also a rusty one who hasn't played in 11 days. Even at home in G3, 16.5 is well below both G1 and G2 actuals.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+    </div>
+
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">DEN-MIN Game 3 @ Minnesota — Series tied 1-1</h4>
+
+      <!-- DEN ML -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DEN ML @ MIN</div>
+        <div class="bet-line">-118 | Model: DEN 108-106 | COIN FLIP | LOW confidence</div>
+        <div class="bet-reasoning">The model projects DEN 108-106 — a coin flip where Denver's talent and system advantages (Jokic 97 rating, #1 offense at 122.6 ORtg, 39.6% 3PT) narrowly outweigh Minnesota's home court. At -118, DEN is a slight road favorite — the market agrees with the model but the juice makes this a break-even play at best. Jokic historically bounces back strong after playoff losses, and Denver's championship pedigree (2023) means they don't fold on the road. LOW confidence because the margin is only 2 points with 49% close-game probability — this truly could go either way.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- DEN SPREAD -->
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">DEN -1.5 @ MIN</div>
+        <div class="bet-line">-105 | Model: DEN by 2 | 0.5pt cushion</div>
+        <div class="bet-reasoning">DEN -1.5 is razor-thin — the model projects DEN by 2, giving just 0.5pts of cushion. The market has DEN as a slight road favorite, which aligns with the model but leaves almost no margin for error. Denver's #1 offense, Jokic's bounce-back potential, and the Hardaway bench weapon (16pts G2) support the case, but the tight spread means any variance could flip the cover. Consider the ML (-118) for a cleaner play if you believe in DEN outright.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- EDWARDS PROP -->
+      <div class="bet-card best-bet">
+        <span class="bet-type prop">PROP ★ BEST BET</span>
+        <div class="bet-pick">Anthony Edwards Over 23.5 points</div>
+        <div class="bet-line">-130 | Model: 24.6 PPG (Phase 22 outlook: good-high) | G1-G2 trend: 22→30</div>
+        <div class="bet-reasoning">Phase 22 per-player outlook projects Edwards at 24.6pts with a "good-high" offensive outlook — his knee is improving game-over-game and he's at home in Target Center. The Bayesian blend (55% model / 45% prior) tempers the G2 explosion (30pts) against his G1 dip (22pts), landing at 24.6. At 23.5, you get 1.1pts of cushion on a player trending sharply upward. His 46% researchFgPct (up from G1's poor shooting) reflects improved mobility. Edwards' +20 net rating in G2 shows he dominated possessions even on the road — at home, the volume only increases. Gordon's "bad-high" outlook means DEN's primary Edwards defender is regressing, widening the lane.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- RANDLE PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Julius Randle Over 17.5 points</div>
+        <div class="bet-line">-115 | Model: 19.1 PPG (Phase 22 outlook: good-medium) | G1-G2: 16→24</div>
+        <div class="bet-reasoning">Phase 22 outlook grades Randle "good-medium" with a 49% researchFgPct — his G2 bounce-back (24pts/9reb/6ast on 50% FG) validates the model's confidence in his role. The Bayesian blend tempers his 24pt G2 with his 16pt G1, landing at 19.1pts projected. At 17.5, you get 1.6pts of cushion. With Edwards drawing Gordon's primary attention and Jokic's help defense stretched, Randle gets favorable post matchups against DEN's depleted frontcourt. At home in Target Center, his physicality and aggression should sustain. The "good" outlook reflects a player who's found his rhythm in this series.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- JOKIC REBOUNDS+ASSISTS PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Nikola Jokic Over 21.5 rebounds + assists</div>
+        <div class="bet-line">-110 | G1: 24 (13+11), G2: 23 (15+8) | Bounce-back driver</div>
+        <div class="bet-reasoning">Jokic has crushed this line in both games — 24 reb+ast in G1 (13+11) and 23 in G2 (15+8). The model picks DEN largely because of Jokic's all-around dominance (97 rating, 31.5 PER). His scoring has been contained somewhat (24.5 PPG avg) but his rebounding and playmaking have been consistent regardless of game outcome. Even when his shot wasn't falling in G2 (8-20 FG), he still pulled down 15 boards and dished 8 assists. At Target Center, expect Jokic to facilitate even more against the hostile crowd. 21.5 is well below both G1 and G2 actuals.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- HYLAND PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Bones Hyland Over 6.5 points</div>
+        <div class="bet-line">+100 | Model: 7.4 PPG (Phase 22 outlook: neutral-low) | G2: 13pts/10min</div>
+        <div class="bet-reasoning">The Phase 22 Bayesian blend tempers Hyland's G2 explosion (13pts/10min, 3-4 3PT) against his limited sample, projecting 7.4pts. The "neutral-low" outlook reflects uncertainty about his minutes — Finch may expand from 10min to 15min after his G2 breakout, but it's not guaranteed. At 6.5, you get 0.9pts of cushion with asymmetric upside: if Finch does expand minutes as expected, Hyland easily clears 10+. As a former Nugget who knows DEN's defensive schemes, he's a matchup weapon at home in Target Center. The 45% researchFgPct is conservative for a career 38% 3PT shooter who went 3-4 in G2. Value play with role-expansion upside.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- MURRAY TURNOVERS PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jamal Murray Over 2.5 turnovers</div>
+        <div class="bet-line">-105 | G2: 4 TOs | Chronic knee + road pressure</div>
+        <div class="bet-reasoning">Murray committed 4 turnovers in G2 while finishing -4 despite scoring 30pts. His chronic knee (ACL tear history) compounds game-over-game, and MIN's defensive pressure — particularly from DiVincenzo and Dosunmu — is forcing rushed decisions. At Target Center, the hostile crowd adds another layer of pressure. Murray's shot selection is deteriorating (6-14 3PT in G2, -4 net rating). When his shooting falters, he forces the issue and turns it over. Over 2.5 TOs at -105 is strong value backed by a clear trend.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+    </div>
+
+    <!-- ═══════ NYK-ATL GAME 3 ═══════ -->
+    <div class="series-bets-header">NYK-ATL Game 3 — Thu Apr 24 — State Farm Arena</div>
+    <div class="bet-card-grid">
+
+      <!-- NYK MONEYLINE -->
+      <div class="bet-card">
+        <span class="bet-type moneyline">MONEYLINE</span>
+        <div class="bet-pick">NYK ML @ ATL</div>
+        <div class="bet-line">-105 | Model: NYK by 6 | Pick'em odds</div>
+        <div class="bet-reasoning">The model projects NYK winning by 6 points in Atlanta, but the market has this as a pick'em at -105. This is a major value discrepancy — the model sees NYK +6 while the market prices it 50/50. ATL's G2 win at MSG (series now 1-1) shifted the line dramatically. Brunson's 39.6% shooting through 2 games screams positive regression for a 47.5% season shooter. NYK's structural edges (1.25x talent, four 76+ rated players, elite road record 25-16) haven't changed. At -105, you're getting the model's 6-point projected winner at coin-flip odds — this is the best value ML on the G3 board.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- NYK SPREAD -->
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">NYK +1.5 @ ATL</div>
+        <div class="bet-line">-118 | Model: NYK by 6 | 7.5pt cushion</div>
+        <div class="bet-reasoning">Model projects NYK by 6, and with the market giving ATL -1.5, NYK +1.5 offers a massive 7.5pts of cushion. This is the best spread value on the entire G3 slate. ATL's G2 win at MSG flipped the line in their favor, but ATL's Q4 shooting in G2 (72.2%) was historically unsustainable — regression there alone narrows ATL's path. NYK's size advantage in the paint and rebounding prowess (Hart's 13 boards) translate regardless of venue. Getting 1.5 points on a team the model projects to win by 6 is exceptional value.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- BRUNSON PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jalen Brunson Over 23.5 points</div>
+        <div class="bet-line">-120 | Model: 24.7 PPG (Phase 22 outlook: neutral-good) | Season: 28.7 PPG</div>
+        <div class="bet-reasoning">Phase 22 projects Brunson at 24.7pts with a "neutral-good" outlook — the Bayesian blend tempers his 28.5 PPG average against his 39.6% shooting efficiency through 2 games. The model expects positive FG% regression for a 47.5% season shooter, but not a full snap-back in a single game. At 23.5, you get 1.2pts of cushion. McCollum hunted Brunson defensively in G2, but Brown will adjust screening assignments in G3. Brunson's volume (28.5 PPG on poor efficiency) is the key signal — when efficiency regresses toward his mean, 25+ is highly likely. Road game in Atlanta adds slight variance but Brunson has proven road resilience (NYK 25-16 away).</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- MCCOLLUM PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">CJ McCollum Over 20.5 points</div>
+        <div class="bet-line">-115 | Model: 21.8 PPG (Phase 22 outlook: neutral) | G1-G2 avg: 29.0 PPG</div>
+        <div class="bet-reasoning">Phase 22 projects McCollum at 21.8pts — the Bayesian blend significantly tempers his 29.0 PPG average because the model expects NYK's defensive adjustments to compress his output in G3. Brown will scheme to take away McCollum's midrange looks after his 32pt G2 explosion. The "neutral" outlook reflects the tension between his hot shooting and NYK's defensive talent (OG, Bridges). At 20.5, you get 1.3pts of cushion — enough to cover even if NYK's defense partially succeeds. McCollum's alpha closer role is locked in regardless of game script. At home in State Farm Arena, volume stays high even if efficiency dips from G2's 12-22 mark.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- TOWNS PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Karl-Anthony Towns Over 16.5 points</div>
+        <div class="bet-line">-115 | Model: 18.6 PPG (Phase 22 outlook: neutral) | G1-G2: 21.5 PPG</div>
+        <div class="bet-reasoning">Phase 22 projects Towns at 18.6pts — the Bayesian blend tempers his 25pt G1 explosion against his 18pt G2 where Kuminga's defense (66 ORtg) was devastating. The "neutral" outlook acknowledges both the defensive challenge and Brown's likely counter-adjustments (more post-ups vs Okongwu, pick-and-pop to pull Kuminga). At 16.5, you get 2.1pts of cushion — the thickest margin on any NYK-ATL prop. Towns' 8-12 shooting in G2 proved his efficiency is elite even when volume dips. Even if Snyder's Kuminga assignment persists, Towns' floor is around 16-18pts given his usage rate. Safe play with structural edge.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- KUMINGA PROP -->
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jonathan Kuminga Over 14.5 points</div>
+        <div class="bet-line">+100 | G1: 8pts → G2: 19pts | Home boost + expanded role</div>
+        <div class="bet-reasoning">Kuminga's trajectory — 8pts (G1 disappointment) → 19pts/+10 (G2 hero) — suggests Snyder has unlocked his role. His defensive assignment on Towns was the game-changer in G2's Q4. At home, Kuminga's athletic finishing and transition game get a boost from State Farm Arena's energy. Snyder will likely lock in 30+ minutes for Kuminga after his G2 performance. His 7-12 shooting showed controlled aggression, not just athleticism. 14.5 is the midpoint of his G1-G2 range, and with momentum and expanded minutes, over leans favorable.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+    </div>
+
+    </div><!-- end betContent-g3 -->
+
     <!-- DISCLAIMER -->
     <div class="bets-disclaimer">
-      <strong>Disclaimer:</strong> These picks are generated by a statistical model calibrated against 2025 NBA Playoff results (73.5% accuracy across 49 games). They are not guaranteed outcomes. All betting involves risk. Lines shown are approximate and may differ from your sportsbook. The model accounts for Home Court Advantage (round-adjusted), System Coherence, Championship DNA, Health Degradation, and Star Ceiling Variance — but cannot predict injuries, ejections, or one-game anomalies. Bet responsibly.
+      <strong>Disclaimer:</strong> These picks are generated by a statistical model calibrated against 2025 NBA Playoff results (73.5% accuracy across 49 games) and updated with deep-dive research from Fadeaway World, Basketball Reference, and SI for the 2026 R1 slate. They are not guaranteed outcomes. All betting involves risk. Lines shown are approximate and may differ from your sportsbook. The model accounts for Home Court Advantage (round-adjusted), System Coherence, Championship DNA, Health Degradation, Star Ceiling Variance, Playoff Pedigree, and G1 Bayesian Updates — but cannot predict injuries, ejections, or one-game anomalies. Bet responsibly.
     </div>
   </div>`;
 }

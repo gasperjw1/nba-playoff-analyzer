@@ -67,9 +67,9 @@ function renderScenarioBuilder(s) {
 }
 
 
-function renderBacktestPanel(s, prob) {
+function renderBacktestPanel(s) {
   const round = s.round || 'R1';
-  const hcaVal = HCA_BY_ROUND[round] || 3.0;
+  const hcaVal = HCA_BY_ROUND[round] || 2.5;
   const bbProb = calcBounceBackProb(s);
   const homeSys = s.homeTeam.systemBonus || 0;
   const awaySys = s.awayTeam.systemBonus || 0;
@@ -204,6 +204,7 @@ function renderMarginProfile(s) {
     <div style="font-size:10px;color:var(--text-dim);margin-bottom:12px">Dynamic margin projections — talent gap, depth, injuries, coaching adjustments, and pace</div>
     ${marginDot(g1Proj, 'G1')}
     ${marginDot(g2Proj, 'G2')}
+    ${(s.games[1] && s.games[1].winner) ? marginDot(calcGameProjection(s, s.id, 3), 'G3') : ''}
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;font-size:10px;text-align:center">
       <div style="padding:8px;background:rgba(0,0,0,0.2);border-radius:8px">
         <div style="color:var(--text-dim)">Talent Gap</div>
@@ -218,6 +219,287 @@ function renderMarginProfile(s) {
         <div style="font-weight:700;font-size:14px;margin-top:2px;color:${g1Proj.closeProb>35?'var(--green)':g1Proj.closeProb>20?'var(--yellow)':'var(--text-dim)'}">${g1Proj.closeProb}%</div>
       </div>
     </div>
+  </div>`;
+}
+
+
+// ============================================================
+// BOX SCORE RENDERING
+// ============================================================
+
+function renderBoxScore(series, gameIdx) {
+  const game = series.games[gameIdx];
+  if (!game || !game.boxScores) return '';
+
+  const bs = game.boxScores;
+
+  function pctStr(m, a) { return a > 0 ? (m/a*100).toFixed(1) + '%' : '-'; }
+
+  function renderTeamBoxTable(players, team) {
+    // Calculate team totals
+    const totals = players.reduce((t, p) => {
+      t.min += p.min; t.pts += p.pts; t.reb += p.reb; t.ast += p.ast;
+      t.stl += p.stl; t.blk += p.blk; t.fgm += p.fgm; t.fga += p.fga;
+      t.tpm += p.tpm; t.tpa += p.tpa; t.ftm += p.ftm; t.fta += p.fta;
+      t.to += p.to; return t;
+    }, {min:0,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:0});
+
+    return `<div class="box-team-section">
+      <div class="box-team-name"><span style="width:4px;height:14px;border-radius:2px;background:${team.color};display:inline-block"></span>${team.city} ${team.name}</div>
+      <div style="overflow-x:auto"><table class="box-table">
+        <tr><th>Player</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG</th><th>3PT</th><th>FT</th><th>TO</th></tr>
+        ${players.map(p => {
+          const ptsColor = p.pts >= 25 ? 'var(--green)' : p.pts >= 15 ? 'var(--accent)' : 'var(--text)';
+          return `<tr>
+            <td class="box-player-name">${p.name}</td>
+            <td>${p.min}</td>
+            <td style="font-weight:700;color:${ptsColor}">${p.pts}</td>
+            <td>${p.reb}</td><td>${p.ast}</td><td>${p.stl}</td><td>${p.blk}</td>
+            <td>${p.fgm}-${p.fga} <span class="box-pct">${pctStr(p.fgm,p.fga)}</span></td>
+            <td>${p.tpm}-${p.tpa} <span class="box-pct">${pctStr(p.tpm,p.tpa)}</span></td>
+            <td>${p.ftm}-${p.fta}</td>
+            <td>${p.to}</td>
+          </tr>`;
+        }).join('')}
+        <tr class="box-totals-row">
+          <td style="font-weight:700">TOTALS</td>
+          <td>${totals.min}</td>
+          <td style="font-weight:700">${totals.pts}</td>
+          <td>${totals.reb}</td><td>${totals.ast}</td><td>${totals.stl}</td><td>${totals.blk}</td>
+          <td>${totals.fgm}-${totals.fga} <span class="box-pct">${pctStr(totals.fgm,totals.fga)}</span></td>
+          <td>${totals.tpm}-${totals.tpa} <span class="box-pct">${pctStr(totals.tpm,totals.tpa)}</span></td>
+          <td>${totals.ftm}-${totals.fta}</td>
+          <td>${totals.to}</td>
+        </tr>
+      </table></div>
+    </div>`;
+  }
+
+  return `<div class="box-score-section">
+    <div class="box-score-title">Game ${gameIdx+1} Box Score</div>
+    ${renderTeamBoxTable(bs.home, series.homeTeam)}
+    ${renderTeamBoxTable(bs.away, series.awayTeam)}
+  </div>`;
+}
+
+
+// ============================================================
+// ADVANCED STATS: ACTUAL vs EXPECTED COMPARISON (Multi-Factor)
+// ============================================================
+
+function renderAdvancedComparison(series, gameIdx) {
+  const game = series.games[gameIdx];
+  if (!game || !game.boxScores) return '';
+  const bs = game.boxScores;
+
+  function findPlayerData(name, team) {
+    return team.players.find(p => p.name === name);
+  }
+
+  function diffCell(diff) {
+    const color = diff > 3 ? 'var(--green)' : diff > 0 ? 'var(--accent)' : diff > -3 ? 'var(--yellow)' : 'var(--red)';
+    const sign = diff > 0 ? '+' : '';
+    return `<span style="color:${color};font-weight:700">${sign}${diff.toFixed(1)}</span>`;
+  }
+
+  function renderModifierPills(mods) {
+    if (!mods.length) return '';
+    // Show top 3 modifiers by absolute PTS impact
+    const sorted = [...mods].sort((a, b) => Math.abs(b.ptsDelta) - Math.abs(a.ptsDelta)).slice(0, 3);
+    return sorted.map(m => {
+      const sign = m.pct > 0 ? '+' : '';
+      const color = m.pct > 0 ? 'rgba(61,214,140,0.15)' : 'rgba(255,79,94,0.15)';
+      const textColor = m.pct > 0 ? 'var(--green)' : 'var(--red)';
+      return `<span class="exp-modifier-pill" style="background:${color};color:${textColor}">${m.label} ${sign}${m.pct}%</span>`;
+    }).join('');
+  }
+
+  function renderTeamComparison(boxPlayers, team, side) {
+    const rows = boxPlayers.filter(bp => bp.min >= 10).map(bp => {
+      const pd = findPlayerData(bp.name, team);
+      if (!pd) return null;
+
+      // Use the full multi-factor projection engine
+      const exp = calcExpectedPlayerStats(pd, series, gameIdx, side);
+
+      const ptsDiff = bp.pts - exp.pts;
+      const rebDiff = bp.reb - exp.reb;
+      const astDiff = bp.ast - exp.ast;
+
+      return `<tr>
+        <td class="box-player-name">${bp.name}</td>
+        <td>${bp.pts}</td><td style="color:var(--text-dim)">${exp.pts}</td><td>${diffCell(ptsDiff)}</td>
+        <td>${bp.reb}</td><td style="color:var(--text-dim)">${exp.reb}</td><td>${diffCell(rebDiff)}</td>
+        <td>${bp.ast}</td><td style="color:var(--text-dim)">${exp.ast}</td><td>${diffCell(astDiff)}</td>
+        <td class="exp-modifiers-cell">${renderModifierPills(exp.modifiers)}</td>
+      </tr>`;
+    }).filter(Boolean);
+
+    if (!rows.length) return '';
+
+    return `<div class="adv-comp-team">
+      <div class="box-team-name"><span style="width:4px;height:14px;border-radius:2px;background:${team.color};display:inline-block"></span>${team.name} — Actual vs Expected</div>
+      <div style="overflow-x:auto"><table class="box-table adv-comp-table">
+        <tr><th>Player</th><th colspan="3">PTS (Act / Exp / Diff)</th><th colspan="3">REB (Act / Exp / Diff)</th><th colspan="3">AST (Act / Exp / Diff)</th><th>Key Modifiers</th></tr>
+        ${rows.join('')}
+      </table></div>
+    </div>`;
+  }
+
+  return `<div class="adv-comp-section">
+    <div class="adv-comp-title">Performance vs Expectations</div>
+    <div class="adv-comp-subtitle">Multi-factor projection: reg season avg + playoff ascension, pace adjustment (Cabarkapa), fatigue model, opponent D quality, defensive matchup suppression, coaching role changes, home court, lineup chemistry, on/off impact, and external factors</div>
+    ${renderTeamComparison(bs.home, series.homeTeam, 'home')}
+    ${renderTeamComparison(bs.away, series.awayTeam, 'away')}
+  </div>`;
+}
+
+
+// ============================================================
+// SERIES AVERAGES (for Player Stats tab)
+// ============================================================
+
+function renderSeriesAverages(series, side) {
+  // Collect all completed games with box scores
+  const gamesWithBS = series.games.filter(g => g.winner && g.boxScores);
+  if (!gamesWithBS.length) return '';
+  const numGames = gamesWithBS.length;
+
+  // Show only the selected team (side = 'home' or 'away')
+  const team = side === 'home' ? series.homeTeam : series.awayTeam;
+
+  // Aggregate player stats across all box-scored games
+  const playerMap = {};
+  gamesWithBS.forEach(g => {
+    const players = g.boxScores[side];
+    if (!players) return;
+    players.forEach(p => {
+      if (!playerMap[p.name]) playerMap[p.name] = {name:p.name,gp:0,min:0,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:0};
+      const a = playerMap[p.name];
+      a.gp++; a.min+=p.min; a.pts+=p.pts; a.reb+=p.reb; a.ast+=p.ast;
+      a.stl+=p.stl; a.blk+=p.blk; a.fgm+=p.fgm; a.fga+=p.fga;
+      a.tpm+=p.tpm; a.tpa+=p.tpa; a.ftm+=p.ftm; a.fta+=p.fta; a.to+=p.to;
+    });
+  });
+
+  const averaged = Object.values(playerMap).map(a => {
+    const gp = a.gp;
+    return {
+      name:a.name, gp,
+      min:(a.min/gp).toFixed(1), pts:(a.pts/gp).toFixed(1), reb:(a.reb/gp).toFixed(1),
+      ast:(a.ast/gp).toFixed(1), stl:(a.stl/gp).toFixed(1), blk:(a.blk/gp).toFixed(1),
+      fgm:(a.fgm/gp).toFixed(1), fga:(a.fga/gp).toFixed(1),
+      tpm:(a.tpm/gp).toFixed(1), tpa:(a.tpa/gp).toFixed(1),
+      ftm:(a.ftm/gp).toFixed(1), fta:(a.fta/gp).toFixed(1),
+      to:(a.to/gp).toFixed(1),
+      fgPct: a.fga > 0 ? (a.fgm/a.fga*100).toFixed(1) : '-',
+      tpPct: a.tpa > 0 ? (a.tpm/a.tpa*100).toFixed(1) : '-'
+    };
+  }).sort((a,b) => parseFloat(b.pts) - parseFloat(a.pts));
+
+  if (!averaged.length) return '';
+
+  return `<div class="series-avg-section">
+    <div class="box-score-title">${team.name} — Series Box Score Averages (${numGames} game${numGames>1?'s':''})</div>
+    <div style="overflow-x:auto"><table class="box-table">
+      <tr><th>Player</th><th>GP</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG</th><th>FG%</th><th>3PT</th><th>3P%</th><th>FT</th><th>TO</th></tr>
+      ${averaged.map(p => {
+        const ptsColor = parseFloat(p.pts) >= 25 ? 'var(--green)' : parseFloat(p.pts) >= 15 ? 'var(--accent)' : 'var(--text)';
+        return `<tr>
+          <td class="box-player-name">${p.name}</td>
+          <td>${p.gp}</td><td>${p.min}</td>
+          <td style="font-weight:700;color:${ptsColor}">${p.pts}</td>
+          <td>${p.reb}</td><td>${p.ast}</td><td>${p.stl}</td><td>${p.blk}</td>
+          <td>${p.fgm}-${p.fga}</td><td>${p.fgPct}%</td>
+          <td>${p.tpm}-${p.tpa}</td><td>${p.tpPct}%</td>
+          <td>${p.ftm}-${p.fta}</td><td>${p.to}</td>
+        </tr>`;
+      }).join('')}
+    </table></div>
+  </div>`;
+}
+
+
+// ============================================================
+// PROJECTED BOX SCORE (for upcoming games)
+// ============================================================
+
+function renderProjectedBoxScore(series, gameIdx) {
+  // Only render for games that haven't been played yet
+  const game = series.games[gameIdx];
+  if (game && game.winner) return ''; // already played, use actual box score
+  if (game && game.boxScores) return ''; // has actual data
+
+  const projected = calcProjectedBoxScore(series, gameIdx);
+  if (!projected) return '';
+
+  const gameNum = gameIdx + 1;
+  const priorGame = gameIdx > 0 ? series.games[gameIdx - 1] : null;
+  const hasPrior = priorGame && priorGame.boxScores;
+
+  function renderTeamProjection(players, team, teamScore) {
+    const total = players.reduce((t, p) => {
+      t.pts += p.pts; t.reb += p.reb; t.ast += p.ast; t.min += p.min; return t;
+    }, {pts:0, reb:0, ast:0, min:0});
+
+    return `<div class="box-team-section">
+      <div class="box-team-name">
+        <span style="width:4px;height:14px;border-radius:2px;background:${team.color};display:inline-block"></span>
+        ${team.name} — Projected ${teamScore} pts
+      </div>
+      <div style="overflow-x:auto"><table class="box-table proj-box-table">
+        <tr><th>Player</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th><th>TO</th><th>Key Factors</th></tr>
+        ${players.map(p => {
+          const ptsColor = p.pts >= 25 ? 'var(--green)' : p.pts >= 15 ? 'var(--accent)' : 'var(--text)';
+          // Show top 2 modifiers as pills
+          const topMods = (p.modifiers || []).sort((a, b) => Math.abs(b.ptsDelta) - Math.abs(a.ptsDelta)).slice(0, 2);
+          const modPills = topMods.map(m => {
+            const sign = m.pct > 0 ? '+' : '';
+            const color = m.pct > 0 ? 'rgba(61,214,140,0.15)' : 'rgba(255,79,94,0.15)';
+            const tc = m.pct > 0 ? 'var(--green)' : 'var(--red)';
+            return `<span class="exp-modifier-pill" style="background:${color};color:${tc}">${m.label} ${sign}${m.pct}%</span>`;
+          }).join('');
+
+          // G1 comparison arrow
+          const prior = hasPrior ? (priorGame.boxScores.home.find(x => x.name === p.name) || priorGame.boxScores.away.find(x => x.name === p.name)) : null;
+          let g1Arrow = '';
+          if (prior) {
+            const diff = p.pts - prior.pts;
+            if (Math.abs(diff) >= 2) {
+              const arrowColor = diff > 0 ? 'var(--green)' : 'var(--red)';
+              const arrow = diff > 0 ? '\u2191' : '\u2193';
+              g1Arrow = `<span style="font-size:9px;color:${arrowColor};margin-left:3px" title="vs G1 actual ${prior.pts}pts">${arrow}${Math.abs(diff).toFixed(0)}</span>`;
+            }
+          }
+
+          return `<tr>
+            <td class="box-player-name">${p.name}</td>
+            <td>${p.min}</td>
+            <td style="font-weight:700;color:${ptsColor}">${p.pts}${g1Arrow}</td>
+            <td>${p.reb}</td><td>${p.ast}</td>
+            <td>${p.fgm}-${p.fga}</td>
+            <td>${p.tpm}-${p.tpa}</td>
+            <td>${p.ftm}-${p.fta}</td>
+            <td>${p.to}</td>
+            <td class="exp-modifiers-cell">${modPills}</td>
+          </tr>`;
+        }).join('')}
+        <tr class="box-totals-row">
+          <td style="font-weight:700">PROJECTED</td>
+          <td>${total.min}</td>
+          <td style="font-weight:700">${total.pts.toFixed(0)}</td>
+          <td>${total.reb.toFixed(0)}</td><td>${total.ast.toFixed(0)}</td>
+          <td colspan="3"></td><td></td><td></td>
+        </tr>
+      </table></div>
+    </div>`;
+  }
+
+  return `<div class="box-score-section" style="border-color:rgba(167,139,250,0.3)">
+    <div class="box-score-title" style="color:var(--purple)">Game ${gameNum} Projected Box Score</div>
+    <div class="adv-comp-subtitle">Multi-factor projection: 13-variable model${hasPrior ? ' + G'+(gameIdx)+' Bayesian update (30% actual / 70% model) + coaching regression adjustments' : ''}. Normalized to match predicted score: ${projected.homeScore}-${projected.awayScore} (${projected.character})</div>
+    ${renderTeamProjection(projected.home, series.homeTeam, projected.homeScore)}
+    ${renderTeamProjection(projected.away, series.awayTeam, projected.awayScore)}
   </div>`;
 }
 

@@ -27,7 +27,12 @@ const _spmCache = new Map();
 function getCachedSPM(team, seriesId) {
   const key = seriesId + '_' + team.abbr;
   if (_spmCache.has(key)) return _spmCache.get(key);
-  const result = calcSPMChemistry(team.players.filter(p => p.rating > 0).slice(0, 8));
+  // Use getEffectiveRating to respect scenario toggles (player toggled OUT → effR = 0)
+  const activePlayers = team.players.filter(p => {
+    const effR = (typeof getEffectiveRating === 'function' && seriesId) ? getEffectiveRating(p, seriesId) : p.rating;
+    return effR > 0;
+  }).slice(0, 8);
+  const result = calcSPMChemistry(activePlayers);
   _spmCache.set(key, result);
   return result;
 }
@@ -106,8 +111,9 @@ function calcSPMChemistry(players) {
 // Calculate team-level on/off impact summary
 function calcOnOffSummary(team) {
   const active = team.players.filter(p => p.rating > 0);
+  if (active.length === 0) return { avg: 0, top: null, worst: null, swing: 0, players: [] };
   const sorted = [...active].sort((a, b) => b.onOff - a.onOff);
-  const avgOnOff = active.reduce((s, p) => s + p.onOff, 0) / active.length;
+  const avgOnOff = active.reduce((s, p) => s + (p.onOff || 0), 0) / active.length;
   const topOnOff = sorted[0];
   const worstOnOff = sorted[sorted.length - 1];
   const swing = topOnOff.onOff - worstOnOff.onOff;

@@ -18,7 +18,6 @@ function renderSeries() {
       return `<div class="game-tab game-tab-game ${currentGameTab==='g'+(gi+1)?'active':''} ${played}" onclick="switchGameTab('g${gi+1}')">G${gi+1}<span class="game-tab-result">${resultTxt}</span></div>`;
     }).join('')}
     <div class="game-tab ${currentGameTab==='stats'?'active':''}" onclick="switchGameTab('stats')">Player Stats</div>
-    <div class="game-tab ${currentGameTab==='fatigue'?'active':''}" onclick="switchGameTab('fatigue')" style="border-color:rgba(212,160,74,0.3);color:#d4a04a">Fatigue</div>
   </div>`;
 
   // Compact header with win prob inline
@@ -130,22 +129,12 @@ function renderSeries() {
         <div class="player-viz-title"><span style="width:4px;height:14px;border-radius:2px;background:${selTeam.color};display:inline-block"></span>${selTeam.name} — Advanced Player Metrics</div>
         <div class="player-viz-grid">${renderPlayerViz(selTeam, s)}</div>
       </div>
+      <!-- Series Box Score Averages -->
+      ${renderSeriesAverages(s, currentRosterTeam)}
       <!-- Roster table for selected team -->
       ${renderRosterTable(selTeam, s)}
       <!-- Synergy for selected team -->
       ${renderSynergy(selTeam)}
-    `;
-  } else if (currentGameTab === 'fatigue') {
-    // Fatigue & Injury Monitor tab
-    const selTeam = currentRosterTeam === 'home' ? s.homeTeam : s.awayTeam;
-    tabContent = `
-      ${renderFatigueMonitor(s)}
-      <!-- Team toggle tabs for roster -->
-      <div class="roster-team-tabs">
-        <div class="roster-team-tab ${currentRosterTeam==='home'?'active':''}" style="${currentRosterTeam==='home'?'background:'+s.homeTeam.color:''}" onclick="switchRosterTeam('home')">${s.homeTeam.name}<span class="rtt-record">${s.homeTeam.record}</span></div>
-        <div class="roster-team-tab ${currentRosterTeam==='away'?'active':''}" style="${currentRosterTeam==='away'?'background:'+s.awayTeam.color:''}" onclick="switchRosterTeam('away')">${s.awayTeam.name}<span class="rtt-record">${s.awayTeam.record}</span></div>
-      </div>
-      ${renderRosterTable(selTeam, s)}
     `;
   } else {
     // Individual game tabs (g1, g2, etc.)
@@ -165,6 +154,8 @@ function renderSeries() {
           <div class="lessons-title">Model Lessons from Game 1</div>
           ${s.modelLessons.map(l => `<div class="lesson-item"><span class="lesson-label ${l.type}">${l.type.toUpperCase()}</span>${l.lesson}</div>`).join('')}
         </div>` : ''}
+        ${renderBoxScore(s, 0)}
+        ${renderAdvancedComparison(s, 0)}
         ${renderFatigueMonitor(s)}
       `;
     } else if (gIdx === 1 && s.game2) {
@@ -179,25 +170,111 @@ function renderSeries() {
           <span style="font-size:12px;font-weight:700;color:var(--green);background:rgba(61,214,140,0.15);padding:4px 10px;border-radius:6px">ACTUAL</span>
           <span style="font-size:14px;font-weight:700">${getGameResultDisplay(s, 2)}</span>
         </div>` : ''}
+        ${renderProjectedBoxScore(s, 1)}
+        ${renderBoxScore(s, 1)}
+        ${renderAdvancedComparison(s, 1)}
         ${renderFatigueMonitor(s)}
       `;
     } else {
       // Games 3-7 (future games or with results)
       const gNum = gIdx + 1;
-      tabContent = `
-        <div class="game-panel">
-          <div class="game-panel-header">
-            <div class="game-panel-title">Game ${gNum}</div>
-            <div style="font-size:12px;color:var(--text-dim)">@ ${isHome?s.homeTeam.abbr:s.awayTeam.abbr}</div>
+      const gameKeyStr = 'game' + gNum;
+
+      // Check if there's a full prediction data object (like game1/game2 have)
+      if (s[gameKeyStr]) {
+        // Use the same renderGamePrediction function as G1/G2
+        const gColors = ['var(--purple)','var(--green)','var(--blue)','var(--yellow)','var(--accent)','var(--red)','var(--purple)'];
+        const gColor = gColors[gIdx] || 'var(--accent)';
+        const gLabel = 'Game ' + gNum;
+        const gPredData = s[gameKeyStr];
+
+        // Determine venue for this game
+        const venueTeam = isHome ? s.homeTeam : s.awayTeam;
+        const actualVenue = s.homeCourtOverride === 'away'
+          ? (isHome ? s.awayTeam : s.homeTeam)
+          : venueTeam;
+
+        // Series score context
+        const score = getSeriesScore(s);
+        const seriesStr = score.home > score.away ? `${s.homeTeam.abbr} leads ${score.home}-${score.away}` : score.away > score.home ? `${s.awayTeam.abbr} leads ${score.away}-${score.home}` : `Series tied ${score.home}-${score.away}`;
+
+        // G2 Adjustments / Key Takeaways section
+        const adjustmentsHtml = gPredData.g2Adjustments ? `
+          <div style="margin-top:14px;padding:12px;background:rgba(0,0,0,0.15);border-radius:10px;border-left:3px solid ${gColor}">
+            <div style="font-size:12px;font-weight:700;color:${gColor};margin-bottom:8px">\u{1F4CB} Key Adjustments from Game 2</div>
+            ${gPredData.g2Adjustments.map(a => '<div style="font-size:11px;color:var(--text);line-height:1.5;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04)">\u2022 ' + a + '</div>').join('')}
+          </div>` : '';
+
+        tabContent = `
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px">@ ${actualVenue.city} | ${seriesStr} | ${gPredData.schedule || ''}</div>
+          ${gameData.winner ? '<div style="background:rgba(61,214,140,0.08);border:1px solid rgba(61,214,140,0.3);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px"><span style="font-size:12px;font-weight:700;color:var(--green);background:rgba(61,214,140,0.15);padding:4px 10px;border-radius:6px">ACTUAL</span><span style="font-size:14px;font-weight:700">' + getGameResultDisplay(s, gNum) + '</span></div>' : ''}
+          ${renderGamePrediction(s, gameKeyStr, gNum, gColor, gLabel)}
+          ${adjustmentsHtml}
+          ${!gameData.winner ? '<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(' + gIdx + ')">Enter result</span></div>' : ''}
+          ${gameData.notes ? '<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">' + gameData.notes + '</div>' : ''}
+          ${renderProjectedBoxScore(s, gIdx)}
+          ${renderBoxScore(s, gIdx)}
+          ${renderAdvancedComparison(s, gIdx)}
+          ${renderFatigueMonitor(s)}
+        `;
+      } else {
+        // No prediction data — show dynamic-only panel
+        const gProj = calcGameProjection(s, s.id, gNum);
+        const gCharClass = gProj.character === 'BLOWOUT RISK' ? 'blowout' : gProj.character === 'SEPARATION' ? 'separation' : gProj.character === 'COMPETITIVE' ? 'competitive' : gProj.character === 'GRIND' ? 'grind' : 'coinflip';
+        const gBarPct = Math.min(100, (gProj.absMargin / 30) * 100);
+        const gBarColor = gProj.absMargin >= 18 ? 'var(--red)' : gProj.absMargin >= 12 ? 'var(--yellow)' : gProj.absMargin >= 7 ? 'var(--accent)' : 'var(--green)';
+        const gDynScore = gProj.margin >= 0
+          ? `${s.homeTeam.abbr} ${gProj.homeScore} — ${s.awayTeam.abbr} ${gProj.awayScore}`
+          : `${s.awayTeam.abbr} ${gProj.awayScore} — ${s.homeTeam.abbr} ${gProj.homeScore}`;
+
+        const venueTeam = isHome ? s.homeTeam : s.awayTeam;
+        const actualVenue = s.homeCourtOverride === 'away'
+          ? (isHome ? s.awayTeam : s.homeTeam)
+          : venueTeam;
+
+        const score = getSeriesScore(s);
+        const seriesStr = score.home > score.away ? `${s.homeTeam.abbr} leads ${score.home}-${score.away}` : score.away > score.home ? `${s.awayTeam.abbr} leads ${score.away}-${score.home}` : `Series tied ${score.home}-${score.away}`;
+
+        tabContent = `
+          <div class="game-panel" style="border-color:var(--accent)40">
+            <div class="game-panel-header">
+              <div class="game-panel-title" style="color:var(--accent)">Game ${gNum} Prediction</div>
+              <span class="game-character ${gCharClass}">${gProj.character}</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px">@ ${actualVenue.city} | ${seriesStr}</div>
+
+            ${gameData.winner ? `<div style="background:rgba(61,214,140,0.08);border:1px solid rgba(61,214,140,0.3);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+              <span style="font-size:12px;font-weight:700;color:var(--green);background:rgba(61,214,140,0.15);padding:4px 10px;border-radius:6px">ACTUAL</span>
+              <span style="font-size:14px;font-weight:700">${getGameResultDisplay(s, gNum)}</span>
+            </div>` : ''}
+
+            <div class="proj-score-dynamic">${gProj.favTeam} by ${gProj.absMargin} — ${gDynScore}</div>
+            <div class="margin-bar-container">
+              <div class="margin-bar"><div class="margin-bar-fill" style="width:${gBarPct}%;background:${gBarColor}"></div></div>
+              <span class="margin-range">${gProj.marginRange}</span>
+            </div>
+            <div class="variance-pills">
+              <div class="variance-pill">Blowout ${gProj.blowoutProb}%</div>
+              <div class="variance-pill">Close game ${gProj.closeProb}%</div>
+              ${gProj.talentMultiplier > 1.1 ? '<div class="variance-pill" style="color:var(--red);border-color:rgba(239,68,68,0.3)">Talent gap \u00d7'+gProj.talentMultiplier+'</div>' : ''}
+              ${Math.abs(gProj.depthEdge) >= 1.5 ? '<div class="variance-pill" style="color:var(--yellow);border-color:rgba(245,158,11,0.3)">Depth edge '+(gProj.depthEdge>0?s.homeTeam.abbr:s.awayTeam.abbr)+'</div>' : ''}
+            </div>
+
+            <div class="game-panel-grid" style="margin-top:12px">
+              <div class="gp-stat"><div class="label">Model Spread</div><div class="val">${gProj.favTeam} -${gProj.absMargin >= 1 ? (gProj.absMargin - 0.5).toFixed(1) : '0.5'}</div></div>
+              <div class="gp-stat"><div class="label">Win Prob</div><div class="val">${gProj.margin >= 0 ? Math.round(50 + gProj.absMargin * 3) : Math.round(50 + gProj.absMargin * 3)}%</div></div>
+              <div class="gp-stat"><div class="label">Total</div><div class="val">${gProj.homeScore + gProj.awayScore}</div></div>
+            </div>
+
+            ${!gameData.winner ? `<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(${gIdx})">Enter result</span></div>` : ''}
+            ${gameData.notes ? `<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">${gameData.notes}</div>` : ''}
           </div>
-          ${gameData.winner ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-            <span style="font-size:12px;font-weight:700;color:var(--green);background:rgba(61,214,140,0.15);padding:4px 10px;border-radius:6px">RESULT</span>
-            <span style="font-size:14px;font-weight:700">${getGameResultDisplay(s, gNum)}</span>
-          </div>` : `<div style="color:var(--text-dim);font-size:13px;margin-bottom:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(${gIdx})">Enter result</span></div>`}
-          ${gameData.notes ? `<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px">${gameData.notes}</div>` : ''}
-        </div>
-        ${renderFatigueMonitor(s)}
-      `;
+          ${renderProjectedBoxScore(s, gIdx)}
+          ${renderBoxScore(s, gIdx)}
+          ${renderAdvancedComparison(s, gIdx)}
+          ${renderFatigueMonitor(s)}
+        `;
+      }
     }
   }
 
@@ -361,6 +438,10 @@ function renderCoaching(series) {
         <div class="coach-detail-label">Key Adjustment</div>
         ${coachData.keyAdjustment}
       </div>
+      ${coachData.g1Performance ? `<div class="coach-detail">
+        <div class="coach-detail-label">G1 Performance</div>
+        ${coachData.g1Performance}
+      </div>` : ''}
     </div>`;
   }
 

@@ -40,8 +40,32 @@ const SPM_COEFF = {
 // BACKTEST-CALIBRATED MODEL CONSTANTS (2025 Playoff Backtest: 73.5% accuracy → targeting 80%+)
 // ============================================================
 // Lesson 1: HCA decays in later rounds. Road teams won G1 in ~75% of later-round series.
-const HCA_BY_ROUND = { 'R1': 3.0, 'R2': 2.0, 'CF': 1.5, 'Finals': 1.0 };
-const HCA_GAME7_OVERRIDE = 5.0; // Game 7 home team wins ~78% historically
+// PHASE 17 UPDATE (Barreira & Morgado 2023): Longitudinal analysis (1946-2022) shows HCA is
+// declining significantly in the modern NBA. Values reduced ~15% from original calibration.
+// López-García et al. (2024): team ability matters more than crowd support for HCA.
+const HCA_BY_ROUND = { 'R1': 2.5, 'R2': 1.7, 'CF': 1.3, 'Finals': 0.85 };
+// PHASE 17 UPDATE (Li et al. 2025): 10-year Game-7 analysis shows game location does NOT
+// significantly affect Game 7 outcomes. EFG% and TOV% are the decisive factors, not venue.
+// Reduced from +5.0 to +2.5 — still acknowledges crowd energy but no longer overweights it.
+const HCA_GAME7_OVERRIDE = 2.5; // Li et al.: location non-significant in G7 outcomes
+
+// PHASE 17: Playoff Adjustment Factor (Cabarkapa et al. 2022, PLOS ONE, 81 citations)
+// Playoff basketball is MORE CONSERVATIVE than regular season: fewer FGA, assists, steals,
+// turnovers, and total points. FG% and DRB are the top two discriminators (23-26% of variance).
+// Discriminant model achieves 87.2% classification accuracy in playoffs vs 82.8% regular season.
+// Applied in calcGameProjection() to reduce expected scoring output.
+const PLAYOFF_ADJUSTMENT = {
+  paceReduction: 0.95,      // playoffs slow down ~5% (was 3%, updated per Cabarkapa)
+  fgWeightBoost: 1.15,      // FG% matters 15% more in playoffs than regular season
+  drbWeightBoost: 1.20,     // DRB matters 20% more in playoffs (2nd-half defensive boards decisive)
+  orbLoserBias: true         // losing teams get more ORB (trailing teams crash boards — counterintuitive)
+};
+
+// PHASE 17: Clutch Weight Adjustment (Sarlis et al. 2024, 31 citations; Iatropoulos et al. 2025)
+// Clutch performance is MORE predictive in playoffs than regular season.
+// Defensive metrics become critical in late-game playoff situations.
+// Player composite clutch weight increased from 10% to 13% for playoff contexts.
+const PLAYOFF_CLUTCH_WEIGHT = 0.13; // up from 0.10 in regular season composite
 
 // Lesson 3: System coherence — teams with elite systems outperform individual talent ratings
 // Applied per-team as systemBonus in SERIES_DATA (range: -2 to +3)

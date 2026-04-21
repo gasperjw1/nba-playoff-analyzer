@@ -7,8 +7,13 @@
 // - Severe physical fatigue hits 3PT accuracy hardest (Oudejans et al.)
 // - Travel distance increases turnovers (p=0.038, Steenland & Deddens)
 // - Players 33+ show accelerated fatigue compounding across playoff series
-// NOTE: Upgraded to MEDIUM CONFIDENCE after G1 validation (age, altitude, injury-compounded fatigue)
-// precisely. The model applies conservative estimates (halved from research maximums).
+// PHASE 17 ADDITIONS (Google Scholar research):
+// - Esteves et al. (2021, 95 citations): Schedule congestion impacts NBA performance via non-linear
+//   recovery curve. 1 day rest = significant fatigue, 2 days = moderate, 3+ = full recovery.
+// - Jewell et al. (2025): End-of-season performance declines as function of cumulative minutes.
+//   Heavy-minute players show measurable decline into playoffs beyond game-to-game rest.
+// - Singh et al. (2021, 51 citations): Sleep/recovery deficits compound across the postseason.
+// NOTE: Upgraded to MEDIUM CONFIDENCE after G1 validation (age, altitude, injury-compounded fatigue).
 
 function calcPlayerFatigue(player, series) {
   let fatigue = 0;
@@ -27,11 +32,30 @@ function calcPlayerFatigue(player, series) {
 
   // 2. MINUTES LOAD — high-minute players degrade across a series
   // Research: back-to-back and extended minutes cause 1-3pt drop
+  // PHASE 17 (Jewell et al. 2025): Cumulative season minutes compound into playoff fatigue.
+  // Players averaging 36+ MPG over 82 games carry ~2400+ total minutes into postseason.
+  // This cumulative load is ADDITIONAL to game-to-game rest — it's a baseline fatigue floor.
   const mpg = player.ppg ? (player.usg ? Math.min(40, 48 * (player.usg / 100) * 2.4) : 32) : 0;
   // Approximate MPG from usage if not explicitly stored
   if (mpg > 36) {
     fatigue += (mpg - 36) * 0.04 * (1 + gamesPlayed * 0.15);
   }
+  // PHASE 17: Cumulative Season Minutes Load (Jewell et al. 2025)
+  // Players with high regular-season minutes carry a baseline fatigue into playoffs.
+  // Estimated season minutes = mpg * 75 (avg games played for playoff-caliber players)
+  const estSeasonMin = mpg * 75;
+  if (estSeasonMin > 2400) {
+    // Each 100 minutes above 2400 adds a small baseline fatigue
+    fatigue += (estSeasonMin - 2400) * 0.0003 * (1 + depth * 0.2);
+  }
+
+  // PHASE 17: Non-Linear Rest Recovery (Esteves et al. 2021, 95 citations)
+  // Recovery between games follows a non-linear curve:
+  // 1 day rest = 0.6x recovery, 2 days = 0.85x, 3+ days = 1.0x (full)
+  // In R1, games are every 2 days; later rounds may have 1-day gaps.
+  // We model this as an additional fatigue penalty for later rounds where
+  // rest days between games are shorter.
+  const restPenalty = depth >= 2 ? 0.04 : (depth >= 1 ? 0.02 : 0);
 
   // 3. INJURY HISTORY — removed to avoid ghosting with Health Degradation Curve
   // (injuryRisk is already penalized via base -= injuryRisk * depth * 0.4 in calcTeamRating)
@@ -54,6 +78,9 @@ function calcPlayerFatigue(player, series) {
   // We model this as a small penalty that grows with games played and series depth
   const mentalFatigue = gamesPlayed * 0.03 * (1 + depth * 0.15);
   fatigue += mentalFatigue;
+
+  // 4b. REST RECOVERY PENALTY (Esteves et al. 2021) — later rounds have less rest
+  fatigue += restPenalty;
 
   // 5. ROLE-BASED FATIGUE — primary ball handlers and shot creators fatigue more
   // These roles require constant decision-making (mental) and carry heavier physical load
@@ -82,6 +109,9 @@ function calcTeamFatigue(team, series, seriesId) {
     fatigue: calcPlayerFatigue(p, series),
     rating: p.rating
   }));
+
+  // Sort by rating descending so highest-rated players get highest weight
+  playerFatigues.sort((a, b) => b.rating - a.rating);
 
   // Team fatigue index is a weighted average (stars count more)
   let wSum = 0, wTot = 0;

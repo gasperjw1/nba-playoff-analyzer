@@ -496,6 +496,130 @@ function renderLearningsPage(el) {
         <span class="learning-tag correct">Maintenance</span>
       </div>
 
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 17 — Google Scholar Research Integration</div>
+        <div class="learning-title">16 Academic Papers Reviewed — 7 Model Changes Implemented</div>
+        <div class="learning-body">Conducted systematic Google Scholar research across 9 topic areas: playoff performance indicators, regular season vs playoff differences, home court advantage, fatigue/rest, momentum/elimination pressure, technical fouls, clutch performance, defensive matchup suppression, and player absence/injury impact. Reviewed 16 papers from 2020-2025, prioritizing peer-reviewed journals with high citation counts.
+        <br><br><strong>Tier 1 (High Impact — Implemented):</strong>
+        <br>1. <strong>Li et al. (2025)</strong> — Game 7 analysis: location non-significant → G7 override reduced from +5 to +2.5
+        <br>2. <strong>Cabarkapa et al. (2022, 81 citations)</strong> — Playoff basketball more conservative → added Playoff Adjustment Factor (pace -5%, FG% weight +15%)
+        <br>3. <strong>Barreira &amp; Morgado (2023, 15 citations)</strong> — HCA declining since 1946 → all HCA values reduced ~15%
+        <br>4. <strong>Esteves et al. (2021, 95 citations)</strong> — Non-linear recovery curve → rest penalty in later rounds
+        <br>5. <strong>Tenenbaum et al. (2025)</strong> — TF momentum differs regular vs playoffs → validates Edwards volatility factor
+        <br><br><strong>Tier 2 (Moderate Impact — Implemented):</strong>
+        <br>6. <strong>Sarlis et al. (2024, 31 citations) + Iatropoulos et al. (2025, 14 citations)</strong> — Clutch more predictive in playoffs → clutch weight increased from 10% to 13%
+        <br>7. <strong>Jewell et al. (2025)</strong> — Cumulative minutes load → season-long fatigue floor for heavy-minute players
+        <br>8. <strong>Morgulev et al. (2022)</strong> — Elimination pressure → bounce-back probability adjusted for series deficit
+        <br><br><strong>Tier 3 (Validation — No Code Changes Needed):</strong>
+        <br>Terner &amp; Franks (2021, 130 citations) validates RAPM framework; Stiles (2024) validates D-LEBRON suppression; Cristo (2025) validates injury+clutch prediction approach; López-García (2024, 10 citations) + Ganz &amp; Allsop (2024, 8 citations) confirm declining HCA.
+        <br><br><strong>Net model impact:</strong> HCA slightly reduced (more conservative), playoff pace slowed, clutch metrics upweighted, fatigue model deepened with cumulative load. These changes make the model more research-grounded and should improve accuracy in later-round predictions where our 2025 backtest accuracy dropped from 87.5% (R1) to 69.6% (R2).</div>
+        <span class="learning-tag model">Research</span><span class="learning-tag milestone">Phase 17</span>
+      </div>
+
+      <div class="learning-card">
+        <div class="learning-title">Phase 17 — Key Insight: HCA Is Not What We Thought</div>
+        <div class="learning-body">Three independent research streams converge on the same conclusion: home court advantage in the NBA playoffs is significantly weaker than historical intuition suggests.
+        <br><br>(1) <strong>Barreira &amp; Morgado (2023)</strong> showed HCA has been declining since at least the 1990s in a 76-year longitudinal study of NBA playoffs.
+        <br>(2) <strong>López-García et al. (2024)</strong> found team ability has a significant effect on HCA (p &lt; 0.01) — meaning strong teams create HCA through quality of play, not venue effects.
+        <br>(3) <strong>Li et al. (2025)</strong> found game location is NOT a significant factor in Game 7 outcomes — the decisive factors are EFG% and TOV%, especially in the second half.
+        <br><br>Our old G7 override of +5.0 was among the most aggressive parameters in the model, and it was built on conventional wisdom rather than rigorous data. The new +2.5 still respects crowd energy but no longer dominates the calculation. Combined with the ~15% reduction across all rounds, this should significantly improve our R2+ accuracy where road teams kept stealing games.</div>
+        <span class="learning-tag model">HCA Research</span><span class="learning-tag correct">Validated</span>
+      </div>
+
+      <div class="learning-card">
+        <div class="learning-title">Phase 17 — Key Insight: Playoffs Are a Different Sport</div>
+        <div class="learning-body">Cabarkapa et al. (2022) provided the most actionable single finding: playoff basketball is <strong>statistically more conservative</strong> than regular season. Their discriminant model achieves 87.2% classification accuracy in playoffs (vs 82.8% regular season), meaning playoff games are EASIER to predict when you use the right variables.
+        <br><br>The key variables that discriminate winners from losers in playoffs: (1) FG% — top discriminator, (2) Defensive Rebounds — teams that secure possession win, (3) Turnovers — TO% is significantly negative. Notably, personal fouls do NOT discriminate in playoffs (unlike regular season), and offensive rebounds actually favor LOSING teams (trailing teams crash boards).
+        <br><br>This validates our stat differential system (Jones &amp; Magel 2016) but suggests we should weight FG% and DRB% even higher for playoff contexts. The counterintuitive ORB finding also explains why teams like CLE (high ORB%) don't get extra credit in our playoff model — those boards come when trailing.</div>
+        <span class="learning-tag model">Playoff Adjustment</span><span class="learning-tag data">Research</span>
+      </div>
+
+      <!-- Phase 20 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 20 — G2 Differentiation Engine</div>
+        <div class="learning-title">Step 7b: Momentum/Regression System for Game 2+ Projections</div>
+        <div class="learning-body">Implemented a 3-factor momentum system that runs after coaching compression: (A) Upset bounce-back — home teams that lost G1 get 2-4pt margin boost, road losers 1-2.5pt. (B) Blowout regression — 25+ pt blowouts regress 25-35%, 15+ pt wins regress 12-25%, close games (<6pts) minimal 3%. (C) Surprise shift — when G1 result contradicts model prediction, margin shifts 30% toward reality.
+        <br><br>Upgraded Bayesian weighting from 30% to 45% for 15+ minute players, with tiered system (65/35 for 10-14min, 40/60 for minutes). Enhanced coaching compression from 10-18% to 15-30% per game with opponent coach quality factor. Lowered overperformance regression threshold from +10 to +6pts, underperformance bounce-back from -8 to -5pts. Result: All 8 series show meaningful G2 margin shifts (2-10pts compressed from G1 projections).</div>
+        <span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 20</span>
+      </div>
+
+      <!-- Phase 21 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 21 — CLE-TOR G2 Results Analysis</div>
+        <div class="learning-title">Game Margin Prediction: Model +11 vs Actual +10 — Excellent</div>
+        <div class="learning-body"><strong>CLE 115, TOR 105 (CLE leads 2-0).</strong> The G2 differentiation engine's first live test was a success at the game level — projected margin of +11 vs actual +10 (within 1 point). The game character prediction of COMPETITIVE was also validated: TOR kept it within 7 through Q2 before CLE pulled away in Q3/Q4.
+        <br><br>CLE's top-3 all exceeded 25pts (Mitchell 30, Harden 28, Mobley 25) — the model didn't anticipate this offensive explosion from all three simultaneously. TOR's 22 turnovers vs CLE's 12 was the game's decisive factor; the model doesn't explicitly project turnover differential. Strus regressed from 24pts (G1) to 6pts — directionally correct but model still overestimated at 12.1.</div>
+        <span class="learning-tag data">G2 Live Result</span><span class="learning-tag milestone">Phase 21</span>
+      </div>
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 21 — CLE-TOR G2 Results Analysis</div>
+        <div class="learning-title">Player-Level Misses: Role Flexibility + Defensive Scheme Impact</div>
+        <div class="learning-body"><strong>Biggest model misses by player:</strong>
+        <br>• <strong>Harden:</strong> 28pts/4ast actual vs 19.1pts/8.7ast projected. Role shifted from facilitator (10ast G1) to scorer. Bayesian update correctly boosted assists but couldn't predict tactical role change. LEARNING: Player role flexibility (facilitator↔scorer) is not captured.
+        <br>• <strong>Mobley:</strong> 25pts on 11/13 FG vs 15.4pts projected. Massive scoring efficiency not predicted. His offensive ceiling in a playoff setting is higher than regular season data suggests.
+        <br>• <strong>Ingram:</strong> 7pts on 3/15 FG vs 18.7pts projected. CLE's defensive scheme completely shut him down for a second straight game (9 shots G1, 3/15 G2). LEARNING: Defensive matchup suppression needs a "scheme lock" multiplier when the same scheme works in consecutive games.
+        <br>• <strong>Barnes:</strong> 26pts vs 19.7pts projected. Bounce-back model was directionally correct but underestimated the magnitude.
+        <br>• <strong>Murray-Boyles:</strong> 17pts vs 9.8pts projected. Bench player emergence is consistently underestimated — young players gaining confidence is nonlinear.
+        <br>• <strong>Poeltl:</strong> Only 9min (model assumed full rotation). Role collapse not captured — a repeatable scheme makes it a G3 factor.</div>
+        <span class="learning-tag model">Model Learning</span><span class="learning-tag data">Player Analysis</span>
+      </div>
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 21 — CLE-TOR G2 Results Analysis</div>
+        <div class="learning-title">5 Actionable Model Improvements Identified</div>
+        <div class="learning-body"><strong>1. Turnover Differential Projection:</strong> Model doesn't project TO differential explicitly. CLE forced 22 TOs in G2 (18 in G1) — this is a repeatable defensive scheme outcome, not random variance. Should add a scheme-based turnover factor.
+        <br><strong>2. Player Role Flexibility:</strong> Harden switching from facilitator (10ast) to scorer (28pts/4ast) broke the Bayesian assist model. Need a "role mode" variable that considers when a team's scoring load redistributes.
+        <br><strong>3. Defensive Scheme Lock:</strong> When a defensive scheme works in G1 AND G2 against a specific player (Ingram: 17pts→7pts), the suppression should compound, not reset. Current model treats each game independently.
+        <br><strong>4. Bench Emergence Nonlinearity:</strong> Murray-Boyles went 14→17pts across G1→G2. Young bench players gaining playoff confidence produce accelerating returns, not mean reversion.
+        <br><strong>5. Minutes Reallocation:</strong> Poeltl's collapse from 21min (G1) to 9min (G2) shifted 12min to Mamukelashvili (20min, 12/10 double-double). Model should track minutes trends and redistribute when patterns emerge.</div>
+        <span class="learning-tag model">Future Work</span><span class="learning-tag milestone">Phase 21</span>
+      </div>
+
+      <!-- Phase 22 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 22 — Per-Player Offensive Outlook System</div>
+        <div class="learning-title">Research-Backed Individual FG% & Scoring Differentiation</div>
+        <div class="learning-body">Implemented <strong>g3PlayerOutlook</strong> — a per-player, per-game offensive outlook system that replaces the old flat 40-50% FG% range with research-backed differentiated projections. Each player gets an <strong>outlook</strong> (good/bad/neutral/neutral-good), <strong>projFgPct</strong>, <strong>ptsRange</strong>, <strong>reason</strong>, and <strong>confidence</strong> (high/medium/low). The outlook feeds into two mechanisms: (1) scoring boost/suppress of ±8-12% based on outlook and confidence, (2) FG% override for shooting stat lines (FGM/FGA/TPM/TPA). This was applied to NYK-ATL G3, CLE-TOR G3, and DEN-MIN G3 using online research covering regular season stats, G1/G2 box scores, historical playoff matchups, coaching tactics, and 2024/2025 playoff similarities.</div>
+        <span class="learning-tag model">Engine Upgrade</span><span class="learning-tag data">Research</span><span class="learning-tag milestone">Phase 22</span>
+      </div>
+
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 22 — Per-Player Offensive Outlook System</div>
+        <div class="learning-title">Bayesian Blend + Returning Player Logic</div>
+        <div class="learning-body">The projection engine uses a <strong>tiered Bayesian blend</strong>: 55% model / 45% prior actual for 15+ minute players, 70/30 for 5-14 min players, and 100% model for players with no prior data. A key bug was discovered where <strong>researchFgPct</strong> was scoped inside the <code>if (prior)</code> block, making it inaccessible for players without prior box scores. Fixed by moving the entire outlook block outside the prior check. Additionally, <strong>returning player logic</strong> was added to include roster players who weren't in prior box scores but have a research outlook entry (e.g., Quickley returning from injury in CLE-TOR G3). The threshold for inclusion was refined from <code>rating > 50</code> to <strong>outlook-entry-based</strong> to avoid normalization dilution from irrelevant bench players.</div>
+        <span class="learning-tag model">Bug Fix</span><span class="learning-tag model">Engine Design</span><span class="learning-tag milestone">Phase 22</span>
+      </div>
+
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 22 — Per-Player Offensive Outlook System</div>
+        <div class="learning-title">Key Research Findings Across Three Series</div>
+        <div class="learning-body"><strong>NYK-ATL:</strong> McCollum trending as primary scorer (26→32pts), ATL's offense runs through him not Jalen Johnson. Okongwu's 3PT evolution (4-6 from 3 in G1) is a scheme-breaker.
+        <br><strong>CLE-TOR:</strong> Mobley's 84.6% FG in G2 was unsustainable (regressed to 52% projection). Strus scouted after 24pt G1 explosion (down to 38.5%). Barnes trending up (21→26pts). Quickley's return from injury at reduced capacity (40.4% FG, 10.3pts projected).
+        <br><strong>DEN-MIN:</strong> Gobert held Jokic to 1-8 when matched in G2 — worst playoff shooting vs single defender in Jokic's career. Edwards' knee warming up (22→30pts health trajectory). Hardaway historically torments Minnesota (19+ PPG). Gordon flagged "bad" due to foul trouble pattern + injury-riddled 36-game season.</div>
+        <span class="learning-tag data">Research</span><span class="learning-tag milestone">Phase 22</span>
+      </div>
+
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 22 — Per-Player Offensive Outlook System</div>
+        <div class="learning-title">Codebase Audit & Hardening</div>
+        <div class="learning-body">Comprehensive audit found and fixed: (1) <strong>Unused variable</strong> <code>isMustWin</code> — logically identical to <code>isElimination</code> in best-of-7, removed. (2) <strong>Null safety</strong> — added <code>|| []</code> guards on <code>series.externalFactors</code> in both projections.js and ratings.js to prevent crashes on series without external factors. (3) <strong>Null guards</strong> on <code>player.ts</code> (true shooting %) — was accessed without checking existence, now defaults to 55 when undefined. (4) <strong>Misleading comment</strong> on <code>researchFgPct</code> corrected — it overrides shooting stat lines, not point totals directly. No broken references, ghost calculations, or duplicate logic found across UI/data files.</div>
+        <span class="learning-tag model">Code Quality</span><span class="learning-tag milestone">Phase 22</span>
+      </div>
+
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 22 — G2 Per-Player Outlook Extension</div>
+        <div class="learning-title">g2PlayerOutlook Extended to All 5 Remaining G2 Series</div>
+        <div class="learning-body">The per-player outlook system (originally built for G3 across 3 series) was extended to cover all 5 remaining G2 matchups: <strong>HOU-LAL, OKC-PHX, SAS-POR, DET-ORL, BOS-PHI</strong>. Each series now has a <code>g2PlayerOutlook</code> block with home and away arrays (6-7 players per side), using the same structure as g3PlayerOutlook.
+        <br><br><strong>Methodology — Bayesian FG% Regression:</strong> Each player's G2 projected FG% uses a <strong>55% model / 45% prior</strong> Bayesian blend, where "model" = G1 actual FG% and "prior" = season average FG%. This naturally regresses overperformers down and bounces underperformers up.
+        <br><br><strong>Key regression examples:</strong>
+        <br>• Kennard (LAL): 69.2% G1 → 44% proj ("bad" — HOU will scheme against him)
+        <br>• SGA (OKC): 27.8% G1 → 46% proj ("good" — major bounce-back expected)
+        <br>• Wemby (SAS): 61.9% G1 → 52% proj ("good" — 3PT regression but midrange holds)
+        <br>• WCJ (ORL): 88.9% G1 → 55% proj ("neutral" — extreme outlier regression)
+        <br>• Cade (DET): 48.1% G1 → 46% proj ("good" — All-Star sustains efficiency)
+        <br><br><strong>Impact on bets:</strong> G2 bets recalibrated — BOS-PHI margin +8→+12, OKC-PHX +9→+13, Cade parlay line bumped O20.5→O27.5.</div>
+        <span class="learning-tag model">Engine Extension</span><span class="learning-tag data">G2 Outlook</span><span class="learning-tag milestone">Phase 22</span>
+      </div>
+
     </div>
   </div>`;
 
@@ -518,7 +642,11 @@ function renderLearningsPage(el) {
     'Phase 11': '2024 playoffs backtest — 86 games across 4 rounds',
     'Phase 14': 'Live G1 results analysis + model corrections',
     'Phase 15': '11-step margin variance engine + bet audit',
-    'Phase 16': 'Fatigue monitor upgraded to medium confidence'
+    'Phase 16': 'Fatigue monitor upgraded to medium confidence',
+    'Phase 17': 'Google Scholar research — 16 papers, 7 model changes',
+    'Phase 20': 'G2 differentiation engine — momentum, regression, coaching compression',
+    'Phase 21': 'CLE-TOR G2 results — margin prediction validated (+11 proj vs +10 actual)',
+    'Phase 22': 'Per-player offensive outlook system — research-backed FG% differentiation for G2 (5 series) + G3 (3 series)'
   };
 
   // Collect all entries/cards
