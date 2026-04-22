@@ -242,7 +242,7 @@ function renderBetsPage(el) {
               <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>Brown O24.5</strong> — averaging 31.0pts through 2 games on 51% FG. PHI's wing defense cannot contain him (Edgecombe D-LEBRON 0.08). Highest-confidence prop on the BOS-PHI slate. <strong>LAL +9.5</strong> — best VALUE bet on the slate. Model projects HOU by only 5, but market gives LAL 9.5pts. Redick's scheme is structural and travels (held HOU to 39% FG across 2 games). Smart (20ppg) and Kennard (25ppg) are sustained. 4.5pt cushion. <strong>Henderson O22.5</strong> — youth breakout CONFIRMED (18&rarr;31pts). Phase 29 persistence active at age 21. NOW AT HOME at Moda Center. Even with FG% regression, volume + crowd = 25+ baseline. BOOST: Barnes (SAS) wrist injury thins SAS depth further.</div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>Brown O24.5</strong> — averaging 31.0pts through 2 games on 51% FG. PHI's wing defense cannot contain him (Edgecombe D-LEBRON 0.08). Highest-confidence prop on the BOS-PHI slate. <strong>LAL +9.5</strong> — best VALUE bet on the slate. Model projects HOU by only 5, but market gives LAL 9.5pts. Redick's scheme is structural and travels (held HOU to 39% FG across 2 games). Smart (20ppg) and Kennard (25ppg) are sustained. 4.5pt cushion. <strong>Henderson O22.5</strong> — youth breakout CONFIRMED (18&rarr;31pts). Phase 29 persistence active at age 21. NOW AT HOME at Moda Center. MEGA BOOST: Wemby OUT (concussion) + Barnes OUT (wrist) + McLaughlin OUT (ankle). SAS missing 3 rotation players including their rim protector. Henderson has open lanes, no intimidation factor, weakened defensive rotations. 25+ is the floor.</div>
         </div>
 
         <!-- $1 CHAOS TICKET — FRI APR 24 -->
@@ -1071,15 +1071,15 @@ function renderBetsPage(el) {
     <!-- ══════════════════════════════════════════════ -->
     <!--  SAS-POR G3 — Fri Apr 24 @ POR                -->
     <!-- ══════════════════════════════════════════════ -->
-    <div class="series-bets-header">SAS @ POR — Game 3 | Fri Apr 24 — 10:00 PM ET — Prime Video</div>
+    <div class="series-bets-header">SAS @ POR — Game 3 | Fri Apr 24 — 10:30 PM ET — Prime Video</div>
     <div class="series-bets-group">
 
-      <!-- CONDITIONAL: WEMBY STATUS -->
-      <div class="bet-card">
-        <span class="bet-type ml">MONEYLINE</span>
-        <div class="bet-pick">SAS ML @ POR (CONDITIONAL on Wemby)</div>
-        <div class="bet-line">-125 | Model: SAS by 3 (blended) | LOW confidence — GAME-TIME DECISION</div>
-        <div class="bet-reasoning">CONDITIONAL PICK: If Wemby plays (60% probability), SAS favored by ~8 — his +16.9 on/off transforms SAS. If Wemby OUT (40%), POR favored by ~5 at home with Henderson's momentum. Blended: SAS by ~3. ⚠️ NEW: Harrison Barnes exited G2 with left wrist injury (DAY-TO-DAY, rating 60→0) — SAS's depth takes ANOTHER hit beyond Wemby. If BOTH Wemby and Barnes are OUT, POR becomes a strong favorite (~7-8pts). WAIT for Wemby AND Barnes status before placing. If Wemby cleared + Barnes plays: SAS ML is value. If either OUT: lean POR ML heavily.</div>
+      <!-- POR ML — WEMBY OUT -->
+      <div class="bet-card best-bet">
+        <span class="bet-type ml">MONEYLINE ★</span>
+        <div class="bet-pick">POR ML vs SAS (Wemby OUT)</div>
+        <div class="bet-line">-122 | Model: POR by 7 | MEDIUM confidence — Wemby CONFIRMED OUT</div>
+        <div class="bet-reasoning">Wemby OUT (concussion protocol — failed to clear neurologist within 48hr window). Barnes OUT (wrist). McLaughlin OUT (ankle). SAS missing their franchise player (+16.9 on/off), starting PF, and backup PG. SAS collapsed without Wemby in G2 — outscored by 10 after his exit, lost 103-106 at HOME. Now on the ROAD at Moda Center for POR's first home game with the crowd electric after the G2 upset. Henderson's youth breakout (18→31pts) carries to home floor. Avdija becomes the clear best player on the floor. Model projects POR by 7 — market only has POR -1.5, creating significant value. POR ML at -122 is the play.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
 
@@ -1088,7 +1088,7 @@ function renderBetsPage(el) {
         <span class="bet-type prop">PROP ★ BEST BET</span>
         <div class="bet-pick">Scoot Henderson Over 22.5 points</div>
         <div class="bet-line">-110 | YOUTH BREAKOUT CONFIRMED (age 21) | 18→31pts | AT HOME</div>
-        <div class="bet-reasoning">THE youth breakout story of 2026 R1. Henderson: 18pts G1 → 31pts G2 (11-17 FG, 5-9 3PT) at age 21. Phase 29 youth breakout persistence: consecutive breakout games for ≤23-year-olds are MORE likely after one. NOW AT HOME at Moda Center — expect peak performance. Even with FG% regression from 64.7% to ~48%, his volume + home crowd energy = 25+ baseline. Over 22.5 gives 2.5pts of cushion on the hottest young player in the playoffs. REGARDLESS of Wemby's status, Henderson will be aggressive. ⚠️ BOOST: Harrison Barnes (SAS) exited G2 with left wrist injury (DAY-TO-DAY) — SAS's depth thins further, creating more transition opportunities and weaker defensive rotations for Henderson to exploit.</div>
+        <div class="bet-reasoning">THE youth breakout story of 2026 R1. Henderson: 18pts G1 → 31pts G2 (11-17 FG, 5-9 3PT) at age 21. Phase 29 youth breakout persistence: consecutive breakout games for ≤23-year-olds are MORE likely after one. NOW AT HOME at Moda Center — expect peak performance. Even with FG% regression from 64.7% to ~48%, his volume + home crowd energy = 25+ baseline. Over 22.5 gives 2.5pts of cushion on the hottest young player in the playoffs. MEGA BOOST: Wemby OUT (concussion), Barnes OUT (wrist), McLaughlin OUT (ankle) — SAS missing their rim protector, starting PF, and backup PG. No Wemby means no intimidation at the rim, weaker defensive rotations, and more transition opportunities for Henderson to attack. This is the highest-confidence prop on the Fri Apr 24 slate.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
 
@@ -1097,7 +1097,7 @@ function renderBetsPage(el) {
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Deni Avdija Over 21.5 points</div>
         <div class="bet-line">-115 | 22pts avg G1-G2 | Home game | Best overall player for POR</div>
-        <div class="bet-reasoning">POR's star: 30pts G1, 14pts G2 — averaging 22pts. G2 dip was partly Wemby's gravity (before his exit). At HOME, expect G1-level restoration. If Wemby OUT, Avdija is the clear best player on the floor — no one on SAS can guard his 6'9 pick-and-roll creation. Over 21.5 is near his 2-game average with massive upside if Wemby sits.</div>
+        <div class="bet-reasoning">POR's star: 30pts G1, 14pts G2 — averaging 22pts. G2 dip (5-13 FG) was partly Wemby's defensive gravity before his exit. At HOME with Wemby CONFIRMED OUT, Avdija is the clear best player on the floor — no one on SAS can guard his 6'9 pick-and-roll creation. No Wemby rim protection means easier driving lanes and mid-range looks. Over 21.5 is near his 2-game average with massive upside now that the series' best defender is sidelined. Expect 24-28pts at home.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
@@ -1106,7 +1106,7 @@ function renderBetsPage(el) {
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Dylan Harper Over 8.5 points</div>
         <div class="bet-line">-110 | YOUTH BREAKOUT CANDIDATE (age 20, rookie) | Expanded role if Wemby OUT</div>
-        <div class="bet-reasoning">Harper (age 20, Phase 29 active): 10pts/4ast in 23min G2 after Wemby exit — showed poise beyond his years. If Wemby OUT again, Harper sees 25+ minutes as secondary ball-handler. Even if Wemby plays, Harper's expanded role is earned. His 4-7 FG (57.1%) G2 was efficient. Over 8.5 is conservative for a player trending toward 12-14pts with expanding minutes. Road game harder for rookies, but youth multiplier compensates.</div>
+        <div class="bet-reasoning">Harper (age 20, Phase 29 active): 10pts/4ast in 23min G2 after Wemby exit — showed poise beyond his years. With Wemby CONFIRMED OUT, Harper is locked into 25+ minutes as secondary ball-handler behind Fox/Castle. His 4-7 FG (57.1%) G2 was efficient. Over 8.5 is conservative for a player trending toward 12-14pts with a guaranteed expanded role. Road game is harder for rookies, but SAS needs his ball-handling and the youth breakout multiplier (Phase 29) compensates.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 

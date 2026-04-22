@@ -102,7 +102,7 @@ const G1_BOX_SCORES = {
       {name:"Scoot Henderson",min:27,pts:18,reb:3,ast:3,stl:1,blk:0,fgm:7,fga:11,tpm:2,tpa:4,ftm:2,fta:2,to:3,orb:0},
       {name:"Donovan Clingan",min:22,pts:4,reb:7,ast:0,stl:0,blk:0,fgm:2,fga:7,tpm:0,tpa:3,ftm:0,fta:0,to:0,orb:1},
       {name:"Shaedon Sharpe",min:22,pts:10,reb:2,ast:1,stl:0,blk:0,fgm:4,fga:13,tpm:0,tpa:4,ftm:2,fta:2,to:0,orb:0},
-      {name:"Matisse Thybulle",min:21,pts:1,reb:4,ast:1,stl:1,blk:0,fgm:1,fga:3,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Matisse Thybulle",min:21,pts:3,reb:4,ast:1,stl:1,blk:0,fgm:1,fga:3,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
       {name:"Jerami Grant",min:19,pts:5,reb:0,ast:2,stl:0,blk:2,fgm:2,fga:6,tpm:1,tpa:3,ftm:0,fta:0,to:1,orb:0},
       {name:"Robert Williams",min:17,pts:11,reb:6,ast:4,stl:0,blk:0,fgm:5,fga:7,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0}
     ]
