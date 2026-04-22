@@ -742,6 +742,23 @@ function renderLearningsPage(el) {
         <span class="learning-tag bug">Data Fix</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 31</span>
       </div>
 
+      <!-- Phase 32 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 32 — G2 Upset Analysis: Five New Prediction Factors</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Trigger:</strong> G1 winner picks were 75% correct (6/8), but G2 picks dropped to 33% (2/6). Multiple series now tied 1-1 that were predicted as sweeps. Systematic audit revealed 5 missing factors.
+        <br><br><strong>Coaching Staffs Verified (Critical Fix):</strong> NYK coach is <strong>Mike Brown</strong> (not Thibodeau — fired 2025). All 16 staffs confirmed: Daigneault (OKC), Johnson (SAS), Adelman (DEN), Redick (LAL), Udoka (HOU), Finch (MIN), Splitter interim (POR — Billups arrested), Ott (PHX), Bickerstaff (DET), Mazzulla (BOS), Brown (NYK), Snyder (ATL), Atkinson (CLE), Rajakovic (TOR), Nurse (PHI), Mosley (ORL).
+        <br><br><strong>Five New Engine Factors:</strong>
+        <br>1. <strong>Coaching Adjustment Quality (CAQ) — Step 7 upgrade:</strong> Replaced single adjustmentRating with blended CAQ score: 50% adjustmentRating + 30% schemeCreativity + 20% urgency. Evidence: Nurse (PHI) schemeCreativity=9 redesigned offense between G1-G2, moved Maxey off-ball, elevated Edgecombe → PHI won by 14 after losing G1 by 32. Snyder (ATL) schemeCreativity=9 unlocked Kuminga, CJ McCollum scored 32 with go-ahead bucket at 34 seconds. Mazzulla (BOS) schemeCreativity=5 "didn't make enough adjustments" per Boston Globe. Formula: <code>adjustmentRate = 0.15 + (caqScore/10) * 0.18</code> (15-33% per game vs old 15-30%).
+        <br>2. <strong>Initiator Count Differential (IC) — Step 5g:</strong> Teams with 3+ independent shot creators have higher offensive floors. Evidence: ORL beat DET G1 with 5 players 16+ pts vs Cade-only (39pts, nobody else). HOU iso-heavy offense (Udoka: "stagnant") lost both to LAL's committee (4 in double figures). Formula: <code>(homeIC - awayIC) * 1.0</code>, ±3.0pt cap, applies G2+.
+        <br>3. <strong>Scheme Persistence Factor (SPF) — Step 5h:</strong> When G1 FG% suppression is scheme-driven (not variance), it persists at ~70% effectiveness. Evidence: LAL zone held HOU to 37.6% G1 → 40.4% G2 (persistent). Gobert held Jokic 1-of-8 individually (structural assignment). Spoelstra's "Giannis Wall" 2023 persisted entire series (21ppg). BOS shot 26% 3PT in G2 after PHI schemed denial. New data field: <code>series.schemePersistence</code> with isSchemeDriven flag and fgSuppression value.
+        <br>4. <strong>Star Absence Recalibration — Steps 5i/5j:</strong> Two components: (a) Role player redistribution — when stars are out, remaining players get more shots and designed plays (Kennard 27pts G1, 23pts G2 with Luka/Reaves out). Deep benches (4+ players rated 65+) claw back 35% of star absence penalty. (b) Star return penalty — players returning mid-series from injury underperform (KD returned G2: 23pts but 9 TOs, 3pts after halftime). New data: <code>series.starReturnPenalty</code>.
+        <br>5. <strong>Youth Playoff Ceiling Multiplier (YCM) — Enhanced:</strong> Raised default ceiling multipliers (1.30/1.40 from 1.25/1.35). Multi-game streak blend now 25/25/50 (model/actual/ceiling, was 30/25/45). Per-player research-backed overrides via <code>series.youthCeilings</code>. Evidence: Edgecombe 30/10 = first rookie 30/10 since Tim Duncan 1998. Henderson 31pts on 65% FG. Banchero career playoff avg 28.0 vs 22.2 reg season. Cade 39pts (60%+ above 24ppg avg).
+        <br><br><strong>Data Added:</strong> schemeCreativity + urgency for all 16 coaching blocks. schemePersistence for 5 series (HOU-LAL, OKC-PHX, DEN-MIN, DET-ORL, BOS-PHI). youthCeilings for 3 series (SAS-POR, DET-ORL, BOS-PHI). starReturnPenalty for HOU-LAL (KD).</div>
+        <span class="learning-tag research">G2 Audit</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 32</span>
+      </div>
+
       <!-- Phase 28 -->
       <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
@@ -797,7 +814,8 @@ function renderLearningsPage(el) {
     'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts',
     'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.',
     'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.',
-    'Phase 31': 'Research anchor blend & data integrity — engine now consumes ptsRange from gNPlayerOutlook (60-70% research blend), normalization caps respect research range, outlook key deduplicated. SGA scoring data reconciled, G1 record corrected to 8/13. Featured Parlays rebuilt for Apr 22 with history timeline.'
+    'Phase 31': 'Research anchor blend & data integrity — engine now consumes ptsRange from gNPlayerOutlook (60-70% research blend), normalization caps respect research range, outlook key deduplicated. SGA scoring data reconciled, G1 record corrected to 8/13. Featured Parlays rebuilt for Apr 22 with history timeline.',
+    'Phase 32': 'G2 upset analysis — 5 new factors: Coaching Adjustment Quality (CAQ blended score), Initiator Count differential (±3.0pts), Scheme Persistence Factor (70% carryforward), Star Absence Recalibration (redistribution + return penalty), Youth Ceiling Multiplier (per-player overrides). All 16 coaching staffs verified. G1→G2 prediction accuracy: 75%→33% identified root causes.'
   };
 
   // Collect all entries/cards

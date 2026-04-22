@@ -201,22 +201,124 @@ function calcGameProjection(series, seriesId, gameNum) {
     }
   }
 
+  // --- STEP 5g: Initiator Count Differential (Phase 32) ---
+  // Research: Teams with 3+ independent shot creators (PnR/ISO initiators) have
+  // higher offensive floors and are harder to scheme against in playoffs.
+  // Evidence: ORL beat DET G1 with 5 players 16+ pts vs Cade-only attack.
+  // HOU's iso-heavy offense (Udoka admitted "stagnant") lost both games to LAL's committee.
+  // LAL had 4 players in double figures despite missing Luka + Reaves.
+  // ATL's assist-driven offense (30.1 APG reg season) overcame 12pt Q4 deficit.
+  // Formula: (homeIC - awayIC) * 1.0, capped at ±3.0 pts. Applies G2+ when
+  // scheme limitations are exposed. Uses dynamic count when available.
+  if (gameNum > 1) {
+    const homeIC = series.homeTeam.initiators || 2;
+    const awayIC = series.awayTeam.initiators || 2;
+    const icDiff = homeIC - awayIC;
+    const icAdj = Math.max(-3.0, Math.min(3.0, icDiff * 1.0));
+    if (Math.abs(icAdj) > 0.1) baseMargin += icAdj;
+  }
+
+  // --- STEP 5h: Scheme Persistence Factor (Phase 32) ---
+  // Research: When G1 FG% suppression is scheme-driven (identifiable defensive
+  // strategy), it persists at ~70% effectiveness in subsequent games.
+  // Evidence: LAL zone held HOU to 37.6% G1 → 40.4% G2 (persisted across both).
+  // Gobert held Jokic 1-of-8 individually in DEN-MIN G2 (structural assignment).
+  // Spoelstra's "Giannis Wall" 2023: Giannis dropped to 21ppg for entire series.
+  // PHI suppressed BOS 3PT to 26% in G2 after schemed denial.
+  // schemePersistence: { home: { fg%Suppression, isSchemedriven }, away: {...} }
+  // If the prior game showed scheme-driven suppression, carry forward 70% of impact.
+  if (gameNum > 1 && series.schemePersistence) {
+    const sp = series.schemePersistence;
+    let schemeAdj = 0;
+    // Home team's scheme suppresses away team's scoring
+    if (sp.home && sp.home.isSchemeDriven && sp.home.fgSuppression) {
+      // fgSuppression is the FG% drop caused by the scheme (e.g., 0.08 = 8pp drop)
+      // Each 1pp of FG% ≈ 0.8pts on ~80 FGA → but capped at 3pts max impact
+      const impact = sp.home.fgSuppression * 80 * 0.7; // 70% persistence
+      schemeAdj += Math.min(3.0, impact);
+    }
+    // Away team's scheme suppresses home team's scoring
+    if (sp.away && sp.away.isSchemeDriven && sp.away.fgSuppression) {
+      const impact = sp.away.fgSuppression * 80 * 0.7;
+      schemeAdj -= Math.min(3.0, impact);
+    }
+    schemeAdj = Math.max(-4.0, Math.min(4.0, schemeAdj));
+    if (Math.abs(schemeAdj) > 0.1) baseMargin += schemeAdj;
+  }
+
+  // --- STEP 5i: Star Absence Role Player Elevation (Phase 32) ---
+  // Research: When a team is missing stars, remaining role players get MORE shots,
+  // MORE designed plays, and often EXCEED their regular season output.
+  // Evidence: LAL without Luka + Reaves → Kennard exploded (27pts G1, 23pts G2).
+  // Smart scored 25pts G1 with 7ast. LeBron shifted to facilitator (13ast G1).
+  // The model's star absence penalty (Step 4) correctly penalizes the team,
+  // but doesn't account for the REDISTRIBUTION effect that lifts role players.
+  // Net effect: star absence hurts team ceiling but less than raw talent loss suggests
+  // because the "hero" response from remaining players partially compensates.
+  // starAbsenceRedistribution: reduces the star absence margin penalty by 30-50%
+  // when the team has a deep rotation (4+ players rated 65+).
+  const homeDepthPlayers = series.homeTeam.players.filter(p => {
+    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+    return r >= 65;
+  }).length;
+  const awayDepthPlayers = series.awayTeam.players.filter(p => {
+    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+    return r >= 65;
+  }).length;
+  if (homeStarsOut > 0 && homeDepthPlayers >= 4) {
+    // Redistribute: team with missing stars but deep bench compensates partially
+    // Reduce the penalty applied in Step 4 by 35%
+    baseMargin += homeStarsOut * 2.0 * 0.35; // clawback 35% of the Step 4 penalty
+  }
+  if (awayStarsOut > 0 && awayDepthPlayers >= 4) {
+    baseMargin -= awayStarsOut * 2.0 * 0.35;
+  }
+
+  // --- STEP 5j: Star Return From Injury Penalty (Phase 32) ---
+  // Research: Stars returning mid-series from injury underperform their baseline.
+  // Evidence: KD returned G2 vs LAL → 23pts but 9 turnovers, only 3pts after halftime.
+  // The rust + conditioning gap is real: even cleared players need 1-2 games to adjust.
+  // starReturnPenalty: { player, gamesOut, severity } — applies 3-6% scoring penalty
+  if (series.starReturnPenalty) {
+    series.starReturnPenalty.forEach(srp => {
+      const isHomePlayer = series.homeTeam.players.some(p => p.name === srp.player);
+      const penaltyPts = (srp.gamesOut || 1) * 0.8; // 0.8pts per game missed
+      if (isHomePlayer) {
+        baseMargin -= Math.min(2.5, penaltyPts);
+      } else {
+        baseMargin += Math.min(2.5, penaltyPts);
+      }
+    });
+  }
+
   // --- STEP 6: Pre-compression cap ---
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
   // can still REDUCE the margin below the cap for G2+, creating game-to-game variety.
   baseMargin = Math.max(-18, Math.min(18, baseMargin));
 
-  // --- STEP 7: Coaching Adjustment Compression (applied AFTER cap) ---
+  // --- STEP 7: Coaching Adjustment Quality (CAQ) Compression (Phase 32 upgrade) ---
   // 2025 evidence: OKC-MEM margins went 51→19→6→2 as Taylor adjusted
-  // Losing coaches study film and counter; margins shrink each game
+  // 2026 evidence: Nurse (PHI) adjusted after 32pt G1 loss → won G2 by 14.
+  //   Snyder (ATL) adjusted after 11pt G1 loss → won G2 by 1 with 13-18 FG Q4.
+  //   Mazzulla (BOS) failed to adjust → lost G2 by 14.
+  //   Bickerstaff (DET) admitted "flat" → lost G1 as 1-seed to 8-seed.
+  // CAQ now consumes coachingProfile which includes schemeCreativity and
+  // historicalAdjustmentRecord, not just a single adjustmentRating number.
+  // Formula: adjustmentRate = 0.15 + (CAQ_score / 10) * 0.18, where CAQ_score
+  // blends adjustmentRating (50%), schemeCreativity (30%), and urgency (20%).
   const score = getSeriesScore(series);
   const gamesPlayed = score.home + score.away;
   if (gamesPlayed > 0 && gameNum > 1) {
     const homeTrailing = score.away > score.home;
-    const trailingCoach = homeTrailing ? (series.coaching?.home?.adjustmentRating || 6) : (series.coaching?.away?.adjustmentRating || 6);
-    // UPGRADED: 15-30% range (was 10-18%) — elite coaches make bigger adjustments
-    const adjustmentRate = 0.15 + (trailingCoach / 10) * 0.15; // 15-30% per game depending on coach quality
+    const trailSide = homeTrailing ? 'home' : 'away';
+    const trailCoaching = series.coaching?.[trailSide];
+    const adjRating = trailCoaching?.adjustmentRating || 6;
+    const schemeCreativity = trailCoaching?.schemeCreativity || adjRating;
+    const urgency = trailCoaching?.urgency || 5;
+    // CAQ blended score: 50% adjustment + 30% creativity + 20% urgency
+    const caqScore = adjRating * 0.50 + schemeCreativity * 0.30 + urgency * 0.20;
+    const adjustmentRate = 0.15 + (caqScore / 10) * 0.18; // 15-33% per game
     const compression = 1 - Math.min(0.55, adjustmentRate * (gameNum - 1));
     baseMargin *= compression;
   }
@@ -848,19 +950,30 @@ function calcProjectedBoxScore(series, gameIdx) {
       }
       if (isYouthBreakout && prior.min >= 15) {
         // Youth breakout blend: model / actual / ceiling
-        // PHASE 29: Multi-game streak makes blend more aggressive toward ceiling
-        // Streak 0 (first breakout): 40% model / 30% actual / 30% ceiling (original)
-        // Streak 1+ (consecutive breakouts): 30% model / 25% actual / 45% ceiling
+        // PHASE 32: Enhanced Youth Playoff Ceiling Multiplier
+        // Research: Tatum, Luka, Edwards all sustained playoff breakouts across full series.
+        // Edgecombe 30/10 in G2 (first rookie 30/10 since Tim Duncan 1998).
+        // Scoot Henderson 31pts on 65% shooting in G2.
+        // Banchero career playoff avg 28.0 vs 22.2 reg season (consistent 26% elevation).
+        // Cade 39pts in G1 (60%+ above season avg of ~24ppg).
+        // New: series.youthCeilings = { playerName: multiplier } allows per-player
+        // research-backed ceiling overrides. Primary initiators get higher ceilings
+        // than role players because the ball MUST go through them.
+        // Streak 0 (first breakout): 40% model / 30% actual / 30% ceiling
+        // Streak 1+ (consecutive breakouts): 25% model / 25% actual / 50% ceiling (was 30/25/45)
         // Evidence: Henderson G1→G2 (18→31pts), Edgecombe proved breakouts aren't one-offs
-        const ceilingMult = youthBreakoutStreak >= 2 ? 1.35 : 1.25;
+        const defaultCeiling = youthBreakoutStreak >= 2 ? 1.40 : 1.30; // raised from 1.35/1.25
+        const youthCeilingOverride = series.youthCeilings?.[player.name];
+        const ceilingMult = youthCeilingOverride || defaultCeiling;
         const ceilingPts = (player.ppg || 12) * ceilingMult;
         const ceilingReb = (player.rpg || 3) * 1.15;
         const ceilingAst = (player.apg || 2) * 1.15;
         if (youthBreakoutStreak >= 1) {
           // Multi-game breakout: lean harder into ceiling — this is a genuine level-up
-          projPts = exp.pts * 0.30 + prior.pts * 0.25 + ceilingPts * 0.45;
-          projReb = exp.reb * 0.30 + prior.reb * 0.25 + ceilingReb * 0.45;
-          projAst = exp.ast * 0.30 + prior.ast * 0.25 + ceilingAst * 0.45;
+          // PHASE 32: Even more aggressive for 2+ game streaks (25/25/50 vs 30/25/45)
+          projPts = exp.pts * 0.25 + prior.pts * 0.25 + ceilingPts * 0.50;
+          projReb = exp.reb * 0.25 + prior.reb * 0.25 + ceilingReb * 0.50;
+          projAst = exp.ast * 0.25 + prior.ast * 0.25 + ceilingAst * 0.50;
         } else {
           projPts = exp.pts * 0.40 + prior.pts * 0.30 + ceilingPts * 0.30;
           projReb = exp.reb * 0.40 + prior.reb * 0.30 + ceilingReb * 0.30;

@@ -235,6 +235,8 @@ const SERIES_DATA = [
       home: {
         coach: "Ime Udoka",
         adjustmentRating: 8,
+        schemeCreativity: 5,
+        urgency: 7,
         playoffRecord: "17-14",
         tendency: "Defense-first architect. Shortened rotation from 9-10 to 7-8 in playoffs. Prioritizes switchable defenders.",
         rotationPlan: "May bench Sheppard for defensive matchups. Eason/Capela get expanded minutes.",
@@ -245,6 +247,8 @@ const SERIES_DATA = [
       away: {
         coach: "JJ Redick",
         adjustmentRating: 8,
+        schemeCreativity: 9,
+        urgency: 6,
         playoffRecord: "2-0",
         tendency: "Offensive innovator. Multiple actions beyond just LeBron iso. Committee approach without Doncic/Reaves.",
         rotationPlan: "8-man rotation. Smart becomes primary secondary playmaker. Kennard critical for spacing.",
@@ -264,6 +268,13 @@ const SERIES_DATA = [
         { team:"LAL", player:"Kennard", regSeason:"Spot-up shooter, 22 MPG", playoff:"Critical spacing, 28+ MPG", impact:"up", reason:"44.3% from 3 essential with limited shot creation" }
       ]
     },
+    schemePersistence: {
+      away: { isSchemeDriven: true, fgSuppression: 0.06, description: "LAL zone/switching held HOU to 37.6% G1 and 40.4% G2 — structural, not variance. Redick's team defense with length contests 6-8ft shots." },
+      home: null
+    },
+    starReturnPenalty: [
+      { player: "Kevin Durant", gamesOut: 1, severity: 0.15 }
+    ],
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior (season avg)
     // G1 shooting: HOU 37.6% FG vs LAL 60.6% FG — extreme outliers both ways, heavy regression expected
     // KD CONFIRMED PLAYING G2 (right knee contusion, limited mobility, ~28-30min restriction)
@@ -535,6 +546,8 @@ const SERIES_DATA = [
       home: {
         coach: "Mark Daigneault",
         adjustmentRating: 9,
+        schemeCreativity: 8,
+        urgency: 5,
         playoffRecord: "20-5",
         tendency: "Matchup chameleon. Plays 11-12 in regular season, trusts roster depth. Self-focused philosophy.",
         rotationPlan: "Shrinks to 9-man. Closers rotate between Caruso/Joe/Wallace based on matchup needs.",
@@ -544,6 +557,8 @@ const SERIES_DATA = [
       away: {
         coach: "Jordan Ott",
         adjustmentRating: 4,
+        schemeCreativity: 4,
+        urgency: 8,
         playoffRecord: "0-1 (first season)",
         tendency: "Young coach, 9-man rotation locked in. Booker + Brooks anchors in closing lineup.",
         rotationPlan: "Booker/Green/Brooks/Williams/O'Neale or Dunn closing lineup. Dunn as SGA stopper.",
@@ -560,6 +575,10 @@ const SERIES_DATA = [
         { team:"PHX", player:"Dunn", regSeason:"Rotation wing, 20 MPG", playoff:"Primary SGA stopper, 28+ MPG", impact:"up", reason:"Ott will maximize his defensive assignment value" },
         { team:"PHX", player:"Green", regSeason:"Second option, 32 MPG", playoff:"Must become co-star, 36+ MPG", impact:"up", reason:"Without a third star, Green must match Booker's production" }
       ]
+    },
+    schemePersistence: {
+      home: { isSchemeDriven: true, fgSuppression: 0.05, description: "OKC's defensive system forced 10 first-half TOs in G1. Structural pressure defense, not variance." },
+      away: null
     },
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior
     // G1: 35-pt OKC blowout. SGA sat Q4 (29min only). PHX 35% FG first half, 17 TOs.
@@ -944,6 +963,8 @@ const SERIES_DATA = [
       home: {
         coach: "David Adelman",
         adjustmentRating: 6,
+        schemeCreativity: 6,
+        urgency: 5,
         playoffRecord: "8-5",
         tendency: "Jokic-centric system. Willing to go small-ball with Watson at C. Creative bench rotations. 39.6% team 3P% (NBA best) means offense flows through spacing.",
         rotationPlan: "9-man core: Starting 5 + Brown/Watson/Hardaway/Valanciunas. Watson may eat into Valanciunas mins in small-ball. Brown closes over Braun when defense matters. Strawther spot minutes if blowout.",
@@ -954,6 +975,8 @@ const SERIES_DATA = [
       away: {
         coach: "Chris Finch",
         adjustmentRating: 7,
+        schemeCreativity: 7,
+        urgency: 7,
         playoffRecord: "12-12",
         tendency: "9-10 man rotation signal. Gobert-anchored defense. Pulls Gobert late for offense but DRtg craters (7.9 pts/100 worse without him — up from 4.4 last year). Transition offense is MIN's biggest identity improvement this season (Dosunmu acquisition).",
         rotationPlan: "9-man rotation: DiVincenzo/Edwards/McDaniels/Randle/Gobert starting. Dosunmu (28.9 MPG), Reid (18-20 MPG), Anderson (spot), Conley (spot). Hyland emergency minutes. Finch may expand to 10-man if he deploys Anderson-on-Jokic scheme.",
@@ -978,6 +1001,10 @@ const SERIES_DATA = [
         { team:"MIN", player:"Anderson", regSeason:"Swiss army knife, 19.1 MPG", playoff:"Potential G2+ adjustment piece for Jokic defense variety", impact:"up", reason:"Can alternate guarding Jokic with Randle. Smallball non-Gobert frontcourt option without sacrificing defensive IQ" },
         { team:"MIN", player:"Gobert", regSeason:"Starter, 32 MPG", playoff:"Starter, must stay on court — DRtg 7.9 pts/100 worse without him (up from 4.4 last year)", impact:"neutral", reason:"G1 MVP by WPA (+15.0%). Pulling him for offense is even riskier than last year. Finch's dilemma: Gobert must play 32+ but Jokic historically dominates him" }
       ]
+    },
+    schemePersistence: {
+      away: { isSchemeDriven: true, fgSuppression: 0.04, description: "Gobert held Jokic 1-of-8 in individual matchups G2 — structural assignment, aggressive fronting scheme." },
+      home: null
     },
     xFactors: {
       home: {
@@ -1139,6 +1166,8 @@ const SERIES_DATA = [
       home: {
         coach: "Mitch Johnson",
         adjustmentRating: 5,
+        schemeCreativity: 6,
+        urgency: 5,
         playoffRecord: "1-0",
         tendency: "Defense-first, offensive freedom. Pop's protege. Matchup-based lineup experiments. Fox/Castle/Harper together in crunch.",
         rotationPlan: "9-man rotation. May use Fox-Castle-Harper closing trio despite shooting concerns. Wembanyama 30+ MPG.",
@@ -1148,6 +1177,8 @@ const SERIES_DATA = [
       away: {
         coach: "Tiago Splitter (interim)",
         adjustmentRating: 4,
+        schemeCreativity: 6,
+        urgency: 9,
         playoffRecord: "0-1",
         tendency: "Former Spur — ironic vs SAS. Continuity-focused, maintaining Billups' system. Young squad plays fast. Avdija is the offensive engine, Holiday stabilizes. Clingan anchors defense.",
         rotationPlan: "8-9 man rotation. Avdija and Sharpe carry offensive load. Holiday's veteran presence critical. Clingan's foul trouble limits minutes. Splitter unlikely to make drastic changes mid-crisis.",
@@ -1166,6 +1197,7 @@ const SERIES_DATA = [
         { team:"POR", player:"Clingan", regSeason:"Starting C, 26 MPG", playoff:"Foul trouble risk limits to 22-24 MPG", impact:"down", reason:"Rim protection vital but 4+ fouls/game is unsustainable" }
       ]
     },
+    youthCeilings: { "Scoot Henderson": 1.45 },
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior
     // G1: SAS won 111-98. Wemby 35pts (13-21, 61.9%, 5-6 3PT) — franchise playoff debut record.
     // Avdija 30pts for POR but team couldn't keep up. SAS length neutralized Clingan.
@@ -1435,6 +1467,8 @@ const SERIES_DATA = [
       home: {
         coach: "JB Bickerstaff",
         adjustmentRating: 5,
+        schemeCreativity: 7,
+        urgency: 8,
         playoffRecord: "5-11",
         tendency: "Defense-first, 'win the possession game'. COTY winner. Turned DET from worst to first.",
         rotationPlan: "Shrinks from 10-man to 8-man. Stewart first off bench 20+ MPG. Duncan Robinson key shooter.",
@@ -1444,6 +1478,8 @@ const SERIES_DATA = [
       away: {
         coach: "Jamahl Mosley",
         adjustmentRating: 7,
+        schemeCreativity: 7,
+        urgency: 9,
         playoffRecord: "8-8",
         tendency: "Defensive identity. Switchable lineups. Methodical half-court offense. 2024 R1 vs CLE (lost 4-3 in 7): proved he can coach competitive series against superior talent. Adjusted after losing Banchero to injury mid-series.",
         rotationPlan: "8-man rotation. Black (15.0ppg breakout) gets key minutes. Bane replaces WCJ in closing if offense stalls. Bitadze backup C (2024 playoff starter experience).",
@@ -1462,6 +1498,11 @@ const SERIES_DATA = [
         { team:"ORL", player:"Bane", regSeason:"Starting guard, 32 MPG", playoff:"34+ MPG, clutch shooter role expands", impact:"up", reason:"Grizzlies playoff experience is invaluable" }
       ]
     },
+    schemePersistence: {
+      away: { isSchemeDriven: true, fgSuppression: 0.05, description: "ORL held DET to 6 offensive boards (avg 12) and dominated paint by 20pts. Neutralized DET's #1 paint-scoring strength." },
+      home: null
+    },
+    youthCeilings: { "Cade Cunningham": 1.50, "Paolo Banchero": 1.30, "Franz Wagner": 1.25 },
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior
     // G1: ORL 112, DET 101. UPSET — #8 seed wins at #1 seed. DET's 11 straight home playoff losses.
     // Cade had 39pts but was alone — only Harris (17) joined him. ORL had 5 in double figures.
@@ -1761,6 +1802,8 @@ const SERIES_DATA = [
       home: {
         coach: "Joe Mazzulla",
         adjustmentRating: 8,
+        schemeCreativity: 5,
+        urgency: 5,
         playoffRecord: "20-4",
         tendency: "Championship pedigree. Five-out offense. Willing to go small with Brown at nominal C. Adaptive in-series.",
         rotationPlan: "Per Fadeaway World: Start White/Hauser/Brown/Tatum/Queta, close with Pritchard/White/Brown/Tatum/Queta. 8-man rotation: Vucevic/Garza matchup-dependent off bench. Hauser as floor-spacer in starting 5.",
@@ -1771,6 +1814,8 @@ const SERIES_DATA = [
       away: {
         coach: "Nick Nurse",
         adjustmentRating: 8,
+        schemeCreativity: 9,
+        urgency: 8,
         playoffRecord: "20-18",
         tendency: "Aggressive player usage. Stacks non-Maxey lineups with quality offense. Wing defense always on floor.",
         rotationPlan: "Per Fadeaway World: Start Maxey/Edgecombe/Oubre/George/Drummond. Close same 5 (or sub Grimes/Edwards for Edgecombe/Oubre). 8-man rotation: Grimes first off bench, then Barlow/Bona big rotation. No real backup PG (40-year-old Lowry emergency only). Maxey 40+ MPG.",
@@ -1797,6 +1842,11 @@ const SERIES_DATA = [
         { team:"PHI", player:"George", regSeason:"17.3 PPG in disrupted season (25-game suspension)", playoff:"Must be PHI's 2nd scorer. G1: looked disconnected. Needs more touches and rhythm by G2", impact:"neutral", reason:"Suspension-rust fading but 4.8 clutch rating and 'Playoff P' history remain concerns" }
       ]
     },
+    schemePersistence: {
+      away: { isSchemeDriven: true, fgSuppression: 0.04, description: "PHI schemed BOS to 26% 3PT in G2 — catch-and-shoot denial. Nurse's defensive creativity (box-and-one history)." },
+      home: null
+    },
+    youthCeilings: { "VJ Edgecombe": 1.55 },
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior
     // G1: 32-pt BOS blowout (123-91). BOS shot 50% FG, 11 3PM. PHI 4-23 from 3 (17.4%).
     // Tatum 25/11/7 in Achilles return. Brown 26pts (16 in Q3). 6 BOS players scored 10+.
@@ -2080,6 +2130,8 @@ const SERIES_DATA = [
       home: {
         coach: "Mike Brown",
         adjustmentRating: 6,
+        schemeCreativity: 6,
+        urgency: 5,
         playoffRecord: "30-30 (career)",
         tendency: "Defense-oriented, 9-man rotation. NBA Cup winner in first season. Adaptability is key question from SAC experience.",
         rotationPlan: "9-man rotation: Brunson/Hart/Bridges/OG/Towns start + McBride/Robinson/Clarkson/Shamet or Yabusele. Sochan for specific defensive matchups only. Robinson strategic deployment for rim protection.",
@@ -2090,6 +2142,8 @@ const SERIES_DATA = [
       away: {
         coach: "Quin Snyder",
         adjustmentRating: 7,
+        schemeCreativity: 9,
+        urgency: 7,
         playoffRecord: "18-19",
         tendency: "Motion offense, tight playoff rotation. Post-Trae era with NAW/McCollum as dual initiators.",
         rotationPlan: "8-man rotation tightened: McCollum/NAW/Daniels/Johnson/Okongwu start and close. Kuminga/Kispert/Hield off bench. Vincent/Houstan emergency only (G1 combined 5pts). Landale OUT (ankle).",
@@ -2389,6 +2443,8 @@ const SERIES_DATA = [
       home: {
         coach: "Kenny Atkinson",
         adjustmentRating: 7,
+        schemeCreativity: 7,
+        urgency: 5,
         playoffRecord: "4-4 (swept MIA R1 2025, lost to IND 1-4 R2 2025). NBCA Coach of the Year 2025.",
         tendency: "Development-focused but defense-drives-rotation. 9-man rotation. 41 different starting lineups this season — extreme adaptability. CLE 21-6 since Harden trade. System absorbed mid-season star acquisition seamlessly.",
         rotationPlan: "Per Fadeaway World: 9-man core. Start Harden/Mitchell/Wade/Mobley/Allen. Wade is SF pick for defense. Bench: Schroder (backup PG), Strus (first forward off bench, 40.2% 3PT), Merrill (42.4% 3PT spacing), Tyson (wing scoring). Ellis for defensive boost. 5th starter may rotate game-to-game based on production (Wade/Strus/Ellis). Allen GTD — if out, Mobley slides to 5.",
@@ -2399,6 +2455,8 @@ const SERIES_DATA = [
       away: {
         coach: "Darko Rajakovic",
         adjustmentRating: 5,
+        schemeCreativity: 5,
+        urgency: 9,
         playoffRecord: "0-1",
         tendency: "Defense-first philosophy — 'everything starts on the defensive end.' Switchable defense, transition offense identity. First European-born coach in NBA playoffs. 10-11 man reg season rotation, tightening to 8-9 for playoffs.",
         rotationPlan: "If Quickley OUT: Shead/Ingram/Barrett/Barnes/Poeltl starting. Walter (.409 3P%) should get minutes over Dick (.309 3P%). Mamukelashvili (15.3 PPG in starts) could steal Poeltl minutes. If Quickley returns: transforms to 9-man with Quickley starting, Shead backing up.",
