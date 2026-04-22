@@ -440,41 +440,43 @@ function renderLearningsPage(el) {
         <span class="learning-tag model">Implemented</span><span class="learning-tag live">2025 Live</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 14 — 2025 Live Results (SAS-POR G1)</div>
         <div class="learning-title">SAS-POR G1: Model's Most Accurate Prediction — 13-pt Margin Nailed Exactly</div>
         <div class="learning-body">Projected SAS 115-102 (13-pt margin, HIGH confidence). Actual: SAS 111-98 (13-pt margin). Winner ✅, confidence ✅, margin EXACT. Total points slightly under (projected 217, actual 209). Wembanyama's playoff debut (35pts, 5-6 3PT, 2blk) exceeded even optimistic projections — his rib contusion (injuryRisk: 0.2) was a non-factor. Avdija's 30/10 showed the defMatchup suppression model was correct to predict only +0.13 advantage for Castle — Avdija scored freely but POR still lost by 13. Key insight: <strong>individual star performances don't overcome systemic talent gaps</strong>. Avdija's 30pts couldn't overcome SAS's depth (Castle 17, Fox 17, Vassell key 3s) and Wemby's two-way dominance. Henderson's 18pts off the bench exceeded model expectations for POR's depth. Clingan was neutralized by SAS's length (blocked by Kornet AND Vassell on same possession) — the LEBRON data (Clingan D-LEBRON 2.35 vs Wemby D-LEBRON 3.992) correctly predicted this interior mismatch.</div>
         <span class="learning-tag correct">Validated</span><span class="learning-tag live">2025 Live</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 14 — 2025 Live Results (SAS-POR G1)</div>
         <div class="learning-title">SAS-POR Betting Scorecard: 3/3 Wins (100%) — Best Single-Game Performance</div>
         <div class="learning-body"><strong>SAS ML (HIGH confidence): ✅</strong> — SAS 111, POR 98. Comfortable wire-to-wire win despite POR's Q3 run. <strong>SAS -10.5 spread: ✅</strong> — Won by 13, covered by 2.5 points. <strong>Under 218.5: ✅</strong> — Total was 209. SAS's elite defense (DRtg 108.2) held POR to 98 while POR's defense limited SAS to 111 despite Wemby's explosion. This was the model's best single-game betting result across all 8 R1 Game 1s. Cumulative G1 record: BOS-PHI 3/5, OKC-PHX 2/3, DET-ORL 0/2, SAS-POR 3/3 = <strong>8/13 overall (61.5%)</strong>.</div>
         <span class="learning-tag bet">Betting</span><span class="learning-tag live">2025 Live</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 14 — 2025 Live Results (SAS-POR G1)</div>
         <div class="learning-title">New Insight: Interim Coaching Penalty May Be Overweighted</div>
         <div class="learning-body">The model applied a -7 impact factor for POR's coaching scandal (Billups gambling investigation, Splitter interim). While SAS won comfortably, POR showed more fight than expected — Avdija's 30/10, Henderson's 18pts breakout, and the 8-0 Q3 run cutting a 16-pt deficit to 2 all suggest the interim coaching disruption wasn't as devastating as modeled. Splitter's halftime adjustments were effective (POR outscored SAS in early Q3), and the team played with energy despite the turmoil. <strong>Model adjustment consideration:</strong> Interim coaching penalties should be reduced from -7 to -4/-5 when the interim coach has been in place for multiple weeks and the team has stabilized. The initial shock value of coaching changes fades with time.</div>
         <span class="learning-tag missed">Overweighted</span><span class="learning-tag live">2025 Live</span>
       </div>
 
-      <div class="learning-entry milestone">
+      <div class="learning-entry correction">
         <div class="learning-phase">Phase 15 — Margin Variance Engine</div>
-      </div>
-
-      <div class="learning-card">
         <div class="learning-title">Static Score Problem Identified: All 16 Projections Had 5-14pt Margins</div>
         <div class="learning-body">The model's projScore values were hardcoded strings (e.g., "HOU 109 — LAL 102"), not dynamically calculated. This produced uniform 5-14 point margins across all series — completely failing to capture that real 2025 playoffs had margins from 1 to 55 points. Root cause: projScore was set manually during initial data entry and never connected to the probability engine. <strong>Fix:</strong> Built the 11-step calcGameProjection() function that derives margins from win probability via logistic inverse formula: margin = 15 × log₁₀(P/(1-P)).</div>
         <span class="learning-tag missed">Structural Bug</span><span class="learning-tag model">Implemented</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 15 — Margin Variance Engine</div>
         <div class="learning-title">11-Step Margin Variance Engine: Logistic Inverse + 8 Contextual Factors</div>
         <div class="learning-body">The new calcGameProjection() engine converts win probability to expected margin through 11 steps: (1) Base margin via logistic inverse, (2) Talent Gap Amplifier (max 1.25×), (3) Depth Disparity Factor (±0.6 per player), (4) Star Absence Blowout Boost (+2.0 per star OUT), (5) Active Injury Margin Drag, (5b) Fatigue Differential, (6) Pre-compression cap at ±18pts, (7) Coaching Adjustment Compression (10-18% per game), (8) Elimination Game Intensity (35% compression), (9) Clutch Team Compression, (10) Pace-Based Score Projection, (11) Variance Profile. Key design: cap applied BEFORE coaching compression so G2+ margins can differentiate below the cap.</div>
         <span class="learning-tag model">Implemented</span><span class="learning-tag live">2025 Live</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 15 — Margin Variance Engine</div>
         <div class="learning-title">HOU-LAL G2 Bet Flip: Margin Engine Disagreed with Manual Pick</div>
         <div class="learning-body">Original G2 pick was LAL ML at medium confidence. The margin engine projected HOU by 3 (COIN FLIP character), disagreeing with the manual pick. Three compounding factors drove the correction: (1) Udoka's Coaching Adjustment Compression (adjustmentRating: 8, highest tier), (2) KD's probable return triggering Star Absence Margin Boost, (3) LAL's unsustainable 61%/53% shooting regression. <strong>Lesson:</strong> When the engine disagrees with qualitative analysis, the engine should win — quantitative factors compound in ways intuition misses.</div>
         <span class="learning-tag bet">Betting</span><span class="learning-tag model">Correction</span>
@@ -482,15 +484,13 @@ function renderLearningsPage(el) {
 
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 16 — Fatigue Monitor Upgrade</div>
-      </div>
-
-      <div class="learning-card">
         <div class="learning-title">Fatigue Monitor Upgraded from LOW to MEDIUM Confidence</div>
         <div class="learning-body">G1 results validated four fatigue predictions: (1) LeBron (age 41, fatigue 19.1%) shifted to facilitator mode instead of scoring — fatigue-driven role adaptation, (2) Edwards admitted altitude fatigue in DEN G1 — compounded with knee injury, (3) Sharpe's fibula return showed conditioning limits via early foul trouble, (4) Tatum's Achilles return (17 games post-surgery) produced 25/11/7 but requires monitoring. <strong>Changes:</strong> Weight increased from 0.5× to 0.75×, team rating penalty increased from max 1.5pts to 2.5pts, fatigue threshold lowered from 0.05 to 0.03, and fatigue differential now feeds directly into margin engine as Step 5b.</div>
         <span class="learning-tag model">Upgraded</span><span class="learning-tag correct">Validated</span>
       </div>
 
-      <div class="learning-card">
+      <div class="learning-entry correction">
+        <div class="learning-phase">Phase 16 — Fatigue Monitor Upgrade</div>
         <div class="learning-title">Ghost Audit: 4 Dead Functions + 87 Orphan CSS Lines Removed</div>
         <div class="learning-body">Comprehensive audit found: 4 ghost functions (estimateUnderdogGames, makeEdge, getExternalEdge, getExternalNote) defined but never called — removed. 87 orphan CSS lines from earlier design iterations (g1-*, g2-*, evidence-*, game-log-*, backtest-lesson-*) — removed. 0 broken function connections, 0 duplicate series IDs, 0 undefined onclick handlers. File reduced by ~120 lines of dead code. All getElementById references verified, div tag balance confirmed (1 extra </div> traced to JS template string — benign).</div>
         <span class="learning-tag correct">Maintenance</span>
@@ -516,8 +516,9 @@ function renderLearningsPage(el) {
         <span class="learning-tag model">Research</span><span class="learning-tag milestone">Phase 17</span>
       </div>
 
-      <div class="learning-card">
-        <div class="learning-title">Phase 17 — Key Insight: HCA Is Not What We Thought</div>
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 17 — Google Scholar Research Integration</div>
+        <div class="learning-title">Key Insight: HCA Is Not What We Thought</div>
         <div class="learning-body">Three independent research streams converge on the same conclusion: home court advantage in the NBA playoffs is significantly weaker than historical intuition suggests.
         <br><br>(1) <strong>Barreira &amp; Morgado (2023)</strong> showed HCA has been declining since at least the 1990s in a 76-year longitudinal study of NBA playoffs.
         <br>(2) <strong>López-García et al. (2024)</strong> found team ability has a significant effect on HCA (p &lt; 0.01) — meaning strong teams create HCA through quality of play, not venue effects.
@@ -526,8 +527,9 @@ function renderLearningsPage(el) {
         <span class="learning-tag model">HCA Research</span><span class="learning-tag correct">Validated</span>
       </div>
 
-      <div class="learning-card">
-        <div class="learning-title">Phase 17 — Key Insight: Playoffs Are a Different Sport</div>
+      <div class="learning-entry insight">
+        <div class="learning-phase">Phase 17 — Google Scholar Research Integration</div>
+        <div class="learning-title">Key Insight: Playoffs Are a Different Sport</div>
         <div class="learning-body">Cabarkapa et al. (2022) provided the most actionable single finding: playoff basketball is <strong>statistically more conservative</strong> than regular season. Their discriminant model achieves 87.2% classification accuracy in playoffs (vs 82.8% regular season), meaning playoff games are EASIER to predict when you use the right variables.
         <br><br>The key variables that discriminate winners from losers in playoffs: (1) FG% — top discriminator, (2) Defensive Rebounds — teams that secure possession win, (3) Turnovers — TO% is significantly negative. Notably, personal fouls do NOT discriminate in playoffs (unlike regular season), and offensive rebounds actually favor LOSING teams (trailing teams crash boards).
         <br><br>This validates our stat differential system (Jones &amp; Magel 2016) but suggests we should weight FG% and DRB% even higher for playoff contexts. The counterintuitive ORB finding also explains why teams like CLE (high ORB%) don't get extra credit in our playoff model — those boards come when trailing.</div>
@@ -661,10 +663,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 25 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 25 — 3-Point Variance & Regression Model</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Research:</strong> Built a comprehensive 3PT variance model using Basketball Reference 2026 Playoffs data (all 16 teams, 182 players) compared against 2025-26 regular season shooting baselines. Incorporated regression methodology from sports analytics research on Bayesian shooting expectation and shot-quality filtering.
         <br><br><strong>Key Findings:</strong>
         <br>• 3PT shooting is the single most volatile stat in the NBA — teams can swing ±10% over 1-5 game stretches
@@ -682,10 +683,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 26 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 26 — Role Flexibility & Defensive Versatility Model</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Research:</strong> Deep-dive into role flexibility using Chrome-based web research across Basketball Reference (roster/position data for all 16 teams), Google Scholar (Guo et al. 2025 lineup-based versatility quantification, Miller 2018 HHI defensive switching index), Sports Illustrated (playoff versatility trends), and Nylon Calculus (HHI framework). Built a 4-dimension flexibility model grounded in academic research and historical playoff patterns.
         <br><br><strong>Key Findings:</strong>
         <br>• Nylon Calculus HHI framework (2018): Bottom-8 teams in defensive versatility ALL lost in Round 1; Conference Finals teams ranked top-4
@@ -703,10 +703,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 30 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 30 — G2 Results Integration & Engine Hardening</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Trigger:</strong> BOS-PHI G2 upset (PHI 111-97) and SAS-POR G2 upset (POR 106-103) revealed two systematic model gaps in how blowout momentum and youth breakout persistence are handled.
         <br><br><strong>Key Findings:</strong>
         <br>• <strong>Blowout Momentum Overweighted:</strong> BOS won G1 by 32 points. Model carried too much momentum into G2, projecting BOS 109-103. PHI won by 14. The missing factor: Nurse (adjustmentRating 8) is an elite adjustment coach — the model treated all coaches equally when applying blowout regression.
@@ -719,10 +718,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 31 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 31 — Research Anchor Blend & Data Integrity Audit</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Trigger:</strong> LeBron projected at 35pts in HOU-LAL G3 box score despite g3PlayerOutlook ptsRange of [20,28]. Root cause: the projection engine completely ignored ptsRange — it only read the "outlook" string for a flat percentage boost (+12% for "good", -8% for "bad"). The ptsRange field was decorative. Additionally, a full data integrity audit caught SGA's G1 scoring listed as 33pts and 36pts in bets.js while the actual box score shows 25pts.
         <br><br><strong>Three Engine Upgrades:</strong>
         <br>1. <strong>Research Anchor Blend (Phase 31a):</strong> When g[N]PlayerOutlook has ptsRange, the engine now blends 60-70% research midpoint with 30-40% engine projection (high-confidence research gets 70%). This replaces the old flat percentage system. Formula: <code>projPts = rMid * researchWeight + projPts * engineWeight</code>, then hard-clamp to [ptsRange[0] - slack, ptsRange[1] + slack] where slack = 10% of range width.
@@ -743,10 +741,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 32 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 32 — G2 Upset Analysis: Five New Prediction Factors</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Trigger:</strong> G1 winner picks were 75% correct (6/8), but G2 picks dropped to 33% (2/6). Multiple series now tied 1-1 that were predicted as sweeps. Systematic audit revealed 5 missing factors.
         <br><br><strong>Coaching Staffs Verified (Critical Fix):</strong> NYK coach is <strong>Mike Brown</strong> (not Thibodeau — fired 2025). All 16 staffs confirmed: Daigneault (OKC), Johnson (SAS), Adelman (DEN), Redick (LAL), Udoka (HOU), Finch (MIN), Splitter interim (POR — Billups arrested), Ott (PHX), Bickerstaff (DET), Mazzulla (BOS), Brown (NYK), Snyder (ATL), Atkinson (CLE), Rajakovic (TOR), Nurse (PHI), Mosley (ORL).
         <br><br><strong>Five New Engine Factors:</strong>
@@ -760,10 +757,9 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 28 -->
-      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div class="learning-entry milestone">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
-        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
-        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div class="learning-body">
         <strong>Trigger:</strong> BOS-PHI G2 concluded with PHI 111 — BOS 97 upset. Model had projected BOS 109-103. Five specific model failures identified from live mid-game analysis and post-game breakdown.
         <br><br><strong>Key Findings:</strong>
         <br>• <strong>Edgecombe Breakout Miss:</strong> Model projected ~13.5 pts for the 20-year-old rookie; he scored 30 on 12-20 FG (6-10 3PT). Bayesian blend (55% model / 45% G1) couldn't capture a genuine youth breakout.
