@@ -18,8 +18,6 @@ function calcGameProjection(series, seriesId, gameNum) {
   const prob = calcWinProb(series, seriesId);
   const hr = prob.homeRating || calcTeamRating(series.homeTeam, series, seriesId);
   const ar = prob.awayRating || calcTeamRating(series.awayTeam, series, seriesId);
-  const diff = hr - ar;
-  const hca = prob.hcaUsed || 3.0;
 
   // --- STEP 1: Base Expected Margin ---
   // Team ratings are on a 20-100 scale (not 0-10 Net Rating), so diff can be large.
