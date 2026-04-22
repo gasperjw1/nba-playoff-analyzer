@@ -586,7 +586,7 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
   const paceRed = PLAYOFF_ADJUSTMENT.paceReduction; // 0.95
   const ptsPace = pts * (paceRed - 1);
   const astPace = ast * (paceRed - 1);
-  const rebPace = reb * (1 - 0.02) - reb; // rebounds only ~2% reduced
+  const rebPace = -reb * 0.02; // rebounds only ~2% reduced
   pts += ptsPace; ast += astPace; reb += rebPace;
   modifiers.push({ label: 'Playoff Pace', ptsDelta: ptsPace, rebDelta: rebPace, astDelta: astPace, pct: -5 });
 
@@ -1177,9 +1177,7 @@ function calcProjectedBoxScore(series, gameIdx) {
         if (prior.pts >= 28) {
           // Determine if this player's team WON the prior game
           const priorGameResult = series.games[gameIdx - 1];
-          const playerTeamAbbr = side === 'home'
-            ? (series.id || '').split('-')[0]
-            : (series.id || '').split('-')[1];
+          const playerTeamAbbr = side === 'home' ? series.homeTeam.abbr : series.awayTeam.abbr;
           const teamWon = priorGameResult && priorGameResult.winner === playerTeamAbbr;
 
           if (teamWon) {
@@ -1226,9 +1224,7 @@ function calcProjectedBoxScore(series, gameIdx) {
         // addresses what went wrong (e.g., TOR adjusting after CLE G1 loss).
         if (g1PtsDev < -5) {
           const priorGameResult2 = series.games[gameIdx - 1];
-          const playerTeamAbbr2 = side === 'home'
-            ? (series.id || '').split('-')[0]
-            : (series.id || '').split('-')[1];
+          const playerTeamAbbr2 = side === 'home' ? series.homeTeam.abbr : series.awayTeam.abbr;
           const teamLost = priorGameResult2 && priorGameResult2.winner !== playerTeamAbbr2;
 
           if (teamLost) {

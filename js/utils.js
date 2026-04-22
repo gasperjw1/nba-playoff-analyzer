@@ -7,8 +7,6 @@
 /** Format a number to 1 decimal place. */
 const fmtDec = v => v.toFixed(1);
 
-/** Round a number to nearest integer. */
-const fmtInt = v => Math.round(v);
 
 // --- Rating Tier Helpers ---
 

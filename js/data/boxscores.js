@@ -292,6 +292,31 @@ const G2_BOX_SCORES = {
       {name:"Tony Bradley",min:12,pts:2,reb:1,ast:1,stl:1,blk:1,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:0},
       {name:"Bilal Coulibaly",min:4,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:2,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0}
     ]
+  },
+  "HOU-LAL": {
+    home: [ // HOU (home in data, LAL had actual home court)
+      {name:"Kevin Durant",min:41,pts:23,reb:6,ast:4,stl:1,blk:1,fgm:7,fga:12,tpm:1,tpa:4,ftm:8,fta:9,to:9,orb:2},
+      {name:"Jabari Smith Jr.",min:39,pts:18,reb:6,ast:1,stl:0,blk:1,fgm:7,fga:16,tpm:3,tpa:7,ftm:1,fta:2,to:1,orb:1},
+      {name:"Alperen Sengun",min:35,pts:20,reb:11,ast:5,stl:4,blk:2,fgm:9,fga:20,tpm:0,tpa:1,ftm:2,fta:3,to:1,orb:5},
+      {name:"Josh Okogie",min:24,pts:7,reb:2,ast:0,stl:0,blk:0,fgm:3,fga:6,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Amen Thompson",min:42,pts:16,reb:5,ast:9,stl:1,blk:0,fgm:6,fga:10,tpm:0,tpa:1,ftm:4,fta:5,to:3,orb:1},
+      {name:"Tari Eason",min:27,pts:10,reb:8,ast:1,stl:0,blk:1,fgm:4,fga:14,tpm:2,tpa:6,ftm:0,fta:0,to:1,orb:5},
+      {name:"Jae'Sean Tate",min:9,pts:0,reb:1,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0},
+      {name:"Clint Capela",min:5,pts:0,reb:2,ast:0,stl:0,blk:1,fgm:0,fga:3,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:1},
+      {name:"Aaron Holiday",min:7,pts:0,reb:1,ast:0,stl:1,blk:0,fgm:0,fga:3,tpm:0,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Reed Sheppard",min:11,pts:0,reb:3,ast:0,stl:0,blk:0,fgm:0,fga:4,tpm:0,tpa:3,ftm:0,fta:0,to:1,orb:0}
+    ],
+    away: [ // LAL
+      {name:"LeBron James",min:39,pts:28,reb:8,ast:7,stl:3,blk:1,fgm:8,fga:20,tpm:2,tpa:5,ftm:10,fta:14,to:0,orb:1},
+      {name:"Rui Hachimura",min:43,pts:13,reb:5,ast:2,stl:0,blk:0,fgm:5,fga:10,tpm:3,tpa:6,ftm:0,fta:0,to:0,orb:0},
+      {name:"Deandre Ayton",min:30,pts:0,reb:5,ast:1,stl:1,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:1},
+      {name:"Marcus Smart",min:35,pts:25,reb:2,ast:7,stl:5,blk:1,fgm:8,fga:13,tpm:5,tpa:7,ftm:4,fta:5,to:3,orb:0},
+      {name:"Luke Kennard",min:42,pts:23,reb:6,ast:2,stl:2,blk:0,fgm:8,fga:13,tpm:3,tpa:6,ftm:4,fta:4,to:3,orb:0},
+      {name:"Jarred Vanderbilt",min:14,pts:0,reb:5,ast:1,stl:0,blk:1,fgm:0,fga:3,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:0},
+      {name:"Jake LaRavia",min:16,pts:0,reb:2,ast:0,stl:2,blk:0,fgm:0,fga:2,tpm:0,tpa:1,ftm:0,fta:0,to:1,orb:1},
+      {name:"Jaxson Hayes",min:21,pts:6,reb:5,ast:1,stl:0,blk:1,fgm:1,fga:2,tpm:0,tpa:1,ftm:4,fta:5,to:0,orb:2},
+      {name:"Bronny James",min:2,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
+    ]
   }
 };
 
