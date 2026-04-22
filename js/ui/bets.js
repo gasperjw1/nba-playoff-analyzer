@@ -4,16 +4,16 @@
 
 function renderBetsPage(el) {
   el.innerHTML = `
-  <div style="max-width:900px;margin:0 auto;padding:20px 10px;">
+  <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1</h2>
     <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 5/17 (29.4%) — 5 pending Wed Apr 22 | G3 projections live | Phase 30: coaching adjustment discount, youth breakout persistence, Bayesian player outlook</p>
 
     <!-- BET TABS -->
-    <div style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
-      <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;">Featured Parlays</div>
-      <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 1 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 2 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g3')" id="betTab-g3" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Game 3 Bets</div>
+    <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
+      <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Featured Parlays</div>
+      <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 1 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 2 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g3')" id="betTab-g3" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 3 Bets</div>
     </div>
 
     <!-- ===== PARLAYS TAB ===== -->
@@ -28,28 +28,28 @@ function renderBetsPage(el) {
       <!-- ===== HEADLINE: $100 BEST BET — APR 22 ===== -->
       <div class="parlay-card headline">
         <div class="parlay-header">
-          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — Star Scoring Parlay (2-Leg)</span>
-          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+247</span>
+          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — G1-Proven Scorers (2-Leg)</span>
+          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+170</span>
         </div>
         <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → ~$347 return</span>
+          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → ~$270 return</span>
           <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">TODAY — Wed Apr 22</span>
         </div>
         <div class="parlay-legs">
           <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">SGA Over 28.5 pts (OKC-PHX G2)</span>
-            <span class="parlay-leg-odds">-130</span>
+            <span class="parlay-leg-pick">Cade Cunningham Over 28.5 pts (DET-ORL G2)</span>
+            <span class="parlay-leg-odds">-104</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
           <div class="parlay-leg" style="border-left:3px solid #f0c040;">
             <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Cade Over 28.5 pts (DET-ORL G2)</span>
-            <span class="parlay-leg-odds">-104</span>
+            <span class="parlay-leg-pick">Banchero Over 22.5 pts (DET-ORL G2)</span>
+            <span class="parlay-leg-odds">-115</span>
             <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
           </div>
         </div>
-        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Two franchise stars primed for massive scoring nights. <strong>SGA Over 28.5</strong> — scored 25pts in G1 in only 29 minutes on a brutal 5-18 FG (sat entire Q4 in blowout). With a full game tonight, his FG% should bounce from 27.8% toward his 46% norm. PHX has no wing defender to slow him. Model projects 31.5pts with a 3pt cushion. <strong>Cade Over 28.5</strong> — erupted for 39pts in G1 loss at Orlando. Now at home at Little Caesars Arena with Bickerstaff adjustments and crowd energy. Shooting was sustainable (not just free throws). Model projects 28-36pt range with "good" outlook. Two uncorrelated star props across separate games — both have significant cushion above the line.</div>
+        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Both legs backed by G1 evidence — no projection guesswork. <strong>Cade Over 28.5</strong> — erupted for 39pts in G1 at Orlando, clearing the line by 10.5pts. Now at home at Little Caesars Arena with Bickerstaff adjustments and crowd energy. Shooting was sustainable (not just free throws). Model projects 31.8pts with "good" outlook (28-36pt range). He's cleared this line in G1 by a massive margin. <strong>Banchero Over 22.5</strong> — posted 23/9/4 in G1, clearing the line as Orlando's offensive engine. Model projects 22.9pts. Whether ORL wins or loses, Paolo is their entire offense. Both players ACTUALLY HIT their overs in G1 — we're not projecting, we're confirming a pattern.</div>
       </div>
 
       <!-- ===== HEADLINE: $1 CHAOS TICKET — APR 22 ===== -->
@@ -91,14 +91,14 @@ function renderBetsPage(el) {
 
         <div class="parlay-card">
           <div class="parlay-header">
-            <span class="parlay-name">OKC Domination (2-Leg)</span>
-            <span class="parlay-odds">~+180</span>
+            <span class="parlay-name">OKC Depth Dominance (2-Leg)</span>
+            <span class="parlay-odds">~+195</span>
           </div>
           <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">OKC -17.5 vs PHX</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">SGA Over 28.5 pts</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">ORL +9.5 @ DET</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-reasoning">OKC won G1 by 35. PHX missing key players — depth mismatch is structural. If SGA plays a full game (he sat Q4 of G1), OKC can cover 17.5 again. Correlated legs: SGA scoring fuels the blowout margin.</div>
+          <div class="parlay-reasoning">Two high-confidence sides from separate games. OKC ML is the safest bet on the board — PHX is depleted and OKC won G1 by 35. Even with heavy juice, it anchors the parlay. ORL +9.5 is value: they won G1 outright by 11 at Detroit. Getting 9.5pts at the same building they just won at? The G1 blueprint (multi-initiator attack, Banchero 23/9/4) is proven and repeatable.</div>
         </div>
 
         <div class="parlay-card">
@@ -110,32 +110,32 @@ function renderBetsPage(el) {
             <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">DET ML vs ORL</span><span class="parlay-leg-odds">-410</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 28.5 pts</span><span class="parlay-leg-odds">-104</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-reasoning">DET at home after ORL stole G1 (112-101). Cade's 39pts in G1 loss proves scoring is sustainable — at home with Bickerstaff adjustments, expect 28+. Harris bounce-back from cold G1 shooting gives DET the supporting cast edge. ML is medium because ORL showed they can compete.</div>
+          <div class="parlay-reasoning">DET at home after ORL stole G1 (112-101). Cade's 39pts in G1 proves scoring is sustainable — at home with Bickerstaff adjustments, expect 28+. Harris bounce-back from cold G1 shooting gives DET the supporting cast edge. ML is medium confidence because ORL showed they can compete, but Cade's scoring is near-lock territory (cleared 28.5 by 10.5pts in G1).</div>
         </div>
 
         <div class="parlay-card">
           <div class="parlay-header">
-            <span class="parlay-name">Cross-Game Star Stack (3-Leg)</span>
-            <span class="parlay-odds">~+450</span>
+            <span class="parlay-name">DET-ORL G2 Star Duel (3-Leg)</span>
+            <span class="parlay-odds">~+310</span>
           </div>
           <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SGA Over 28.5 pts</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 28.5 pts</span><span class="parlay-leg-odds">-104</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Banchero Over 22.5 pts</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Cade Over 28.5 pts</span><span class="parlay-leg-odds">-104</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Banchero Over 22.5 pts</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Franz Wagner Over 17.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
           </div>
-          <div class="parlay-reasoning">Three stars, three overs, two games. SGA (25pts G1 in 29min — FG% bounce-back due), Cade (39pts G1), and Banchero (23pts G1) are the primary engines. All three are the primary offensive engines for their teams. Zero correlation risk — different games, different matchups.</div>
+          <div class="parlay-reasoning">All three legs from DET-ORL where G1 data is strongest. Cade (39pts G1) and Banchero (23pts G1) both cleared their lines in G1. Wagner (14pts G1) is the bounce-back candidate — model projects 17.7pts and he's due for regression to his mean as ORL's #2 option. Wagner is the swing leg; Cade and Banchero are the anchors.</div>
         </div>
 
         <div class="parlay-card">
           <div class="parlay-header">
-            <span class="parlay-name">Wagner Bounce-Back Special (2-Leg)</span>
-            <span class="parlay-odds">~+240</span>
+            <span class="parlay-name">SGA Bounce-Back (2-Leg) — RISKY</span>
+            <span class="parlay-odds">~+180</span>
           </div>
           <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Franz Wagner Over 17.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">ORL +9.5 @ DET</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SGA Over 28.5 pts</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
           </div>
-          <div class="parlay-reasoning">Wagner had a quiet 14pts in G1 — due for regression to mean. If ORL is competitive (and they won G1 outright), Wagner needs to produce as the #2 option. ORL +9.5 is generous after they won G1 by 11 on the road. Correlated: Wagner scoring keeps ORL close.</div>
+          <div class="parlay-reasoning"><strong>CAUTION:</strong> SGA scored only 25pts in G1 on 5-18 FG (27.8%) and MISSED this exact over. The bull case: he played only 29 min (sat Q4 blowout), his FT drawing was elite (15-17), and career 47.4% FG means major regression up is likely. The bear case: 18 FGA in 29min already represents high volume — more minutes doesn't guarantee more makes if his shot isn't falling. This is a FG% regression bet, not a G1-proven bet. Downgraded to MEDIUM confidence — only play if you believe in the bounce-back.</div>
         </div>
 
       </div><!-- end parlay-grid -->
@@ -193,8 +193,8 @@ function renderBetsPage(el) {
             <div style="flex:1;">
               <div style="background:rgba(76,175,80,0.06);border:1px solid rgba(76,175,80,0.2);border-radius:8px;padding:10px 14px;">
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
-                  <span style="font-size:11px;font-weight:700;color:#f0c040;background:rgba(240,192,64,0.12);padding:2px 8px;border-radius:3px;">$100: SGA O28.5 + Cade O28.5</span>
-                  <span style="font-size:11px;color:#4caf50;">~+247</span>
+                  <span style="font-size:11px;font-weight:700;color:#f0c040;background:rgba(240,192,64,0.12);padding:2px 8px;border-radius:3px;">$100: Cade O28.5 + Banchero O22.5</span>
+                  <span style="font-size:11px;color:#4caf50;">~+170</span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
                   <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 8px;border-radius:3px;">$1: ORL ML + PHX +17.5 + Banchero O22.5</span>
@@ -481,10 +481,10 @@ function renderBetsPage(el) {
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">SGA Over 28.5 points</div>
-        <div class="bet-line">-130 | Model: 31.5 pts | Outlook: GOOD (46% FG) | G1: 25pts in 29min</div>
-        <div class="bet-reasoning">Phase 22 "good" outlook driven by FG% bounce-back: G1's 27.8% FG was season-worst but still scored 25 in 29min via elite FT (15-17). Season 47.4% FG → major regression up expected. Will play FULL game in G2 (sat Q4 of blowout in G1). Even at projected 46% FG, his volume + FT artistry project 31+ pts. PHX has no perimeter stopper (Dunn 0-3 in G1). Safest player prop on the board — massive cushion over 28.5.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">SGA Over 28.5 points — MEDIUM (bounce-back bet)</div>
+        <div class="bet-line">-130 | Model: 31.5 pts | Outlook: GOOD (46% FG) | G1: 25pts in 29min (MISSED over)</div>
+        <div class="bet-reasoning"><strong>CAUTION — SGA missed this exact over in G1 (25pts on 5-18 FG).</strong> The model projects bounce-back to 31.5pts based on: FG% regression (27.8% → career 47.4%), full game minutes (29min G1 → 36min G2), and elite FT floor (15-17 in G1). But 18 FGA in 29min already represents high volume — more minutes doesn't guarantee more makes. This is a FG% regression bet, NOT a G1-proven bet. Play if you believe in the bounce-back; skip if you want G1 evidence behind your pick.</div>
+        <span class="bet-edge model">Regression Bet</span>
       </div>
 
       <!-- DET-ORL -->

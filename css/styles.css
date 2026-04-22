@@ -518,13 +518,263 @@
   .exp-modifier-pill { display:inline-block; font-size:8px; padding:1px 5px; border-radius:4px; margin:1px 2px; white-space:nowrap; font-weight:600; }
   .proj-box-table tr:hover { background:rgba(79,140,255,0.04); }
 
+  /* ============================================================ */
+  /* RESPONSIVE: TABLET (≤768px)                                 */
+  /* ============================================================ */
   @media (max-width:768px) {
     .header { padding:14px 16px; }
+    .header h1 { font-size:18px; }
+    .header-sub { display:none; }
     .tabs { padding:10px 16px 0; }
-    .main { padding:0 16px 16px; }
+    .main { padding:0 12px 16px; }
     .team-adv { grid-template-columns:1fr; }
     .rating-breakdown { grid-template-columns:1fr 1fr; }
     .coaching-grid { grid-template-columns:1fr; }
+    .spm-grid { grid-template-columns:1fr; }
+    .onoff-grid { grid-template-columns:1fr; }
     table { font-size:11px; }
     th, td { padding:6px 8px; }
+
+    /* Make all tab rows horizontally scrollable */
+    .page-nav { padding:12px 12px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .page-nav::-webkit-scrollbar { display:none; }
+    .page-nav-btn { padding:10px 16px; font-size:12px; white-space:nowrap; flex-shrink:0; }
+
+    .round-tabs { padding:10px 12px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .round-tabs::-webkit-scrollbar { display:none; }
+    .round-tab { padding:8px 16px; font-size:12px; flex-shrink:0; }
+
+    .series-tabs { padding:4px 12px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .series-tabs::-webkit-scrollbar { display:none; }
+    .series-tab { padding:7px 12px; font-size:11px; flex-shrink:0; }
+
+    /* Scrollable tables */
+    .roster-section, .box-score-section, .adv-comp-section, .series-avg-section { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+    /* Page content */
+    .page-content { padding:16px 12px 24px; }
+    .page-header { font-size:18px; }
+
+    /* Def grid */
+    .def-grid { grid-template-columns:1fr; }
+
+    /* Def tabs scrollable on mobile */
+    .scroll-x { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; flex-wrap:nowrap !important; justify-content:flex-start !important; }
+    .scroll-x::-webkit-scrollbar { display:none; }
+
+    /* Series header compact */
+    .series-header-compact .team-block { min-width:80px; }
+    .series-header-compact .team-block .name { font-size:15px; }
+    .series-header-compact .prob-compact .prob-num { font-size:22px; }
+
+    /* Game panel grid */
+    .game-panel-grid { grid-template-columns:1fr 1fr; gap:8px; }
+
+    /* Scenario builder */
+    .scenario-comparison { grid-template-columns:1fr; gap:10px; }
+    .scenario-vs { display:none; }
+    .scenario-col .prob { font-size:22px; }
+
+    /* Parlay featured */
+    .parlay-featured { padding:14px; }
+    .parlay-card.headline { padding:14px; }
+
+    /* Bet grid */
+    .bet-grid { grid-template-columns:1fr; }
+  }
+
+  /* ============================================================ */
+  /* RESPONSIVE: PHONE LANDSCAPE / SMALL TABLET (≤600px)         */
+  /* ============================================================ */
+  @media (max-width:600px) {
+    .header { flex-direction:column; align-items:flex-start; gap:8px; }
+    .header-right { width:100%; }
+    .legend { flex-wrap:wrap; gap:8px; }
+
+    .rating-breakdown { grid-template-columns:1fr; }
+    .game-panel-grid { grid-template-columns:1fr; }
+
+    /* Parlay legs: stack more compactly */
+    .parlay-leg { gap:6px; padding:6px 10px; }
+    .parlay-leg-pick { font-size:11px; }
+    .parlay-leg-odds { font-size:10px; }
+    .parlay-reasoning { font-size:10px; padding:8px; }
+
+    /* Synergy */
+    .synergy-note { max-width:100%; }
+    .lineup-row { gap:8px; }
+
+    /* Fatigue */
+    .fatigue-player-name { min-width:80px; font-size:10px; }
+    .fatigue-bar { max-width:60px; }
+
+    /* External factors */
+    .ext-factor-item { flex-direction:column; gap:6px; }
+  }
+
+  /* ============================================================ */
+  /* RESPONSIVE: PHONE PORTRAIT (≤480px)                         */
+  /* ============================================================ */
+  @media (max-width:480px) {
+    .header { padding:10px 12px; }
+    .header h1 { font-size:15px; letter-spacing:-0.3px; }
+    .main { padding:0 8px 12px; }
+
+    /* Page nav: full-width scrollable with touch-friendly targets */
+    .page-nav { padding:8px 8px 0; gap:0; }
+    .page-nav-btn { padding:12px 14px; font-size:11px; letter-spacing:0.3px; min-height:44px; }
+
+    /* Round and series tabs: compact */
+    .round-tabs { padding:8px 8px 0; }
+    .round-tab { padding:8px 12px; font-size:11px; }
+    .series-tabs { padding:4px 8px; }
+    .series-tab { padding:6px 10px; font-size:10px; }
+
+    /* Game tabs: scrollable row */
+    .game-tabs { flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; }
+    .game-tabs::-webkit-scrollbar { display:none; }
+    .game-tab { flex-shrink:0; padding:8px 12px; font-size:10px; min-width:60px; min-height:44px; }
+
+    /* Bet sub-tabs: scrollable */
+    .bet-tab { white-space:nowrap; flex-shrink:0; }
+
+    /* Page content */
+    .page-content { padding:12px 8px 20px; }
+    .page-header { font-size:16px; }
+    .page-subheader { font-size:11px; }
+
+    /* Series header: stack vertically */
+    .series-header-compact { flex-direction:column; align-items:center; text-align:center; gap:8px; }
+    .series-header-compact .team-vs { flex-direction:column; gap:6px; }
+    .series-header-compact .team-block { min-width:unset; }
+    .series-header-compact .team-block .name { font-size:16px; }
+    .series-header-compact .prob-compact .prob-num { font-size:20px; }
+
+    /* Win prob bar */
+    .win-prob-bar { height:32px; }
+    .win-prob-side { font-size:13px; }
+    .win-prob-container { padding:12px; }
+
+    /* Adv stats: tighter */
+    .adv-stats-grid { grid-template-columns:repeat(3, 1fr); gap:4px; }
+    .adv-stat { padding:6px 2px; }
+    .adv-stat .s-val { font-size:13px; }
+    .adv-stat .s-label { font-size:8px; }
+    .adv-stat .s-rank { font-size:9px; }
+
+    /* Cards: tighter padding */
+    .team-adv-card { padding:12px; }
+    .rating-card { padding:12px; }
+    .rating-card .value { font-size:18px; }
+    .synergy-section { padding:12px; }
+    .spm-section { padding:12px; }
+    .coaching-section { padding:12px; }
+    .ext-factors { padding:12px; }
+    .game-panel { padding:12px; }
+
+    /* Parlay cards: compact mobile view */
+    .parlay-featured { padding:10px; border-radius:10px; }
+    .parlay-card { padding:12px; border-radius:8px; }
+    .parlay-card.headline { padding:12px; }
+    .parlay-header { flex-direction:column; align-items:flex-start; gap:4px; }
+    .parlay-name { font-size:13px; }
+    .parlay-odds { font-size:12px; padding:3px 8px; }
+    .parlay-leg { padding:6px 8px; gap:6px; }
+    .parlay-leg-pick { font-size:11px; }
+    .parlay-leg-odds { font-size:10px; }
+    .parlay-leg-conf { font-size:9px; padding:2px 5px; }
+    .parlay-reasoning { font-size:10px; line-height:1.5; padding:8px; margin-top:8px; }
+    .parlay-grid { gap:8px; }
+
+    /* Bet cards */
+    .bet-card { padding:12px; }
+    .bet-pick { font-size:13px; }
+    .bet-line { font-size:11px; }
+    .bet-reasoning { font-size:10px; }
+
+    /* Tables: force horizontal scroll, minimum readable width */
+    table { min-width:500px; }
+    .box-table { min-width:600px; }
+    th { font-size:9px; padding:5px 6px; }
+    td { font-size:10px; padding:5px 6px; }
+    .box-table th { font-size:9px; padding:4px 5px; }
+    .box-table td { font-size:10px; padding:4px 5px; }
+
+    /* Modals */
+    .modal { padding:16px; border-radius:12px; width:95%; }
+
+    /* Coach cards */
+    .coach-name { font-size:13px; }
+    .coach-card { padding:10px; }
+    .coach-tendency { font-size:11px; padding:6px 8px; }
+
+    /* Learning entries */
+    .learning-entry { padding:0 8px; }
+    .learning-title { font-size:13px; }
+    .learning-body { font-size:11px; }
+    .phase-box summary { padding:10px 12px; }
+    .phase-summary-title { font-size:12px; }
+
+    /* Def cards */
+    .def-card { padding:12px; }
+    .def-term { font-size:13px; }
+    .def-desc { font-size:11px; }
+
+    /* Game character & margin */
+    .proj-score-dynamic { font-size:14px; }
+    .variance-pills { gap:4px; }
+    .variance-pill { font-size:8px; padding:2px 6px; }
+
+    /* Fatigue compact */
+    .fatigue-player-name { min-width:70px; font-size:10px; }
+    .fatigue-bar { max-width:50px; }
+    .fatigue-val { font-size:10px; min-width:28px; }
+    .fatigue-tag { font-size:7px; padding:1px 4px; }
+
+    /* On/Off compact */
+    .onoff-name { font-size:10px; }
+    .onoff-val { font-size:11px; min-width:44px; }
+    .onoff-bar { width:40px; }
+
+    /* Backtest panel */
+    .backtest-panel { padding:12px; }
+    .backtest-stats { gap:10px; padding:8px; }
+    .backtest-stat .bs-val { font-size:15px; }
+    .model-factor-chip { font-size:9px; padding:3px 7px; }
+
+    /* Scenario builder */
+    .scenario-builder { padding:12px; }
+
+    /* Lineup data */
+    .lineup-stat-row { padding:8px; }
+    .lineup-stat-row .lineup-stats { gap:8px; }
+
+    /* Role change */
+    .role-change-item .rc-player { min-width:80px; font-size:11px; }
+    .role-change-item .rc-roles { min-width:150px; }
+  }
+
+  /* ============================================================ */
+  /* RESPONSIVE: VERY SMALL PHONE (≤360px)                       */
+  /* ============================================================ */
+  @media (max-width:360px) {
+    .header h1 { font-size:13px; }
+    .page-nav-btn { padding:10px 10px; font-size:10px; }
+    .series-tab { padding:5px 8px; font-size:9px; }
+    .round-tab { padding:7px 10px; font-size:10px; }
+    .parlay-name { font-size:12px; }
+    .parlay-leg-pick { font-size:10px; }
+    .adv-stats-grid { grid-template-columns:repeat(2, 1fr); }
+  }
+
+  /* ============================================================ */
+  /* GLOBAL: Scrollable containers for horizontal overflow        */
+  /* ============================================================ */
+  .scroll-x { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .scroll-x::-webkit-scrollbar { display:none; }
+
+  /* Touch-friendly: ensure minimum tap targets */
+  @media (pointer:coarse) {
+    .page-nav-btn, .round-tab, .series-tab, .game-tab, .bet-tab, .player-toggle, .btn { min-height:44px; display:flex; align-items:center; justify-content:center; }
+    .roster-team-tab { min-height:44px; }
   }
