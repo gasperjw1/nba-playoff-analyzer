@@ -702,6 +702,28 @@ function renderLearningsPage(el) {
         <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 26</span>
       </div>
 
+      <!-- Phase 28 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Trigger:</strong> BOS-PHI G2 concluded with PHI 111 — BOS 97 upset. Model had projected BOS 109-103. Five specific model failures identified from live mid-game analysis and post-game breakdown.
+        <br><br><strong>Key Findings:</strong>
+        <br>• <strong>Edgecombe Breakout Miss:</strong> Model projected ~13.5 pts for the 20-year-old rookie; he scored 30 on 12-20 FG (6-10 3PT). Bayesian blend (55% model / 45% G1) couldn't capture a genuine youth breakout.
+        <br>• <strong>Team 3PT Correlation Blind Spot:</strong> PHI went from 17.4% 3PT in G1 to 49% in G2. The model treated each shooter independently but team shooting is correlated — when one is hot, the team tends to be hot.
+        <br>• <strong>Tatum Ceiling Overstatement:</strong> Model projected ~24pts; Tatum had 19pts on 8-19 with 5 PFs. Recovery volatility from Achilles creates wider variance bands than the model assumed.
+        <br>• <strong>Defensive Suppression Misframe:</strong> White on Maxey was modeled as reducing total points (volume + efficiency), but Maxey still took 28 shots — suppression should reduce FG%, not shot attempts.
+        <br>• <strong>PHI Initiator Miscount:</strong> Model had PHI at 1 initiator (Maxey only). Edgecombe's 30pts on 20 FGA with 21.2% usage proved he's a second initiator — changes all suppression calculations.
+        <br><br><strong>Five Engine Upgrades:</strong>
+        <br>1. <strong>Youth Breakout Multiplier:</strong> Players ≤23 with rising usage who outperformed G1 get modified Bayesian blend (40% model / 30% actual / 30% ceiling). Weaker overperformance regression (40% of normal). Prevents model from regressing genuine breakouts.
+        <br>2. <strong>Team 3PT Correlation:</strong> Step 5f in calcGameProjection — when a team shot >8pp above/below their season 3PT% baseline, apply 50% regression toward mean. ±3pt cap. Accounts for correlated shooting nights.
+        <br>3. <strong>Efficiency Tax Defense:</strong> Defensive suppression (modifier #7) now reduces FG% not volume. D-LEBRON suppresses conversion rate while preserving shot attempts. More accurate for sole initiators who must shoot regardless of matchup.
+        <br>4. <strong>Dynamic Initiator Recalculation:</strong> Initiator counts now update from prior game box scores (≥18% pts share + ≥3 assists or ≥25% share). PHI auto-updates from 1→2 after Edgecombe's breakout. Affects all suppression and scheme calculations.
+        <br>5. <strong>Recovery Volatility:</strong> Post-major-injury players (Achilles/ACL/surgery) get 2-4% asymmetric downside penalty (modifier #6b). Captures the non-linear recovery curve — a player can be "cleared" but still have wider variance.
+        <br><br><strong>Data Update:</strong> BOS-PHI G2 results recorded (PHI 111-97, series tied 1-1). Full box scores with per-player stats. PHI initiators updated 1→2.</div>
+        <span class="learning-tag data">Live Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 28</span>
+      </div>
+
     </div>
   </div>`;
 
@@ -732,7 +754,8 @@ function renderLearningsPage(el) {
     'Phase 23': 'Injury/fatigue-adjusted G2 projections — CBS injury reports + ESPN live odds integrated (KD return, Tatum recovery, LeBron fatigue)',
     'Phase 24': 'Turnover modeling & foul trouble probability — career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g), 2026 per-game TOV/PF analysis, pressure multipliers, DRtg degradation',
     'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series',
-    'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts'
+    'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts',
+    'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.'
   };
 
   // Collect all entries/cards

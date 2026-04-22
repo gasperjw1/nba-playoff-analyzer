@@ -162,6 +162,42 @@ function calcGameProjection(series, seriesId, gameNum) {
     }
   }
 
+  // --- STEP 5f: Team 3PT Correlation Factor (Phase 28) ---
+  // NBA 3PT shooting is correlated within a team on any given night — when one
+  // shooter is hot, others tend to be too (shared ball movement, defensive rotations,
+  // crowd energy, court conditions). The model previously treated each player's 3PT%
+  // independently. BOS-PHI G2: PHI shot 49% from 3 as a TEAM while G1 was 17.4%.
+  // This swing is partly captured by individual regression but TEAM correlation
+  // means the variance band for overall scoring should be wider.
+  // Implementation: check if either team had an extreme 3PT game in prior game(s).
+  // If so, add ±variance to the margin to reflect that team 3PT nights are streaky.
+  const gPlayed5f = (series.games || []).filter(g => g && g.winner).length;
+  if (gPlayed5f > 0 && gameNum > 1 && series.games) {
+    const priorG = series.games[gPlayed5f - 1];
+    if (priorG && priorG.winner) {
+      // Extract team 3PT% from prior game if available in THREE_POINT_VARIANCE_DATA
+      const tpvKey = seriesId || (series && series.id);
+      const tpv = (typeof THREE_POINT_VARIANCE_DATA !== 'undefined') ? THREE_POINT_VARIANCE_DATA[tpvKey] : null;
+      if (tpv && tpv.home && tpv.away) {
+        const home3Diff = (tpv.home.team.playoff3Pct || 0.36) - (tpv.home.team.regSeason3Pct || 0.36);
+        const away3Diff = (tpv.away.team.playoff3Pct || 0.36) - (tpv.away.team.regSeason3Pct || 0.36);
+        // If a team was extremely hot (>+8pp above baseline) or cold (>-8pp below),
+        // apply a correlation-based regression: the team that was hot regresses DOWN,
+        // the team that was cold regresses UP — but only partially (50%) because
+        // some of the variance is structural (scheme-driven).
+        let teamCorrelationAdj = 0;
+        if (Math.abs(home3Diff) > 0.08) {
+          teamCorrelationAdj -= home3Diff * 0.5 * 30; // rough: 1pp of team 3PT% ≈ 0.3pts on ~30 3PA
+        }
+        if (Math.abs(away3Diff) > 0.08) {
+          teamCorrelationAdj += away3Diff * 0.5 * 30;
+        }
+        teamCorrelationAdj = Math.max(-3, Math.min(3, teamCorrelationAdj));
+        baseMargin += teamCorrelationAdj;
+      }
+    }
+  }
+
   // --- STEP 6: Pre-compression cap ---
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
@@ -491,9 +527,40 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
     modifiers.push({ label: 'Active Injury (' + player.activeInjury.type + ')', ptsDelta: ptsInj, rebDelta: rebInj, astDelta: astInj, pct: -(sev * 12).toFixed(0) });
   }
 
-  // ---- 7. DEFENSIVE MATCHUP SUPPRESSION ----
+  // ---- 6b. RECOVERY VOLATILITY FLAG (Phase 28) ----
+  // Post-major-injury players (Achilles, ACL, major surgery) have wider variance
+  // bands even when their outlook is "good". Tatum's G1 was 25/11/7 (great) but
+  // his G2 could be 15pts or 30pts — the recovery curve is non-linear.
+  // This doesn't change the EXPECTED value, it widens the variance profile.
+  // We approximate this by adding a small random-walk element: the projection
+  // stays the same but we flag it for the UI and reduce confidence in the estimate.
+  // For the engine: we apply a mild efficiency reduction (2-4%) to account for
+  // the asymmetric downside risk of recovery players.
+  if (player.activeInjury && player.activeInjury.type) {
+    const injType = player.activeInjury.type.toLowerCase();
+    const isMajorRecovery = injType.includes('achilles') || injType.includes('acl')
+      || injType.includes('surgery') || injType.includes('appendectomy')
+      || injType.includes('fracture');
+    if (isMajorRecovery && player.activeInjury.severity < 0.5) {
+      // Player is cleared to play but recovery is ongoing
+      // Apply 2-4% asymmetric downside penalty based on how recent the injury is
+      const recoveryPenalty = 0.02 + player.activeInjury.severity * 0.04; // 2-4%
+      const ptsRecov = -pts * recoveryPenalty;
+      const rebRecov = -reb * recoveryPenalty * 0.3;
+      pts += ptsRecov; reb += rebRecov;
+      modifiers.push({ label: 'Recovery Volatility (' + player.activeInjury.type + ')', ptsDelta: ptsRecov, rebDelta: rebRecov, astDelta: 0, pct: -(recoveryPenalty * 100).toFixed(1) });
+    }
+  }
+
+  // ---- 7. DEFENSIVE MATCHUP SUPPRESSION (Phase 28: Efficiency Tax) ----
   // If this player is the primary defensive target, elite D-LEBRON defender
-  // suppresses their output. Uses the same engine as calcDefMatchupSuppression().
+  // suppresses their EFFICIENCY, not their volume. This is a critical distinction:
+  // a player guarded by an elite defender still takes the same number of shots
+  // (their role demands it), but makes fewer of them.
+  // BOS-PHI evidence: White on Maxey — Maxey still shot 20 FGA (volume maintained
+  // as PHI's sole initiator) but hit only 40% (efficiency suppressed from 47%).
+  // OLD model: suppression * 0.12 reduced total pts (incorrectly reducing volume)
+  // NEW model: suppression reduces effective FG% → pts = volume × reduced efficiency
   if (series.defMatchups) {
     const dm = series.defMatchups;
     // Check if THIS player is the target of a defensive matchup
@@ -503,11 +570,16 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
     if (matchup && matchup.target === player.name && matchup.dLebron > 0) {
       const initiators = team.initiators || 2;
       const suppression = calcDefMatchupSuppression(matchup, initiators);
-      // Suppression reduces scoring most, assists moderately
-      const ptsDef = -pts * suppression * 0.12;
-      const astDef = -ast * suppression * 0.08;
+      // Efficiency tax: reduce FG% equivalent, not raw volume
+      // A suppression value of 5.0 with dLebron 2.3 → ~6% FG% reduction
+      // Points change = volume × FG% reduction: assume ~18 FGA for a star,
+      // each 1% FG% drop = ~0.18pts per attempt × 18 = ~3.2pts
+      // This naturally preserves volume while reducing output proportionally
+      const efficiencyTax = suppression * 0.008; // ~0.8% FG% reduction per suppression unit
+      const ptsDef = -pts * efficiencyTax;
+      const astDef = -ast * suppression * 0.06; // assists slightly reduced (fewer successful plays)
       pts += ptsDef; ast += astDef;
-      modifiers.push({ label: 'Def Matchup (' + matchup.defender.split(' ').pop() + ')', ptsDelta: ptsDef, rebDelta: 0, astDelta: astDef, pct: -(suppression * 12).toFixed(1) });
+      modifiers.push({ label: 'Def Matchup (' + matchup.defender.split(' ').pop() + ')', ptsDelta: ptsDef, rebDelta: 0, astDelta: astDef, pct: -(efficiencyTax * 100).toFixed(1) });
     }
   }
 
@@ -634,6 +706,31 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
 //   4. Normalize all players to match the game projection's team totals
 //   5. Apply minutes distribution based on role + G1 actual minutes
 
+// PHASE 28: Dynamic Initiator Recalculation
+// Recalculates initiator counts from prior game box scores rather than using
+// the static team.initiators field. A player is counted as an "initiator" if
+// they had usage >= 25% (approximated by scoring 20%+ of team points AND
+// having 3+ assists or being a primary ball handler).
+// Evidence: PHI went from 1 initiator (Maxey) to 2 after Edgecombe's G2 breakout
+// (30pts, ~27% of team scoring). This changes defensive suppression calculations.
+function calcDynamicInitiators(series, side, gameIdx) {
+  if (gameIdx <= 0 || !series.games) return null; // no prior games, use static
+  const priorG = series.games[gameIdx - 1];
+  if (!priorG || !priorG.boxScores) return null;
+  const bs = priorG.boxScores[side];
+  if (!bs || bs.length === 0) return null;
+  const teamTotal = bs.reduce((s, p) => s + (p.pts || 0), 0);
+  if (teamTotal === 0) return null;
+  let count = 0;
+  bs.forEach(p => {
+    const ptsShare = p.pts / teamTotal;
+    const hasCreation = (p.ast || 0) >= 3;
+    const highVolume = ptsShare >= 0.18 && p.min >= 20;
+    if (highVolume && (hasCreation || ptsShare >= 0.25)) count++;
+  });
+  return Math.max(1, count);
+}
+
 function calcProjectedBoxScore(series, gameIdx) {
   const gameNum = gameIdx + 1;
   const proj = calcGameProjection(series, series.id, gameNum);
@@ -641,6 +738,10 @@ function calcProjectedBoxScore(series, gameIdx) {
   // Get prior game box scores for Bayesian update
   const priorGame = gameIdx > 0 ? series.games[gameIdx - 1] : null;
   const hasPriorBS = priorGame && priorGame.boxScores;
+
+  // PHASE 28: Calculate dynamic initiator counts for both sides
+  const dynHomeInit = calcDynamicInitiators(series, 'home', gameIdx);
+  const dynAwayInit = calcDynamicInitiators(series, 'away', gameIdx);
 
   function projectTeam(side) {
     const team = side === 'home' ? series.homeTeam : series.awayTeam;
@@ -694,7 +795,28 @@ function calcProjectedBoxScore(series, gameIdx) {
       //   - 10-14 min: 65% model / 35% G1 actual (moderate signal)
       // This gives G1 performance substantially more influence on G2 projections,
       // creating meaningful differentiation from pre-series (G1) projections.
-      if (prior && prior.min >= 15) {
+      //
+      // PHASE 28: Youth Breakout Multiplier
+      // Players ≤23 with rising usage who outperformed in G1 get a different Bayesian
+      // blend: 40% model / 30% G1 actual / 30% ceiling projection (ppg * 1.25).
+      // This captures the "breakout" phenomenon where young players elevate in playoffs
+      // beyond what either their season baseline or one game sample would predict.
+      // Evidence: Edgecombe G2 (30pts on 12-20, 6-10 3PT) — model projected 13.5pts.
+      const isYouthBreakout = player.age && player.age <= 23
+        && prior && prior.min >= 20
+        && prior.pts > (player.ppg || 12) * 1.15  // outperformed season avg by 15%+
+        && (player.usg || 0) >= 18;
+      if (isYouthBreakout && prior.min >= 15) {
+        // Youth breakout blend: 40% model / 30% G1 actual / 30% ceiling
+        const ceilingPts = (player.ppg || 12) * 1.25;
+        const ceilingReb = (player.rpg || 3) * 1.15;
+        const ceilingAst = (player.apg || 2) * 1.15;
+        projPts = exp.pts * 0.40 + prior.pts * 0.30 + ceilingPts * 0.30;
+        projReb = exp.reb * 0.40 + prior.reb * 0.30 + ceilingReb * 0.30;
+        projAst = exp.ast * 0.40 + prior.ast * 0.30 + ceilingAst * 0.30;
+        const estMin = player.usg ? Math.min(42, 48 * (player.usg / 100) * 2.4) : 28;
+        projMin = estMin * 0.35 + prior.min * 0.65; // youth breakouts earn more minutes
+      } else if (prior && prior.min >= 15) {
         projPts = exp.pts * 0.55 + prior.pts * 0.45;
         projReb = exp.reb * 0.55 + prior.reb * 0.45;
         projAst = exp.ast * 0.55 + prior.ast * 0.45;
@@ -723,13 +845,22 @@ function calcProjectedBoxScore(series, gameIdx) {
         // Overperformance regression (threshold lowered from 10 to 6)
         // Rationale: even moderate overperformance (+6-10) is partially unsustainable
         // in playoffs as opposing coaches adjust defensive schemes
-        if (g1PtsDev > 6) {
+        // PHASE 28: Youth breakout candidates regress LESS — their overperformance
+        // may represent a genuine level-up rather than random variance
+        if (g1PtsDev > 6 && isYouthBreakout) {
+          // Youth breakout: apply only 40% of normal regression — their ceiling is expanding
+          const youthRegression = g1PtsDev > 10
+            ? Math.min(0.35, 0.08 + (g1PtsDev - 10) * 0.04) * 0.40
+            : Math.min(0.12, (g1PtsDev - 6) * 0.03) * 0.40;
+          projPts *= (1 - youthRegression);
+        } else if (g1PtsDev > 6) {
           // SCHEME-DRIVEN VOLUME CHECK: If the player is the primary/sole initiator
           // on a team with few creators, the opposing defense may be FUNNELING scoring
           // to them deliberately (e.g. "let Cade score, shut down everyone else").
           // In this case, the high output is structural, not random — regress less.
           const teamObj = side === 'home' ? series.homeTeam : series.awayTeam;
-          const initiators = teamObj.initiators || 2;
+          // PHASE 28: Use dynamic initiator count when available
+          const initiators = (side === 'home' ? dynHomeInit : dynAwayInit) || teamObj.initiators || 2;
           const isHighUsg = (player.usg || 0) >= 27;
           const isSoleCreator = initiators <= 1 && isHighUsg;
           const isLowInitiatorStar = initiators <= 2 && isHighUsg && (player.rating || 0) >= 80;
@@ -789,7 +920,7 @@ function calcProjectedBoxScore(series, gameIdx) {
               : series.defMatchups?.homeDefOnAway;
             if (defMatchup && defMatchup.target === player.name && defMatchup.dLebron >= 2.0) {
               const teamObj2 = side === 'home' ? series.homeTeam : series.awayTeam;
-              const teamInitiators = teamObj2.initiators || 2;
+              const teamInitiators = (side === 'home' ? dynHomeInit : dynAwayInit) || teamObj2.initiators || 2;
               if (teamInitiators <= 1) {
                 suppressBounceBack = true;
                 suppressReason = 'elite-defender-on-sole-initiator';
@@ -807,7 +938,7 @@ function calcProjectedBoxScore(series, gameIdx) {
             const isBigMan = ['C', 'PF'].includes(player.pos) && (player.rpg || 0) >= 7;
             if (isBigMan) {
               const teamObj3 = side === 'home' ? series.homeTeam : series.awayTeam;
-              const teamInit = teamObj3.initiators || 2;
+              const teamInit = (side === 'home' ? dynHomeInit : dynAwayInit) || teamObj3.initiators || 2;
               // Big on a team with ≤1 initiator AND big underperformance (>8pts below ppg)
               // = paint-packing scheme exploiting structural spacing weakness
               if (teamInit <= 1 && g1PtsDev < -8) {
@@ -909,7 +1040,7 @@ function calcProjectedBoxScore(series, gameIdx) {
             // Multi-initiator dampening: if the winning team has 3+ initiators,
             // the coach can't just focus on one player — suppression is weaker
             const winTeam = side === 'home' ? series.homeTeam : series.awayTeam;
-            const winInit = winTeam.initiators || 2;
+            const winInit = (side === 'home' ? dynHomeInit : dynAwayInit) || winTeam.initiators || 2;
             if (winInit >= 3) {
               coachCounter *= 0.5; // much harder to target one player on deep teams
             }

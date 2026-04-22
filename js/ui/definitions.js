@@ -585,6 +585,54 @@ function renderDefinitionsPage(el) {
       </div>
     </div>
 
+    <!-- Phase 28: Live Analysis Model Corrections -->
+    <div style="margin-top:24px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 28: Live Analysis Model Corrections</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Youth Breakout Multiplier</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Standard Bayesian update (55% model / 45% G1) regresses ALL overperformance equally. But young players (≤23) with rising usage who outperform G1 may be genuinely breaking out, not randomly hot.
+            <br><br><strong>Evidence:</strong> Edgecombe (age 20) scored 30pts in G2 (12-20 FG, 6-10 3PT). Model had projected 13.5pts using standard regression from his 13pt G1. The breakout was real — he's PHI's second initiator now.
+            <br><br><strong>Solution:</strong> Youth breakout blend: 40% model / 30% G1 actual / 30% ceiling projection (PPG × 1.25). Overperformance regression reduced to 40% of normal. Triggers when: age ≤23, min ≥20 in G1, outperformed PPG by 15%+, usage ≥18%.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Team 3PT Correlation</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Model treated each player's 3PT% independently. In reality, team shooting is correlated on any given night — ball movement quality, defensive rotations, arena conditions, and momentum affect everyone.
+            <br><br><strong>Evidence:</strong> PHI went from 17.4% 3PT (G1) to 49% 3PT (G2). BOS went from 38%+ (G1) to 26% (G2). These swings are too large to be independent player variance — they're team-level phenomena.
+            <br><br><strong>Solution:</strong> Step 5f in calcGameProjection: when a team's playoff 3PT% deviates >8pp from season baseline, apply 50% regression × 30 (approximate 3PA) to the margin. Capped at ±3pts. Partially structural (scheme-driven), partially regression.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Efficiency Tax Defense Model</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Old model reduced a player's total points when guarded by an elite defender. But sole initiators MUST shoot regardless — their volume is dictated by team structure, not matchup quality.
+            <br><br><strong>Evidence:</strong> White on Maxey: Maxey still took 28 FGA in G2 (PHI's only option) but hit 39.3%. The suppression is on efficiency (FG%), not on shot volume.
+            <br><br><strong>Solution:</strong> Modifier #7 now applies an "efficiency tax" — suppression × 0.8% FG% reduction per unit. Points change through efficiency drop, not volume reduction. This naturally produces the right output: high-usage players on low-initiator teams keep shooting but convert less.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Dynamic Initiator Recalculation</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Initiator counts were static (set pre-series). But players can BECOME initiators mid-series through breakout performances, changing the entire offensive structure.
+            <br><br><strong>Evidence:</strong> PHI was coded as 1 initiator (Maxey). After Edgecombe's 30pt G2 (27% of team scoring), PHI functionally has 2 initiators — meaning White can't fully commit to Maxey anymore.
+            <br><br><strong>Solution:</strong> calcDynamicInitiators() scans prior game box scores: a player counts as an initiator if they scored ≥18% of team points AND had ≥3 assists (or ≥25% scoring share). The dynamic count overrides the static field in all scheme/suppression calculations.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Recovery Volatility Flag</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Post-major-injury players (Achilles, ACL, surgery) were projected at their expected value with normal confidence. But recovery curves are non-linear — a player can look great one game and terrible the next.
+            <br><br><strong>Evidence:</strong> Tatum's G1 was 25/11/7 (excellent), but G2 was 19pts on 8-19 with 5PF. The Achilles recovery creates wider variance than the model captured. His "good" outlook was right on average but wrong on any individual game.
+            <br><br><strong>Solution:</strong> Modifier #6b applies a 2-4% asymmetric downside penalty for cleared players with major injury history (Achilles/ACL/surgery/fracture). This doesn't change the expected value much but accurately represents the risk profile.</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>`;
 }
 

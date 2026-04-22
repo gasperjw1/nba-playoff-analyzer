@@ -26,6 +26,11 @@
 //   + Role Flexibility Model (Phase 26 — HHI-based switching defense, offensive role flex, lineup optionality, positional versatility)
 //   + Flexibility Differential Adjustment (Phase 26 — (homeFlex - awayFlex) × 0.4, capped ±3.0pts)
 //   + Blended Prediction System (Phase 27 — pick winner accuracy 72.7% + engine margin sizing 8.8 avg err → blended 72.7% + 7.9 avg err)
+//   + Youth Breakout Multiplier (Phase 28 — Bayesian blend: 40% model / 30% G1 actual / 30% ceiling for ≤23yr breakouts)
+//   + Team 3PT Correlation (Phase 28 — team shooting is correlated; ±3pt variance for extreme deviations from baseline)
+//   + Efficiency Tax Defense (Phase 28 — D-LEBRON suppresses FG% not volume; preserves shot attempts, reduces conversion)
+//   + Dynamic Initiator Recalc (Phase 28 — recalculate initiator counts from prior game box scores; usage ≥18%+ share + creation)
+//   + Recovery Volatility (Phase 28 — post-major-injury players get 2-4% asymmetric downside penalty for Achilles/ACL/surgery)
 //   Calibrated against 49 games in the 2025 NBA Playoffs (73.5% accuracy)
 // ============================================================
 
@@ -41,12 +46,12 @@ const SERIES_DATA = [
       name: "Rockets", city: "Houston", abbr: "HOU", seed: 5, record: "52-30",
       systemBonus: 0.5, // Udoka's defensive system is solid but young team limits execution
       playoffPedigree: 0, // No recent playoff experience for this core
-      offStyle: "KD iso + Sengun post-up dual-threat. G1 WITHOUT KD: collapsed to Sengun P&R only (6-19 FG). Team shot 37.6%.", initiators: 1, // KD DID NOT DRESS G1. Game-time decision G2 per ESPN.
+      offStyle: "KD iso + Sengun post-up dual-threat RESTORED for G2. G1 without KD collapsed to Sengun P&R only (37.6% FG). KD's return adds elite midrange gravity + secondary creation, opening Sheppard/Smith 3PT looks.", initiators: 2, // KD CONFIRMED SUITING UP G2. Was OUT G1 (knee contusion). Transforms offense from single to dual initiator.
       color: "#CE1141", color2: "#C4CED4",
       advStats: { ortg:115.2, drtg:110.8, netRtg:4.4, pace:100.8, ts:57.8, efg:54.2, tov:13.2, reb:51.1, ortgRk:6, drtgRk:8, clutchNetRtg:-2.8, last10:"8-2", fgPct:51.2, threePct:34.8, ftPct:77.6, orbPct:24.9 },
       players: [
-        { name:"Kevin Durant", age:37, pos:"SF", rating:0, ppg:26.0, rpg:5.5, apg:4.8, fgp:52.4, per:25.8, ts:65.5, epm:5.5, bpm:6.1, ws48:.195, onOff:5.2, clutch:6.0, vorp:5.3, usg:29.5, injury:"OUT G1 — right knee contusion (expected return Apr 21, G2)", lebron:2.377, oLebron:2.519, dLebron:-0.142, war:8.586, offRole:"Shot Creator", defRole:"Helper",
-          matchupNote:"67% TS vs LAL reg season. Elite efficiency but burner scandal chemistry ding. Clutch 6.0. Right knee contusion Apr 17 — OUT Game 1, targeting Game 2 return (Apr 21). Knee injuries at 37 carry elevated risk.", baseRating:89, starCeiling:2, injuryRisk:0.7, activeInjury:{type:"right knee contusion",severity:0.6,note:"DID NOT DRESS G1 (not even suited up). Per ESPN Apr 21: game-time decision for G2 — went through only half of practice Mon. Udoka says knee is 'tough to bend in certain ways'. MRI clean but limited mobility persists. At 37, even minor knee issues can linger. If he plays G2, likely on minutes restriction."} },
+        { name:"Kevin Durant", age:37, pos:"SF", rating:82, ppg:26.0, rpg:5.5, apg:4.8, fgp:52.4, per:25.8, ts:65.5, epm:5.5, bpm:6.1, ws48:.195, onOff:5.2, clutch:6.0, vorp:5.3, usg:29.5, injury:"ACTIVE G2 — right knee contusion (limited mobility, minutes restriction likely)", lebron:2.377, oLebron:2.519, dLebron:-0.142, war:8.586, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"67% TS vs LAL reg season. Elite efficiency but burner scandal chemistry ding. Clutch 6.0. Right knee contusion Apr 17 — OUT Game 1, CONFIRMED SUITING UP Game 2 (Apr 21). Went through half of practice Mon. Udoka: knee 'tough to bend in certain ways'. At 37 with knee stiffness, expect limited explosiveness but midrange game is matchup-proof.", baseRating:89, starCeiling:2, injuryRisk:0.7, activeInjury:{type:"right knee contusion",severity:0.35,note:"CONFIRMED PLAYING G2 (Apr 21). DID NOT DRESS G1. Went through half of Monday practice. Udoka says knee is 'tough to bend in certain ways' — limited mobility but cleared to play. MRI clean. Sam Amick reports 'good chance he is a go.' Likely on minutes restriction (~28-30min). At 37, midrange game doesn't require explosiveness — but drives/post-ups will be limited. Rating 82 (down from 89 base) reflects knee limitation. Recovery volatility flag applies (Phase 28)."} },
         { name:"Alperen Sengun", pos:"C", rating:81, ppg:20.4, rpg:8.9, apg:6.2, fgp:54.2, per:24.5, ts:61.5, epm:4.2, bpm:4.6, ws48:.180, onOff:6.5, clutch:5.4, vorp:3.5, usg:26.2, injury:null, lebron:1.058, oLebron:1.055, dLebron:0.003, war:5.285, offRole:"Shot Creator", defRole:"Mobile Big",
           matchupNote:"All-Star. +6.5 on/off is team-best. Dominates interior. Mentioned in KD leaks — chemistry factor", baseRating:82, starCeiling:1, injuryRisk:0 },
         { name:"Amen Thompson", pos:"SF", rating:79, ppg:18.3, rpg:7.8, apg:5.3, fgp:50.8, per:18.2, ts:58.5, epm:2.2, bpm:2.0, ws48:.128, onOff:3.5, clutch:5.0, vorp:2.2, usg:25.2, injury:null, lebron:2.036, oLebron:1.077, dLebron:0.959, war:8.308, offRole:"Shot Creator", defRole:"Point of Attack",
@@ -161,25 +166,28 @@ const SERIES_DATA = [
       { type:"missed", lesson:"WPA analysis (inpredictable) confirms Kennard was the game's MVP (+15.2% WPA) and Sheppard was LVP (-14.6%). Field goal shooting was the overwhelmingly dominant factor — model had no mechanism to predict LAL's 60.6% FG explosion vs HOU's 37.6%. This was a scheme-driven FG% gap (zone defense forcing HOU non-spacers into bad shots), not random variance." }
     ],
     game2: {
-      spread: "HOU -3.5", moneyline: "HOU -155 / LAL +135", ou: "O/U 213.5",
-      pick: "HOU", confidence: "medium", projScore: "HOU 111 — LAL 103",
+      spread: "HOU -5.5", moneyline: "HOU -210 / LAL +170", ou: "O/U 207.5",
+      pick: "HOU", confidence: "high", projScore: "HOU 108 — LAL 101",
       schedule: "Tue Apr 21 — 10:30 PM ET — NBC",
-      reasoning: "MODEL PICK: HOU 108-107 (LOW confidence, COIN FLIP). The engine projects a razor-thin 1-point Houston victory at Crypto.com Arena — essentially a toss-up. Despite LAL's convincing G1 win (107-98), the model gives HOU the slightest edge for several reasons: (1) SHOOTING REGRESSION — LAL shot 61% FG and 53% from 3PT in G1, which is historically unsustainable. The 2025 backtest showed teams shooting 10%+ above playoff averages in G1 always regressed in G2, potentially costing LAL 10-15 points of efficiency. (2) KD'S PROBABLE RETURN — Durant's MRI was clean and he's expected back for G2. Even at 70% health, KD's star ceiling (starCeiling: 2) transforms HOU's offense and defensive gravity, creating a second elite initiator alongside Sengun's 19pts in G1. (3) UDOKA'S ADJUSTMENT PEDIGREE — In the 2022 playoffs with Boston, Udoka bounced back from 4 losses with wins averaging +17.3pt margins. His track record of between-game tactical adjustments is elite. (4) HOU DEPTH — Thompson (17pts), Sheppard (17pts), and Smith all gained real playoff experience in G1 — the jitters are gone. The margin is only 1 because LAL retains significant advantages: LeBron's championship DNA (pedigree: 2), home court for Games 1-2, the proven Kennard-LeBron-Smart system, and Smart's defensive blueprint that held HOU to 33% shooting in stretches. This is as close to a true 50/50 as the model produces.",
+      reasoning: "MODEL PICK: HOU (HIGH confidence, COMPETITIVE). KD CONFIRMED SUITING UP — transforms this from a coin-flip to a clear HOU edge. Three converging factors: (1) KD'S RETURN = DUAL INITIATOR — HOU goes from 1 to 2 initiators (Phase 28 dynamic recalc). In G1, Sengun was the sole creator and Smart hunted him mercilessly (6-19 FG). KD's midrange gravity forces Smart to choose: guard KD or roam to disrupt Sengun. He can't do both. Even at 80% health (~28-30min restriction), KD's 67% TS vs LAL this season and matchup-proof midrange game add ~18-22 points of efficient offense. (2) LAL SHOOTING REGRESSION — LAL shot 61% FG and 53% 3PT in G1, both historically unsustainable. 2025 backtest: teams shooting 10%+ above playoff averages in G1 ALWAYS regressed in G2. Kennard's 5-5 from 3PT (100%) will face heavy scheming — HOU will face-guard and switch. Project LAL regression from 61% to ~46% FG, costing ~12-15 points of efficiency. (3) UDOKA ADJUSTMENT PEDIGREE — In 2022 playoffs with Boston, bounced back from 4 losses averaging +17.3pt margins. His between-game adjustments are elite. Will counter LAL's zone by inserting more shooting (KD + Sheppard spread floor). LAL retains home court (Crypto.com Arena) and LeBron's championship DNA (pedigree 2), but at 41 on a 2-day turnaround with increased usage, fatigue is a real factor. Smart's defensive blueprint from G1 is partially neutralized by KD's presence — can't free-roam when KD is on the court. Line moved from HOU -3.5 to -5.5 with KD confirmation, and O/U dropped from 213.5 to 207.5 (market expects tighter, more half-court game with KD controlling pace).",
       g1Adjustments: [
-        "LAL WON G1 107-98 at home — proved LeBron facilitator system works without Doncic/Reaves",
-        "UDOKA ADJUSTMENT HISTORY: In 2022 playoffs (BOS), bounced back from 4 losses with wins averaging +17.3pt margin. Will adjust scheme for G2.",
-        "Udoka deploying 5 different defenders on LeBron — same scheme he used to limit KD to 2/10 FG in 2022 G2 vs Nets",
-        "KD probable — MRI clean, 'hopefully a one-game thing'. Even limited KD changes defensive calculus entirely",
-        "LAL SHOOTING REGRESSION: 61% FG / 53% 3PT is historically unsustainable. Playoff averages ~45% FG, ~35% 3PT",
-        "HOU young players' G1 jitters gone — Thompson (17pts), Sheppard (17pts), Smith now have real playoff reps",
-        "HOU will target Kennard defensively — force him to be a defender, not just a shooter",
-        "HOME COURT: Games 1 & 2 at Crypto.com Arena (LAL is 4 seed). HOU must steal a road game to avoid 0-2",
-        "COACHING EDGE: Redick G1 rated A (masterclass facilitator scheme) vs Udoka D+ (no answer for zone defense). Coaching gap favors LAL."
+        "KD CONFIRMED PLAYING G2 — transforms HOU from 1 to 2 initiators. Biggest single-game roster upgrade in R1.",
+        "LAL WON G1 107-98 at home — but shot 61% FG / 53% 3PT (historically unsustainable, WILL regress)",
+        "UDOKA ADJUSTMENT HISTORY: 2022 playoffs (BOS) bounce-back wins averaged +17.3pt margin. Will counter LAL zone with KD spacing.",
+        "HOU initiators: 1→2. KD + Sengun dual-threat forces Smart to pick his poison — can't hunt both.",
+        "Kennard G1 breakout (27pts, 5-5 3PT) will be schemed against — expect face-guarding, aggressive switches.",
+        "LAL SHOOTING REGRESSION: 61% FG → project ~46% FG. Kennard 100% 3PT → project ~38%. Cost: ~12-15pts efficiency.",
+        "HOU young players' G1 jitters gone — Thompson (17pts), Sheppard (17pts), Smith now have real playoff reps.",
+        "KD on minutes restriction (~28-30min) — limited explosiveness but midrange game is matchup-proof.",
+        "LeBron FATIGUE FACTOR: 41 years old, 2-day turnaround, high-usage G1 (13ast = constant decision-making load).",
+        "HOME COURT: Still at Crypto.com Arena (LAL is 4 seed). HOU must steal a road game to avoid 0-2.",
+        "O/U dropped 213.5→207.5 — market expects slower pace, more half-court sets with KD controlling tempo.",
+        "Recovery volatility (Phase 28): KD's knee contusion carries 2-4% asymmetric downside risk at age 37."
       ],
-      prosHome: ["KD probable return — even at 70% transforms offense and defensive gravity", "UDOKA GAME 2 PEDIGREE: 4 bounce-back wins averaging +17.3pts in 2022 playoffs", "G1 jitters gone — Thompson/Sheppard/Smith have playoff reps now", "HOU's depth advantage reasserts when LAL shooting regresses", "Sengun 19pts in G1 — can build on solid foundation with KD drawing attention"],
-      consHome: ["Clutch problems (-2.8 NetRtg) are systemic, not just jitters", "Sengun/Sheppard defensive weaknesses are structural — Smart hunted them in G1", "KD may be limited if he plays — conditioning after missed time", "Lost G1 by 9 — must steal a road game to avoid 0-2 deficit", "Young team facing hostile Crypto.com Arena crowd again"],
-      prosAway: ["LeBron facilitator mode proven — 13ast game plan works", "Kennard-LeBron 2-man game is a KNOWN weapon (+8.7 NetRtg)", "Smart's defensive blueprint established — HOU shot 33% in stretches", "1-0 series lead — can afford to experiment", "Home court advantage for Games 1 & 2 (LAL is higher seed)", "Playoff pedigree (2.0) — LeBron's championship DNA is unmatched"],
-      consAway: ["SHOOTING REGRESSION: 61% FG / 53% 3PT will not repeat — could lose 15+ points of efficiency", "Udoka's Game 2 adjustment history is elite (17.3pt avg bounce-back margin)", "KD return neutralizes Smart's free-roaming defense", "Kennard will be schemed against — no more open 3s"]
+      prosHome: ["KD CONFIRMED — dual initiator offense restored. 67% TS vs LAL, midrange matchup-proof", "UDOKA GAME 2 PEDIGREE: 4 bounce-back wins averaging +17.3pts in 2022 playoffs", "G1 jitters gone — Thompson/Sheppard/Smith have playoff reps now", "LAL shooting WILL regress (61% FG unsustainable) — HOU depth reasserts", "Sengun + KD dual-threat forces Smart to pick poison — no more free-roaming defense", "KD's gravity opens clean looks for Sheppard (41% 3PT) and Smith (36.8% 3PT)"],
+      consHome: ["KD on minutes restriction (~28-30min) — knee 'tough to bend' per Udoka", "Clutch problems (-2.8 NetRtg) are systemic, not just jitters", "Sengun defensive vulnerability to Smart is structural — doesn't disappear with KD", "Lost G1 by 9 — must steal a road game to avoid 0-2 deficit", "Young team + KD chemistry concerns (burner scandal) — first game together in playoffs", "Recovery volatility: knee contusion at 37 carries asymmetric downside risk"],
+      prosAway: ["HOME COURT — Crypto.com Arena crowd, LAL is higher seed", "LeBron facilitator mode proven — 13ast game plan is repeatable", "Smart's defensive blueprint established — held HOU to 33% in stretches", "1-0 series lead — can afford a loss and still lead", "Playoff pedigree (2.0) — LeBron's championship DNA, 14-6 vs HOU in last 20"],
+      consAway: ["SHOOTING REGRESSION: 61% FG / 53% 3PT will NOT repeat — biggest G2 risk", "KD return neutralizes Smart's free-roaming defense — must guard KD on-ball now", "Kennard will be face-guarded — 5-5 3PT (100%) is the most obvious schematic target", "LeBron fatigue: 41 years old, 2-day turnaround, high-usage G1 (13ast)", "Still missing Doncic (hamstring, May 1) and Reaves (oblique, May 1) — no reinforcements coming"]
     },
     coaching: {
       home: {
@@ -214,13 +222,15 @@ const SERIES_DATA = [
     },
     // G2 Player Outlook — Bayesian blend: 55% model / 45% prior (season avg)
     // G1 shooting: HOU 37.6% FG vs LAL 60.6% FG — extreme outliers both ways, heavy regression expected
-    // KD game-time decision (right knee contusion) — if he plays, HOU offense transforms entirely
-    // LAL: Kennard 9-13 (69.2%) is unsustainable; LeBron facilitator mode (13ast) may shift to scoring
+    // KD CONFIRMED PLAYING G2 (right knee contusion, limited mobility, ~28-30min restriction)
+    // HOU transforms: 1→2 initiators. Smart can't hunt Sengun AND guard KD.
+    // LAL: Kennard 9-13 (69.2%) is unsustainable; HOU will scheme against him. LeBron fatigue factor at 41.
     g2PlayerOutlook: {
       home: [ // HOU
         // Sengun: G1 6-19 (31.6%) — Smart disrupted post rhythm. Season 54.2% FG.
-        // Bayesian: 0.55*0.316 + 0.45*0.542 = 0.418. But home game + adjustment = bump to ~0.46
-        { player:"Alperen Sengun", outlook:"neutral-good", projFgPct:0.46, ptsRange:[18,24], reason:"G1 was worst FG% game of season (31.6%) — Smart's disruption real but unsustainable at that level. Home crowd + Udoka adjustments (more high-post face-ups vs Smart switching) should restore rhythm. Bayesian regression to ~46% from season 54.2% baseline.", confidence:"high" },
+        // Bayesian: 0.55*0.316 + 0.45*0.542 = 0.418. But KD return + adjustment = bump to ~0.48
+        // KD's presence forces Smart to guard KD → Sengun faces weaker defenders
+        { player:"Alperen Sengun", outlook:"good", projFgPct:0.48, ptsRange:[18,26], reason:"G1 was worst FG% game of season (31.6%) — Smart's relentless disruption was real but CRITICALLY: KD's confirmed return for G2 forces Smart to guard KD on-ball, removing the primary source of Sengun's G1 struggles. With Smart pulled away, Sengun faces Ayton/Hayes — much more favorable matchups. Udoka will adjust with more high-post face-ups and KD-Sengun P&R (1.12 PPP, 89th percentile in reg season). Bayesian regression from 31.6% toward season 54.2% baseline, plus KD-gravity uplift. Upgraded from 'neutral-good' to 'good'.", confidence:"high" },
 
         // Thompson: G1 7-18 (38.9%), 17pts. Season 50.8% FG. Physical but inefficient.
         // Bayesian: 0.55*0.389 + 0.45*0.508 = 0.443
@@ -234,9 +244,10 @@ const SERIES_DATA = [
         // Bayesian: 0.55*0.357 + 0.45*0.462 = 0.404
         { player:"Jabari Smith Jr.", outlook:"neutral", projFgPct:0.40, ptsRange:[12,18], reason:"G1 cold shooting (35.7%) but grabbed 12 boards (5 offensive). Season 46.2% FG — expect bounce-back. 3PT regression likely (3-9 in G1, 36.8% season). Home game helps rhythm.", confidence:"medium" },
 
-        // KD: OUT G1. CBS injury report: "out until at least Apr 21" = G2 day. Line moved HOU -4.5→-5.5 (market pricing return).
+        // KD: OUT G1, CONFIRMED PLAYING G2. Line HOU -5.5 (market priced in return).
         // Season 52.4% FG, 26.0 PPG. Knee limits explosiveness — project conservative FG%.
-        { player:"Kevin Durant", outlook:"neutral-good", projFgPct:0.48, ptsRange:[20,28], reason:"CBS injury report lists return date as Apr 21 (today). ESPN line moved HOU -4.5→-5.5, strongly suggesting he plays. Likely on minutes restriction (~28-30min). At 37, knee stiffness limits explosiveness but midrange game is matchup-proof. Transforms HOU from single-initiator to dual-threat with Sengun. Even at 80% capacity, adds ~20pts and gravity that opens shots for Sheppard/Smith. Upgraded from 'neutral' to 'neutral-good' based on line movement signal.", confidence:"medium" },
+        // Recovery volatility (Phase 28): knee contusion at 37 = 2-4% asymmetric downside risk.
+        { player:"Kevin Durant", outlook:"neutral-good", projFgPct:0.47, ptsRange:[18,26], reason:"CONFIRMED SUITING UP for G2. Went through half of Monday practice — Udoka says knee is 'tough to bend in certain ways'. Limited mobility means reduced explosiveness: drives and post-ups will be limited, but midrange game (67% TS vs LAL this season) doesn't require full mobility. Minutes restriction likely (~28-30min). At 37, Recovery Volatility flag (Phase 28) applies — 2-4% asymmetric downside risk for knee issues. Transforms HOU from 1→2 initiators: Smart must guard KD on-ball, freeing Sengun from relentless disruption. Even at 80% capacity, adds ~18-22pts and gravity that opens Sheppard/Smith 3PT looks. FG% projection conservative at 47% (down from 52.4% season) reflecting limited practice + knee stiffness + first game back.", confidence:"medium" },
 
         // Eason: G1 7-7 (100%!!) 16pts/10reb in 24min. Massive overperformance.
         // Season 48.7% FG. Bayesian: severe regression to ~0.50
@@ -1269,7 +1280,7 @@ const SERIES_DATA = [
       name: "76ers", city: "Philadelphia", abbr: "PHI", seed: 7, record: "45-37",
       systemBonus: 0,
       playoffPedigree: 0,
-      offStyle: "Without Embiid: post-up anchor gone, offense collapses to Maxey P&R only. One-dimensional and easy to scout (Partnow initiator-loss cascade).", initiators: 1, // Maxey only (Embiid OUT)
+      offStyle: "G2 proved dual-initiator capability: Edgecombe breakout (30pts, 12-20 FG, 6-10 3PT) as co-creator with Maxey. PHI's offense transforms with two creators — harder to scheme against.", initiators: 2, // Maxey + Edgecombe (G2 PROVED — Edgecombe 30pts breakout)
       color: "#006BB6", color2: "#ED174C",
       advStats: { ortg:113.2, drtg:112.5, netRtg:0.7, pace:97.8, ts:56.8, efg:53.1, tov:13.5, reb:49.5, ortgRk:16, drtgRk:17, clutchNetRtg:0.8, last10:"5-5", fgPct:50.1, threePct:33.2, ftPct:75.6, orbPct:23.6 },
       players: [
@@ -1343,6 +1354,29 @@ const SERIES_DATA = [
       consHome: ["PHI 3PT% will regress upward — they won't shoot 17.4% again", "Nurse historically adjusts well between games", "Complacency risk after 32-pt blowout", "Maxey is too talented to go 8-20 twice"],
       prosAway: ["Nurse's G2 adjustment history is strong (Toronto tenure)", "Maxey shooting regression — 8-20 won't repeat, elite talent finds a way", "George will be further from suspension rust — rhythm should improve", "PHI competitive pride — 32-pt loss will fuel urgency"],
       consAway: ["No Embiid — structural problem unchanged", "0-7 vs BOS in playoffs since 1982 — psychological weight compounds", "Drummond starting C is unsolvable without Embiid", "BOS system is schematic, not effort-based — harder to adjust against"]
+    },
+    game3: {
+      spread: "PHI -1.5", moneyline: "PHI -120 / BOS +100", ou: "O/U 214.5",
+      pick: "PHI", confidence: "medium", projScore: "PHI 109 — BOS 105",
+      schedule: "Fri Apr 24 — 7:00 PM ET — Prime Video",
+      reasoning: "BLENDED PICK: PHI (medium confidence). The series dynamics shifted dramatically after PHI's G2 road upset (111-97). Three factors converge for a PHI G3 lean: (1) EDGECOMBE BREAKOUT CHANGES EVERYTHING — His 30pts/10reb (12-20 FG, 6-10 3PT) proves PHI now has a genuine second initiator. Our Phase 28 model recognizes this via dynamic initiator recalculation: PHI went from 1→2 initiators, meaning White can no longer fully commit to Maxey. The defensive math changes fundamentally — BOS must now defend TWO creators, stretching their elite perimeter D thinner. (2) HOME COURT + MOMENTUM — PHI won G2 on the road, the hardest win to get in a playoff series. Now they return to Wells Fargo Center where they were 24-17 this season. The crowd energy after a road upset is a measurable boost (~2.5pts in R1). PHI hasn't been home all series — they'll feed off the crowd. (3) 3PT NORMALIZATION — PHI shot 49% from 3 in G2 (will regress down), but BOS shot 26% (will regress UP). The net regression favors BOS slightly, but PHI's improved shot creation (2 initiators now) means their baseline 3PT generation improves structurally, not just via variance. COUNTER-ARGUMENT: BOS's Mazzulla (adj rating 8) will scheme against Edgecombe in G3 — expect hard traps, switching assignments, and forcing the rookie into uncomfortable decisions. Brown's 36pts in a LOSS shows BOS can score regardless. Tatum's 5PF in G2 was fluky — he'll be more disciplined. But PHI's combination of home court, momentum, and a transformed offensive identity (2 initiators) tips the edge. Engine says BOS by 4 at PHI, but the manual pick overrides due to qualitative momentum factors the engine can't fully capture.",
+      g2Adjustments: [
+        "PHI WON G2 111-97 ON THE ROAD — broke 0-7 since 1982 playoff drought vs BOS. Series tied 1-1.",
+        "EDGECOMBE BREAKOUT: 30pts/10reb (12-20 FG, 6-10 3PT). Rookie scored more than Tatum. PHI's initiator count rises from 1→2 — this fundamentally changes the defensive math for BOS.",
+        "PHI SHOT 49% FROM 3PT AS A TEAM (19-39): Team 3PT correlation phenomenon — when one shooter gets hot, the whole team follows. Will regress but structural improvement from 2-initiator offense is real.",
+        "BOS SHOT 26% FROM 3PT (13-50): Ice-cold team-wide shooting. Will regress UP toward 38% season baseline. Brown went 3-8, Tatum 2-7, White 1-6, Pritchard 2-7 — everybody was off.",
+        "TATUM FOUL TROUBLE: 5 PFs in 32 minutes, only 19pts (8-19 FG). Achilles recovery volatility showing — great G1, mediocre G2. His ceiling/floor variance is wider than model captured pre-Phase 28.",
+        "BROWN HEROIC BUT INSUFFICIENT: 36pts (14-28 FG) in a LOSS. BOS's depth advantage evaporated when team 3PT% collapsed. Brown can't carry alone if the rest of BOS shoots 26%.",
+        "WHITE-ON-MAXEY LESS EFFECTIVE: Maxey had 29pts (11-28 FG, 39.3%) with 7 assists. Still below his 47% baseline but got to the line (4-5 FT) and created for others. With Edgecombe as a second threat, White's assignment becomes harder.",
+        "PAUL GEORGE FINDING RHYTHM: 19pts on 7-13 FG (53.8%). Suspension rust clearing. Still not the aggressive alpha PHI needs but efficiency is trending right.",
+        "MAZZULLA MUST ADJUST: First time in 2026 playoffs he's lost (was 4-0 in G1s). Must scheme for Edgecombe specifically — hard traps, switching assignments, forcing rookie into ISO decisions. Mazzulla's adjustment rating (8) suggests he WILL adapt.",
+        "NURSE'S MASTERCLASS: Adjusted from G1's disaster (91pts) to G2's road upset (111pts). Unleashed Edgecombe as co-creator, got George involved, improved ball movement. His Toronto-era G2 adjustment reputation is now proven in PHI.",
+        "SERIES SHIFTS TO PHILADELPHIA: G3 and G4 at Wells Fargo Center. PHI was 24-17 at home this season. First time PHI has home court this series — crowd energy is a real factor after road upset."
+      ],
+      prosHome: ["PHI home court for first time — crowd energy after stunning road upset","Edgecombe breakout transforms offense from 1→2 initiators — harder to scheme against","Nurse proved elite G2 adjustment ability — expect continued innovation","Maxey averaging 24.5pts through 2 games — still below his 28.3 ceiling, upside room","George trending up: 17pts G1 → 19pts G2 on 53.8% FG — rhythm building","PHI broke 40-year BOS playoff drought — psychological barrier shattered","Momentum — winning on the road in G2 is historically the hardest win to get"],
+      consHome: ["No Embiid (appendectomy recovery — targeting Apr 27 at earliest)","PHI's 49% 3PT G2 will regress down — structural improvement is real but 49% is not baseline","Drummond starting C remains a structural liability vs BOS five-out","PHI bench still thin — Grimes/Barlow/Bona limited offensive punch","Edgecombe is a 20-year-old rookie — Mazzulla will scheme specifically for him in G3 film session"],
+      prosAway: ["BOS 3PT regression UP from 26% — 38% season baseline suggests massive correction","Mazzulla's adjustment rating (8) — will scheme against Edgecombe after film study","Brown averaging 31.0pts through 2 games — MVP-level dominance continues regardless","Tatum's 5PF game is a fluky outlier — expect more disciplined play","White's defensive impact on Maxey is repeatable even with 2-initiator offense","BOS depth advantage returns if team shooting normalizes — 6 players scored 10+ in G1","Championship DNA — defending champs don't lose 3 in a row to a 7-seed without Embiid"],
+      consAway: ["PHI home court advantage — ~2.5pts in R1","Lost G2 despite Brown's 36pts — team shooting collapse (26% 3PT) is concerning pattern risk","Tatum's Achilles recovery creates wider variance — could have another sub-20pt game","Playing on the road for first time this series — away from TD Garden comfort","Edgecombe's breakout means White can't fully commit to Maxey — defensive scheme diluted","Series psychology shifts after G2 upset — PHI believes they can win this series now"]
     },
     coaching: {
       home: {
@@ -1445,7 +1479,72 @@ const SERIES_DATA = [
         { player:"Adem Bona", outlook:"neutral", projFgPct:0.45, ptsRange:[2,6], reason:"Young backup center with limited offensive role. G1 was fine for spot minutes. Provides energy and rim protection. Not a scoring factor.", confidence:"low" }
       ]
     },
-    games: [{num:1,result:"W",homeScore:123,awayScore:91,winner:"BOS",notes:"32-pt blowout. Tatum 25/11/7 in return from Achilles. Brown 26 pts (7-9 Q3). 6 BOS players scored 10+. BOS shot 50% FG, 11 3PM. PHI 4-23 from 3 (17.4%, 2nd worst franchise playoff history). Maxey 20 pts on 8-20, White's D stifled him. Wire-to-wire. Model projected BOS 112-98 (margin 14); actual margin 32. Model picks: BOS ML ✅, BOS -12.5 ✅ (+19.5 margin), Under 211.5 ❌ (actual 214), Brown O25.5 ✅ (26), Maxey O26.5 ❌ (20)."},{num:2,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:3,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:4,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    // G3 Player Outlook — Bayesian blend with 2-game sample
+    // G1: BOS 123-91 blowout. G2: PHI 111-97 upset (Edgecombe 30/10, PHI 49% 3PT).
+    // Series tied 1-1. G3 at PHI (Wells Fargo Center). Embiid still OUT.
+    // PHI now has 2 initiators (Maxey + Edgecombe). BOS must adjust defensive scheme.
+    // Both teams' 3PT% should regress toward season baseline.
+    g3PlayerOutlook: {
+      home: [ // BOS (playing AWAY at PHI for G3)
+        // Brown: G1 11-21 (52.4%) 26pts. G2 14-28 (50.0%) 36pts. Averaging 31.0 PPG.
+        // 2-game Bayesian: strong performer, consistent star. PHI has no answer for him.
+        { player:"Jaylen Brown", outlook:"good", projFgPct:0.48, ptsRange:[24,34], reason:"Averaging 31.0 PPG on 51.0% FG through 2 games — MVP-level production. G2's 36pts proved he can carry BOS even when team collapses. PHI's Edgecombe (D-LEBRON 0.08) remains a massive defensive mismatch. Only concern: road game fatigue if he has to carry the full load again. Expect 26-32pts.", confidence:"high" },
+
+        // Tatum: G1 9-17 (52.9%) 25pts/11reb/7ast. G2 8-19 (42.1%) 19pts/8reb/5ast, 5PF.
+        // Achilles recovery volatility. Wide variance band.
+        { player:"Jayson Tatum", outlook:"neutral", projFgPct:0.44, ptsRange:[18,28], reason:"High-variance projector due to Achilles recovery (Phase 28 recovery volatility). G1 was dominant (25/11/7, 52.9% FG), G2 was mediocre (19pts, 42.1% FG, 5 fouls). Two-game average: 22.0 PPG, 47.4% FG. The foul trouble in G2 is unlikely to repeat but his game-to-game ceiling/floor gap remains wide. Road game with less favorable whistles may limit FTA. Expect 20-26pts with high uncertainty.", confidence:"medium" },
+
+        // White: G1 4-10 (40%) 10pts. G2 5-14 (35.7%) 12pts. Defensive value primary.
+        // His 3PT was 1-6 in G2, season 38.5% — regression UP expected.
+        { player:"Derrick White", outlook:"neutral", projFgPct:0.40, ptsRange:[10,18], reason:"Primary defensive assignment on Maxey remains his value — held Maxey to 39.3% FG in G2 and 40% in G1. Scoring: averaging 11.0 PPG on 37.5% FG through 2 games, below 44% season baseline. 3PT regression UP expected (2-12 for series, 16.7% vs 38.5% season). With Edgecombe now a 2nd initiator, White's defensive assignment may need to adjust — could unlock more offensive opportunity. Expect 12-16pts.", confidence:"medium" },
+
+        // Pritchard: G1 4-12 (33.3%) 12pts. G2 4-11 (36.4%) 11pts. Cold shooter.
+        // Season 43% FG, 37.7% 3PT. 2-game: 36.4% FG, 4-16 from 3 (25%).
+        { player:"Payton Pritchard", outlook:"neutral-good", projFgPct:0.42, ptsRange:[10,18], reason:"Massive 3PT regression expected: 4-16 from 3 for the series (25%) vs 37.7% season baseline. He's too good a shooter to stay this cold. Plantar fasciitis is a monitor item but hasn't limited minutes (30-34 MPG). High-usage bench role continues (11.5 PPG). Road game energy could help or hurt. Expect bounce-back to 14-18pts with improved 3PT%.", confidence:"medium" },
+
+        // Hauser: G1 4-6 (66.7%) 12pts. G2 2-6 (33.3%) 6pts. Starter/spacer.
+        { player:"Sam Hauser", outlook:"neutral", projFgPct:0.44, ptsRange:[4,12], reason:"G1 scorching (4-6, 12pts), G2 average (2-6, 6pts). 2-game: 6-12 (50%) which is above his 42% season. Will hover around 6-10pts. Spacing role is critical regardless of personal scoring. Road game at PHI shouldn't significantly affect his corner 3 looks.", confidence:"low" },
+
+        // Queta: G1 5-5 (100%) 13pts. G2 2-3 (66.7%) 5pts.
+        { player:"Neemias Queta", outlook:"neutral", projFgPct:0.58, ptsRange:[4,10], reason:"2-game average: 9.0 PPG on 7-8 FG (87.5%) — extreme outlier efficiency that will regress. Rim-finishing role means 4-8pts on limited attempts. Rebounding and defense are his value (7.0 RPG in G2).", confidence:"low" },
+
+        // Vucevic: G1 1-3 3pts. G2 2-5 4pts. Bench C.
+        { player:"Nikola Vucevic", outlook:"neutral", projFgPct:0.44, ptsRange:[4,10], reason:"Bench center averaging 3.5 PPG. Provides rebounding and passing. May see slightly more minutes on the road. Low offensive impact.", confidence:"low" }
+      ],
+      away: [ // PHI (playing HOME at Wells Fargo for G3)
+        // Maxey: G1 8-20 (40%) 20pts. G2 11-28 (39.3%) 29pts/7ast.
+        // Averaging 24.5 PPG on 39.6% FG — below 47% season baseline.
+        // With Edgecombe as 2nd initiator, White's defensive assignment may loosen.
+        { player:"Tyrese Maxey", outlook:"good", projFgPct:0.44, ptsRange:[24,34], reason:"HOME GAME BOOST. Averaging 24.5 PPG but on only 39.6% FG — well below 47% season baseline. FG% regression UP is the strongest statistical signal in this series. White's D is real but with Edgecombe now a confirmed 2nd initiator (30pts G2), BOS can't fully commit White to Maxey anymore — help must rotate. Home court means more favorable whistles and crowd energy. G2's 7 assists shows he's creating for others when scoring is tough. Expect 26-32pts on improved efficiency.", confidence:"high" },
+
+        // Edgecombe: G1 6-16 (37.5%) 13pts. G2 12-20 (60.0%) 30pts/10reb.
+        // YOUTH BREAKOUT candidate (age 20, usage rising).
+        // Mazzulla will scheme for him in G3 film session.
+        { player:"VJ Edgecombe", outlook:"good", projFgPct:0.45, ptsRange:[16,26], reason:"YOUTH BREAKOUT ACTIVE (Phase 28). G2's 30pts/10reb was a star-making performance — 12-20 FG including 6-10 3PT on the road. At 20 years old, this may be a genuine level-up rather than variance. However: Mazzulla (adj 8) will scheme SPECIFICALLY for Edgecombe in G3 after film study — expect hard traps, switching, forcing him into uncomfortable decisions. His 3PT% (60% G2) will regress down significantly. HOME GAME helps — crowd energy for the rookie breakout star. Realistic range: 18-24pts at lower efficiency than G2.", confidence:"medium" },
+
+        // George: G1 4-8 (50%) 17pts. G2 7-13 (53.8%) 19pts.
+        // Trending up. Suspension rust clearing.
+        { player:"Paul George", outlook:"neutral-good", projFgPct:0.46, ptsRange:[16,24], reason:"Steady improvement: 17pts G1 → 19pts G2 on 53.8% FG. Suspension rust is fading. 2-game: 18.0 PPG on 52.4% FG — above his 44.2% season baseline (small sample). Home game should boost confidence further. With Edgecombe drawing defensive attention, George gets cleaner looks. 3PT trending well (3-5 G2, 60%). Expect continued improvement to 18-22pts.", confidence:"medium" },
+
+        // Oubre: G1 5-14 (35.7%) 10pts. G2 6-12 (50%) 14pts.
+        // Trending up, home game boost.
+        { player:"Kelly Oubre Jr.", outlook:"neutral-good", projFgPct:0.44, ptsRange:[10,18], reason:"Improvement arc: 10pts G1 → 14pts G2 on 50% FG. 2-game: 12.0 PPG, 43.1% FG — right at season baseline. 3PT was 2-5 G2 (40%) after 0-5 G1 — normalizing. Home game should boost a player who thrives on energy. PHI's 4th scorer needs to stay in the 12-16pts range for PHI to compete.", confidence:"medium" },
+
+        // Drummond: G1 1-2 2pts. G2 3-5 6pts/9reb.
+        // Structural liability vs five-out but rebounding value.
+        { player:"Andre Drummond", outlook:"neutral", projFgPct:0.52, ptsRange:[4,10], reason:"Slight improvement: 2pts G1 → 6pts G2 with 9 rebounds. Five-out spacing issue persists but his rebounding (9 boards G2) has value. Home crowd energy helps effort-based players. Still a structural mismatch vs BOS spacing but less exploitable at home with familiar defensive rotations.", confidence:"medium" },
+
+        // Grimes: G1 3-6 (50%) 7pts. G2 3-6 (50%) 8pts. Steady bench.
+        { player:"Quentin Grimes", outlook:"neutral", projFgPct:0.44, ptsRange:[6,12], reason:"Steady 7.5 PPG on 50% FG through 2 games. Reliable bench wing on expiring contract. Home game favors bench players. Could see 20+ minutes if PHI rides the hot hand. 3PT: 2-3 in G2 — capable shooter.", confidence:"low" },
+
+        // Barlow: G1 DNP/limited. G2 1-3 3pts in 10min.
+        { player:"Dominick Barlow", outlook:"neutral", projFgPct:0.45, ptsRange:[2,6], reason:"Limited bench big. 10 minutes in G2 with 3pts. Athletic but raw. Provides energy in spot minutes.", confidence:"low" },
+
+        // Bona: G1 1-3 3pts in 14min. G2 1-2 2pts in 8min.
+        { player:"Adem Bona", outlook:"neutral", projFgPct:0.48, ptsRange:[2,6], reason:"Backup center averaging 2.5 PPG. Provides rim protection and energy. Home game could mean slightly more confidence.", confidence:"low" }
+      ]
+    },
+    games: [{num:1,result:"W",homeScore:123,awayScore:91,winner:"BOS",notes:"32-pt blowout. Tatum 25/11/7 in return from Achilles. Brown 26 pts (7-9 Q3). 6 BOS players scored 10+. BOS shot 50% FG, 11 3PM. PHI 4-23 from 3 (17.4%, 2nd worst franchise playoff history). Maxey 20 pts on 8-20, White's D stifled him. Wire-to-wire. Model projected BOS 112-98 (margin 14); actual margin 32. Model picks: BOS ML ✅, BOS -12.5 ✅ (+19.5 margin), Under 211.5 ❌ (actual 214), Brown O25.5 ✅ (26), Maxey O26.5 ❌ (20)."},{num:2,result:"L",homeScore:97,awayScore:111,winner:"PHI",notes:"PHI upset at BOS. Edgecombe BREAKOUT: 30pts (12-20 FG, 6-10 3PT) — model projected 13.5. PHI shot 48% FG, 49% 3PT (team correlation). Maxey 29pts (11-28). PG 19pts (7-13). Brown 36pts heroic but BOS shot 39% FG, 26% 3PT. Tatum 19pts (8-19, 5PF foul trouble). Series tied 1-1. Model projected BOS 109-103; actual PHI 111-97. Model pick BOS ❌.",boxScores:{home:[{name:"Jaylen Brown",min:38,pts:36,reb:6,ast:4,fgm:14,fga:28,tpm:3,tpa:8,ftm:5,fta:6,stl:2,blk:0,to:3},{name:"Jayson Tatum",min:32,pts:19,reb:8,ast:5,fgm:8,fga:19,tpm:2,tpa:7,ftm:1,fta:2,stl:1,blk:1,to:2},{name:"Derrick White",min:36,pts:12,reb:3,ast:5,fgm:5,fga:14,tpm:1,tpa:6,ftm:1,fta:2,stl:2,blk:1,to:1},{name:"Payton Pritchard",min:30,pts:11,reb:2,ast:4,fgm:4,fga:11,tpm:2,tpa:7,ftm:1,fta:1,stl:0,blk:0,to:1},{name:"Sam Hauser",min:24,pts:6,reb:3,ast:1,fgm:2,fga:6,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Neemias Queta",min:18,pts:5,reb:7,ast:0,fgm:2,fga:3,tpm:0,tpa:0,ftm:1,fta:2,stl:0,blk:2,to:1},{name:"Nikola Vucevic",min:14,pts:4,reb:4,ast:2,fgm:2,fga:5,tpm:0,tpa:1,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Baylor Scheierman",min:12,pts:2,reb:1,ast:0,fgm:1,fga:3,tpm:0,tpa:2,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Jordan Walsh",min:8,pts:2,reb:2,ast:1,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:0,to:0}],away:[{name:"VJ Edgecombe",min:36,pts:30,reb:10,ast:3,fgm:12,fga:20,tpm:6,tpa:10,ftm:0,fta:0,stl:2,blk:0,to:2},{name:"Tyrese Maxey",min:40,pts:29,reb:3,ast:7,fgm:11,fga:28,tpm:3,tpa:9,ftm:4,fta:5,stl:1,blk:0,to:3},{name:"Paul George",min:34,pts:19,reb:6,ast:4,fgm:7,fga:13,tpm:3,tpa:5,ftm:2,fta:2,stl:1,blk:0,to:1},{name:"Kelly Oubre Jr.",min:30,pts:14,reb:5,ast:1,fgm:6,fga:12,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Andre Drummond",min:20,pts:6,reb:9,ast:1,fgm:3,fga:5,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Quentin Grimes",min:18,pts:8,reb:2,ast:2,fgm:3,fga:6,tpm:2,tpa:3,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Dominick Barlow",min:10,pts:3,reb:3,ast:0,fgm:1,fga:3,tpm:0,tpa:1,ftm:1,fta:2,stl:0,blk:0,to:0},{name:"Adem Bona",min:8,pts:2,reb:3,ast:0,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:0}]}},{num:3,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:4,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
   },
   {
     id: "NYK-ATL", conf: "East", round: "R1",

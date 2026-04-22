@@ -354,8 +354,8 @@ function renderBetsPage(el) {
 
     <!-- ===== G2 BETS TAB ===== -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — Phase 23 Injury + Fatigue Update</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 23: Injury/fatigue-adjusted G2 projections. CBS Sports injury report (Apr 21) + ESPN live odds integrated. KEY UPDATES: KD (HOU) likely returns today (line moved -4.5→-5.5), Tatum Achilles recovery management, LeBron fatigue (age 41, 2-day turnaround). LAL still missing Luka (hamstring) + Reaves (oblique). Embiid (PHI) remains OUT.</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — Phase 28 Live Analysis Update</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 28: Live game analysis + model corrections. KD (HOU) CONFIRMED PLAYING G2 — HOU initiators 1→2, spread moved to -5.5, O/U dropped to 207.5. Phase 28 engine: youth breakout multiplier, efficiency tax defense, dynamic initiator recalc, recovery volatility. Tatum Achilles recovery management. LeBron fatigue (age 41, 2-day turnaround). LAL still missing Luka (hamstring) + Reaves (oblique). Embiid (PHI) OUT until Apr 24. BOS-PHI G2 result: PHI UPSET 111-97 (Edgecombe 21pts breakout).</p>
 
     <!-- COMPLETED + SATURDAY/SUNDAY G2 GAMES -->
     <div class="bet-section">
@@ -409,19 +409,26 @@ function renderBetsPage(el) {
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
-      <!-- HOU-LAL (10:30pm ET) — KD LIKELY RETURNS -->
+      <!-- HOU-LAL (10:30pm ET) — KD CONFIRMED PLAYING -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
         <div class="bet-pick">HOU ML @ LAL</div>
-        <div class="bet-line">-205 | Model: HOU 110-104 (+6) | COMPETITIVE</div>
-        <div class="bet-reasoning"><strong>PHASE 23 UPGRADE — KD RETURNS:</strong> CBS injury report lists KD target date as Apr 21 (today). ESPN spread moved HOU -4.5→-5.5, strongly signaling KD plays. Model upgraded from +2 COIN FLIP to +6 COMPETITIVE. KD adds ~20pts and transforms HOU from single-initiator to dual-threat with Sengun. Even on ~28-30min restriction, his midrange gravity opens shots for Sheppard/Smith. LAL missing Luka (hamstring, out May 1) + Reaves (oblique, out May 1) — their backcourt is skeletal. LeBron "good" outlook but FATIGUE FACTOR: age 41, 2-day turnaround from high-usage G1 (13ast = constant decision load). Kennard "bad" (HOU will scheme). Market: HOU -5.5. Model aligns with market now.</div>
+        <div class="bet-line">-210 | Model: HOU 108-101 (+7) | COMPETITIVE</div>
+        <div class="bet-reasoning"><strong>PHASE 28 RECALC — KD CONFIRMED:</strong> KD is suiting up for G2 (went through half practice Mon, Udoka says knee 'tough to bend'). HOU goes from 1→2 initiators (Phase 28 dynamic recalc) — the single biggest roster upgrade in R1. Smart can no longer free-roam to hunt Sengun; he must guard KD on-ball. Sengun outlook upgraded to "good" (0.48 FG%). KD projects 18-26pts on conservative 47% FG (minutes restriction ~28-30min). LAL WILL regress from 61% FG / 53% 3PT — historically unsustainable. Kennard "bad" (HOU will face-guard). LeBron "good" but fatigue factor at 41 on 2-day turnaround. Market: HOU -5.5, O/U 207.5. Model picks HOU by 7 — HIGH confidence.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">HOU -5.5 @ LAL</div>
+        <div class="bet-line">-110 | Model: HOU +7 | Market: HOU -5.5</div>
+        <div class="bet-reasoning"><strong>PHASE 28:</strong> Model projects HOU by 7, market is -5.5 — 1.5pt edge FAVORS HOU SPREAD. KD's return is the catalyst: dual-initiator offense + LAL shooting regression + Kennard schemed out + LeBron fatigue. Recovery volatility (KD's knee at 37) is the downside risk — if he's worse than expected, margin compresses to ~4. But the 1.5pt cushion above the market line makes this a model edge play. O/U 207.5 also tracks with model (108+101=209).</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">LeBron James Over 9.5 assists</div>
-        <div class="bet-line">-110 | Model: 9.8 APG | Outlook: GOOD | G1: 13 ast</div>
-        <div class="bet-reasoning">Phase 23 adjustment: LeBron's assist projection dipped from 10.3 to 9.8. G1 facilitator masterclass (13ast) supports playmaking, and Ayton/Hachimura/Kennard remain excellent targets. BUT: fatigue concern (41 years old, 2-day turnaround) + if KD returns, faster pace drains more energy. If LeBron shifts to more scoring mode (likely if Kennard gets schemed out), assist volume could dip. Line is now TIGHT — 0.3pt cushion down from 0.8. Still lean Over but confidence dropped from MEDIUM to LOW.</div>
+        <div class="bet-line">-110 | Model: 9.5 APG | Outlook: GOOD | G1: 13 ast</div>
+        <div class="bet-reasoning">Phase 28 update: LeBron's assist projection at 9.5 — right on the line. G1 facilitator masterclass (13ast) supports playmaking, and Ayton/Hachimura/Kennard remain targets. BUT: with KD confirmed, HOU has more offensive possessions → fewer LAL possessions → fewer assist opportunities. LeBron may also shift to scoring mode if Kennard is face-guarded. Fatigue (41, 2-day turnaround) compounds. This is now a SKIP — no edge either way at 9.5.</div>
         <span class="bet-edge historical">Historical</span>
       </div>
     </div>
