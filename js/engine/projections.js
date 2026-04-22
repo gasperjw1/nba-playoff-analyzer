@@ -9,6 +9,11 @@
 // - Blowout cascades: early runs compound via bench garbage time
 // - 2025 set record with 4 games decided by 40+ pts
 
+// Helper: count completed games in a series
+function getGamesPlayed(series) {
+  return (series.games || []).filter(g => g && g.winner).length;
+}
+
 function calcGameProjection(series, seriesId, gameNum) {
   const prob = calcWinProb(series, seriesId);
   const hr = prob.homeRating || calcTeamRating(series.homeTeam, series, seriesId);
@@ -108,7 +113,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       const homeTeamData = tpv.home.team;
       const awayTeamData = tpv.away.team;
       // Regression weight: heavier for smaller playoff samples
-      const gPlayed = (series.games || []).filter(g => g && g.winner).length;
+      const gPlayed = getGamesPlayed(series);
       const regWeight = gPlayed <= 1 ? 0.70 : (gPlayed <= 2 ? 0.55 : 0.40);
 
       // Expected 3P% via Bayesian blend
@@ -171,7 +176,7 @@ function calcGameProjection(series, seriesId, gameNum) {
   // means the variance band for overall scoring should be wider.
   // Implementation: check if either team had an extreme 3PT game in prior game(s).
   // If so, add ±variance to the margin to reflect that team 3PT nights are streaky.
-  const gPlayed5f = (series.games || []).filter(g => g && g.winner).length;
+  const gPlayed5f = getGamesPlayed(series);
   if (gPlayed5f > 0 && gameNum > 1 && series.games) {
     const priorG = series.games[gPlayed5f - 1];
     if (priorG && priorG.winner) {
@@ -252,15 +257,31 @@ function calcGameProjection(series, seriesId, gameNum) {
       // Factor B: Blowout regression / close-game persistence
       // Blowouts (20+) rarely repeat consecutively — regression is strong
       // Close games (< 6) suggest evenly matched teams → minimal shift
+      //
+      // PHASE 30 UPGRADE: Coaching Adjustment Discount on Blowout Momentum
+      // Evidence: BOS-PHI G1 was a 32-pt blowout, but PHI won G2 by 14.
+      // Nurse (adjustmentRating 8) made masterful G2 adjustments — the model
+      // overweighted the blowout momentum because it didn't account for HOW GOOD
+      // the losing coach is at adjusting. Elite coaches (adj ≥ 7) extract more
+      // information from blowout film and make bigger tactical changes.
+      // The losing coach's adjustment rating amplifies blowout regression.
+      const losingCoachAdj = homeWonG1
+        ? (series.coaching?.away?.adjustmentRating || 5)
+        : (series.coaching?.home?.adjustmentRating || 5);
+      // Elite coach bonus: coaches rated 7+ amplify regression by 15-40%
+      const coachRegBoost = losingCoachAdj >= 7
+        ? 1.0 + (losingCoachAdj - 6) * 0.10  // adj7=1.10, adj8=1.20, adj9=1.30
+        : 1.0;
+
       if (g1AbsMargin >= 25) {
         // Massive blowout → strong regression (blowouts overstate true talent gap)
-        // Reduce expected margin by 25-35% toward zero
-        const blowoutRegression = 0.25 + Math.min(0.10, (g1AbsMargin - 25) * 0.005);
-        baseMargin *= (1 - blowoutRegression);
+        // Reduce expected margin by 25-35% toward zero, amplified by coach quality
+        const blowoutRegression = (0.25 + Math.min(0.10, (g1AbsMargin - 25) * 0.005)) * coachRegBoost;
+        baseMargin *= (1 - Math.min(0.50, blowoutRegression)); // cap at 50% regression
       } else if (g1AbsMargin >= 15) {
-        // Solid win → moderate regression
-        const solidRegression = 0.12 + (g1AbsMargin - 15) * 0.013;
-        baseMargin *= (1 - solidRegression);
+        // Solid win → moderate regression, amplified by coach quality
+        const solidRegression = (0.12 + (g1AbsMargin - 15) * 0.013) * coachRegBoost;
+        baseMargin *= (1 - Math.min(0.40, solidRegression)); // cap at 40% regression
       } else if (g1AbsMargin <= 5) {
         // Very close game → both teams stay near baseline, add slight variance
         // Coin-flip games don't create much G2 shift
@@ -796,24 +817,53 @@ function calcProjectedBoxScore(series, gameIdx) {
       // This gives G1 performance substantially more influence on G2 projections,
       // creating meaningful differentiation from pre-series (G1) projections.
       //
-      // PHASE 28: Youth Breakout Multiplier
-      // Players ≤23 with rising usage who outperformed in G1 get a different Bayesian
-      // blend: 40% model / 30% G1 actual / 30% ceiling projection (ppg * 1.25).
-      // This captures the "breakout" phenomenon where young players elevate in playoffs
-      // beyond what either their season baseline or one game sample would predict.
-      // Evidence: Edgecombe G2 (30pts on 12-20, 6-10 3PT) — model projected 13.5pts.
+      // PHASE 28+: Youth Breakout Multiplier with Multi-Game Momentum
+      // Players ≤23 with rising usage who outperformed get a different Bayesian blend.
+      // PHASE 29 UPGRADE: Breakout momentum now persists across games.
+      // Evidence: Henderson G1 18pts (63.6%) → G2 31pts (64.7%). Edgecombe G1 struggled → G2 30pts.
+      // When a young player outperforms in MULTIPLE games, it's a genuine level-up, not variance.
+      // Multi-game breakout streak = even more aggressive blend toward ceiling.
       const isYouthBreakout = player.age && player.age <= 23
         && prior && prior.min >= 20
         && prior.pts > (player.ppg || 12) * 1.15  // outperformed season avg by 15%+
         && (player.usg || 0) >= 18;
+      // Count consecutive breakout games (scan all completed games for this player)
+      let youthBreakoutStreak = 0;
+      if (player.age && player.age <= 23 && (player.usg || 0) >= 18) {
+        const ppgBase = player.ppg || 12;
+        for (let gi = gameIdx - 1; gi >= 0; gi--) {
+          const g = series.games[gi];
+          if (!g || !g.boxScores) break;
+          const bs = g.boxScores[side];
+          if (!bs) break;
+          const pbs = bs.find(b => b.name === player.name);
+          if (pbs && pbs.min >= 15 && pbs.pts > ppgBase * 1.10) {
+            youthBreakoutStreak++;
+          } else {
+            break; // streak broken
+          }
+        }
+      }
       if (isYouthBreakout && prior.min >= 15) {
-        // Youth breakout blend: 40% model / 30% G1 actual / 30% ceiling
-        const ceilingPts = (player.ppg || 12) * 1.25;
+        // Youth breakout blend: model / actual / ceiling
+        // PHASE 29: Multi-game streak makes blend more aggressive toward ceiling
+        // Streak 0 (first breakout): 40% model / 30% actual / 30% ceiling (original)
+        // Streak 1+ (consecutive breakouts): 30% model / 25% actual / 45% ceiling
+        // Evidence: Henderson G1→G2 (18→31pts), Edgecombe proved breakouts aren't one-offs
+        const ceilingMult = youthBreakoutStreak >= 2 ? 1.35 : 1.25;
+        const ceilingPts = (player.ppg || 12) * ceilingMult;
         const ceilingReb = (player.rpg || 3) * 1.15;
         const ceilingAst = (player.apg || 2) * 1.15;
-        projPts = exp.pts * 0.40 + prior.pts * 0.30 + ceilingPts * 0.30;
-        projReb = exp.reb * 0.40 + prior.reb * 0.30 + ceilingReb * 0.30;
-        projAst = exp.ast * 0.40 + prior.ast * 0.30 + ceilingAst * 0.30;
+        if (youthBreakoutStreak >= 1) {
+          // Multi-game breakout: lean harder into ceiling — this is a genuine level-up
+          projPts = exp.pts * 0.30 + prior.pts * 0.25 + ceilingPts * 0.45;
+          projReb = exp.reb * 0.30 + prior.reb * 0.25 + ceilingReb * 0.45;
+          projAst = exp.ast * 0.30 + prior.ast * 0.25 + ceilingAst * 0.45;
+        } else {
+          projPts = exp.pts * 0.40 + prior.pts * 0.30 + ceilingPts * 0.30;
+          projReb = exp.reb * 0.40 + prior.reb * 0.30 + ceilingReb * 0.30;
+          projAst = exp.ast * 0.40 + prior.ast * 0.30 + ceilingAst * 0.30;
+        }
         const estMin = player.usg ? Math.min(42, 48 * (player.usg / 100) * 2.4) : 28;
         projMin = estMin * 0.35 + prior.min * 0.65; // youth breakouts earn more minutes
       } else if (prior && prior.min >= 15) {
@@ -848,10 +898,12 @@ function calcProjectedBoxScore(series, gameIdx) {
         // PHASE 28: Youth breakout candidates regress LESS — their overperformance
         // may represent a genuine level-up rather than random variance
         if (g1PtsDev > 6 && isYouthBreakout) {
-          // Youth breakout: apply only 40% of normal regression — their ceiling is expanding
+          // Youth breakout: apply reduced regression — their ceiling is expanding
+          // PHASE 29: Multi-game streaks regress even less (25% of normal vs 40%)
+          const streakDampener = youthBreakoutStreak >= 1 ? 0.25 : 0.40;
           const youthRegression = g1PtsDev > 10
-            ? Math.min(0.35, 0.08 + (g1PtsDev - 10) * 0.04) * 0.40
-            : Math.min(0.12, (g1PtsDev - 6) * 0.03) * 0.40;
+            ? Math.min(0.35, 0.08 + (g1PtsDev - 10) * 0.04) * streakDampener
+            : Math.min(0.12, (g1PtsDev - 6) * 0.03) * streakDampener;
           projPts *= (1 - youthRegression);
         } else if (g1PtsDev > 6) {
           // SCHEME-DRIVEN VOLUME CHECK: If the player is the primary/sole initiator

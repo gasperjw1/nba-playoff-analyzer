@@ -20,7 +20,7 @@ function calcPlayerFatigue(player, series) {
   const round = series.round || 'R1';
   const roundDepth = { 'R1': 0, 'R2': 1, 'CF': 2, 'Finals': 3 };
   const depth = roundDepth[round] || 0;
-  const gamesPlayed = series.games.filter(g => g.winner).length;
+  const gamesPlayed = (series.games || []).filter(g => g && g.winner).length;
 
   // 1. AGE FACTOR — players 33+ accumulate fatigue faster
   // Research: older athletes show reduced recovery rates and cumulative performance decline

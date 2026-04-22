@@ -702,6 +702,22 @@ function renderLearningsPage(el) {
         <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 26</span>
       </div>
 
+      <!-- Phase 30 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 30 — G2 Results Integration & Engine Hardening</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Trigger:</strong> BOS-PHI G2 upset (PHI 111-97) and SAS-POR G2 upset (POR 106-103) revealed two systematic model gaps in how blowout momentum and youth breakout persistence are handled.
+        <br><br><strong>Key Findings:</strong>
+        <br>• <strong>Blowout Momentum Overweighted:</strong> BOS won G1 by 32 points. Model carried too much momentum into G2, projecting BOS 109-103. PHI won by 14. The missing factor: Nurse (adjustmentRating 8) is an elite adjustment coach — the model treated all coaches equally when applying blowout regression.
+        <br>• <strong>Youth Breakout Not Persisting:</strong> Edgecombe scored 18pts in G1 (breakout), then 30pts in G2. Henderson had similar trajectory (18→31). Single-game breakout multipliers reset each game rather than accumulating evidence across consecutive breakout games.
+        <br>• <strong>SAS-POR Coaching Adjustments:</strong> Splitter's adjustments after G1 blowout were neutralized by Chauncey Billups (adj 6). POR won despite being 13-pt underdogs. Model overweighted G1 margin of 13.
+        <br><br><strong>Two Engine Upgrades:</strong>
+        <br>1. <strong>Youth Breakout Momentum Persistence (Phase 29):</strong> For players ≤23 with usage ≥18%, the engine now scans ALL prior games for consecutive breakout performances. Multi-game breakouts get a more aggressive Bayesian blend (30% model / 25% actual / 45% ceiling) with reduced regression (25% of normal vs 40%). Evidence: Henderson G1→G2, Edgecombe G2.
+        <br>2. <strong>Coaching Adjustment Discount on Blowout Momentum (Phase 30):</strong> Blowout regression (Step 7b Factor B) now scales with the losing coach's adjustmentRating. Coaches rated ≥7 amplify regression by 10-30% (adj7=+10%, adj8=+20%, adj9=+30%). Caps prevent over-correction (50% max for massive blowouts, 40% for solid wins). Evidence: Nurse (adj 8) transformed PHI offense between games.</div>
+        <span class="learning-tag data">G2 Results</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 30</span>
+      </div>
+
       <!-- Phase 28 -->
       <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
@@ -755,7 +771,8 @@ function renderLearningsPage(el) {
     'Phase 24': 'Turnover modeling & foul trouble probability — career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g), 2026 per-game TOV/PF analysis, pressure multipliers, DRtg degradation',
     'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series',
     'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts',
-    'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.'
+    'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.',
+    'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.'
   };
 
   // Collect all entries/cards

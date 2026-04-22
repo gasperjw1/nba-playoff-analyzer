@@ -150,11 +150,11 @@ function renderBetsPage(el) {
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">CLE ML vs TOR ✓</span><span class="parlay-leg-odds">-300</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">BOS ML vs PHI</span><span class="parlay-leg-odds">-850</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">BOS ML vs PHI ✗</span><span class="parlay-leg-odds">-850</span><span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">4</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">4</span><span class="parlay-leg-pick">SAS ML vs POR ✗</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span></div>
           </div>
-          <div class="parlay-reasoning">CLE ✓ cashed. Remaining 3 legs are massive chalk — combined payout barely exceeds even money (~-127). High-probability, poor value.</div>
+          <div class="parlay-reasoning">DEAD — 2 legs lost. CLE ✓ cashed but BOS ✗ (PHI 111-97 upset, Edgecombe 30pts) and SAS ✗ (POR 106-103, Wemby concussion exit) killed the parlay. "Chalk slams" in playoffs are vulnerable to young-player breakouts and in-game injuries.</div>
         </div>
 
         <div class="parlay-card">
@@ -164,10 +164,10 @@ function renderBetsPage(el) {
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">SAS ML vs POR</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
+            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">SAS ML vs POR ✗</span><span class="parlay-leg-odds">-700</span><span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span></div>
             <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">CLE ML vs TOR ✓</span><span class="parlay-leg-odds">-300</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT</span></div>
           </div>
-          <div class="parlay-reasoning">CLE ✓ cashed. OKC -2100 and SAS -700 remain — near-locks but ~-167 combined payout makes this a grind play.</div>
+          <div class="parlay-reasoning">DEAD — SAS ✗ (POR 106-103, Wemby concussion exit). CLE ✓ cashed, OKC still pending. Heavy chalk parlays are structurally vulnerable to in-game injuries and breakout performances.</div>
         </div>
 
         <div class="parlay-card">
@@ -437,34 +437,34 @@ function renderBetsPage(el) {
     <div class="bet-section">
       <h4 style="color:#fff;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">Today's G2 Games — Tue Apr 21 (Phase 23 Injury/Fatigue Update)</h4>
 
-      <!-- BOS-PHI (7:00pm ET) — Tatum recovery management -->
-      <div class="bet-card">
+      <!-- BOS-PHI G2 RESULTS (7:00pm ET) — PHI 111, BOS 97 — PHI UPSET -->
+      <div class="bet-card" style="border-left:3px solid #f44336;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">BOS ML vs PHI</div>
-        <div class="bet-line">-850 | Model: BOS 111-100 (+11) | SEPARATION</div>
-        <div class="bet-reasoning"><strong>PHASE 23:</strong> Tatum "good" (47% FG, 22-30pts) with Achilles recovery management — NBA.com flags workload monitoring, expect ~30-32min cap. Brown "good" (49% FG, 22-30pts — Edgecombe mismatch). Maxey "neutral-good" (44% FG — bounce-back from 40% G1). PHI structural problems unchanged: Embiid OUT (abdomen, Apr 24 target), Drummond "bad", PHI shot 4-23 3PT in G1. Model margin dipped 12→11 on Tatum minutes cap, but BOS depth (6 players scored 10+ in G1) covers easily. Ron Harper Jr. (ankle) may return for BOS today — minor bench depth boost. Market: BOS -14.5 (-110), wider than model.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">BOS ML vs PHI ✗</div>
+        <div class="bet-line">-850 | Model: BOS +11 | Actual: PHI 111-97 (+14) | LOSS</div>
+        <div class="bet-reasoning"><strong>RESULT: ✗ LOSS.</strong> PHI won outright 111-97. Edgecombe BREAKOUT (30pts, 12-20 FG, 6-10 3PT) transformed PHI into a 2-initiator offense. BOS shot 26% from 3PT (13-50) — team-wide collapse. Nurse's G2 adjustments were masterful despite model dismissing them due to "roster limitations." Model's biggest G2 miss: overweighted 32-pt G1 momentum, underweighted coaching adjustment + youth breakout potential.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">LOSS</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">PHI +14.5 vs BOS</div>
-        <div class="bet-line">-110 | Model: +11 margin | ESPN line: BOS -14.5</div>
-        <div class="bet-reasoning"><strong>PHASE 23 FLIP:</strong> Model projects +11, market is -14.5 — 3.5pt gap FAVORS PHI SPREAD. Tatum minutes management (Achilles recovery) compresses BOS ceiling. Maxey bounce-back (44% FG) + PHI 3PT regression up from historic 4-23 G1. Nurse's adjustments should narrow margin from G1's 32pts. Even if BOS wins comfortably, +14.5 covers in the model. CHANGED from BOS -14.5 to PHI +14.5 — value shifted to the dog covering.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">PHI +14.5 vs BOS ✓</div>
+        <div class="bet-line">-110 | Model: +11 margin | Actual: PHI won by 14 | WIN</div>
+        <div class="bet-reasoning"><strong>RESULT: ✓ WIN.</strong> PHI didn't just cover +14.5 — they won outright by 14. The Phase 23 flip to PHI spread was the right call: PHI 3PT regression (17.4%→49%), Nurse adjustments, and Maxey bounce-back all materialized. Model's contrarian PHI +14.5 lean was validated even though the ML pick was wrong.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">WIN</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jaylen Brown Over 24.5 points</div>
-        <div class="bet-line">-120 | Model: 26.8 pts | Outlook: GOOD (49% FG) | G1: 26pts</div>
-        <div class="bet-reasoning"><strong>PHASE 23 UPGRADE:</strong> Brown's projection INCREASED from 26.1 to 26.8. If Tatum is on minutes management (~30-32min), Brown absorbs more touches and usage. G1: 26pts (52.4% FG, 7-9 in Q3) was near-baseline. Edgecombe's D-LEBRON (0.08) is a massive mismatch. Home court. Brown becomes BOS's primary option in Tatum-rest stretches. Clears 24.5 by 2.3pts — highest-confidence prop on the BOS-PHI slate.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Jaylen Brown Over 24.5 points ✓</div>
+        <div class="bet-line">-120 | Model: 26.8 pts | Actual: 36pts (14-28 FG) | WIN</div>
+        <div class="bet-reasoning"><strong>RESULT: ✓ WIN.</strong> Brown exploded for 36pts (14-28 FG, 5-12 3PT, 9-12 FT) — cleared 24.5 by 11.5pts. MVP-level performance in a LOSS. Brown is averaging 31.0pts through 2 games. The Edgecombe mismatch (D-LEBRON 0.08) was validated — Brown scored at will. Highest-confidence prop on the BOS-PHI slate was correct.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">WIN</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #f44336;">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Tatum Over 10.5 rebounds</div>
-        <div class="bet-line">+105 | Model: 10.8 RPG | Outlook: GOOD | No Embiid = empty paint</div>
-        <div class="bet-reasoning">Phase 23 adjustment: Tatum rebound proj dipped from 11.4 to 10.8 on minutes management. If capped at ~30-32min (Achilles recovery), he needs 10.8/32 = 0.34 reb/min — G1 rate was 11/32 = 0.34. So per-minute production sustains even with cap. No Embiid = PHI interior is rebounding wasteland (Drummond "bad"). Plus-odds on a line that clears at his G1 rate. Tighter than before but still has value at +105.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">Tatum Over 10.5 rebounds ✗</div>
+        <div class="bet-line">+105 | Model: 10.8 RPG | Actual: 8 reb in 32min | LOSS</div>
+        <div class="bet-reasoning"><strong>RESULT: ✗ LOSS.</strong> Tatum had only 8 rebounds in 32 minutes. His per-minute rate dropped from 0.34 in G1 to 0.25 in G2. The 5-foul game (recovery volatility) reduced his aggressiveness inside. Achilles recovery volatility lesson: post-injury players have wider variance than Bayesian blend captures — good G1 doesn't guarantee good G2.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">LOSS</span>
       </div>
 
       <!-- ═══ WEDNESDAY G2 GAMES (Apr 22) ═══ -->
@@ -514,24 +514,24 @@ function renderBetsPage(el) {
       <!-- SAS-POR (8:00pm ET) — No major injury changes -->
       <div class="bet-card">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">SAS ML vs POR</div>
-        <div class="bet-line">-700 | Model: SAS 112-100 (+12) | SEPARATION</div>
-        <div class="bet-reasoning"><strong>PHASE 23:</strong> No significant injury changes for this series. SAS: Jordan McLaughlin OUT (ankle, minor backup PG). POR: Lillard OUT (season-ending Achilles, already modeled). Outlooks hold: Wemby "good" (52% FG), Fox "neutral-good" (47% FG), Avdija "neutral" (47% FG — regression from 57.1% G1). Wemby won DPOY (announced today per NBA.com) — confidence/momentum boost. ESPN market: SAS -11.5 (-110), ML -700. Model +12 aligns perfectly with market -11.5. Home again for SAS. Cleanest G2 on the board — no injury variance to factor.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">SAS ML vs POR ✗</div>
+        <div class="bet-line">-700 | Model: SAS 112-100 (+12) | Actual: POR 106-103 (-3)</div>
+        <div class="bet-reasoning"><strong>LOSS — WEMBY CONCUSSION:</strong> Wembanyama fell face-first at 8:57 Q2 after Holiday foul — entered concussion protocol, OUT for remainder. Only 5pts in 12min. SAS collapsed without him (+16.9 on/off means they're a different team). Scoot Henderson exploded for 31pts (11-17 FG, 5-9 3PT). Holiday bounce-back: 19pts/9ast/5stl. SAS 3PT regression confirmed: 7-24 (29%). Model had no mechanism for mid-game star injuries — this was an unpredictable event, not a model logic failure.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">SAS -11.5 vs POR</div>
-        <div class="bet-line">-110 | Model: +12 margin | ESPN line: SAS -11.5</div>
-        <div class="bet-reasoning">Phase 23 confirms: model +12 vs market -11.5 — tight 0.5pt cushion. No new injuries disrupt either side. Wemby DPOY momentum is a psychological boost but not model-quantifiable. Avdija's "neutral" regression from 30pt G1 is the key dynamic — if he reverts to ~22pts, SAS covers. Holiday "neutral-good" bounce-back (40% FG, up from 26.7% G1) is the biggest cover risk. Lean SAS covers but razor-thin edge.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">SAS -11.5 vs POR ✗</div>
+        <div class="bet-line">-110 | Model: +12 margin | Actual: POR +3 (15pt miss)</div>
+        <div class="bet-reasoning"><strong>LOSS:</strong> 15pt miss from model — entirely driven by Wemby's G2 concussion exit. Without Wemby, SAS's rating drops ~15pts and they become an underdog. Scoot Henderson's 31pt youth breakout (Phase 28 multiplier territory) and Holiday's 19pts/9ast/5stl bounce-back were the catalysts. SAS shot 29% from 3PT — 3PT regression model was correct directionally.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Wembanyama Over 25.5 points</div>
-        <div class="bet-line">-125 | Model: 28.2 pts | Outlook: GOOD (52% FG) | G1: 35pts</div>
-        <div class="bet-reasoning">Phase 23 holds: "good" outlook at 52% FG (26-34pt range). 3PT regression expected (season ~37% vs G1's 83.3%), but midrange/rim finishing (8-15 on 2PT in G1) is sustainable. Fresh off DPOY win — expect high energy and aggression. POR still has no answer for his length. Home court. Clears 25.5 by 2.7pts. No injury or fatigue concerns for a 22-year-old on 2-day rest.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Wembanyama Over 25.5 points ✗</div>
+        <div class="bet-line">-125 | Model: 28.2 pts | Actual: 5pts (12min — concussion exit)</div>
+        <div class="bet-reasoning"><strong>LOSS — INJURY:</strong> Wemby fell face-first to court at 8:57 Q2, entered concussion protocol, OUT for remainder. Only 5pts/4reb/1blk in 12min before injury. Per NBA policy: minimum 48hrs before return. G3 Fri Apr 24 — QUESTIONABLE. Model lesson: prop bets on individual players carry inherent injury variance that the model can't capture. With star players who have extreme on/off (+16.9), this risk is asymmetrically large.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>

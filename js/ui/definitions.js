@@ -633,6 +633,29 @@ function renderDefinitionsPage(el) {
       </div>
     </div>
 
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 30: G2 Results Integration & Engine Hardening</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Youth Breakout Momentum Persistence</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Phase 28's youth breakout multiplier only looked at the most recent game. It couldn't distinguish a one-game fluke from a genuine multi-game breakout pattern, resetting evidence each game.
+            <br><br><strong>Evidence:</strong> Henderson scored 18pts in G1 then 31pts in G2 (consecutive breakouts). Edgecombe scored 30pts in G2. The single-game multiplier would still regress Henderson heavily in a G3 projection despite two straight games of evidence.
+            <br><br><strong>Solution:</strong> The engine now scans ALL prior games backwards counting consecutive breakout performances (pts > PPG × 1.10, min ≥ 15). Multi-game streaks (≥2) get a more aggressive blend: 30% model / 25% actual / 45% ceiling (vs 40/30/30 for single breakout). Ceiling multiplier rises from 1.25× to 1.35×. Regression dampened to 25% of normal (vs 40%). This lets the model "believe" in genuine youth development faster.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Coaching Adjustment Discount on Blowout Momentum</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Blowout regression (Step 7b Factor B) applied the same regression rate regardless of how good the losing coach is at making adjustments. A 32-pt blowout against a coach rated 4 should carry more momentum than one against an elite adjuster rated 8.
+            <br><br><strong>Evidence:</strong> BOS won G1 by 32 points. Model projected BOS to win G2 109-103. But Nurse (adjustmentRating 8) made masterful halftime and film study adjustments — PHI won G2 by 14. The model overweighted blowout momentum by not factoring in coaching quality.
+            <br><br><strong>Solution:</strong> Blowout regression now scales with losing coach's adjustmentRating. Coaches rated ≥7 amplify regression: adj7 = +10%, adj8 = +20%, adj9 = +30%. Applied multiplicatively to both massive blowout (25+ margin) and solid win (15+ margin) regression paths. Regression capped at 50% for massive blowouts, 40% for solid wins to prevent over-correction.</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>`;
 }
 

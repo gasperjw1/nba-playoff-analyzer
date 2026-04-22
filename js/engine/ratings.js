@@ -1,3 +1,11 @@
+// Helper: filter a team's players to only those currently active (rating > 0, not toggled out)
+function getActivePlayers(team, seriesId) {
+  return team.players.filter(p => {
+    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+    return r > 0;
+  });
+}
+
 function calcTeamRating(team, series, seriesId) {
   // REPLACEMENT-LEVEL SLOT SYSTEM
   // Instead of filtering out inactive players and re-averaging (which self-heals),
@@ -33,10 +41,7 @@ function calcTeamRating(team, series, seriesId) {
 
   // RESEARCH: VORP & USG% integration (Ylä-Autio 2022 — most predictive advanced metrics)
   // VORP captures cumulative value; USG-adjusted efficiency rewards high-usage efficient players
-  const activeForVorp = team.players.filter(p => {
-    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-    return r > 0;
-  });
+  const activeForVorp = getActivePlayers(team, seriesId);
   if (activeForVorp.length > 0) {
     const totalVorp = activeForVorp.reduce((s, p) => s + (p.vorp || 0), 0);
     const avgUsg = activeForVorp.reduce((s, p) => s + (p.usg || 20), 0) / activeForVorp.length;
@@ -135,10 +140,7 @@ function calcTeamRating(team, series, seriesId) {
   // BUG FIX: synergy arrays use nicknames ("SGA", "LeBron", "NAW", "PG") but p.name uses full names.
   // Build a fuzzy lookup that maps both full names and last names to active status.
   const activeNameSet = new Set();
-  team.players.filter(p => {
-    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-    return r > 0;
-  }).forEach(p => {
+  getActivePlayers(team, seriesId).forEach(p => {
     activeNameSet.add(p.name); // full name: "Shai Gilgeous-Alexander"
     const parts = p.name.split(' ');
     if (parts.length >= 2) activeNameSet.add(parts[parts.length - 1]); // last name: "Gilgeous-Alexander"
@@ -162,10 +164,7 @@ function calcTeamRating(team, series, seriesId) {
   base += teamFactors.reduce((s, f) => s + f.impact, 0) / 3;
 
   // SPM Chemistry bonus (Maymin et al.) — only active players
-  const activePlayers = team.players.filter(p => {
-    const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-    return r > 0;
-  });
+  const activePlayers = getActivePlayers(team, seriesId);
   const spmChem = calcSPMChemistry(activePlayers.slice(0, 8));
   base += (spmChem.score - 50) / 10;
 
@@ -310,10 +309,6 @@ function calcWinProb(series, seriesId) {
     statDiffBonus = Math.max(-3, Math.min(3, fgDiff + threeDiff + orbDiff + tovDiff));
   }
 
-  // D-LEBRON matchup differential — REMOVED (ghost fix)
-  // D-LEBRON is already factored into both team ratings via calcTeamRating()'s D-LEBRON aggregate.
-  // Adding it again here would triple-count defense (DRtg via netRtg + D-LEBRON in team rating + here).
-  const dLebronEdge = 0;
 
   // 2024 BACKTEST LESSON: Matchup-Specific Pace/System Differential
   // IND's pace-and-space (103.2 pace) structurally countered MIL's half-court offense.
@@ -326,11 +321,8 @@ function calcWinProb(series, seriesId) {
   const paceDiff = Math.abs(homePace - awayPace);
   if (paceDiff >= 2) {
     const fasterTeam = homePace > awayPace ? 'home' : 'away';
-    const fasterPlayers = fasterTeam === 'home' ? series.homeTeam.players : series.awayTeam.players;
-    const activeCount = fasterPlayers.filter(p => {
-      const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-      return r > 0;
-    }).length;
+    const fasterTeamObj = fasterTeam === 'home' ? series.homeTeam : series.awayTeam;
+    const activeCount = getActivePlayers(fasterTeamObj, seriesId).length;
     // Fast team with deep rotation gets matchup bonus (capped at ±1.0)
     if (activeCount >= 8) {
       const paceBonus = Math.min(1.0, paceDiff * 0.15);
@@ -345,14 +337,16 @@ function calcWinProb(series, seriesId) {
   const pedigreeEdge = (homePedigree - awayPedigree) * pressureMod * 0.3;
 
   // PHASE 14: Defensive Matchup Suppression
+  // Initiator counts — used by both defensive matchup suppression and single-vs-multi penalty
+  const homeInit = series.homeTeam.initiators || 2;
+  const awayInit = series.awayTeam.initiators || 2;
+
   // When an elite defender locks onto the opponent's sole initiator, the suppression is amplified.
   // homeSupp = home team's defender suppressing away team's #1 (positive = helps home)
   // awaySupp = away team's defender suppressing home team's #1 (positive = helps away)
   let defMatchupAdj = 0;
   if (series.defMatchups) {
     const dm = series.defMatchups;
-    const awayInit = series.awayTeam.initiators || 2;
-    const homeInit = series.homeTeam.initiators || 2;
     const homeSupp = calcDefMatchupSuppression(dm.homeDefOnAway, awayInit);
     const awaySupp = calcDefMatchupSuppression(dm.awayDefOnHome, homeInit);
     defMatchupAdj = Math.max(-1.5, Math.min(1.5, homeSupp - awaySupp));
@@ -362,10 +356,8 @@ function calcWinProb(series, seriesId) {
   // DET-ORL G1 proved: Cade's 39pts (sole initiator) lost to ORL's 5 players in double figures.
   // When a single-initiator team faces a multi-initiator team, apply additional penalty.
   let initiatorAdj = 0;
-  const homeInit2 = series.homeTeam.initiators || 2;
-  const awayInit2 = series.awayTeam.initiators || 2;
-  if (homeInit2 === 1 && awayInit2 >= 2) initiatorAdj = -1.5;
-  else if (awayInit2 === 1 && homeInit2 >= 2) initiatorAdj = 1.5;
+  if (homeInit === 1 && awayInit >= 2) initiatorAdj = -1.5;
+  else if (awayInit === 1 && homeInit >= 2) initiatorAdj = 1.5;
 
   // PHASE 14 G1 LESSON: Playoff Pedigree Floor
   // DET's 11-game home playoff losing streak shows franchise playoff culture deficit.
@@ -374,7 +366,7 @@ function calcWinProb(series, seriesId) {
   if (homePedigree === 0 && awayPedigree > 0) pedigreeFloorAdj = -0.5;
   else if (awayPedigree === 0 && homePedigree > 0) pedigreeFloorAdj = 0.5;
 
-  const diff = (hr + hca + ceilingDiff + statDiffBonus + dLebronEdge + pedigreeEdge + paceMatchup + defMatchupAdj + initiatorAdj + pedigreeFloorAdj) - ar;
+  const diff = (hr + hca + ceilingDiff + statDiffBonus + pedigreeEdge + paceMatchup + defMatchupAdj + initiatorAdj + pedigreeFloorAdj) - ar;
   const prob = 1 / (1 + Math.pow(10, -diff / 15));
   return {
     home: Math.round(prob * 100), away: Math.round((1 - prob) * 100),
@@ -385,7 +377,7 @@ function calcWinProb(series, seriesId) {
 
 function getSeriesScore(series) {
   let home = 0, away = 0;
-  series.games.forEach(g => { if (g.winner === series.homeTeam.abbr) home++; else if (g.winner === series.awayTeam.abbr) away++; });
+  (series.games || []).forEach(g => { if (g.winner === series.homeTeam.abbr) home++; else if (g.winner === series.awayTeam.abbr) away++; });
   return { home, away };
 }
 
