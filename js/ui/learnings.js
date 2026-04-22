@@ -718,6 +718,30 @@ function renderLearningsPage(el) {
         <span class="learning-tag data">G2 Results</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 30</span>
       </div>
 
+      <!-- Phase 31 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 31 — Research Anchor Blend & Data Integrity Audit</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 22, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Trigger:</strong> LeBron projected at 35pts in HOU-LAL G3 box score despite g3PlayerOutlook ptsRange of [20,28]. Root cause: the projection engine completely ignored ptsRange — it only read the "outlook" string for a flat percentage boost (+12% for "good", -8% for "bad"). The ptsRange field was decorative. Additionally, a full data integrity audit caught SGA's G1 scoring listed as 33pts and 36pts in bets.js while the actual box score shows 25pts.
+        <br><br><strong>Three Engine Upgrades:</strong>
+        <br>1. <strong>Research Anchor Blend (Phase 31a):</strong> When g[N]PlayerOutlook has ptsRange, the engine now blends 60-70% research midpoint with 30-40% engine projection (high-confidence research gets 70%). This replaces the old flat percentage system. Formula: <code>projPts = rMid * researchWeight + projPts * engineWeight</code>, then hard-clamp to [ptsRange[0] - slack, ptsRange[1] + slack] where slack = 10% of range width.
+        <br>2. <strong>Normalization Cap with Research Range (Phase 31b):</strong> Post-normalization now uses ptsRange[1] + 10% slack as the per-player cap instead of max(ppg*1.35, prior actual, 38). This prevents normalization from pushing players above their research-backed ceiling. For LeBron with ptsRange [20,28]: new cap = 30.8 vs old cap = 38.
+        <br>3. <strong>Outlook Key Deduplication (Phase 31c):</strong> The lookup key <code>'g' + (gameIdx+1) + 'PlayerOutlook'</code> was computed in 3 separate places within projectTeam() with 3 different variable names. Consolidated to single team-scoped variable <code>teamPlayerOutlooks</code>.
+        <br><br><strong>Data Integrity Fixes:</strong>
+        <br>• SGA G1 scoring reconciled to 25pts (box score: 5-18 FG, 0-4 3PT, 15-17 FT = 25pts). Fixed 3 inconsistent references (33pts, 36pts) in bets.js.
+        <br>• G1 bet record corrected: SGA Over 28.5 marked ✗ (was ✓). Overall G1 record: 8/13 (61.5%), down from 9/13 (69.2%).
+        <br>• Stale "Today's G2 Games — Tue Apr 21" label fixed to "Completed."
+        <br>• g3PlayerOutlook added for OKC-PHX, SAS-POR, and DET-ORL (previously only 5/8 series had them).
+        <br>• HOU-LAL g3PlayerOutlook corrected: LeBron ptsRange [24,32]→[20,28], Smart [16,24]→[14,22], Kennard [16,24]→[14,22] with road regression adjustments.
+        <br><br><strong>Featured Parlays Overhaul:</strong>
+        <br>• Rebuilt Featured Parlays tab for Apr 22 games only (OKC-PHX G2 + DET-ORL G2).
+        <br>• New $100 Best Bet: SGA O28.5 + Cade O28.5 (~+247).
+        <br>• New $1 Chaos Ticket: ORL ML + PHX +17.5 + Banchero O22.5 (~+1450).
+        <br>• Added scrollable Parlay History timeline with running P&L tracker (0-1 / 1-0, -$88.97 net).</div>
+        <span class="learning-tag bug">Data Fix</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 31</span>
+      </div>
+
       <!-- Phase 28 -->
       <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
@@ -772,7 +796,8 @@ function renderLearningsPage(el) {
     'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series',
     'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts',
     'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.',
-    'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.'
+    'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.',
+    'Phase 31': 'Research anchor blend & data integrity — engine now consumes ptsRange from gNPlayerOutlook (60-70% research blend), normalization caps respect research range, outlook key deduplicated. SGA scoring data reconciled, G1 record corrected to 8/13. Featured Parlays rebuilt for Apr 22 with history timeline.'
   };
 
   // Collect all entries/cards

@@ -787,9 +787,8 @@ function calcProjectedBoxScore(series, gameIdx) {
       }).filter(Boolean);
       const bsNames = new Set(fromBS.map(p => p.name));
       // Check if there's a research outlook for this game that includes returning players
-      const outlookKey = 'g' + (gameIdx + 1) + 'PlayerOutlook';
-      const outlooks = series[outlookKey];
-      const sideOutlooks = outlooks ? (side === 'home' ? outlooks.home : outlooks.away) : null;
+      // Re-use teamPlayerOutlooks (computed at line ~771) to avoid triple key computation
+      const sideOutlooks = teamPlayerOutlooks ? (side === 'home' ? teamPlayerOutlooks.home : teamPlayerOutlooks.away) : null;
       if (sideOutlooks) {
         const returning = team.players.filter(p =>
           p.rating > 0 && !bsNames.has(p.name) &&
@@ -1274,8 +1273,8 @@ function calcProjectedBoxScore(series, gameIdx) {
       // BLEND: 60% research midpoint / 40% engine projection, then clamp to
       // [ptsRange[0], ptsRange[1]]. High-confidence research gets 70/30 blend.
       // This ensures the projected box score actually reflects the written analysis.
-      const gameOutlookKey = 'g' + (gameIdx + 1) + 'PlayerOutlook';
-      const playerOutlooks = series[gameOutlookKey];
+      // Re-use teamPlayerOutlooks from team scope (line ~771) — same key
+      const playerOutlooks = teamPlayerOutlooks;
       let researchFgPct = null;
       if (playerOutlooks) {
         const sideOutlooks = side === 'home' ? playerOutlooks.home : playerOutlooks.away;
