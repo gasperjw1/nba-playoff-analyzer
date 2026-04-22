@@ -242,7 +242,7 @@ function renderBetsPage(el) {
               <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>Brown O24.5</strong> — averaging 31.0pts through 2 games on 51% FG. PHI's wing defense cannot contain him (Edgecombe D-LEBRON 0.08). Highest-confidence prop on the BOS-PHI slate. <strong>LAL +9.5</strong> — best VALUE bet on the slate. Model projects HOU by only 5, but market gives LAL 9.5pts. Redick's scheme is structural and travels (held HOU to 39% FG across 2 games). Smart (20ppg) and Kennard (25ppg) are sustained. 4.5pt cushion. <strong>Henderson O22.5</strong> — youth breakout CONFIRMED (18&rarr;31pts). Phase 29 persistence active at age 21. NOW AT HOME at Moda Center. Even with FG% regression, volume + crowd = 25+ baseline.</div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>Brown O24.5</strong> — averaging 31.0pts through 2 games on 51% FG. PHI's wing defense cannot contain him (Edgecombe D-LEBRON 0.08). Highest-confidence prop on the BOS-PHI slate. <strong>LAL +9.5</strong> — best VALUE bet on the slate. Model projects HOU by only 5, but market gives LAL 9.5pts. Redick's scheme is structural and travels (held HOU to 39% FG across 2 games). Smart (20ppg) and Kennard (25ppg) are sustained. 4.5pt cushion. <strong>Henderson O22.5</strong> — youth breakout CONFIRMED (18&rarr;31pts). Phase 29 persistence active at age 21. NOW AT HOME at Moda Center. Even with FG% regression, volume + crowd = 25+ baseline. BOOST: Barnes (SAS) wrist injury thins SAS depth further.</div>
         </div>
 
         <!-- $1 CHAOS TICKET — FRI APR 24 -->
@@ -1079,7 +1079,7 @@ function renderBetsPage(el) {
         <span class="bet-type ml">MONEYLINE</span>
         <div class="bet-pick">SAS ML @ POR (CONDITIONAL on Wemby)</div>
         <div class="bet-line">-125 | Model: SAS by 3 (blended) | LOW confidence — GAME-TIME DECISION</div>
-        <div class="bet-reasoning">CONDITIONAL PICK: If Wemby plays (60% probability), SAS favored by ~8 — his +16.9 on/off transforms SAS. If Wemby OUT (40%), POR favored by ~5 at home with Henderson's momentum. Blended: SAS by ~3. WAIT for Wemby status before placing. If Wemby cleared: SAS ML is strong value. If Wemby OUT: flip to POR ML. Do NOT bet blind on this game.</div>
+        <div class="bet-reasoning">CONDITIONAL PICK: If Wemby plays (60% probability), SAS favored by ~8 — his +16.9 on/off transforms SAS. If Wemby OUT (40%), POR favored by ~5 at home with Henderson's momentum. Blended: SAS by ~3. ⚠️ NEW: Harrison Barnes exited G2 with left wrist injury (DAY-TO-DAY, rating 60→0) — SAS's depth takes ANOTHER hit beyond Wemby. If BOTH Wemby and Barnes are OUT, POR becomes a strong favorite (~7-8pts). WAIT for Wemby AND Barnes status before placing. If Wemby cleared + Barnes plays: SAS ML is value. If either OUT: lean POR ML heavily.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
 
@@ -1088,7 +1088,7 @@ function renderBetsPage(el) {
         <span class="bet-type prop">PROP ★ BEST BET</span>
         <div class="bet-pick">Scoot Henderson Over 22.5 points</div>
         <div class="bet-line">-110 | YOUTH BREAKOUT CONFIRMED (age 21) | 18→31pts | AT HOME</div>
-        <div class="bet-reasoning">THE youth breakout story of 2026 R1. Henderson: 18pts G1 → 31pts G2 (11-17 FG, 5-9 3PT) at age 21. Phase 29 youth breakout persistence: consecutive breakout games for ≤23-year-olds are MORE likely after one. NOW AT HOME at Moda Center — expect peak performance. Even with FG% regression from 64.7% to ~48%, his volume + home crowd energy = 25+ baseline. Over 22.5 gives 2.5pts of cushion on the hottest young player in the playoffs. REGARDLESS of Wemby's status, Henderson will be aggressive.</div>
+        <div class="bet-reasoning">THE youth breakout story of 2026 R1. Henderson: 18pts G1 → 31pts G2 (11-17 FG, 5-9 3PT) at age 21. Phase 29 youth breakout persistence: consecutive breakout games for ≤23-year-olds are MORE likely after one. NOW AT HOME at Moda Center — expect peak performance. Even with FG% regression from 64.7% to ~48%, his volume + home crowd energy = 25+ baseline. Over 22.5 gives 2.5pts of cushion on the hottest young player in the playoffs. REGARDLESS of Wemby's status, Henderson will be aggressive. ⚠️ BOOST: Harrison Barnes (SAS) exited G2 with left wrist injury (DAY-TO-DAY) — SAS's depth thins further, creating more transition opportunities and weaker defensive rotations for Henderson to exploit.</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
 
