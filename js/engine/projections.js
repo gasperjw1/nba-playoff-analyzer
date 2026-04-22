@@ -904,6 +904,23 @@ function calcProjectedBoxScore(series, gameIdx) {
       activePlayers = team.players.filter(p => p.rating > 0).slice(0, 9);
     }
 
+    // --- Exclude players marked OUT via playerOutlook ptsRange [0,0] ---
+    // When a player's research outlook has ptsRange [0,0], they are confirmed OUT
+    // for this game (e.g. Wemby concussion protocol). Remove them from the active
+    // player list so their minutes/scoring redistribute to teammates naturally.
+    const sideOutlooksForExclusion = teamPlayerOutlooks
+      ? (side === 'home' ? teamPlayerOutlooks.home : teamPlayerOutlooks.away)
+      : null;
+    if (sideOutlooksForExclusion) {
+      activePlayers = activePlayers.filter(player => {
+        const ol = sideOutlooksForExclusion.find(o => o.player === player.name);
+        if (ol && ol.ptsRange && ol.ptsRange[0] === 0 && ol.ptsRange[1] === 0) {
+          return false; // player is OUT
+        }
+        return true;
+      });
+    }
+
     // Calculate raw expected stats per player
     const rawProjections = activePlayers.map(player => {
       const exp = calcExpectedPlayerStats(player, series, gameIdx, side);
