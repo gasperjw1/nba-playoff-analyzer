@@ -508,24 +508,39 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
   const g = s[gameKey];
   if (!g) return '';
 
-  // Dynamic projection from the new engine
-  const proj = calcGameProjection(s, s.id, gameNum);
+  // Blended projection: combines manual pick (better winner accuracy) with engine (better margins)
+  const blend = calcBlendedProjection(s, s.id, gameNum);
+  const proj = blend; // blend includes all engine fields via spread
   const charClass = proj.character === 'BLOWOUT RISK' ? 'blowout' : proj.character === 'SEPARATION' ? 'separation' : proj.character === 'COMPETITIVE' ? 'competitive' : proj.character === 'GRIND' ? 'grind' : 'coinflip';
 
-  // Margin bar width (0-50 scale)
-  const barPct = Math.min(100, (proj.absMargin / 30) * 100);
-  const barColor = proj.absMargin >= 18 ? 'var(--red)' : proj.absMargin >= 12 ? 'var(--yellow)' : proj.absMargin >= 7 ? 'var(--accent)' : 'var(--green)';
+  // Margin bar uses blended margin
+  const blendedAbsMargin = Math.abs(blend.blendedMargin);
+  const barPct = Math.min(100, (blendedAbsMargin / 30) * 100);
+  const barColor = blendedAbsMargin >= 18 ? 'var(--red)' : blendedAbsMargin >= 12 ? 'var(--yellow)' : blendedAbsMargin >= 7 ? 'var(--accent)' : 'var(--green)';
 
-  // Dynamic score string
-  const dynScore = proj.margin >= 0
-    ? `${s.homeTeam.abbr} ${proj.homeScore} — ${s.awayTeam.abbr} ${proj.awayScore}`
-    : `${s.awayTeam.abbr} ${proj.awayScore} — ${s.homeTeam.abbr} ${proj.homeScore}`;
+  // Consensus indicator
+  const consensusIcon = blend.consensus === 'strong-agree' ? '🟢' : blend.consensus === 'agree' ? '🔵' : '🟡';
+  const consensusLabel = blend.consensus === 'strong-agree' ? 'Strong consensus' : blend.consensus === 'agree' ? 'Systems agree' : 'Systems split — pick trusted';
+  const consensusStyle = blend.consensus === 'disagree'
+    ? 'background:rgba(255,199,58,0.12);color:var(--yellow);border:1px solid rgba(255,199,58,0.25)'
+    : blend.consensus === 'strong-agree'
+    ? 'background:rgba(61,214,140,0.1);color:var(--green);border:1px solid rgba(61,214,140,0.2)'
+    : 'background:rgba(96,165,250,0.1);color:var(--accent);border:1px solid rgba(96,165,250,0.2)';
+
+  // Use blended confidence instead of static g.confidence
+  const displayConf = blend.blendedConfidence || g.confidence;
+
+  // Blended margin range
+  const spreadFactor = Math.max(3, blendedAbsMargin * 0.35 + 2);
+  const lowM = Math.max(1, Math.round(blendedAbsMargin - spreadFactor));
+  const highM = Math.round(blendedAbsMargin + spreadFactor * 1.2);
+  const blendedRange = blend.blendedWinner + ' by ' + lowM + '-' + highM;
 
   return `<div class="game-panel" style="border-color:${color}40">
     <div class="game-panel-header">
       <div class="game-panel-title" style="color:${color}">${label} Prediction</div>
       <span class="game-character ${charClass}">${proj.character}</span>
-      <span class="g1-confidence ${g.confidence}">${g.confidence.toUpperCase()}</span>
+      <span class="g1-confidence ${displayConf}">${displayConf.toUpperCase()}</span>
     </div>
     <div class="game-panel-grid">
       <div class="gp-stat"><div class="label">Spread</div><div class="val">${g.spread}</div></div>
@@ -533,10 +548,11 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
       <div class="gp-stat"><div class="label">O/U</div><div class="val">${g.ou}</div></div>
     </div>
 
-    <div class="proj-score-dynamic">${g.projScore || (g.pick + ' — ' + dynScore)}</div>
+    <div class="proj-score-dynamic">${blend.blendedScore}</div>
+    <div style="text-align:center;margin:-4px 0 6px 0"><span style="font-size:10px;padding:2px 8px;border-radius:10px;${consensusStyle}">${consensusIcon} ${consensusLabel}${blend.consensus === 'disagree' ? ' (Pick: ' + blend.pickWinner + ' / Engine: ' + blend.engineWinner + ')' : ''}</span></div>
     <div class="margin-bar-container">
       <div class="margin-bar"><div class="margin-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
-      <span class="margin-range">${proj.marginRange}</span>
+      <span class="margin-range">${blendedRange}</span>
     </div>
     <div class="variance-pills">
       <div class="variance-pill">Blowout ${proj.blowoutProb}%</div>

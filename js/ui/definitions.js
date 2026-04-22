@@ -20,7 +20,8 @@ function renderDefinitionsPage(el) {
       <div class="def-tab-btn" id="defTab-research" onclick="switchDefTab('research')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Phase 17 Research</div>
       <div class="def-tab-btn" id="defTab-xfactors" onclick="switchDefTab('xfactors')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">X-Factors</div>
       <div class="def-tab-btn" id="defTab-turnovers" onclick="switchDefTab('turnovers')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">TOV & Fouls</div>
-      <div class="def-tab-btn" id="defTab-threepoint" onclick="switchDefTab('threepoint')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">3PT Variance</div>
+      <div class="def-tab-btn" id="defTab-threepoint" onclick="switchDefTab('threepoint')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">3PT Variance</div>
+      <div class="def-tab-btn" id="defTab-roleflex" onclick="switchDefTab('roleflex')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;">Role Flexibility</div>
     </div>
 
     <!-- PLAYER TAB -->
@@ -469,6 +470,116 @@ function renderDefinitionsPage(el) {
             <br>6. <strong>CLE-TOR:</strong> CLE hot but paint-dominant. 3PT regression won't change series trajectory.
             <br>7. <strong>BOS-PHI:</strong> PHI's .174 will regress but BOS defense caps it at ~.300. Gap too large.
             <br>8. <strong>OKC-PHX:</strong> OKC won by 35 WHILE shooting cold. SGA regression UP makes it worse for PHX.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ROLE FLEXIBILITY TAB -->
+    <div id="defContent-roleflex" class="def-tab-content" style="display:none;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Role Flexibility Model (Phase 26)</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Research Foundation:</strong> Nylon Calculus (Miller 2018) used HHI-based defensive versatility to measure switching capacity. Key finding: <strong>NONE of the bottom-8 teams in defensive versatility advanced past R1</strong> in 2018. Conference Finals teams all ranked top-4 in versatility.
+            <br><br>Guo et al. (2025) quantified player versatility through lineup-based playing styles across 10 NBA seasons, finding that versatile players provide coaches with significantly more flexible substitution options.
+            <br><br><strong>Four Dimensions (each 0-10):</strong>
+            <br>• <strong>Switch Defense (30%):</strong> How many rotation players can credibly switch 1-4 or 1-5 on defense
+            <br>• <strong>Offensive Role Flex (25%):</strong> Can stars toggle scorer/facilitator; multi-initiator capability
+            <br>• <strong>Lineup Options (25%):</strong> Viable alternative lineups (small-ball, big, switching, etc.)
+            <br>• <strong>Positional Versatility (20%):</strong> Number of players credibly playing 2+ positions
+            <br><br><strong>Point Adjustment:</strong> (homeFlex - awayFlex) × 0.4, capped at ±3.0 pts</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Why Flexibility Matters in Playoffs</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Regular season vs Playoffs:</strong> In the regular season, teams rarely face the same opponent more than 4 times. In the playoffs, teams play 4-7 games against each other. This means:
+            <br><br>1. <strong>Film study compounds:</strong> Coaches identify and exploit weaknesses. Rigid teams can't counter-adjust.
+            <br>2. <strong>Switching prevents P&R exploitation:</strong> Teams that can switch every screen eliminate the #1 playoff offense action.
+            <br>3. <strong>Multi-initiator offense survives defensive adjustments:</strong> When teams shut down one creator, flexible teams have alternatives.
+            <br>4. <strong>Lineup optionality creates matchup nightmares:</strong> Can you go small? Big? 5-out? Teams locked into one lineup are predictable.
+            <br><br><strong>Historical Champions (switch-era, 2017-2025):</strong>
+            <br>• 2025 OKC: Elite switching (9.2 flex)
+            <br>• 2024 BOS: Switch-everything scheme (8.5 flex)
+            <br>• 2023 DEN: Elite offensive flex via Jokic (8.5 off role)
+            <br>Every recent champion ranked top-3 in at least ONE flexibility dimension.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">2026 Playoff Team Flexibility Rankings</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong style="color:#51cf66;">ELITE (8.0+):</strong>
+            <br>1. <strong>OKC 9.2</strong> — Switch-everything champion defense. Williams plays 3 positions.
+            <br>2. <strong>BOS 8.5</strong> — 2024 champion switching model. Brown/Tatum/White all switch.
+            <br>3. <strong>SAS 8.0</strong> — Wemby guards 1-5 at 7-5. Most versatile defender ever.
+            <br>4. <strong>CLE 8.0</strong> — Mobley switches 1-5. Mitchell/Harden toggle scorer/facilitator.
+            <br><br><strong style="color:#ffd43b;">GOOD (7.0-7.9):</strong>
+            <br>5. <strong>NYK 7.5</strong> — OG/Bridges/Hart switching trident. Towns stretches from C.
+            <br>6. <strong>HOU 7.2</strong> — Amen Thompson's 6-7 PG frame. KD adds SF/PF versatility.
+            <br>7. <strong>ORL 7.0</strong> — Wagner as 6-10 point-forward is unique lineup versatility.
+            <br><br><strong style="color:#ff922b;">MODERATE (5.0-6.9):</strong>
+            <br>8. <strong>DEN 6.5</strong> — Elite offensive flex (Jokic) but poor defensive switching.
+            <br>9. <strong>MIN 6.0</strong> — McDaniels switches. Gobert limits defensive schemes.
+            <br>10. <strong>ATL 6.0</strong> — Snyder's coaching amplifies roster flex. Kuminga switches.
+            <br>11. <strong>DET 6.0</strong> — Cade-centric. Proved can survive without him, barely.
+            <br>12. <strong>TOR 5.5</strong> — Barnes is versatile. Rest is rigid. Quickley's return helps.
+            <br>13. <strong>LAL 5.0</strong> — LeBron's flex is all-time but injuries gutted the roster.
+            <br><br><strong style="color:#ff6b6b;">LOW (&lt;5.0):</strong>
+            <br>14. <strong>PHX 4.5</strong> — Booker can't switch. One viable lineup.
+            <br>15. <strong>POR 4.0</strong> — Clingan drop-only. No small-ball option.
+            <br>16. <strong>PHI 3.5</strong> — No Embiid = no interior versatility. Maxey undersized.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Most Versatile Players in 2026 Playoffs</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Tier 1: Positionless Stars</strong>
+            <br>• <strong>Wembanyama (SAS):</strong> 7-5, guards 1-5, shoots 3s, handles, passes. Unprecedented.
+            <br>• <strong>Jalen Williams (OKC):</strong> 6-5, plays SG/SF/PF. 2025 Finals proved 3-position excellence.
+            <br>• <strong>LeBron James (LAL):</strong> 6-9, plays PG/SF/PF. 21 playoff runs across all roles. Age 41 limits switching.
+            <br>• <strong>Evan Mobley (CLE):</strong> 6-11 PF/C who switches 1-5 on defense. 25pts on 11/13 FG in G2.
+            <br><br><strong>Tier 2: Elite Switch Defenders</strong>
+            <br>• <strong>Derrick White (BOS):</strong> PG/SG — locked down Maxey G1 (8-20 FG). Switches everything.
+            <br>• <strong>OG Anunoby (NYK):</strong> SF/PF — guards 1-4, one of NBA's best perimeter defenders.
+            <br>• <strong>Lu Dort (OKC):</strong> SG/SF at 6-4/220lbs — physically matches up across 3 positions.
+            <br>• <strong>Marcus Smart (LAL):</strong> PG/SG — DPOY-caliber, disrupted Sengun AND guards in G1.
+            <br><br><strong>Tier 3: Unique Role Flex</strong>
+            <br>• <strong>Franz Wagner (ORL):</strong> 6-10 SF who plays point-forward. ORL's lineup versatility depends on him.
+            <br>• <strong>Amen Thompson (HOU):</strong> 6-7 PG — tallest starting PG in playoffs. Matchup-proof frame.
+            <br>• <strong>James Harden (CLE):</strong> G1 facilitator (10ast) → G2 co-scorer (28pts). All-time role toggle.
+            <br>• <strong>Aaron Gordon (DEN):</strong> PF/SF — DEN's best switch defender and offensive connector.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Series Flexibility Differentials</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong style="color:#ff6b6b;">MASSIVE GAPS (>3.0):</strong>
+            <br>1. <strong>BOS-PHI: +5.0</strong> (BOS 8.5 vs PHI 3.5) — +2.0 pts BOS. Largest gap in R1. No Embiid = no flexibility.
+            <br>2. <strong>OKC-PHX: +4.7</strong> (OKC 9.2 vs PHX 4.5) — +1.9 pts OKC. Switch-everything vs rigid single-creator.
+            <br>3. <strong>SAS-POR: +4.0</strong> (SAS 8.0 vs POR 4.0) — +1.6 pts SAS. Wemby vs Clingan drop coverage.
+            <br><br><strong style="color:#ffd43b;">MODERATE GAPS (1.5-3.0):</strong>
+            <br>4. <strong>CLE-TOR: +2.5</strong> (CLE 8.0 vs TOR 5.5) — +1.0 pts CLE. Mobley's versatility vs TOR's rigidity.
+            <br>5. <strong>HOU-LAL: +2.2</strong> (HOU 7.2 vs LAL 5.0) — +0.9 pts HOU. Injuries gutted LAL's versatility.
+            <br>6. <strong>NYK-ATL: +1.5</strong> (NYK 7.5 vs ATL 6.0) — +0.6 pts NYK. OG trident vs Snyder schemes.
+            <br><br><strong style="color:#aaa;">CLOSE MATCHUPS (&lt;1.5):</strong>
+            <br>7. <strong>DET-ORL: -1.0</strong> (DET 6.0 vs ORL 7.0) — -0.4 pts (ORL edge). Wagner point-forward gives ORL the rare lower-seed flex advantage.
+            <br>8. <strong>DEN-MIN: +0.5</strong> (DEN 6.5 vs MIN 6.0) — +0.2 pts DEN. Offensive flex vs defensive switching — nearly a wash.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Coaching Flexibility vs Roster Flexibility</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Key insight:</strong> Raw roster flexibility can be amplified or wasted by coaching. This model captures ROSTER flexibility; coaching amplification is a separate factor.
+            <br><br><strong>Coaches who AMPLIFY flexibility:</strong>
+            <br>• <strong>Daigneault (OKC):</strong> Built switch-everything identity. Makes 9.2 flex roster play at 10.
+            <br>• <strong>Snyder (ATL):</strong> G2 adjustment (Kuminga on Towns) was elite role-flex coaching. Makes 6.0 roster play at 7.0+.
+            <br>• <strong>Mazzulla (BOS):</strong> 2024 championship scheme built on positional versatility.
+            <br>• <strong>Johnson (SAS):</strong> Pop protege, designed system around Wemby's uniqueness.
+            <br><br><strong>Coaches who WASTE flexibility:</strong>
+            <br>• <strong>Bickerstaff (DET):</strong> G1 panic lineup (0 min together all season) showed inflexibility under pressure. DET has 6.0 roster flex but G1 execution was 4.0.
+            <br><br><strong>Note on game-level adaptation:</strong> Flexibility advantages compound across a series because coaches exploit rigidity more in games 3-7 after film study. The R1 adjustment is conservative (×0.4); later rounds would use higher multipliers (×0.5 for R2, ×0.6 for CF/Finals).</div>
         </div>
 
       </div>

@@ -19,10 +19,13 @@
 //   + Stat Differential Model (Jones & Magel 2016 — FG%, 3PT%, ORB%, TOV differentials)
 //   + Series-Stage Pressure (Mateus et al. 2024 — pedigree amplified in later games)
 //   + Enhanced SPM Chemistry v2 (8 dimensions: added o3PT, oPass per Mateus et al.)
-//   + Turnover Modeling (Phase 24 — TOV differential × 1.07 pts/TOV, pressure multipliers)
-//   + Foul Trouble Probability (Phase 24 — star foul-out risk × DRtg degradation)
+//   + Turnover Modeling (Phase 24 — TOV differential × 1.07 pts/TOV × 0.15 attenuation, capped ±2.5pts, engine Step 5e)
+//   + Foul Trouble Probability (Phase 24 — star foul-out risk × DRtg degradation, data in TURNOVER_FOUL_DATA)
 //   + 3PT Variance Regression (Phase 25 — Bayesian blend: playoff 3P% × sample + season 3P% × regWeight)
 //   + Individual Shooter Regression (Phase 25 — flag unsustainable hot/cold streaks, role player inflation)
+//   + Role Flexibility Model (Phase 26 — HHI-based switching defense, offensive role flex, lineup optionality, positional versatility)
+//   + Flexibility Differential Adjustment (Phase 26 — (homeFlex - awayFlex) × 0.4, capped ±3.0pts)
+//   + Blended Prediction System (Phase 27 — pick winner accuracy 72.7% + engine margin sizing 8.8 avg err → blended 72.7% + 7.9 avg err)
 //   Calibrated against 49 games in the 2025 NBA Playoffs (73.5% accuracy)
 // ============================================================
 
@@ -158,8 +161,8 @@ const SERIES_DATA = [
       { type:"missed", lesson:"WPA analysis (inpredictable) confirms Kennard was the game's MVP (+15.2% WPA) and Sheppard was LVP (-14.6%). Field goal shooting was the overwhelmingly dominant factor — model had no mechanism to predict LAL's 60.6% FG explosion vs HOU's 37.6%. This was a scheme-driven FG% gap (zone defense forcing HOU non-spacers into bad shots), not random variance." }
     ],
     game2: {
-      spread: "HOU -1.5", moneyline: "HOU -125 / LAL +105", ou: "O/U 211.5",
-      pick: "HOU", confidence: "low", projScore: "HOU 108 — LAL 107",
+      spread: "HOU -3.5", moneyline: "HOU -155 / LAL +135", ou: "O/U 213.5",
+      pick: "HOU", confidence: "medium", projScore: "HOU 111 — LAL 103",
       schedule: "Tue Apr 21 — 10:30 PM ET — NBC",
       reasoning: "MODEL PICK: HOU 108-107 (LOW confidence, COIN FLIP). The engine projects a razor-thin 1-point Houston victory at Crypto.com Arena — essentially a toss-up. Despite LAL's convincing G1 win (107-98), the model gives HOU the slightest edge for several reasons: (1) SHOOTING REGRESSION — LAL shot 61% FG and 53% from 3PT in G1, which is historically unsustainable. The 2025 backtest showed teams shooting 10%+ above playoff averages in G1 always regressed in G2, potentially costing LAL 10-15 points of efficiency. (2) KD'S PROBABLE RETURN — Durant's MRI was clean and he's expected back for G2. Even at 70% health, KD's star ceiling (starCeiling: 2) transforms HOU's offense and defensive gravity, creating a second elite initiator alongside Sengun's 19pts in G1. (3) UDOKA'S ADJUSTMENT PEDIGREE — In the 2022 playoffs with Boston, Udoka bounced back from 4 losses with wins averaging +17.3pt margins. His track record of between-game tactical adjustments is elite. (4) HOU DEPTH — Thompson (17pts), Sheppard (17pts), and Smith all gained real playoff experience in G1 — the jitters are gone. The margin is only 1 because LAL retains significant advantages: LeBron's championship DNA (pedigree: 2), home court for Games 1-2, the proven Kennard-LeBron-Smart system, and Smart's defensive blueprint that held HOU to 33% shooting in stretches. This is as close to a true 50/50 as the model produces.",
       g1Adjustments: [
@@ -721,7 +724,7 @@ const SERIES_DATA = [
     },
     game3: {
       spread: "MIN -2.5", moneyline: "MIN -145 / DEN +125", ou: "O/U 228.5",
-      pick: "DEN", confidence: "low", projScore: "DEN 108 — MIN 106",
+      pick: "DEN", confidence: "medium", projScore: "DEN 110 — MIN 104",
       schedule: "Thu Apr 23 — 9:30 PM ET — Prime Video",
       reasoning: "MODEL PICK: DEN 108-106 (LOW confidence, COIN FLIP). The model projects Denver to win by 2 on the road in Minnesota — a razor-thin margin that reflects this series' volatility. Despite the HCA flip to Target Center for G3-G4, Denver's structural advantages narrowly outweigh Minnesota's home court. Here's why: (1) TALENT EDGE — Jokic's 97 rating and 31.5 PER remain the highest of any player in this series by a wide margin. He averaged 24.5/14/9.5 through two games, and his playoff track record after a loss is historically dominant — expect a bounce-back performance. (2) SYSTEM COHERENCE — Denver's Jokic-centric system carries a 1.5 bonus vs Minnesota's 1.0. The Jokic-Murray two-man game generates 1.18 PPP, and DEN's #1-ranked offense (122.6 ORtg) with the NBA's best 3PT% (39.6%) creates reliable shot creation even in hostile environments. (3) CHAMPIONSHIP DNA — Denver's playoffPedigree of 2 (2023 champions) gives them a composure edge in road playoff games. Adelman's system doesn't panic — G1 showed this when Jokic started slow (3pts in Q1) but DEN let the system work and dominated. (4) DEPTH EDGE (+0.6) — Hardaway's 16pts off the bench in G2 (3-3 3PT) confirms DEN's bench can produce even in losses. The margin is only 2 points because Minnesota's HCA, Edwards' improving health (22pts G1 → 30pts G2), and Randle's bounce-back (24/9/6 in G2) keep this extremely competitive. The 49% close-game probability and just 5% blowout probability confirm this is a true coin flip — the model leans DEN but barely.",
       g2Adjustments: [
@@ -890,7 +893,7 @@ const SERIES_DATA = [
     },
     game2: {
       spread: "SAS -11.5", moneyline: "SAS -600 / POR +425", ou: "O/U 216.5",
-      pick: "SAS", confidence: "high", projScore: "SAS 113 — POR 101",
+      pick: "SAS", confidence: "high", projScore: "SAS 112 — POR 102",
       schedule: "Tue Apr 21 — 9:30 PM ET — TNT",
       reasoning: "BACKTEST-CALIBRATED PICK: SAS (high confidence). G1's 111-98 result validated the model almost perfectly (projected 115-102, 13-pt margin; actual 13-pt margin). Wemby's 35-pt playoff debut (franchise record) proved his rib contusion is a non-factor and he's genuinely unguardable — 5-6 from 3PT means POR can't sag off him. The 2025 backtest showed home teams winning G1 by 10+ in R1 won G2 at 82%. SAS's defensive scheme (Kornet + Vassell blocking Clingan on the same possession) neutralized POR's rim protector. Avdija's 30/10 was excellent individually but couldn't overcome the systemic talent gap — the 'let the star score, contain the rest' approach is repeatable. Henderson's 18pts was POR's bright spot but Fox+Castle (17 each, 15 combined ast) answered every run. POR's Q3 comeback (cut 16 to 2) shows fight, but Splitter had no second-level adjustment when SAS reasserted. Staying HIGH confidence — the talent gap, Wemby's dominance, and coaching advantage are all structural.",
       g1Adjustments: [
@@ -1101,7 +1104,7 @@ const SERIES_DATA = [
     },
     game2: {
       spread: "DET -4.5", moneyline: "DET -200 / ORL +170", ou: "O/U 216.5",
-      pick: "DET", confidence: "low", projScore: "DET 105 — ORL 101",
+      pick: "DET", confidence: "low", projScore: "DET 105 — ORL 102",
       schedule: "Tue Apr 21 — 7:00 PM ET — ESPN",
       reasoning: "MODEL PICK: DET 105-101 (LOW confidence, GRIND). Despite Orlando's stunning G1 upset (112-101), the engine still projects Detroit to win G2 by 4 points at home — a narrow margin that reflects significant uncertainty. The model leans DET for structural reasons: (1) #1 DEFENSE (107.2 DRtg) — Detroit's elite defense is schematic, not effort-based. One bad game doesn't erase a season of defensive dominance. Bickerstaff will have 48 hours of film to adjust the WCJ-on-Duren scheme that neutralized his All-Star center. (2) CADE'S STAR CEILING — Cunningham's 39pts in G1 proved he's a legitimate playoff alpha. The model's star ceiling variance means Cade at his best can single-handedly overcome ORL's depth advantage. He needs better supporting cast deployment, which Bickerstaff (COTY) should address. (3) HOME COURT — DET retains R1 HCA (+3.0 adjustment). Despite the 11-game home playoff losing streak, the #1 seed's talent floor at home is significant. (4) GRIND CHARACTER — The engine projects a physical, low-scoring affair where DET's defensive identity should reassert. The confidence is LOW because G1 exposed real structural problems: single-initiator penalty (only Cade and Harris scored), Bickerstaff's panic closing lineup (0 minutes together all season), and ORL's repeatable 'let Cade score, suffocate the rest' strategy. Mosley's A+ game plan exploits DET's creation gap, and ORL's 5-player balanced scoring is sustainable. This is a genuine toss-up that the model barely tilts toward Detroit.",
       g1Adjustments: [
@@ -1323,7 +1326,7 @@ const SERIES_DATA = [
     },
     game2: {
       spread: "BOS -13.5", moneyline: "BOS -750 / PHI +500", ou: "O/U 210.5",
-      pick: "BOS", confidence: "high", projScore: "BOS 110 — PHI 102",
+      pick: "BOS", confidence: "high", projScore: "BOS 109 — PHI 103",
       schedule: "Tue Apr 21 — 7:30 PM ET — TNT",
       reasoning: "BACKTEST-CALIBRATED PICK: BOS (high confidence). G1's 32-pt blowout (123-91) was even more dominant than our projected 14-pt margin. The 2025 backtest showed teams winning G1 by 20+ in R1 went on to win G2 at 88%. Mazzulla is 4-0 in Game 1s — his system doesn't need adjustment, it's PHI that must solve BOS's five-out spacing. White's full-time Maxey assignment (8-20 FG) is a proven schematic lock. PHI went 4-23 from 3PT (17.4%) — while some shooting regression to the mean is expected (they'll shoot better), BOS's defensive scheme CAUSED many of those misses. Nurse historically improves between games (G2 adjustments were his strength in TOR), but he's limited by roster: no Embiid, Drummond is overmatched, and George's suspension-rust won't clear in 2 days. Brown's ascension as #1 (26pts, 7-9 Q3) is sustainable, and Tatum showed zero rust (25/11/7). The 0-7 since 1982 psychological weight now compounds. Only scenario for PHI: Maxey goes nuclear (35+) AND BOS shoots below 40% — a ~8% probability parlay.",
       g1Adjustments: [
@@ -1884,7 +1887,7 @@ const SERIES_DATA = [
     },
     game3: {
       spread: "CLE -4.5", moneyline: "CLE -240 / TOR +195", ou: "O/U 219.5",
-      pick: "CLE", confidence: "medium-high", projScore: "CLE 111 — TOR 104",
+      pick: "CLE", confidence: "medium", projScore: "CLE 111 — TOR 104",
       schedule: "Thu Apr 23 — 8:00 PM ET — Prime Video",
       reasoning: "RESEARCH-INFORMED PICK: CLE (MEDIUM-HIGH confidence, down from G2's HIGH). Model projects CLE 111-104 (+7, COMPETITIVE) — the margin compression from G1 (+13) to G2 (+10) to G3 (+7) reflects real coaching adaptation and the HCA flip to Toronto. The key variable is Quickley's expected return: his mild hamstring strain (Apr 12 regular-season finale) puts him at 10-11 days rest by Game 3, and he was already questionable for G2. Rajakovic admitted 'we missed Quickley big time' — his return transforms Toronto from an 18-22 TO mess into a functional 3-initiator offense (.374+ 3P%, 6 APG). CLE's defensive scheme on Ingram has been devastating (G1: 17pts on 9 FGA, G2: 7pts on 3/15 FG) — per Fear The Sword, Dean Wade has been 'phenomenal defensively' meeting Ingram at the point of attack. But Ingram acknowledged CLE 'knew most of the stuff we've been running' — Toronto will counter-adjust at home with new sets. The Raptors' small-ball experiment (Murray-Boyles at C in G2 Q3) backfired because it removed rim protection while Mitchell and Harden exploited iso opportunities. Rajakovic needs to find a middle ground. CLE's stars are rolling: Mitchell 31 PPG (62% series avg), Harden 25/7ast (shift from facilitator to co-scorer in G2), Mobley 21 PPG on 67% shooting — Toronto has no matchup for all three. However, TOR's home crowd (first playoff game at Scotiabank Arena), Quickley's probable return, and Barnes' rising form (26pts on 58% in G2) create real upset conditions. Historical data: teams up 2-0 win Game 3 on the road ~60% of the time, but that drops when the home team gets a key player back.",
       g2Adjustments: [
@@ -2355,5 +2358,340 @@ const THREE_POINT_VARIANCE_DATA = {
       modelNote: "TOR's 3PT story is mixed: Barnes hot (.500 vs .320 career), Walter cold (.364 vs .409), Ingram cold (.250). TOR's low volume (26.5 3PA vs 36 for CLE) means 3PT variance has less total impact on their scoring. TOR's path to competitiveness runs through the paint, not the arc."
     },
     seriesImpact: "CLE has more regression DOWN risk (Mitchell/Harden/Strus all hot) than TOR has regression UP potential (low 3PA volume). Net: CLE's G3 scoring may dip 3-4 points from 3PT regression alone. However, CLE's overall offensive machine is paint-dominant (48-30 paint advantage in G1), so 3PT regression is a secondary factor. LOW-MODERATE IMPACT."
+  }
+};
+
+// ============================================================
+// ROLE FLEXIBILITY DATA (Phase 26)
+// ============================================================
+// Framework: Adapted from Nylon Calculus HHI defensive versatility model (Miller 2018),
+// Guo et al. 2025 lineup-based versatility quantification, and SI playoff trends analysis.
+// Historical finding: In 2018 playoffs, NONE of the bottom-8 teams in defensive versatility
+// advanced past R1. Conference Finals teams ranked top-4 in versatility.
+//
+// Dimensions (each 0-10):
+//   switchDefense: How many rotation players can credibly switch 1-4 or 1-5 defensively
+//   offRoleFlex: Can stars toggle scorer/facilitator; multi-initiator offense capability
+//   lineupOptions: Viable alternative lineups (small-ball, big, switching, etc.)
+//   positionalVersatility: Number of players credibly playing 2+ positions
+//   overallFlex: Weighted average (switchDef 30%, offRole 25%, lineup 25%, posVers 20%)
+//
+// Point adjustment formula: (homeFlex - awayFlex) × 0.4, capped at ±3.0
+// ============================================================
+
+const ROLE_FLEXIBILITY_DATA = {
+  "HOU-LAL": {
+    home: {
+      team: "HOU",
+      switchDefense: 7.5,
+      offRoleFlex: 7.0,
+      lineupOptions: 7.0,
+      positionalVersatility: 7.5,
+      overallFlex: 7.2,
+      keyFlexPlayers: [
+        { player: "Amen Thompson", flexNote: "6-7 PG — guards 1-3, initiates offense or slashes. Most positionally disruptive player on either roster. Played PG, SG, SF in reg season.", positionsPlayed: "PG/SG/SF" },
+        { player: "Kevin Durant", flexNote: "6-11 SF/PF — scores from anywhere, can facilitate in short-roll, defends 2-4. When healthy, transforms HOU from single-initiator to multi-creator.", positionsPlayed: "SF/PF" },
+        { player: "Dorian Finney-Smith", flexNote: "3&D wing who switches 2-4 seamlessly. 6-7 frame + 7-1 wingspan. Championship DNA (DAL 2022 Finals).", positionsPlayed: "SF/PF" },
+        { player: "Jabari Smith Jr.", flexNote: "6-11 PF/C — can play stretch-5 in small lineups or space the floor at 4. .348 career 3PT from the 4/5 is rare.", positionsPlayed: "PF/C" }
+      ],
+      smallBallLineup: "VanVleet / Sheppard / Thompson / KD / Jabari — 5-out switching everything",
+      bigLineup: "VanVleet / Sheppard / KD / Jabari / Sengun — traditional with post-up creation",
+      historicalNote: "KD's career playoff role flexibility is elite — primary scorer in OKC/GSW/BKN/PHX/HOU across 5 different systems. Thompson is first-time playoff player but 6-7 PG frame is inherently matchup-proof."
+    },
+    away: {
+      team: "LAL",
+      switchDefense: 5.0,
+      offRoleFlex: 5.0,
+      lineupOptions: 4.5,
+      positionalVersatility: 5.5,
+      overallFlex: 5.0,
+      keyFlexPlayers: [
+        { player: "LeBron James", flexNote: "ALL-TIME positional flexibility: 21 playoff runs playing PG/SF/PF. G1 showed facilitator mode (13ast) when scoring wasn't falling. At 41, still guards 1-4 in short bursts.", positionsPlayed: "PG/SF/PF" },
+        { player: "Marcus Smart", flexNote: "DPOY-caliber switch defender. Guards 1-4 on defense, initiates offense when needed. G1: disrupted Sengun AND switched onto guards.", positionsPlayed: "PG/SG" },
+        { player: "Rui Hachimura", flexNote: "6-8 PF who can play small-ball 5. Decent face-up scorer but limited playmaking.", positionsPlayed: "PF/SF" }
+      ],
+      smallBallLineup: "Smart / Knecht / LeBron / Hachimura / Vanderbilt — no spacing, grinding defense",
+      bigLineup: "Smart / Knecht / LeBron / Hachimura / Ayton — traditional, post-heavy",
+      injuryImpact: "WITHOUT Luka (PG/SG, 6-8) and Reaves (SG, 6-5), LAL loses TWO multi-position creators. Flexibility drops from ~7.5 to 5.0. LeBron carries entire creation burden.",
+      historicalNote: "LeBron's playoff role flexibility is historically unmatched — won titles as primary scorer (2012-13 MIA), facilitator (2020 LAL), and hybrid (2016 CLE comeback). Smart was key switch defender in BOS's 2024 championship run."
+    },
+    flexDifferential: 2.2,
+    modelAdjustment: 0.9,
+    seriesNote: "HOU's positional versatility (Amen's 6-7 PG, KD's SF/PF, Jabari's PF/C) vs LAL's injury-depleted roster creates a structural mismatch. LAL's defensive switching relies almost entirely on Smart and LeBron. When Smart rests, LAL has NO credible switch defender at guard. HOU can exploit this by running Amen in pick-and-rolls — any switch produces a mismatch."
+  },
+
+  "OKC-PHX": {
+    home: {
+      team: "OKC",
+      switchDefense: 9.5,
+      offRoleFlex: 9.0,
+      lineupOptions: 9.0,
+      positionalVersatility: 9.5,
+      overallFlex: 9.2,
+      keyFlexPlayers: [
+        { player: "Jalen Williams", flexNote: "6-5 SG who plays SF and PF — the ultimate 3-position weapon. 2025 Finals proved he can be #2 scorer OR primary facilitator. Guards 1-4 on defense.", positionsPlayed: "SG/SF/PF" },
+        { player: "Shai Gilgeous-Alexander", flexNote: "6-6 PG/SG — size allows switching onto wings. Scores at all 3 levels. Can play off-ball when Williams initiates.", positionsPlayed: "PG/SG" },
+        { player: "Lu Dort", flexNote: "6-4 but 220lbs — switches 1-3 and physically matches up with PFs. Historically locked down stars across all positions in playoffs.", positionsPlayed: "SG/SF" },
+        { player: "Alex Caruso", flexNote: "Elite switch defender (PG/SG). Secondary ballhandler. Won championship with LAL 2020 in switching schemes.", positionsPlayed: "PG/SG" },
+        { player: "Chet Holmgren", flexNote: "7-1 PF/C who can switch onto guards in short bursts. Blocks shots from the weak side while recovering. Unique rim protector.", positionsPlayed: "PF/C" }
+      ],
+      smallBallLineup: "SGA / Dort / Williams / Caruso / Holmgren — switching everything, 5-out spacing",
+      bigLineup: "SGA / Williams / Wiggins / Holmgren / Hartenstein — size + rebounding advantage",
+      historicalNote: "OKC WON 2025 CHAMPIONSHIP with switch-everything defense as their identity. Daigneault's system is built on positional versatility — every player defends multiple positions. Proven model."
+    },
+    away: {
+      team: "PHX",
+      switchDefense: 4.0,
+      offRoleFlex: 5.5,
+      lineupOptions: 4.0,
+      positionalVersatility: 4.5,
+      overallFlex: 4.5,
+      keyFlexPlayers: [
+        { player: "Royce O'Neale", flexNote: "SF/PF — best switching defender on PHX roster. 6-6, guards 2-4. Playoff experience (UTA, BKN, PHI).", positionsPlayed: "SF/PF" },
+        { player: "Ryan Dunn", flexNote: "6-7 SF — athletic wing defender with some switching upside. Limited offensive role.", positionsPlayed: "SF" },
+        { player: "Dillon Brooks", flexNote: "6-7 SF — physical defender but limited to wing assignments. Can't switch onto guards effectively.", positionsPlayed: "SF" }
+      ],
+      smallBallLineup: "Booker / Green / Brooks / O'Neale / Ighodaro — spacing issues, limited creation",
+      bigLineup: "Booker / Green / Brooks / Ighodaro / M.Williams — traditional, one creator",
+      historicalNote: "Booker has playoff pedigree (2021 Finals) but PHX has always been built around his scoring, not versatility. Green's addition helps creation but doesn't fix switching gaps."
+    },
+    flexDifferential: 4.7,
+    modelAdjustment: 1.9,
+    seriesNote: "LARGEST flexibility gap in R1. OKC's switch-everything championship defense vs PHX's rigid single-creator offense. G1's 35-pt blowout confirmed that PHX has NO answer for OKC's multi-initiator attack — when SGA, Williams, AND role players all contribute, PHX's defense is overwhelmed. OKC can switch every screen; PHX cannot."
+  },
+
+  "DEN-MIN": {
+    home: {
+      team: "DEN",
+      switchDefense: 5.5,
+      offRoleFlex: 8.5,
+      lineupOptions: 6.5,
+      positionalVersatility: 6.0,
+      overallFlex: 6.5,
+      keyFlexPlayers: [
+        { player: "Aaron Gordon", flexNote: "6-8 PF/SF — DEN's best switch defender. Guards 2-4, plays 3 or 4. Connector on offense (cutting, short-roll passing).", positionsPlayed: "PF/SF" },
+        { player: "Nikola Jokic", flexNote: "ALL-TIME offensive versatility at C: scores, facilitates (8+ APG), rebounds, plays in post or at arc. But DROP defender only — limits DEN's defensive schemes.", positionsPlayed: "C (offense: C/PG hybrid)" },
+        { player: "Christian Braun", flexNote: "6-6 SG/SF — improved switching defender. Championship experience (2023). Can guard 1-3 and play either wing.", positionsPlayed: "SG/SF" },
+        { player: "Cameron Johnson", flexNote: "6-8 SF/PF — elite floor spacer who defends 3/4. Adds lineup optionality.", positionsPlayed: "SF/PF" }
+      ],
+      smallBallLineup: "Murray / Braun / Cam Johnson / Gordon / Jokic — 5-out, elite spacing",
+      bigLineup: "Murray / Braun / Gordon / Jokic / Valanciunas — twin towers, paint dominance",
+      historicalNote: "DEN won 2023 title with Jokic's offensive versatility compensating for defensive limitations. 2025: took OKC to 7 games despite defensive rating issues. Jokic's playoff career: 26/12/8 — most versatile offensive center ever."
+    },
+    away: {
+      team: "MIN",
+      switchDefense: 6.5,
+      offRoleFlex: 5.5,
+      lineupOptions: 6.0,
+      positionalVersatility: 6.0,
+      overallFlex: 6.0,
+      keyFlexPlayers: [
+        { player: "Jaden McDaniels", flexNote: "6-9 PF/SF — MIN's most versatile defender. Switches 2-4 and contests 3s with 7-0 wingspan. Key to containing Murray/Jokic actions.", positionsPlayed: "PF/SF" },
+        { player: "Kyle Anderson", flexNote: "6-8 SF/PF — 'Slo-Mo' is a secondary playmaker with positional flexibility. Guards 2-4, facilitates in half-court.", positionsPlayed: "SF/PF" },
+        { player: "Naz Reid", flexNote: "6-9 C/PF — gives MIN a small-ball 5 option when Gobert sits. Can space the floor (.368 3PT career).", positionsPlayed: "C/PF" },
+        { player: "Anthony Edwards", flexNote: "6-4 SG who can play SF in small lineups. Improving as facilitator (5.5 APG). Physical enough to guard 1-3.", positionsPlayed: "SG/SF" }
+      ],
+      smallBallLineup: "Edwards / DiVincenzo / McDaniels / Randle / Reid — more spacing, switchable",
+      bigLineup: "Edwards / DiVincenzo / McDaniels / Randle / Gobert — rim protection + rebounding",
+      historicalNote: "MIN's G2 lineup adjustment (DiVincenzo over Conley) was a role flexibility move — prioritizing switching and spacing. Edwards' 2024 playoff run (vs DEN) showed his scorer-to-alpha evolution is real."
+    },
+    flexDifferential: 0.5,
+    modelAdjustment: 0.2,
+    seriesNote: "Closest flexibility matchup in R1. DEN has ELITE offensive role flexibility (Jokic's all-time versatility) but POOR defensive switching (Jokic drop scheme). MIN has BETTER defensive switching (McDaniels, Edwards) but MORE RIGID offense (Edwards-centric). This is offense-flex vs defense-flex — nearly a wash. The G2 DiVincenzo-over-Conley switch shows MIN is ADAPTING its flexibility in real-time."
+  },
+
+  "SAS-POR": {
+    home: {
+      team: "SAS",
+      switchDefense: 8.0,
+      offRoleFlex: 7.5,
+      lineupOptions: 8.5,
+      positionalVersatility: 8.0,
+      overallFlex: 8.0,
+      keyFlexPlayers: [
+        { player: "Victor Wembanyama", flexNote: "7-5 C/PF — MOST VERSATILE DEFENDER IN NBA HISTORY. Guards 1-5 credibly. Blocks shots from perimeter AND paint. On offense: shoots 3s (.357), handles, passes, posts up. Truly positionless.", positionsPlayed: "C/PF (defends 1-5)" },
+        { player: "Devin Vassell", flexNote: "6-5 SF/SG — switchable wing defender, reliable 3PT shooter. Can play 2 or 3.", positionsPlayed: "SF/SG" },
+        { player: "Stephon Castle", flexNote: "6-6 SG/SF — elite athletic defender, switches 1-3. Developing offensive game. Playoff rookie energy.", positionsPlayed: "SG/SF" },
+        { player: "Keldon Johnson (Harrison)", flexNote: "Physical PF/SF who plays both forward spots. Provides lineup flexibility at 4.", positionsPlayed: "PF/SF" }
+      ],
+      smallBallLineup: "Fox / Castle / Vassell / Harrison / Wemby — switching everything, 5-out with Wemby at 5",
+      bigLineup: "Fox / Castle / Vassell / Wemby / Kornet — traditional rim protection + length",
+      historicalNote: "Wemby's G1 playoff debut (35pts, 5-6 3PT) confirmed he's matchup-proof. His versatility is unprecedented — 7-5 with guard skills. Johnson (Pop's protege) has run versatile schemes his entire career."
+    },
+    away: {
+      team: "POR",
+      switchDefense: 3.5,
+      offRoleFlex: 4.5,
+      lineupOptions: 3.5,
+      positionalVersatility: 4.5,
+      overallFlex: 4.0,
+      keyFlexPlayers: [
+        { player: "Deni Avdija", flexNote: "6-9 SF/PF — POR's most versatile player. Can create, facilitate (7 APG), and defend 2-4. Carried POR's offense in G1 (30/10).", positionsPlayed: "SF/PF" },
+        { player: "Jrue Holiday", flexNote: "6-4 SG — championship-proven defender (MIL 2021). Switches 1-3 on defense. Veteran playoff flexibility.", positionsPlayed: "SG/PG" }
+      ],
+      smallBallLineup: "Limited — no credible small-ball 5 option. Clingan MUST play.",
+      bigLineup: "Holiday / Henderson / Avdija / Sharpe / Clingan — POR's only real lineup",
+      historicalNote: "Holiday won 2021 championship with MIL as a defensive flex piece. Avdija's breakout is real but he's in his first playoff series. Clingan is a rookie drop-big with zero playoff switching experience."
+    },
+    flexDifferential: 4.0,
+    modelAdjustment: 1.6,
+    seriesNote: "MASSIVE flexibility gap — 2nd largest in R1. Wemby's 7-5 frame + guard skills gives SAS unlimited defensive scheme options. POR is locked into Clingan drop coverage with no alternative. G1 confirmed: SAS's length (Kornet + Vassell blocking Clingan on same possession) is a STRUCTURAL problem POR cannot solve by switching lineups. Avdija is POR's lone versatile player but he can't fix their defensive rigidity."
+  },
+
+  "DET-ORL": {
+    home: {
+      team: "DET",
+      switchDefense: 6.5,
+      offRoleFlex: 5.5,
+      lineupOptions: 5.5,
+      positionalVersatility: 6.5,
+      overallFlex: 6.0,
+      keyFlexPlayers: [
+        { player: "Cade Cunningham", flexNote: "6-6 PG — oversized PG who can play SG in big lineups. Scores AND facilitates (9 APG). G1: 39pts showed alpha scorer ceiling.", positionsPlayed: "PG/SG" },
+        { player: "Tobias Harris", flexNote: "6-7 SF/PF — can play 3 or 4. Reliable scorer in multiple roles. Playoff experience.", positionsPlayed: "SF/PF" },
+        { player: "Kevin Huerter", flexNote: "6-7 SG/SF — floor spacer who defends wings. Adds some positional flex.", positionsPlayed: "SG/SF" }
+      ],
+      smallBallLineup: "Cunningham / Ivey / Huerter / Harris / Duren — spacing around Duren",
+      bigLineup: "Cunningham / Jenkins / Harris / Stewart / Duren — grinding defense",
+      injuryContext: "SI article: DET's ORtg WITHOUT Cade went from Pelicans-level to Clippers-level during his collapsed-lung absence (113.3 → 116.7). They proved they can function without him, but barely.",
+      historicalNote: "Cunningham's first playoff series. Bickerstaff (COTY) is a system coach who can adjust, but DET's G1 panic lineup (0 min together all season) showed inflexibility under pressure."
+    },
+    away: {
+      team: "ORL",
+      switchDefense: 7.0,
+      offRoleFlex: 7.5,
+      lineupOptions: 7.0,
+      positionalVersatility: 7.0,
+      overallFlex: 7.0,
+      keyFlexPlayers: [
+        { player: "Franz Wagner", flexNote: "6-10 SF/PG — POINT-FORWARD. Plays PG in a 6-10 frame. Creates, facilitates, defends multiple positions. One of the most position-fluid players in the NBA.", positionsPlayed: "SF/PG/SG" },
+        { player: "Paolo Banchero", flexNote: "6-10 PF/SF — can face up like a wing or post up like a big. Creates his own shot. G1: 23pts as the secondary creator showed his flexibility.", positionsPlayed: "PF/SF" },
+        { player: "Jalen Suggs", flexNote: "6-4 PG/SG — defends 1-2, can switch onto wings. Aggressive on-ball defender.", positionsPlayed: "PG/SG" },
+        { player: "Desmond Bane", flexNote: "6-5 SG/SF — acquired via trade. 3-level scorer who can play 2 or 3. Adds another creation option.", positionsPlayed: "SG/SF" }
+      ],
+      smallBallLineup: "Suggs / Bane / Wagner / Banchero / WCJ — 5 players who can all create + defend",
+      bigLineup: "Suggs / Bane / Wagner / Banchero / WCJ — ORL's standard is already versatile",
+      historicalNote: "Wagner's point-forward role is the key to ORL's upset in G1. Mosley's scheme ('let Cade score, suffocate the rest') required defensive versatility to execute. ORL's 5-player balanced scoring (all 5 starters in double figures) reflects offensive role flexibility."
+    },
+    flexDifferential: -1.0,
+    modelAdjustment: -0.4,
+    seriesNote: "RARE CASE: Lower seed has BETTER flexibility. ORL's Wagner (point-forward in 6-10 frame) gives them unique lineup versatility that DET can't match. DET's offense is Cade-centric with limited secondary creation; ORL runs through Wagner OR Banchero OR Bane. G1 proved ORL's 5-player balanced attack beats DET's star-driven model. ORL's flexibility edge is why they're the biggest upset threat in R1."
+  },
+
+  "BOS-PHI": {
+    home: {
+      team: "BOS",
+      switchDefense: 9.0,
+      offRoleFlex: 8.0,
+      lineupOptions: 8.5,
+      positionalVersatility: 8.5,
+      overallFlex: 8.5,
+      keyFlexPlayers: [
+        { player: "Jaylen Brown", flexNote: "6-6 SG/SF — elevated to #1 scorer (28.7 PPG) after Tatum's injury. Can play 2 or 3. Elite switch defender.", positionsPlayed: "SG/SF" },
+        { player: "Jayson Tatum", flexNote: "6-9 SF/PF — scores from everywhere, facilitates (7.2 APG). Guards 2-4. Returning from Achilles — still showed zero rust in G1 (25/11/7).", positionsPlayed: "SF/PF" },
+        { player: "Derrick White", flexNote: "6-4 PG/SG — ELITE switch defender. G1: locked down Maxey (8-20 FG) as full-time assignment. Can initiate offense or play off-ball.", positionsPlayed: "PG/SG" },
+        { player: "Payton Pritchard", flexNote: "PG — limited defensive switching but elite 3PT creates offensive flexibility (pull-up 3s, transition, catch-and-shoot).", positionsPlayed: "PG" }
+      ],
+      smallBallLineup: "White / Brown / Tatum / Hauser / Al Horford — switch-everything, 5-out (proven 2024 championship scheme)",
+      bigLineup: "White / Brown / Tatum / Kornet / (big) — added rim protection",
+      historicalNote: "BOS WON 2024 CHAMPIONSHIP with switch-everything defense as identity. Mazzulla's system is the gold standard for positional versatility in modern NBA. Brown's elevation from #2 to #1 when Tatum was injured showed extreme offensive role flexibility."
+    },
+    away: {
+      team: "PHI",
+      switchDefense: 3.0,
+      offRoleFlex: 4.0,
+      lineupOptions: 3.0,
+      positionalVersatility: 4.0,
+      overallFlex: 3.5,
+      keyFlexPlayers: [
+        { player: "Paul George", flexNote: "6-9 SF/PF — can switch 2-4 on defense. But aging (35) and returning from suspension, limiting his switching upside this series.", positionsPlayed: "SF/PF" },
+        { player: "Tyrese Maxey", flexNote: "6-2 PG — elite scorer but UNDERSIZED for switching. Gets hunted on mismatches when BOS forces switches.", positionsPlayed: "PG" }
+      ],
+      smallBallLineup: "Maxey / Edgecombe / George / (wing) / Drummond — zero switching capacity at C",
+      bigLineup: "Maxey / (guard) / George / (PF) / Drummond — one viable lineup",
+      injuryImpact: "WITHOUT Embiid (C, 7-0), PHI loses their ONLY versatile interior defender and primary post scorer. Flexibility drops from ~6.0 to 3.5. Drummond is a strict drop-coverage center with no switching ability.",
+      historicalNote: "PHI is 0-7 vs BOS in playoffs since 1982. This is partly a flexibility problem — BOS's switching defense has historically disrupted PHI's star-dependent offense. George has deep playoff experience but has shrunk in big moments (4.8 clutch rating)."
+    },
+    flexDifferential: 5.0,
+    modelAdjustment: 2.0,
+    seriesNote: "LARGEST flexibility gap in ALL of R1. BOS's championship switch-everything defense vs PHI's rigid, Embiid-less roster. G1's 32-pt blowout was a FLEXIBILITY blowout — BOS switched every screen, PHI had NO counter. White-on-Maxey is a schematic lock that PHI can't break without a versatile big to create mismatches. Nurse is an elite adjustment coach (proven in TOR) but his roster simply lacks the positional versatility to compete with BOS's scheme. PHI would need Embiid back to change the flexibility calculus."
+  },
+
+  "NYK-ATL": {
+    home: {
+      team: "NYK",
+      switchDefense: 8.0,
+      offRoleFlex: 7.0,
+      lineupOptions: 7.5,
+      positionalVersatility: 7.5,
+      overallFlex: 7.5,
+      keyFlexPlayers: [
+        { player: "OG Anunoby", flexNote: "6-7 SF/PF — ELITE lockdown defender who guards 1-4. One of the NBA's best switch defenders. Can guard CJ McCollum OR Jalen Johnson.", positionsPlayed: "SF/PF" },
+        { player: "Mikal Bridges", flexNote: "6-7 SF — long wing defender who switches 2-4. 3&D role but can create in spurts.", positionsPlayed: "SF/SG" },
+        { player: "Josh Hart", flexNote: "6-5 SG/SF — bulldog defender, rebounds like a big (8+ RPG). Switches 1-3 and plays with maximum effort.", positionsPlayed: "SG/SF" },
+        { player: "Karl-Anthony Towns", flexNote: "7-0 C/PF — stretches the floor from C (.418 3PT career). Can play 5 or 4 in big lineups. Creates matchup problems.", positionsPlayed: "C/PF" }
+      ],
+      smallBallLineup: "Brunson / Hart / Bridges / Anunoby / Towns — elite switching + floor spacing",
+      bigLineup: "Brunson / Hart / Bridges / Towns / Robinson — twin towers + rebounding dominance",
+      historicalNote: "NYK's wing defense (OG, Bridges, Hart) is proven in playoff switching. Anunoby was elite in 2024 playoffs. Towns' 3PT shooting from the 5 forces opposing bigs to the perimeter, creating driving lanes."
+    },
+    away: {
+      team: "ATL",
+      switchDefense: 5.5,
+      offRoleFlex: 6.5,
+      lineupOptions: 6.0,
+      positionalVersatility: 6.0,
+      overallFlex: 6.0,
+      keyFlexPlayers: [
+        { player: "Jalen Johnson", flexNote: "6-9 PF/SF — ATL's most versatile player. Can play 3 or 4, create off the dribble, and defend multiple positions.", positionsPlayed: "PF/SF" },
+        { player: "Jonathan Kuminga", flexNote: "6-7 SF/PF — athletic forward who can switch 2-4 on defense. G2 bounce-back (19pts) showed offensive ceiling. Snyder's G2 adjustment putting Kuminga on Towns was a role-flex chess move.", positionsPlayed: "SF/PF" },
+        { player: "Dyson Daniels", flexNote: "6-7 SG/SF — elite length at guard. Defensive specialist who switches 1-3.", positionsPlayed: "SG/SF" }
+      ],
+      smallBallLineup: "McCollum / Daniels / Hunter / Kuminga / Johnson — switchable wings, no rim protection",
+      bigLineup: "McCollum / Daniels / Johnson / Kuminga / Okongwu — standard with Okongwu rim-protecting",
+      historicalNote: "Snyder's coaching AMPLIFIES flexibility beyond the roster's raw talent. His G2 adjustment (Kuminga on Towns, Okongwu on Hart) created a defensive scheme that held NYK to 66 ORtg in Q4. Scheme-driven versatility can close the talent gap."
+    },
+    flexDifferential: 1.5,
+    modelAdjustment: 0.6,
+    seriesNote: "NYK has the better raw flexibility (OG/Bridges/Hart switching trident), but ATL's COACHING flexibility under Snyder partially closes the gap. Snyder's G2 Q4 adjustment was a masterclass in role-flex — putting a wing (Kuminga) on a center (Towns) is only possible because Kuminga has the positional versatility to do it. NYK's edge is in PERSONNEL versatility; ATL's edge is in SCHEMATIC adaptability."
+  },
+
+  "CLE-TOR": {
+    home: {
+      team: "CLE",
+      switchDefense: 8.0,
+      offRoleFlex: 8.5,
+      lineupOptions: 8.0,
+      positionalVersatility: 7.5,
+      overallFlex: 8.0,
+      keyFlexPlayers: [
+        { player: "Evan Mobley", flexNote: "6-11 PF/C — ELITE switch defender who guards 1-5. Can handle, shoot 3s, and create. The most positionally versatile big in the East. G2: 25pts on 11/13 FG showed offensive ceiling.", positionsPlayed: "PF/C (defends 1-5)" },
+        { player: "Donovan Mitchell", flexNote: "SG who toggles between scorer mode and playmaker mode series-to-series. 31 PPG this series = scorer. Can facilitate when needed (7+ APG in 2024 playoffs).", positionsPlayed: "SG" },
+        { player: "James Harden", flexNote: "ALL-TIME offensive flexibility: PG/SG who toggled from facilitator (G1: 10ast) to co-scorer (G2: 28pts/4ast). Playoff career: adapts role to matchup.", positionsPlayed: "PG/SG" },
+        { player: "Jarrett Allen", flexNote: "C — primarily a rim-runner/defender, but CLE can go small with Mobley-at-5 and remove Allen for more switching.", positionsPlayed: "C" }
+      ],
+      smallBallLineup: "Mitchell / Harden / Strus / Mobley / (no Allen) — extreme switching, 5-out",
+      bigLineup: "Mitchell / Harden / Strus / Mobley / Allen — twin towers, paint dominance",
+      historicalNote: "CLE's Mobley-at-5 small lineups have been devastating this series. G2: when CLE went small, Mobley dominated the paint (11/13 FG) because TOR's small-ball experiment removed their rim protection. Harden's G1→G2 role shift (facilitator→scorer) shows CLE can adapt in real-time."
+    },
+    away: {
+      team: "TOR",
+      switchDefense: 5.5,
+      offRoleFlex: 6.0,
+      lineupOptions: 5.0,
+      positionalVersatility: 5.5,
+      overallFlex: 5.5,
+      keyFlexPlayers: [
+        { player: "Scottie Barnes", flexNote: "6-9 SF/PF — TOR's most versatile player. Can create, facilitate, defend multiple positions. Trending up (21→26pts through 2 games).", positionsPlayed: "SF/PF" },
+        { player: "Sandro Mamukelashvili", flexNote: "Stretch-5 experiment that's working — G2: 12pts/10reb double-double. His 3PT spacing (2/3) counters CLE's drop coverage.", positionsPlayed: "PF/C" },
+        { player: "Immanuel Quickley", flexNote: "PG/SG — EXPECTED BACK for G3. His return adds a second creator and improves TOR's offensive flexibility significantly.", positionsPlayed: "PG/SG" }
+      ],
+      smallBallLineup: "Murray / Quickley / Barnes / Ingram / Mamukelashvili — spacing + creation",
+      bigLineup: "Murray / Barnes / Ingram / Mamukelashvili / Poeltl — but Poeltl minutes collapsed (21→9)",
+      historicalNote: "TOR's small-ball experiment (Murray-Boyles at C in G2 Q3) BACKFIRED — removed rim protection and CLE's Mobley exploited iso. Rajakovic is still searching for the right flexibility answer. Quickley's return could be transformative."
+    },
+    flexDifferential: 2.5,
+    modelAdjustment: 1.0,
+    seriesNote: "CLE's ability to toggle between Harden-as-facilitator and Harden-as-scorer gives them unique offensive flexibility. Mobley's 1-5 defensive switching is a structural advantage TOR has no answer for. TOR's lineup experimentation (benching Poeltl, trying small-ball, starting Mamukelashvili) shows they're SEARCHING for flexibility but haven't found it. Quickley's return for G3 could narrow this gap by adding a second ball-handler."
   }
 };

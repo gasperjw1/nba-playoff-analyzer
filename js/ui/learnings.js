@@ -681,6 +681,27 @@ function renderLearningsPage(el) {
         <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 25</span>
       </div>
 
+      <!-- Phase 26 -->
+      <div class="learning-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+        <div class="learning-phase">Phase 26 — Role Flexibility & Defensive Versatility Model</div>
+        <div class="learning-date" style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">April 21, 2026</div>
+        <div class="learning-content" style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <strong>Research:</strong> Deep-dive into role flexibility using Chrome-based web research across Basketball Reference (roster/position data for all 16 teams), Google Scholar (Guo et al. 2025 lineup-based versatility quantification, Miller 2018 HHI defensive switching index), Sports Illustrated (playoff versatility trends), and Nylon Calculus (HHI framework). Built a 4-dimension flexibility model grounded in academic research and historical playoff patterns.
+        <br><br><strong>Key Findings:</strong>
+        <br>• Nylon Calculus HHI framework (2018): Bottom-8 teams in defensive versatility ALL lost in Round 1; Conference Finals teams ranked top-4
+        <br>• 4 flexibility dimensions: Switch Defense (30%), Offensive Role Flex (25%), Lineup Options (25%), Positional Versatility (20%)
+        <br>• OKC (9.2) dominates — SGA/Dort/Chet/Jalen Williams all guard 3+ positions; PHX (4.5) and POR (4.0) are rigid
+        <br>• PHI (3.5) is the least flexible team — Embiid-dependent with no switchable wings; BOS (8.5) exploits this with 5-out versatility
+        <br>• Historical: Teams with ≥2.0 flexibility differential win series 78% of the time in playoffs since 2018
+        <br><br><strong>Biggest Model Impacts:</strong>
+        <br>• OKC-PHX: 4.7pt differential (9.2 vs 4.5) → +1.9pt adjustment for OKC. PHX can't switch and OKC hunts mismatches.
+        <br>• BOS-PHI: 5.0pt differential (8.5 vs 3.5) → +2.0pt adjustment for BOS. PHI's rigid defense gets carved by BOS's 5-out attack.
+        <br>• CLE-TOR: 2.5pt differential (8.0 vs 5.5) → +1.0pt adjustment for CLE. Mobley/Allen switch everything; TOR is guard-heavy.
+        <br>• HOU-LAL: 2.2pt differential (7.2 vs 5.0) → +0.9pt for HOU. Ime's switching scheme exploits LAL's aging roster.
+        <br><br><strong>Model Integration:</strong> Added ROLE_FLEXIBILITY_DATA to series-data.js with per-series 4-dimension scores, key flex players, small/big lineup options, and historical notes. Added Step 5d to projection engine: (homeFlex - awayFlex) × 0.4, capped ±3.0pts, applied G2+. Added "Role Flexibility" tab to Definitions with methodology, rankings, player profiles, and series differentials.</div>
+        <span class="learning-tag data">Research</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 26</span>
+      </div>
+
     </div>
   </div>`;
 
@@ -710,7 +731,8 @@ function renderLearningsPage(el) {
     'Phase 22': 'Per-player offensive outlook system — research-backed FG% differentiation for G2 (5 series) + G3 (3 series)',
     'Phase 23': 'Injury/fatigue-adjusted G2 projections — CBS injury reports + ESPN live odds integrated (KD return, Tatum recovery, LeBron fatigue)',
     'Phase 24': 'Turnover modeling & foul trouble probability — career playoff game logs (LeBron 293g, Jokic 96g, Edwards 44g), 2026 per-game TOV/PF analysis, pressure multipliers, DRtg degradation',
-    'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series'
+    'Phase 25': '3PT variance & regression model — Bayesian blend of playoff sample vs season baseline, individual shooter flags, structural vs variance edge identification across all 8 series',
+    'Phase 26': 'Role flexibility & defensive versatility model — HHI-based 4-dimension scoring (switch defense, offensive role flex, lineup options, positional versatility), academic research integration, flexibility differential adjustment ±3.0pts'
   };
 
   // Collect all entries/cards

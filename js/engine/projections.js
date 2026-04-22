@@ -128,6 +128,40 @@ function calcGameProjection(series, seriesId, gameNum) {
     }
   }
 
+  // --- STEP 5d: Role Flexibility Adjustment (Phase 26) ---
+  // Research (Nylon Calculus HHI, Guo et al. 2025) shows defensive versatility and
+  // lineup flexibility correlate with playoff success — bottom-8 in versatility ALL lost R1 in 2018.
+  // Formula: (homeFlex - awayFlex) × 0.4, capped at ±3.0 pts.
+  // Applies to games 2+ (need at least 1 game of film to see flexibility advantages manifest).
+  if (typeof ROLE_FLEXIBILITY_DATA !== 'undefined') {
+    const rfKey = seriesId || (series && series.id);
+    const rf = rfKey ? ROLE_FLEXIBILITY_DATA[rfKey] : null;
+    if (rf && rf.home && rf.away && gameNum > 1) {
+      const homeFlex = rf.home.overallFlex || 5.0;
+      const awayFlex = rf.away.overallFlex || 5.0;
+      const flexDiff = homeFlex - awayFlex;
+      const flexAdj = Math.max(-3, Math.min(3, flexDiff * 0.4));
+      baseMargin += flexAdj;
+    }
+  }
+
+  // --- STEP 5e: Turnover & Foul Trouble Adjustment (Phase 24) ---
+  // Research: Each turnover differential ≈ 1.07 points (NBA average points per possession).
+  // Teams with structural TOV advantages (ball security, pressure defense) gain repeatable edges.
+  // TURNOVER_FOUL_DATA.turnover.differential is positive when away team has MORE turnovers.
+  // Apply a moderate fraction (0.15 × differential) to avoid double-counting with existing
+  // injury/depth factors that already partially capture lineup disruptions from foul trouble.
+  if (typeof TURNOVER_FOUL_DATA !== 'undefined') {
+    const tfKey = seriesId || (series && series.id);
+    const tf = tfKey ? TURNOVER_FOUL_DATA[tfKey] : null;
+    if (tf && tf.turnover && typeof tf.turnover.differential === 'number' && gameNum > 1) {
+      // differential > 0 means away turns it over more → benefits home
+      // Convert to points: differential × 1.07pts/TOV × 0.15 attenuation (to avoid overweighting)
+      const tovAdj = Math.max(-2.5, Math.min(2.5, tf.turnover.differential * 1.07 * 0.15));
+      baseMargin += tovAdj;
+    }
+  }
+
   // --- STEP 6: Pre-compression cap ---
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
@@ -1153,6 +1187,121 @@ function calcProjectedBoxScore(series, gameIdx) {
     character: proj.character,
     margin: proj.margin
   };
+}
+
+
+// ============================================================
+// BLENDED PREDICTION SYSTEM (Phase 27)
+// ============================================================
+// Combines two complementary prediction approaches:
+//   - Manual picks (backtest-calibrated): better at picking winners (72.7% vs 63.6%)
+//     because they capture qualitative factors — coaching tactics, scheme adjustments,
+//     matchup intangibles, and contextual reads the engine can't model.
+//   - Dynamic engine: better at sizing margins (8.8 avg error vs 9.5)
+//     because it systematically accounts for 11+ quantitative factors.
+//
+// Blend rules:
+//   1. WINNER: Trust manual pick when it exists; fall back to engine.
+//   2. MARGIN: Use engine margin (better calibrated), but when the two systems
+//      disagree on winner, compress margin toward a toss-up since uncertainty is high.
+//   3. SCORE: Reconstruct score from blended margin + engine total points.
+//   4. CONFIDENCE: Derive from agreement/disagreement + margin magnitude:
+//      - Both agree + margin ≥10: high
+//      - Both agree + margin 6-9: medium-high
+//      - Both agree + margin 3-5: medium
+//      - Both agree + margin 0-2: low
+//      - Disagree: always low (signals genuine uncertainty)
+//   5. SIGNAL: Expose agreement/disagreement as a "consensus" field the UI can render.
+
+function calcBlendedProjection(series, seriesId, gameNum) {
+  const gameKey = 'game' + gameNum;
+  const g = series[gameKey];
+  const proj = calcGameProjection(series, seriesId, gameNum);
+
+  // If no manual pick data, return pure engine
+  if (!g || !g.pick) {
+    return {
+      ...proj,
+      blendedWinner: proj.margin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr,
+      blendedMargin: proj.margin,
+      blendedHomeScore: proj.homeScore,
+      blendedAwayScore: proj.awayScore,
+      blendedConfidence: deriveConfidence(Math.abs(proj.margin), true),
+      consensus: 'engine-only',
+      pickWinner: null,
+      engineWinner: proj.margin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr,
+      blendedScore: proj.margin >= 0
+        ? series.homeTeam.abbr + ' ' + proj.homeScore + ' — ' + series.awayTeam.abbr + ' ' + proj.awayScore
+        : series.awayTeam.abbr + ' ' + proj.awayScore + ' — ' + series.homeTeam.abbr + ' ' + proj.homeScore
+    };
+  }
+
+  const pickWinner = g.pick;
+  const engineWinner = proj.margin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr;
+  const agree = pickWinner === engineWinner;
+
+  // --- MARGIN BLENDING ---
+  // Engine margin is in home-relative terms (positive = home favored).
+  // When both agree on the winner: use engine margin directly (it's better at sizing).
+  // When they disagree: the manual pick says the OTHER team wins, which means
+  // we're in a high-uncertainty zone. Compress the engine margin by 60% toward
+  // zero, then flip it to match the manual pick's winner.
+  let blendedMargin;
+  if (agree) {
+    blendedMargin = proj.margin;
+  } else {
+    // Disagreement: compress engine margin 60% toward zero, then flip to pick's direction
+    const compressed = proj.margin * 0.4; // keep only 40% of engine's conviction
+    // Flip sign so the pick's winner is favored
+    const pickIsHome = pickWinner === series.homeTeam.abbr;
+    blendedMargin = pickIsHome ? Math.abs(compressed) : -Math.abs(compressed);
+    // Floor of 1-point margin for the pick's winner (they get the benefit of the doubt)
+    if (pickIsHome && blendedMargin < 1) blendedMargin = 1;
+    if (!pickIsHome && blendedMargin > -1) blendedMargin = -1;
+  }
+
+  // --- SCORE RECONSTRUCTION ---
+  // Preserve engine's total points (pace/efficiency model), redistribute by blended margin
+  const totalPts = proj.homeScore + proj.awayScore;
+  const blendedHomeScore = Math.round((totalPts + blendedMargin) / 2);
+  const blendedAwayScore = totalPts - blendedHomeScore;
+
+  // --- CONFIDENCE ---
+  const absMargin = Math.abs(blendedMargin);
+  const blendedConfidence = deriveConfidence(absMargin, agree);
+
+  // --- CONSENSUS SIGNAL ---
+  let consensus;
+  if (agree && absMargin >= 10) consensus = 'strong-agree';
+  else if (agree) consensus = 'agree';
+  else consensus = 'disagree';
+
+  // --- BLENDED SCORE STRING ---
+  const winner = blendedMargin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr;
+  const loser = blendedMargin >= 0 ? series.awayTeam.abbr : series.homeTeam.abbr;
+  const wScore = blendedMargin >= 0 ? blendedHomeScore : blendedAwayScore;
+  const lScore = blendedMargin >= 0 ? blendedAwayScore : blendedHomeScore;
+
+  return {
+    ...proj,
+    blendedWinner: winner,
+    blendedMargin,
+    blendedHomeScore,
+    blendedAwayScore,
+    blendedConfidence,
+    consensus,
+    pickWinner,
+    engineWinner,
+    blendedScore: winner + ' ' + wScore + ' — ' + loser + ' ' + lScore
+  };
+}
+
+function deriveConfidence(absMargin, systemsAgree) {
+  if (!systemsAgree) return 'low';
+  if (absMargin >= 10) return 'high';
+  if (absMargin >= 6) return 'medium-high';
+  if (absMargin >= 3) return 'medium';
+  return 'low';
 }
 
 
