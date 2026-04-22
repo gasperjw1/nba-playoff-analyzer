@@ -359,19 +359,22 @@ const SERIES_DATA = [
         { player:"Tari Eason", outlook:"neutral", projFgPct:0.48, ptsRange:[8,14], reason:"G1 perfection (7-7) was a massive outlier. Season 48.7% FG provides anchor. Energy and rebounding are his value — scoring is secondary. Home crowd amplifies his bench energy. Solid role player at home.", confidence:"medium" }
       ],
       away: [ // LAL — ROAD game at Toyota Center
-        // LeBron: G1 9-15 (60%), G2 28pts. Season 52.1% FG.
-        // 2-game avg ~53% FG. Blend: 0.40*(0.53) + 0.30*(~0.50 G2) + 0.30*(0.521) = ~0.52. Road dip → 0.50
-        { player:"LeBron James", outlook:"good", projFgPct:0.50, ptsRange:[24,32], reason:"Averaging 23.5/8/10 through 2 games with seamless scorer↔facilitator shifting. G2: 28/8/7 destroyed the fatigue narrative. At 41, LeBron is playing his best playoff basketball since the bubble. ROAD GAME factor: slight efficiency dip (2%), but LeBron has extensive road playoff experience. Season 52.1% FG. 3 days rest between games helps. Expect continued elite production. Only downside: cumulative fatigue if series extends, but for G3 specifically, he should be fresh.", confidence:"high" },
+        // LeBron: G1 9-15 (60%) 19pts/13ast (facilitator), G2 28pts/7ast (scorer). Season 52.1% FG.
+        // 2-game avg 23.5pts. G3 road game = likely balanced scorer/facilitator split.
+        // Blend: 0.40*(0.53) + 0.30*(~0.50 G2) + 0.30*(0.521) = ~0.52. Road dip → 0.48
+        // CRITICAL: Team projects 100pts. LeBron can't average 28 AND have Smart/Kennard at 20 each.
+        { player:"LeBron James", outlook:"good", projFgPct:0.48, ptsRange:[20,28], reason:"Averaging 23.5/8/10 through 2 games with seamless scorer↔facilitator shifting. G1 was facilitator mode (19pts/13ast), G2 was scorer mode (28pts/7ast). G3 ROAD GAME projects a balanced split: ~22-24pts with 8-9 assists. At 41, LeBron is playing elite playoff basketball — but road games historically tilt him toward facilitating (he trusts teammates to score in hostile environments). ROAD dip: expect ~48% FG (down from 53% home average). Team total of 100 means LeBron, Smart, and Kennard can't ALL score 25+ — someone facilitates, and LeBron's 13-assist G1 shows he'll take that role when needed.", confidence:"high" },
 
         // Smart: G1 5-12 (41.7%) 15pts/8ast, G2 8-13 (61.5%) 25pts/7ast. Season 41.2% FG.
-        // 2-game avg: ~52% FG, 20pts/7.5ast. Blend: 0.40*(0.52) + 0.30*(0.615 G2) + 0.30*(0.412) = ~0.52. Road → 0.46
-        // STOP predicting regression — this is Smart's playoff level.
-        { player:"Marcus Smart", outlook:"good", projFgPct:0.46, ptsRange:[16,24], reason:"BREAKOUT CONFIRMED: 20pts/7.5ast average through 2 games. G2 was 25pts/5 3PM/7ast (8-13 FG). Model was WRONG to predict regression in G2. Smart's playoff pedigree (2022 DPOY, Finals) is real — this is his level. Road game adds small efficiency dip. FG% at 46% is slightly above season 41.2% but this IS his playoff elevation. Defensive impact (forcing KD into 9 TOs) is as valuable as his scoring. Expect another big two-way game.", confidence:"high" },
+        // 2-game avg: ~52% FG, 20pts/7.5ast. Blend: 0.40*(0.52) + 0.30*(0.615 G2) + 0.30*(0.412) = ~0.49. Road → 0.44
+        // Breakout confirmed but road game + team total of 100 caps ceiling.
+        { player:"Marcus Smart", outlook:"good", projFgPct:0.44, ptsRange:[14,22], reason:"BREAKOUT CONFIRMED: 20pts/7.5ast average through 2 games. G2 was 25pts/5 3PM/7ast (8-13 FG). Smart's playoff pedigree (2022 DPOY, Finals) is real — this is his level. ROAD GAME adds meaningful efficiency dip (~3-4% FG on road historically). G2's 61.5% FG was an outlier even for elevated Smart — project 44% FG on the road. His defensive impact (forcing KD into 9 TOs) is as valuable as scoring. Expect 16-20pts with continued elite defense — slightly below his 2-game average due to road regression.", confidence:"high" },
 
         // Kennard: G1 9-13 (69.2%) 27pts, G2 8-13 (61.5%) 23pts. Season 45.5% FG.
-        // 2-game avg: 65.4% FG, 25ppg. Blend: 0.40*(0.654) + 0.30*(0.615) + 0.30*(0.455) = ~0.58. Road → 0.50
-        // Even with regression, he's been SO good that his floor is higher than predicted.
-        { player:"Luke Kennard", outlook:"neutral-good", projFgPct:0.50, ptsRange:[16,24], reason:"Averaging 25pts on 65.4% FG through 2 games — the LeBron-Kennard system (+8.7 NetRtg) is proven. Model was WRONG to predict 'bad' outlook in G2 (23pts on 8-13 FG). However, ROAD GAME is the biggest regression factor: HOU home crowd, unfamiliar rims, louder defensive communication. Also, HOU has had 2 games of film to scheme against Kennard. FG% regresses to 50% (still above season 45.5% because the system creates open looks). Upgraded from 'bad' to 'neutral-good' — stop underestimating Kennard.", confidence:"medium" },
+        // 2-game avg: 65.4% FG, 25ppg. Blend: 0.40*(0.654) + 0.30*(0.615) + 0.30*(0.455) = ~0.58. Road → 0.46
+        // Road regression is the BIGGEST factor. HOU has 2 games of film to scheme against him.
+        // CRITICAL: Team total 100. Can't have LeBron 24 + Smart 18 + Kennard 20 = 62 (leaves 38 for 3 others).
+        { player:"Luke Kennard", outlook:"neutral", projFgPct:0.46, ptsRange:[14,22], reason:"Averaging 25pts on 65.4% FG through 2 games — the LeBron-Kennard system (+8.7 NetRtg) is proven. However, ROAD GAME is the single biggest regression factor: unfamiliar rims, HOU home crowd noise disrupting catch-and-shoot rhythm, louder defensive communication. HOU has 2 games of film to scheme against Kennard specifically — expect more aggressive closeouts and switching. FG% regresses to 46% (still above season 45.5% because the LeBron system creates open looks, but road context tempers the upside). G2's 61.5% FG was unsustainable even at home. Project 16-20pts — still productive but down from the 25ppg he had at Crypto.com.", confidence:"medium" },
 
         // Ayton: G1 8-10 (80%) 19pts/11reb. Season 55.8% FG. G2 stats not highlighted in recap.
         // Blend conservatively: road game + Sengun improving = tougher matchup

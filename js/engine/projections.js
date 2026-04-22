@@ -766,6 +766,11 @@ function calcProjectedBoxScore(series, gameIdx) {
     const team = side === 'home' ? series.homeTeam : series.awayTeam;
     const teamScore = side === 'home' ? proj.homeScore : proj.awayScore;
 
+    // Pre-compute research outlook data at the team scope (needed for both
+    // per-player projection and normalization capping)
+    const teamOutlookKey = 'g' + (gameIdx + 1) + 'PlayerOutlook';
+    const teamPlayerOutlooks = series[teamOutlookKey];
+
     // Get active players (rated > 0 or appeared in prior box score)
     const priorBS = hasPriorBS ? priorGame.boxScores[side] : null;
     const priorMap = {};
@@ -1254,31 +1259,60 @@ function calcProjectedBoxScore(series, gameIdx) {
         }
       }
 
-      // RESEARCH-BASED PER-PLAYER OFFENSIVE OUTLOOK
-      // When g3PlayerOutlook (or gNPlayerOutlook) exists, adjust scoring based on
-      // deep research into matchups, trends, coaching tactics, and historical data.
-      // outlook: "good" = boost, "bad" = suppress, "neutral" = no change
+      // RESEARCH-BASED PER-PLAYER OFFENSIVE OUTLOOK (Phase 30 upgrade)
+      // When gNPlayerOutlook exists with a ptsRange, the research-backed range
+      // acts as a HARD ANCHOR that overrides the engine's raw projection.
+      //
+      // WHY: The engine stacks multiplicative modifiers (playoff ascension, role
+      // change, on/off, Bayesian update, coaching, x-factors) that can push a
+      // star player 30-50% above their season PPG. Research accounts for all of
+      // these factors holistically and produces a realistic range. When both exist,
+      // the research range should WIN because it incorporates context the engine
+      // can't model (facilitator/scorer role splits, road game tendencies, scheme
+      // adjustments, team total budget constraints).
+      //
+      // BLEND: 60% research midpoint / 40% engine projection, then clamp to
+      // [ptsRange[0], ptsRange[1]]. High-confidence research gets 70/30 blend.
+      // This ensures the projected box score actually reflects the written analysis.
       const gameOutlookKey = 'g' + (gameIdx + 1) + 'PlayerOutlook';
       const playerOutlooks = series[gameOutlookKey];
-      let researchFgPct = null; // overrides FG%/3PT% in shooting stat line (FGM/FGA/TPM/TPA), NOT point total
+      let researchFgPct = null;
       if (playerOutlooks) {
         const sideOutlooks = side === 'home' ? playerOutlooks.home : playerOutlooks.away;
         if (sideOutlooks) {
           const outlook = sideOutlooks.find(o => o.player === player.name);
           if (outlook) {
-            researchFgPct = outlook.projFgPct; // store for later FG% estimation
-            if (outlook.outlook === 'good') {
-              // Good game expected: boost 8-12% based on confidence
-              const boost = outlook.confidence === 'high' ? 0.12 : 0.08;
-              projPts *= (1 + boost);
-            } else if (outlook.outlook === 'bad') {
-              // Bad game expected: suppress 8-12%
-              const suppress = outlook.confidence === 'high' ? 0.12 : 0.08;
-              projPts *= (1 - suppress);
-            }
-            // "neutral-good" = slight uplift
-            if (outlook.outlook === 'neutral-good') {
-              projPts *= 1.04;
+            researchFgPct = outlook.projFgPct;
+
+            // Phase 30: Use ptsRange as a hard anchor when available
+            if (outlook.ptsRange && outlook.ptsRange.length === 2) {
+              const [rLow, rHigh] = outlook.ptsRange;
+              const rMid = (rLow + rHigh) / 2;
+
+              // Blend weight: high confidence research = 70% research / 30% engine
+              //               medium/low confidence = 60% research / 40% engine
+              const researchWeight = outlook.confidence === 'high' ? 0.70 : 0.60;
+              const engineWeight = 1 - researchWeight;
+
+              // Blend toward research midpoint
+              projPts = rMid * researchWeight + projPts * engineWeight;
+
+              // Hard clamp: never exceed research range regardless of engine output
+              // Allow 10% slack beyond range to avoid over-constraining normalization
+              const slack = (rHigh - rLow) * 0.10;
+              projPts = Math.max(rLow - slack, Math.min(rHigh + slack, projPts));
+            } else {
+              // Fallback: no ptsRange, use old percentage-based system
+              if (outlook.outlook === 'good') {
+                const boost = outlook.confidence === 'high' ? 0.12 : 0.08;
+                projPts *= (1 + boost);
+              } else if (outlook.outlook === 'bad') {
+                const suppress = outlook.confidence === 'high' ? 0.12 : 0.08;
+                projPts *= (1 - suppress);
+              }
+              if (outlook.outlook === 'neutral-good') {
+                projPts *= 1.04;
+              }
             }
           }
         }
@@ -1316,11 +1350,32 @@ function calcProjectedBoxScore(series, gameIdx) {
     const rawTotal = rawProjections.reduce((s, p) => s + p.pts, 0);
     const scale = rawTotal > 0 ? teamScore / rawTotal : 1;
     let excess = 0;
+    // Build a lookup of research ptsRange caps for each player
+    const researchCaps = {};
+    if (teamPlayerOutlooks) {
+      const allLooks = side === 'home'
+        ? (teamPlayerOutlooks.home || [])
+        : (teamPlayerOutlooks.away || []);
+      allLooks.forEach(o => {
+        if (o.ptsRange && o.ptsRange.length === 2) {
+          researchCaps[o.player] = o.ptsRange[1]; // use high end as cap
+        }
+      });
+    }
+
     rawProjections.forEach(p => {
       let scaledPts = p.pts * scale;
-      // Cap: no player exceeds max(ppg*1.35, G1 actual, 38) after normalization
+      // Cap: use research ptsRange high-end (+ 10% slack) when available,
+      // otherwise fall back to max(ppg*1.35, prior actual, 38)
       const prior = priorMap[p.player.name];
-      const ptsCap = Math.max((p.player.ppg || 20) * 1.35, prior ? prior.pts : 0, 38);
+      const researchHigh = researchCaps[p.player.name];
+      let ptsCap;
+      if (researchHigh != null) {
+        // Research-backed cap: high end of range + 10% slack for normalization breathing room
+        ptsCap = researchHigh + (researchHigh * 0.10);
+      } else {
+        ptsCap = Math.max((p.player.ppg || 20) * 1.35, prior ? prior.pts : 0, 38);
+      }
       if (scaledPts > ptsCap) {
         excess += scaledPts - ptsCap;
         scaledPts = ptsCap;
@@ -1331,7 +1386,13 @@ function calcProjectedBoxScore(series, gameIdx) {
     if (excess > 0) {
       const uncapped = rawProjections.filter(p => {
         const prior = priorMap[p.player.name];
-        const ptsCap = Math.max((p.player.ppg || 20) * 1.35, prior ? prior.pts : 0, 38);
+        const researchHigh = researchCaps[p.player.name];
+        let ptsCap;
+        if (researchHigh != null) {
+          ptsCap = researchHigh + (researchHigh * 0.10);
+        } else {
+          ptsCap = Math.max((p.player.ppg || 20) * 1.35, prior ? prior.pts : 0, 38);
+        }
         return p.pts < ptsCap;
       });
       const uncappedTotal = uncapped.reduce((s, p) => s + p.pts, 0);
