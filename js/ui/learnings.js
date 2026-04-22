@@ -492,7 +492,7 @@ function renderLearningsPage(el) {
       <div class="learning-entry correction">
         <div class="learning-phase">Phase 16 — Fatigue Monitor Upgrade</div>
         <div class="learning-title">Ghost Audit: 4 Dead Functions + 87 Orphan CSS Lines Removed</div>
-        <div class="learning-body">Comprehensive audit found: 4 ghost functions (estimateUnderdogGames, makeEdge, getExternalEdge, getExternalNote) defined but never called — removed. 87 orphan CSS lines from earlier design iterations (g1-*, g2-*, evidence-*, game-log-*, backtest-lesson-*) — removed. 0 broken function connections, 0 duplicate series IDs, 0 undefined onclick handlers. File reduced by ~120 lines of dead code. All getElementById references verified, div tag balance confirmed (1 extra </div> traced to JS template string — benign).</div>
+        <div class="learning-body">Comprehensive audit found: 4 ghost functions (estimateUnderdogGames, makeEdge, getExternalEdge, getExternalNote) defined but never called — removed. 87 orphan CSS lines from earlier design iterations (g1-*, g2-*, evidence-*, game-log-*, backtest-lesson-*) — removed. 0 broken function connections, 0 duplicate series IDs, 0 undefined onclick handlers. File reduced by ~120 lines of dead code. All getElementById references verified, div tag balance confirmed (1 extra &lt;/div&gt; traced to JS template string — benign).</div>
         <span class="learning-tag correct">Maintenance</span>
       </div>
 
