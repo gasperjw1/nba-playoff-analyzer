@@ -22,7 +22,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING — Thu Apr 23 | NYK-ATL G3, CLE-TOR G3, DEN-MIN G3</span>
+        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TOMORROW — Thu Apr 23 | NYK-ATL G3, CLE-TOR G3, DEN-MIN G3</span>
       </div>
 
       <!-- ===== APR 22 PARLAY RESULTS (COLLAPSED) ===== -->
@@ -35,83 +35,10 @@ function renderBetsPage(el) {
         </div>
       </details>
 
-      <!-- ===== SAT APR 25 FEATURED PARLAYS ===== -->
+      <!-- ===== G3 FEATURED PARLAYS ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">SAT APR 25 — DET-ORL G3 (OT Projected!) &amp; OKC-PHX G3</span>
-        </div>
-
-        <!-- $100 BEST BET — SAT APR 25 -->
-        <div class="parlay-card headline">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f0c040;">Sat $100 Play — G2 Winners Roll (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+380</span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$480 return</span>
-            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Sat Apr 25</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-              <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">DET ML @ ORL (DET-ORL G3) ⭐</span>
-              <span class="parlay-leg-odds">-148</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-              <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">OKC ML @ PHX (OKC-PHX G3)</span>
-              <span class="parlay-leg-odds">-455</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-              <span class="parlay-leg-num">3</span>
-              <span class="parlay-leg-pick">SGA Over 27.5 pts (OKC-PHX G3)</span>
-              <span class="parlay-leg-odds">-125</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>DET ML</strong> — the anchor. DET won G2 by 15 with Cade's dual-mode (27pts/11ast). They're road favorites (-2.5) for a reason. Model projects OVERTIME — meaning this game is a coin flip, but Cade's adaptability gives DET the edge. <strong>OKC ML</strong> — OKC won G1 by 35, G2 by 13. PHX had 21 turnovers G2. Even at Phoenix, OKC's depth overwhelms. Heavy juice (-455) but safe floor. <strong>SGA O27.5</strong> — G2 proved the bounce-back: 37pts on 52% FG, 9-9 FT. Two-game avg of 31pts. At Phoenix he'll play full minutes with no blowout risk. This is the highest-confidence prop on the Sat slate.</div>
-        </div>
-
-        <!-- $1 CHAOS TICKET — SAT APR 25 -->
-        <div class="parlay-card headline" style="border:1px solid #f44336;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f44336;">Sat $1 Chaos Ticket — OT + Upset (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+2800</span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$29.00 return</span>
-            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Sat Apr 25</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #f44336;">
-              <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">ORL ML vs DET (DET-ORL G3 — OVERTIME UPSET)</span>
-              <span class="parlay-leg-odds">+124</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f44336;">
-              <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">PHX ML vs OKC (OKC-PHX G3 — DESPERATION)</span>
-              <span class="parlay-leg-odds">+350</span>
-              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f44336;">
-              <span class="parlay-leg-num">3</span>
-              <span class="parlay-leg-pick">Dillon Brooks Over 22.5 pts (OKC-PHX G3)</span>
-              <span class="parlay-leg-odds">+115</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning" style="border-left-color:#f44336;">The engine projects DET-ORL G3 as OVERTIME — dead even. If any game this round goes to OT, it's this one. <strong>ORL ML +124</strong> — first home game, model says regulation is a toss-up, Banchero's career playoff avg is 28ppg. Home OT = crowd advantage. <strong>PHX ML +350</strong> — 0-2 desperation at home. Brooks just scored 30pts (52.2%) proving PHX has firepower. 0-2 teams win G3 at home ~35% of the time. <strong>Brooks O22.5</strong> — model was WRONG about Brooks (projected "bad", he scored 30). Upgrade to neutral means 22+ is realistic at home with desperation minutes.</div>
-        </div>
-      </div>
-
-      <!-- ===== G3 FEATURED PARLAYS ===== -->
-      <div style="margin-top:24px;border-top:2px solid #64b5f6;padding-top:20px;">
-        <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TOMORROW — Thu Apr 23 G3 Parlays &amp; Fri Apr 24</span>
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TOMORROW — Thu Apr 23 | G3: NYK-ATL, CLE-TOR, DEN-MIN</span>
         </div>
 
         <!-- $100 G3 BEST BET — THU APR 23 -->
@@ -244,6 +171,79 @@ function renderBetsPage(el) {
             </div>
           </div>
           <div class="parlay-reasoning" style="border-left-color:#f44336;">Pure chaos play: three contrarian legs. <strong>PHI ML</strong> — PHI just won G2 111-97 on the road. Nurse's adjustment masterclass, Edgecombe's emergence as 2nd initiator, Maxey's home comfort. If BOS's 3PT stays cold (26% G2), PHI wins again. <strong>LAL ML</strong> — Redick has outcoached Udoka in EVERY dimension. Smart and Kennard are sustained elite. LeBron's legacy motivation vs KD. LAL's scheme is structural and travels. <strong>Edgecombe O24.5</strong> — the swing leg. Youth breakout persistence (Phase 29) says consecutive breakouts are MORE likely for ≤23-year-olds. His 30pts G2 may not fully repeat, but at home in Philly with crowd energy and Nurse designing plays for him, 25+ is possible even with Mazzulla's counter-schemes.</div>
+        </div>
+      </div>
+
+      <!-- ===== SAT APR 25 FEATURED PARLAYS ===== -->
+      <div style="margin-top:24px;border-top:2px solid #64b5f6;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">SAT APR 25 — DET-ORL G3 (OT Projected!) &amp; OKC-PHX G3</span>
+        </div>
+
+        <!-- $100 BEST BET — SAT APR 25 -->
+        <div class="parlay-card headline">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f0c040;">Sat $100 Play — G2 Winners Roll (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+380</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$480 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Sat Apr 25</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">DET ML @ ORL (DET-ORL G3) ⭐</span>
+              <span class="parlay-leg-odds">-148</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">OKC ML @ PHX (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">-455</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">SGA Over 27.5 pts (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">-125</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>DET ML</strong> — the anchor. DET won G2 by 15 with Cade's dual-mode (27pts/11ast). They're road favorites (-2.5) for a reason. Model projects OVERTIME — meaning this game is a coin flip, but Cade's adaptability gives DET the edge. <strong>OKC ML</strong> — OKC won G1 by 35, G2 by 13. PHX had 21 turnovers G2. Even at Phoenix, OKC's depth overwhelms. Heavy juice (-455) but safe floor. <strong>SGA O27.5</strong> — G2 proved the bounce-back: 37pts on 52% FG, 9-9 FT. Two-game avg of 31pts. At Phoenix he'll play full minutes with no blowout risk. This is the highest-confidence prop on the Sat slate.</div>
+        </div>
+
+        <!-- $1 CHAOS TICKET — SAT APR 25 -->
+        <div class="parlay-card headline" style="border:1px solid #f44336;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">Sat $1 Chaos Ticket — OT + Upset (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+2800</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$29.00 return</span>
+            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Sat Apr 25</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">ORL ML vs DET (DET-ORL G3 — OVERTIME UPSET)</span>
+              <span class="parlay-leg-odds">+124</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">PHX ML vs OKC (OKC-PHX G3 — DESPERATION)</span>
+              <span class="parlay-leg-odds">+350</span>
+              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">Dillon Brooks Over 22.5 pts (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">+115</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;">The engine projects DET-ORL G3 as OVERTIME — dead even. If any game this round goes to OT, it's this one. <strong>ORL ML +124</strong> — first home game, model says regulation is a toss-up, Banchero's career playoff avg is 28ppg. Home OT = crowd advantage. <strong>PHX ML +350</strong> — 0-2 desperation at home. Brooks just scored 30pts (52.2%) proving PHX has firepower. 0-2 teams win G3 at home ~35% of the time. <strong>Brooks O22.5</strong> — model was WRONG about Brooks (projected "bad", he scored 30). Upgrade to neutral means 22+ is realistic at home with desperation minutes.</div>
         </div>
       </div>
 
