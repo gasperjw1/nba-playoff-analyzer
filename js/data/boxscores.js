@@ -317,6 +317,32 @@ const G2_BOX_SCORES = {
       {name:"Jaxson Hayes",min:21,pts:6,reb:5,ast:1,stl:0,blk:1,fgm:1,fga:2,tpm:0,tpa:1,ftm:4,fta:5,to:0,orb:2},
       {name:"Bronny James",min:2,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
     ]
+  },
+  "DET-ORL": {
+    home: [ // DET
+      {name:"Cade Cunningham",min:37,pts:27,reb:6,ast:11,stl:2,blk:2,fgm:11,fga:19,tpm:1,tpa:6,ftm:4,fta:8,to:7,orb:0},
+      {name:"Tobias Harris",min:33,pts:16,reb:11,ast:1,stl:2,blk:2,fgm:7,fga:17,tpm:0,tpa:3,ftm:2,fta:2,to:1,orb:4},
+      {name:"Jalen Duren",min:32,pts:11,reb:9,ast:4,stl:1,blk:0,fgm:4,fga:10,tpm:0,tpa:0,ftm:3,fta:5,to:3,orb:4},
+      {name:"Duncan Robinson",min:32,pts:10,reb:6,ast:3,stl:2,blk:1,fgm:3,fga:9,tpm:3,tpa:8,ftm:1,fta:2,to:2,orb:2},
+      {name:"Ausar Thompson",min:28,pts:11,reb:8,ast:1,stl:2,blk:1,fgm:5,fga:9,tpm:0,tpa:0,ftm:1,fta:2,to:2,orb:3},
+      {name:"Isaiah Stewart",min:16,pts:10,reb:5,ast:0,stl:0,blk:2,fgm:4,fga:4,tpm:1,tpa:1,ftm:1,fta:1,to:3,orb:2},
+      {name:"Javonte Green",min:23,pts:2,reb:5,ast:0,stl:1,blk:3,fgm:0,fga:1,tpm:0,tpa:1,ftm:2,fta:2,to:1,orb:1},
+      {name:"Caris LeVert",min:14,pts:4,reb:1,ast:0,stl:0,blk:0,fgm:2,fga:6,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:0},
+      {name:"Kevin Huerter",min:6,pts:3,reb:1,ast:0,stl:0,blk:0,fgm:1,fga:2,tpm:1,tpa:2,ftm:0,fta:0,to:2,orb:0},
+      {name:"Daniss Jenkins",min:11,pts:4,reb:2,ast:2,stl:0,blk:1,fgm:2,fga:7,tpm:0,tpa:2,ftm:0,fta:2,to:1,orb:1}
+    ],
+    away: [ // ORL
+      {name:"Paolo Banchero",min:34,pts:18,reb:6,ast:8,stl:1,blk:1,fgm:7,fga:17,tpm:0,tpa:2,ftm:4,fta:8,to:4,orb:1},
+      {name:"Franz Wagner",min:32,pts:12,reb:7,ast:1,stl:4,blk:0,fgm:4,fga:11,tpm:0,tpa:2,ftm:4,fta:4,to:2,orb:2},
+      {name:"Wendell Carter Jr.",min:24,pts:3,reb:5,ast:0,stl:1,blk:2,fgm:1,fga:6,tpm:0,tpa:2,ftm:1,fta:2,to:0,orb:2},
+      {name:"Desmond Bane",min:34,pts:12,reb:4,ast:2,stl:2,blk:1,fgm:2,fga:11,tpm:2,tpa:7,ftm:6,fta:7,to:3,orb:1},
+      {name:"Jalen Suggs",min:32,pts:19,reb:6,ast:4,stl:0,blk:0,fgm:7,fga:18,tpm:3,tpa:10,ftm:2,fta:2,to:3,orb:0},
+      {name:"Anthony Black",min:24,pts:5,reb:3,ast:1,stl:3,blk:0,fgm:1,fga:6,tpm:0,tpa:1,ftm:3,fta:4,to:1,orb:0},
+      {name:"Goga Bitadze",min:21,pts:3,reb:5,ast:0,stl:2,blk:2,fgm:0,fga:0,tpm:0,tpa:0,ftm:3,fta:4,to:2,orb:2},
+      {name:"Tristan da Silva",min:17,pts:3,reb:3,ast:0,stl:1,blk:0,fgm:1,fga:3,tpm:1,tpa:2,ftm:0,fta:0,to:1,orb:1},
+      {name:"Jevon Carter",min:13,pts:0,reb:0,ast:1,stl:1,blk:0,fgm:0,fga:1,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0},
+      {name:"Jase Richardson",min:3,pts:6,reb:0,ast:0,stl:0,blk:0,fgm:2,fga:2,tpm:2,tpa:2,ftm:0,fta:0,to:0,orb:0}
+    ]
   }
 };
 
