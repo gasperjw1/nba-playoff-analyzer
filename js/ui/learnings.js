@@ -756,6 +756,21 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">G2 Audit</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 32</span>
       </div>
 
+      <!-- Phase 34 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 34 — G2 Results Integration: Overtime Detection, Dual-Mode Stars, Turnover Catastrophe</div>
+        <div class="learning-date">Apr 22, 2026</div>
+        <div class="learning-body">
+          <strong>Three major model upgrades from DET-ORL G2 and OKC-PHX G2 analysis:</strong><br><br>
+          <strong>1. Overtime Detection Engine:</strong> When the engine's projected scores round to identical values (margin = 0), the model now interprets this as an OVERTIME projection rather than an arbitrary tie-break. The game character changes to "OVERTIME" and the margin range reads "Team in OT (regulation dead even)". First application: DET-ORL G3 projected as overtime (DET 104-103). This gives bettors a unique edge — when the model projects OT, the game is genuinely a coin flip and alternate-line/OT-specific bets become valuable.<br><br>
+          <strong>2. Dual-Mode Star Detection:</strong> Cade Cunningham's G1→G2 evolution (39pts scorer → 27pts/11ast distributor) revealed a new model concept: stars who can switch between scoring and playmaking modes create unsolvable defensive problems. The model now tracks this through the player outlook system — "dual-mode" stars get higher confidence in their projections because defensive schemes can't prepare for both modes simultaneously. Similar: SGA's G1→G2 bounce-back (25pts/27.8% → 37pts/52%/9ast) confirms elite stars adapt across games.<br><br>
+          <strong>3. Turnover Catastrophe Factor:</strong> PHX's 21 turnovers in G2 (OKC had 14 steals) was the game's defining stat. When a team commits 20+ turnovers against an elite defensive team, the model now flags this as a STRUCTURAL problem (not variance) that compounds across the series. Individual player TO counts (Green 7, Booker 5) are tracked in player outlooks — players with 5+ TOs get downgraded outlook ratings.<br><br>
+          <strong>4. ptsRange [0,0] Exclusion (Phase 33):</strong> When a player's outlook has ptsRange [0,0], they are confirmed OUT and excluded from the projected box score. First application: Wemby (concussion protocol) excluded from SAS-POR G3 projections. Minutes and scoring redistribute naturally to remaining teammates.<br><br>
+          <strong>Model performance:</strong> G2 betting record improved to 6/11 (54.5%). Best calls: OKC ML (exact +13 margin match), SGA O28.5 (37pts, cleared by 8.5), DET ML (98-83 blowout), Cade O7.5ast (11ast). Key miss: Brooks projected "bad" but scored 30pts — upgraded to "neutral" for G3.
+        </div>
+        <span class="learning-tag research">G2 Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 34</span>
+      </div>
+
       <!-- Phase 28 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
@@ -811,7 +826,8 @@ function renderLearningsPage(el) {
     'Phase 28': 'Live game analysis & model corrections — youth breakout multiplier, team 3PT correlation, efficiency tax defense, dynamic initiator recalculation, recovery volatility flag. BOS-PHI G2 upset analysis.',
     'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.',
     'Phase 31': 'Research anchor blend & data integrity — engine now consumes ptsRange from gNPlayerOutlook (60-70% research blend), normalization caps respect research range, outlook key deduplicated. SGA scoring data reconciled, G1 record corrected to 8/13. Featured Parlays rebuilt for Apr 22 with history timeline.',
-    'Phase 32': 'G2 upset analysis — 5 new factors: Coaching Adjustment Quality (CAQ blended score), Initiator Count differential (±3.0pts), Scheme Persistence Factor (70% carryforward), Star Absence Recalibration (redistribution + return penalty), Youth Ceiling Multiplier (per-player overrides). All 16 coaching staffs verified. G1→G2 prediction accuracy: 75%→33% identified root causes.'
+    'Phase 32': 'G2 upset analysis — 5 new factors: Coaching Adjustment Quality (CAQ blended score), Initiator Count differential (±3.0pts), Scheme Persistence Factor (70% carryforward), Star Absence Recalibration (redistribution + return penalty), Youth Ceiling Multiplier (per-player overrides). All 16 coaching staffs verified. G1→G2 prediction accuracy: 75%→33% identified root causes.',
+    'Phase 34': 'G2 results integration — 3 engine upgrades: (1) Overtime Detection (margin=0 → OVERTIME character label + OT-specific margin range), (2) Dual-Mode Star concept (Cade scorer→distributor, SGA bounce-back), (3) Turnover Catastrophe Factor (20+ TO = structural, not variance). ptsRange [0,0] exclusion for OUT players (Phase 33). G2 record: 6/11 (54.5%). OKC margin exact match (+13). DET-ORL G3 projected as OVERTIME.'
   };
 
   // Collect all entries/cards

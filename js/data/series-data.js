@@ -526,12 +526,16 @@ const SERIES_DATA = [
       consAway: ["Single-initiator penalty is structural — can't add creators between games", "-1.4 NetRtg team facing +11.6 NetRtg team — massive talent gap", "17 TOs reflect systematic pressure, not nerves — OKC's defense is schematic", "Interior defense non-existent — Holmgren will feast again"]
     },
     game3: {
-      spread: "OKC -8.5", moneyline: "OKC -380 / PHX +300", ou: "O/U 217.5",
+      spread: "OKC -9.5", moneyline: "OKC -455 / PHX +350", ou: "O/U 215.5",
       pick: "OKC", confidence: "medium", projScore: "OKC 116 — PHX 108",
-      schedule: "Fri Apr 24 — 9:30 PM ET — ESPN",
+      schedule: "Sat Apr 25 — 3:30 PM ET — NBC/Peacock",
       reasoning: "PHASE 30 PICK: OKC (MEDIUM confidence). G3 shifts to Phoenix but the structural mismatch is unchanged. OKC's multi-initiator attack (SGA/Williams/Holmgren = 3 stars) vs PHX's single-initiator dependence (only Booker) is a talent gap that coaching can't close.\n\n3PT VARIANCE: OKC shot well in G1 (team ~38%), expect slight regression. PHX shot 35% first half in G1 — could regress UP slightly at home. Net: minimal 3PT swing, maybe 2-3pts toward PHX.\n\nHOME COURT EFFECT: PHX at home (~2.5pt R1 boost) compresses the margin from G1's 35pts to a more realistic 8-10pts. The crowd at Footprint Center will give PHX energy, and Booker historically shoots better at home (51% FG home vs 47% road). But OKC was 25-16 on the road — elite road team.\n\nYOUTH BREAKOUT WATCH: Jalen Green (age 22) is the prime candidate. Phase 29 youth breakout persistence: he shot 37.5% in G1 but at home with crowd energy, his athletic scoring could spike to 25+. Brooks (age 27) is too old for the youth multiplier.\n\nSGA BOUNCE-BACK: If SGA shot 27.8% in G1 (season 47.4%), expect massive regression UP. Road SGA is historically elite — averaged 31+ PPG in 2025 playoffs. Full game (no sitting Q4) means 28-35pts range.\n\nCOACHING: Daigneault (adj 9) vs Ott (adj 3). Massive coaching gap. Even with 2 game films, Ott lacks the roster tools to counter OKC's depth. PHX's 17 TOs in G1 are scheme-driven by OKC's defense — home court helps but doesn't fix systemic ball pressure.\n\nWHY NOT HIGHER MARGIN: PHX will compete better at home. Booker's clutch rating (7.8) + home crowd + desperation = they'll fight. But the talent gap is too wide for an upset. Margin compresses from 35 (G1) to projected 8. Spread at -8.5 is near our projection — pick ML for safer play.",
       g2Adjustments: [
-        "G2 result pending (Wed Apr 22) — this prediction assumes OKC won G2 at home as heavily favored",
+        "G2 RESULT: OKC 120-107. OKC leads 2-0. SGA BOUNCE-BACK: 37pts (52% FG, 9-9 FT), 9ast — massive improvement from G1's 25pts on 27.8%.",
+        "PHX TURNOVER CATASTROPHE: 21 turnovers (OKC 14 steals). Green 7TO, Booker 5TO. Ball security is PHX's fatal flaw.",
+        "BROOKS 30PTS: Only PHX player who showed fight (12-23, 5-9 3PT). Model projected him 'bad' — missed badly.",
+        "HOLMGREN RIM PROTECTION: 4 blocks. PHX had 1 team block total. Interior mismatch is overwhelming.",
+        "OKC DEPTH: Mitchell 14pts/5ast (bench), Caruso 3stl, Wallace 3stl. PHX has no answer for OKC's 10-deep rotation.",
         "SERIES SHIFTS TO PHOENIX: First road games for OKC. PHX home record was 21-20 — not dominant, but crowd energy helps",
         "SGA FG% REGRESSION: 27.8% G1 on 5-18 FG was historic cold. Expect massive regression UP to ~46% at PHX. Even Dort-level defense can't hold SGA below 40% twice.",
         "PHX DESPERATION: Likely 0-2, only ~7% of teams come back from 0-2. Maximum urgency creates energy but also pressing/turnovers",
@@ -545,6 +549,16 @@ const SERIES_DATA = [
       prosAway: ["HOME COURT — Footprint Center crowd, first home game of the series (~2.5pt R1 boost)", "Booker historical home shooting boost (51% FG) — expect best scoring game of the series", "Green YOUTH BREAKOUT at home — age 22, athletic scorer, crowd energy could unlock 25+ game", "Ott has 2 game films now — even a modest improvement helps", "Desperation creates energy — nothing to lose, play freely"],
       consAway: ["Single-initiator penalty UNCHANGED — can't add creators. Only Booker generates half-court offense.", "-1.4 NetRtg team — structurally weaker regardless of venue", "Brooks is a career 39.8% playoff shooter — venue doesn't fix his shot selection", "Ighodaro's zero offense means PHX plays 4-on-5 offensively in the half-court", "OKC's defensive scheme is schematic — travels to any building", "Turnovers (17 in G1) are pressure-driven, and OKC's pressure travels"]
     },
+    game4: {
+      spread: "OKC -7.5", moneyline: "OKC -350 / PHX +275", ou: "O/U 218.5",
+      pick: "OKC", confidence: "high", projScore: "OKC 116 — PHX 104",
+      schedule: "Mon Apr 27 — 9:30 PM ET — Peacock/NBCSN",
+      reasoning: "PHASE 34 PICK: OKC (HIGH confidence, SEPARATION). Down 0-3 (if OKC wins G3) or 1-2 (if PHX steals G3), PHX faces a talent/depth mismatch they have no schematic answer for. OKC's defensive pressure (14 steals, 21 forced TOs in G2) is systematic — PHX's ball-handling issues (Green 7TO, Booker 5TO) won't improve in 2 days. SGA's bounce-back (37pts/9ast G2 after 25pts G1) confirms he's an elite playoff performer. Holmgren's rim protection (4blk G2) eliminates PHX's interior game. OKC's depth (Mitchell 14pts bench, Caruso 3stl, Wallace 3stl) means fatigue hits PHX harder in a series grind. PHX home court is their only advantage — crowd energy is real but OKC's system travels.\n\nEVEN IF PHX STEALS G3: OKC's structural advantages remain. SGA + Williams + Holmgren + depth > Booker + Brooks + turnover-prone supporting cast. Model projects OKC by 12 in G4 regardless of G3 outcome.",
+      prosHome: ["OKC has won both games by 13+ (35pts G1, 13pts G2) — this is a talent mismatch", "SGA's dual-game data: 25pts (bad) + 37pts (great) = adaptable star, not matchup-dependent", "OKC depth is overwhelming: 10 players contribute vs PHX's 5-6 player rotation", "Defensive pressure system (14 steals G2) is schematic and repeatable"],
+      consHome: ["Second consecutive road game — B2B travel even with rest days", "PHX crowd desperation if facing elimination could create hostile environment", "Brooks' 30pts G2 shows PHX has a scorer who can match OKC's output"],
+      prosAway: ["HOME COURT — only remaining advantage. Crowd energy in desperate situation", "Brooks trending UP: 30pts G2 on 52.2% FG challenges the 'bad' outlook label", "O'Neale's emergence (16pts, 4-5 3PT G2) adds a new dimension", "Booker typically elevates in elimination/desperation games"],
+      consAway: ["21 turnovers G2 is catastrophic — ball security can't improve enough in 2 days", "Green's 7TO problem is structural (OKC's pressure defense, not variance)", "Holmgren's 4blk eliminates PHX's interior scoring", "OKC's bench outscores PHX's bench consistently — depth gap is unsolvable"]
+    },
     coaching: {
       home: {
         coach: "Mark Daigneault",
@@ -555,7 +569,8 @@ const SERIES_DATA = [
         tendency: "Matchup chameleon. Plays 11-12 in regular season, trusts roster depth. Self-focused philosophy.",
         rotationPlan: "Shrinks to 9-man. Closers rotate between Caruso/Joe/Wallace based on matchup needs.",
         keyAdjustment: "Will likely mirror PHX small-ball with Dort/Williams/Caruso defensive wings",
-        g1Performance: "A | Executed a near-perfect defensive game plan. Every PHX shot was contested, forcing 35% first-half shooting and 17 turnovers (15-2 in pts off TOs). Brilliantly staggered Booker and Green so OKC always had elite defenders against the lone scoring threat on the floor. Key coaching decision: limited SGA to 29 minutes and Holmgren to 25 — protecting his stars for the long series while still winning by 35. Williams' reintegration was seamless (22pts in 29min) suggesting Daigneault managed his minutes/role carefully during the injury rehab. Let Holmgren feast on PHX's non-existent interior defense (16pts, 50% FG). The game was won in Q1 (35-20) through defensive intensity and transition offense off turnovers."
+        g1Performance: "A | Executed a near-perfect defensive game plan. Every PHX shot was contested, forcing 35% first-half shooting and 17 turnovers (15-2 in pts off TOs). Brilliantly staggered Booker and Green so OKC always had elite defenders against the lone scoring threat on the floor. Key coaching decision: limited SGA to 29 minutes and Holmgren to 25 — protecting his stars for the long series while still winning by 35. Williams' reintegration was seamless (22pts in 29min) suggesting Daigneault managed his minutes/role carefully during the injury rehab. Let Holmgren feast on PHX's non-existent interior defense (16pts, 50% FG). The game was won in Q1 (35-20) through defensive intensity and transition offense off turnovers.",
+        g2Performance: "A | Another dominant coaching performance. Daigneault's defensive scheme generated 14 steals and forced 21 PHX turnovers — the game's defining stat line. SGA played 38min (vs 29min G1) and delivered 37pts/9ast/9-9 FT, proving the G1 blowout was sustainable with more playtime. Key decisions: (1) Ajay Mitchell 29min off bench (14pts/5reb/5ast) — depth management keeps starters fresh. (2) Wallace's defensive role (6reb/3stl/0pts) maximizes his impact without needing offense. (3) Holmgren's 4 blocks shut down PHX's interior. OKC's 2-0 lead with both games decided by 13+ confirms this is a mismatch."
       },
       away: {
         coach: "Jordan Ott",
@@ -566,7 +581,8 @@ const SERIES_DATA = [
         tendency: "Young coach, 9-man rotation locked in. Booker + Brooks anchors in closing lineup.",
         rotationPlan: "Booker/Green/Brooks/Williams/O'Neale or Dunn closing lineup. Dunn as SGA stopper.",
         keyAdjustment: "Ryan Dunn as primary SGA defender — length and athleticism to contest",
-        g1Performance: "D- | First-year coach overwhelmed by OKC's defensive intensity. Critical failure: staggering Booker and Green left each isolated against OKC's elite POA defenders with no help. Brooks was allowed to shoot the team out of the game (game-high 8 attempts while down 23 in Q2) with no visible coaching intervention. Ott's small-ball approach — which he doubled down on pre-playoffs per reports — backfired against OKC's length (Holmgren 16pts with PHX having no matchup for him). PHX committed 17 turnovers suggesting no adjustment to OKC's pressure. The 48-hour turnaround from the play-in gave Ott no preparation time, but the game plan appeared non-existent. Must completely rethink approach for G2 — potentially starting Dunn for more defensive presence."
+        g1Performance: "D- | First-year coach overwhelmed by OKC's defensive intensity. Critical failure: staggering Booker and Green left each isolated against OKC's elite POA defenders with no help. Brooks was allowed to shoot the team out of the game (game-high 8 attempts while down 23 in Q2) with no visible coaching intervention. Ott's small-ball approach — which he doubled down on pre-playoffs per reports — backfired against OKC's length (Holmgren 16pts with PHX having no matchup for him). PHX committed 17 turnovers suggesting no adjustment to OKC's pressure. The 48-hour turnaround from the play-in gave Ott no preparation time, but the game plan appeared non-existent. Must completely rethink approach for G2 — potentially starting Dunn for more defensive presence.",
+        g2Performance: "D | Another loss — 21 turnovers killed any chance of competing. Budenholzer failed to solve OKC's ball-pressure defense that generated 14 steals. Green had 7 turnovers (team-worst), Booker had 5 — neither was protected by scheme adjustments. Brooks' 30pts (52.2% FG) was a bright spot but came in a losing effort because the turnovers created a -11 turnover differential. The only coaching win was O'Neale's extended role (34min, 16pts, 4-5 3PT) — but one rotation adjustment doesn't overcome systematic ball-security failures. PHX needs fundamental ball-handling fixes that coaching may not be able to solve against OKC's elite pressure defense."
       },
       bestLineups: {
         home: { players: ["SGA","Dort","J.Williams","Holmgren","Hartenstein"], netRtg:14.2, ortg:121.5, drtg:107.3, min:850, note:"Starting/closing 5. Championship-proven. G1: dominated from tip to final buzzer." },
@@ -641,27 +657,27 @@ const SERIES_DATA = [
         { player:"Ryan Dunn", outlook:"bad", projFgPct:0.30, ptsRange:[0,4], reason:"Defensive specialist with zero offensive game. G1 confirmed: 0pts, 0-3 FG, 0-3 3PT, 3 TOs. Playing for his D on SGA only. Scoring is nonexistent.", confidence:"high" }
       ]
     },
-    // ── G3 Per-Player Offensive Outlook (Phase 30) ──
-    // OKC likely leads 2-0. G3 shifts to Footprint Center (PHX home). PHX desperate.
-    // SGA sat Q4 in G1 blowout (29min). Expect full game at PHX → 28-35pts range.
-    // PHX single-initiator problem unchanged. Green (age 22) youth breakout candidate at home.
+    // ── G3 Per-Player Offensive Outlook (Phase 34) ──
+    // OKC leads 2-0. G2: OKC 120-107. SGA bounce-back 37pts (52% FG, 9-9 FT). Holmgren 19pts/4blk.
+    // PHX TURNOVER CATASTROPHE: 21 TO (Green 7, Booker 5). Brooks 30pts was only bright spot.
+    // G3 shifts to Footprint Center (PHX home). PHX desperate — 0-2, ~7% comeback rate.
     // Coaching gap: Daigneault (adj 9) vs Ott (adj 4). OKC's scheme travels.
     g3PlayerOutlook: {
       home: [ // OKC (AWAY at Footprint Center for G3)
-        // SGA: G1 5-18 (27.8%), 25pts in 29min. Season 55.3% FG, 38.6% 3PT.
-        // Massive regression UP expected. Full game (no Q4 sit) = 34-38min.
-        // Bayesian: 0.40*(G1-G2 avg ~40%) + 0.30*(G2 recency ~46%) + 0.30*(55.3% season) = ~0.46. Road dip → 0.45
-        { player:"Shai Gilgeous-Alexander", outlook:"good", projFgPct:0.45, ptsRange:[28,36], reason:"G1's 27.8% FG was a historic cold snap — career 55.3% FG guarantees massive regression UP. Sat Q4 in blowout (29min only); expect full 36min at PHX. Free throw artistry (88.2%, 15-17 G1) provides scoring floor even on cold nights. Road game at Footprint Center adds slight efficiency dip (~2%), but SGA averaged 31+ PPG in 2025 playoff road games. At 45% FG with full minutes, 30+ is near-certain. The best player in this series by a wide margin.", confidence:"high" },
+        // SGA: G1 5-18 (27.8%), G2 13-25 (52%). Two-game Bayesian: avg ~42% FG.
+        // G2 BOUNCE-BACK: 37pts, 9ast, 9-9 FT — elite playoff performer confirmed.
+        // Bayesian: 0.40*(G1-G2 avg ~40%) + 0.30*(G2 recency 52%) + 0.30*(55.3% season) = ~0.48. Road dip → 0.46
+        { player:"Shai Gilgeous-Alexander", outlook:"good", projFgPct:0.48, ptsRange:[30,38], reason:"G2 BOUNCE-BACK: 37pts (13-25 FG, 52%), 9ast, 9-9 FT — massive improvement from G1's 25pts on 27.8% FG. Two-game Bayesian blend confirms elite playoff performer who self-corrects. Free throw perfection (9-9 G2, 15-17 G1) provides scoring floor even on cold shooting nights. Road game at Footprint Center adds slight efficiency dip (~2%), but SGA averaged 31+ PPG in 2025 playoff road games. At 48% FG with full minutes, 32+ is near-certain. The best player in this series by a wide margin.", confidence:"high" },
 
-        // Williams: G1 9-15 (60%), 22pts/7reb/6ast in 29min. Season 48.4% FG.
-        // All-NBA return confirmed. Wrist/hamstring concerns downgraded after G1.
-        // Bayesian: 0.40*(0.60 G1) + 0.30*(~0.50 projected) + 0.30*(0.484 season) = ~0.54. Road → 0.50
-        { player:"Jalen Williams", outlook:"good", projFgPct:0.50, ptsRange:[18,26], reason:"G1 return was seamless: 22pts (9-15 FG, 60%), 7reb, 6ast in 29min. Wrist/hamstring concerns downgraded (severity 0.5→0.3). All-NBA talent operating as OKC's second star. Road game slight dip but Williams' finesse game (downhill attacks, floaters) travels well. PHX has no matchup for his 6'6 wing versatility. Expect continued elite production as OKC's secondary creator.", confidence:"high" },
+        // Williams: G1 9-15 (60%), G2 7-11 (63.6%), 19pts in 23min. Season 48.4% FG.
+        // Two-game avg: ~61.5% FG. All-NBA level sustained across both games.
+        // Bayesian: 0.40*(G1-G2 avg ~61%) + 0.30*(G2 recency 63.6%) + 0.30*(0.484 season) = ~0.54. Road → 0.50
+        { player:"Jalen Williams", outlook:"good", projFgPct:0.50, ptsRange:[18,26], reason:"G2 continued elite production: 19pts (7-11 FG, 63.6%) in only 23min — two-game average of ~61.5% FG confirms All-NBA form. Wrist/hamstring concerns fully resolved. OKC's second star is locked in as a multi-faceted creator (scoring, passing, defense). Road game slight dip but Williams' finesse game (downhill attacks, floaters) travels well. PHX has no matchup for his 6'6 wing versatility.", confidence:"high" },
 
-        // Holmgren: G1 5-10 (50%), 16pts/7reb/2stl/2blk in 25min. Season 55.7% FG.
-        // PHX has ZERO interior matchup for him. Stretch-5 unicorn.
-        // Bayesian: 0.40*(0.50) + 0.30*(~0.52) + 0.30*(0.557) = ~0.52. Road → 0.50
-        { player:"Chet Holmgren", outlook:"good", projFgPct:0.50, ptsRange:[14,22], reason:"PHX has no answer for Holmgren's unicorn skill set — 7'1 stretch-5 who shoots 36.2% from 3 AND protects the rim (D-LEBRON 3.465). G1: 16pts/7reb/2stl/2blk in only 25min. With fuller minutes at PHX (~30min), expect 16-20pts. Road game doesn't affect his interior dominance — PHX's lack of rim protection is structural. The matchup advantage is the widest in any G3.", confidence:"high" },
+        // Holmgren: G1 5-10 (50%), G2 19pts/8reb/4blk. Season 55.7% FG.
+        // PHX has ZERO interior matchup. 4blk G2 — rim protection is dominant.
+        // Bayesian: 0.40*(G1-G2 avg ~50%) + 0.30*(G2 recency ~52%) + 0.30*(0.557) = ~0.52. Road → 0.50
+        { player:"Chet Holmgren", outlook:"good", projFgPct:0.50, ptsRange:[14,22], reason:"G2 dominance: 19pts/8reb/4blk — rim protection is overwhelming (PHX had 1 team block total). PHX has no answer for Holmgren's unicorn skill set — 7'1 stretch-5 who shoots 36.2% from 3 AND protects the rim (D-LEBRON 3.465). Two-game avg of ~50% FG with elite defensive impact. Road game doesn't affect his interior dominance — PHX's lack of rim protection is structural. The matchup advantage is the widest in any G3.", confidence:"high" },
 
         // Dort: G1 3-8 (37.5%), 8pts. Season 38.5% FG. Value is defense.
         { player:"Lu Dort", outlook:"neutral", projFgPct:0.38, ptsRange:[6,12], reason:"Defensive stopper — clamped Booker in G1. Scoring is secondary (8.3ppg season). Road game doesn't affect his defensive assignment. 2-6 3PT in G1 is near his 34.4% season baseline. Expect similar modest scoring with elite perimeter defense.", confidence:"medium" },
@@ -674,19 +690,20 @@ const SERIES_DATA = [
         { player:"Jared McCain", outlook:"neutral", projFgPct:0.40, ptsRange:[4,12], reason:"Bench guard energy scorer. If PHX goes small, Daigneault may give McCain crunch-time minutes. Road game reduces his already modest impact. Upside if he gets hot from 3.", confidence:"low" }
       ],
       away: [ // PHX (HOME at Footprint Center for G3)
-        // Booker: G1 23pts at OKC. Season ~47% FG. Home FG% historically 51%.
+        // Booker: G1 23pts, G2 22pts but 5TO and 0-3 3PT. Season ~47% FG. Home FG% historically 51%.
         // PHX's sole offensive engine. Clutch rating 7.8. Home crowd boosts rhythm.
-        // Bayesian: 0.40*(G1-G2 avg ~45%) + 0.30*(G2 recency) + 0.30*(0.47 season) = ~0.46. Home bump → 0.49
-        { player:"Devin Booker", outlook:"neutral-good", projFgPct:0.49, ptsRange:[26,34], reason:"PHX's only reliable creator. G1: 23pts despite OKC's elite defense (Dort primary, help from Caruso/Williams). Home shooting boost is real — career 51% FG at home vs 47% road. Clutch rating 7.8 means he'll compete in close games. Expect his best game of the series: 28-32pts with improved efficiency on familiar rims. Still limited by OKC's defensive scheme — Dort + help won't change. Desperation + crowd energy = aggressive attacking.", confidence:"medium" },
+        // Bayesian: 0.40*(G1-G2 avg ~45%) + 0.30*(G2 recency ~42%) + 0.30*(0.47 season) = ~0.45. Home bump → 0.49
+        { player:"Devin Booker", outlook:"neutral-good", projFgPct:0.49, ptsRange:[26,34], reason:"PHX's only reliable creator. G2: 22pts but 5 turnovers and 0-3 from 3PT — scoring was there but ball security was catastrophic. Two-game avg: ~22.5pts on decent efficiency but turnover-prone under OKC pressure. Home shooting boost is real — career 51% FG at home vs 47% road. Clutch rating 7.8 means he'll compete in close games. Expect his best game of the series at home: 28-32pts with improved efficiency on familiar rims. Still limited by OKC's defensive scheme — Dort + help won't change. Desperation + crowd energy = aggressive attacking.", confidence:"medium" },
 
-        // Green: G1 stats not highlighted but part of 35% FG team shooting.
-        // Age 22 — YOUTH BREAKOUT CANDIDATE (Phase 29 active).
-        // Home crowd could unlock athletic scoring. 37.5% G1 → regression UP at home.
-        { player:"Jalen Green", outlook:"neutral", projFgPct:0.43, ptsRange:[16,26], reason:"YOUTH BREAKOUT WATCH (age 22, Phase 29 active). G1 was quiet as part of PHX's 35% FG disaster, but at home, Green's athletic scoring could spike. Footprint Center crowd energy helps young players find rhythm. His ceiling is 25+ if he attacks the rim instead of settling for jumpers. OKC will still send elite defenders at him, but at home he'll be more comfortable with shot creation. The best PHX player to monitor for a breakout game — his youth multiplier is the highest on the roster.", confidence:"medium" },
+        // Green: G2 was CATASTROPHIC — 7 turnovers. OKC's pressure defense destroyed him.
+        // Age 22 youth breakout thesis FAILED in G2. Ball security is a structural problem.
+        // Downgraded neutral → bad. Home crowd may help but 7TO is scheme-driven, not nerves.
+        { player:"Jalen Green", outlook:"bad", projFgPct:0.40, ptsRange:[12,20], reason:"G2 CATASTROPHE: 7 turnovers (team-worst) — OKC's pressure defense completely destroyed his ball-handling. Youth breakout thesis failed: instead of breaking out, Green broke down under playoff pressure. Home crowd at Footprint Center may help his confidence but the 7TO problem is structural — OKC's defensive scheme targets his ball-handling weaknesses, and that scheme travels. Even if his shooting improves at home, the turnover liability makes him a net negative. Downgraded from neutral to bad — OKC has solved him.", confidence:"high" },
 
-        // Brooks: G1 18pts/7reb but shot team out of the game (8 attempts while down 23).
-        // Career 39.8% playoff shooter. Season ~40% FG. Home won't fix shot selection.
-        { player:"Dillon Brooks", outlook:"bad", projFgPct:0.38, ptsRange:[10,18], reason:"G1: 18pts/7reb but terrible shot selection — 8 attempts while down 23 in Q2 with no coaching intervention. Career 39.8% playoff FG. Home court won't fix his shot selection or defensive liability (negative D-LEBRON). Brooks will score 12-16pts on mediocre efficiency regardless of venue. His defensive assignment on SGA is meaningless — SGA creates at will.", confidence:"high" },
+        // Brooks: G1 18pts (27.3% FG), G2 30pts (52.2% FG, 5-9 3PT). Model was WRONG on 'bad' outlook.
+        // Two-game Bayesian: ~40% FG avg. G2 recency shows he can score on OKC.
+        // Upgraded bad → neutral. Career 39.8% playoff FG but G2 was legitimately good.
+        { player:"Dillon Brooks", outlook:"neutral", projFgPct:0.42, ptsRange:[16,28], reason:"MODEL CORRECTION: G2 scored 30pts (12-23, 52.2% FG, 5-9 3PT) — the only PHX player who showed real fight. Model projected 'bad' outlook and was wrong. Two-game data: 18pts (bad) + 30pts (great) shows high variance. Career 39.8% playoff FG anchors expectations but G2 proves he can score on OKC's defense when aggressive. Home court should help his confidence. Upgraded to neutral — his ceiling is legitimate but floor remains low.", confidence:"medium" },
 
         // Ighodaro: Started G1 but zero offensive threat.
         { player:"Oso Ighodaro", outlook:"bad", projFgPct:0.45, ptsRange:[2,6], reason:"Started G1 when M. Williams was inactive. Zero offensive threat — PHX plays 4-on-5 in the half-court with him on the floor. Home court doesn't help a player who can't score. Defensive effort is his only value. May lose minutes to a scoring-oriented adjustment by Ott.", confidence:"high" },
@@ -701,7 +718,7 @@ const SERIES_DATA = [
         { player:"Ryan Dunn", outlook:"bad", projFgPct:0.30, ptsRange:[0,6], reason:"Zero offensive game confirmed (0-3 FG, 0-3 3PT, 3 TOs in G1). His ONLY value is defending SGA, and even that was ineffective (SGA scored 25 in 29min). Home court doesn't help a non-scorer. Expect similar zero offensive impact.", confidence:"high" }
       ]
     },
-    games: [{num:1,result:"W",homeScore:119,awayScore:84,winner:"OKC",notes:"35-pt blowout. SGA 25pts (5-18 FG, 0-4 3PT, 15-17 FT) in 29min — sat Q4. J.Williams 22pts (9-15 FG), 7reb, 6ast — All-NBA return. Holmgren 16pts, 7reb, 2stl, 2blk in 25min. PHX: Booker 23pts, 6reb. Brooks 18pts, 7reb — shot team out early (8 attempts while down 23). PHX 35% FG first half, 17 TOs, OKC pts off TOs 15-2. Q1: 35-20 OKC, Half: 65-44. Model picks: OKC ML ✅, OKC -14.5 ✅ (+20.5 margin), SGA O27.5 ❌ (25pts — sat in blowout)."},{num:2,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:3,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:4,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"W",homeScore:119,awayScore:84,winner:"OKC",notes:"35-pt blowout. SGA 25pts (5-18 FG, 0-4 3PT, 15-17 FT) in 29min — sat Q4. J.Williams 22pts (9-15 FG), 7reb, 6ast — All-NBA return. Holmgren 16pts, 7reb, 2stl, 2blk in 25min. PHX: Booker 23pts, 6reb. Brooks 18pts, 7reb — shot team out early (8 attempts while down 23). PHX 35% FG first half, 17 TOs, OKC pts off TOs 15-2. Q1: 35-20 OKC, Half: 65-44. Model picks: OKC ML ✅, OKC -14.5 ✅ (+20.5 margin), SGA O27.5 ❌ (25pts — sat in blowout)."},{num:2,result:"W",homeScore:120,awayScore:107,winner:"OKC",notes:"OKC 120-107. SGA BOUNCE-BACK: 37pts (13-25 FG, 52%), 9ast, 9-9 FT (perfect) — massive improvement from G1's 25pts on 27.8% FG. Holmgren 19pts/8reb/4blk — rim protection dominant (PHX had 1 team block). J.Williams 19pts (7-11 FG, 63.6%) in only 23min. Dort 9pts all from 3PT (3-7). OKC depth: Mitchell 14pts/5reb/5ast, Caruso 7pts/3stl, Wallace 0pts but 6reb/3stl off bench. PHX TURNOVER CATASTROPHE: 21 TO (OKC 14 steals). Green 7TO, Booker 5TO. Brooks scored 30pts (12-23, 5-9 3PT) but couldn't overcome team's 21 turnovers. O'Neale surprise: 16pts (4-5 3PT). OKC leads 2-0. Model picks: OKC ML ✅, SGA O28.5 ✅ (37pts cleared by 8.5)."},{num:3,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:4,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
   },
   {
     id: "DEN-MIN", conf: "West", round: "R1",

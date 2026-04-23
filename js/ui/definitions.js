@@ -83,6 +83,10 @@ function renderDefinitionsPage(el) {
       <div class="def-card" style="border-left:3px solid #e74c3c;"><div class="def-term">Scheme Persistence Factor <span class="def-abbr">SPF</span></div><div class="def-desc"><strong>Phase 32.</strong> When FG% suppression in G1 is scheme-driven (not variance), it carries forward at 70% effectiveness. Step 5h: <code>fgSuppression × 80 FGA × 0.7 persistence</code>, ±4.0pt cap. Data: <code>series.schemePersistence.{home|away}.isSchemeDriven</code>. Evidence: LAL zone held HOU to 37.6% → 40.4% (persistent). Gobert on Jokic 1-of-8 (structural). Spoelstra "Giannis Wall" 2023: Giannis dropped to 21ppg for entire series. BOS 3PT suppressed to 26% by PHI G2 scheme.</div></div>
       <div class="def-card" style="border-left:3px solid #e74c3c;"><div class="def-term">Star Absence Recalibration <span class="def-abbr">SAR</span></div><div class="def-desc"><strong>Phase 32.</strong> Two components: (a) <strong>Role Player Redistribution</strong> (Step 5i) — when stars are out, teams with 4+ depth players (rated 65+) claw back 35% of the Step 4 star absence penalty. Evidence: Kennard 27/23pts with Luka + Reaves out. (b) <strong>Star Return Penalty</strong> (Step 5j) — players returning mid-series from injury lose 0.8pts per game missed, capped at 2.5pts. Data: <code>series.starReturnPenalty</code>. Evidence: KD returned G2 with 23pts but 9 TOs, 3pts after halftime.</div></div>
       <div class="def-card" style="border-left:3px solid #e74c3c;"><div class="def-term">Youth Playoff Ceiling <span class="def-abbr">YCM</span></div><div class="def-desc"><strong>Phase 32.</strong> Enhanced youth breakout multiplier with per-player research-backed overrides via <code>series.youthCeilings</code>. Default ceiling: 1.30 (single breakout), 1.40 (multi-game streak), raised from 1.25/1.35. Multi-game streak Bayesian blend: 25% model / 25% actual / 50% ceiling (was 30/25/45). Primary initiators sustain breakouts better than role players. Evidence: Edgecombe 30/10 (first rookie since Duncan 1998), Henderson 31pts on 65% FG, Banchero career playoff avg 28.0 vs 22.2 regular season.</div></div>
+      <div class="def-card" style="border-left:3px solid #9b59b6;"><div class="def-term">Overtime Projection <span class="def-abbr">OT</span></div><div class="def-desc"><strong>Phase 34.</strong> When the engine's raw projected scores round to identical values (margin = 0), the game is flagged as an OVERTIME projection. Character label changes to "OVERTIME" and marginRange shows "Team in OT (regulation dead even)". Indicates the teams are so evenly matched that regulation cannot separate them. First application: DET-ORL G3. Betting implication: OT-specific bets and alternate lines become valuable.</div></div>
+      <div class="def-card" style="border-left:3px solid #9b59b6;"><div class="def-term">Dual-Mode Star <span class="def-abbr">DMS</span></div><div class="def-desc"><strong>Phase 34.</strong> A star player who can switch between primary scoring mode and primary distribution mode across games (e.g., Cade Cunningham: 39pts G1 → 27pts/11ast G2). Creates an unsolvable defensive problem — opponents can't scheme for both modes simultaneously. These players receive higher outlook confidence because their floor is elevated by adaptability. Similar: SGA bounce-back (25pts/27.8% → 37pts/52%/9ast).</div></div>
+      <div class="def-card" style="border-left:3px solid #9b59b6;"><div class="def-term">Turnover Catastrophe <span class="def-abbr">TOCat</span></div><div class="def-desc"><strong>Phase 34.</strong> When a team commits 20+ turnovers against an elite defensive team, flagged as a STRUCTURAL problem (not variance). Individual players with 5+ turnovers get downgraded outlook ratings. The pressure defense is schematic and repeatable, meaning the TO problem compounds across a series. Evidence: PHX 21 TOs in G2 (OKC 14 steals), Green 7 TOs, Booker 5 TOs.</div></div>
+      <div class="def-card" style="border-left:3px solid #9b59b6;"><div class="def-term">ptsRange [0,0] Exclusion <span class="def-abbr">OUT</span></div><div class="def-desc"><strong>Phase 33/34.</strong> When a player's research outlook has <code>ptsRange [0,0]</code>, they are confirmed OUT. The engine removes them from the active player list so minutes and scoring redistribute naturally to teammates. First used for Wembanyama (concussion protocol) exclusion from SAS-POR G3. Cleaner than zeroing points — full exclusion ensures normalization and minute distribution work correctly.</div></div>
     </div>
     </div>
 
@@ -659,6 +663,45 @@ function renderDefinitionsPage(el) {
             <strong>Problem:</strong> Blowout regression (Step 7b Factor B) applied the same regression rate regardless of how good the losing coach is at making adjustments. A 32-pt blowout against a coach rated 4 should carry more momentum than one against an elite adjuster rated 8.
             <br><br><strong>Evidence:</strong> BOS won G1 by 32 points. Model projected BOS to win G2 109-103. But Nurse (adjustmentRating 8) made masterful halftime and film study adjustments — PHI won G2 by 14. The model overweighted blowout momentum by not factoring in coaching quality.
             <br><br><strong>Solution:</strong> Blowout regression now scales with losing coach's adjustmentRating. Coaches rated ≥7 amplify regression: adj7 = +10%, adj8 = +20%, adj9 = +30%. Applied multiplicatively to both massive blowout (25+ margin) and solid win (15+ margin) regression paths. Regression capped at 50% for massive blowouts, 40% for solid wins to prevent over-correction.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 34: G2 Results Integration — Overtime Detection, Dual-Mode Stars, Turnover Catastrophe</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Overtime Projection</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When the engine's raw projected scores round to identical values (margin = 0), the old model would arbitrarily assign one team a 1-point win. This misrepresented genuinely even matchups.
+            <br><br><strong>Evidence:</strong> DET-ORL G3 projected as DET 104 - ORL 103. The teams are so evenly matched that the model cannot meaningfully separate them in regulation.
+            <br><br><strong>Solution:</strong> When projected margin rounds to 0, the game is flagged as an OVERTIME projection. The character label changes to "OVERTIME" and the marginRange reads "Team in OT (regulation dead even)". Betting implication: OT-specific bets and alternate lines become valuable because the model is saying the game is a genuine coin flip.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Dual-Mode Star</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model treated star players as having a single offensive identity. But some stars can switch between primary scoring mode and primary distribution mode across games, creating an unsolvable defensive problem.
+            <br><br><strong>Evidence:</strong> Cade Cunningham G1 → G2 evolution: 39pts scorer → 27pts/11ast distributor. SGA's G1 → G2 bounce-back: 25pts/27.8% → 37pts/52%/9ast. Opponents cannot scheme for both modes simultaneously.
+            <br><br><strong>Solution:</strong> Stars who demonstrate the ability to switch between scoring and playmaking modes are tagged as "dual-mode" in the player outlook system. These players receive higher outlook confidence because their floor is elevated by adaptability — defensive schemes optimized for one mode get exploited by the other.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Turnover Catastrophe</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model treated high-turnover games as random variance. But when a team commits 20+ turnovers against an elite defensive team, this is often a STRUCTURAL problem driven by defensive scheme, not single-game noise.
+            <br><br><strong>Evidence:</strong> PHX committed 21 turnovers in G2 (OKC had 14 steals). Individual player TO counts: Green 7, Booker 5. OKC's pressure defense is schematic and repeatable, meaning the TO problem compounds across the series.
+            <br><br><strong>Solution:</strong> When a team commits 20+ turnovers against an elite defensive team, the model flags this as a Turnover Catastrophe — a structural issue rather than variance. Individual players with 5+ turnovers receive downgraded outlook ratings in subsequent games. The pressure defense creating these turnovers is tracked as a persistent series factor.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">ptsRange [0,0] Exclusion</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a player is confirmed OUT for a game, the engine still included them in the projected box score with some minimum point projection, distorting team totals and teammate projections.
+            <br><br><strong>Evidence:</strong> Wembanyama entered concussion protocol and was confirmed OUT for SAS-POR G3. Without explicit exclusion logic, the engine would still project him for minutes and points.
+            <br><br><strong>Solution:</strong> When a player's research outlook has ptsRange [0,0], they are confirmed OUT for the game. The engine removes them from the active player list entirely, so their minutes and scoring redistribute naturally to remaining teammates. This is cleaner than setting points to 0 but keeping the player in the rotation — full exclusion ensures normalization and minute distribution work correctly.</div>
         </div>
 
       </div>

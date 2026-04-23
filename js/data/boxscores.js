@@ -318,6 +318,31 @@ const G2_BOX_SCORES = {
       {name:"Bronny James",min:2,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
     ]
   },
+  "OKC-PHX": {
+    home: [ // OKC
+      {name:"Shai Gilgeous-Alexander",min:38,pts:37,reb:5,ast:9,stl:1,blk:0,fgm:13,fga:25,tpm:2,tpa:5,ftm:9,fta:9,to:3,orb:1},
+      {name:"Jalen Williams",min:23,pts:19,reb:1,ast:4,stl:1,blk:0,fgm:7,fga:11,tpm:2,tpa:3,ftm:3,fta:5,to:1,orb:0},
+      {name:"Chet Holmgren",min:32,pts:19,reb:8,ast:0,stl:0,blk:4,fgm:7,fga:12,tpm:3,tpa:6,ftm:2,fta:3,to:3,orb:1},
+      {name:"Isaiah Hartenstein",min:22,pts:9,reb:10,ast:2,stl:1,blk:1,fgm:3,fga:6,tpm:0,tpa:0,ftm:3,fta:4,to:1,orb:6},
+      {name:"Lu Dort",min:24,pts:9,reb:1,ast:0,stl:1,blk:0,fgm:3,fga:7,tpm:3,tpa:7,ftm:0,fta:0,to:0,orb:0},
+      {name:"Ajay Mitchell",min:29,pts:14,reb:5,ast:5,stl:2,blk:0,fgm:5,fga:12,tpm:1,tpa:5,ftm:3,fta:4,to:1,orb:3},
+      {name:"Alex Caruso",min:23,pts:7,reb:2,ast:1,stl:3,blk:0,fgm:3,fga:7,tpm:1,tpa:4,ftm:0,fta:0,to:0,orb:0},
+      {name:"Cason Wallace",min:21,pts:0,reb:6,ast:2,stl:3,blk:0,fgm:0,fga:2,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:1},
+      {name:"Isaiah Joe",min:15,pts:6,reb:1,ast:0,stl:1,blk:0,fgm:2,fga:7,tpm:2,tpa:7,ftm:0,fta:0,to:1,orb:0},
+      {name:"Jaylin Williams",min:11,pts:0,reb:1,ast:1,stl:1,blk:1,fgm:0,fga:2,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0}
+    ],
+    away: [ // PHX
+      {name:"Devin Booker",min:40,pts:22,reb:7,ast:4,stl:1,blk:0,fgm:7,fga:14,tpm:0,tpa:3,ftm:8,fta:10,to:5,orb:3},
+      {name:"Dillon Brooks",min:38,pts:30,reb:6,ast:1,stl:0,blk:0,fgm:12,fga:23,tpm:5,tpa:9,ftm:1,fta:1,to:1,orb:0},
+      {name:"Jalen Green",min:41,pts:21,reb:5,ast:3,stl:2,blk:0,fgm:8,fga:23,tpm:1,tpa:8,ftm:4,fta:5,to:7,orb:3},
+      {name:"Collin Gillespie",min:29,pts:7,reb:6,ast:6,stl:2,blk:0,fgm:3,fga:9,tpm:1,tpa:5,ftm:0,fta:0,to:2,orb:3},
+      {name:"Oso Ighodaro",min:29,pts:7,reb:8,ast:5,stl:0,blk:1,fgm:3,fga:8,tpm:0,tpa:0,ftm:1,fta:2,to:2,orb:4},
+      {name:"Royce O'Neale",min:34,pts:16,reb:9,ast:4,stl:2,blk:0,fgm:4,fga:5,tpm:4,tpa:5,ftm:4,fta:4,to:2,orb:2},
+      {name:"Ryan Dunn",min:8,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Khaman Maluach",min:0,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Amir Coffey",min:19,pts:4,reb:2,ast:0,stl:0,blk:0,fgm:2,fga:3,tpm:0,tpa:1,ftm:0,fta:0,to:2,orb:0}
+    ]
+  },
   "DET-ORL": {
     home: [ // DET
       {name:"Cade Cunningham",min:37,pts:27,reb:6,ast:11,stl:2,blk:2,fgm:11,fga:19,tpm:1,tpa:6,ftm:4,fta:8,to:7,orb:0},

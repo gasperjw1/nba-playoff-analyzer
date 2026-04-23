@@ -6,7 +6,7 @@ function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 2/6 (33.3%) — 2 pending Wed Apr 22 | G3 projections live | Phase 30: coaching adjustment discount, youth breakout persistence, Bayesian player outlook</p>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3 projections live | Phase 30: coaching adjustment discount, youth breakout persistence, Bayesian player outlook</p>
 
     <!-- BET TABS -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -25,125 +25,93 @@ function renderBetsPage(el) {
         <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING — Thu Apr 23 | NYK-ATL G3, CLE-TOR G3, DEN-MIN G3</span>
       </div>
 
-      <!-- ===== HEADLINE: $100 BEST BET — APR 22 ===== -->
-      <div class="parlay-card headline">
-        <div class="parlay-header">
-          <span class="parlay-name" style="font-size:16px;color:#f0c040;">The $100 Play — G1-Proven Scorers (2-Leg)</span>
-          <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+170</span>
+      <!-- ===== APR 22 PARLAY RESULTS (COLLAPSED) ===== -->
+      <details style="margin-bottom:16px;border:1px solid #333;border-radius:8px;padding:8px 12px;">
+        <summary style="cursor:pointer;color:#888;font-size:12px;font-weight:600;">📊 Wed Apr 22 Parlay Results — $100 Play: ✗ LOSS (Cade 27pts, missed O28.5) | $1 Chaos: ✗ LOSS (DET won, ORL ML missed)</summary>
+        <div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.03);border-radius:4px;font-size:11px;color:#666;">
+          <div><strong>$100 Play (2-Leg ~+170):</strong> ✗ LOSS — Leg 1: Cade O28.5 ✗ (had 27pts, missed by 1.5). Leg 2: Banchero O22.5 ✗ (had 18pts, missed by 4.5). Neither star hit their over — DET's defensive game suppressed individual scoring.</div>
+          <div style="margin-top:4px;"><strong>$1 Chaos (3-Leg ~+1450):</strong> ✗ LOSS — Leg 1: ORL ML ✗ (DET won 98-83). Leg 2: PHX +17.5 ✗ (OKC won by 13, PHX covered). Leg 3: Banchero O22.5 ✗ (18pts). ORL ML was the killer — DET dominated.</div>
+          <div style="margin-top:4px;"><strong>DET Home Bounce-Back:</strong> ✓ HIT partially — DET ML ✓ but Cade O28.5 ✗ (27pts). <strong>OKC Depth Dominance:</strong> ✓/✗ Split — OKC ML ✓ but ORL +9.5 ✗ (DET won by 15).</div>
         </div>
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-          <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 → ~$270 return</span>
-          <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">TODAY — Wed Apr 22</span>
+      </details>
+
+      <!-- ===== SAT APR 25 FEATURED PARLAYS ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">SAT APR 25 — DET-ORL G3 (OT Projected!) &amp; OKC-PHX G3</span>
         </div>
-        <div class="parlay-legs">
-          <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-            <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">Cade Cunningham Over 28.5 pts (DET-ORL G2)</span>
-            <span class="parlay-leg-odds">-104</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+
+        <!-- $100 BEST BET — SAT APR 25 -->
+        <div class="parlay-card headline">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f0c040;">Sat $100 Play — G2 Winners Roll (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+380</span>
           </div>
-          <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-            <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Banchero Over 22.5 pts (DET-ORL G2)</span>
-            <span class="parlay-leg-odds">-115</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$480 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Sat Apr 25</span>
           </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">DET ML @ ORL (DET-ORL G3) ⭐</span>
+              <span class="parlay-leg-odds">-148</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">OKC ML @ PHX (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">-455</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">SGA Over 27.5 pts (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">-125</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>DET ML</strong> — the anchor. DET won G2 by 15 with Cade's dual-mode (27pts/11ast). They're road favorites (-2.5) for a reason. Model projects OVERTIME — meaning this game is a coin flip, but Cade's adaptability gives DET the edge. <strong>OKC ML</strong> — OKC won G1 by 35, G2 by 13. PHX had 21 turnovers G2. Even at Phoenix, OKC's depth overwhelms. Heavy juice (-455) but safe floor. <strong>SGA O27.5</strong> — G2 proved the bounce-back: 37pts on 52% FG, 9-9 FT. Two-game avg of 31pts. At Phoenix he'll play full minutes with no blowout risk. This is the highest-confidence prop on the Sat slate.</div>
         </div>
-        <div class="parlay-reasoning" style="border-left-color:#f0c040;">Both legs backed by G1 evidence — no projection guesswork. <strong>Cade Over 28.5</strong> — erupted for 39pts in G1 at Orlando, clearing the line by 10.5pts. Now at home at Little Caesars Arena with Bickerstaff adjustments and crowd energy. Shooting was sustainable (not just free throws). Model projects 31.8pts with "good" outlook (28-36pt range). He's cleared this line in G1 by a massive margin. <strong>Banchero Over 22.5</strong> — posted 23/9/4 in G1, clearing the line as Orlando's offensive engine. Model projects 22.9pts. Whether ORL wins or loses, Paolo is their entire offense. Both players ACTUALLY HIT their overs in G1 — we're not projecting, we're confirming a pattern.</div>
+
+        <!-- $1 CHAOS TICKET — SAT APR 25 -->
+        <div class="parlay-card headline" style="border:1px solid #f44336;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">Sat $1 Chaos Ticket — OT + Upset (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+2800</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$29.00 return</span>
+            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Sat Apr 25</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">ORL ML vs DET (DET-ORL G3 — OVERTIME UPSET)</span>
+              <span class="parlay-leg-odds">+124</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">PHX ML vs OKC (OKC-PHX G3 — DESPERATION)</span>
+              <span class="parlay-leg-odds">+350</span>
+              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">Dillon Brooks Over 22.5 pts (OKC-PHX G3)</span>
+              <span class="parlay-leg-odds">+115</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;">The engine projects DET-ORL G3 as OVERTIME — dead even. If any game this round goes to OT, it's this one. <strong>ORL ML +124</strong> — first home game, model says regulation is a toss-up, Banchero's career playoff avg is 28ppg. Home OT = crowd advantage. <strong>PHX ML +350</strong> — 0-2 desperation at home. Brooks just scored 30pts (52.2%) proving PHX has firepower. 0-2 teams win G3 at home ~35% of the time. <strong>Brooks O22.5</strong> — model was WRONG about Brooks (projected "bad", he scored 30). Upgrade to neutral means 22+ is realistic at home with desperation minutes.</div>
+        </div>
       </div>
-
-      <!-- ===== HEADLINE: $1 CHAOS TICKET — APR 22 ===== -->
-      <div class="parlay-card headline" style="border:1px solid #f44336;">
-        <div class="parlay-header">
-          <span class="parlay-name" style="font-size:16px;color:#f44336;">The $1 Chaos Ticket — Upset + Props (3-Leg)</span>
-          <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1450</span>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-          <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 → ~$15.50 return</span>
-          <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Wed Apr 22</span>
-        </div>
-        <div class="parlay-legs">
-          <div class="parlay-leg" style="border-left:3px solid #f44336;">
-            <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">ORL ML @ DET (UPSET)</span>
-            <span class="parlay-leg-odds">+320</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-          </div>
-          <div class="parlay-leg" style="border-left:3px solid #f44336;">
-            <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">PHX +17.5 @ OKC</span>
-            <span class="parlay-leg-odds">-110</span>
-            <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
-          </div>
-          <div class="parlay-leg" style="border-left:3px solid #f44336;">
-            <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">Banchero Over 22.5 pts (DET-ORL G2)</span>
-            <span class="parlay-leg-odds">-115</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span>
-          </div>
-        </div>
-        <div class="parlay-reasoning" style="border-left-color:#f44336;">Last $1 Chaos Ticket hit for $11.03 — riding the hot hand. <strong>ORL ML +320</strong> — Orlando already won G1 (112-101) on the road behind Banchero's 23/9/4. They have the blueprint. DET's home crowd helps, but ORL proved this series is real. <strong>PHX +17.5</strong> — OKC won G1 by 35, but 17.5 is an enormous spread. PHX has professional pride, and blowout margins rarely repeat back-to-back. Even in a loss, Booker keeps it respectable. <strong>Banchero Over 22.5</strong> — the anchor leg. Posted 23/9/4 in G1 and is the engine of everything ORL does. Whether ORL wins or loses, Paolo scores. His line is set below his G1 output — this is the highest-confidence leg that funds the chaos.</div>
-      </div>
-
-      <!-- ===== ADDITIONAL G2 PARLAYS — APR 22 ===== -->
-      <div class="parlay-grid">
-        <div class="parlay-grid-header">More Apr 22 Parlays — OKC-PHX G2 &amp; DET-ORL G2</div>
-
-        <div class="parlay-card">
-          <div class="parlay-header">
-            <span class="parlay-name">OKC Depth Dominance (2-Leg)</span>
-            <span class="parlay-odds">~+195</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">ORL +9.5 @ DET</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-          </div>
-          <div class="parlay-reasoning">Two high-confidence sides from separate games. OKC ML is the safest bet on the board — PHX is depleted and OKC won G1 by 35. Even with heavy juice, it anchors the parlay. ORL +9.5 is value: they won G1 outright by 11 at Detroit. Getting 9.5pts at the same building they just won at? The G1 blueprint (multi-initiator attack, Banchero 23/9/4) is proven and repeatable.</div>
-        </div>
-
-        <div class="parlay-card">
-          <div class="parlay-header">
-            <span class="parlay-name">DET Home Bounce-Back (2-Leg)</span>
-            <span class="parlay-odds">~+225</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">DET ML vs ORL</span><span class="parlay-leg-odds">-410</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Cade Over 28.5 pts</span><span class="parlay-leg-odds">-104</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-          </div>
-          <div class="parlay-reasoning">DET at home after ORL stole G1 (112-101). Cade's 39pts in G1 proves scoring is sustainable — at home with Bickerstaff adjustments, expect 28+. Harris bounce-back from cold G1 shooting gives DET the supporting cast edge. ML is medium confidence because ORL showed they can compete, but Cade's scoring is near-lock territory (cleared 28.5 by 10.5pts in G1).</div>
-        </div>
-
-        <div class="parlay-card">
-          <div class="parlay-header">
-            <span class="parlay-name">DET-ORL G2 Star Duel (3-Leg)</span>
-            <span class="parlay-odds">~+310</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">Cade Over 28.5 pts</span><span class="parlay-leg-odds">-104</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">Banchero Over 22.5 pts</span><span class="parlay-leg-odds">-115</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">3</span><span class="parlay-leg-pick">Franz Wagner Over 17.5 pts</span><span class="parlay-leg-odds">-110</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
-          </div>
-          <div class="parlay-reasoning">All three legs from DET-ORL where G1 data is strongest. Cade (39pts G1) and Banchero (23pts G1) both cleared their lines in G1. Wagner (14pts G1) is the bounce-back candidate — model projects 17.7pts and he's due for regression to his mean as ORL's #2 option. Wagner is the swing leg; Cade and Banchero are the anchors.</div>
-        </div>
-
-        <div class="parlay-card">
-          <div class="parlay-header">
-            <span class="parlay-name">SGA Bounce-Back (2-Leg) — RISKY</span>
-            <span class="parlay-odds">~+180</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg"><span class="parlay-leg-num">1</span><span class="parlay-leg-pick">SGA Over 28.5 pts</span><span class="parlay-leg-odds">-130</span><span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span></div>
-            <div class="parlay-leg"><span class="parlay-leg-num">2</span><span class="parlay-leg-pick">OKC ML vs PHX</span><span class="parlay-leg-odds">-2100</span><span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH</span></div>
-          </div>
-          <div class="parlay-reasoning"><strong>CAUTION:</strong> SGA scored only 25pts in G1 on 5-18 FG (27.8%) and MISSED this exact over. The bull case: he played only 29 min (sat Q4 blowout), his FT drawing was elite (15-17), and career 47.4% FG means major regression up is likely. The bear case: 18 FGA in 29min already represents high volume — more minutes doesn't guarantee more makes if his shot isn't falling. This is a FG% regression bet, not a G1-proven bet. Downgraded to MEDIUM confidence — only play if you believe in the bounce-back.</div>
-        </div>
-
-      </div><!-- end parlay-grid -->
 
       <!-- ===== G3 FEATURED PARLAYS ===== -->
       <div style="margin-top:24px;border-top:2px solid #64b5f6;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING G3 PARLAYS — Thu Apr 23 &amp; Fri Apr 24</span>
+          <span style="font-size:12px;font-weight:700;color:#64b5f6;background:rgba(100,181,246,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TOMORROW — Thu Apr 23 G3 Parlays &amp; Fri Apr 24</span>
         </div>
 
         <!-- $100 G3 BEST BET — THU APR 23 -->
@@ -513,8 +481,8 @@ function renderBetsPage(el) {
 
     <!-- ===== G2 BETS TAB ===== -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — G2 Record: 4/8 (50.0%) | OKC-PHX G2 pending</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">G2 moneyline record: 4 correct, 4 wrong out of 8 completed games (50.0%). Recent wins: ✅ DET ML (98-83 blowout), ✅ Cade O7.5ast (11ast). SAS-POR G2 losses were Wemby-injury-driven. DET-ORL G2 was the model's best call — got the winner AND both prop bets (DET ML + Cade assists). OKC-PHX G2 pending.</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 2 Picks — G2 Record: 6/11 (54.5%) | All G2 Complete</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G2 moneyline record: 6 correct, 5 wrong out of 11 bets (54.5%). All G2 games complete. Best calls: ✅ OKC ML (120-107, exact +13 margin match), ✅ SGA O28.5 (37pts, cleared by 8.5), ✅ DET ML (98-83 blowout), ✅ Cade O7.5ast (11ast). Misses: ✗ OKC -17.5 (won by 13, not 17.5), plus earlier SAS/HOU/BOS/NYK upsets. Key learning: ML bets outperform spread bets when model margin < line by 4+pts. Star bounce-back props (SGA, Cade) are high-conviction plays.</p>
 
     <!-- COMPLETED + SATURDAY/SUNDAY G2 GAMES -->
     <div class="bet-section">
@@ -628,30 +596,30 @@ function renderBetsPage(el) {
 
       <!-- ═══ WEDNESDAY G2 GAMES (Apr 22) ═══ -->
       <div style="margin:20px 0 12px;padding:8px 0;border-top:2px solid #444;border-bottom:1px solid #333;">
-        <span style="color:#4caf50;font-size:14px;font-weight:700;">Wed Apr 22 RESULTS | DET-ORL G2: ✅ DET ML (+15), ✅ Cade O7.5ast (11ast) | OKC-PHX G2: pending</span>
+        <span style="color:#4caf50;font-size:14px;font-weight:700;">Wed Apr 22 RESULTS | DET-ORL: ✅ DET ML, ✅ Cade O7.5ast | OKC-PHX: ✅ OKC ML, ✅ SGA O28.5, ✗ OKC -17.5 | 4/5 on the night</span>
       </div>
 
       <!-- OKC-PHX (9:30pm ET) -->
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">OKC ML vs PHX</div>
-        <div class="bet-line">-2100 | Model: OKC 114-101 (+13) | SEPARATION | ESPN: OKC -17.5</div>
-        <div class="bet-reasoning">Phase 22 outlook: SGA "good" (46% FG, 28-36pts — massive bounce-back from 27.8% G1 shooting, will play full game), J.Williams "good" (52% FG, 18-26pts — All-NBA form confirmed), Holmgren "neutral-good" (49% FG — PHX has no interior answer). PHX outlook is grim: Brooks "bad" (36% FG, chronic playoff chucker), Ighodaro "bad" (zero offense), Dunn "bad" (30% FG). Booker "neutral-good" (48% FG, 24-32pts) is PHX's only positive outlook. OKC's depth overwhelms PHX at every position.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">OKC ML vs PHX ✓</div>
+        <div class="bet-line">-2100 | Model: OKC 114-101 (+13) | Actual: OKC 120-107 (+13) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: OKC wins 120-107 (+13). Model projected +13 — EXACT MARGIN MATCH.</strong> SGA bounce-back: 37pts (52% FG, 9-9 FT perfect), 9ast — massive improvement from G1's 25pts on 27.8%. Holmgren 19pts/4blk dominated interior. PHX had 21 turnovers (OKC 14 steals). Brooks scored 30pts but team collapsed under pressure. OKC leads 2-0.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #f44336;">
         <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">OKC -17.5 vs PHX</div>
-        <div class="bet-line">-110 | Model: +13 margin | Outlook-adjusted spread</div>
-        <div class="bet-reasoning">Phase 22 outlooks push OKC's margin back up to +13 (from +9 pre-outlook). SGA's "good" outlook + full game (sat Q4 in G1 blowout) means more scoring volume. PHX's collective "bad" outlooks (Brooks 36%, Dunn 30%, Ighodaro 35%) drag their team projection. OKC -17.5 is still a stretch vs +13 model — 4.5pt gap means AVOID the spread. Stick with ML or player props.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">OKC -17.5 vs PHX ✗</div>
+        <div class="bet-line">-110 | Model: +13 margin | Actual: +13 (missed by 4.5pts)</div>
+        <div class="bet-reasoning"><strong>RESULT: ✗ LOSS. OKC won by 13, missing -17.5 by 4.5pts.</strong> Model correctly warned: "+13 model projection means 4.5pt gap — AVOID the spread." The advice was right — ML was the play, not the spread. PHX's Brooks (30pts) and O'Neale (16pts) kept the game close enough to avoid the blowout cover. Lesson confirmed: when model margin < spread by 4+pts, avoid the spread.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">LOSS</span>
       </div>
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">SGA Over 28.5 points — MEDIUM (bounce-back bet)</div>
-        <div class="bet-line">-130 | Model: 31.5 pts | Outlook: GOOD (46% FG) | G1: 25pts in 29min (MISSED over)</div>
-        <div class="bet-reasoning"><strong>CAUTION — SGA missed this exact over in G1 (25pts on 5-18 FG).</strong> The model projects bounce-back to 31.5pts based on: FG% regression (27.8% → career 47.4%), full game minutes (29min G1 → 36min G2), and elite FT floor (15-17 in G1). But 18 FGA in 29min already represents high volume — more minutes doesn't guarantee more makes. This is a FG% regression bet, NOT a G1-proven bet. Play if you believe in the bounce-back; skip if you want G1 evidence behind your pick.</div>
-        <span class="bet-edge model">Regression Bet</span>
+        <div class="bet-pick">SGA Over 28.5 points ✓</div>
+        <div class="bet-line">-130 | Model: 31.5 pts | Actual: 37 pts ✓ (cleared by 8.5!)</div>
+        <div class="bet-reasoning"><strong>RESULT: ✓ WIN — SGA had 37pts (model: 31.5, line: 28.5). Cleared by 8.5!</strong> The FG% regression bet PAID OFF: G1's 27.8% → G2's 52.0% (career 47.4%). Full game (38min vs 29min G1) + elite FT floor (9-9 perfect) + 9 assists. This is exactly the bounce-back scenario the model predicted. LEARNING: When a star shoots 28% in a blowout win with reduced minutes, the over is almost always the play in the next game.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
       </div>
 
       <!-- DET-ORL -->
@@ -1027,15 +995,15 @@ function renderBetsPage(el) {
     <!-- ══════════════════════════════════════════════ -->
     <!--  OKC-PHX G3 — Fri Apr 24 @ PHX               -->
     <!-- ══════════════════════════════════════════════ -->
-    <div class="series-bets-header">OKC @ PHX — Game 3 | Fri Apr 24 — 9:30 PM ET — ESPN</div>
+    <div class="series-bets-header">OKC @ PHX — Game 3 | OKC leads 2-0 — Sat Apr 25 3:30 PM ET</div>
     <div class="series-bets-group">
 
       <!-- OKC ML -->
       <div class="bet-card best-bet">
         <span class="bet-type ml">MONEYLINE ★ BEST BET</span>
         <div class="bet-pick">OKC ML @ PHX</div>
-        <div class="bet-line">-380 | Model: OKC by 8 | HIGH confidence</div>
-        <div class="bet-reasoning">The most lopsided series in R1. OKC's 35-pt G1 blowout exposed PHX's structural problems: single-initiator (only Booker), no interior matchup for Holmgren, 17 turnovers from defensive pressure. Even at Footprint Center, OKC's scheme travels — Daigneault (adj 9) vs Ott (adj 4) is the widest coaching gap in the playoffs. SGA sat Q4 blowout in G1; full minutes at PHX = 30+pts. Williams' All-NBA return (22/7/6) gives OKC multi-initiator dominance (3 vs 1). PHX home crowd adds ~2.5pts but can't fix a talent gap this wide. ML at -380 is steep but safe.</div>
+        <div class="bet-line">-320 | Model: OKC by 8 | HIGH confidence</div>
+        <div class="bet-reasoning">OKC dominated G1 (+35) and G2 (+13, model EXACT margin match). SGA's G2 bounce-back (37pts, 52% FG, 9-9 FT) proves he's fully locked in. Holmgren's 19pts/4blk G2 confirms PHX has no interior answer. PHX committed 21 turnovers in G2 (OKC 14 steals) — the defensive pressure scheme is structural and travels to Footprint Center. Daigneault (adj 9) vs Ott (adj 4) is the widest coaching gap in the playoffs. PHX home crowd adds ~2.5pts but can't fix a talent gap this wide when they're 0-2. ML at -320 is the play — avoid the spread (lesson from G2's -17.5 miss).</div>
         <span class="bet-edge model">Model Edge</span>
       </div>
 
@@ -1043,9 +1011,18 @@ function renderBetsPage(el) {
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">SGA Over 27.5 points</div>
-        <div class="bet-line">-115 | Model: ~30 PPG | Full game (sat Q4 G1 blowout)</div>
-        <div class="bet-reasoning">SGA scored 25pts in only 29 minutes in G1 (sat Q4 blowout), on a career-cold 27.8% FG. Massive regression UP guaranteed — career 55.3% FG. At PHX, he'll play full 36min. Even at 45% FG (road adjustment), his free throw artistry (15-17 G1, 88.2% season) provides a scoring floor. SGA averaged 31+ PPG in 2025 road playoff games. Over 27.5 gives solid cushion.</div>
+        <div class="bet-line">-115 | Model: ~30 PPG | G2 bounce-back CONFIRMED: 37pts (52% FG, 9-9 FT)</div>
+        <div class="bet-reasoning">SGA's G2 bounce-back was massive: 37pts on 52% FG with 9-9 perfect FT and 9 assists. The FG% regression bet from G1 (27.8%) paid off in spectacular fashion — cleared 28.5 by 8.5pts. Now at PHX, expect slight road dip but his floor is elite: G1 25pts (29min, cold shooting) + G2 37pts = 31.0 PPG average. Even at 45% FG (road adjustment), his FT artistry (9-9 G2, 15-17 G1) provides a 28+ floor. Over 27.5 gives solid cushion on a player averaging 31.0 through 2 games. HIGHEST-CONFIDENCE PROP on this slate after G2 confirmation.</div>
         <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- OKC SPREAD — AVOID LESSON -->
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">OKC -9.5 @ PHX — CAUTION</div>
+        <div class="bet-line">-110 | Model: OKC by 8 | 1.5pt gap AGAINST you</div>
+        <div class="bet-reasoning">G2 LESSON APPLIED: OKC -17.5 missed by 4.5pts despite a 13-point win. Model projects OKC by 8 at PHX, but the line is -9.5 — meaning you need OKC to beat the model projection by 1.5pts. PHX at home with 0-2 desperation + Booker's home FG% boost (51% vs 47%) should keep this closer than G1/G2. Brooks' 30pts in G2 shows PHX can score when desperate. RECOMMENDATION: Skip the spread, play ML or SGA prop instead. When model margin < spread, avoid — this was the G2 lesson.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
       <!-- GREEN YOUTH BREAKOUT PROP -->
@@ -1053,7 +1030,7 @@ function renderBetsPage(el) {
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Jalen Green Over 16.5 points</div>
         <div class="bet-line">-110 | YOUTH BREAKOUT (age 22) at home | Phase 29 active</div>
-        <div class="bet-reasoning">Green (age 22) is PHX's best youth breakout candidate. Phase 29 multiplier active. G1 was quiet as part of PHX's 35% FG disaster, but NOW AT HOME at Footprint Center, his athletic scoring could spike. The crowd energy helps young players find rhythm. OKC will still send elite defenders, but desperation + home court + youth breakout persistence creates upside. His ceiling is 25+ if he attacks the rim. Over 16.5 gives room for a breakout home game.</div>
+        <div class="bet-reasoning">Green (age 22) is PHX's best youth breakout candidate. Phase 29 multiplier active. G1-G2 at OKC were quiet as part of PHX's overall struggles, but NOW AT HOME at Footprint Center with 0-2 desperation, his athletic scoring could spike. The crowd energy helps young players find rhythm. OKC will still send elite defenders, but desperation + home court + youth breakout persistence creates upside. His ceiling is 25+ if he attacks the rim. Over 16.5 gives room for a breakout home game.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 
@@ -1061,8 +1038,8 @@ function renderBetsPage(el) {
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
         <div class="bet-pick">Devin Booker Over 24.5 points</div>
-        <div class="bet-line">-120 | Home FG% boost (51% vs 47%) | Desperate | Clutch 7.8</div>
-        <div class="bet-reasoning">Booker scored 23pts at OKC despite elite defense. NOW AT HOME — career 51% FG at home vs 47% road. PHX's sole creator in a desperate situation (likely 0-2). Clutch rating 7.8 means he'll compete in close stretches. At home with crowd energy, expect his best game of the series: 26-30pts. Over 24.5 provides cushion for his home shooting boost. Dort will still be primary defender but Booker's shot-making is world-class at home.</div>
+        <div class="bet-line">-120 | Home FG% boost (51% vs 47%) | 0-2 desperate | Clutch 7.8</div>
+        <div class="bet-reasoning">Booker scored 23pts G1 and was PHX's best player in G2 despite the loss (OKC 120-107). NOW AT HOME down 0-2 — career 51% FG at home vs 47% road. PHX's sole creator in a desperate must-win situation. Clutch rating 7.8 means he'll compete in close stretches. With Brooks' 30pts G2 proving PHX CAN score at OKC, expect Booker to push for 28-32pts at home. Over 24.5 provides cushion for his home shooting boost. Dort will still be primary defender but Booker's shot-making is world-class at home. Desperation games historically boost star usage by 5-10%.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
       </div>
 

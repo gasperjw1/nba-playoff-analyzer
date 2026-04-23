@@ -456,9 +456,21 @@ function calcGameProjection(series, seriesId, gameNum) {
   homeExpected += marginAdj;
   awayExpected -= marginAdj;
 
-  // Round to realistic scores
-  const homeScore = Math.round(homeExpected);
-  const awayScore = Math.round(awayExpected);
+  // Round to realistic scores — detect overtime projections
+  let homeScore = Math.round(homeExpected);
+  let awayScore = Math.round(awayExpected);
+  let projectedOT = false;
+  if (homeScore === awayScore) {
+    // When the model projects a dead-even game, interpret as an OVERTIME projection.
+    // The teams are so evenly matched that regulation can't separate them.
+    // Break the tie for the final score (+1 to the slight raw favorite), but flag OT.
+    projectedOT = true;
+    if (homeExpected >= awayExpected) {
+      homeScore += 1;
+    } else {
+      awayScore += 1;
+    }
+  }
   const margin = homeScore - awayScore;
 
   // --- STEP 11: Variance Profile ---
@@ -495,6 +507,12 @@ function calcGameProjection(series, seriesId, gameNum) {
   else if (absMargin >= 4) character = 'GRIND';
   else character = 'COIN FLIP';
 
+  // Override character for overtime projections
+  if (projectedOT) {
+    character = 'OVERTIME';
+    closeProb = Math.min(65, closeProb + 20); // OT games are inherently close
+  }
+
   // Margin range (±30% for realistic spread)
   const spreadFactor = Math.max(3, absMargin * 0.35 + 2);
   const lowMargin = Math.max(1, absMargin - Math.round(spreadFactor));
@@ -509,7 +527,10 @@ function calcGameProjection(series, seriesId, gameNum) {
     blowoutProb: Math.round(blowoutProb),
     closeProb: Math.round(closeProb),
     character,
-    marginRange: `${favTeam.abbr} by ${lowMargin}-${highMargin}`,
+    projectedOT,
+    marginRange: projectedOT
+      ? `${favTeam.abbr} in OT (regulation dead even)`
+      : `${favTeam.abbr} by ${lowMargin}-${highMargin}`,
     talentMultiplier: +talentMultiplier.toFixed(2),
     depthEdge: +depthEdge.toFixed(1)
   };
@@ -1552,7 +1573,9 @@ function calcProjectedBoxScore(series, gameIdx) {
     homeScore: proj.homeScore,
     awayScore: proj.awayScore,
     character: proj.character,
-    margin: proj.margin
+    margin: proj.margin,
+    projectedOT: proj.projectedOT || false,
+    marginRange: proj.marginRange
   };
 }
 
