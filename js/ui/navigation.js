@@ -43,7 +43,7 @@ function switchGameTab(tab) {
 }
 
 function switchBetTab(tab) {
-  ['parlays','g1','g2','g3'].forEach(t => {
+  ['parlays','g1','g2','g3','g4'].forEach(t => {
     const content = document.getElementById('betContent-'+t);
     const tabEl = document.getElementById('betTab-'+t);
     if(content) content.style.display = t===tab ? 'block' : 'none';

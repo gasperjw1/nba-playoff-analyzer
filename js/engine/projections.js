@@ -761,7 +761,31 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
     ? ((!isHome && gameIsHome) || (isHome && !gameIsHome))
     : playerAtHome;
   if (actualHome) {
-    const hcaPct = hcaVal * 0.006; // ~1.5% for R1
+    let hcaPct = hcaVal * 0.006; // ~1.5% for R1
+
+    // PHASE 35: First-Home-Game Boost — G3 data (Apr 23) showed all 3
+    // first-home-game teams won (ATL +1, TOR +22, MIN +17). The boost
+    // creates strong Q1-Q2 energy. However, it's talent-gap dependent:
+    // BOS beat PHI, LAL beat HOU, SAS beat POR despite their first home games.
+    // When the road team has a transcendent star (rating >= 88), the boost is halved.
+    const isFirstHomeGame = (gameIdx === 0 && isHome) || (gameIdx === 2 && !isHome);
+    if (isFirstHomeGame) {
+      // Check if opposing team has a transcendent star that overrides home energy
+      const oppTeam = isHome ? series.awayTeam : series.homeTeam;
+      const oppMaxRating = oppTeam.players ? Math.max(...oppTeam.players.map(p => p.rating || 0)) : 0;
+      const boostPct = oppMaxRating >= 88 ? 0.005 : 0.012; // halved if facing elite star
+      hcaPct += boostPct;
+      modifiers.push({ label: 'First Home Game', ptsDelta: pts * boostPct, rebDelta: 0, astDelta: 0, pct: +(boostPct * 100).toFixed(1) });
+    }
+
+    // PHASE 35: Second-half fatigue for low-seed teams — young/inexperienced
+    // teams fade in Q3-Q4 at home (POR led by 15, lost by 12 to SAS).
+    // Low seeds (7-8) get a reduced late-game boost.
+    const teamSeed = isHome ? series.homeTeam.seed : series.awayTeam.seed;
+    if (isFirstHomeGame && teamSeed >= 7) {
+      hcaPct -= 0.004; // reduce boost for low seeds who fade in 2nd half
+    }
+
     const ptsHCA = pts * hcaPct;
     pts += ptsHCA;
     modifiers.push({ label: 'Home Court', ptsDelta: ptsHCA, rebDelta: 0, astDelta: 0, pct: +(hcaPct * 100).toFixed(1) });
