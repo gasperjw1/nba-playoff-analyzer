@@ -568,6 +568,111 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
       ${g.prosAway.map(p=>'<div style="color:var(--green);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,0.2)">+ '+s.awayTeam.abbr+': '+p+'</div>').join('')}
       ${g.consAway.map(p=>'<div style="color:var(--red);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,0.2)">- '+s.awayTeam.abbr+': '+p+'</div>').join('')}
     </div>` : ''}
+    ${renderSimulationPanel(s, gameNum)}
+  </div>`;
+}
+
+// ============================================================
+// MONTE CARLO SIMULATION PANEL (Phase 40)
+// ============================================================
+function renderSimulationPanel(series, gameNum) {
+  if (typeof runMonteCarloSimulation !== 'function') return '';
+
+  // Only show for upcoming games (no result yet)
+  const gameIdx = gameNum - 1;
+  const game = series.games && series.games[gameIdx];
+  if (game && game.winner) return ''; // game already played
+
+  let sim;
+  try {
+    sim = runMonteCarloSimulation(series, series.id, gameNum, 1000);
+  } catch (e) {
+    return `<div style="font-size:11px;color:var(--red);margin-top:8px">Simulation error: ${e.message}</div>`;
+  }
+
+  const homeAbbr = series.homeTeam.abbr;
+  const awayAbbr = series.awayTeam.abbr;
+
+  // Win probability bar
+  const homeWinW = Math.round(sim.homeWinPct);
+  const awayWinW = 100 - homeWinW;
+  const homeWinColor = homeWinW >= 55 ? 'var(--green)' : homeWinW >= 45 ? 'var(--yellow)' : 'var(--red)';
+  const awayWinColor = awayWinW >= 55 ? 'var(--green)' : awayWinW >= 45 ? 'var(--yellow)' : 'var(--red)';
+
+  // Histogram — build mini SVG bar chart of margin distribution
+  const hist = sim.histogram || [];
+  const maxCount = Math.max(...hist.map(h => h.count), 1);
+  const histBars = hist.map(h => {
+    const height = Math.round((h.count / maxCount) * 40);
+    const barColor = h.margin > 0 ? 'rgba(96,165,250,0.7)' : h.margin < 0 ? 'rgba(239,68,68,0.7)' : 'rgba(255,199,58,0.7)';
+    const x = ((h.margin + 40) / 80) * 280; // map -40..+40 to 0..280
+    return `<rect x="${x}" y="${40-height}" width="6" height="${height}" fill="${barColor}" rx="1"/>`;
+  }).join('');
+
+  // Chaos factors summary
+  const chaosFactors = [];
+  if (sim.blowoutRate > 15) chaosFactors.push(`Blowout risk ${sim.blowoutRate}%`);
+  if (sim.closeGameRate > 35) chaosFactors.push(`Coin-flip zone ${sim.closeGameRate}%`);
+  if (sim.overtimeRate > 5) chaosFactors.push(`OT chance ${sim.overtimeRate}%`);
+  if (sim.isElimination) chaosFactors.push('Elimination pressure active');
+  if (Math.abs(sim.simVsLogisticDiff) > 5) chaosFactors.push(`Chaos shifts odds ${sim.simVsLogisticDiff > 0 ? '+' : ''}${sim.simVsLogisticDiff}% vs spread`);
+
+  return `
+  <div class="sim-panel" style="margin-top:12px;padding:12px;border-radius:10px;background:rgba(0,0,0,0.25);border:1px solid rgba(167,139,250,0.25)">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+      <span style="font-size:12px;font-weight:700;color:var(--purple)">CHAOS SIMULATION</span>
+      <span style="font-size:10px;color:var(--text-dim);opacity:0.6">${sim.iterations.toLocaleString()} iterations</span>
+    </div>
+
+    <!-- Win Probability Bar -->
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
+        <span style="color:${homeWinColor};font-weight:600">${homeAbbr} ${sim.homeWinPct}%</span>
+        <span style="color:${awayWinColor};font-weight:600">${sim.awayWinPct}% ${awayAbbr}</span>
+      </div>
+      <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:rgba(0,0,0,0.3)">
+        <div style="width:${homeWinW}%;background:${homeWinColor};transition:width 0.3s"></div>
+        <div style="width:${awayWinW}%;background:${awayWinColor};transition:width 0.3s"></div>
+      </div>
+    </div>
+
+    <!-- Score Distribution -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;font-size:11px">
+      <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.2)">
+        <div style="color:var(--text-dim);font-size:9px;margin-bottom:2px">MEDIAN SCORE</div>
+        <div style="font-weight:600">${sim.meanHomeScore}-${sim.meanAwayScore}</div>
+      </div>
+      <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.2)">
+        <div style="color:var(--text-dim);font-size:9px;margin-bottom:2px">MARGIN RANGE</div>
+        <div style="font-weight:600">${sim.percentiles.p25 > 0 ? '+' : ''}${sim.percentiles.p25} to ${sim.percentiles.p75 > 0 ? '+' : ''}${sim.percentiles.p75}</div>
+      </div>
+      <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.2)">
+        <div style="color:var(--text-dim);font-size:9px;margin-bottom:2px">VOLATILITY</div>
+        <div style="font-weight:600">SD ±${sim.marginSD}</div>
+      </div>
+    </div>
+
+    <!-- Margin Distribution Histogram -->
+    <div style="margin-bottom:8px">
+      <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px">Margin Distribution (${awayAbbr} ← → ${homeAbbr})</div>
+      <svg viewBox="0 0 280 50" style="width:100%;height:50px">
+        <line x1="140" y1="0" x2="140" y2="45" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="2,2"/>
+        ${histBars}
+        <text x="5" y="48" fill="var(--text-dim)" font-size="7">${awayAbbr} wins</text>
+        <text x="245" y="48" fill="var(--text-dim)" font-size="7">${homeAbbr} wins</text>
+      </svg>
+    </div>
+
+    <!-- Chaos Factor Pills -->
+    ${chaosFactors.length > 0 ? `
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      ${chaosFactors.map(f => `<span style="font-size:9px;padding:2px 6px;border-radius:8px;background:rgba(167,139,250,0.12);color:var(--purple);border:1px solid rgba(167,139,250,0.2)">${f}</span>`).join('')}
+    </div>` : ''}
+
+    <!-- 90% Confidence Range -->
+    <div style="font-size:10px;color:var(--text-dim);margin-top:6px;text-align:center">
+      90% of simulations: ${homeAbbr} ${sim.homeScoreRange[0]}-${sim.homeScoreRange[1]} | ${awayAbbr} ${sim.awayScoreRange[0]}-${sim.awayScoreRange[1]}
+    </div>
   </div>`;
 }
 

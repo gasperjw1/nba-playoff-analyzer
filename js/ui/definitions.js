@@ -21,7 +21,8 @@ function renderDefinitionsPage(el) {
       <div class="def-tab-btn" id="defTab-xfactors" onclick="switchDefTab('xfactors')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">X-Factors</div>
       <div class="def-tab-btn" id="defTab-turnovers" onclick="switchDefTab('turnovers')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">TOV & Fouls</div>
       <div class="def-tab-btn" id="defTab-threepoint" onclick="switchDefTab('threepoint')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">3PT Variance</div>
-      <div class="def-tab-btn" id="defTab-roleflex" onclick="switchDefTab('roleflex')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">Role Flexibility</div>
+      <div class="def-tab-btn" id="defTab-roleflex" onclick="switchDefTab('roleflex')" style="padding:8px 16px;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">Role Flexibility</div>
+      <div class="def-tab-btn" id="defTab-montecarlo" onclick="switchDefTab('montecarlo')" style="padding:8px 16px;border-radius:0 8px 8px 0;cursor:pointer;font-size:12px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;flex-shrink:0;white-space:nowrap;">Monte Carlo</div>
     </div>
 
     <!-- PLAYER TAB -->
@@ -595,6 +596,21 @@ function renderDefinitionsPage(el) {
         </div>
 
       </div>
+    </div>
+
+    <!-- MONTE CARLO TAB -->
+    <div id="defContent-montecarlo" class="def-tab-content" style="display:none;">
+    <div class="def-category model">Monte Carlo Chaos Simulation (Phase 40)</div>
+    <div class="def-grid">
+      <div class="def-card"><div class="def-term">Chaos Simulation</div><div class="def-desc">1,000-iteration Monte Carlo model that runs quarter-by-quarter with interconnected state variables. Produces win probability distributions, not single-point predictions.</div></div>
+      <div class="def-card"><div class="def-term">Team Shooting Temperature</div><div class="def-desc">Game-level draw determining if a team shoots hot or cold. One SD = ~3 points of scoring swing. Creates the "whole team is hot" effect.</div></div>
+      <div class="def-card"><div class="def-term">Scoring Run</div><div class="def-desc">7+ point swing within a quarter. 15% probability per quarter. Triggered by shooting state + opponent weakness. 66% halted by timeouts.</div></div>
+      <div class="def-card"><div class="def-term">Momentum Carry</div><div class="def-desc">Momentum from runs carries across quarters but decays 40% per quarter. Creates interconnected multi-quarter swings.</div></div>
+      <div class="def-card"><div class="def-term">Foul Trouble Cascade</div><div class="def-desc">When a key player picks up 2 early fouls, coach benches them (67%), defense weakens, opponent gains momentum — a chain reaction.</div></div>
+      <div class="def-card"><div class="def-term">Clutch Pressure</div><div class="def-desc">Q4 scoring drops in close games. Veteran teams with playoff ascension stars resist 30% of the penalty.</div></div>
+      <div class="def-card"><div class="def-term">Margin SD</div><div class="def-desc">Standard deviation of actual margin vs predicted spread. NBA: ~11.5 pts. The simulation is calibrated to match this.</div></div>
+      <div class="def-card"><div class="def-term">Garbage Time Compression</div><div class="def-desc">When margin exceeds 20 pts, reduce by 20%. Prevents unrealistic blowout margins.</div></div>
+    </div>
     </div>
 
     <!-- Phase 28: Live Analysis Model Corrections -->

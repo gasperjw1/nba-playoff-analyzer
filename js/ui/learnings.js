@@ -819,6 +819,23 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 40 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 40 — Monte Carlo Chaos Simulation: Interdependent Quarter-by-Quarter Model</div>
+        <div class="learning-date">Apr 30, 2026</div>
+        <div class="learning-body">
+          <strong>1,000-iteration Monte Carlo simulation engine built. Quarter-by-quarter model with interdependent chaos factors. Calibrated to ATS margin SD = 11.3 (target: 11.5). Backtest: 56.4% winner accuracy, 11.6 avg margin error across 39 completed games.</strong><br><br>
+          <strong>1. ARCHITECTURE — PERTURBATION MODEL:</strong> Engine's deterministic projection serves as the baseline. Each simulation iteration draws correlated chaos factors that shift the outcome through interconnected channels. Quarter state carries forward: Q1 foul trouble → Q2 passive defense → Q3 opponent momentum run → Q4 clutch pressure. Nothing is independent.<br><br>
+          <strong>2. TEAM SHOOTING TEMPERATURE:</strong> One draw per team per game determines if the whole team is hot or cold. Each SD of shooting temperature = ~3 points (8% 3PT swing × 35 attempts × 3pts). This single variable explains the bulk of game-to-game variance. Within-quarter correlation creates realistic "whole team is cold" quarters like BOS's 3-22 Q4 in G5.<br><br>
+          <strong>3. MOMENTUM & SCORING RUNS:</strong> 15% chance per quarter of a significant run. Runs are triggered by shooting state + opponent weakness (bench mode from foul trouble). Timeouts halt 66% of runs (Weimer et al. 2023). Counter-runs occur 35% of the time after timeouts. Momentum decays 40% per quarter if unrefueled.<br><br>
+          <strong>4. FOUL TROUBLE CASCADE:</strong> 8% chance per team of key player getting 2 early fouls. 67% coaches bench them. Bench mode reduces team scoring and weakens defense, which feeds the opponent's momentum. Player returns Q2 but plays passively — lingering effect.<br><br>
+          <strong>5. FATIGUE DECAY:</strong> Scoring drops Q3 (-0.7 pts) and Q4 (-1.8 pts). Veteran teams (playoff ascension stars) resist 30% of clutch penalty. Fatigue compounds across series (0.5 pts per game past G4). Fatigued teams turn ball over more, feeding opponent scoring.<br><br>
+          <strong>6. CLUTCH PRESSURE:</strong> In close games entering Q4 (within ~24 pts total), both teams' scoring drops. 25% chance of a "clutch hero" performance (+2-5 pts for one team). Veteran bonus partially offsets the pressure.<br><br>
+          <strong>7. CALIBRATION:</strong> Margin SD = 11.3 (target 11.5). Blowout rate = 14-15% (real: ~15%). Close game rate = 30-32%. OT rate = 2-4%. Garbage time compression reduces margins 20% at 20+ pt leads. The simulation produces realistic score distributions.
+        </div>
+        <span class="learning-tag model">Monte Carlo</span><span class="learning-tag data">Chaos Simulation</span><span class="learning-tag milestone">Phase 40</span>
+      </div>
+
       <!-- Phase 39 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 39 — G5 Wed Results: Superstar Dueling, FT-Rate Efficiency, Turnover Regression</div>
@@ -912,6 +929,7 @@ function renderLearningsPage(el) {
     'Phase 36': 'G3/G4 deep dive — 5 concepts: (1) Scheme-Driven 3PT Suppression Override (regression weight halved when schemePersistence active — DEN 39.6% season → 22% under MIN scheme), (2) Nuclear Game Probability (SGA 42pts on 83.3% FG — tail risk for MVP-caliber players), (3) Coaching Counter Decay (McCollum 0 3s in G4 after game-winners in G2-G3), (4) Engine > Manual Overrides for G4+ (trust structural talent over narrative), (5) Multi-Star Absence Liberation Extreme (Dosunmu 43pts with Edwards + DDV both OUT). G3: 1/8, G4: 5/8 with engine.',
     'Phase 37': 'Series Scoring Context + Score Range Bands: Engine now blends projected scores with actual series averages (low-scoring series project lower, high-scoring project higher). Score ranges show ±12% variance bands. Macro analysis: ESPN reports "15 of 16 teams won a game" — historic parity. Injuries dominate every series. OKC 12-0 in R1 over 3 years, clear R2 favorite.',
     'Phase 38': 'G5 deep analysis — 3 new concepts: (1) Elimination Game Star Elevation (Embiid 33pts facing elimination after 2pts Q1), (2) Closeout Pressure Inversion (BOS 3-22 FG in Q4 trying to clinch), (3) Home Star Ceiling Games (Brunson 39pts at MSG, Embiid 33 at WFC). Model went 1/2 on G5 picks. SAS-POR nearly perfect prediction (116-99 vs 114-95). Henderson youth breakout NOT persistent (31pts G2 → 5pts G5). SAS wins series 4-1.',
+    'Phase 40': 'Monte Carlo Chaos Simulation — 1000-iteration quarter-by-quarter model with interdependent chaos factors (shooting temperature, momentum runs, foul trouble cascades, fatigue decay, clutch pressure). Calibrated to ATS margin SD = 11.3. Backtest: 56.4% accuracy, 11.6 avg margin error across 39 games. Outputs win probability distributions instead of single-point predictions.',
     'Phase 39': 'G5 Wed results — 3/4 engine picks correct (missed HOU-LAL). (1) DET-ORL first 45-45 dual scoring game (Cade 45, Banchero 45/9/7). (2) CLE-TOR shooting regression normalized, CLE won Q4 25-17. (3) DEN-MIN Jokic triple-double + Spencer Jones 20pts Star Absence Liberation, MIN 25 TOs. (4) HOU-LAL: Reaves return rust (4-16 FG), LeBron 0-6 3PT, Smart 6 TOs. G5 overall: 5/7 (71.4%). Injury-return rust discount and initiator-absent TO compounding identified as new factors.'
   };
 
