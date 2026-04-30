@@ -771,6 +771,86 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">G2 Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 34</span>
       </div>
 
+      <!-- Phase 35 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 35 — G3 Analysis: First-Home-Game Boost, Talent-Gap Scaling, Youth Fatigue</div>
+        <div class="learning-date">Apr 27, 2026</div>
+        <div class="learning-body">
+          <strong>Deep game-by-game analysis of all 8 G3 games revealed the model's biggest systematic error and produced 5 new concepts:</strong><br><br>
+          <strong>G3 ML Record: 1/6 (16.7%) — worst round of the playoffs.</strong> The model picked the road favorite in 5/6 games and lost all 5. Only correct pick was BOS over PHI (2pt margin miss). After implementing Phase 35 changes, the G4 engine improved to 5/8 (62.5%).<br><br>
+          <strong>1. First-Home-Game Boost (Talent-Gap Scaled):</strong> All 3 Thu Apr 23 home teams won their first home game (ATL +1, TOR +22, MIN +17). However, BOS beat PHI, LAL beat HOU in OT, and SAS beat POR despite those teams' first home games. Pattern: the boost reliably creates strong Q1-Q2 energy but doesn't override massive talent gaps. Implementation: +1.2% scoring boost for first home game, halved to +0.5% when facing a team with a transcendent star (rating &ge; 88). Low seeds (7-8) get an additional -0.4% penalty for second-half fatigue.<br><br>
+          <strong>2. Star Absence &ne; Pure Subtraction:</strong> SAS won G3 120-108 WITHOUT Wembanyama (concussion). Castle scored 33pts career-high, Harper had 27/10. In deep teams, removing the alpha star can LIBERATE secondary players who get more touches and confidence. The model's ptsRange [0,0] exclusion correctly redistributes minutes but underestimates the quality of absorption.<br><br>
+          <strong>3. Second-Half Youth Fatigue:</strong> POR scored 65 in H1 but only 43 in H2 against SAS. Young/low-seed teams build adrenaline-fueled leads early but can't sustain playoff intensity for 48 minutes. The model now penalizes low-seed teams (-0.4%) in first-home-game scenarios to account for this fade.<br><br>
+          <strong>4. Road Turnover Volatility:</strong> CLE had 22 turnovers at Toronto (Harden 8 TOs). Teams visiting a hostile building for the first time see TO rates spike 30-50%. High-usage ball handlers are especially vulnerable to crowd noise disrupting their decision-making.<br><br>
+          <strong>5. Veteran Clutch Override:</strong> LeBron (41yo, 45min) hit a steal+tying 3 with 13sec left to force OT. Smart drew a 3-FT foul down 6 with 25sec left. The model's age/fatigue penalties don't apply to transcendent veterans with 15+ years of playoff experience in crunch-time scenarios. McCollum's series-long clutch closing (game-winners in G2 and G3) confirms veteran closers need a premium.<br><br>
+          <strong>3PT Regression Validated:</strong> BOS-PHI G3 was the model's best prediction (BOS +6, actual +8). PHI's 48.7% 3PT from G2 dropped to 34.3%, BOS's 26% bounced to 42.6%. The 3PT regression framework remains the model's strongest predictive tool.
+        </div>
+        <span class="learning-tag research">G3 Deep Dive</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 35</span>
+      </div>
+
+      <!-- Phase 36 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 36 — G3/G4 Deep Dive: Scheme Suppression Override, Nuclear Games, Coaching Counters</div>
+        <div class="learning-date">Apr 27, 2026</div>
+        <div class="learning-body">
+          <strong>Games 7-10 analysis (Sat Apr 25 slate) revealed 5 additional model concepts:</strong><br><br>
+          <strong>1. Scheme-Driven 3PT Suppression COMPOUNDS (Engine Fix):</strong> DEN shot 39.6% 3PT regular season but 22-30% across 4 games vs MIN. The model kept predicting regression UP toward the mean, but it never came because MIN's defense specifically removes DEN's 3PT looks. Implementation: when schemePersistence is active, the regression weight toward regular-season mean is halved. This prevents the model from incorrectly projecting bounce-back for teams under sustained defensive scheme pressure.<br><br>
+          <strong>2. Nuclear Game Probability:</strong> SGA scored 42pts on 15-18 FG (83.3%) in G3 — an efficiency level no statistical model can predict. MVP-caliber players have a ~10-15% probability of "nuclear games" where everything goes in. The model should acknowledge this tail risk rather than capping projections. When it happens, margin projections become irrelevant.<br><br>
+          <strong>3. Coaching Counter Decay on Clutch Closers:</strong> McCollum hit game-winners in G2 and G3, but Brown's G4 defensive adjustment held him to 17pts and 0 made 3s. Veteran closers' clutch premium decays as the opposing coach accumulates film. By G4, the counter-scheme is typically in place. The model should reduce the "clutch closer premium" by ~30% per game after the initial breakout.<br><br>
+          <strong>4. Engine > Manual Overrides for G4+ Games:</strong> The engine predicted NYK +4 for NYK-ATL G4 (actual: NYK +16). The manual pick was ATL based on McCollum's G3 momentum. The engine's structural talent assessment was correct while the narrative-based manual override was wrong. Lesson: for G4+ games where the engine has 3+ data points, trust the structural analysis over momentum/narrative.<br><br>
+          <strong>5. Multi-Star Absence Liberation (Extreme):</strong> MIN won G4 by 16 WITHOUT both Edwards AND DiVincenzo. Dosunmu scored 43pts — highest playoff reserve performance in 50 years. When multiple stars are absent from a deep team, the redistribution can produce performances that exceed ANY individual's career ceiling. The model should project elevated ceilings for replacement players, not just redistributed minutes.<br><br>
+          <strong>Running G3/G4 record after Phase 35-36 updates:</strong> G3 picks: 1/8 (12.5%). G4 picks: 5/8 (62.5%) with engine. The model improved dramatically between G3 and G4 — the first-home-game boost and talent-gap scaling were the key corrections.
+        </div>
+        <span class="learning-tag research">G3/G4 Deep Dive</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 36</span>
+      </div>
+
+      <!-- Phase 37 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 37 — Series Scoring Context, Score Range Bands, Macro Playoff Analysis</div>
+        <div class="learning-date">Apr 28, 2026</div>
+        <div class="learning-body">
+          <strong>Engine score diversity fix + macro-level playoff insights from ESPN/The Athletic/Ringer analysis:</strong><br><br>
+          <strong>1. Series Scoring Context Adjustment (Engine Fix):</strong> The engine projected all scores in a narrow 98-116 range while actual games spanned 83-131. Root cause: regular-season ORtg/DRtg produces average-seeking projections. Fix: blend projected scores with the series' actual scoring average. Low-scoring series (DET-ORL avg ~95ppg) now project lower, high-scoring series (OKC-PHX avg ~115ppg) project higher. Uses progressive weighting: G2 40% series data, G4+ 60% series data.<br><br>
+          <strong>2. Scoring Range Bands:</strong> Every projection now includes &plusmn;12% variance bands showing realistic score ranges (e.g., DET 89-113 instead of just "DET 101"). This captures the reality that shooting variance can produce 32.6% FG nights (ORL G4) or 50% 3PT nights (OKC G4). The point estimate is the expected value; the range shows what's plausible.<br><br>
+          <strong>3. Macro Playoff Insight — Historic Parity:</strong> ESPN noted "15 of 16 teams have won at least one game" — the most competitive first round in recent memory. Five underdogs have multiple wins. This validates our Phase 35 finding that the model's regular-season-record bias was too strong. The parity means wider uncertainty bands are appropriate for all remaining predictions.<br><br>
+          <strong>4. Injuries Are THE Dominant Narrative:</strong> Nearly every series was shaped by injuries: Edwards (knee), DiVincenzo (ruptured Achilles), KD (ankle, missed 3 of 4 games), Wemby (concussion), Embiid (appendectomy), Wagner (calf), Booker (ankle), Gordon (calf), J.Williams (hamstring). The model's mid-series injury recalculation concept is the single highest-ROI improvement still needed.<br><br>
+          <strong>5. OKC Is the Clear R2 Favorite:</strong> 12-0 in R1 over 3 years, swept PHX despite missing J.Williams. Anonymous player poll: OKC 50%, SAS 25.3% championship probability. The model should project OKC as heavy favorites regardless of R2 opponent.
+        </div>
+        <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
+      </div>
+
+      <!-- Phase 39 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 39 — G5 Wed Results: Superstar Dueling, FT-Rate Efficiency, Turnover Regression</div>
+        <div class="learning-date">Apr 29, 2026</div>
+        <div class="learning-body">
+          <strong>Wed Apr 29 G5 results analyzed. Model went 3/4 on Wed engine picks (missed HOU-LAL). G5 overall record: 5/7 (71.4%). Elimination game dynamics remain strongest domain.</strong><br><br>
+          <strong>1. DET-ORL G5 — HISTORIC 45-45 DUEL:</strong> First 45-45 dual scoring game in playoff history. Cade Cunningham 45pts and Paolo Banchero 45/9/7. Wagner DNP (calf) elevated Banchero into full carry mode — Star Absence Liberation working in reverse (opponent's star absence forces remaining star to shoulder entire load). DET won 116-109. ORL leads 3-2. Model picked DET medium — CORRECT.<br><br>
+          <strong>2. CLE-TOR G5 — SHOOTING REGRESSION NORMALIZATION:</strong> After G4's historic shooting nightmare (CLE 37% FG / TOR 32% FG), both teams shot normally in G5. CLE 125, TOR 120. Harden 23/9reb orchestrated CLE's offense. Barrett 25/12reb carried TOR. The decisive factor: CLE won Q4 25-17 via defensive tightening — closing ability separates playoff teams. CLE leads 3-2. Model picked CLE medium — CORRECT.<br><br>
+          <strong>3. DEN-MIN G5 — JOKIC ELIMINATION TRIPLE-DOUBLE:</strong> Jokic 27pts/16ast/12reb — elimination game unlocked peak playmaking mode. Spencer Jones scored 20pts, proving Star Absence Liberation (Gordon/Watson OUT). MIN committed 25 turnovers without Edwards/DiVincenzo — Turnover Catastrophe Factor validated again when missing primary ball-handlers. DEN 125, MIN 113. MIN leads 3-2. Model engine picked DEN — CORRECT.<br><br>
+          <strong>4. HOU-LAL G5 — REAVES RETURN INEFFICIENCY:</strong> HOU 99, LAL 93. Model picked LAL — WRONG. Reaves returned from oblique injury (22pts but 4-16 FG, 12-13 FT — volume via fouls not shooting). LeBron 25pts but 0-6 3PT — 3PT regression at age 41. Smart had 6 TOs — Turnover Catastrophe without Luka as primary initiator. HOU's depth prevailed: Smith Jr 22, Eason 18, Sengun 14/9/8. LAL leads 3-2.<br><br>
+          <strong>5. MODEL PERFORMANCE:</strong> G5 engine record: 5/7 (71.4%) across Tue+Wed. Elimination game dynamics (EGSE, CPI) remain the model's strongest domain. The engine correctly identified DET, CLE, and DEN as G5 winners. Misses: BOS-PHI G5 (Tue) and HOU-LAL G5 (Wed). Key lesson: returning-from-injury players need a rust discount on efficiency, and teams missing their primary initiator (LAL without Luka) suffer compounding turnover issues.
+        </div>
+        <span class="learning-tag data">G5 Results</span><span class="learning-tag model">Elimination Dynamics</span><span class="learning-tag milestone">Phase 39</span>
+      </div>
+
+      <!-- Phase 38 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 38 — G5 Deep Analysis: Elimination Heroics, Closeout Pressure, Star Elevation</div>
+        <div class="learning-date">Apr 29, 2026</div>
+        <div class="learning-body">
+          <strong>G5 results analyzed game-by-game with full box score comparison. Model went 1/2 on G5 picks (SAS correct, BOS wrong). Three new behavioral concepts identified.</strong><br><br>
+          <strong>1. BOS-PHI G5 — MASSIVE MODEL MISS:</strong> Model predicted BOS 118-101 closeout; actual PHI 113-97 (33pt swing). Embiid erupted for 33pts after just 2pts in Q1 (1-6 FG → 13/10/8 in Q2-Q4). Maxey 25/10reb/5ast. BOS collapsed: 10pts in Q4 on 3-22 FG (13.6%). PHI shot 50% FG, BOS just 40%. The model severely underweighted Embiid's elimination-game ceiling and overweighted closeout momentum.<br><br>
+          <strong>2. NYK-ATL G5 — BRUNSON MASTERCLASS:</strong> NYK 126-97. Brunson went 39pts (15-23 FG, 65.2%) + 8ast + 1TO in 35min. KAT near triple-double: 16/14reb/6ast. ATL's McCollum collapsed: 6pts on 3-10 with 4 TOs (-14). NYK shot 57% FG/42% 3PT vs ATL's 45%/31%/59% FT. Coaching Counter Decay validated — McCollum's G2-G3 game-winner magic fully countered.<br><br>
+          <strong>3. SAS-POR G5 — MODEL NEARLY PERFECT:</strong> Predicted SAS 116-99, actual SAS 114-95. SAS closes series 4-1. Wemby 17/14reb/6blk. Fox 21pts/9ast (13pts Q4 closer). Champagnie 19pts (5-7 3PT). POR's Holiday worst game: 8pts (3-14 FG). Henderson confirmed as one-game spike, not breakout: 31pts G2 → 5pts G5 (17min).<br><br>
+          <strong>THREE NEW CONCEPTS IDENTIFIED:</strong><br>
+          • <strong>Elimination Game Star Elevation (EGSE):</strong> Facing elimination multiplies star output by 1.2-1.5x above series average. Embiid's G5 explosion (33pts after 2/20/26/19 in G1-G4) is the archetype. The pressure of elimination acts as a performance amplifier for franchise-caliber stars, not a suppressor.<br>
+          • <strong>Closeout Pressure Inversion (CPI):</strong> The team trying to close a series often faces EQUAL or GREATER pressure than the elimination team. BOS went from 118pts in G4 to 97pts in G5 — a 21pt drop. The Q4 collapse (3-22 FG) suggests psychological weight of clinching creates tightness, not relaxation.<br>
+          • <strong>Home Star Ceiling Games (HSCG):</strong> Elite stars produce ceiling games disproportionately at home. Brunson's 39pts came at MSG. Embiid's 33 came at Wells Fargo. 3PT regression timing correlates with venue — road shooters regress faster. Youth breakout persistence is NOT guaranteed across scheme adjustments (Henderson: 31pts G2 → 5pts G5).
+        </div>
+        <span class="learning-tag model">Elimination Dynamics</span><span class="learning-tag data">G5 Results</span><span class="learning-tag milestone">Phase 38</span>
+      </div>
+
       <!-- Phase 28 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 28 — Live Game Analysis & Model Corrections</div>
@@ -827,7 +907,12 @@ function renderLearningsPage(el) {
     'Phase 30': 'G2 results integration & engine hardening — youth breakout momentum persistence across consecutive games, coaching adjustment discount on blowout regression. Evidence: BOS-PHI G2 upset, SAS-POR G2 upset.',
     'Phase 31': 'Research anchor blend & data integrity — engine now consumes ptsRange from gNPlayerOutlook (60-70% research blend), normalization caps respect research range, outlook key deduplicated. SGA scoring data reconciled, G1 record corrected to 8/13. Featured Parlays rebuilt for Apr 22 with history timeline.',
     'Phase 32': 'G2 upset analysis — 5 new factors: Coaching Adjustment Quality (CAQ blended score), Initiator Count differential (±3.0pts), Scheme Persistence Factor (70% carryforward), Star Absence Recalibration (redistribution + return penalty), Youth Ceiling Multiplier (per-player overrides). All 16 coaching staffs verified. G1→G2 prediction accuracy: 75%→33% identified root causes.',
-    'Phase 34': 'G2 results integration — 3 engine upgrades: (1) Overtime Detection (margin=0 → OVERTIME character label + OT-specific margin range), (2) Dual-Mode Star concept (Cade scorer→distributor, SGA bounce-back), (3) Turnover Catastrophe Factor (20+ TO = structural, not variance). ptsRange [0,0] exclusion for OUT players (Phase 33). G2 record: 6/11 (54.5%). OKC margin exact match (+13). DET-ORL G3 projected as OVERTIME.'
+    'Phase 34': 'G2 results integration — 3 engine upgrades: (1) Overtime Detection (margin=0 → OVERTIME character label + OT-specific margin range), (2) Dual-Mode Star concept (Cade scorer→distributor, SGA bounce-back), (3) Turnover Catastrophe Factor (20+ TO = structural, not variance). ptsRange [0,0] exclusion for OUT players (Phase 33). G2 record: 6/11 (54.5%). OKC margin exact match (+13). DET-ORL G3 projected as OVERTIME.',
+    'Phase 35': 'G3 deep analysis — 5 engine upgrades: (1) First-Home-Game Boost with talent-gap scaling (+1.2% base, halved vs elite stars, -0.4% for low seeds), (2) Star Absence Liberation (secondary players elevated by more touches), (3) Second-Half Youth Fatigue (low seeds fade in Q3-Q4), (4) Road Turnover Volatility (first road visit spikes TOs 30-50%), (5) Veteran Clutch Override (transcendent vets defy age curves). G3 record: 1/6 (16.7%) → G4 improved to 5/8 (62.5%). 3PT regression validated as strongest tool.',
+    'Phase 36': 'G3/G4 deep dive — 5 concepts: (1) Scheme-Driven 3PT Suppression Override (regression weight halved when schemePersistence active — DEN 39.6% season → 22% under MIN scheme), (2) Nuclear Game Probability (SGA 42pts on 83.3% FG — tail risk for MVP-caliber players), (3) Coaching Counter Decay (McCollum 0 3s in G4 after game-winners in G2-G3), (4) Engine > Manual Overrides for G4+ (trust structural talent over narrative), (5) Multi-Star Absence Liberation Extreme (Dosunmu 43pts with Edwards + DDV both OUT). G3: 1/8, G4: 5/8 with engine.',
+    'Phase 37': 'Series Scoring Context + Score Range Bands: Engine now blends projected scores with actual series averages (low-scoring series project lower, high-scoring project higher). Score ranges show ±12% variance bands. Macro analysis: ESPN reports "15 of 16 teams won a game" — historic parity. Injuries dominate every series. OKC 12-0 in R1 over 3 years, clear R2 favorite.',
+    'Phase 38': 'G5 deep analysis — 3 new concepts: (1) Elimination Game Star Elevation (Embiid 33pts facing elimination after 2pts Q1), (2) Closeout Pressure Inversion (BOS 3-22 FG in Q4 trying to clinch), (3) Home Star Ceiling Games (Brunson 39pts at MSG, Embiid 33 at WFC). Model went 1/2 on G5 picks. SAS-POR nearly perfect prediction (116-99 vs 114-95). Henderson youth breakout NOT persistent (31pts G2 → 5pts G5). SAS wins series 4-1.',
+    'Phase 39': 'G5 Wed results — 3/4 engine picks correct (missed HOU-LAL). (1) DET-ORL first 45-45 dual scoring game (Cade 45, Banchero 45/9/7). (2) CLE-TOR shooting regression normalized, CLE won Q4 25-17. (3) DEN-MIN Jokic triple-double + Spencer Jones 20pts Star Absence Liberation, MIN 25 TOs. (4) HOU-LAL: Reaves return rust (4-16 FG), LeBron 0-6 3PT, Smart 6 TOs. G5 overall: 5/7 (71.4%). Injury-return rust discount and initiator-absent TO compounding identified as new factors.'
   };
 
   // Collect all entries/cards

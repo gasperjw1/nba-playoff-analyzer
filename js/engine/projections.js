@@ -112,11 +112,29 @@ function calcGameProjection(series, seriesId, gameNum) {
       const awayTeamData = tpv.away.team;
       // Regression weight: heavier for smaller playoff samples
       const gPlayed = getGamesPlayed(series);
-      const regWeight = gPlayed <= 1 ? 0.70 : (gPlayed <= 2 ? 0.55 : 0.40);
+      let regWeight = gPlayed <= 1 ? 0.70 : (gPlayed <= 2 ? 0.55 : 0.40);
 
-      // Expected 3P% via Bayesian blend
-      const homeExp3 = homeTeamData.playoff3Pct * (1 - regWeight) + homeTeamData.regSeason3Pct * regWeight;
-      const awayExp3 = awayTeamData.playoff3Pct * (1 - regWeight) + awayTeamData.regSeason3Pct * regWeight;
+      // PHASE 36: Scheme-Driven 3PT Suppression Override
+      // When schemePersistence is active for a team's defense, their opponent's
+      // 3PT suppression is STRUCTURAL, not variance. The regression weight toward
+      // regular-season mean should be REDUCED because the scheme will persist.
+      // Evidence: DEN shot 39.6% regular season but 22-30% across 4 games vs MIN
+      // because MIN's defense specifically removes 3PT looks. Regression never came.
+      const homeSP = series.schemePersistence && series.schemePersistence.home;
+      const awaySP = series.schemePersistence && series.schemePersistence.away;
+      // If away team has scheme persistence on home team's offense, reduce home's regression UP
+      let homeRegWeight = regWeight;
+      let awayRegWeight = regWeight;
+      if (awaySP && awaySP.isSchemeDriven && gPlayed >= 2) {
+        homeRegWeight *= 0.5; // halve regression toward mean — suppression is structural
+      }
+      if (homeSP && homeSP.isSchemeDriven && gPlayed >= 2) {
+        awayRegWeight *= 0.5;
+      }
+
+      // Expected 3P% via Bayesian blend (using scheme-adjusted regression weights)
+      const homeExp3 = homeTeamData.playoff3Pct * (1 - homeRegWeight) + homeTeamData.regSeason3Pct * homeRegWeight;
+      const awayExp3 = awayTeamData.playoff3Pct * (1 - awayRegWeight) + awayTeamData.regSeason3Pct * awayRegWeight;
 
       // Point swing from 3PT regression: (expected - actual) × 3PA × 3
       // Positive = team expected to score MORE (regression UP)
@@ -450,6 +468,33 @@ function calcGameProjection(series, seriesId, gameNum) {
   let homeExpected = possessions * homeEfficiency;
   let awayExpected = possessions * awayEfficiency;
 
+  // PHASE 37: Series Scoring Context Adjustment
+  // The engine projects scores clustered around 105-110 using regular-season ORtg/DRtg,
+  // but actual games range from 83 to 131. The fix: use ACTUAL series scoring data
+  // to calibrate projected totals. If this series averages 95ppg, project closer to 95.
+  // If it averages 120ppg (like OKC-PHX), project closer to 120.
+  if (series.games && gameNum > 1) {
+    let totalHomeScored = 0, totalAwayScored = 0, gamesWithScores = 0;
+    for (let gi = 0; gi < gameNum - 1 && gi < series.games.length; gi++) {
+      const g = series.games[gi];
+      if (g && g.homeScore && g.awayScore) {
+        totalHomeScored += g.homeScore;
+        totalAwayScored += g.awayScore;
+        gamesWithScores++;
+      }
+    }
+    if (gamesWithScores >= 1) {
+      const seriesAvgHome = totalHomeScored / gamesWithScores;
+      const seriesAvgAway = totalAwayScored / gamesWithScores;
+      // Blend: weight actual series scoring more as more games are played
+      // G2: 40% series, 60% model. G3: 50/50. G4+: 60% series, 40% model.
+      const seriesWeight = Math.min(0.65, 0.30 + gamesWithScores * 0.10);
+      const modelWeight = 1 - seriesWeight;
+      homeExpected = homeExpected * modelWeight + seriesAvgHome * seriesWeight;
+      awayExpected = awayExpected * modelWeight + seriesAvgAway * seriesWeight;
+    }
+  }
+
   // Adjust to match our predicted margin
   const rawMargin = homeExpected - awayExpected;
   const marginAdj = (baseMargin - rawMargin) / 2;
@@ -521,6 +566,16 @@ function calcGameProjection(series, seriesId, gameNum) {
   const favTeam = margin >= 0 ? series.homeTeam : series.awayTeam;
   const dogTeam = margin >= 0 ? series.awayTeam : series.homeTeam;
 
+  // PHASE 37: Scoring Range Bands — project realistic score ranges, not just point estimates.
+  // Playoff games have ~12% scoring variance from the mean. Apply higher variance for
+  // series with extreme actual scoring (defensive grinds or shootouts).
+  const avgScore = (homeScore + awayScore) / 2;
+  const variancePct = 0.12; // ~12% variance produces realistic bands
+  const homeScoreLow = Math.round(homeScore * (1 - variancePct));
+  const homeScoreHigh = Math.round(homeScore * (1 + variancePct));
+  const awayScoreLow = Math.round(awayScore * (1 - variancePct));
+  const awayScoreHigh = Math.round(awayScore * (1 + variancePct));
+
   return {
     homeScore, awayScore, margin,
     absMargin, favTeam: favTeam.abbr, dogTeam: dogTeam.abbr,
@@ -528,6 +583,10 @@ function calcGameProjection(series, seriesId, gameNum) {
     closeProb: Math.round(closeProb),
     character,
     projectedOT,
+    // Scoring range bands: realistic low-to-high for each team
+    homeScoreRange: [homeScoreLow, homeScoreHigh],
+    awayScoreRange: [awayScoreLow, awayScoreHigh],
+    totalRange: [homeScoreLow + awayScoreLow, homeScoreHigh + awayScoreHigh],
     marginRange: projectedOT
       ? `${favTeam.abbr} in OT (regulation dead even)`
       : `${favTeam.abbr} by ${lowMargin}-${highMargin}`,
@@ -1599,7 +1658,10 @@ function calcProjectedBoxScore(series, gameIdx) {
     character: proj.character,
     margin: proj.margin,
     projectedOT: proj.projectedOT || false,
-    marginRange: proj.marginRange
+    marginRange: proj.marginRange,
+    homeScoreRange: proj.homeScoreRange,
+    awayScoreRange: proj.awayScoreRange,
+    totalRange: proj.totalRange
   };
 }
 

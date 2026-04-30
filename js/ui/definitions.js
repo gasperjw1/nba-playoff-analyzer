@@ -707,6 +707,146 @@ function renderDefinitionsPage(el) {
       </div>
     </div>
 
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 35: G3 Analysis — First-Home-Game Boost, Talent-Gap Scaling, Youth Fatigue</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">First-Home-Game Boost (FHG)</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a team plays its first home game of a playoff series (G3 for the lower seed, G1 for the higher seed), there is a documented energy surge from crowd excitement in the team's playoff home debut that the model did not account for.
+            <br><br><strong>Evidence:</strong> Apr 23 home teams went 3/3 (ATL +1, TOR +22, MIN +17). However, BOS beat PHI, LAL beat HOU in OT, and SAS beat POR despite those teams' first home games — because their star talent advantage overrode the crowd energy.
+            <br><br><strong>Solution:</strong> The model applies a +1.2% scoring boost to all home players in first-home-game scenarios. The boost is talent-gap dependent: halved to +0.5% when the visiting team has a transcendent star (rating &ge; 88) — because elite closers like LeBron, Tatum, or SGA override crowd energy in crunch time. Low-seed teams (7-8) receive an additional -0.4% penalty because young teams tend to build adrenaline-fueled Q1-Q2 leads but fade in Q3-Q4.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Star Absence Liberation</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a team's alpha star is OUT (e.g., Wembanyama concussion), the model's default is to subtract their production. But in teams with elite depth, the absence can LIBERATE secondary players who receive more touches, shots, and confidence.
+            <br><br><strong>Evidence:</strong> SAS without Wemby saw Castle score 33pts and Harper 27/10 — both career highs. The minute and scoring redistribution produced BETTER team output because the supporting cast was talented enough to absorb the role expansion.
+            <br><br><strong>Solution:</strong> The model now projects "next-man-up" youth breakouts as the DEFAULT when an alpha is absent from a deep team, not as a surprise. This modifies the ptsRange [0,0] exclusion by recognizing that minute/scoring redistribution can produce better team output if the supporting cast is talented enough.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Second-Half Youth Fatigue</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Young, low-seeded teams consistently build strong first halves on adrenaline and home crowd energy but fade in Q3-Q4 as playoff intensity exceeds their experience threshold.
+            <br><br><strong>Evidence:</strong> POR scored 65 in H1 but only 43 in H2 of G3 against SAS. The adrenaline-fueled early lead evaporated as the veteran SAS squad sustained intensity and made tactical adjustments in the second half.
+            <br><br><strong>Solution:</strong> The model applies a -0.4% penalty to low-seed (7-8) teams in first-home-game scenarios to account for this predictable second-half drop-off. Elite teams with championship DNA (#1 seeds, veteran cores) exploit these fades with sustained intensity and tactical adjustments.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Road Turnover Volatility</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a team visits a hostile building for the first time in a series (typically G3), their turnover rate spikes significantly above baseline. The model did not account for this first-visit turnover inflation.
+            <br><br><strong>Evidence:</strong> CLE had 22 turnovers at Toronto (12 avg in G1-G2), with Harden committing 8. High-usage ball handlers are especially vulnerable because crowd noise disrupts secondary reads, passing lanes, and decision-making tempo.
+            <br><br><strong>Solution:</strong> The model now increases projected turnovers by 30-50% for road teams in their first away game of a series. High-usage ball handlers receive an additional turnover premium because they are most affected by the unfamiliar hostile environment.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Veteran Clutch Override</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Transcendent veterans with 15+ years of playoff experience defy the model's age and fatigue curves in crunch time. Standard age-based penalties underestimate their ability to produce decisive plays in high-leverage moments.
+            <br><br><strong>Evidence:</strong> LeBron at age 41 played 45+ minutes, stole the ball, and hit a game-tying 3 with 13 seconds left. Marcus Smart drew a 3-point foul down 6 with 25 seconds left. CJ McCollum hit game-winners in consecutive games (G2 and G3).
+            <br><br><strong>Solution:</strong> The model reduces age-based penalties for players with extensive playoff pedigree (15+ years) and gives a "clutch closer" premium to proven late-game performers. These plays are unmeasurable by statistical models but consistently produced by experienced veterans in crunch time.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 36: G3/G4 Deep Dive — Scheme Suppression Override, Nuclear Games, Coaching Counters</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Scheme-Driven 3PT Suppression Override</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a team's schemePersistence data shows their defense specifically targets the opponent's 3PT shooting, the model's 3PT regression engine reduces the weight toward regular-season mean by 50%. This prevents the model from incorrectly predicting shooting bounce-back when the suppression is structural (defensive scheme) rather than variance (cold streak).
+            <br><br><strong>Evidence:</strong> DEN shot 39.6% from 3 in the regular season but 22-30% across 4 games vs MIN because MIN's defense systematically removes 3PT looks. The regression engine kept predicting bounce-back that never came.
+            <br><br><strong>Solution:</strong> When schemePersistence is active for a defensive matchup, the regression weight toward regular-season 3PT mean is halved. This allows the model to respect sustained defensive scheme pressure rather than always expecting reversion to the mean.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Nuclear Game Probability</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> MVP-caliber players (rating &ge; 90) have approximately a 10-15% probability of a "nuclear game" where their shooting efficiency reaches historically extreme levels (70%+ FG). The model previously capped individual projections, failing to account for this tail risk.
+            <br><br><strong>Evidence:</strong> SGA's 42pts on 15-18 FG (83.3%) in OKC-PHX G3 exemplifies this phenomenon. When a nuclear game occurs, margin projections become irrelevant because one player's output exceeds the entire team's expected advantage.
+            <br><br><strong>Solution:</strong> The model acknowledges nuclear game tail risk for MVP-caliber players rather than capping projections. This is communicated as a confidence interval widener rather than a point estimate change — the median projection stays the same but the upside tail extends significantly.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Coaching Counter Decay</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> When a player has consecutive clutch/breakout performances (e.g., McCollum's game-winners in G2 and G3), the opposing coach accumulates film and develops counter-schemes. By G4, the counter is typically effective, but the model's "clutch closer" premium did not decay.
+            <br><br><strong>Evidence:</strong> McCollum went from 9 made 3s in G1-G3 to 0 in G4 after Brown's defensive adjustment. The coaching counter neutralized the veteran closer premium that had been reliable for three consecutive games.
+            <br><br><strong>Solution:</strong> The model reduces "clutch closer" and "breakout persistence" premiums by approximately 30% per game after the initial breakout, reflecting coaching adaptation. This decay rate accelerates against elite coaching staffs (top-8 rated coaches).</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Multi-Star Absence Liberation (Extreme)</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Extension of the Star Absence Liberation concept to scenarios where MULTIPLE key players are absent simultaneously. When 2+ stars are out, the redistribution of minutes and touches to talented replacements can produce historically great performances that exceed any individual's career ceiling.
+            <br><br><strong>Evidence:</strong> MIN won G4 by 16 without both Edwards AND DiVincenzo. Dosunmu scored 43pts — the highest by a playoff reserve in 50 years. The model would have projected a large deficit, but the extreme redistribution produced an outcome better than the baseline with stars present.
+            <br><br><strong>Solution:</strong> The model projects ELEVATED ceilings for replacement players in multi-absence scenarios, not just redistributed baseline production. Deep teams with talented reserves can actually perform better when forced into liberation mode because role clarity increases and defensive attention disperses.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 37: Series Scoring Context, Score Range Bands, Macro Playoff Analysis</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Series Scoring Context Adjustment</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The engine blends projected team scores with the series' actual scoring average to produce more realistic point totals. For G2, the blend is 40% series data / 60% model. By G4+, the blend is 60% series data / 40% model. This fixes the problem where the engine projected all games in a narrow 98-116 range while actual scores ranged from 83 to 131.
+            <br><br><strong>Evidence:</strong> Low-scoring defensive grinds (DET-ORL) now project closer to 95, while high-scoring shootouts (OKC-PHX) project closer to 115. The regular-season ORtg/DRtg inputs produce average-seeking projections that fail to capture each series' unique scoring environment.
+            <br><br><strong>Solution:</strong> Progressive blending with series actual scoring average. The weighting increases as more games are played (40% at G2, 60% at G4+), giving the model more confidence in the series-specific scoring context as the sample grows.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Scoring Range Bands</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Every projected score includes &plusmn;12% variance bands showing the realistic range of possible outcomes. For example, a point estimate of DET 101 produces a range of 89-113. This acknowledges that any given game can produce extreme shooting variance that no statistical model can predict as a point estimate.
+            <br><br><strong>Evidence:</strong> ORL shot 32.6% FG in G4 while OKC shot 50% from 3PT in G4 — both outcomes are within normal game-to-game variance but produce wildly different scores than point estimates would suggest.
+            <br><br><strong>Solution:</strong> The range represents the plausible scoring outcomes given normal game-to-game variance. The &plusmn;12% band was calibrated from the actual score distribution observed across the first round, where scores ranged from 83 to 131.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 38: G5 Analysis — Elimination Heroics, Closeout Pressure, Home Star Ceilings</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Elimination Game Star Elevation <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(EGSE)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model treated elimination games as standard games with a small pressure modifier. In reality, franchise-caliber stars facing elimination produce performances 1.2-1.5x above their series average. The model's closeout confidence was inflated because it didn't account for this star elevation effect.
+            <br><br><strong>Evidence:</strong> Embiid scored 2pts in Q1 of BOS-PHI G5, then exploded for 31pts in Q2-Q4 (finishing with 33pts + 8ast). His series average entering G5 was ~17pts. The elimination trigger unlocked a gear the model had no mechanism to project. Similarly, Maxey's 25/10reb/5ast was his best all-around game of the series.
+            <br><br><strong>Solution:</strong> When projecting elimination games, multiply the star's projected output by 1.2x (base) to 1.5x (franchise player at home). This stacks with Home Star Ceiling Games for maximum elevation. Conversely, reduce closeout team confidence by 10-15% to account for the opponent's desperation-fueled intensity.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Closeout Pressure Inversion <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(CPI)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model assumed a team with a 3-1 or 3-2 series lead would perform at or above baseline because they have "nothing to lose." In reality, the pressure to close out a series often creates tightness and execution failures equal to or exceeding the elimination team's pressure.
+            <br><br><strong>Evidence:</strong> BOS scored 118pts in G4 (win) but only 97pts in G5 (loss) — a 21pt scoring drop. Their Q4 was catastrophic: 10pts on 3-22 FG (13.6%). The psychological weight of "this could be the clincher" manifested as shooting paralysis in crunch time. Meanwhile PHI, facing elimination, played freely and shot 50% FG.
+            <br><br><strong>Solution:</strong> When the leading team is attempting to close, apply a -3% to -5% shooting efficiency drag in the model's projected FG%. The drag intensifies on the road (away closeout games are historically harder). This partially offsets the series lead advantage that the model currently treats as purely beneficial.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Home Star Ceiling Games <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(HSCG)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model treats home/away as a flat team-level advantage (+2.5 R1 HCA). But elite stars produce their ceiling games disproportionately at home, where crowd energy, familiar shooting backgrounds, and rhythm create an amplification effect beyond the generic HCA.
+            <br><br><strong>Evidence:</strong> Brunson's 39pts (65.2% FG) came at MSG. Embiid's 33-point elimination explosion came at Wells Fargo Center. 3PT regression timing also correlates with venue — road shooters regress to mean faster while home shooters sustain hot streaks longer. ATL's road scoring evaporated in G5 (97pts on 45% FG) after scoring 117+ at home in G3.
+            <br><br><strong>Solution:</strong> For star players (rating &ge; 80) playing at home, widen the upside ceiling by 10-15% while keeping the floor the same. This creates an asymmetric projection: the median stays similar but the probability of a ceiling game increases at home. Youth breakout persistence is venue-dependent — Henderson's 31pts G2 (home) → 5pts G5 (away) confirms this pattern.</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>`;
 }
 

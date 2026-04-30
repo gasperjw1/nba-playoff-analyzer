@@ -561,6 +561,196 @@ const G4_BOX_SCORES = {
   }
 };
 
+// ---- DET-ORL G4 (Apr 27) ----
+G4_BOX_SCORES["DET-ORL"] = {
+  homeTeam: "DET",
+  awayTeam: "ORL",
+  home: [
+    {name:"Tobias Harris",min:35,pts:20,reb:6,ast:0,stl:1,blk:1,fgm:8,fga:17,tpm:0,tpa:5,ftm:4,fta:5,to:1,orb:0},
+    {name:"Duncan Robinson",min:29,pts:7,reb:2,ast:1,stl:1,blk:0,fgm:2,fga:8,tpm:1,tpa:6,ftm:2,fta:2,to:1,orb:0},
+    {name:"Jalen Duren",min:31,pts:12,reb:8,ast:3,stl:1,blk:1,fgm:5,fga:8,tpm:0,tpa:0,ftm:2,fta:2,to:4,orb:4},
+    {name:"Cade Cunningham",min:39,pts:25,reb:9,ast:6,stl:0,blk:2,fgm:7,fga:23,tpm:3,tpa:11,ftm:8,fta:10,to:8,orb:0},
+    {name:"Ausar Thompson",min:32,pts:6,reb:4,ast:1,stl:2,blk:1,fgm:2,fga:8,tpm:0,tpa:0,ftm:2,fta:2,to:2,orb:2},
+    {name:"Isaiah Stewart",min:17,pts:8,reb:3,ast:1,stl:0,blk:0,fgm:3,fga:4,tpm:1,tpa:1,ftm:1,fta:3,to:2,orb:0},
+    {name:"Javonte Green",min:17,pts:5,reb:5,ast:0,stl:1,blk:2,fgm:2,fga:4,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+    {name:"Caris LeVert",min:25,pts:2,reb:5,ast:3,stl:2,blk:0,fgm:1,fga:4,tpm:0,tpa:1,ftm:0,fta:0,to:2,orb:0},
+    {name:"Kevin Huerter",min:13,pts:3,reb:2,ast:0,stl:0,blk:0,fgm:1,fga:6,tpm:0,tpa:3,ftm:1,fta:2,to:0,orb:0}
+  ],
+  away: [
+    {name:"Paolo Banchero",min:40,pts:18,reb:8,ast:4,stl:1,blk:1,fgm:4,fga:18,tpm:0,tpa:4,ftm:10,fta:13,to:2,orb:0},
+    {name:"Franz Wagner",min:24,pts:19,reb:5,ast:3,stl:4,blk:0,fgm:7,fga:15,tpm:1,tpa:3,ftm:4,fta:4,to:0,orb:1},
+    {name:"Wendell Carter Jr.",min:35,pts:12,reb:11,ast:4,stl:0,blk:2,fgm:3,fga:8,tpm:1,tpa:2,ftm:5,fta:8,to:2,orb:5},
+    {name:"Desmond Bane",min:37,pts:22,reb:5,ast:1,stl:1,blk:0,fgm:7,fga:18,tpm:5,tpa:10,ftm:3,fta:4,to:3,orb:0},
+    {name:"Jalen Suggs",min:35,pts:5,reb:2,ast:2,stl:2,blk:1,fgm:1,fga:13,tpm:1,tpa:11,ftm:2,fta:2,to:3,orb:0},
+    {name:"Jamal Cain",min:24,pts:8,reb:9,ast:0,stl:0,blk:0,fgm:4,fga:8,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:3},
+    {name:"Tristan da Silva",min:14,pts:6,reb:4,ast:1,stl:0,blk:0,fgm:2,fga:4,tpm:1,tpa:3,ftm:1,fta:2,to:0,orb:1},
+    {name:"Goga Bitadze",min:13,pts:2,reb:6,ast:0,stl:0,blk:2,fgm:1,fga:4,tpm:0,tpa:0,ftm:0,fta:1,to:0,orb:4},
+    {name:"Anthony Black",min:18,pts:2,reb:2,ast:0,stl:0,blk:0,fgm:1,fga:4,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
+  ]
+};
+
+// ---- OKC-PHX G4 (Apr 27) ----
+G4_BOX_SCORES["OKC-PHX"] = {
+  homeTeam: "OKC",
+  awayTeam: "PHX",
+  home: [
+    {name:"Shai Gilgeous-Alexander",min:38,pts:31,reb:1,ast:8,stl:3,blk:0,fgm:10,fga:17,tpm:2,tpa:4,ftm:9,fta:10,to:2,orb:2},
+    {name:"Chet Holmgren",min:34,pts:24,reb:12,ast:3,stl:2,blk:2,fgm:9,fga:16,tpm:2,tpa:5,ftm:4,fta:4,to:2,orb:2},
+    {name:"Isaiah Hartenstein",min:29,pts:18,reb:12,ast:2,stl:1,blk:0,fgm:5,fga:7,tpm:0,tpa:0,ftm:8,fta:9,to:3,orb:7},
+    {name:"Luguentz Dort",min:27,pts:3,reb:1,ast:0,stl:0,blk:0,fgm:1,fga:2,tpm:0,tpa:2,ftm:1,fta:2,to:0,orb:0},
+    {name:"Ajay Mitchell",min:34,pts:22,reb:4,ast:4,stl:3,blk:0,fgm:7,fga:16,tpm:4,tpa:6,ftm:4,fta:4,to:1,orb:0},
+    {name:"Jaylin Williams",min:10,pts:3,reb:0,ast:1,stl:0,blk:0,fgm:1,fga:3,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+    {name:"Alex Caruso",min:25,pts:14,reb:4,ast:1,stl:3,blk:1,fgm:5,fga:7,tpm:4,tpa:6,ftm:0,fta:0,to:0,orb:0},
+    {name:"Cason Wallace",min:11,pts:2,reb:0,ast:0,stl:0,blk:0,fgm:1,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+    {name:"Jared McCain",min:22,pts:10,reb:4,ast:4,stl:2,blk:1,fgm:4,fga:7,tpm:2,tpa:3,ftm:0,fta:0,to:1,orb:0},
+    {name:"Isaiah Joe",min:7,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
+  ],
+  away: [
+    {name:"Dillon Brooks",min:42,pts:23,reb:4,ast:3,stl:0,blk:1,fgm:10,fga:19,tpm:2,tpa:4,ftm:1,fta:1,to:2,orb:0},
+    {name:"Oso Ighodaro",min:4,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:5,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:0},
+    {name:"Devin Booker",min:42,pts:24,reb:9,ast:6,stl:0,blk:1,fgm:8,fga:16,tpm:1,tpa:6,ftm:7,fta:9,to:3,orb:0},
+    {name:"Collin Gillespie",min:29,pts:20,reb:1,ast:2,stl:1,blk:0,fgm:7,fga:12,tpm:6,tpa:11,ftm:0,fta:0,to:2,orb:0},
+    {name:"Jalen Green",min:39,pts:23,reb:6,ast:4,stl:2,blk:0,fgm:10,fga:25,tpm:1,tpa:10,ftm:2,fta:2,to:3,orb:0},
+    {name:"Royce O'Neale",min:18,pts:8,reb:7,ast:2,stl:1,blk:0,fgm:3,fga:3,tpm:2,tpa:2,ftm:0,fta:0,to:0,orb:0},
+    {name:"Ryan Dunn",min:10,pts:0,reb:1,ast:0,stl:0,blk:0,fgm:0,fga:2,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:0},
+    {name:"Rasheer Fleming",min:9,pts:0,reb:0,ast:1,stl:0,blk:0,fgm:0,fga:2,tpm:0,tpa:2,ftm:0,fta:0,to:1,orb:0},
+    {name:"Khaman Maluach",min:5,pts:2,reb:0,ast:0,stl:0,blk:0,fgm:1,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+    {name:"Grayson Allen",min:21,pts:12,reb:2,ast:3,stl:0,blk:0,fgm:4,fga:5,tpm:2,tpa:3,ftm:2,fta:2,to:0,orb:0}
+  ]
+};
+
+const G5_BOX_SCORES = {
+  "BOS-PHI": {
+    homeTeam: "BOS",
+    awayTeam: "PHI",
+    home: [
+      {name:"Jayson Tatum",min:41,pts:24,reb:16,ast:4,stl:3,blk:0,fgm:8,fga:19,tpm:4,tpa:12,ftm:4,fta:7,to:4,orb:3},
+      {name:"Sam Hauser",min:20,pts:8,reb:5,ast:0,stl:0,blk:0,fgm:3,fga:7,tpm:2,tpa:5,ftm:0,fta:0,to:2,orb:2},
+      {name:"Neemias Queta",min:26,pts:8,reb:14,ast:1,stl:0,blk:0,fgm:4,fga:8,tpm:0,tpa:0,ftm:0,fta:2,to:0,orb:5},
+      {name:"Derrick White",min:36,pts:6,reb:1,ast:3,stl:0,blk:0,fgm:2,fga:8,tpm:0,tpa:4,ftm:2,fta:2,to:1,orb:0},
+      {name:"Jaylen Brown",min:41,pts:22,reb:5,ast:5,stl:1,blk:0,fgm:9,fga:23,tpm:1,tpa:4,ftm:3,fta:5,to:3,orb:3},
+      {name:"Payton Pritchard",min:26,pts:12,reb:2,ast:6,stl:0,blk:0,fgm:5,fga:10,tpm:1,tpa:5,ftm:1,fta:1,to:0,orb:0},
+      {name:"Nikola Vucevic",min:15,pts:8,reb:2,ast:3,stl:0,blk:0,fgm:3,fga:6,tpm:2,tpa:5,ftm:0,fta:0,to:1,orb:0},
+      {name:"Luka Garza",min:6,pts:4,reb:0,ast:1,stl:0,blk:0,fgm:1,fga:2,tpm:0,tpa:1,ftm:2,fta:2,to:0,orb:0},
+      {name:"Ron Harper Jr.",min:2,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Baylor Scheierman",min:9,pts:3,reb:0,ast:0,stl:0,blk:0,fgm:1,fga:2,tpm:1,tpa:2,ftm:0,fta:0,to:1,orb:0},
+      {name:"Jordan Walsh",min:16,pts:1,reb:3,ast:2,stl:2,blk:0,fgm:0,fga:2,tpm:0,tpa:1,ftm:1,fta:2,to:0,orb:1}
+    ],
+    away: [
+      {name:"Paul George",min:43,pts:16,reb:9,ast:7,stl:2,blk:0,fgm:6,fga:13,tpm:4,tpa:9,ftm:0,fta:0,to:2,orb:0},
+      {name:"Joel Embiid",min:39,pts:33,reb:4,ast:8,stl:0,blk:1,fgm:12,fga:23,tpm:0,tpa:5,ftm:9,fta:10,to:3,orb:1},
+      {name:"Kelly Oubre Jr.",min:32,pts:4,reb:6,ast:1,stl:0,blk:0,fgm:2,fga:5,tpm:0,tpa:2,ftm:0,fta:1,to:0,orb:0},
+      {name:"Tyrese Maxey",min:43,pts:25,reb:10,ast:5,stl:2,blk:1,fgm:10,fga:18,tpm:3,tpa:10,ftm:2,fta:2,to:2,orb:0},
+      {name:"VJ Edgecombe",min:40,pts:10,reb:7,ast:3,stl:1,blk:0,fgm:3,fga:8,tpm:3,tpa:6,ftm:1,fta:2,to:1,orb:2},
+      {name:"Quentin Grimes",min:24,pts:18,reb:2,ast:0,stl:0,blk:1,fgm:5,fga:8,tpm:4,tpa:7,ftm:4,fta:4,to:1,orb:0},
+      {name:"Andre Drummond",min:7,pts:5,reb:4,ast:0,stl:0,blk:0,fgm:1,fga:1,tpm:1,tpa:1,ftm:2,fta:2,to:0,orb:0},
+      {name:"Dominick Barlow",min:6,pts:2,reb:3,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:2,fta:2,to:0,orb:2}
+    ]
+  },
+  "DEN-MIN": {
+    homeTeam: "DEN",
+    awayTeam: "MIN",
+    home: [
+      {name:"Cameron Johnson",min:36,pts:18,reb:6,ast:5,stl:1,blk:0,fgm:8,fga:13,tpm:2,tpa:7,ftm:0,fta:0,to:2,orb:0},
+      {name:"Spencer Jones",min:43,pts:20,reb:3,ast:1,stl:1,blk:3,fgm:7,fga:9,tpm:4,tpa:5,ftm:2,fta:2,to:0,orb:0},
+      {name:"Nikola Jokic",min:38,pts:27,reb:12,ast:16,stl:0,blk:2,fgm:9,fga:15,tpm:1,tpa:4,ftm:8,fta:10,to:3,orb:0},
+      {name:"Jamal Murray",min:39,pts:24,reb:4,ast:4,stl:1,blk:0,fgm:9,fga:23,tpm:2,tpa:6,ftm:4,fta:4,to:2,orb:0},
+      {name:"Christian Braun",min:31,pts:19,reb:2,ast:2,stl:1,blk:0,fgm:7,fga:12,tpm:2,tpa:4,ftm:3,fta:4,to:3,orb:0},
+      {name:"Jonas Valanciunas",min:10,pts:9,reb:2,ast:1,stl:0,blk:0,fgm:4,fga:4,tpm:0,tpa:0,ftm:1,fta:2,to:1,orb:0},
+      {name:"Tim Hardaway Jr.",min:12,pts:8,reb:1,ast:0,stl:0,blk:0,fgm:3,fga:5,tpm:1,tpa:3,ftm:1,fta:1,to:0,orb:0},
+      {name:"Tyus Jones",min:14,pts:0,reb:2,ast:0,stl:1,blk:0,fgm:0,fga:2,tpm:0,tpa:0,ftm:0,fta:1,to:0,orb:0},
+      {name:"Bruce Brown",min:20,pts:0,reb:0,ast:3,stl:2,blk:0,fgm:0,fga:7,tpm:0,tpa:2,ftm:0,fta:1,to:2,orb:0}
+    ],
+    away: [
+      {name:"Julius Randle",min:32,pts:27,reb:9,ast:6,stl:0,blk:1,fgm:8,fga:15,tpm:2,tpa:4,ftm:9,fta:11,to:3,orb:0},
+      {name:"Jaden McDaniels",min:27,pts:13,reb:3,ast:1,stl:0,blk:1,fgm:5,fga:11,tpm:0,tpa:3,ftm:3,fta:5,to:1,orb:0},
+      {name:"Rudy Gobert",min:29,pts:3,reb:7,ast:2,stl:1,blk:2,fgm:1,fga:2,tpm:0,tpa:0,ftm:1,fta:1,to:0,orb:0},
+      {name:"Mike Conley",min:25,pts:17,reb:1,ast:4,stl:1,blk:0,fgm:7,fga:14,tpm:3,tpa:5,ftm:0,fta:0,to:1,orb:0},
+      {name:"Ayo Dosunmu",min:38,pts:18,reb:3,ast:4,stl:2,blk:1,fgm:7,fga:14,tpm:2,tpa:5,ftm:2,fta:3,to:4,orb:0},
+      {name:"Joe Ingles",min:3,pts:0,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Kyle Anderson",min:15,pts:4,reb:3,ast:6,stl:0,blk:0,fgm:2,fga:4,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Naz Reid",min:24,pts:12,reb:8,ast:1,stl:0,blk:0,fgm:5,fga:11,tpm:2,tpa:5,ftm:0,fta:0,to:4,orb:0},
+      {name:"Jaylen Clark",min:11,pts:0,reb:1,ast:0,stl:0,blk:0,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:0},
+      {name:"Bones Hyland",min:14,pts:15,reb:2,ast:1,stl:1,blk:0,fgm:6,fga:10,tpm:3,tpa:7,ftm:0,fta:0,to:2,orb:0},
+      {name:"Julian Phillips",min:3,pts:2,reb:0,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:2,fta:2,to:0,orb:0}
+    ]
+  },
+  "DET-ORL": {
+    homeTeam: "DET",
+    awayTeam: "ORL",
+    home: [
+      {name:"Tobias Harris",min:31,pts:23,reb:8,ast:1,stl:2,blk:0,fgm:9,fga:18,tpm:1,tpa:3,ftm:4,fta:7,to:1,orb:1},
+      {name:"Duncan Robinson",min:25,pts:12,reb:3,ast:1,stl:0,blk:0,fgm:4,fga:8,tpm:3,tpa:6,ftm:1,fta:2,to:1,orb:1},
+      {name:"Jalen Duren",min:28,pts:12,reb:9,ast:2,stl:0,blk:2,fgm:4,fga:6,tpm:0,tpa:0,ftm:4,fta:4,to:3,orb:5},
+      {name:"Cade Cunningham",min:44,pts:45,reb:4,ast:5,stl:1,blk:0,fgm:13,fga:23,tpm:5,tpa:8,ftm:14,fta:14,to:6,orb:3},
+      {name:"Ausar Thompson",min:36,pts:6,reb:15,ast:6,stl:5,blk:2,fgm:3,fga:5,tpm:0,tpa:0,ftm:0,fta:2,to:5,orb:4},
+      {name:"Isaiah Stewart",min:20,pts:5,reb:5,ast:0,stl:0,blk:1,fgm:1,fga:3,tpm:0,tpa:1,ftm:3,fta:4,to:0,orb:1},
+      {name:"Javonte Green",min:15,pts:5,reb:2,ast:1,stl:1,blk:0,fgm:2,fga:5,tpm:1,tpa:4,ftm:0,fta:0,to:0,orb:0},
+      {name:"Caris LeVert",min:25,pts:2,reb:3,ast:2,stl:0,blk:0,fgm:1,fga:4,tpm:0,tpa:1,ftm:0,fta:0,to:1,orb:1},
+      {name:"Daniss Jenkins",min:16,pts:6,reb:0,ast:2,stl:1,blk:0,fgm:2,fga:8,tpm:0,tpa:5,ftm:2,fta:2,to:0,orb:0}
+    ],
+    away: [
+      {name:"Jamal Cain",min:25,pts:5,reb:4,ast:1,stl:0,blk:0,fgm:1,fga:4,tpm:0,tpa:1,ftm:3,fta:7,to:1,orb:1},
+      {name:"Paolo Banchero",min:41,pts:45,reb:9,ast:7,stl:2,blk:0,fgm:17,fga:31,tpm:6,tpa:11,ftm:5,fta:12,to:6,orb:2},
+      {name:"WCJ",min:34,pts:9,reb:4,ast:4,stl:1,blk:3,fgm:2,fga:4,tpm:1,tpa:3,ftm:4,fta:4,to:1,orb:2},
+      {name:"Desmond Bane",min:34,pts:18,reb:5,ast:1,stl:3,blk:0,fgm:6,fga:15,tpm:4,tpa:10,ftm:2,fta:2,to:2,orb:1},
+      {name:"Jalen Suggs",min:37,pts:10,reb:2,ast:5,stl:3,blk:0,fgm:4,fga:9,tpm:2,tpa:5,ftm:0,fta:1,to:1,orb:0},
+      {name:"Tristan da Silva",min:16,pts:3,reb:3,ast:0,stl:0,blk:0,fgm:1,fga:4,tpm:0,tpa:2,ftm:1,fta:2,to:0,orb:2},
+      {name:"Goga Bitadze",min:14,pts:0,reb:1,ast:0,stl:0,blk:2,fgm:0,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:2,orb:0},
+      {name:"Anthony Black",min:39,pts:19,reb:5,ast:3,stl:3,blk:0,fgm:7,fga:12,tpm:4,tpa:6,ftm:1,fta:2,to:3,orb:0}
+    ]
+  },
+  "CLE-TOR": {
+    homeTeam: "CLE",
+    awayTeam: "TOR",
+    home: [
+      {name:"Jarrett Allen",min:25,pts:9,reb:3,ast:1,stl:0,blk:3,fgm:4,fga:5,tpm:0,tpa:0,ftm:1,fta:2,to:3,orb:0},
+      {name:"Evan Mobley",min:33,pts:23,reb:9,ast:1,stl:1,blk:3,fgm:8,fga:13,tpm:3,tpa:3,ftm:4,fta:8,to:0,orb:2},
+      {name:"James Harden",min:40,pts:23,reb:9,ast:5,stl:2,blk:1,fgm:7,fga:13,tpm:4,tpa:8,ftm:5,fta:6,to:6,orb:1},
+      {name:"Donovan Mitchell",min:31,pts:19,reb:5,ast:3,stl:1,blk:1,fgm:7,fga:17,tpm:3,tpa:5,ftm:2,fta:2,to:2,orb:0},
+      {name:"Max Strus",min:27,pts:8,reb:4,ast:2,stl:1,blk:0,fgm:2,fga:4,tpm:0,tpa:2,ftm:4,fta:4,to:0,orb:0},
+      {name:"Dean Wade",min:21,pts:7,reb:3,ast:1,stl:1,blk:0,fgm:3,fga:10,tpm:1,tpa:6,ftm:0,fta:0,to:0,orb:1},
+      {name:"Dennis Schroder",min:21,pts:19,reb:0,ast:2,stl:0,blk:0,fgm:7,fga:11,tpm:3,tpa:6,ftm:2,fta:2,to:0,orb:0},
+      {name:"Sam Merrill",min:23,pts:9,reb:1,ast:2,stl:1,blk:0,fgm:2,fga:3,tpm:2,tpa:2,ftm:3,fta:4,to:2,orb:0},
+      {name:"Jaylon Tyson",min:13,pts:8,reb:1,ast:2,stl:0,blk:0,fgm:3,fga:5,tpm:2,tpa:4,ftm:0,fta:0,to:0,orb:0}
+    ],
+    away: [
+      {name:"Brandon Ingram",min:11,pts:1,reb:1,ast:2,stl:0,blk:1,fgm:0,fga:2,tpm:0,tpa:0,ftm:1,fta:2,to:1,orb:0},
+      {name:"RJ Barrett",min:38,pts:25,reb:12,ast:5,stl:0,blk:0,fgm:9,fga:19,tpm:2,tpa:5,ftm:5,fta:9,to:3,orb:5},
+      {name:"Scottie Barnes",min:39,pts:17,reb:8,ast:11,stl:1,blk:3,fgm:6,fga:16,tpm:0,tpa:3,ftm:5,fta:6,to:4,orb:2},
+      {name:"Jakob Poeltl",min:21,pts:14,reb:9,ast:3,stl:0,blk:1,fgm:5,fga:6,tpm:0,tpa:0,ftm:4,fta:6,to:0,orb:0},
+      {name:"Ja'Kobe Walter",min:35,pts:20,reb:3,ast:2,stl:4,blk:0,fgm:7,fga:16,tpm:6,tpa:14,ftm:0,fta:0,to:1,orb:1},
+      {name:"Sandro Mamukelashvili",min:15,pts:10,reb:3,ast:0,stl:0,blk:1,fgm:3,fga:9,tpm:2,tpa:5,ftm:2,fta:2,to:0,orb:1},
+      {name:"Jamison Battle",min:19,pts:7,reb:6,ast:0,stl:0,blk:0,fgm:3,fga:5,tpm:1,tpa:1,ftm:0,fta:0,to:1,orb:3},
+      {name:"Collin Murray-Boyles",min:26,pts:8,reb:5,ast:2,stl:1,blk:1,fgm:4,fga:5,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:2},
+      {name:"Jamal Shead",min:34,pts:18,reb:1,ast:7,stl:2,blk:0,fgm:7,fga:15,tpm:4,tpa:10,ftm:0,fta:0,to:3,orb:1}
+    ]
+  },
+  "HOU-LAL": {
+    home: [
+      {name:"Jabari Smith Jr.",min:42,pts:22,reb:7,ast:3,stl:0,blk:0,fgm:6,fga:13,tpm:4,tpa:9,ftm:6,fta:8,to:2,orb:0},
+      {name:"Tari Eason",min:31,pts:18,reb:5,ast:1,stl:0,blk:1,fgm:6,fga:11,tpm:2,tpa:6,ftm:4,fta:5,to:0,orb:0},
+      {name:"Alperen Sengun",min:43,pts:14,reb:9,ast:8,stl:2,blk:1,fgm:5,fga:9,tpm:0,tpa:0,ftm:4,fta:4,to:5,orb:0},
+      {name:"Amen Thompson",min:45,pts:15,reb:7,ast:4,stl:4,blk:0,fgm:4,fga:14,tpm:2,tpa:5,ftm:5,fta:8,to:3,orb:0},
+      {name:"Reed Sheppard",min:35,pts:12,reb:0,ast:6,stl:3,blk:0,fgm:5,fga:12,tpm:2,tpa:7,ftm:0,fta:0,to:1,orb:0},
+      {name:"Josh Okogie",min:18,pts:7,reb:3,ast:2,stl:1,blk:0,fgm:3,fga:6,tpm:1,tpa:4,ftm:0,fta:0,to:0,orb:0},
+      {name:"Aaron Holiday",min:12,pts:5,reb:0,ast:0,stl:0,blk:0,fgm:2,fga:5,tpm:1,tpa:4,ftm:0,fta:0,to:0,orb:0},
+      {name:"Dorian Finney-Smith",min:11,pts:6,reb:3,ast:1,stl:0,blk:0,fgm:2,fga:5,tpm:2,tpa:5,ftm:0,fta:0,to:1,orb:0}
+    ],
+    away: [
+      {name:"LeBron James",min:39,pts:25,reb:3,ast:7,stl:2,blk:0,fgm:9,fga:20,tpm:0,tpa:6,ftm:7,fta:10,to:2,orb:0},
+      {name:"Rui Hachimura",min:36,pts:12,reb:3,ast:0,stl:1,blk:0,fgm:5,fga:11,tpm:2,tpa:3,ftm:0,fta:0,to:1,orb:0},
+      {name:"Deandre Ayton",min:38,pts:18,reb:17,ast:0,stl:0,blk:2,fgm:9,fga:14,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:10},
+      {name:"Marcus Smart",min:36,pts:11,reb:6,ast:2,stl:0,blk:0,fgm:3,fga:7,tpm:3,tpa:7,ftm:2,fta:2,to:6,orb:0},
+      {name:"Luke Kennard",min:31,pts:1,reb:3,ast:2,stl:1,blk:1,fgm:0,fga:4,tpm:0,tpa:2,ftm:1,fta:2,to:2,orb:0},
+      {name:"Austin Reaves",min:33,pts:22,reb:4,ast:6,stl:0,blk:1,fgm:4,fga:16,tpm:2,tpa:8,ftm:12,fta:13,to:3,orb:0},
+      {name:"Jake LaRavia",min:8,pts:2,reb:2,ast:0,stl:0,blk:1,fgm:1,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Jaxson Hayes",min:9,pts:0,reb:1,ast:0,stl:0,blk:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:0},
+      {name:"Jarred Vanderbilt",min:5,pts:2,reb:2,ast:0,stl:0,blk:0,fgm:1,fga:3,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0}
+    ]
+  }
+};
+
 // Attach box scores to SERIES_DATA games[0], games[1], games[2], and games[3]
 (function attachBoxScores() {
   if (typeof SERIES_DATA === 'undefined') return;
@@ -580,6 +770,10 @@ const G4_BOX_SCORES = {
     const bs4 = G4_BOX_SCORES && G4_BOX_SCORES[s.id];
     if (bs4 && s.games[3]) {
       s.games[3].boxScores = bs4;
+    }
+    const bs5 = G5_BOX_SCORES && G5_BOX_SCORES[s.id];
+    if (bs5 && s.games[4]) {
+      s.games[4].boxScores = bs5;
     }
   });
 })();
