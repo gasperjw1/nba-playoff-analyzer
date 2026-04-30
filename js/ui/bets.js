@@ -74,8 +74,8 @@ function renderBetsPage(el) {
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">HOU-LAL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#ffc73a;">HOU 55%</div>
-              <div style="font-size:9px;color:#666;">103-101 | COIN FLIP</div>
+              <div style="font-size:18px;font-weight:700;color:#ffc73a;">LAL 52%</div>
+              <div style="font-size:9px;color:#666;">106-104 | COIN FLIP (Reaves ↑)</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">DET-ORL G6</div>
@@ -94,7 +94,7 @@ function renderBetsPage(el) {
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">NYK 84%</span> to win series<br/><span style="color:#666;">G6: 57% | G7: 43%</span></div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 86%</span> to win series<br/><span style="color:#666;">G6: 59% | G7: 41%</span></div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">MIN 67%</span> to win series<br/><span style="color:#666;">G6: 44% | G7: 56%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">LAL 71%</span> to win series<br/><span style="color:#666;">G6: 48% | G7: 52%</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">LAL 74%</span> to win series<br/><span style="color:#666;">G6: 52% | G7: 48% (Reaves ↑)</span></div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">ORL 71%</span> to win series<br/><span style="color:#666;">G6: 48% | G7: 52%</span></div>
           </div>
           <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 41 Ensemble: blended model picks winners (72.7%), sim generates probability distributions | SD ±11.6 calibrated to 28K games | 5/6 series aligned, 1 coin flip</div>
@@ -201,7 +201,7 @@ function renderBetsPage(el) {
               <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f44336;">Three underdog scenarios the ensemble says are each ~39%. <strong>PHI ML</strong> — Embiid's 33pts G5 + Wells Fargo crowd. Ensemble gives PHI 39% — that's 2 in 5 games, not a long shot. <strong>ATL ML</strong> — weakest leg. ATL's road win at MSG (G2) proves they can punch. State Farm in desperation mode. <strong>MIN ML</strong> — the longest shot. Edwards is OUT (knee, May 9), DiVincenzo OUT FOR SEASON. MIN went 0-2 without Ant and had 25 TOs in G5. All three hitting = 0.39³ = ~5.9%. At +2200 (implied 4.3%), this is technically +EV but the MIN leg drags it down significantly.</div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;">Three underdog scenarios the ensemble says are each ~39%. <strong>PHI ML</strong> — Embiid's 33pts G5 + Wells Fargo crowd. Ensemble gives PHI 39% — that's 2 in 5 games, not a long shot. <strong>ATL ML</strong> — weakest leg. ATL's road win at MSG (G2) proves they can punch. State Farm in desperation mode. <strong>MIN ML</strong> — the longest shot. Edwards is OUT (knee, May 9), DiVincenzo OUT FOR SEASON. MIN went 0-2 without Ant and had 25 TOs in G5. All three hitting = 0.39³ = ~5.9%. At +2200 (implied 4.3%), this is technically +EV but the MIN leg drags it down significantly. <strong>NOTE: HOU-LAL flipped to LAL lean after Reaves upgrade (68→74). HOU ML is no longer an ensemble pick.</strong></div>
           <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(244,67,54,0.2);">
             <div style="font-size:10px;color:#f44336;font-weight:700;margin-bottom:4px;">CHAOS PROP ADD-ONS (if betting individually)</div>
             <div style="font-size:10px;color:#aaa;">Embiid O28.5pts (-115) pairs with PHI ML • Barnes O22.5pts (-110) for TOR elimination heroics • Cade O30.5pts (-105) if DET fights for survival</div>
@@ -1734,10 +1734,10 @@ function renderBetsPage(el) {
 
       <div class="bet-card" style="border-left:3px solid #ff9800;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">HOU ML @ LAL (Elimination survival)</div>
-        <div class="bet-line">+180 | Ensemble: HOU by 2 | <span style="color:#4caf50;">Ensemble: HOU 55%</span> — Systems agree</div>
-        <div class="bet-reasoning"><strong>Phase 41 ENSEMBLE UPDATE — pick flipped to HOU.</strong> HOU has won G4 by 19 and G5 by 6 — back-to-back elimination survival with escalating confidence. Smith Jr hot (4-9 3PT G5), Ayton dominant (18/17reb). LAL showed cracks: LeBron 0-6 3PT G5, Reaves rusty (4-16 FG), Smart 6 TOs. HOU at +180 is strong value — implied 35.7% vs ensemble 55%. <strong>Biggest value edge on the board if HOU's road momentum travels.</strong></div>
-        <span class="bet-edge model">Model + Sim ✓</span>
+        <div class="bet-pick">LAL ML vs HOU (Close-out at home)</div>
+        <div class="bet-line">+140 | Model: LAL by 2 | <span style="color:#ff9800;">Ensemble: ~52% LAL</span> — COIN FLIP (Reaves upgrade shifts lean)</div>
+        <div class="bet-reasoning"><strong>REAVES UPGRADE FLIPS THIS PICK.</strong> Reaves' rating jumped 68→74 (oblique severity 0.6→0.35) after his G5 return game. With one game of conditioning, expect his FG% to normalize from 25% toward 35-40%. This gives LAL their 3rd scorer back alongside LeBron + Ayton. LAL's G5 3PT collapse (25.9%, 7-27) was an anomaly — regression to the mean at home adds 5-8pts. Kennard (1pt G5) is due for a home bounce-back (17ppg G1-G2). <strong>BUT: HOU is undefeated at Toyota Center and this is a ROAD game for LAL. Genuine coin flip — lean LAL because Reaves is the biggest variable change since G5.</strong></div>
+        <span class="bet-edge" style="background:#ff9800;color:#000;">Coin Flip — Slight LAL Lean</span>
       </div>
 
       <div class="bet-card">

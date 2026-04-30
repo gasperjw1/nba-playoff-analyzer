@@ -591,21 +591,25 @@ function renderProjectionWaterfall(blend) {
     ...lineage.map(l => Math.abs(l.delta)),
     1
   );
-  // Scale factor: bars fill a 240px wide SVG center region (120px each side of zero)
-  const halfWidth = 120;
-  const scale = halfWidth / (maxAbs * 1.15); // 15% padding
+  // Scale factor: bars fill a 300px wide SVG center region (150px each side of zero)
+  const halfWidth = 150;
+  const scale = halfWidth / (maxAbs * 1.2); // 20% padding
 
-  const rowH = 18;
-  const labelW = 110;
-  const chartX = labelW + 4;
+  const rowH = 24;
+  const labelW = 140;
+  const chartX = labelW + 8;
   const chartW = halfWidth * 2;
-  const totalW = chartX + chartW + 40; // extra space for value label
-  const totalH = lineage.length * rowH + 24; // +24 for header
+  const valLabelW = 50;
+  const totalW = chartX + chartW + valLabelW;
+  const legendH = 44;
+  const headerH = 28;
+  const bodyStart = legendH + headerH;
+  const totalH = bodyStart + lineage.length * rowH + 12;
   const zeroX = chartX + halfWidth;
 
   // Build SVG rows
   const rows = lineage.map((step, i) => {
-    const y = 22 + i * rowH;
+    const y = bodyStart + i * rowH;
     const barW = Math.abs(step.delta) * scale;
     const isPositive = step.delta >= 0;
     const barX = isPositive ? zeroX : zeroX - barW;
@@ -619,14 +623,19 @@ function renderProjectionWaterfall(blend) {
     const markerX = zeroX + step.runningMargin * scale;
 
     // Truncate label to fit
-    const label = step.label.length > 22 ? step.label.slice(0, 20) + '…' : step.label;
+    const label = step.label.length > 26 ? step.label.slice(0, 24) + '…' : step.label;
+
+    // Alternating row background
+    const rowBg = i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent';
 
     return `
       <g>
-        <text x="${labelW}" y="${y + 12}" fill="var(--text-dim)" font-size="8" text-anchor="end" font-family="monospace">${label}</text>
-        ${Math.abs(step.delta) >= 0.01 ? `<rect x="${barX}" y="${y + 3}" width="${Math.max(barW, 1)}" height="${rowH - 6}" rx="2" fill="${barColor}" opacity="0.85"/>` : ''}
-        <line x1="${markerX}" y1="${y + 2}" x2="${markerX}" y2="${y + rowH - 2}" stroke="var(--text)" stroke-width="1.5" opacity="0.7"/>
-        <text x="${chartX + chartW + 4}" y="${y + 12}" fill="${isPositive ? 'var(--green)' : step.delta < 0 ? 'var(--red)' : 'var(--text-dim)'}" font-size="8" font-family="monospace">${deltaStr}</text>
+        <rect x="0" y="${y}" width="${totalW}" height="${rowH}" fill="${rowBg}"/>
+        <text x="${labelW}" y="${y + 16}" fill="var(--text-dim)" font-size="10" text-anchor="end" font-family="monospace">${label}</text>
+        ${Math.abs(step.delta) >= 0.01 ? `<rect x="${barX}" y="${y + 5}" width="${Math.max(barW, 2)}" height="${rowH - 10}" rx="3" fill="${barColor}" opacity="0.85"/>` : ''}
+        <line x1="${markerX}" y1="${y + 3}" x2="${markerX}" y2="${y + rowH - 3}" stroke="#fff" stroke-width="2" opacity="0.6"/>
+        <circle cx="${markerX}" cy="${y + rowH / 2}" r="3" fill="#fff" opacity="0.5"/>
+        <text x="${chartX + chartW + 6}" y="${y + 16}" fill="${isPositive ? 'var(--green)' : step.delta < 0 ? 'var(--red)' : 'var(--text-dim)'}" font-size="10" font-family="monospace">${deltaStr}</text>
       </g>`;
   }).join('');
 
@@ -634,20 +643,49 @@ function renderProjectionWaterfall(blend) {
   const finalStep = lineage[lineage.length - 1];
   const finalLabel = finalStep.runningMargin >= 0 ? 'Home +' + finalStep.runningMargin.toFixed(1) : 'Away +' + Math.abs(finalStep.runningMargin).toFixed(1);
 
+  // Legend items
+  const legendY = 8;
+  const legend = `
+    <g transform="translate(${chartX}, ${legendY})">
+      <rect x="0" y="0" width="${chartW + valLabelW - 8}" height="36" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <text x="8" y="13" fill="var(--text-dim)" font-size="9" font-weight="bold" font-family="sans-serif">LEGEND</text>
+      <!-- Green bar -->
+      <rect x="8" y="20" width="16" height="8" rx="2" fill="rgba(61,214,140,0.6)"/>
+      <text x="28" y="28" fill="var(--text-dim)" font-size="8" font-family="sans-serif">Positive factor</text>
+      <!-- Red bar -->
+      <rect x="110" y="20" width="16" height="8" rx="2" fill="rgba(239,68,68,0.55)"/>
+      <text x="130" y="28" fill="var(--text-dim)" font-size="8" font-family="sans-serif">Negative factor</text>
+      <!-- Marker -->
+      <line x1="210" y1="20" x2="210" y2="28" stroke="#fff" stroke-width="2" opacity="0.6"/>
+      <circle cx="210" cy="24" r="2.5" fill="#fff" opacity="0.5"/>
+      <text x="218" y="28" fill="var(--text-dim)" font-size="8" font-family="sans-serif">Running margin</text>
+    </g>`;
+
+  // Pixel height for the container, clamped so it doesn't get absurdly tall
+  const containerH = Math.min(totalH * 0.85, 520);
+
   return `
   <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-      <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Projection Lineage</span>
+      <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Projection Lineage — How the predicted margin was built</span>
       <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(167,139,250,0.12);color:var(--purple);border:1px solid rgba(167,139,250,0.2)">Final: ${finalLabel}</span>
     </div>
-    <svg viewBox="0 0 ${totalW} ${totalH}" style="width:100%;height:auto;min-height:${Math.min(totalH, 400)}px">
+    <div style="overflow-x:auto;">
+    <svg viewBox="0 0 ${totalW} ${totalH}" style="width:100%;max-width:700px;height:auto;min-height:${containerH}px" preserveAspectRatio="xMidYMin meet">
+      <!-- Legend -->
+      ${legend}
       <!-- Zero line -->
-      <line x1="${zeroX}" y1="16" x2="${zeroX}" y2="${totalH}" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="3,2"/>
-      <text x="${zeroX}" y="12" fill="var(--text-dim)" font-size="7" text-anchor="middle">0</text>
-      <text x="${zeroX - halfWidth * 0.6}" y="12" fill="var(--red)" font-size="7" text-anchor="middle">← Away</text>
-      <text x="${zeroX + halfWidth * 0.6}" y="12" fill="var(--green)" font-size="7" text-anchor="middle">Home →</text>
+      <line x1="${zeroX}" y1="${bodyStart - 4}" x2="${zeroX}" y2="${totalH}" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="3,2"/>
+      <!-- Axis labels -->
+      <text x="${zeroX}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" text-anchor="middle" font-family="sans-serif">0</text>
+      <text x="${zeroX - halfWidth * 0.55}" y="${bodyStart - 8}" fill="var(--red)" font-size="9" text-anchor="middle" font-family="sans-serif">← Away favored</text>
+      <text x="${zeroX + halfWidth * 0.55}" y="${bodyStart - 8}" fill="var(--green)" font-size="9" text-anchor="middle" font-family="sans-serif">Home favored →</text>
+      <!-- Column headers -->
+      <text x="${labelW}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" text-anchor="end" font-weight="bold" font-family="sans-serif">Factor</text>
+      <text x="${chartX + chartW + 6}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" font-weight="bold" font-family="sans-serif">Delta</text>
       ${rows}
     </svg>
+    </div>
   </div>`;
 }
 
