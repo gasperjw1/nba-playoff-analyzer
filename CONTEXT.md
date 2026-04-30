@@ -1,12 +1,12 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: April 30, 2026 (Phase 42 complete, G6 bets added).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: April 30, 2026 (Phase 43 complete, G6 odds calibrated vs DraftKings).
 
 ---
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 42-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props.
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 43-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds.
 
 **Current model accuracy: G1-G5 ML record 22/38 (57.9%) | G1 8/13 (61.5%) | G4 3/4 (75%) | G5 5/7 (71.4%)**
 
@@ -206,6 +206,7 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 | 40 | Monte Carlo chaos simulation (10K iterations) |
 | 41 | Unified ensemble (manual + engine + sim) |
 | 42 | Projection lineage waterfall, post-game attribution, round navigation, series graduation, localStorage V3 |
+| 43 | Market odds calibration — all G6 bets updated vs real DraftKings lines. CLE ML +110→-170, Jokic O24.5→O29.5, parlays recalculated |
 
 ---
 
