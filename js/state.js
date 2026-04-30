@@ -1,12 +1,13 @@
 // ============================================================
-// STATE MANAGEMENT
+// STATE MANAGEMENT (Phase 42 — Multi-Round + Lineage)
 // ============================================================
 
 // --- Active UI State ---
 let currentSeriesIdx = 0;
 let currentGameIdx = null;
 let currentFactorSeriesIdx = null;
-let currentRound = 'West';
+let currentConf = 'West';             // Active conference tab: 'West' | 'East'
+let currentPlayoffRound = 'R1';       // Active playoff round: 'R1' | 'R2' | 'CF' | 'Finals'
 let currentGameTab = 'overview';
 let currentRosterTeam = 'home';
 
@@ -50,36 +51,63 @@ function getEffectiveRating(player, seriesId) {
 }
 
 // --- Persistence (localStorage) ---
+// V3: Keyed by series ID (round-safe). V2: Keyed by array index (legacy).
 
-const STORAGE_KEY = 'nba2026playoffV2';
+const STORAGE_KEY = 'nba2026playoffV3';
+const LEGACY_STORAGE_KEY = 'nba2026playoffV2';
 
 /**
  * Load saved game results and player ratings from localStorage.
+ * Supports both V3 (keyed by series ID) and legacy V2 (keyed by array index).
  */
 function loadState() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return;
-
-    const parsed = JSON.parse(saved);
-    parsed.forEach((sv, i) => {
-      if (!SERIES_DATA[i]) return;
-
-      SERIES_DATA[i].games = sv.games || SERIES_DATA[i].games;
-      if (sv.externalFactors) {
-        SERIES_DATA[i].externalFactors = sv.externalFactors;
-      }
-      if (sv.playerRatings) {
-        Object.entries(sv.playerRatings).forEach(([teamKey, ratings]) => {
-          const team = SERIES_DATA[i][teamKey];
-          if (!team) return;
-          Object.entries(ratings).forEach(([name, rating]) => {
-            const player = team.players.find(x => x.name === name);
-            if (player) player.rating = rating;
+    // Try V3 format first (keyed by series ID)
+    const savedV3 = localStorage.getItem(STORAGE_KEY);
+    if (savedV3) {
+      const parsed = JSON.parse(savedV3);
+      SERIES_DATA.forEach(s => {
+        const sv = parsed[s.id];
+        if (!sv) return;
+        if (sv.games) s.games = sv.games;
+        if (sv.externalFactors) s.externalFactors = sv.externalFactors;
+        if (sv.playerRatings) {
+          Object.entries(sv.playerRatings).forEach(([teamKey, ratings]) => {
+            const team = s[teamKey];
+            if (!team) return;
+            Object.entries(ratings).forEach(([name, rating]) => {
+              const player = team.players.find(x => x.name === name);
+              if (player) player.rating = rating;
+            });
           });
-        });
-      }
-    });
+        }
+      });
+      return;
+    }
+
+    // Fall back to V2 legacy format (keyed by array index)
+    const savedV2 = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (savedV2) {
+      const parsed = JSON.parse(savedV2);
+      parsed.forEach((sv, i) => {
+        if (!SERIES_DATA[i]) return;
+        SERIES_DATA[i].games = sv.games || SERIES_DATA[i].games;
+        if (sv.externalFactors) SERIES_DATA[i].externalFactors = sv.externalFactors;
+        if (sv.playerRatings) {
+          Object.entries(sv.playerRatings).forEach(([teamKey, ratings]) => {
+            const team = SERIES_DATA[i][teamKey];
+            if (!team) return;
+            Object.entries(ratings).forEach(([name, rating]) => {
+              const player = team.players.find(x => x.name === name);
+              if (player) player.rating = rating;
+            });
+          });
+        }
+      });
+      // Migrate: save in V3 format, remove V2
+      saveState();
+      try { localStorage.removeItem(LEGACY_STORAGE_KEY); } catch (_) {}
+    }
   } catch (e) {
     // Silently fail — localStorage may be unavailable
   }
@@ -87,17 +115,22 @@ function loadState() {
 
 /**
  * Save current game results and player ratings to localStorage.
+ * V3 format: object keyed by series ID (survives array reordering / R2 additions).
  */
 function saveState() {
   try {
-    const data = SERIES_DATA.map(s => ({
-      games: s.games,
-      externalFactors: s.externalFactors,
-      playerRatings: {
-        homeTeam: Object.fromEntries(s.homeTeam.players.map(p => [p.name, p.rating])),
-        awayTeam: Object.fromEntries(s.awayTeam.players.map(p => [p.name, p.rating]))
-      }
-    }));
+    const data = {};
+    SERIES_DATA.forEach(s => {
+      data[s.id] = {
+        round: s.round || 'R1',
+        games: s.games,
+        externalFactors: s.externalFactors,
+        playerRatings: {
+          homeTeam: Object.fromEntries(s.homeTeam.players.map(p => [p.name, p.rating])),
+          awayTeam: Object.fromEntries(s.awayTeam.players.map(p => [p.name, p.rating]))
+        }
+      };
+    });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (e) {
     // Silently fail

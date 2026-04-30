@@ -615,6 +615,41 @@ function renderDefinitionsPage(el) {
     </div>
     </div>
 
+    <!-- Phase 42: Multi-Round Scalability + Projection Lineage -->
+    <div style="margin-top:24px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 42: Multi-Round Scalability + Projection Lineage</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Series Graduation</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            When a team advances from one round to the next, <code>graduateSeries()</code> scaffolds a new series entry carrying forward cumulative fatigue, injury timelines, player data, and model context from the prior round. Fatigue compounds by round depth: R2 teams carry R1 fatigue, CF teams carry R1+R2. Older players (30+/35+) accumulate fatigue faster. Sweep winners get a +3 momentum bonus; teams that played 6-7 games get a -2/-3 fatigue penalty.
+            <br><br><strong>Formula:</strong> baseFatigue = gamesPlayed × 0.5% × (1 + roundDepth × 0.15) × ageMult × injuryMult</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Projection Lineage Waterfall</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            Every game projection now includes a <code>lineage</code> array that tracks the running margin through ~18 calculation steps. Each step records the factor name, the margin delta it contributed, and the resulting running margin. The UI renders this as an SVG waterfall chart below the prediction panel, making it transparent exactly which factors pushed the margin in each direction.
+            <br><br><strong>Steps tracked:</strong> base → talent → depth → starAbsence → injuryDrag → fatigue → 3ptRegression → roleFlex → turnovers → 3ptCorrelation → initiators → schemePersist → redistribution → cap → coaching → momentum → elimination → clutch → blend</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Post-Game Factor Attribution</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            After a game completes, <code>buildGameAttribution()</code> compares the projected lineage against the actual result. The total prediction error is distributed proportionally across factors (weight = |delta| / totalAbsDelta). Factors with larger projected contributions absorb more of the error. The system identifies whether each factor under-predicted, over-predicted, over-corrected, or under-corrected, and auto-generates model lessons from the top 3 error sources.
+            <br><br><strong>Output:</strong> Winner correct/wrong badge, total error in points, top 5 error sources with direction labels, and auto-generated lesson text.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Round-Level Navigation</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            The UI now supports a two-level navigation hierarchy: playoff round (R1/R2/CF/Finals) on top, conference (West/East) below. Rounds only appear when they contain series data. The Finals round auto-disables conference split since it's a single series. The bets page title updates dynamically to reflect the active round. localStorage uses V3 format (keyed by series ID) so saved game results survive round transitions.</div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Phase 28: Live Analysis Model Corrections -->
     <div style="margin-top:24px;">
       <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 28: Live Analysis Model Corrections</h3>

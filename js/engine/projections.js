@@ -19,6 +19,17 @@ function calcGameProjection(series, seriesId, gameNum) {
   const hr = prob.homeRating || calcTeamRating(series.homeTeam, series, seriesId);
   const ar = prob.awayRating || calcTeamRating(series.awayTeam, series, seriesId);
 
+  // --- LINEAGE ACCUMULATOR (Phase 42) ---
+  // Tracks each step's contribution to the final margin for cause-and-effect analysis.
+  // Each entry: { step, label, delta, runningMargin, detail? }
+  const lineage = [];
+  function trackStep(step, label, marginBefore, marginAfter, detail) {
+    const delta = +(marginAfter - marginBefore).toFixed(2);
+    if (Math.abs(delta) >= 0.01 || step === 'base') {
+      lineage.push({ step, label, delta, runningMargin: +marginAfter.toFixed(2), detail: detail || null });
+    }
+  }
+
   // --- STEP 1: Base Expected Margin ---
   // Team ratings are on a 20-100 scale (not 0-10 Net Rating), so diff can be large.
   // Use win probability to derive margin: logit-based conversion.
@@ -27,6 +38,7 @@ function calcGameProjection(series, seriesId, gameNum) {
   const winP = Math.max(0.02, Math.min(0.98, prob.home / 100));
   let baseMargin = 15 * Math.log10(winP / (1 - winP)); // exact inverse of the logistic
   // This naturally produces: 50% → 0pts, 60% → 2.6pts, 70% → 5.6pts, 80% → 9.1pts, 90% → 14.3pts
+  trackStep('base', 'Win Prob → Base Margin', 0, baseMargin, `HR=${hr} AR=${ar} WP=${prob.home}%`);
 
   // --- STEP 2: Talent Gap Amplifier ---
   // 2025 evidence: OKC (68-14) beat MEM by 51 in G1; CLE beat MIA by 55 in G4
@@ -40,7 +52,9 @@ function calcGameProjection(series, seriesId, gameNum) {
   let talentMultiplier = 1.0;
   if (absMarginBase > 8) talentMultiplier = 1.0 + (absMarginBase - 8) * 0.02;
   talentMultiplier = Math.min(talentMultiplier, 1.25);
+  const preMultMargin = baseMargin;
   baseMargin *= talentMultiplier;
+  trackStep('talent', 'Talent Gap Amplifier', preMultMargin, baseMargin, `mult=${talentMultiplier.toFixed(2)}`);
 
   // --- STEP 3: Depth Disparity Factor ---
   // 2025 evidence: CLE's 138-83 blowout used 10+ players effectively; MIA had 5
@@ -54,7 +68,7 @@ function calcGameProjection(series, seriesId, gameNum) {
     return r >= 55;
   }).length;
   const depthEdge = (homeActive - awayActive) * 0.6;
-  baseMargin += depthEdge;
+  { const pre = baseMargin; baseMargin += depthEdge; trackStep('depth', 'Depth Disparity', pre, baseMargin, `home=${homeActive} away=${awayActive}`); }
 
   // --- STEP 4: Star Absence Blowout Boost ---
   // 2025 evidence: LAL without Doncic+Reaves lost G1 by 22; MIL without Lillard lost G4 by 26
@@ -69,7 +83,7 @@ function calcGameProjection(series, seriesId, gameNum) {
     const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
     return br >= 75 && eff === 0;
   }).length;
-  baseMargin += (awayStarsOut - homeStarsOut) * 2.0; // Each star absence widens margin ~2 pts
+  { const pre = baseMargin; baseMargin += (awayStarsOut - homeStarsOut) * 2.0; trackStep('starAbsence', 'Star Absence Boost', pre, baseMargin, `homeOut=${homeStarsOut} awayOut=${awayStarsOut}`); }
 
   // --- STEP 5: activeInjury Drag ---
   // 2025 evidence: Edwards at 0.7 severity shot 7-19; partially hurt stars reduce efficiency
@@ -87,7 +101,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       awayInjuryDrag += p.activeInjury.severity * (br / 100) * 1.0;
     }
   });
-  baseMargin += (awayInjuryDrag - homeInjuryDrag);
+  { const pre = baseMargin; baseMargin += (awayInjuryDrag - homeInjuryDrag); trackStep('injuryDrag', 'Active Injury Drag', pre, baseMargin, `homeDrag=${homeInjuryDrag.toFixed(2)} awayDrag=${awayInjuryDrag.toFixed(2)}`); }
 
   // --- STEP 5b: Fatigue Differential (MEDIUM CONFIDENCE) ---
   // Teams with higher cumulative fatigue lose margin points.
@@ -97,7 +111,7 @@ function calcGameProjection(series, seriesId, gameNum) {
   const homeFat = calcTeamFatigue(series.homeTeam, series, seriesId || series.id);
   const awayFat = calcTeamFatigue(series.awayTeam, series, seriesId || series.id);
   const fatigueDiff = (awayFat.index - homeFat.index) * 4.0; // max ~0.5 index → 2.0 pts
-  baseMargin += fatigueDiff;
+  { const pre = baseMargin; baseMargin += fatigueDiff; trackStep('fatigue', 'Fatigue Differential', pre, baseMargin, `homeFat=${homeFat.index.toFixed(3)} awayFat=${awayFat.index.toFixed(3)}`); }
 
   // --- STEP 5c: 3PT Variance Regression Adjustment (Phase 25) ---
   // When teams are shooting significantly above/below their season 3P% baseline,
@@ -145,7 +159,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       // Net margin adjustment: home improvement - away improvement
       // Cap at ±4 pts to prevent 3PT variance from dominating the model
       const threePtAdj = Math.max(-4, Math.min(4, home3PSwing - away3PSwing));
-      baseMargin += threePtAdj;
+      { const pre = baseMargin; baseMargin += threePtAdj; trackStep('3ptRegression', '3PT Variance Regression', pre, baseMargin, `adj=${threePtAdj.toFixed(2)}`); }
     }
   }
 
@@ -162,7 +176,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       const awayFlex = rf.away.overallFlex || 5.0;
       const flexDiff = homeFlex - awayFlex;
       const flexAdj = Math.max(-3, Math.min(3, flexDiff * 0.4));
-      baseMargin += flexAdj;
+      { const pre = baseMargin; baseMargin += flexAdj; trackStep('roleFlex', 'Role Flexibility', pre, baseMargin, `homeFlex=${homeFlex.toFixed(1)} awayFlex=${awayFlex.toFixed(1)}`); }
     }
   }
 
@@ -179,7 +193,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       // differential > 0 means away turns it over more → benefits home
       // Convert to points: differential × 1.07pts/TOV × 0.15 attenuation (to avoid overweighting)
       const tovAdj = Math.max(-2.5, Math.min(2.5, tf.turnover.differential * 1.07 * 0.15));
-      baseMargin += tovAdj;
+      { const pre = baseMargin; baseMargin += tovAdj; trackStep('turnovers', 'Turnover Differential', pre, baseMargin, `diff=${tf.turnover.differential}`); }
     }
   }
 
@@ -214,7 +228,7 @@ function calcGameProjection(series, seriesId, gameNum) {
           teamCorrelationAdj += away3Diff * 0.5 * 30;
         }
         teamCorrelationAdj = Math.max(-3, Math.min(3, teamCorrelationAdj));
-        baseMargin += teamCorrelationAdj;
+        { const pre = baseMargin; baseMargin += teamCorrelationAdj; trackStep('3ptCorrelation', 'Team 3PT Correlation', pre, baseMargin, `adj=${teamCorrelationAdj.toFixed(2)}`); }
       }
     }
   }
@@ -233,7 +247,7 @@ function calcGameProjection(series, seriesId, gameNum) {
     const awayIC = series.awayTeam.initiators || 2;
     const icDiff = homeIC - awayIC;
     const icAdj = Math.max(-3.0, Math.min(3.0, icDiff * 1.0));
-    if (Math.abs(icAdj) > 0.1) baseMargin += icAdj;
+    if (Math.abs(icAdj) > 0.1) { const pre = baseMargin; baseMargin += icAdj; trackStep('initiators', 'Initiator Count', pre, baseMargin, `homeIC=${homeIC} awayIC=${awayIC}`); }
   }
 
   // --- STEP 5h: Scheme Persistence Factor (Phase 32) ---
@@ -261,7 +275,7 @@ function calcGameProjection(series, seriesId, gameNum) {
       schemeAdj -= Math.min(3.0, impact);
     }
     schemeAdj = Math.max(-4.0, Math.min(4.0, schemeAdj));
-    if (Math.abs(schemeAdj) > 0.1) baseMargin += schemeAdj;
+    if (Math.abs(schemeAdj) > 0.1) { const pre = baseMargin; baseMargin += schemeAdj; trackStep('schemePersist', 'Scheme Persistence', pre, baseMargin, `adj=${schemeAdj.toFixed(2)}`); }
   }
 
   // --- STEP 5i: Star Absence Role Player Elevation (Phase 32) ---
@@ -283,13 +297,14 @@ function calcGameProjection(series, seriesId, gameNum) {
     const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
     return r >= 65;
   }).length;
+  { const pre = baseMargin;
   if (homeStarsOut > 0 && homeDepthPlayers >= 4) {
-    // Redistribute: team with missing stars but deep bench compensates partially
-    // Reduce the penalty applied in Step 4 by 35%
-    baseMargin += homeStarsOut * 2.0 * 0.35; // clawback 35% of the Step 4 penalty
+    baseMargin += homeStarsOut * 2.0 * 0.35;
   }
   if (awayStarsOut > 0 && awayDepthPlayers >= 4) {
     baseMargin -= awayStarsOut * 2.0 * 0.35;
+  }
+  trackStep('redistribution', 'Star Absence Redistribution', pre, baseMargin, `homeDepth=${homeDepthPlayers} awayDepth=${awayDepthPlayers}`);
   }
 
   // --- STEP 5j: Star Return From Injury Penalty (Phase 32) ---
@@ -313,7 +328,7 @@ function calcGameProjection(series, seriesId, gameNum) {
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
   // can still REDUCE the margin below the cap for G2+, creating game-to-game variety.
-  baseMargin = Math.max(-18, Math.min(18, baseMargin));
+  { const pre = baseMargin; baseMargin = Math.max(-18, Math.min(18, baseMargin)); trackStep('cap', 'Pre-Compression Cap (±18)', pre, baseMargin); }
 
   // --- STEP 7: Coaching Adjustment Quality (CAQ) Compression (Phase 32 upgrade) ---
   // 2025 evidence: OKC-MEM margins went 51→19→6→2 as Taylor adjusted
@@ -338,7 +353,7 @@ function calcGameProjection(series, seriesId, gameNum) {
     const caqScore = adjRating * 0.50 + schemeCreativity * 0.30 + urgency * 0.20;
     const adjustmentRate = 0.15 + (caqScore / 10) * 0.18; // 15-33% per game
     const compression = 1 - Math.min(0.55, adjustmentRate * (gameNum - 1));
-    baseMargin *= compression;
+    { const pre = baseMargin; baseMargin *= compression; trackStep('coaching', 'Coaching Adjustment (CAQ)', pre, baseMargin, `caq=${caqScore.toFixed(1)} comp=${compression.toFixed(2)}`); }
   }
 
   // --- STEP 7b: G1 Result Impact / Momentum Shift ---
@@ -350,6 +365,7 @@ function calcGameProjection(series, seriesId, gameNum) {
   //   - G1 loser's coaching adjustments compress expected margin
   //   - G1 overperformance/underperformance vs model prediction informs G2 shift
   if (gamesPlayed > 0 && gameNum > 1) {
+    const preMomentum = baseMargin;
     const g1 = series.games[0];
     if (g1 && g1.winner) {
       const g1Margin = (g1.homeScore || 0) - (g1.awayScore || 0); // positive = home won
@@ -422,11 +438,13 @@ function calcGameProjection(series, seriesId, gameNum) {
         baseMargin += surpriseShift;
       }
     }
+    trackStep('momentum', 'G1 Result / Momentum', preMomentum, baseMargin);
   }
 
   // --- STEP 8: Elimination Game Intensity ---
   // In a best-of-7, any game where one team is at 3 wins IS a must-win for the trailing team
   const isElimination = score.home === 3 || score.away === 3;
+  { const pre = baseMargin;
   if (isElimination) {
     baseMargin *= 0.65; // 35% compression for elimination games
   }
@@ -434,12 +452,17 @@ function calcGameProjection(series, seriesId, gameNum) {
   if (gamesPlayed >= 3 && seriesDiff <= 1) {
     baseMargin *= 0.8; // tight series = tight games
   }
+  trackStep('elimination', 'Elimination / Tight Series', pre, baseMargin, `elim=${isElimination} diff=${seriesDiff}`);
+  }
 
   // --- STEP 9: Clutch Team Compression ---
   const homeClutch = series.homeTeam.advStats.clutchNetRtg || 0;
   const awayClutch = series.awayTeam.advStats.clutchNetRtg || 0;
+  { const pre = baseMargin;
   if (homeClutch > 3 && awayClutch > 3) {
     baseMargin *= 0.85; // Two clutch teams → games stay close
+  }
+  trackStep('clutch', 'Clutch Team Compression', pre, baseMargin, `homeClutch=${homeClutch} awayClutch=${awayClutch}`);
   }
 
   // --- STEP 10: Pace-Based Score Projection ---
@@ -591,7 +614,9 @@ function calcGameProjection(series, seriesId, gameNum) {
       ? `${favTeam.abbr} in OT (regulation dead even)`
       : `${favTeam.abbr} by ${lowMargin}-${highMargin}`,
     talentMultiplier: +talentMultiplier.toFixed(2),
-    depthEdge: +depthEdge.toFixed(1)
+    depthEdge: +depthEdge.toFixed(1),
+    // Phase 42: Lineage — full audit trail of every factor that shaped this margin
+    lineage: lineage
   };
 }
 
@@ -1758,6 +1783,16 @@ function calcBlendedProjection(series, seriesId, gameNum) {
   const wScore = blendedMargin >= 0 ? blendedHomeScore : blendedAwayScore;
   const lScore = blendedMargin >= 0 ? blendedAwayScore : blendedHomeScore;
 
+  // Phase 42: Extend lineage with the blend step
+  const blendLineage = (proj.lineage || []).slice();
+  blendLineage.push({
+    step: 'blend',
+    label: agree ? 'Blended (Systems Agree)' : 'Blended (Systems Disagree — 60% compression)',
+    delta: +(blendedMargin - proj.margin).toFixed(2),
+    runningMargin: +blendedMargin.toFixed(2),
+    detail: `pick=${pickWinner} engine=${engineWinner} consensus=${consensus}`
+  });
+
   return {
     ...proj,
     blendedWinner: winner,
@@ -1768,7 +1803,8 @@ function calcBlendedProjection(series, seriesId, gameNum) {
     consensus,
     pickWinner,
     engineWinner,
-    blendedScore: winner + ' ' + wScore + ' — ' + loser + ' ' + lScore
+    blendedScore: winner + ' ' + wScore + ' — ' + loser + ' ' + lScore,
+    lineage: blendLineage  // Phase 42: override engine lineage with blend-extended version
   };
 }
 
@@ -1790,5 +1826,103 @@ function getGameResultDisplay(series, gameNum) {
   const lScore = winnerIsHome ? g.awayScore : g.homeScore;
   const loser = winnerIsHome ? series.awayTeam.abbr : series.homeTeam.abbr;
   return `${g.winner} ${wScore} — ${loser} ${lScore}${g.notes ? '. ' + g.notes.split('.')[0] : ''}`;
+}
+
+// ============================================================
+// POST-GAME FACTOR ATTRIBUTION (Phase 42 — Lineage Backward Pass)
+// ============================================================
+// After a game is completed, this function compares the projected lineage
+// against the actual result to identify which factors the model got right
+// or wrong. Returns a structured attribution array suitable for model lessons.
+//
+// Usage:
+//   const attr = buildGameAttribution(series, gameNum);
+//   series.modelLessons.push(...attr.lessons);
+
+/**
+ * Build a post-game attribution report by comparing the projection
+ * lineage against the actual game result.
+ *
+ * @param {Object} series - The series object
+ * @param {number} gameNum - 1-indexed game number
+ * @returns {Object|null} Attribution report or null if game not completed
+ */
+function buildGameAttribution(series, gameNum) {
+  const gameIdx = gameNum - 1;
+  const game = series.games && series.games[gameIdx];
+  if (!game || !game.winner) return null;
+
+  // Get the projection that was made for this game
+  const blend = calcBlendedProjection(series, series.id, gameNum);
+  const lineage = blend.lineage || [];
+  if (lineage.length === 0) return null;
+
+  // Actual margin in home-relative terms
+  const actualHomeMargin = (game.homeScore || 0) - (game.awayScore || 0);
+  const projectedMargin = blend.blendedMargin;
+  const totalError = +(actualHomeMargin - projectedMargin).toFixed(2);
+
+  // Did we get the winner right?
+  const projectedWinner = blend.blendedWinner;
+  const actualWinner = game.winner;
+  const winnerCorrect = projectedWinner === actualWinner;
+
+  // --- PROPORTIONAL ERROR ATTRIBUTION ---
+  // Distribute the total prediction error proportionally across lineage steps
+  // Steps with larger absolute deltas absorb more of the error (they were the
+  // bigger bets the model made, so they deserve more error attribution).
+  const totalAbsDelta = lineage.reduce((sum, s) => sum + Math.abs(s.delta), 0) || 1;
+
+  const attribution = lineage.map(step => {
+    const weight = Math.abs(step.delta) / totalAbsDelta;
+    const attributedError = +(totalError * weight).toFixed(2);
+    // A positive attributedError on a positive-delta step means the step UNDER-predicted
+    // (reality was more favorable to home than the step projected).
+    // A negative attributedError on a positive-delta step means the step OVER-predicted.
+    const direction = (step.delta >= 0 && attributedError > 0) ? 'under-predicted'
+      : (step.delta >= 0 && attributedError < 0) ? 'over-predicted'
+      : (step.delta < 0 && attributedError > 0) ? 'over-corrected'
+      : 'under-corrected';
+
+    return {
+      step: step.step,
+      label: step.label,
+      projectedDelta: step.delta,
+      weight: +weight.toFixed(3),
+      attributedError: attributedError,
+      direction: direction,
+      detail: step.detail || null
+    };
+  });
+
+  // --- TOP LESSONS EXTRACTION ---
+  // Sort by absolute attributed error to find the biggest misses
+  const sorted = attribution.slice().sort((a, b) => Math.abs(b.attributedError) - Math.abs(a.attributedError));
+  const topMisses = sorted.slice(0, 3).filter(a => Math.abs(a.attributedError) >= 0.5);
+
+  const lessons = topMisses.map(miss => ({
+    game: gameNum,
+    factor: miss.step,
+    label: miss.label,
+    direction: miss.direction,
+    error: miss.attributedError,
+    lesson: `${miss.label} ${miss.direction} by ~${Math.abs(miss.attributedError).toFixed(1)} pts` +
+            (miss.detail ? ` (${miss.detail})` : '')
+  }));
+
+  return {
+    gameNum: gameNum,
+    projectedMargin: +projectedMargin.toFixed(2),
+    actualMargin: actualHomeMargin,
+    totalError: totalError,
+    winnerCorrect: winnerCorrect,
+    projectedWinner: projectedWinner,
+    actualWinner: actualWinner,
+    attribution: attribution,
+    lessons: lessons,
+    summary: winnerCorrect
+      ? `Winner correct (${actualWinner}), margin error ${totalError > 0 ? '+' : ''}${totalError.toFixed(1)} pts`
+      : `Winner WRONG (predicted ${projectedWinner}, actual ${actualWinner}), margin error ${totalError > 0 ? '+' : ''}${totalError.toFixed(1)} pts`
+  };
 }
 

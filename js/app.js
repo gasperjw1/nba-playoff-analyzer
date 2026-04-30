@@ -7,3 +7,4 @@ loadState();
 initScenarioState();
 renderTabs();
 renderSeries();
+updateBetsNavLabel();

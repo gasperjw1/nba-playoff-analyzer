@@ -525,7 +525,9 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
 }
 
 // ============================================================
-// SERIES OUTCOME SIMULATION
+// SERIES OUTCOME SIMULATION (UTILITY — not called from app UI)
+// Used by test scripts and offline analysis. Could be wired into
+// the Chaos Sim Spotlight for dynamic series outcome probabilities.
 // ============================================================
 function simulateSeriesOutcome(series, seriesId, iterations) {
   const n = iterations || 500;

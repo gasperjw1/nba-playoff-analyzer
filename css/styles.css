@@ -29,6 +29,17 @@
   .legend { display:flex; gap:14px; font-size:11px; color:var(--text-dim); }
   .legend-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:3px; vertical-align:middle; }
 
+  /* Playoff round navigation (Phase 42 — Multi-Round) */
+  .playoff-round-tabs { display:flex; gap:0; padding:0 32px; background:var(--bg); border-bottom:2px solid var(--border); }
+  .playoff-round-tab { padding:10px 20px; cursor:pointer; font-size:12px; font-weight:700; color:var(--text-dim); border-bottom:3px solid transparent; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .playoff-round-tab:hover { color:var(--text); background:rgba(79,140,255,0.05); }
+  .playoff-round-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .playoff-round-label { font-size:13px; }
+  .playoff-round-count { font-size:10px; color:var(--text-dim); opacity:0.7; }
+  .playoff-round-tab.active .playoff-round-count { color:var(--accent); opacity:1; }
+  @media (max-width:700px) { .playoff-round-tabs { padding:0 12px; } .playoff-round-tab { padding:8px 12px; } .playoff-round-label { font-size:11px; } }
+  @media (max-width:480px) { .playoff-round-tab { padding:6px 8px; } .playoff-round-label { font-size:10px; } .playoff-round-count { font-size:9px; } }
+
   .tabs { display:flex; flex-direction:column; gap:0; background: var(--bg); overflow-x:auto; }
   .tab { padding:10px 18px; border-radius:8px 8px 0 0; cursor:pointer; font-size:12px; font-weight:600; background: var(--card); color:var(--text-dim); border:1px solid var(--border); border-bottom:none; transition:all 0.2s; white-space:nowrap; }
   .tab:hover { background: var(--card-hover); color:var(--text); }
@@ -255,6 +266,7 @@
   .learning-entry { position:relative; margin-bottom:16px; padding:0 16px; }
   .learning-phase { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--accent); margin-bottom:4px; }
   .learning-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .learning-date { font-size:11px; color:var(--text-dim); margin-bottom:6px; }
   .learning-body { font-size:12px; color:var(--text-dim); line-height:1.7; }
   .learning-body strong { color:var(--text); }
   .learning-tag { display:inline-block; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; margin-right:4px; margin-top:6px; }
@@ -297,7 +309,7 @@
   .parlay-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .parlay-grid .parlay-card { margin-bottom:0; }
   .parlay-grid-header { grid-column:1/-1; color:#f0c040; font-size:15px; font-weight:700; margin:8px 0 4px; padding-bottom:6px; border-bottom:1px solid rgba(240,192,64,0.25); }
-  @media (max-width:700px) { .parlay-grid { grid-template-columns:1fr; } }
+  @media (max-width:700px) { .parlay-grid { grid-template-columns:1fr; } .bet-card-grid { grid-template-columns:1fr; } }
   .parlay-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
   .parlay-name { font-size:14px; font-weight:700; color:var(--text); }
   .parlay-odds { font-size:14px; font-weight:800; padding:4px 12px; border-radius:6px; }
@@ -316,6 +328,13 @@
   .risk-tier-badge.high-conf { background:rgba(61,214,140,0.15); color:var(--green); }
   .risk-tier-badge.med-conf { background:rgba(255,199,58,0.15); color:var(--yellow); }
   .risk-tier-badge.low-conf { background:rgba(255,79,94,0.15); color:var(--red); }
+
+  /* Bet tab content panels (visibility toggled by switchBetTab in navigation.js) */
+  .bet-content { }
+  /* Bet section groupings (confidence tiers within each game tab) */
+  .bet-section { margin-bottom:20px; }
+  /* Grid layout for individual bet cards within a game section */
+  .bet-card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; margin-bottom:16px; }
 
   .bet-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; }
   .bet-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; transition:border-color 0.2s; }

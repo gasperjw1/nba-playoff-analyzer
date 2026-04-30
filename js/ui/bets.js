@@ -5,7 +5,7 @@
 function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
-    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1</h2>
+    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — ${typeof ROUND_META !== 'undefined' && ROUND_META[currentPlayoffRound] ? ROUND_META[currentPlayoffRound].label : 'Round 1'}</h2>
     <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | Phase 41: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
 
     <!-- BET TABS -->

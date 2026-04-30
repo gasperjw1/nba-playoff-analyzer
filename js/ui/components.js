@@ -569,6 +569,145 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
       ${g.consAway.map(p=>'<div style="color:var(--red);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,0.2)">- '+s.awayTeam.abbr+': '+p+'</div>').join('')}
     </div>` : ''}
     ${renderSimulationPanel(s, gameNum)}
+    ${renderProjectionWaterfall(blend)}
+    ${renderGameAttribution(s, gameNum)}
+  </div>`;
+}
+
+// ============================================================
+// PROJECTION LINEAGE WATERFALL (Phase 42)
+// ============================================================
+// Renders a visual waterfall showing how each engine factor pushed
+// the projected margin from 0 → final blended value.
+// Each bar shows the delta contributed by that step.
+
+function renderProjectionWaterfall(blend) {
+  const lineage = blend && blend.lineage;
+  if (!lineage || lineage.length === 0) return '';
+
+  // Find the max absolute running margin for scaling
+  const maxAbs = Math.max(
+    ...lineage.map(l => Math.abs(l.runningMargin)),
+    ...lineage.map(l => Math.abs(l.delta)),
+    1
+  );
+  // Scale factor: bars fill a 240px wide SVG center region (120px each side of zero)
+  const halfWidth = 120;
+  const scale = halfWidth / (maxAbs * 1.15); // 15% padding
+
+  const rowH = 18;
+  const labelW = 110;
+  const chartX = labelW + 4;
+  const chartW = halfWidth * 2;
+  const totalW = chartX + chartW + 40; // extra space for value label
+  const totalH = lineage.length * rowH + 24; // +24 for header
+  const zeroX = chartX + halfWidth;
+
+  // Build SVG rows
+  const rows = lineage.map((step, i) => {
+    const y = 22 + i * rowH;
+    const barW = Math.abs(step.delta) * scale;
+    const isPositive = step.delta >= 0;
+    const barX = isPositive ? zeroX : zeroX - barW;
+    const barColor = step.step === 'base' ? 'rgba(96,165,250,0.7)'
+      : step.step === 'blend' ? 'rgba(167,139,250,0.8)'
+      : isPositive ? 'rgba(61,214,140,0.6)' : 'rgba(239,68,68,0.55)';
+    const sign = step.delta > 0 ? '+' : '';
+    const deltaStr = Math.abs(step.delta) < 0.01 ? '0' : sign + step.delta.toFixed(1);
+
+    // Running margin marker
+    const markerX = zeroX + step.runningMargin * scale;
+
+    // Truncate label to fit
+    const label = step.label.length > 22 ? step.label.slice(0, 20) + '…' : step.label;
+
+    return `
+      <g>
+        <text x="${labelW}" y="${y + 12}" fill="var(--text-dim)" font-size="8" text-anchor="end" font-family="monospace">${label}</text>
+        ${Math.abs(step.delta) >= 0.01 ? `<rect x="${barX}" y="${y + 3}" width="${Math.max(barW, 1)}" height="${rowH - 6}" rx="2" fill="${barColor}" opacity="0.85"/>` : ''}
+        <line x1="${markerX}" y1="${y + 2}" x2="${markerX}" y2="${y + rowH - 2}" stroke="var(--text)" stroke-width="1.5" opacity="0.7"/>
+        <text x="${chartX + chartW + 4}" y="${y + 12}" fill="${isPositive ? 'var(--green)' : step.delta < 0 ? 'var(--red)' : 'var(--text-dim)'}" font-size="8" font-family="monospace">${deltaStr}</text>
+      </g>`;
+  }).join('');
+
+  // Final margin callout
+  const finalStep = lineage[lineage.length - 1];
+  const finalLabel = finalStep.runningMargin >= 0 ? 'Home +' + finalStep.runningMargin.toFixed(1) : 'Away +' + Math.abs(finalStep.runningMargin).toFixed(1);
+
+  return `
+  <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Projection Lineage</span>
+      <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(167,139,250,0.12);color:var(--purple);border:1px solid rgba(167,139,250,0.2)">Final: ${finalLabel}</span>
+    </div>
+    <svg viewBox="0 0 ${totalW} ${totalH}" style="width:100%;height:auto;min-height:${Math.min(totalH, 400)}px">
+      <!-- Zero line -->
+      <line x1="${zeroX}" y1="16" x2="${zeroX}" y2="${totalH}" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="${zeroX}" y="12" fill="var(--text-dim)" font-size="7" text-anchor="middle">0</text>
+      <text x="${zeroX - halfWidth * 0.6}" y="12" fill="var(--red)" font-size="7" text-anchor="middle">← Away</text>
+      <text x="${zeroX + halfWidth * 0.6}" y="12" fill="var(--green)" font-size="7" text-anchor="middle">Home →</text>
+      ${rows}
+    </svg>
+  </div>`;
+}
+
+// ============================================================
+// POST-GAME FACTOR ATTRIBUTION PANEL (Phase 42)
+// ============================================================
+// Shows which model factors over/under-predicted after a game completes.
+// Only renders for completed games with lineage data available.
+
+function renderGameAttribution(series, gameNum) {
+  if (typeof buildGameAttribution !== 'function') return '';
+  const gameIdx = gameNum - 1;
+  const game = series.games && series.games[gameIdx];
+  if (!game || !game.winner) return ''; // only for completed games
+
+  let attr;
+  try { attr = buildGameAttribution(series, gameNum); } catch (e) { return ''; }
+  if (!attr || !attr.attribution || attr.attribution.length === 0) return '';
+
+  const errSign = attr.totalError >= 0 ? '+' : '';
+  const errColor = Math.abs(attr.totalError) <= 3 ? 'var(--green)' : Math.abs(attr.totalError) <= 8 ? 'var(--yellow)' : 'var(--red)';
+  const winnerIcon = attr.winnerCorrect ? '✓' : '✗';
+  const winnerColor = attr.winnerCorrect ? 'var(--green)' : 'var(--red)';
+
+  // Top 5 factors by absolute attributed error
+  const topFactors = attr.attribution
+    .slice()
+    .sort((a, b) => Math.abs(b.attributedError) - Math.abs(a.attributedError))
+    .slice(0, 5)
+    .filter(f => Math.abs(f.attributedError) >= 0.2);
+
+  if (topFactors.length === 0) return '';
+
+  const factorRows = topFactors.map(f => {
+    const errDir = f.attributedError >= 0 ? '+' : '';
+    const dirLabel = f.direction.replace('-', ' ');
+    const color = f.attributedError >= 0 ? 'var(--green)' : 'var(--red)';
+    return `<div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <span style="font-size:10px;color:var(--text)">${f.label}</span>
+      <span style="font-size:10px;color:var(--text-dim)">${dirLabel}</span>
+      <span style="font-size:10px;font-weight:600;color:${color};font-family:monospace">${errDir}${f.attributedError.toFixed(1)}</span>
+    </div>`;
+  }).join('');
+
+  return `
+  <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Post-Game Attribution</span>
+      <div style="display:flex;gap:8px">
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:${attr.winnerCorrect ? 'rgba(61,214,140,0.12)' : 'rgba(239,68,68,0.12)'};color:${winnerColor};border:1px solid ${attr.winnerCorrect ? 'rgba(61,214,140,0.2)' : 'rgba(239,68,68,0.2)'}">${winnerIcon} Winner ${attr.winnerCorrect ? 'Correct' : 'Wrong'}</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(0,0,0,0.2);color:${errColor};font-family:monospace">Error: ${errSign}${attr.totalError.toFixed(1)} pts</span>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--text-dim);margin-bottom:6px">Projected ${attr.projectedMargin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr} ${attr.projectedMargin >= 0 ? '+' : ''}${attr.projectedMargin.toFixed(1)} → Actual ${attr.actualMargin >= 0 ? series.homeTeam.abbr : series.awayTeam.abbr} ${attr.actualMargin >= 0 ? '+' : ''}${attr.actualMargin}</div>
+    <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Top Error Sources</div>
+    ${factorRows}
+    ${attr.lessons.length > 0 ? `<div style="margin-top:6px;padding:6px 8px;background:rgba(167,139,250,0.08);border-radius:6px;border:1px solid rgba(167,139,250,0.15)">
+      <div style="font-size:9px;color:var(--purple);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Auto-Generated Lessons</div>
+      ${attr.lessons.map(l => `<div style="font-size:10px;color:var(--text-dim);line-height:1.5">• ${l.lesson}</div>`).join('')}
+    </div>` : ''}
   </div>`;
 }
 
