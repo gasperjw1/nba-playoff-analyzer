@@ -14,7 +14,8 @@ function renderBetsPage(el) {
       <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 1 Bets</div>
       <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 2 Bets</div>
       <div class="bet-tab" onclick="switchBetTab('g3')" id="betTab-g3" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 3 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g4')" id="betTab-g4" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 4 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g4')" id="betTab-g4" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 4 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g5')" id="betTab-g5" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 5 Bets</div>
     </div>
 
     <!-- ===== PARLAYS TAB ===== -->
@@ -216,10 +217,10 @@ function renderBetsPage(el) {
 
       <!-- ===== APR 24 G3 PARLAY RESULTS (COLLAPSED) ===== -->
       <details style="margin-bottom:16px;border:1px solid #333;border-radius:8px;padding:8px 12px;">
-        <summary style="cursor:pointer;color:#888;font-size:12px;font-weight:600;">📊 Fri Apr 24 Parlay Results — $100 Play: PENDING | $1 Chaos: PENDING</summary>
+        <summary style="cursor:pointer;color:#888;font-size:12px;font-weight:600;">📊 Fri Apr 24 Parlay Results — $100 Play: ✗ LOSS (Henderson missed O22.5) | $1 Chaos: ✗ LOSS (PHI ML missed, Edgecombe 10pts)</summary>
         <div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.03);border-radius:4px;font-size:11px;color:#666;">
-          <div><strong>$100 Play (3-Leg ~+490):</strong> Brown O24.5 + LAL +9.5 + Henderson O22.5 — Results pending.</div>
-          <div style="margin-top:4px;"><strong>$1 Chaos (3-Leg ~+2200):</strong> PHI ML + LAL ML + Edgecombe O24.5 — Results pending.</div>
+          <div><strong>$100 Play (3-Leg ~+490):</strong> ✗ LOSS — Leg 1: Brown O24.5 ✓ (25pts). Leg 2: LAL +9.5 ✓ (LAL won 112-108 OT). Leg 3: Henderson O22.5 ✗ (POR collapsed in 2H, Henderson quiet). Two legs hit but parlay dead on Henderson miss.</div>
+          <div style="margin-top:4px;"><strong>$1 Chaos (3-Leg ~+2200):</strong> ✗ LOSS — Leg 1: PHI ML ✗ (BOS won 108-100). Leg 2: LAL ML ✓ (won 112-108 OT). Leg 3: Edgecombe O24.5 ✗ (10pts, 0-7 3PT — Mazzulla schemed him out). PHI ML was the killer.</div>
         </div>
       </details>
 
@@ -304,9 +305,9 @@ function renderBetsPage(el) {
             <span style="font-size:11px;color:#666;margin-left:8px;">Featured $100 &amp; $1 picks — running record</span>
           </div>
           <div style="display:flex;gap:12px;font-size:12px;">
-            <span style="color:#4caf50;font-weight:700;">$100 Record: 0-4</span>
-            <span style="color:#f0c040;font-weight:700;">$1 Record: 2-2</span>
-            <span style="color:#aaa;">Net P&amp;L: <span style="color:#f44336;">-$371.47</span></span>
+            <span style="color:#4caf50;font-weight:700;">$100 Record: 0-5</span>
+            <span style="color:#f0c040;font-weight:700;">$1 Record: 2-3</span>
+            <span style="color:#aaa;">Net P&amp;L: <span style="color:#f44336;">-$472.47</span></span>
           </div>
         </div>
 
@@ -337,28 +338,27 @@ function renderBetsPage(el) {
             </div>
           </div>
 
-          <!-- ===== G5 SLATE — Tue-Wed Apr 28-29 (UPCOMING) ===== -->
+          <!-- ===== G5 SLATE — Tue-Wed Apr 28-29 (RESULTS) ===== -->
           <div style="display:flex;gap:12px;margin-bottom:16px;">
             <div style="min-width:90px;text-align:right;padding-top:2px;">
-              <div style="font-size:12px;font-weight:700;color:#64b5f6;">Tue-Wed Apr 28-29</div>
-              <div style="font-size:10px;color:#666;">G5: SAS-POR, BOS-PHI, CLE-TOR</div>
-              <div style="font-size:10px;color:#64b5f6;font-weight:600;">UPCOMING</div>
+              <div style="font-size:12px;font-weight:700;color:#aaa;">Tue-Wed Apr 28-29</div>
+              <div style="font-size:10px;color:#666;">G5: All 7 series</div>
             </div>
-            <div style="width:2px;background:linear-gradient(to bottom,#64b5f6,#333);border-radius:1px;position:relative;">
-              <div style="position:absolute;top:4px;left:-4px;width:10px;height:10px;border-radius:50%;background:#64b5f6;border:2px solid #1a1a2e;"></div>
+            <div style="width:2px;background:linear-gradient(to bottom,#333,#333);border-radius:1px;position:relative;">
+              <div style="position:absolute;top:4px;left:-4px;width:10px;height:10px;border-radius:50%;background:#333;border:2px solid #1a1a2e;"></div>
             </div>
             <div style="flex:1;">
-              <div style="background:rgba(100,181,246,0.06);border:1px solid rgba(100,181,246,0.2);border-radius:8px;padding:10px 14px;">
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid #333;border-radius:8px;padding:10px 14px;">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
                   <span style="font-size:11px;font-weight:700;color:#f0c040;background:rgba(240,192,64,0.12);padding:2px 8px;border-radius:3px;">$100: BOS ML + SAS ML + Brown O24.5</span>
-                  <span style="font-size:11px;color:#64b5f6;">~+350</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
                 </div>
-                <div style="font-size:10px;color:#888;margin-bottom:6px;">Two close-out favorites + Brown's reliable scoring prop. BOS 3-1, SAS 3-1 — both at home.</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 8px;border-radius:3px;">$1: POR ML + PHI ML + TOR ML (3-team elimination chaos)</span>
-                  <span style="font-size:11px;color:#64b5f6;">~+2500</span>
+                <div style="font-size:10px;color:#888;margin-bottom:8px;">BOS ML ✗ (PHI won 113-97) | SAS ML ✓ (114-95) | Brown O24.5 ✗ (BOS lost, Brown limited) — <span style="color:#f44336;">-$100</span></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 8px;border-radius:3px;">$1: POR ML + PHI ML + TOR ML (3-team elimination)</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
                 </div>
-                <div style="font-size:10px;color:#888;">Three underdogs fighting elimination/survival. POR &amp; PHI face close-out, TOR rides G4 momentum at CLE.</div>
+                <div style="font-size:10px;color:#888;">PHI ML ✓ (113-97) | POR ML ✗ (SAS 114-95) | TOR ML ✗ (CLE 125-120) — <span style="color:#f44336;">-$1</span></div>
               </div>
             </div>
           </div>
@@ -1375,6 +1375,185 @@ function renderBetsPage(el) {
     </div>
 
     </div><!-- end betContent-g4 -->
+
+    <!-- ===== G5 TAB ===== -->
+    <div id="betContent-g5" class="bet-content" style="display:none;">
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 5 Results &amp; Game 6 Picks — G5 Record: 5/7 (71.4%)</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G5 moneyline record: 5 correct, 2 wrong out of 7 bets (71.4%). Best calls: DET ✅ (Cade 45pts masterpiece), CLE ✅ (closed Q4 25-17), DEN ✅ (Jokic triple-double). Misses: BOS ❌ (Embiid 33pt eruption, BOS Q4 collapse 11pts on 3-22 FG), HOU-LAL ❌ (Smith Jr 22pts, LeBron 0-6 3PT). SAS clinched 4-1.</p>
+
+    <!-- ═══════ G5 RESULTS — TUE APR 28 ═══════ -->
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:0 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">G5 Results — Tue Apr 28 | ML Record: ❌ BOS, ✅ NYK, ✅ SAS (series clinch)</h4>
+
+      <!-- BOS-PHI G5 -->
+      <div class="bet-card" style="border-left:3px solid #f44336;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">BOS ML vs PHI ✗</div>
+        <div class="bet-line">-500 | Model: BOS close-out | Actual: PHI 113, BOS 97 (+16) | LOSS</div>
+        <div class="bet-reasoning"><strong>RESULT: ✗ LOSS. PHI wins 113-97. BOS leads 3-2.</strong> Embiid erupted for 33pts (only 2 in Q1 then 31 in final 3Q). BOS collapsed in Q4: 11pts on 3-22 FG — one of the worst close-out chokes in recent memory. Maxey added 25/10/5, George 16/9/7, Grimes 18 off bench. PHI's elimination desperation + Embiid's star elevation was massively underweighted by the model.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">LOSS</span>
+      </div>
+
+      <!-- NYK-ATL G5 -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">NYK ML vs ATL ✓</div>
+        <div class="bet-line">-220 | Model: NYK dominant | Actual: NYK 126, ATL 97 (+29) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: NYK wins 126-97 (+29). NYK leads 3-2.</strong> Brunson went nuclear: 39pts on 15-23 FG (65.2%). McCollum was completely schemed out — 6pts on 3-10 FG. NYK shot 57% FG as a team. The model's read on NYK's offensive ceiling was perfectly validated. ATL had no answer for Brunson's mid-range mastery.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
+      </div>
+
+      <!-- SAS-POR G5 -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">SAS ML vs POR ✓ — SERIES CLINCH 4-1</div>
+        <div class="bet-line">-300 | Model: SAS close-out | Actual: SAS 114, POR 95 (+19) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: SAS wins 114-95 (+19). SAS WINS SERIES 4-1.</strong> Wembanyama 17/14reb/6blk dominated the paint. Fox 21/9ast ran the offense. Champagnie 5-7 3PT provided spacing. Model prediction of SAS 116-99 was nearly perfect (actual 114-95). POR's youth breakout fully faded on the road. First series completed in R1.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
+      </div>
+    </div>
+
+    <!-- ═══════ G5 RESULTS — WED APR 29 ═══════ -->
+    <div class="bet-section">
+      <h4 style="color:#fff;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #333;padding-bottom:6px;">G5 Results — Wed Apr 29 | ML Record: ✅ DET, ✅ CLE, ❌ HOU-LAL, ✅ DEN</h4>
+
+      <!-- DET-ORL G5 -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DET ML @ ORL ✓</div>
+        <div class="bet-line">+130 | Model: DET medium | Actual: DET 116, ORL 109 (+7) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: DET wins 116-109. ORL leads 3-2.</strong> Historic 45-45 dual scoring duel — Cade Cunningham 45pts (14-14 FT) vs Paolo Banchero 45/9/7. Wagner DNP (calf) elevated Banchero to carry mode but also removed ORL's secondary creation. Ausar Thompson 15reb/6ast/5stl/2blk was the X-factor. Harris added 23pts as a reliable second scorer. DET's desperation energy overwhelmed ORL late.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
+      </div>
+
+      <!-- CLE-TOR G5 -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML vs TOR ✓</div>
+        <div class="bet-line">-200 | Model: CLE by 6 | Actual: CLE 125, TOR 120 (+5) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: CLE wins 125-120. CLE leads 3-2.</strong> Shooting regression normalized — both teams shot efficiently after G4's nightmare percentages. Harden 23/9reb, Barrett 25/12reb. CLE won Q4 25-17 via defensive tightening when it mattered most. Model's home-court read validated again — CLE remains unbeaten at home. TOR Q4 collapse (17pts) raises road closing concerns.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
+      </div>
+
+      <!-- HOU-LAL G5 -->
+      <div class="bet-card" style="border-left:3px solid #f44336;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">LAL ML @ HOU ✗</div>
+        <div class="bet-line">-150 | Model leaned LAL | Actual: HOU 99, LAL 93 (+6) | LOSS</div>
+        <div class="bet-reasoning"><strong>RESULT: ✗ LOSS. HOU wins 99-93. LAL leads 3-2.</strong> Smith Jr 22pts (4-9 3PT) led HOU's gutsy elimination survival. Reaves returned but was inefficient (22pts on 4-16 FG, FT-merchant 12-13 FT). LeBron had 25pts but went 0-6 from 3PT. Smart had 6 TOs. Ayton dominated the boards with 18pts/17reb. Model overweighted LAL's road close-out ability — HOU's desperation at Toyota Center proved too much.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">LOSS</span>
+      </div>
+
+      <!-- DEN-MIN G5 -->
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DEN ML @ MIN ✓</div>
+        <div class="bet-line">+200 | Model engine: DEN | Actual: DEN 125, MIN 113 (+12) ✓</div>
+        <div class="bet-reasoning"><strong>RESULT: DEN wins 125-113. MIN leads 3-2.</strong> Jokic triple-double 27/16ast/12reb orchestrated DEN's survival. Spencer Jones 20pts (Star Absence Liberation effect — Murray/Porter out elevated role players). MIN had 25 turnovers without Edwards (suspension) and DiVincenzo (illness). DEN exploited MIN's chaos ruthlessly. Model engine correctly read DEN's desperation + MIN's absences.</div>
+        <span class="bet-edge model">Model Edge ✓</span>
+      </div>
+    </div>
+
+    <!-- ═══════ G6 PREDICTIONS ═══════ -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">G6 Predictions — Thu Apr 30</h4>
+
+      <!-- ═══ NYK-ATL G6 ═══ -->
+      <div style="margin:12px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">NYK-ATL G6 — Thu Apr 30 | NYK leads 3-2 — Close-out @ ATL</span>
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">NYK ML @ ATL (Close-out)</div>
+        <div class="bet-line">-200 | Model: NYK by 7 | HIGH confidence</div>
+        <div class="bet-reasoning">Brunson's 39pt G5 masterpiece proved NYK's offensive ceiling is untouchable. McCollum completely schemed out (6pts G5). NYK already won at ATL in G4 by 16 — they can close on the road. ATL's home-court advantage is the only resistance, but NYK's 57% FG shooting and Brunson's mid-range dominance should travel. Highest-confidence G6 pick.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- ═══ BOS-PHI G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">BOS-PHI G6 — Thu Apr 30 | BOS leads 3-2 — Close-out @ PHI</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">BOS ML @ PHI (Close-out)</div>
+        <div class="bet-line">-170 | Model: BOS by 5 | MEDIUM confidence</div>
+        <div class="bet-reasoning">BOS's Q4 collapse in G5 (3-22 FG, 11pts) was an anomaly — championship DNA (2024 champs) suggests bounce-back. Tatum/Brown/Pritchard give BOS 3 initiators vs PHI's 2. BUT: Embiid proved he's an elimination monster (33pts G5), and Wells Fargo Center will be electric. BOS is the better team but road close-outs are never easy. Medium confidence reflects the G5 choke risk.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Joel Embiid Over 28.5 points</div>
+        <div class="bet-line">-115 | G5: 33pts | Elimination monster at home</div>
+        <div class="bet-reasoning">Embiid proved Star Elevation is real with 33pts in G5 (only 2 in Q1 then 31 in final 3Q). At home facing elimination again, expect maximum aggression. His series arc has been building and Wells Fargo Center energy amplifies his dominance. Even if BOS wins, Embiid gets his 30+.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- ═══ DEN-MIN G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">DEN-MIN G6 — Thu Apr 30 | MIN leads 3-2 — Close-out @ DEN</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">MIN ML @ DEN (Close-out)</div>
+        <div class="bet-line">+140 | Model: MIN favored | MEDIUM confidence</div>
+        <div class="bet-reasoning">Edwards returns from suspension — MIN's alpha scorer transforms their offense. DiVincenzo should also return (illness). MIN had 25 TOs in G5 without their stars — that won't repeat. DEN's home-court and Jokic's brilliance make this tough, but MIN at full strength is the better team. Edwards' return alone shifts this 8-10 points in MIN's favor. Road close-out with full roster = value at +140.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Nikola Jokic Over 24.5 points</div>
+        <div class="bet-line">-120 | G5: 27pts triple-double | Elimination desperation</div>
+        <div class="bet-reasoning">Jokic was magnificent in G5: 27/16ast/12reb. Facing elimination at home, expect maximum scoring aggression from the 3x MVP. Even with Edwards back to provide defensive resistance, Jokic's post mastery is unguardable. He'll get 25+ in an elimination game at Ball Arena.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- ═══ DET-ORL G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#888;font-size:13px;font-weight:700;">DET-ORL G6 — Fri May 1 | ORL leads 3-2 — DET faces elimination @ ORL</span>
+      </div>
+
+      <div class="bet-card" style="border-left:3px solid #888;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">ORL ML vs DET (Close-out at home)</div>
+        <div class="bet-line">-180 | Model: ORL by 4 | Kia Center fortress 8-1</div>
+        <div class="bet-reasoning">ORL is 8-1 at Kia Center in the playoffs — elite home-court advantage. Wagner could return with extra rest, transforming the offense. Banchero proved he can score 45 — at home his ceiling is even higher. DET's Cade had 45pts in G5 but 6 TOs, and DET bench only scored 18pts. DET's desperation is real but ORL's home fortress should hold.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <!-- ═══ CLE-TOR G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#888;font-size:13px;font-weight:700;">CLE-TOR G6 — Fri May 1 | CLE leads 3-2 — TOR faces elimination @ TOR</span>
+      </div>
+
+      <div class="bet-card" style="border-left:3px solid #888;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML @ TOR (Close-out on road)</div>
+        <div class="bet-line">+110 | Model: CLE by 3 | CLE has 3 closers</div>
+        <div class="bet-reasoning">CLE's 3-2 lead means one win from advancing. Mobley's evolution to 3-level scorer changes matchup dynamics. CLE has multiple closers (Mitchell, Harden, Mobley) — hard to scheme for all three. BUT: TOR won both home games (G3 by 22, G4 by 4) and Scotiabank Arena has been a fortress. Barnes plays best at home. This is a tough road close-out but CLE's depth (bench 36pts G5) overwhelms TOR's thin rotation.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <!-- ═══ HOU-LAL G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#888;font-size:13px;font-weight:700;">HOU-LAL G6 — Fri May 1 | LAL leads 3-2 — HOU faces elimination @ LAL</span>
+      </div>
+
+      <div class="bet-card" style="border-left:3px solid #888;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">LAL ML vs HOU (Close-out at home)</div>
+        <div class="bet-line">-220 | Model: LAL by 6 | Home close-out</div>
+        <div class="bet-reasoning">LAL leads 3-2 and closes at home at Crypto.com Arena. LAL won G1 by 11, G2 by 8, G3 by 6 at home — dominant home record. HOU won G4-G5 at Toyota Center but their road shooting has been poor all series. Reaves should be healthier with rest. LeBron's 0-6 3PT in G5 was an outlier. LAL's defensive scheme works better at home. Home close-out favorite.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+    </div>
+
+    </div><!-- end betContent-g5 -->
 
     <!-- DISCLAIMER -->
     <div class="bets-disclaimer">
