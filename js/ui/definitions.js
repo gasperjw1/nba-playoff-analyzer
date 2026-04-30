@@ -600,8 +600,10 @@ function renderDefinitionsPage(el) {
 
     <!-- MONTE CARLO TAB -->
     <div id="defContent-montecarlo" class="def-tab-content" style="display:none;">
-    <div class="def-category model">Monte Carlo Chaos Simulation (Phase 40)</div>
+    <div class="def-category model">Unified Ensemble (Phase 41) &amp; Monte Carlo Chaos Simulation (Phase 40)</div>
     <div class="def-grid">
+      <div class="def-card"><div class="def-term">Unified Ensemble</div><div class="def-desc">Phase 41 alignment of all three prediction systems: manual picks (72.7% winner accuracy), deterministic engine (8.8 avg margin error), and chaos simulation (1,000 iterations). The sim now uses the blended projection as its baseline, eliminating internal disagreements.</div></div>
+      <div class="def-card"><div class="def-term">Disagreement Variance Scaling</div><div class="def-desc">When the engine and manual pick disagree on the winner, chaos variance increases 20% — producing wider probability distributions that honestly reflect genuine uncertainty. When they strongly agree, variance tightens 5%.</div></div>
       <div class="def-card"><div class="def-term">Chaos Simulation</div><div class="def-desc">1,000-iteration Monte Carlo model that runs quarter-by-quarter with interconnected state variables. Produces win probability distributions, not single-point predictions.</div></div>
       <div class="def-card"><div class="def-term">Team Shooting Temperature</div><div class="def-desc">Game-level draw determining if a team shoots hot or cold. One SD = ~3 points of scoring swing. Creates the "whole team is hot" effect.</div></div>
       <div class="def-card"><div class="def-term">Scoring Run</div><div class="def-desc">7+ point swing within a quarter. 15% probability per quarter. Triggered by shooting state + opponent weakness. 66% halted by timeouts.</div></div>

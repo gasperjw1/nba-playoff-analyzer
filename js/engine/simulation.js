@@ -1,8 +1,15 @@
 // ============================================================
-// MONTE CARLO CHAOS SIMULATION ENGINE (Phase 40)
+// MONTE CARLO CHAOS SIMULATION ENGINE (Phase 40 → Phase 41 Ensemble)
 // ============================================================
 // Quarter-by-quarter simulation with INTERDEPENDENT state variables.
-// Uses a "perturbation model": the deterministic engine provides the
+// Phase 41 UNIFIED ENSEMBLE: uses the BLENDED projection (manual pick
+// winner + engine margin sizing) as the simulation baseline. This
+// eliminates model/sim disagreements — the chaos sim now generates
+// probability distributions around the same winner the deterministic
+// model picks. When engine and manual pick disagree (high uncertainty),
+// chaos variance widens 20% for a more honest probability spread.
+//
+// Uses a "perturbation model": the blended projection provides the
 // baseline, then each iteration draws correlated chaos factors that
 // shift the outcome. Factors feed into each other — shooting state
 // affects momentum, momentum amplifies runs, fatigue compounds and
@@ -350,8 +357,15 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
 // ============================================================
 // EXTRACT TEAM CONTEXT FROM SERIES DATA
 // ============================================================
+// Phase 41: Uses BLENDED projection as baseline (not raw engine).
+// The blended system picks winners at 72.7% accuracy; the engine
+// sizes margins at 8.8 avg error. By starting from the blended
+// baseline, the sim's probability distribution centers on the
+// most accurate winner call. When the engine and manual pick
+// disagree, we widen the chaos variance — an honest signal that
+// the outcome is genuinely uncertain.
 function extractTeamContext(series, seriesId, gameNum) {
-  const proj = calcGameProjection(series, seriesId, gameNum);
+  const blended = calcBlendedProjection(series, seriesId, gameNum);
 
   // Veteran presence
   const homeVet = series.homeTeam.players.some(p =>
@@ -369,7 +383,12 @@ function extractTeamContext(series, seriesId, gameNum) {
     : 0;
 
   return {
-    engineProjection: proj,
+    engineProjection: blended,  // Phase 41: blended baseline
+    rawEngineMargin: blended.margin,       // original engine margin (pre-blend)
+    blendedMargin: blended.blendedMargin,  // blended margin (engine + manual pick)
+    blendedHomeScore: blended.blendedHomeScore,
+    blendedAwayScore: blended.blendedAwayScore,
+    consensus: blended.consensus || 'engine-only',
     homeVeteran: homeVet,
     awayVeteran: awayVet,
     seriesFatigue: seriesFatigueAdj,
@@ -385,7 +404,14 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
   const n = iterations || SIM_CONFIG.iterations;
   const config = { ...SIM_CONFIG };
   const ctx = extractTeamContext(series, seriesId, gameNum);
-  const proj = ctx.engineProjection;
+
+  // Phase 41: Use BLENDED projection as simulation baseline
+  // The blended system combines the manual pick winner (72.7% accuracy)
+  // with the engine's margin sizing (8.8 avg error). The sim then
+  // generates the probability distribution around this unified baseline.
+  const simMargin = ctx.blendedMargin;
+  const simHomeScore = ctx.blendedHomeScore;
+  const simAwayScore = ctx.blendedAwayScore;
 
   // Series context adjustments
   if (ctx.isElimination) {
@@ -395,6 +421,18 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
   }
   if (ctx.seriesFatigue > 0) {
     config.q4FatiguePenalty += ctx.seriesFatigue;
+  }
+
+  // Phase 41: DISAGREEMENT VARIANCE SCALING
+  // When the engine and manual pick disagree on the winner, that's a
+  // genuine signal of uncertainty. Widen the chaos distribution so the
+  // sim produces a flatter, more honest probability spread.
+  // When they agree, tighten slightly — both systems are confident.
+  if (ctx.consensus === 'disagree') {
+    config.quarterScoreSD *= 1.20;  // 20% more chaos — wider distribution
+    config.shootingSwingMax *= 1.15; // shooting swings amplified
+  } else if (ctx.consensus === 'strong-agree') {
+    config.quarterScoreSD *= 0.95;  // 5% tighter — both systems confident
   }
 
   // Run simulations
@@ -408,7 +446,7 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
   for (let i = 0; i < n; i++) {
     const rng = createRNG(42 + i * 7919);
     const result = simulateGame(
-      proj.margin, proj.homeScore, proj.awayScore, ctx, rng, config
+      simMargin, simHomeScore, simAwayScore, ctx, rng, config
     );
 
     margins.push(result.margin);
@@ -450,8 +488,8 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
     .map(([margin, count]) => ({ margin: +margin, count, pct: count / n }))
     .sort((a, b) => a.margin - b.margin);
 
-  // Cross-check vs logistic
-  const logisticWinProb = 1 / (1 + Math.exp(-0.14 * proj.margin));
+  // Cross-check vs logistic (uses blended margin now)
+  const logisticWinProb = 1 / (1 + Math.exp(-0.14 * simMargin));
 
   const homeFavored = homeWinPct >= 0.5;
   const favTeam = homeFavored ? series.homeTeam.abbr : series.awayTeam.abbr;
@@ -474,10 +512,12 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
     closeGameRate: +((closeGames / n) * 100).toFixed(1),
     overtimeRate: +((otGames / n) * 100).toFixed(1),
     histogram,
-    engineSpread: +proj.margin.toFixed(1),
+    engineSpread: +simMargin.toFixed(1),
+    rawEngineSpread: +(ctx.rawEngineMargin).toFixed(1),  // Phase 41: pre-blend engine margin
     logisticWinProb: +(logisticWinProb * 100).toFixed(1),
     simVsLogisticDiff: +((homeWinPct - logisticWinProb) * 100).toFixed(1),
-    engineProjection: proj,
+    engineProjection: ctx.engineProjection,
+    consensus: ctx.consensus,  // Phase 41: expose agreement signal
     iterations: n,
     isElimination: ctx.isElimination,
     seriesScore: `${ctx.seriesScore.home}-${ctx.seriesScore.away}`
@@ -512,13 +552,19 @@ function simulateSeriesOutcome(series, seriesId, iterations) {
     while (hWins < 4 && aWins < 4 && gameNum <= 7) {
       const rng = createRNG(42 + i * 7919 + gameNum * 1013);
       const ctx = extractTeamContext(series, seriesId, gameNum);
-      const proj = ctx.engineProjection;
       const config = { ...SIM_CONFIG };
       if (ctx.isElimination || hWins === 3 || aWins === 3) {
         config.runProb *= 0.7;
         config.clutchSwing *= 1.3;
       }
-      const result = simulateGame(proj.margin, proj.homeScore, proj.awayScore, ctx, rng, config);
+      // Phase 41: use blended baseline for series simulation too
+      if (ctx.consensus === 'disagree') {
+        config.quarterScoreSD *= 1.20;
+        config.shootingSwingMax *= 1.15;
+      } else if (ctx.consensus === 'strong-agree') {
+        config.quarterScoreSD *= 0.95;
+      }
+      const result = simulateGame(ctx.blendedMargin, ctx.blendedHomeScore, ctx.blendedAwayScore, ctx, rng, config);
       if (result.margin > 0) hWins++; else aWins++;
       gameNum++;
     }
