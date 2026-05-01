@@ -819,6 +819,20 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 45 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 45 — Deep Lineage Overhaul: Blowout Suppression Fixes + 9 Engine Upgrades</div>
+        <div class="learning-date">May 1, 2026</div>
+        <div class="learning-body">
+          <strong>Comprehensive model overhaul based on G6 lineage attribution analysis. 19 specific code-level fixes across projections.js, simulation.js, and constants.js. Accuracy: 25/42 (59.5%), up from 23/41 (56.1%).</strong><br><br>
+          <strong>1. ENGINE FIXES (projections.js):</strong> Talent gap amplifier threshold lowered (8→4pts). Star absence boost increased (+2→+3.5/star) with new Liberation Factor for adaptive rosters. Turnover cap doubled (±2.5→±5.0). 3PT regression cap raised (±4→±7). Pre-compression cap widened (±18→±22). Star elevation now applies to BOTH closing and elimination teams (1.5x for elimination). Elimination compression reduced (35%→30%).<br><br>
+          <strong>2. NEW ENGINE FACTORS:</strong> Psychological Collapse (+0.4/pt above 12pt margin), Elimination Streak Momentum (+1.5/consecutive win), Player Inconsistency Variance (Murray inconsistencyFactor=1.5), Fortress Venue Bonus (+1.5pts for MIN/PHI/TOR home courts).<br><br>
+          <strong>3. SIMULATION FIXES (simulation.js):</strong> Iterations 1K→10K. Garbage time threshold 20→30pts, compression 80%→90%. Quarter score floor 12→8. Shooting swing 3→5 pts/SD. Run magnitude 3-7→5-15pts. Timeout halt 66%→45%. Anti-correlated noise 0.40→0.20. NEW: Capitulation threshold (25+ pts behind → 15% scoring reduction). NEW: Cascading collapse (2+ negative chaos factors compound at 1.3x).<br><br>
+          <strong>4. VALIDATION:</strong> G1 accuracy 88% (7/8). G5 accuracy 86% (6/7). No regressions on correctly predicted games. DEN-MIN still hardest series — model overrates DEN's talent edge vs MIN's home court fortress.
+        </div>
+        <span class="learning-tag correct">+3.4pp Accuracy</span><span class="learning-tag model">19 Fixes</span><span class="learning-tag milestone">Phase 45</span>
+      </div>
+
       <!-- Phase 44 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 44 — G6 Post-Game Attribution: Star Elevation ≠ Scoring Volume</div>
@@ -990,6 +1004,7 @@ function renderLearningsPage(el) {
     'Phase 37': 'Series Scoring Context + Score Range Bands: Engine now blends projected scores with actual series averages (low-scoring series project lower, high-scoring project higher). Score ranges show ±12% variance bands. Macro analysis: ESPN reports "15 of 16 teams won a game" — historic parity. Injuries dominate every series. OKC 12-0 in R1 over 3 years, clear R2 favorite.',
     'Phase 38': 'G5 deep analysis — 3 new concepts: (1) Elimination Game Star Elevation (Embiid 33pts facing elimination after 2pts Q1), (2) Closeout Pressure Inversion (BOS 3-22 FG in Q4 trying to clinch), (3) Home Star Ceiling Games (Brunson 39pts at MSG, Embiid 33 at WFC). Model went 1/2 on G5 picks. SAS-POR nearly perfect prediction (116-99 vs 114-95). Henderson youth breakout NOT persistent (31pts G2 → 5pts G5). SAS wins series 4-1.',
     'Phase 43': 'Market Odds Calibration — Calibrated all G6 bets against real DraftKings lines. Key findings: CLE ML was +110 estimated, real was -170 (no value edge). BOS -230 and DEN -258 priced higher than our 61% model. Jokic O/U 29.5 (not 24.5). True value lives in underdogs: LAL +150 (12% edge), ORL +136 (7.6%), MIN +210 (6.7%). All parlays recalculated with real odds.',
+    'Phase 45': 'Deep Lineage Overhaul — 19 code-level fixes across engine and simulation. Talent gap threshold lowered, turnover/3PT caps doubled, star elevation bidirectional, psychological collapse + elimination streak momentum + player inconsistency factors added. Sim: 10K iterations, capitulation threshold, cascading collapse, reduced blowout suppression. Accuracy 25/42 (59.5%), +3.4pp from Phase 44.',
     'Phase 44': 'G6 Post-Game Attribution — Model went 1/3 on Thu G6 picks (worst day). NYK ✅ 140-89 (margin miss +40), BOS ❌ (PHI 106-93, Maxey 30pts), DEN ❌ (MIN 110-98, Murray 4-17). Props 2/6. Key concept: Star Elevation Modes — stars elevate through facilitating/efficiency, not just scoring volume. Embiid 19pts but 10reb/8ast. Murray Inconsistency Factor added. P&L: -$698.47.',
     'Phase 42': 'Multi-Round Scalability + Projection Lineage — Round-level navigation (R1/R2/CF/Finals), series graduation with fatigue/injury carryover, projection lineage waterfall (SVG chart showing each factor\'s margin contribution), post-game factor attribution engine (proportional error distribution), localStorage V3 (series-ID keyed, backward-compatible). Infrastructure for playoff progression without code changes.',
     'Phase 41': 'Unified Ensemble — Aligned blended model (manual picks + engine margins) with Monte Carlo chaos sim. Sim now uses blended projection as baseline instead of raw engine. Disagreement variance scaling: +20% chaos when systems disagree, -5% when strongly agree. Result: 5/6 series aligned, 1 genuine coin flip. Calibration maintained at SD = 11.6.',

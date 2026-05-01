@@ -900,6 +900,69 @@ function renderDefinitionsPage(el) {
       </div>
     </div>
 
+    <div style="margin-top:28px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;font-size:16px;">Phase 45: Deep Lineage Attribution — Chaos Blowouts, Psychological Collapse, Fortress Venues</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Psychological Collapse Factor <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(PCF)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The projection engine capped margins too tightly, preventing blowout predictions. When a team is already projected to win by 12+, the trailing team often stops competing mentally, accelerating the margin.
+            <br><br><strong>Evidence:</strong> NYK outscored ATL 55-10 in a Q2-Q3 run in G6 — once the deficit exceeded ~15, ATL collapsed completely. DEN-MIN G6 saw MIN win by 27 at Target Center. These aren't random variance; they're psychological capitulation that compounds once the gap widens.
+            <br><br><strong>Solution:</strong> Added Step 5k in projections.js: when |projected margin| > 12, add +0.4 points per point above 12. A projected +16 margin becomes +17.6, a +20 becomes +23.2. This non-linear amplification captures the snowball effect of large leads.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Fortress Venue Bonus <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(FVB)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> Generic HCA by round (R1: 3.0, R2: 2.0, etc.) treats all arenas equally. Some venues have measurably stronger home-court effects driven by crowd intensity, altitude, or hostile environments.
+            <br><br><strong>Evidence:</strong> MIN went 4-0 at Target Center in the DEN series, winning by an average of 18.5pts at home. PHI's Wells Fargo Center produced the Embiid explosion games (G5 33pts, G6 comeback). These venues amplified home team performance beyond the standard HCA model.
+            <br><br><strong>Solution:</strong> Added <code>fortressVenue: true</code> property to series data and a +1.5pt <code>FORTRESS_VENUE_BONUS</code> constant applied in ratings.js before HCA calculation. Stacks with round-based HCA for total home advantages up to 4.5pts in R1.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Liberation Factor <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(LIB)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The old "star absence redistribution" model only clawed back 35% of the star's lost impact (2.0pts), assuming role players can't fully compensate. In reality, when depth is sufficient, removing a ball-dominant star can <em>liberate</em> secondary players who thrive with more touches and freedom.
+            <br><br><strong>Evidence:</strong> MIN without Edwards won 4 straight — Randle, Gobert, and DiVincenzo (before injury) all elevated their production with Edwards out. The team played more cohesive, egalitarian basketball rather than funneling through one star.
+            <br><br><strong>Solution:</strong> Increased star absence penalty to 3.5pts per star but raised liberation clawback to 45% (from 35%), renamed the lineage step from "redistribution" to "liberation." Net effect: deeper teams lose less from star absences while shallow teams lose more.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Elimination Streak Momentum <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(ESM)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model treated each elimination game independently. But teams that have already won consecutive elimination games carry compounding momentum and confidence that amplifies with each successive survival.
+            <br><br><strong>Evidence:</strong> PHI won G3, G4, G5, G6 in a row facing elimination — their play improved each game, not just stayed constant. MIN won G4 and G5 facing elimination before closing in G6. The psychological momentum of "we've been here before and survived" creates measurable performance boosts.
+            <br><br><strong>Solution:</strong> Added Step 5l: +1.5pts per consecutive elimination win for the facing-elimination team. A team on a 3-game elimination streak gets +4.5pts. Tracked via <code>eliminationWinStreak</code> property in series data (separate home/away counts).</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Player Inconsistency Variance <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(PIV)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The model projected margins assuming all players perform at their mean. Highly inconsistent players create unpredictable variance that should compress projected margins toward zero.
+            <br><br><strong>Evidence:</strong> Jamal Murray went 4-17 FG in G6 after scoring 24pts in G5. His game-to-game scoring variance was the highest of any star in the playoffs. When your key player is a coin flip, the team's projected advantage should shrink because you can't rely on consistent output.
+            <br><br><strong>Solution:</strong> Added <code>inconsistencyFactor</code> player property (1.0 = normal, 1.5 = high variance). Step 5m compresses the projected margin by up to &plusmn;2.0pts when inconsistent players are on the favored team — reflecting the risk that their variance drags the team down rather than up.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Capitulation Threshold <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(CAP)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The Monte Carlo sim's garbage time check started at a 20pt deficit with 80% scoring compression, which suppressed blowouts. Real NBA teams trailing by 25+ essentially stop competing, and the winning team often maintains intensity through Q3.
+            <br><br><strong>Evidence:</strong> In NYK-ATL G6, once NYK led by 30+, ATL's lineup was entirely bench players playing out the string. MIN-DEN G6 final margin was 27pts — the last 10 minutes were pure garbage time with DEN scoring at reduced efficiency.
+            <br><br><strong>Solution:</strong> Added capitulation mechanic: when trailing by 25+, the trailing team loses up to 8pts/quarter while the leading team gains up to 3pts. Garbage threshold raised from 20 to 30, compression reduced from 0.80 to 0.90. This allows the sim to produce realistic 25-35pt blowouts.</div>
+        </div>
+
+        <div class="def-card" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Cascading Collapse <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(CC)</span></div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+            <strong>Problem:</strong> The sim applied negative factors (cold shooting, bad momentum, foul trouble) independently. In reality, these factors compound: a team shooting poorly loses confidence, which tanks their shot selection, which triggers more turnovers — a vicious cycle.
+            <br><br><strong>Evidence:</strong> ATL's G6 collapse involved simultaneous cold shooting (38% FG), lost momentum (NYK 55-10 run), and foul trouble — each factor feeding the others. DEN's G6 similarly saw Murray's cold shooting drag down team morale and ball movement simultaneously.
+            <br><br><strong>Solution:</strong> When 2+ negative chaos factors align for a team in a quarter, apply a 1.3x cascade multiplier to the combined negative effect. This produces the realistic "everything goes wrong at once" quarters that create 15-20pt swings within a single period.</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>`;
 }
 

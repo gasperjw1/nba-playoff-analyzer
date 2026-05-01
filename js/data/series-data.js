@@ -790,6 +790,10 @@ const SERIES_DATA = [
   },
   {
     id: "DEN-MIN", conf: "West", round: "R1",
+    // PHASE 45: Fortress venue — MIN's Target Center is elite (G3 +17, G4 +16, G6 +12)
+    fortressVenue: true,
+    // PHASE 45: Track elimination wins for momentum factor
+    eliminationWinStreak: { home: 0, away: 2 }, // MIN won G4 and G6 facing elimination
     defMatchups: {
       homeDefOnAway: { defender:"Aaron Gordon", target:"Anthony Edwards", dLebron:-0.774, targetUsg:32.5, note:"G1 CONFIRMED: Gordon physical enough to bother Ant (7-19 FG) but knee was the bigger factor. Gordon's on/off (+12.8) means DEN defense craters without him — foul trouble (3 fouls Q1 in G1) is the x-factor. Edwards' 63.9% 2PT vs DEN means he WILL score at the rim — Gordon must force midrange. G2 KEY: If Edwards' knee loosens, Gordon needs help-side from Braun/Brown on drives." },
       awayDefOnHome: { defender:"Jaden McDaniels", target:"Nikola Jokic", dLebron:0.233, targetUsg:33.2, note:"G1 CONFIRMED: Jokic dominated (25/13/11) despite slow Q1 (3pts). McDaniels' tech for pushing Jokic revealed 'low flustered threshold'. G2 ADJUSTMENT: Finch may deploy Randle as PRIMARY Jokic defender (lower-body strength for post-up contests) with Gobert floating to 'guard' Braun (.301 3P%). Anderson is another option — Swiss army knife versatility. Team defense > individual assignment vs Jokic." },
@@ -811,7 +815,7 @@ const SERIES_DATA = [
         { name:"Nikola Jokic", age:31, pos:"C", rating:97, ppg:27.7, rpg:12.9, apg:10.7, fgp:56.9, per:31.5, ts:66.2, epm:10.2, bpm:14.2, ws48:.312, onOff:14.5, clutch:9.1, vorp:9.2, usg:33.2, injury:null, lebron:7.367, oLebron:6.247, dLebron:1.12, war:13.33, offRole:"Shot Creator", defRole:"Anchor Big",
           matchupNote:"Best player alive. PER 31.5, EPM 10.2, +14.5 on/off — all league-best. 2nd consecutive triple-double season (27.7/12.9/10.7). Averaged 35.8/15/11.3 vs MIN in reg season (3-1). Historically dominates Gobert. G1: 25/13/11 (22nd career playoff TD), dominated Q2-Q3 with 15pts", baseRating:97, starCeiling:2, injuryRisk:0, playoffAscension:0.5 },
         { name:"Jamal Murray", pos:"PG", rating:82, ppg:25.4, rpg:4.4, apg:7.1, fgp:48.3, per:21.5, ts:60.8, epm:4.2, bpm:3.8, ws48:.165, onOff:5.5, clutch:7.8, vorp:3.8, usg:28.0, injury:null, lebron:1.389, oLebron:3.171, dLebron:-1.782, war:6.394, offRole:"Shot Creator", defRole:"Chaser",
-          matchupNote:"Career-year All-Star: 25.4 PPG, .435 3P%, .887 FT%. Two-man game with Jokic is unstoppable (1.18 PPP). G1: 30pts, 16/16 FT (historic), 0/8 from 3 — won via free throw aggression. Combined Jokic/Murray: 55pts/18reb/18ast in G1", baseRating:82, starCeiling:1, injuryRisk:0.8, activeInjury:{type:"chronic knee",severity:0.7,note:"ACL tear history (2020). G1: 30pts on 16/16 FT despite 0/8 from 3 — found alternative scoring path. Conditioning concern grows each game."} },
+          matchupNote:"Career-year All-Star: 25.4 PPG, .435 3P%, .887 FT%. Two-man game with Jokic is unstoppable (1.18 PPP). G1: 30pts, 16/16 FT (historic), 0/8 from 3 — won via free throw aggression. Combined Jokic/Murray: 55pts/18reb/18ast in G1", baseRating:82, starCeiling:1, injuryRisk:0.8, inconsistencyFactor:1.5, activeInjury:{type:"chronic knee",severity:0.7,note:"ACL tear history (2020). G1: 30pts on 16/16 FT despite 0/8 from 3 — found alternative scoring path. Conditioning concern grows each game."} },
         { name:"Cameron Johnson", pos:"SF", rating:72, ppg:12.2, rpg:3.8, apg:2.4, fgp:48.0, per:15.2, ts:59.5, epm:1.8, bpm:1.5, ws48:.115, onOff:10.1, clutch:5.0, vorp:1.9, usg:22.0, injury:null, lebron:0.574, oLebron:0.806, dLebron:-0.231, war:3.133, offRole:"Movement Shooter", defRole:"Helper",
           matchupNote:"Acquired from BKN for MPJ (Jul 2025). Starting SF over Watson. Underwhelming first season (12.2 PPG) but form picked up late. 43% from 3, elite wing defense. FantasyLabs on/off +10.14 NetRtg. Closes games — more defensive versatility than MPJ", baseRating:72 },
         { name:"Aaron Gordon", pos:"PF", rating:73, ppg:16.2, rpg:5.8, apg:2.7, fgp:49.7, per:17.4, ts:59.2, epm:2.0, bpm:1.8, ws48:.128, onOff:12.8, clutch:5.2, vorp:1.7, usg:22.5, injury:null, lebron:0.61, oLebron:1.384, dLebron:-0.774, war:1.934, offRole:"Shot Creator", defRole:"Wing Stopper",
@@ -1920,6 +1924,10 @@ const SERIES_DATA = [
   },
   {
     id: "BOS-PHI", conf: "East", round: "R1",
+    // PHASE 45: PHI's Wells Fargo Center is a fortress venue (G6 +13)
+    fortressVenue: true,
+    // PHASE 45: PHI has won 3 straight elimination games (G5, G6, heading into G7)
+    eliminationWinStreak: { home: 0, away: 3 },
     defMatchups: {
       homeDefOnAway: { defender:"Derrick White", target:"Tyrese Maxey", dLebron:2.324, targetUsg:31.5, note:"G1 VALIDATED: White (D-LEBRON 2.324, Chaser role) held Maxey to 20pts on 8/20 FG. PHI has 1 initiator — White can fully commit to Maxey with no secondary creator to worry about. George's 4.8 clutch rating means he doesn't take pressure off Maxey. This is the bracket's most impactful defensive matchup." },
       awayDefOnHome: { defender:"VJ Edgecombe", target:"Jaylen Brown", dLebron:0.08, targetUsg:31.0, note:"Rookie (D-LEBRON 0.08) vs Finals MVP (28.7 PPG). Massive mismatch. Brown has Tatum, White, Pritchard as co-creators (3 initiators) — even if Edgecombe slows Brown slightly, BOS has endless alternatives. G1 CONFIRMED: Brown scored 26 pts including 16 in Q3 (7-of-9)." },
@@ -2698,6 +2706,9 @@ const SERIES_DATA = [
   },
   {
     id: "CLE-TOR", conf: "East", round: "R1",
+    // PHASE 45: TOR's Scotiabank Arena is a fortress (G3 +22, G4 +4)
+    fortressVenue: true,
+    eliminationWinStreak: { home: 0, away: 0 },
     defMatchups: {
       homeDefOnAway: { defender:"Craig Porter Jr.", target:"Scottie Barnes", dLebron:1.177, targetUsg:25.0, note:"G1-G2: Barnes bounced back from WPA LVP in G1 (21pts) to 26pts/5ast in G2 on 11/19 FG. CLE's paint denial still effective (TOR 22 TOs in G2) but Barnes found individual offense. The BIGGER defensive story is Ingram suppression — CLE's scheme LOCKED him down (17pts G1, 7pts/3-15 FG in G2). Mobley's help defense and CLE's switching are the series-defining scheme." },
       awayDefOnHome: { defender:"Scottie Barnes", target:"Donovan Mitchell", dLebron:1.914, targetUsg:31.0, note:"G1-G2: Mitchell 32pts→30pts. Barnes cannot contain Mitchell — CLE's 3-initiator system (Mitchell 30, Harden 28, Mobley 25 in G2) overwhelms any individual defender. All three CLE stars scored 25+ in G2, which is historically rare. Suppression diluted to ~20% as Harden shifted from facilitator to scorer role." },

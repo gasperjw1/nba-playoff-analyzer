@@ -282,6 +282,12 @@ function calcWinProb(series, seriesId) {
     baseHCA = HCA_GAME7_OVERRIDE;
   }
 
+  // PHASE 45: Fortress Venue Bonus — elite home environments provide extra HCA.
+  // Evidence: MIN Target Center G3 +17, G4 +16, G6 +12; PHI Wells Fargo G6 +13.
+  if (typeof FORTRESS_VENUE_BONUS !== 'undefined' && series.fortressVenue) {
+    baseHCA += FORTRESS_VENUE_BONUS;
+  }
+
   // homeCourtOverride: 'away' means the away team in data structure actually has home court
   const hca = series.homeCourtOverride === 'away' ? -baseHCA : baseHCA;
 

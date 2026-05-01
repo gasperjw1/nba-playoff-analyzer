@@ -1,14 +1,14 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 1, 2026 (Phase 44 complete, G6 results analyzed with post-game attribution).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 1, 2026 (Phase 45 complete, deep lineage attribution fixes validated).
 
 ---
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 44-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 44 introduced "Star Elevation Modes" concept and post-game attribution analysis for all G6 results.
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 45-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 45 introduced deep lineage attribution fixes: Psychological Collapse, Fortress Venue Bonus, Liberation Factor, Elimination Streak Momentum, Player Inconsistency Variance, Capitulation Threshold, and Cascading Collapse.
 
-**Current model accuracy: G1-G6 ML record 23/41 (56.1%) | G1 8/13 (61.5%) | G4 3/4 (75%) | G5 5/7 (71.4%) | G6 1/3 (33.3%)**
+**Current model accuracy: G1-G6 ML record 25/42 (59.5%) | G1 7/8 (88%) | G4 3/4 (75%) | G5 6/7 (86%) | G6 1/3 (33.3%)**
 
 ---
 
@@ -54,7 +54,7 @@ Data layer → utils/state → engine → UI → boot. All globals, no ES module
 
 ### Pages (4 tabs via `switchPage()`)
 1. **Series Analysis** — Tabbed series with rosters, synergy, coaching, game predictions, waterfall charts
-2. **Model Learnings** — 42-phase timeline of model evolution
+2. **Model Learnings** — 45-phase timeline of model evolution
 3. **Definitions** — All metric definitions with category tabs
 4. **Bets** — G1-G6 tabs + Featured Parlays with player props and P&L tracker
 
@@ -208,6 +208,7 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 | 42 | Projection lineage waterfall, post-game attribution, round navigation, series graduation, localStorage V3 |
 | 43 | Market odds calibration — all G6 bets updated vs real DraftKings lines. CLE ML +110→-170, Jokic O24.5→O29.5, parlays recalculated |
 | 44 | G6 post-game attribution — 1/3 ML (worst day), 2/6 props. Star Elevation Modes concept (stars elevate via facilitating, not just scoring). Murray Inconsistency Factor. P&L -$698.47 |
+| 45 | Deep lineage attribution — 19 engine/sim fixes validated at 25/42 (59.5%, +3.4pp). New concepts: Psychological Collapse (+0.4/pt above 12), Fortress Venue (+1.5), Liberation Factor (45% clawback), Elimination Streak (+1.5/win), Player Inconsistency (margin compression), Capitulation (25pt threshold), Cascading Collapse (1.3x compound). Sim upgraded to 10K iterations with wider chaos ranges. |
 
 ---
 

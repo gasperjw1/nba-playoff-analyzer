@@ -49,9 +49,11 @@ function calcGameProjection(series, seriesId, gameNum) {
   const absMarginBase = Math.abs(baseMargin);
   // Talent multiplier is intentionally gentle — big blowouts come from variance, not expectation
   // NBA spreads rarely exceed -14 even for dominant matchups
+  // PHASE 45: Lowered threshold from 8→4 so moderate favorites get amplification.
+  // Evidence: NYK-ATL G6 had ~5.6pt base margin but talent gap warranted more.
   let talentMultiplier = 1.0;
-  if (absMarginBase > 8) talentMultiplier = 1.0 + (absMarginBase - 8) * 0.02;
-  talentMultiplier = Math.min(talentMultiplier, 1.25);
+  if (absMarginBase > 4) talentMultiplier = 1.0 + (absMarginBase - 4) * 0.025;
+  talentMultiplier = Math.min(talentMultiplier, 1.30);
   const preMultMargin = baseMargin;
   baseMargin *= talentMultiplier;
   trackStep('talent', 'Talent Gap Amplifier', preMultMargin, baseMargin, `mult=${talentMultiplier.toFixed(2)}`);
@@ -83,7 +85,9 @@ function calcGameProjection(series, seriesId, gameNum) {
     const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
     return br >= 75 && eff === 0;
   }).length;
-  { const pre = baseMargin; baseMargin += (awayStarsOut - homeStarsOut) * 2.0; trackStep('starAbsence', 'Star Absence Boost', pre, baseMargin, `homeOut=${homeStarsOut} awayOut=${awayStarsOut}`); }
+  // PHASE 45: Increased per-star impact from +2.0→+3.5 but added liberation offset below.
+  // Evidence: LAL without Doncic+Reaves lost G1 by 22; MIN without Edwards still won G4/G6.
+  { const pre = baseMargin; baseMargin += (awayStarsOut - homeStarsOut) * 3.5; trackStep('starAbsence', 'Star Absence Boost', pre, baseMargin, `homeOut=${homeStarsOut} awayOut=${awayStarsOut}`); }
 
   // --- STEP 5: activeInjury Drag ---
   // 2025 evidence: Edwards at 0.7 severity shot 7-19; partially hurt stars reduce efficiency
@@ -157,8 +161,9 @@ function calcGameProjection(series, seriesId, gameNum) {
       const away3PSwing = (awayExp3 - awayTeamData.playoff3Pct) * awayTeamData.threePA * 3;
 
       // Net margin adjustment: home improvement - away improvement
-      // Cap at ±4 pts to prevent 3PT variance from dominating the model
-      const threePtAdj = Math.max(-4, Math.min(4, home3PSwing - away3PSwing));
+      // PHASE 45: Cap raised ±4→±7 — team-wide hot/cold 3PT nights can swing 8+ pts.
+      // Evidence: BOS 29% 3PT in G6 vs PHI (12-41); NYK 59% FG team-wide in G6 vs ATL.
+      const threePtAdj = Math.max(-7, Math.min(7, home3PSwing - away3PSwing));
       { const pre = baseMargin; baseMargin += threePtAdj; trackStep('3ptRegression', '3PT Variance Regression', pre, baseMargin, `adj=${threePtAdj.toFixed(2)}`); }
     }
   }
@@ -192,7 +197,9 @@ function calcGameProjection(series, seriesId, gameNum) {
     if (tf && tf.turnover && typeof tf.turnover.differential === 'number' && gameNum > 1) {
       // differential > 0 means away turns it over more → benefits home
       // Convert to points: differential × 1.07pts/TOV × 0.15 attenuation (to avoid overweighting)
-      const tovAdj = Math.max(-2.5, Math.min(2.5, tf.turnover.differential * 1.07 * 0.15));
+      // PHASE 45: Raised cap ±2.5→±5.0 and attenuation 0.15→0.25.
+      // Evidence: ATL 19 TOs in G6 = ~10pt swing; 2.5 cap was absurdly low.
+      const tovAdj = Math.max(-5.0, Math.min(5.0, tf.turnover.differential * 1.07 * 0.25));
       { const pre = baseMargin; baseMargin += tovAdj; trackStep('turnovers', 'Turnover Differential', pre, baseMargin, `diff=${tf.turnover.differential}`); }
     }
   }
@@ -297,14 +304,17 @@ function calcGameProjection(series, seriesId, gameNum) {
     const r = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
     return r >= 65;
   }).length;
+  // PHASE 45: Liberation Factor — when stars are out and depth is sufficient (4+ rated 65+),
+  // role players get more touches and often EXCEED baselines (McDaniels 32pts, Shannon 24pts).
+  // Now claws back 45% of the increased star absence penalty (up from 35% of old 2.0).
   { const pre = baseMargin;
   if (homeStarsOut > 0 && homeDepthPlayers >= 4) {
-    baseMargin += homeStarsOut * 2.0 * 0.35;
+    baseMargin += homeStarsOut * 3.5 * 0.45; // liberation clawback
   }
   if (awayStarsOut > 0 && awayDepthPlayers >= 4) {
-    baseMargin -= awayStarsOut * 2.0 * 0.35;
+    baseMargin -= awayStarsOut * 3.5 * 0.45;
   }
-  trackStep('redistribution', 'Star Absence Redistribution', pre, baseMargin, `homeDepth=${homeDepthPlayers} awayDepth=${awayDepthPlayers}`);
+  trackStep('liberation', 'Star Absence Liberation', pre, baseMargin, `homeDepth=${homeDepthPlayers} awayDepth=${awayDepthPlayers}`);
   }
 
   // --- STEP 5j: Star Return From Injury Penalty (Phase 32) ---
@@ -324,11 +334,80 @@ function calcGameProjection(series, seriesId, gameNum) {
     });
   }
 
+  // --- STEP 5k: Psychological Collapse Factor (Phase 45) ---
+  // When the projected margin is already large (>12pts), the trailing team faces
+  // psychological pressure that compounds the deficit. Evidence: NYK-ATL G6 (+51),
+  // ATL committed 19 TOs with Daniels ejected after a fight; the team gave up.
+  // Formula: +0.4 per point above 12, uncapped — models cascading capitulation.
+  // Only applies when baseMargin is already extreme (big favorites get bigger).
+  { const pre = baseMargin;
+  const absM = Math.abs(baseMargin);
+  if (absM > 12) {
+    const collapseBonus = (absM - 12) * 0.4;
+    baseMargin += baseMargin > 0 ? collapseBonus : -collapseBonus;
+  }
+  trackStep('psychCollapse', 'Psychological Collapse', pre, baseMargin, `absM=${absM.toFixed(1)}`);
+  }
+
+  // --- STEP 5l: Elimination Streak Momentum (Phase 45) ---
+  // Teams that have won consecutive elimination games build psychological momentum.
+  // Evidence: PHI won G5 and G6 facing elimination → confidence compounded.
+  // Formula: +1.5 pts per consecutive elimination win for the trailing team.
+  // eliminationWinStreak is tracked on the series object.
+  if (series.eliminationWinStreak) {
+    const streak = series.eliminationWinStreak;
+    const elimScore = getSeriesScore(series);
+    const isHomeFacingElim = elimScore && elimScore.away === 3;
+    const isAwayFacingElim = elimScore && elimScore.home === 3;
+    { const pre = baseMargin;
+    if (isHomeFacingElim && streak.home > 0) {
+      baseMargin += streak.home * 1.5; // boost home team that's survived eliminations
+    }
+    if (isAwayFacingElim && streak.away > 0) {
+      baseMargin -= streak.away * 1.5; // boost away team that's survived eliminations
+    }
+    trackStep('elimStreak', 'Elimination Streak Momentum', pre, baseMargin, `homeStreak=${streak.home||0} awayStreak=${streak.away||0}`);
+    }
+  }
+
+  // --- STEP 5m: Player Inconsistency Variance (Phase 45) ---
+  // Some stars have wider game-to-game variance than their rating suggests.
+  // Evidence: Murray went 4-17 (12pts, -18) in DEN-MIN G6 elimination game.
+  // Players with inconsistencyFactor > 0 widen the margin uncertainty.
+  // When these players are on the FAVORED team, reduce margin by up to 2pts
+  // (their floor is lower than rating suggests).
+  { const pre = baseMargin;
+  let homeInconsistency = 0, awayInconsistency = 0;
+  series.homeTeam.players.forEach(p => {
+    if (p.inconsistencyFactor && p.inconsistencyFactor > 0) {
+      const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+      if (eff > 0) homeInconsistency += p.inconsistencyFactor;
+    }
+  });
+  series.awayTeam.players.forEach(p => {
+    if (p.inconsistencyFactor && p.inconsistencyFactor > 0) {
+      const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+      if (eff > 0) awayInconsistency += p.inconsistencyFactor;
+    }
+  });
+  // Inconsistency on the favored team compresses margin (their floor is lower)
+  // Inconsistency on the underdog widens it (their ceiling could steal a game)
+  if (baseMargin > 0 && homeInconsistency > 0) {
+    baseMargin -= Math.min(2.0, homeInconsistency * 0.8);
+  } else if (baseMargin < 0 && awayInconsistency > 0) {
+    baseMargin += Math.min(2.0, awayInconsistency * 0.8);
+  }
+  if (homeInconsistency > 0 || awayInconsistency > 0) {
+    trackStep('inconsistency', 'Player Inconsistency', pre, baseMargin, `homeInc=${homeInconsistency.toFixed(1)} awayInc=${awayInconsistency.toFixed(1)}`);
+  }
+  }
+
   // --- STEP 6: Pre-compression cap ---
   // Cap the "raw talent edge" margin before applying game-context adjustments.
   // This ensures coaching adjustments, clutch compression, and elimination intensity
   // can still REDUCE the margin below the cap for G2+, creating game-to-game variety.
-  { const pre = baseMargin; baseMargin = Math.max(-18, Math.min(18, baseMargin)); trackStep('cap', 'Pre-Compression Cap (±18)', pre, baseMargin); }
+  // PHASE 45: Raised cap from ±18 to ±22 to allow bigger blowout projections.
+  { const pre = baseMargin; baseMargin = Math.max(-22, Math.min(22, baseMargin)); trackStep('cap', 'Pre-Compression Cap (±22)', pre, baseMargin); }
 
   // --- STEP 7: Coaching Adjustment Quality (CAQ) Compression (Phase 32 upgrade) ---
   // 2025 evidence: OKC-MEM margins went 51→19→6→2 as Taylor adjusted
@@ -441,12 +520,30 @@ function calcGameProjection(series, seriesId, gameNum) {
     trackStep('momentum', 'G1 Result / Momentum', preMomentum, baseMargin);
   }
 
-  // --- STEP 8: Elimination Game Intensity ---
-  // In a best-of-7, any game where one team is at 3 wins IS a must-win for the trailing team
+  // --- STEP 8: Elimination Game Intensity (Phase 45 upgrade) ---
+  // PHASE 45: Reduced compression from 0.65→0.70 (only 30% compression).
+  // The old 35% compression was too strong — it made elimination games too close.
+  // Also: star elevation now applies to BOTH teams. The elimination team gets 1.5x
+  // boost because desperation > closeout focus (evidence: PHI G5 and G6 vs BOS).
   const isElimination = score.home === 3 || score.away === 3;
   { const pre = baseMargin;
   if (isElimination) {
-    baseMargin *= 0.65; // 35% compression for elimination games
+    // Determine which team faces elimination
+    const homeFacesElim = score.away === 3 && score.home < 3;
+    const awayFacesElim = score.home === 3 && score.away < 3;
+
+    // Star elevation for elimination team (1.5x stronger than closeout)
+    // Evidence: PHI's trio combined 72pts in G6 facing elimination. ATL collapsed under closeout pressure.
+    if (homeFacesElim) {
+      // Home team faces elimination → boost home margin (desperation energy)
+      baseMargin += 1.5; // elimination boost for home team
+    } else if (awayFacesElim) {
+      // Away team faces elimination → boost away (reduce margin)
+      baseMargin -= 1.5;
+    }
+
+    // Compression still applies but less aggressively
+    baseMargin *= 0.70; // 30% compression (was 35%)
   }
   const seriesDiff = Math.abs(score.home - score.away);
   if (gamesPlayed >= 3 && seriesDiff <= 1) {

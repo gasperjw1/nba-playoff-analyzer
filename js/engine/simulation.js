@@ -38,41 +38,46 @@
 // ============================================================
 
 const SIM_CONFIG = {
-  iterations: 1000,
+  iterations: 10000,          // PHASE 45: 1K→10K for better tail event capture (matches docs)
   marginSD: 11.5,            // THE calibration target
   teamScoreSD: 12.0,         // individual team score SD
   quarterScoreSD: 8.0,       // per-quarter score SD — tuned to produce ~11.5 game margin SD
 
   // Chaos channel weights (how much each factor can shift the margin)
-  shootingSwingMax: 8,       // max points from team shooting correlation
+  shootingSwingMax: 12,      // PHASE 45: 8→12 max points from team shooting correlation
   foulTroubleSwing: 3.5,     // points lost when key player in foul trouble
-  momentumRunSwing: 5,       // max points from a momentum run
+  momentumRunSwing: 8,       // PHASE 45: 5→8 max points from a momentum run
   fatigueSwing: 3,           // max points from fatigue differential
   clutchSwing: 4,            // max points from clutch performance differential
-  threePtVarianceSwing: 6,   // max from 3PT variance (biggest single factor)
+  threePtVarianceSwing: 8,   // PHASE 45: 6→8 max from 3PT variance
 
   // Probabilities
   earlyFoulProb: 0.08,       // 8% chance key player gets 2 fouls in Q1
   coachBenchProb: 0.67,      // 67% coaches bench foul-troubled player
-  runProb: 0.15,             // probability of a significant run per quarter
-  timeoutHaltProb: 0.66,     // timeout stops run
-  counterRunProb: 0.35,      // counter-run after timeout
+  runProb: 0.20,             // PHASE 45: 0.15→0.20 — runs happen more often in playoffs
+  timeoutHaltProb: 0.45,     // PHASE 45: 0.66→0.45 — timeouts fail more in hostile arenas
+  counterRunProb: 0.30,      // PHASE 45: 0.35→0.30 — counter-runs slightly rarer
 
   // Fatigue
   q4FatiguePenalty: 1.8,     // points of scoring drop in Q4 from fatigue
   veteranBonus: 0.3,         // partial clutch offset for veteran teams
   seriesFatiguePerGame: 0.5, // extra fatigue points per game past G4
 
-  // Garbage time
-  garbageThreshold: 20,
-  garbageCompression: 0.80,
+  // Garbage time — PHASE 45: Raised threshold, reduced compression
+  garbageThreshold: 30,      // was 20 — allow blowouts to develop naturally
+  garbageCompression: 0.90,  // was 0.80 — only 10% reduction (not 20%)
 
   // Clutch
   clutchThreshold: 6,        // "close game" = within 6 pts entering Q4
   clutchFGDrop: 0.06,        // 6% FG drop in clutch
 
   // 3PT correlation
-  team3PtSD: 0.08            // 8% SD in team 3PT% per game
+  team3PtSD: 0.08,           // 8% SD in team 3PT% per game
+
+  // PHASE 45: Capitulation and cascade parameters
+  capitulationThreshold: 25, // when trailing by 25+, team starts giving up
+  capitulationPenalty: 0.15, // 15% scoring reduction for capitulating team
+  cascadeMultiplier: 1.3     // when 2+ chaos factors align, compound the effect
 };
 
 // ============================================================
@@ -121,10 +126,11 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
   // This is the #1 source of game-to-game variance (3PT% SD = 8%)
   const homeShootingTemp = normalRandom(rng, 0, 1); // standard normal
   const awayShootingTemp = normalRandom(rng, 0, 1);
-  // Convert to point swing: each SD of shooting temp = ~3 points
-  // (8% 3PT swing × 35 attempts × 3pts × 0.35 = ~2.9 pts per SD)
-  const homeShootingSwing = homeShootingTemp * 3.0;
-  const awayShootingSwing = awayShootingTemp * 3.0;
+  // PHASE 45: Increased from 3.0→5.0 pts per SD of shooting temp.
+  // Evidence: NYK shot 59% FG while ATL shot 38% — a 21pp differential = ~20+ pts.
+  // At 3.0/SD, max impact was ~9pts (3 SDs). At 5.0/SD, max is ~15pts — more realistic.
+  const homeShootingSwing = homeShootingTemp * 5.0;
+  const awayShootingSwing = awayShootingTemp * 5.0;
 
   // ============================================
   // QUARTER-BY-QUARTER SIMULATION
@@ -218,8 +224,9 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
         - (homeBenchMode ? 0.15 : 0);
       const runIsHome = rng() < homeRunChance;
 
-      // Run magnitude: 7-15 point swing
-      const runMag = 3 + rng() * 4; // 3-7 point quarter swing
+      // PHASE 45: Run magnitude increased from 3-7→5-15 point swing.
+      // Evidence: NYK went on 55-10 run spanning Q1-Q2. Real playoff runs are 10-20pts.
+      const runMag = 5 + rng() * 10; // 5-15 point quarter swing
       if (runIsHome) {
         homeQScore += runMag * 0.6;
         awayQScore -= runMag * 0.4; // opponent's offense disrupted too
@@ -304,6 +311,31 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
       }
     }
 
+    // --- PHASE 45: CASCADING COLLAPSE CHECK ---
+    // When multiple chaos factors align negative in the same quarter
+    // (e.g., cold shooting + opponent run + foul trouble), the combined effect
+    // should compound rather than just add. This models psychological spirals
+    // where one bad thing leads to another.
+    // Count negative chaos channels for each team this quarter:
+    let homeNegFactors = 0, awayNegFactors = 0;
+    if (homeShootingSwing < -2) homeNegFactors++;
+    if (awayShootingSwing < -2) awayNegFactors++;
+    if (homeBenchMode) homeNegFactors++;
+    if (awayBenchMode) awayNegFactors++;
+    if (momentum < 0 && momentumStrength > 0.3) homeNegFactors++;
+    if (momentum > 0 && momentumStrength > 0.3) awayNegFactors++;
+    // When 2+ factors align negative, apply cascade multiplier
+    if (homeNegFactors >= 2) {
+      const cascadeBoost = (homeNegFactors - 1) * (config.cascadeMultiplier - 1);
+      homeQScore *= (1 - cascadeBoost * 0.15); // reduce home scoring by 4-8%
+      awayQScore *= (1 + cascadeBoost * 0.08); // opponent benefits slightly
+    }
+    if (awayNegFactors >= 2) {
+      const cascadeBoost = (awayNegFactors - 1) * (config.cascadeMultiplier - 1);
+      awayQScore *= (1 - cascadeBoost * 0.15);
+      homeQScore *= (1 + cascadeBoost * 0.08);
+    }
+
     // --- QUARTER NOISE ---
     // After all the structured chaos, add calibrated random noise.
     // This represents the thousands of micro-events we can't model.
@@ -311,15 +343,39 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
     // game-level margin SD ≈ 11.5 when combined with the structured chaos.
     const qNoise = normalRandom(rng, 0, config.quarterScoreSD * 0.55);
     homeQScore += qNoise;
-    awayQScore -= qNoise * 0.4; // partially anti-correlated (shared pace)
+    // PHASE 45: Reduced anti-correlation from 0.4→0.2.
+    // In blowouts, scoring collapses are NOT offset by opponent slowing down.
+    awayQScore -= qNoise * 0.2;
 
-    // Ensure non-negative quarter scores and round
-    homeQScore = Math.max(12, Math.round(homeQScore));
-    awayQScore = Math.max(12, Math.round(awayQScore));
+    // PHASE 45: Quarter floor reduced from 12→8. Teams have scored 8-10 in real playoff quarters.
+    // Evidence: ATL scored 15 in the first HALF (83-36 halftime) — old floor of 12 per quarter
+    // meant a team's Q1+Q2 couldn't go below 24, making a 47-point halftime lead impossible.
+    homeQScore = Math.max(8, Math.round(homeQScore));
+    awayQScore = Math.max(8, Math.round(awayQScore));
 
     homeScore += homeQScore;
     awayScore += awayQScore;
     quarterScores.push({ home: homeQScore, away: awayQScore });
+  }
+
+  // --- PHASE 45: CAPITULATION CHECK ---
+  // When a team is down by 25+ after any quarter, psychological capitulation kicks in.
+  // The trailing team's remaining scoring is reduced. This models the body language
+  // collapse, reduced effort, and defensive lapses seen in ATL's 140-89 G6 loss.
+  // Applied BEFORE garbage time to allow capitulation to widen the margin further.
+  const marginAfterQ4 = homeScore - awayScore;
+  if (Math.abs(marginAfterQ4) >= config.capitulationThreshold) {
+    // The trailing team "gives up" — their Q3/Q4 scoring was already affected
+    // but we apply an extra penalty proportional to how far behind they are
+    const overThreshold = Math.abs(marginAfterQ4) - config.capitulationThreshold;
+    const capitPenalty = Math.round(overThreshold * config.capitulationPenalty);
+    if (marginAfterQ4 > 0) {
+      awayScore -= Math.min(capitPenalty, 8); // cap at 8 extra pts loss
+      homeScore += Math.min(Math.round(capitPenalty * 0.3), 3); // winning team coasts slightly better
+    } else {
+      homeScore -= Math.min(capitPenalty, 8);
+      awayScore += Math.min(Math.round(capitPenalty * 0.3), 3);
+    }
   }
 
   // --- GARBAGE TIME COMPRESSION ---

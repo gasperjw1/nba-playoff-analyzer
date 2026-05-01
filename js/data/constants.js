@@ -43,7 +43,11 @@ const SPM_COEFF = {
 // PHASE 17 UPDATE (Barreira & Morgado 2023): Longitudinal analysis (1946-2022) shows HCA is
 // declining significantly in the modern NBA. Values reduced ~15% from original calibration.
 // López-García et al. (2024): team ability matters more than crowd support for HCA.
-const HCA_BY_ROUND = { 'R1': 2.5, 'R2': 1.7, 'CF': 1.3, 'Finals': 0.85 };
+const HCA_BY_ROUND = { 'R1': 3.0, 'R2': 2.0, 'CF': 1.5, 'Finals': 1.0 };
+// PHASE 45: Fortress Venue Bonus — some arenas provide HCA far above league average.
+// Evidence: MIN Target Center +17 and +16 in home games; PHI Wells Fargo +13 in G6.
+// Applied on top of HCA_BY_ROUND when series has fortressVenue flag.
+const FORTRESS_VENUE_BONUS = 1.5; // additional pts for elite home environments
 // PHASE 17 UPDATE (Li et al. 2025): 10-year Game-7 analysis shows game location does NOT
 // significantly affect Game 7 outcomes. EFG% and TOV% are the decisive factors, not venue.
 // Reduced from +5.0 to +2.5 — still acknowledges crowd energy but no longer overweights it.
