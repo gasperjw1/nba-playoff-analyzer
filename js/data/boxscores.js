@@ -751,7 +751,99 @@ const G5_BOX_SCORES = {
   }
 };
 
-// Attach box scores to SERIES_DATA games[0], games[1], games[2], and games[3]
+const G6_BOX_SCORES = {
+  // ---- EAST ----
+
+  "NYK-ATL": {
+    home: [ // NYK (series homeTeam, but game was at ATL)
+      {name:"OG Anunoby",min:27,pts:29,reb:7,ast:2,stl:4,blk:1,fgm:11,fga:14,tpm:4,tpa:6,ftm:3,fta:5,to:0,orb:0},
+      {name:"Karl-Anthony Towns",min:28,pts:12,reb:11,ast:10,stl:3,blk:1,fgm:1,fga:4,tpm:0,tpa:1,ftm:10,fta:10,to:3,orb:4},
+      {name:"Josh Hart",min:27,pts:14,reb:5,ast:2,stl:0,blk:0,fgm:6,fga:10,tpm:2,tpa:4,ftm:0,fta:1,to:2,orb:0},
+      {name:"Mikal Bridges",min:27,pts:24,reb:5,ast:3,stl:0,blk:1,fgm:10,fga:12,tpm:2,tpa:2,ftm:2,fta:2,to:0,orb:1},
+      {name:"Jalen Brunson",min:29,pts:17,reb:2,ast:8,stl:2,blk:0,fgm:6,fga:12,tpm:1,tpa:6,ftm:4,fta:4,to:0,orb:0},
+      {name:"Mitchell Robinson",min:9,pts:6,reb:3,ast:0,stl:0,blk:2,fgm:3,fga:3,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:2},
+      {name:"Jordan Clarkson",min:11,pts:7,reb:0,ast:1,stl:1,blk:0,fgm:2,fga:4,tpm:0,tpa:1,ftm:3,fta:4,to:0,orb:0},
+      {name:"Tyler Kolek",min:12,pts:6,reb:1,ast:3,stl:0,blk:0,fgm:2,fga:5,tpm:0,tpa:2,ftm:2,fta:2,to:1,orb:0},
+      {name:"Landry Shamet",min:15,pts:5,reb:1,ast:0,stl:0,blk:0,fgm:2,fga:5,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Mohamed Diawara",min:12,pts:2,reb:4,ast:2,stl:1,blk:0,fgm:1,fga:4,tpm:0,tpa:2,ftm:0,fta:0,to:1,orb:1},
+      {name:"Pacome Dadiet",min:8,pts:5,reb:1,ast:0,stl:0,blk:0,fgm:2,fga:4,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Ariel Hukporti",min:12,pts:3,reb:4,ast:0,stl:0,blk:1,fgm:0,fga:0,tpm:0,tpa:0,ftm:3,fta:6,to:2,orb:1},
+      {name:"Jose Alvarado",min:7,pts:3,reb:1,ast:2,stl:2,blk:0,fgm:1,fga:2,tpm:1,tpa:2,ftm:0,fta:0,to:0,orb:0},
+      {name:"Miles McBride",min:10,pts:3,reb:1,ast:0,stl:2,blk:0,fgm:1,fga:3,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:0},
+      {name:"Jeremy Sochan",min:7,pts:4,reb:0,ast:0,stl:1,blk:0,fgm:2,fga:3,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0}
+    ],
+    away: [ // ATL
+      {name:"Onyeka Okongwu",min:32,pts:4,reb:6,ast:5,stl:1,blk:1,fgm:2,fga:6,tpm:0,tpa:2,ftm:0,fta:0,to:2,orb:2},
+      {name:"Jalen Johnson",min:32,pts:21,reb:8,ast:6,stl:0,blk:1,fgm:7,fga:15,tpm:2,tpa:5,ftm:5,fta:5,to:3,orb:2},
+      {name:"CJ McCollum",min:24,pts:11,reb:3,ast:0,stl:0,blk:0,fgm:4,fga:13,tpm:1,tpa:4,ftm:2,fta:2,to:2,orb:3},
+      {name:"Nickeil Alexander-Walker",min:29,pts:11,reb:1,ast:2,stl:1,blk:0,fgm:3,fga:8,tpm:1,tpa:4,ftm:4,fta:6,to:5,orb:0},
+      {name:"Dyson Daniels",min:15,pts:3,reb:0,ast:0,stl:1,blk:0,fgm:1,fga:4,tpm:1,tpa:3,ftm:0,fta:0,to:2,orb:0},
+      {name:"Jonathan Kuminga",min:23,pts:11,reb:2,ast:3,stl:0,blk:1,fgm:3,fga:7,tpm:1,tpa:3,ftm:4,fta:6,to:1,orb:1},
+      {name:"Zaccharie Risacher",min:16,pts:8,reb:3,ast:0,stl:0,blk:0,fgm:4,fga:9,tpm:0,tpa:3,ftm:0,fta:0,to:0,orb:1},
+      {name:"Tony Bradley",min:8,pts:5,reb:3,ast:1,stl:0,blk:1,fgm:1,fga:1,tpm:1,tpa:1,ftm:2,fta:2,to:0,orb:0},
+      {name:"Buddy Hield",min:9,pts:5,reb:2,ast:0,stl:0,blk:0,fgm:2,fga:2,tpm:1,tpa:1,ftm:0,fta:0,to:1,orb:0},
+      {name:"Corey Kispert",min:15,pts:4,reb:2,ast:1,stl:0,blk:0,fgm:1,fga:7,tpm:1,tpa:5,ftm:1,fta:2,to:2,orb:1},
+      {name:"Keaton Wallace",min:10,pts:4,reb:3,ast:2,stl:1,blk:0,fgm:2,fga:5,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0},
+      {name:"Mouhamed Gueye",min:9,pts:2,reb:2,ast:2,stl:0,blk:0,fgm:1,fga:3,tpm:0,tpa:2,ftm:0,fta:0,to:1,orb:1},
+      {name:"Gabe Vincent",min:13,pts:0,reb:0,ast:0,stl:1,blk:0,fgm:0,fga:2,tpm:0,tpa:1,ftm:0,fta:0,to:0,orb:0}
+    ]
+  },
+
+  "BOS-PHI": {
+    home: [ // BOS (series homeTeam, but game was at PHI)
+      {name:"Jayson Tatum",min:29,pts:17,reb:11,ast:3,stl:0,blk:0,fgm:6,fga:13,tpm:2,tpa:6,ftm:3,fta:5,to:3,orb:0},
+      {name:"Sam Hauser",min:21,pts:5,reb:4,ast:1,stl:0,blk:0,fgm:2,fga:6,tpm:1,tpa:5,ftm:0,fta:0,to:0,orb:0},
+      {name:"Neemias Queta",min:20,pts:4,reb:11,ast:0,stl:0,blk:2,fgm:2,fga:5,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:1},
+      {name:"Derrick White",min:32,pts:11,reb:1,ast:1,stl:3,blk:0,fgm:3,fga:8,tpm:3,tpa:6,ftm:2,fta:2,to:2,orb:1},
+      {name:"Jaylen Brown",min:28,pts:18,reb:1,ast:2,stl:0,blk:0,fgm:7,fga:17,tpm:2,tpa:6,ftm:2,fta:6,to:5,orb:0},
+      {name:"Payton Pritchard",min:36,pts:14,reb:3,ast:5,stl:0,blk:0,fgm:6,fga:16,tpm:1,tpa:8,ftm:1,fta:1,to:1,orb:0},
+      {name:"Luka Garza",min:14,pts:9,reb:2,ast:1,stl:0,blk:0,fgm:4,fga:5,tpm:1,tpa:2,ftm:0,fta:0,to:0,orb:2},
+      {name:"Jordan Walsh",min:19,pts:3,reb:5,ast:3,stl:0,blk:1,fgm:1,fga:3,tpm:0,tpa:1,ftm:1,fta:2,to:0,orb:2},
+      {name:"Ron Harper Jr.",min:10,pts:3,reb:3,ast:0,stl:1,blk:0,fgm:1,fga:3,tpm:1,tpa:2,ftm:0,fta:0,to:0,orb:1},
+      {name:"Baylor Scheierman",min:15,pts:5,reb:3,ast:1,stl:2,blk:0,fgm:2,fga:4,tpm:1,tpa:3,ftm:0,fta:0,to:1,orb:0},
+      {name:"Nikola Vucevic",min:14,pts:2,reb:2,ast:1,stl:1,blk:0,fgm:1,fga:5,tpm:0,tpa:2,ftm:0,fta:0,to:0,orb:1},
+      {name:"Dalano Banton",min:1,pts:2,reb:0,ast:0,stl:0,blk:0,fgm:1,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0}
+    ],
+    away: [ // PHI
+      {name:"Paul George",min:40,pts:23,reb:4,ast:3,stl:2,blk:1,fgm:8,fga:17,tpm:5,tpa:9,ftm:2,fta:2,to:4,orb:0},
+      {name:"Joel Embiid",min:34,pts:19,reb:10,ast:8,stl:1,blk:0,fgm:6,fga:18,tpm:1,tpa:5,ftm:6,fta:7,to:1,orb:1},
+      {name:"Kelly Oubre Jr.",min:39,pts:14,reb:9,ast:1,stl:2,blk:2,fgm:6,fga:11,tpm:1,tpa:3,ftm:1,fta:2,to:3,orb:3},
+      {name:"Tyrese Maxey",min:40,pts:30,reb:2,ast:5,stl:2,blk:0,fgm:11,fga:22,tpm:3,tpa:5,ftm:5,fta:5,to:0,orb:1},
+      {name:"VJ Edgecombe",min:38,pts:14,reb:8,ast:3,stl:0,blk:2,fgm:5,fga:11,tpm:1,tpa:6,ftm:3,fta:3,to:0,orb:0},
+      {name:"Andre Drummond",min:13,pts:2,reb:7,ast:0,stl:0,blk:1,fgm:1,fga:1,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:1},
+      {name:"Quentin Grimes",min:22,pts:2,reb:3,ast:2,stl:0,blk:0,fgm:1,fga:6,tpm:0,tpa:3,ftm:0,fta:0,to:0,orb:1},
+      {name:"Justin Edwards",min:10,pts:2,reb:5,ast:0,stl:0,blk:0,fgm:1,fga:3,tpm:0,tpa:2,ftm:0,fta:0,to:2,orb:1}
+    ]
+  },
+
+  // ---- WEST ----
+
+  "DEN-MIN": {
+    home: [ // DEN (series homeTeam, but game was at MIN)
+      {name:"Cameron Johnson",min:39,pts:27,reb:8,ast:3,stl:0,blk:1,fgm:8,fga:15,tpm:5,tpa:10,ftm:6,fta:9,to:2,orb:0},
+      {name:"Spencer Jones",min:35,pts:8,reb:2,ast:1,stl:0,blk:1,fgm:3,fga:4,tpm:2,tpa:3,ftm:0,fta:0,to:1,orb:0},
+      {name:"Nikola Jokic",min:43,pts:28,reb:9,ast:10,stl:0,blk:1,fgm:11,fga:19,tpm:1,tpa:5,ftm:5,fta:6,to:4,orb:1},
+      {name:"Jamal Murray",min:40,pts:12,reb:6,ast:4,stl:0,blk:1,fgm:4,fga:17,tpm:0,tpa:2,ftm:4,fta:4,to:0,orb:1},
+      {name:"Christian Braun",min:28,pts:3,reb:1,ast:0,stl:0,blk:3,fgm:1,fga:4,tpm:1,tpa:4,ftm:0,fta:0,to:1,orb:0},
+      {name:"Tim Hardaway Jr.",min:21,pts:13,reb:4,ast:2,stl:1,blk:1,fgm:4,fga:7,tpm:1,tpa:2,ftm:4,fta:4,to:1,orb:2},
+      {name:"Tyus Jones",min:12,pts:4,reb:0,ast:3,stl:1,blk:0,fgm:2,fga:4,tpm:0,tpa:0,ftm:0,fta:0,to:0,orb:0},
+      {name:"Bruce Brown",min:14,pts:1,reb:1,ast:1,stl:0,blk:0,fgm:0,fga:2,tpm:0,tpa:1,ftm:1,fta:2,to:3,orb:1},
+      {name:"Jonas Valanciunas",min:4,pts:2,reb:2,ast:0,stl:0,blk:0,fgm:1,fga:3,tpm:0,tpa:0,ftm:0,fta:0,to:1,orb:1}
+    ],
+    away: [ // MIN
+      {name:"Julius Randle",min:37,pts:18,reb:4,ast:5,stl:1,blk:0,fgm:6,fga:17,tpm:2,tpa:5,ftm:4,fta:6,to:4,orb:2},
+      {name:"Jaden McDaniels",min:45,pts:32,reb:10,ast:3,stl:2,blk:1,fgm:13,fga:25,tpm:1,tpa:4,ftm:5,fta:6,to:0,orb:4},
+      {name:"Rudy Gobert",min:42,pts:10,reb:13,ast:8,stl:1,blk:2,fgm:4,fga:6,tpm:0,tpa:0,ftm:2,fta:4,to:0,orb:7},
+      {name:"Mike Conley",min:26,pts:7,reb:6,ast:3,stl:1,blk:0,fgm:3,fga:7,tpm:1,tpa:4,ftm:0,fta:0,to:1,orb:1},
+      {name:"Terrence Shannon Jr.",min:35,pts:24,reb:6,ast:1,stl:2,blk:0,fgm:9,fga:20,tpm:1,tpa:7,ftm:5,fta:5,to:0,orb:2},
+      {name:"Naz Reid",min:34,pts:15,reb:7,ast:4,stl:1,blk:0,fgm:7,fga:13,tpm:1,tpa:3,ftm:0,fta:1,to:2,orb:1},
+      {name:"Jaylen Clark",min:12,pts:3,reb:2,ast:1,stl:0,blk:0,fgm:1,fga:3,tpm:1,tpa:3,ftm:0,fta:0,to:0,orb:1},
+      {name:"Bones Hyland",min:9,pts:1,reb:2,ast:1,stl:0,blk:0,fgm:0,fga:3,tpm:0,tpa:3,ftm:1,fta:2,to:0,orb:1}
+    ]
+  }
+};
+
+// Attach box scores to SERIES_DATA games[0] through games[5]
 (function attachBoxScores() {
   if (typeof SERIES_DATA === 'undefined') return;
   SERIES_DATA.forEach(s => {
@@ -774,6 +866,10 @@ const G5_BOX_SCORES = {
     const bs5 = G5_BOX_SCORES && G5_BOX_SCORES[s.id];
     if (bs5 && s.games[4]) {
       s.games[4].boxScores = bs5;
+    }
+    const bs6 = G6_BOX_SCORES && G6_BOX_SCORES[s.id];
+    if (bs6 && s.games[5]) {
+      s.games[5].boxScores = bs6;
     }
   });
 })();

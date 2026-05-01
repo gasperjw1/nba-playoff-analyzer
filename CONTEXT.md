@@ -1,14 +1,14 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: April 30, 2026 (Phase 43 complete, G6 odds calibrated vs DraftKings).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 1, 2026 (Phase 44 complete, G6 results analyzed with post-game attribution).
 
 ---
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 43-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds.
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 44-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 44 introduced "Star Elevation Modes" concept and post-game attribution analysis for all G6 results.
 
-**Current model accuracy: G1-G5 ML record 22/38 (57.9%) | G1 8/13 (61.5%) | G4 3/4 (75%) | G5 5/7 (71.4%)**
+**Current model accuracy: G1-G6 ML record 23/41 (56.1%) | G1 8/13 (61.5%) | G4 3/4 (75%) | G5 5/7 (71.4%) | G6 1/3 (33.3%)**
 
 ---
 
@@ -106,9 +106,9 @@ After a game completes, `buildGameAttribution()` distributes prediction error pr
 
 | Series | Score | Status | Next |
 |--------|-------|--------|------|
-| BOS-PHI | BOS 3-2 | Active | G6 Thu Apr 30 @ PHI |
-| NYK-ATL | NYK 3-2 | Active | G6 Thu Apr 30 @ ATL |
-| DEN-MIN | MIN 3-2 | Active | G6 Thu Apr 30 @ DEN |
+| BOS-PHI | Tied 3-3 | Active | G7 Sat May 2 @ BOS |
+| NYK-ATL | NYK 4-2 | Complete | NYK wins |
+| DEN-MIN | MIN 4-2 | Complete | MIN wins |
 | HOU-LAL | LAL 3-2 | Active | G6 Fri May 1 @ LAL |
 | DET-ORL | ORL 3-2 | Active | G6 Fri May 1 @ ORL |
 | CLE-TOR | CLE 3-2 | Active | G6 Fri May 1 @ TOR |
@@ -138,7 +138,7 @@ After a game completes, `buildGameAttribution()` distributes prediction error pr
 - $100 Best Bet, $50 Ensemble Edge, $1 Chaos Ticket for each game day
 - Old parlays wrapped in collapsible `<details>` tags
 - Player prop add-ons on high-confidence parlays
-- Running P&L tracker: $100 Record 0-5, $1 Record 2-3, Net -$472.47
+- Running P&L tracker: $100 Record 0-6, $1 Record 2-4, Net -$698.47
 
 ### G6 Bets (new)
 All 6 series with ML + player props:
@@ -207,6 +207,7 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 | 41 | Unified ensemble (manual + engine + sim) |
 | 42 | Projection lineage waterfall, post-game attribution, round navigation, series graduation, localStorage V3 |
 | 43 | Market odds calibration — all G6 bets updated vs real DraftKings lines. CLE ML +110→-170, Jokic O24.5→O29.5, parlays recalculated |
+| 44 | G6 post-game attribution — 1/3 ML (worst day), 2/6 props. Star Elevation Modes concept (stars elevate via facilitating, not just scoring). Murray Inconsistency Factor. P&L -$698.47 |
 
 ---
 

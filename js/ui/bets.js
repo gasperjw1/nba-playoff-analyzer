@@ -6,7 +6,7 @@ function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — ${typeof ROUND_META !== 'undefined' && ROUND_META[currentPlayoffRound] ? ROUND_META[currentPlayoffRound].label : 'Round 1'}</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | Phase 41: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | G6: 1/3 (33.3%) | Phase 42: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
 
     <!-- BET TABS -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -16,7 +16,8 @@ function renderBetsPage(el) {
       <div class="bet-tab" onclick="switchBetTab('g3')" id="betTab-g3" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 3 Bets</div>
       <div class="bet-tab" onclick="switchBetTab('g4')" id="betTab-g4" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 4 Bets</div>
       <div class="bet-tab" onclick="switchBetTab('g5')" id="betTab-g5" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 5 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g6')" id="betTab-g6" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 6 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g6')" id="betTab-g6" style="padding:10px 24px;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 6 Bets</div>
+      <div class="bet-tab" onclick="switchBetTab('g7')" id="betTab-g7" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 7 Bets</div>
     </div>
 
     <!-- ===== PARLAYS TAB ===== -->
@@ -25,170 +26,158 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Thu Apr 30 | NYK-ATL G6, BOS-PHI G6, DEN-MIN G6</span>
+        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Thu May 1 | DET-ORL G6, CLE-TOR G6 | Sat May 2: BOS-PHI G7</span>
       </div>
 
-      <!-- ===== CHAOS SIM SPOTLIGHT — THU APR 30 ===== -->
+      <!-- ===== CHAOS SIM SPOTLIGHT — UPCOMING ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:16px;">
         <div style="text-align:center;margin-bottom:12px;">
-          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UNIFIED ENSEMBLE — Blended Model + Chaos Sim | Phase 41</span>
+          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UNIFIED ENSEMBLE — Blended Model + Chaos Sim | Phase 42</span>
         </div>
         <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:14px;margin-bottom:16px;">
-          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">TONIGHT'S WIN PROBABILITIES (Phase 41 Unified Ensemble — All Systems Aligned)</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">UPCOMING WIN PROBABILITIES</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">BOS-PHI G6</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">BOS 61%</div>
-              <div style="font-size:9px;color:#666;">106-102 | SD ±11.3</div>
-            </div>
-            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">NYK-ATL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">NYK 61%</div>
-              <div style="font-size:9px;color:#666;">108-104 | SD ±11.4</div>
-            </div>
-            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">DEN-MIN G6</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">DEN 61%</div>
-              <div style="font-size:9px;color:#666;">109-105 | SD ±11.3</div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">HOU-LAL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#ffc73a;">LAL 52%</div>
-              <div style="font-size:9px;color:#666;">106-104 | COIN FLIP (Reaves ↑)</div>
+              <div style="font-size:10px;color:#888;">BOS-PHI G7</div>
+              <div style="font-size:18px;font-weight:700;color:#60a5fa;">BOS 65%</div>
+              <div style="font-size:9px;color:#666;">108-103 | G7 OVERRIDE +5 HCA</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">DET-ORL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#ff9800;">50/50</div>
-              <div style="font-size:9px;color:#666;">~100-99 | TRUE COIN FLIP</div>
+              <div style="font-size:18px;font-weight:700;color:#60a5fa;">ORL 58%</div>
+              <div style="font-size:9px;color:#666;">110-103 | SEPARATION</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">CLE-TOR G6</div>
-              <div style="font-size:18px;font-weight:700;color:#3dd68c;">CLE 64%</div>
-              <div style="font-size:9px;color:#666;">111-107 | STRONGEST</div>
+              <div style="font-size:18px;font-weight:700;color:#ffc73a;">CLE 55%</div>
+              <div style="font-size:9px;color:#666;">112-110 | COIN FLIP</div>
+            </div>
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;">HOU-LAL G6</div>
+              <div style="font-size:18px;font-weight:700;color:#ffc73a;">LAL 52%</div>
+              <div style="font-size:9px;color:#666;">106-104 | COIN FLIP</div>
             </div>
           </div>
           <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">SERIES OUTCOME PROBABILITIES</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">BOS 84%</span> to win series<br/><span style="color:#666;">G6: 56% | G7: 44%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">NYK 84%</span> to win series<br/><span style="color:#666;">G6: 57% | G7: 43%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 86%</span> to win series<br/><span style="color:#666;">G6: 59% | G7: 41%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">MIN 67%</span> to win series<br/><span style="color:#666;">G6: 44% | G7: 56%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">LAL 74%</span> to win series<br/><span style="color:#666;">G6: 52% | G7: 48% (Reaves ↑)</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">ORL 71%</span> to win series<br/><span style="color:#666;">G6: 48% | G7: 52%</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:10px;">
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">BOS 65%</span> to win series<br/><span style="color:#666;">G7 only</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">ORL 58%</span> to win series<br/><span style="color:#666;">G6 close-out</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 84%</span> to win series<br/><span style="color:#666;">G6: 55% | G7: 45%</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">LAL 74%</span> to win series<br/><span style="color:#666;">G6: 52% | G7: 48%</span></div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 41 Ensemble: blended model picks winners (72.7%), sim generates probability distributions | SD ±11.6 calibrated to 28K games | 5/6 series aligned, 1 coin flip</div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 42 Ensemble update: NYK advanced (4-2), MIN advanced (4-2), BOS-PHI forced G7. 4 series remain.</div>
         </div>
       </div>
 
-      <!-- ===== G6 FEATURED PARLAYS — THU APR 30 ===== -->
+      <!-- ===== UPCOMING FEATURED PARLAYS — MAY 1-2 ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Thu Apr 30 | NYK-ATL G6, BOS-PHI G6, DEN-MIN G6</span>
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING — May 1-2 | DET-ORL G6, CLE-TOR G6, BOS-PHI G7</span>
         </div>
 
-        <!-- $100 G6 BEST BET — THU APR 30 (SIM-INFORMED) -->
+        <!-- $100 PLAY — G7 BLOCKBUSTER + ROAD CLOSE-OUT -->
         <div class="parlay-card headline">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f0c040;">G6 $100 Play — Road Closers (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+136</span>
+            <span class="parlay-name" style="font-size:16px;color:#f0c040;">$100 Play — G7 Blockbuster + Road Close-Out (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+165</span>
           </div>
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$236 return</span>
-            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Thu Apr 30</span>
-            <span style="font-size:10px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:600;">ENSEMBLE: 37% | Market: 42%</span>
+            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$265 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">May 1-2</span>
+            <span style="font-size:10px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:600;">ENSEMBLE: ~33% hit rate | Market: 38%</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #f0c040;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">BOS ML @ PHI (BOS-PHI G6) &star;</span>
-              <span class="parlay-leg-odds">-230</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — Ensemble: 61%</span>
+              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7) &star;</span>
+              <span class="parlay-leg-odds">-200</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — G7 Override +5 HCA, home teams win 78% of G7s</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #f0c040;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">NYK ML @ ATL (NYK-ATL G6)</span>
-              <span class="parlay-leg-odds">-155</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — Ensemble: 61%</span>
+              <span class="parlay-leg-pick">CLE ML @ TOR (CLE-TOR G6)</span>
+              <span class="parlay-leg-odds">-140</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — Ensemble: 55%</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>ENSEMBLE REALITY CHECK:</strong> Both legs are 61% per the unified model — all three systems agree on both winners. Parlay hit rate = 0.61 × 0.61 = 37%. At +136 (implied 42%), this is SLIGHTLY -EV vs ensemble 37%. Market prices both favorites higher than our model. Bet on conviction, not value. <strong>BOS ML</strong> — Ensemble shows 15% blowout chance but also 32% close game chance. Embiid's elimination mode is real. <strong>NYK ML</strong> — Brunson's dominance raises the floor but ATL's elimination desperation gives them a 39% upset window. Both systems agree = higher floor than Phase 40's conflicted picks.</div>
-          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(240,192,64,0.2);">
-            <div style="font-size:10px;color:#f0c040;font-weight:700;margin-bottom:4px;">ADD-ON: HIGH-CONFIDENCE PLAYER PROPS</div>
-            <div style="font-size:10px;color:#aaa;">Embiid O27.5pts (-112, 72%) • Brunson O27.5pts (-115, 70%) • McCollum U18.5pts (-110, 65%) — all correlated with ML picks. Adding Embiid + Brunson props creates a 4-leg at ~+550.</div>
-          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>BOS's G7 Override (+5 HCA) makes them the strongest pick.</strong> Home teams have won ~78% of Game 7s historically. BOS has championship DNA (2024), TD Garden will be hostile, and Tatum/Brown have been in this exact spot before. CLE has multiple closers (Mitchell, Harden, Mobley) and the deepest rotation in the East. Combined ~33% hit rate. At +165 implied 38%, slight -EV but high conviction on both legs.</div>
         </div>
 
-        <!-- $50 SIM-EDGE BET — THU APR 30 (NEW) -->
+        <!-- $50 ELIMINATION NIGHT SPECIAL -->
         <div class="parlay-card headline" style="border:1px solid #a78bfa;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">G6 $50 Ensemble Edge — Best Conviction (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+203</span>
+            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">$50 Elimination Night Special (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+220</span>
           </div>
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$50 &rarr; ~$152 return</span>
-            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">NEW — Phase 41 Ensemble Pick</span>
+            <span style="font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$50 &rarr; ~$160 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Phase 42 Ensemble Pick</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">CLE ML @ TOR (CLE-TOR G6 — STRONGEST ENSEMBLE EDGE)</span>
-              <span class="parlay-leg-odds">-170</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — Ensemble: 64%</span>
+              <span class="parlay-leg-pick">ORL ML vs DET (DET-ORL G6 — close-out at home)</span>
+              <span class="parlay-leg-odds">-240</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — Ensemble: 58%</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">DEN +6.5 vs MIN (DEN-MIN G6 — Ensemble: DEN 61%)</span>
-              <span class="parlay-leg-odds">-110</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — Ensemble: 79% cover</span>
+              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7)</span>
+              <span class="parlay-leg-odds">-200</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — G7 Override +5 HCA</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>THE ENSEMBLE'S BEST EDGES.</strong> These are the two games where the unified model found the biggest gap between its probability and the implied odds. <strong>CLE ML -170</strong> — ensemble gives CLE 64%, market implies 63%. Virtually no edge. Betting on conviction that CLE closes, not on value. CLE has the deepest rotation (bench 36pts G5), multiple closers, and 86% series win probability. <strong>DEN +6.5</strong> — DEN wins outright 61% in the ensemble. Jokic at home in elimination is a force multiplier — 27/16ast/12reb in G5. Getting 6.5 points of cushion is enormous value. MIN missing Edwards (knee) + DiVincenzo (Achilles) makes DEN the clear play.</div>
-          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(167,139,250,0.2);">
-            <div style="font-size:10px;color:#a78bfa;font-weight:700;margin-bottom:4px;">ADD-ON: PLAYER PROP BOOSTERS</div>
-            <div style="font-size:10px;color:#aaa;">Mitchell O24.5pts (-115 est, 67%) • Jokic O29.5pts (-104, 55%) • Jokic O9.5ast (-148, 68%) — correlated with ML picks. Adding Mitchell + Jokic pts creates a 4-leg at ~+600.</div>
-          </div>
+          <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>Two high-confidence home favorites.</strong> ORL closes out DET at home with Banchero in superstar mode (45pts G5). BOS gets the G7 Override — home teams win 78% of Game 7s. Both legs are HIGH confidence with strong home-court advantages. Combined probability makes this the safest parlay of the slate.</div>
         </div>
 
-        <!-- $1 CHAOS TICKET — THU APR 30 (UPDATED) -->
+        <!-- $1 CHAOS — UNDERDOGS UNITE -->
         <div class="parlay-card headline" style="border:1px solid #f44336;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f44336;">G6 $1 Chaos — Elimination Heroics (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1970</span>
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$1 Chaos — Underdogs Unite (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+2400</span>
           </div>
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$20.70 return</span>
-            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — Thu Apr 30</span>
-            <span style="font-size:10px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:600;">ENSEMBLE: ~5.9% hit rate</span>
+            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$25 return</span>
+            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — May 1-2</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">PHI ML vs BOS (Embiid elimination mode — ensemble: 39%)</span>
-              <span class="parlay-leg-odds">+190</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED</span>
+              <span class="parlay-leg-pick">PHI ML @ BOS (BOS-PHI G7) — Embiid G7 monster mode</span>
+              <span class="parlay-leg-odds">+165</span>
+              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">ATL ML vs NYK (Home elimination — ensemble: 39%)</span>
-              <span class="parlay-leg-odds">+130</span>
+              <span class="parlay-leg-pick">DET ML @ ORL (DET-ORL G6) — Cade 45pts ceiling</span>
+              <span class="parlay-leg-odds">+195</span>
               <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">3</span>
-              <span class="parlay-leg-pick">MIN ML @ DEN (Edwards OUT — massive underdog, ensemble: 39%)</span>
-              <span class="parlay-leg-odds">+210</span>
+              <span class="parlay-leg-pick">TOR ML vs CLE (CLE-TOR G6) — Scotiabank elimination energy</span>
+              <span class="parlay-leg-odds">+120</span>
               <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f44336;">Three underdog scenarios the ensemble says are each ~39%. <strong>PHI ML</strong> — Embiid's 33pts G5 + Wells Fargo crowd. Ensemble gives PHI 39% — that's 2 in 5 games, not a long shot. <strong>ATL ML</strong> — weakest leg. ATL's road win at MSG (G2) proves they can punch. State Farm in desperation mode. <strong>MIN ML</strong> — the longest shot. Edwards is OUT (knee, May 9), DiVincenzo OUT FOR SEASON. MIN went 0-2 without Ant and had 25 TOs in G5. All three hitting = 0.39³ = ~5.9%. At +1970 (implied 4.8%), this is technically +EV but the MIN leg drags it down significantly. <strong>NOTE: HOU-LAL flipped to LAL lean after Reaves upgrade (68→74). HOU ML is no longer an ensemble pick.</strong></div>
-          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(244,67,54,0.2);">
-            <div style="font-size:10px;color:#f44336;font-weight:700;margin-bottom:4px;">CHAOS PROP ADD-ONS (if betting individually)</div>
-            <div style="font-size:10px;color:#aaa;">Embiid O27.5pts (-112) pairs with PHI ML • Barnes O22.5pts (-110 est) for TOR elimination heroics • Cade O30.5pts (-105 est) if DET fights for survival</div>
-          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;">Three underdogs fighting for survival. <strong>PHI ML</strong> — Embiid has been an elimination monster (33pts G5, 31pts G6). Road G7 is brutal but Embiid + Maxey can steal one. <strong>DET ML</strong> — Cade proved his 45pt ceiling in G5. Road elimination is tough but DET's young energy is unpredictable. <strong>TOR ML</strong> — Scotiabank Arena in an elimination game is deafening. Barnes at home has been elite (33pts G3, 28pts G4). All three hitting is a long shot but at +2400, the $1 price is right.</div>
         </div>
       </div>
+
+      <!-- ===== THU APR 30 G6 RESULTS (COLLAPSED) ===== -->
+      <details style="margin-bottom:16px;border:1px solid #333;border-radius:8px;padding:8px 12px;">
+        <summary style="cursor:pointer;color:#888;font-size:12px;font-weight:600;">📊 Thu Apr 30 G6 Results — NYK-ATL: NYK 140-89 ✅ SERIES WON 4-2 | BOS-PHI: PHI 106-93 ❌ Tied 3-3 | DEN-MIN: MIN 110-98 ❌ SERIES LOST 4-2</summary>
+        <div style="margin-top:8px;padding:8px;background:rgba(255,255,255,0.03);border-radius:4px;font-size:11px;color:#666;">
+          <div><strong>$100 Road Closers: ❌ LOST</strong> — BOS ML ❌ (PHI won 106-93, Maxey 30pts, George 23pts, BOS 42% FG/29% 3PT). NYK ML ✅ (140-89 blowout). Parlay dead on BOS loss.</div>
+          <div style="margin-top:4px;"><strong>$50 Ensemble Edge: ❌ LOST</strong> — DEN +6.5 ❌ (MIN won 110-98, DEN lost by 12, didn't cover). CLE leg pending (G6 May 1).</div>
+          <div style="margin-top:4px;"><strong>$1 Chaos: ❌ LOST</strong> — PHI ML ✅ (won 106-93), ATL ML ❌ (NYK 140-89 blowout), MIN ML ✅ (won 110-98). Needed all 3, ATL busted it.</div>
+          <div style="margin-top:4px;"><strong>$75 Player Props: ❌ LOST</strong> — Embiid O27.5 ❌ (19pts), Brunson O27.5 ❌ (17pts), Jokic O29.5 ❌ (28pts). All 3 Thu legs missed — parlay dead.</div>
+          <div style="margin-top:4px;"><strong>NYK-ATL G6:</strong> NYK 140, ATL 89 (+51). NYK WINS SERIES 4-2. Anunoby 29pts (11-14 FG), Bridges 24pts, Brunson 17pts/8ast. Historic blowout. Model ✅.</div>
+          <div style="margin-top:4px;"><strong>BOS-PHI G6:</strong> PHI 106, BOS 93. Series TIED 3-3 → G7 at Boston. Maxey 30pts (0 TOs), George 23pts (5-9 3PT), Embiid 19/10/8. BOS shot 42% FG, 29% 3PT — road close-out failures continue. Model ❌.</div>
+          <div style="margin-top:4px;"><strong>DEN-MIN G6:</strong> MIN 110, DEN 98. MIN WINS SERIES 4-2. MIN closed out without Edwards/DiVincenzo — team effort overwhelmed Jokic (28pts). Model ❌ — underestimated MIN's depth without stars.</div>
+          <div style="margin-top:4px;"><strong>G6 Model Record:</strong> 1/3 (33.3%). Only NYK-ATL correct. Cumulative: 23/41 (56.1%).</div>
+        </div>
+      </details>
 
       <!-- ===== WED APR 29 G5 RESULTS (COLLAPSED) ===== -->
       <details style="margin-bottom:16px;border:1px solid #333;border-radius:8px;padding:8px 12px;">
@@ -417,13 +406,48 @@ function renderBetsPage(el) {
             <span style="font-size:11px;color:#666;margin-left:8px;">Featured $100 &amp; $1 picks — running record</span>
           </div>
           <div style="display:flex;gap:12px;font-size:12px;">
-            <span style="color:#4caf50;font-weight:700;">$100 Record: 0-5</span>
-            <span style="color:#f0c040;font-weight:700;">$1 Record: 2-3</span>
-            <span style="color:#aaa;">Net P&amp;L: <span style="color:#f44336;">-$472.47</span></span>
+            <span style="color:#4caf50;font-weight:700;">$100 Record: 0-6</span>
+            <span style="color:#f0c040;font-weight:700;">$1 Record: 2-4</span>
+            <span style="color:#aaa;">Net P&amp;L: <span style="color:#f44336;">-$698.47</span></span>
           </div>
         </div>
 
         <div style="max-height:320px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:#444 transparent;">
+
+          <!-- ===== G6 SLATE — Thu Apr 30 (RESULTS) ===== -->
+          <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <div style="min-width:90px;text-align:right;padding-top:2px;">
+              <div style="font-size:12px;font-weight:700;color:#aaa;">Thu Apr 30</div>
+              <div style="font-size:10px;color:#666;">G6: NYK-ATL, BOS-PHI, DEN-MIN</div>
+            </div>
+            <div style="width:2px;background:linear-gradient(to bottom,#333,#333);border-radius:1px;position:relative;">
+              <div style="position:absolute;top:4px;left:-4px;width:10px;height:10px;border-radius:50%;background:#333;border:2px solid #1a1a2e;"></div>
+            </div>
+            <div style="flex:1;">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid #333;border-radius:8px;padding:10px 14px;">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
+                  <span style="font-size:11px;font-weight:700;color:#f0c040;background:rgba(240,192,64,0.12);padding:2px 8px;border-radius:3px;">$100: BOS ML + NYK ML</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
+                </div>
+                <div style="font-size:10px;color:#888;margin-bottom:8px;">BOS ML ✗ (PHI 106-93) | NYK ML ✓ (140-89 blowout) — <span style="color:#f44336;">-$100</span></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
+                  <span style="font-size:11px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:2px 8px;border-radius:3px;">$50: CLE ML + DEN +6.5</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
+                </div>
+                <div style="font-size:10px;color:#888;margin-bottom:8px;">DEN +6.5 ✗ (MIN won 110-98, -12) | CLE pending (G6 May 1) — <span style="color:#f44336;">-$50</span></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 8px;border-radius:3px;">$1: PHI ML + ATL ML + MIN ML</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
+                </div>
+                <div style="font-size:10px;color:#888;">PHI ML ✓ | ATL ML ✗ (NYK 140-89) | MIN ML ✓ — <span style="color:#f44336;">-$1</span></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px;">
+                  <span style="font-size:11px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:2px 8px;border-radius:3px;">$75: Props Parlay (Embiid + Brunson + Jokic + Mitchell)</span>
+                  <span style="font-size:11px;font-weight:700;color:#f44336;background:rgba(244,67,54,0.12);padding:2px 6px;border-radius:3px;">LOST</span>
+                </div>
+                <div style="font-size:10px;color:#888;">Embiid O27.5 ✗ (19pts) | Brunson O27.5 ✗ (17pts) | Jokic O29.5 ✗ (28pts) — <span style="color:#f44336;">-$75</span></div>
+              </div>
+            </div>
+          </div>
 
           <!-- ===== G3 SLATE — Thu Apr 23 (RESULTS) ===== -->
           <div style="display:flex;gap:12px;margin-bottom:16px;">
@@ -1570,40 +1594,40 @@ function renderBetsPage(el) {
 
     <!-- ===== G6 BETS TAB ===== -->
     <div id="betContent-g6" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 6 Picks — Thu Apr 30 &amp; Fri May 1</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">Phase 41 Unified Ensemble picks for all 6 remaining series. G5 ML Record: 5/7 (71.4%). Cumulative: 22/38 (57.9%). Three series play Thu Apr 30 (BOS-PHI, NYK-ATL, DEN-MIN), three play Fri May 1 (DET-ORL, CLE-TOR, HOU-LAL).</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 6 Picks &amp; Results — G6 Record: 1/3 (33.3%)</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G6 results (Thu Apr 30): NYK ✅ 140-89 (series 4-2), PHI ✅ 106-93 (model ❌), MIN ✅ 110-98 (model ❌). G6 ML Record: 1/3 (33.3%). Cumulative: 23/41 (56.1%). Remaining G6: DET-ORL (May 1), CLE-TOR (May 1), HOU-LAL (TBD). BOS-PHI G7 (May 2).</p>
 
     <!-- ═══════ G6 THU APR 30 ═══════ -->
     <div class="bet-section">
-      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">G6 — Thu Apr 30 | BOS-PHI, NYK-ATL, DEN-MIN</h4>
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">G6 Results — Thu Apr 30 | NYK ✅ (4-2), BOS ❌ (3-3→G7), DEN ❌ (2-4 eliminated)</h4>
 
       <!-- ═══ NYK-ATL G6 ═══ -->
       <div style="margin:12px 0 8px;padding:6px 0;border-top:1px solid #444;">
         <span style="color:#64b5f6;font-size:13px;font-weight:700;">NYK-ATL G6 — Thu Apr 30 | NYK leads 3-2 — Close-out @ ATL</span>
       </div>
 
-      <div class="bet-card best-bet">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type moneyline">ML ★ BEST BET</span>
-        <div class="bet-pick">NYK ML @ ATL (Close-out)</div>
-        <div class="bet-line">-155 | NYK -2.5 | Model: NYK by 4 | <span style="color:#4caf50;">Ensemble: NYK 61%</span> — Systems agree</div>
-        <div class="bet-reasoning">Brunson's 39pt G5 masterpiece proved NYK's offensive ceiling is untouchable. McCollum completely schemed out (6pts G5). NYK already won at ATL in G4 by 16 — they can close on the road. ATL's home-court advantage is the only resistance, but NYK's 57% FG shooting and Brunson's mid-range dominance should travel. <strong>Ensemble confirms: 61% win probability, 15% blowout rate, 33% close game.</strong> Highest-confidence G6 pick.</div>
+        <div class="bet-pick">NYK ML @ ATL ✓ — SERIES WON 4-2</div>
+        <div class="bet-line">-155 | NYK -2.5 | Model: NYK by 4 | Actual: NYK 140, ATL 89 (+51) ✓ | <span style="color:#4caf50;">Ensemble: NYK 61%</span> — Systems agree</div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — NYK 140, ATL 89.</strong> Historic 51-point blowout — largest halftime lead in NBA playoff history. Anunoby 29pts (11-14 FG), Bridges 24pts (10-12 FG), Brunson 17pts/8ast, KAT triple-double 12/11reb/10ast. NYK shot 59% FG. ATL collapsed: 19 TOs, Daniels ejected. NYK advances to Round 2.</div>
         <span class="bet-edge model">Model + Sim ✓</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jalen Brunson Over 27.5 points</div>
-        <div class="bet-line">-115 | G5: 39pts (15-23 FG) | Series avg: 31.2pts | Close-out aggression</div>
-        <div class="bet-reasoning">Brunson has been on a tear: 39pts G5 (65.2% FG), 28pts G4, averaging 31.2pts this series. His mid-range game is unschemmable — ATL has no answer for his pull-up jumper. In a close-out game, expect maximum usage. Even in ATL's home environment, Brunson's shot creation travels. The 27.5 line is too low given his series trajectory.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Jalen Brunson Over 27.5 points ✗ — 17pts (6-12 FG)</div>
+        <div class="bet-line">-115 | G5: 39pts (15-23 FG) | Series avg: 31.2pts | <span style="color:#f44336;">Actual: 17pts ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Brunson 17pts (6-12 FG, 1-6 3PT).</strong> In a 51-point blowout, Brunson only played 30min and didn't need to force. Anunoby (29pts) and Bridges (24pts) carried the scoring. When the game is a blowout, star usage drops — the model's "close-out aggression" thesis was correct but the blowout magnitude made it irrelevant. LESSON: player props are voided by extreme blowouts.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">CJ McCollum Under 18.5 points</div>
-        <div class="bet-line">-110 | G5: 6pts (3-10 FG) | NYK's defensive scheme lock</div>
-        <div class="bet-reasoning">McCollum has been completely schemed out of this series — 6pts G5, declining efficiency since G2's 32pt explosion. NYK's switching defense denies him clean looks, and ATL's offensive hierarchy has shifted to Kuminga/Murray. The under is the play until McCollum proves he can break the scheme.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">CJ McCollum Under 18.5 points ✓ — 11pts (4-13 FG)</div>
+        <div class="bet-line">-110 | G5: 6pts (3-10 FG) | <span style="color:#4caf50;">Actual: 11pts ✅</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — McCollum 11pts (4-13 FG, 1-4 3PT, -24).</strong> Brown's defensive scheme continued to neutralize McCollum. He shot 30.8% FG in a game where ATL's entire offense collapsed. The defensive scheme lock thesis has been the single most reliable bet of this series — McCollum averaged just 10pts over the last 3 games after his 32pt G2 outlier.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <!-- ═══ BOS-PHI G6 ═══ -->
@@ -1611,57 +1635,57 @@ function renderBetsPage(el) {
         <span style="color:#64b5f6;font-size:13px;font-weight:700;">BOS-PHI G6 — Thu Apr 30 | BOS leads 3-2 — Close-out @ PHI</span>
       </div>
 
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #f44336;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">BOS ML @ PHI (Close-out)</div>
-        <div class="bet-line">-230 | BOS -6.5 | Model: BOS by 4 | <span style="color:#4caf50;">Ensemble: BOS 61%</span> — Systems agree</div>
-        <div class="bet-reasoning">BOS's Q4 collapse in G5 (3-22 FG, 11pts) was an anomaly — championship DNA (2024 champs) suggests bounce-back. Tatum/Brown/Pritchard give BOS 3 initiators vs PHI's 2. BUT: Embiid proved he's an elimination monster (33pts G5), and Wells Fargo Center will be electric. BOS is the better team but road close-outs are never easy. <strong>Ensemble: 61% BOS, but 32% chance of a close game — Embiid eruption risk is real.</strong></div>
-        <span class="bet-edge model">Model + Sim ✓</span>
+        <div class="bet-pick">BOS ML @ PHI ✗</div>
+        <div class="bet-line">-230 | BOS -6.5 | Model: BOS by 4 | Actual: PHI 106, BOS 93 | Series tied 3-3 → G7 | <span style="color:#f44336;">Model ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ WRONG — PHI 106, BOS 93.</strong> Maxey 30pts (11-22 FG, 0 TOs), George 23pts (5-9 3PT), Embiid 19/10/8. BOS shot 42% FG but only 29% 3PT (12-41). PHI's Q2 explosion (38pts) broke the game open. BOS's 3PT shooting collapsed AGAIN. Series tied 3-3 heading to G7 at Boston.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Joel Embiid Over 27.5 points</div>
-        <div class="bet-line">-112 | G5: 33pts | Elimination monster at home</div>
-        <div class="bet-reasoning">Embiid proved Star Elevation is real with 33pts in G5 (only 2 in Q1 then 31 in final 3Q). At home facing elimination again, expect maximum aggression. His series arc has been building and Wells Fargo Center energy amplifies his dominance. Even if BOS wins, Embiid gets his 30+.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">Joel Embiid Over 27.5 points ✗ — 19pts (6-18 FG)</div>
+        <div class="bet-line">-112 | G5: 33pts | <span style="color:#f44336;">Actual: 19pts ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Embiid 19pts (6-18 FG, 1-5 3PT).</strong> Embiid shifted to facilitator mode: 10reb, 8ast, only 1 TO. He didn't need to force scoring because Maxey (30pts) and George (23pts) carried the offense. The model assumed "elimination monster" would mean high scoring, but Embiid chose efficiency and playmaking over volume. PHI won by 13 without Embiid needing 30+. LESSON: Star Elevation doesn't always mean scoring — sometimes it means facilitating.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jayson Tatum Over 24.5 points</div>
-        <div class="bet-line">-110 | Series avg: 26.8pts | Bounce-back game after Q4 collapse</div>
-        <div class="bet-reasoning">Tatum was part of the historic Q4 collapse (3-22 FG team) in G5, but his series average is 26.8pts. Championship-caliber players respond to adversity. Expect a focused, aggressive Tatum in the close-out attempt. PHI's defense will focus on Brown, giving Tatum cleaner looks. The 24.5 line undervalues his bounce-back motivation.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Jayson Tatum Over 24.5 points ✗ — 17pts (6-13 FG)</div>
+        <div class="bet-line">-110 | Series avg: 26.8pts | <span style="color:#f44336;">Actual: 17pts ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Tatum 17pts (6-13 FG, 2-6 3PT, -11).</strong> The "bounce-back" narrative failed entirely. Tatum was passive and inefficient on the road. PHI's defense forced uncomfortable shots and Tatum's 29 minutes were limited by the game getting away from BOS early. BOS's entire offense went cold (42% FG, 29% 3PT). The model's "championship DNA responds to adversity" thesis was wrong — Tatum looked defeated, not motivated.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <!-- ═══ DEN-MIN G6 ═══ -->
       <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
-        <span style="color:#64b5f6;font-size:13px;font-weight:700;">DEN-MIN G6 — Thu Apr 30 | MIN leads 3-2 — Close-out @ DEN</span>
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">DEN-MIN G6 — Thu Apr 30 | MIN leads 3-2 — DEN faces elimination @ MIN</span>
       </div>
 
-      <div class="bet-card">
+      <div class="bet-card" style="border-left:3px solid #f44336;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">DEN ML vs MIN (Survival at home)</div>
-        <div class="bet-line">-258 | DEN -6.5 | Ensemble: DEN by 4 | <span style="color:#4caf50;">Ensemble: DEN 61%</span> — Systems agree</div>
-        <div class="bet-reasoning"><strong>Phase 41 ENSEMBLE UPDATE — pick flipped to DEN.</strong> Edwards (knee) is OUT until May 9, DiVincenzo (Achilles) OUT FOR SEASON — MIN is missing both starting guards. The unified model now aligns: engine, blended system, and chaos sim all favor DEN at home. Jokic's triple-double brilliance (27/16ast/12reb G5) + Ball Arena desperation + MIN's guard-depleted chaos (25 TOs in G5) = DEN 61%. <strong>If Edwards miraculously plays, this reverts to a coin flip. But as of now, DEN ML is the play.</strong></div>
-        <span class="bet-edge model">Model + Sim ✓</span>
+        <div class="bet-pick">DEN ML vs MIN ✗ — MIN WINS SERIES 4-2</div>
+        <div class="bet-line">-258 | DEN -6.5 | Ensemble: DEN by 4 | Actual: MIN 110, DEN 98 | LOSS | <span style="color:#f44336;">Model ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ WRONG — MIN 110, DEN 98.</strong> MIN WINS SERIES 4-2. MIN closed out without Edwards and DiVincenzo — team effort overwhelmed Jokic (28pts). The model badly underestimated MIN's depth and collective will without their stars. DEN eliminated despite Jokic's brilliance. The ensemble's 61% DEN probability was the biggest miss of G6.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Nikola Jokic Over 29.5 points</div>
-        <div class="bet-line">-104 | G5: 27pts triple-double | Elimination desperation</div>
-        <div class="bet-reasoning">Jokic was magnificent in G5: 27/16ast/12reb. Facing elimination at home, expect maximum scoring aggression from the 3x MVP. Without Edwards defending, MIN's interior defense is compromised. Jokic's post mastery is unguardable — 30+ in an elimination game at Ball Arena is near-automatic. Line set high at 29.5 — his G5 triple-double (27pts) barely missed, but expect G6 scoring aggression.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Nikola Jokic Over 29.5 points ✗ — 28pts (11-19 FG)</div>
+        <div class="bet-line">-104 | G5: 27pts triple-double | <span style="color:#f44336;">Actual: 28pts ❌ (missed by 1.5)</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Jokic 28pts (11-19 FG, 1-5 3PT, 9reb, 10ast, -9).</strong> Jokic was brilliant individually (near triple-double) but missed the 29.5 line by 1.5pts. His scoring was efficient (58% FG) but MIN's rebounding dominance (50-33) limited second-chance opportunities. Jokic was -9 despite great individual stats — the model correctly identified his quality but the line was just too high. Murray's 4-17 collapse meant Jokic couldn't get easy assists-to-scores.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Nikola Jokic Over 9.5 assists</div>
-        <div class="bet-line">-148 | G5: 16 assists | MIN's turnover chaos creates passing lanes</div>
-        <div class="bet-reasoning">Jokic dished 16 assists in G5 as MIN's depleted backcourt created constant passing windows. Without Edwards and DiVincenzo, MIN's defensive rotations are a step slow — leading to open shooters off Jokic's reads. Spencer Jones (20pts G5) and role players are converting. The 9.5 line is very beatable when Jokic is in orchestrator mode — he had 16 assists in G5.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Nikola Jokic Over 9.5 assists ✓ — 10ast</div>
+        <div class="bet-line">-148 | G5: 16 assists | <span style="color:#4caf50;">Actual: 10ast ✅ (barely over)</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — Jokic 10ast (just over 9.5).</strong> Jokic's playmaking remained elite even in an elimination loss. His 10 assists on 11-19 FG showed he was finding teammates, but Murray's 4-17 shooting meant many of those looks didn't convert to buckets. The 9.5 line was the right play — Jokic averaged 12+ assists over G5-G6. His orchestrator mode is the most bankable prop in the series.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
     </div>
 
@@ -1771,8 +1795,8 @@ function renderBetsPage(el) {
 
       <div class="parlay-card headline" style="border:1px solid #a78bfa;">
         <div class="parlay-header">
-          <span class="parlay-name" style="font-size:16px;color:#a78bfa;">G6 $75 Player Props Special — Star Elevation (4-Leg)</span>
-          <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+1200</span>
+          <span class="parlay-name" style="font-size:16px;color:#f44336;">G6 $75 Player Props Special — Star Elevation (4-Leg) ❌ LOST</span>
+          <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1200 | -$75</span>
         </div>
         <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
           <span style="font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$75 &rarr; ~$975 return</span>
@@ -1782,34 +1806,92 @@ function renderBetsPage(el) {
         <div class="parlay-legs">
           <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
             <span class="parlay-leg-num">1</span>
-            <span class="parlay-leg-pick">Embiid O27.5pts (BOS-PHI G6) — Elimination monster, 33pts G5</span>
+            <span class="parlay-leg-pick">Embiid O27.5pts (BOS-PHI G6) — ❌ 19pts (6-18 FG)</span>
             <span class="parlay-leg-odds">-112</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 72%</span>
+            <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span>
           </div>
-          <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+          <div class="parlay-leg" style="border-left:3px solid #f44336;">
             <span class="parlay-leg-num">2</span>
-            <span class="parlay-leg-pick">Brunson O27.5pts (NYK-ATL G6) — 39pts G5, unguardable mid-range</span>
+            <span class="parlay-leg-pick">Brunson O27.5pts (NYK-ATL G6) — ❌ 17pts (6-12 FG, blowout)</span>
             <span class="parlay-leg-odds">-115</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 70%</span>
+            <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span>
           </div>
-          <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+          <div class="parlay-leg" style="border-left:3px solid #f44336;">
             <span class="parlay-leg-num">3</span>
-            <span class="parlay-leg-pick">Jokic O29.5pts (DEN-MIN G6) — Elimination desperation, 27pts G5</span>
+            <span class="parlay-leg-pick">Jokic O29.5pts (DEN-MIN G6) — ❌ 28pts (11-19 FG, missed by 1.5)</span>
             <span class="parlay-leg-odds">-104</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 68%</span>
+            <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS</span>
           </div>
-          <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+          <div class="parlay-leg" style="border-left:3px solid #888;">
             <span class="parlay-leg-num">4</span>
-            <span class="parlay-leg-pick">Mitchell O24.5pts (CLE-TOR G6) — Close-out aggression, 27.4 avg</span>
+            <span class="parlay-leg-pick">Mitchell O24.5pts (CLE-TOR G6) — Parlay dead (3 legs missed)</span>
             <span class="parlay-leg-odds">-115</span>
-            <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 67%</span>
+            <span class="parlay-leg-conf" style="background:#333;color:#888;">VOID</span>
           </div>
         </div>
-        <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>THE STAR ELEVATION PARLAY.</strong> All four legs target stars in elimination/close-out games who have demonstrated elevated scoring. Combined probability: 0.72 × 0.70 × 0.55 × 0.67 = ~18.5%. At +1200 odds (implied 7.7%), this has good upside but Jokic O29.5 is the swing leg — his G5 line was 27pts. Combined probability: ~23% vs implied 7.7% = strong +EV. Key insight: playoff stars consistently elevate in high-stakes games — Star Elevation Effect has been the model's most reliable signal all series. If any leg misses, it's Jokic (29.5 is a high line), but elimination desperation pushes scoring aggression.</div>
+        <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>❌ LOST — All 3 Thursday legs missed.</strong> The Star Elevation Parlay was a complete bust. Embiid (19pts) chose facilitator mode over scoring. Brunson (17pts) coasted in a 51-point blowout. Jokic (28pts) missed by just 1.5. The fundamental flaw: "Star Elevation = high scoring" is wrong. Stars elevate in DIFFERENT ways — Embiid elevated through playmaking (8ast), Brunson through efficiency (not volume), Jokic through assists (10ast). The model needs to decouple "star elevation" from "scoring volume." Props record for G6 Thu: 2/6 (33.3%) — only McCollum Under and Jokic assists hit.</div>
       </div>
     </div>
 
     </div><!-- end betContent-g6 -->
+
+    <!-- ===== G7 BETS TAB ===== -->
+    <div id="betContent-g7" class="bet-content" style="display:none;">
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 7 — BOS-PHI | Sat May 2 @ Boston</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G7 Override: +5 HCA (home teams win ~78% of Game 7s historically). BOS at TD Garden with championship DNA (2024). PHI forced G7 with two consecutive elimination wins — Embiid averaging 26pts in elimination games this series.</p>
+
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:0 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">BOS-PHI Game 7 — Sat May 2, 7:30 PM ET @ TD Garden</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">BOS ML vs PHI (G7 at home)</div>
+        <div class="bet-line">-200 | BOS -4.5 | Model: BOS by 5 | <span style="color:#4caf50;">G7 OVERRIDE: +5 HCA — Home teams win 78%</span></div>
+        <div class="bet-reasoning"><strong>G7 OVERRIDE is the strongest single-game signal in the model.</strong> Home teams have won ~78% of Game 7s historically. BOS has championship DNA (2024), TD Garden will be hostile, and Tatum/Brown have been in this exact spot before. PHI has won two straight elimination games (G5: Embiid 33pts, G6: Embiid 19pts) but road G7s are a different animal. BOS's talent edge (Tatum+Brown+Pritchard vs Embiid+Maxey) is amplified by crowd energy. The model projects BOS 108-103 with medium confidence. Embiid's elimination heroics prove he elevates in must-win games, but G7 at BOS is the toughest close-out in basketball.</div>
+        <span class="bet-edge model">G7 Override + Model</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">BOS -4.5 vs PHI</div>
+        <div class="bet-line">-110 | Model: BOS by 5 | 0.5pt cushion</div>
+        <div class="bet-reasoning">Model projects BOS by 5 with the G7 Override, giving just 0.5pts of cushion on -4.5. The G7 Override generates BOS dominance at home, but Embiid's elimination-game elevation (26pts avg in elim games) is a real counter. Tight spread — ML is safer unless you're very confident in the G7 HCA effect.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Joel Embiid Over 27.5 points</div>
+        <div class="bet-line">-115 | G5: 33pts, G6: 19pts | Elimination heroics</div>
+        <div class="bet-reasoning">Embiid has elevated in elimination games: 33pts G5, 19pts G6 (PHI won both). His physicality in the post is unguardable in a Game 7 atmosphere. The 27.5 line respects his G5 ceiling — his 26pts avg in elimination games and G7 desperation amplifies everything. Road game concerns are offset by his proven big-game elevation.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jaylen Brown Over 24.5 points</div>
+        <div class="bet-line">-120 | Series avg: 28+ PPG | G7 at home — legacy game</div>
+        <div class="bet-reasoning">Brown has been BOS's most consistent scorer all series (28+ PPG avg). In a Game 7 at home, expect maximum effort. PHI's wing defense still can't contain his athleticism and finishing. Brown O24.5 has hit in nearly every game this series. Championship-level players show up in G7.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jayson Tatum Over 24.5 points</div>
+        <div class="bet-line">-110 | G7 redemption arc | Series avg: 26.8pts</div>
+        <div class="bet-reasoning">Tatum was part of BOS's Q4 collapse in G5 and has been inconsistent this series. But G7 at home is the ultimate stage for redemption. Championship players respond to adversity, and TD Garden energy lifts Tatum. His series average is 26.8pts — expect him at or above that in the biggest game of the season. The 24.5 line gives 2.3pts of cushion.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Tyrese Maxey Over 22.5 points</div>
+        <div class="bet-line">-110 | G6: 25/10/5 | PHI's engine alongside Embiid</div>
+        <div class="bet-reasoning">Maxey has been brilliant alongside Embiid in elimination games — 25/10/5 in G6. In G7, he'll have maximum green light as PHI's #2 option. Road game hurts slightly, but Maxey's speed and shot creation travel. His floor is 20pts given his usage, making 22.5 very beatable.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+    </div><!-- end betContent-g7 -->
 
     <!-- DISCLAIMER -->
     <div class="bets-disclaimer">

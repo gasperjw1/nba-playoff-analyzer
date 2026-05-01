@@ -819,6 +819,21 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 44 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 44 — G6 Post-Game Attribution: Star Elevation ≠ Scoring Volume</div>
+        <div class="learning-date">May 1, 2026</div>
+        <div class="learning-body">
+          <strong>G6 Thursday results (1/3 ML picks, 2/6 props) exposed a fundamental flaw: the model equates "star elevation" with scoring volume. Stars elevate in DIFFERENT ways — facilitating, efficiency, defense — not just points.</strong><br><br>
+          <strong>1. NYK 140, ATL 89 (Model ✅, margin miss +40):</strong> Predicted NYK by 11, actual by 51 — largest margin miss ever. Anunoby 29pts (11-14 FG), Bridges 24pts (10-12 FG), KAT triple-double. ATL collapsed: Daniels ejected, 19 TOs, Kuminga -44. No mechanism for complete psychological capitulation by lower seeds in elimination road games.<br><br>
+          <strong>2. PHI 106, BOS 93 (Model ❌):</strong> Picked BOS -230. Maxey 30pts (0 TOs), George 23pts (5-9 3PT). Embiid only 19pts (6-18) but delivered 10reb/8ast/1TO — facilitator mode. BOS 29% 3PT (12-41). PHI has won 3 straight elimination games. NEW CONCEPT: "Star Elevation Modes" — stars don't always score more; they sometimes elevate through playmaking.<br><br>
+          <strong>3. MIN 110, DEN 98 (Model ❌):</strong> Picked DEN -258. MIN won 4-2 WITHOUT Edwards/DiVincenzo. McDaniels 32/10 backed up trash talk. Murray 4-17 (-18) — catastrophic. MIN dominated boards 50-33 (19 OREB). NEW CONCEPT: "Murray Inconsistency Factor" — his variance is wider than his rating suggests.<br><br>
+          <strong>4. PROPS DISASTER (2/6):</strong> Embiid O27.5 ❌ (19pts), Brunson O27.5 ❌ (17pts, blowout), Jokic O29.5 ❌ (28pts). Only McCollum U18.5 ✅ and Jokic O9.5ast ✅ hit. Parlay thesis wrong: blowouts, facilitator modes, and role player elevation all suppress star scoring volume.<br><br>
+          <strong>5. ACCURACY:</strong> G6 ML: 1/3 (33.3%). Cumulative: 23/41 (56.1%). Props: 2/6. P&L: -$698.47.
+        </div>
+        <span class="learning-tag missed">G6 Attribution</span><span class="learning-tag model">Star Elevation Modes</span><span class="learning-tag milestone">Phase 44</span>
+      </div>
+
       <!-- Phase 43 -->
       <div class="learning-entry">
         <div class="learning-phase">Phase 43 — Market Odds Calibration: Model vs. Vegas Reality Check</div>
@@ -975,6 +990,7 @@ function renderLearningsPage(el) {
     'Phase 37': 'Series Scoring Context + Score Range Bands: Engine now blends projected scores with actual series averages (low-scoring series project lower, high-scoring project higher). Score ranges show ±12% variance bands. Macro analysis: ESPN reports "15 of 16 teams won a game" — historic parity. Injuries dominate every series. OKC 12-0 in R1 over 3 years, clear R2 favorite.',
     'Phase 38': 'G5 deep analysis — 3 new concepts: (1) Elimination Game Star Elevation (Embiid 33pts facing elimination after 2pts Q1), (2) Closeout Pressure Inversion (BOS 3-22 FG in Q4 trying to clinch), (3) Home Star Ceiling Games (Brunson 39pts at MSG, Embiid 33 at WFC). Model went 1/2 on G5 picks. SAS-POR nearly perfect prediction (116-99 vs 114-95). Henderson youth breakout NOT persistent (31pts G2 → 5pts G5). SAS wins series 4-1.',
     'Phase 43': 'Market Odds Calibration — Calibrated all G6 bets against real DraftKings lines. Key findings: CLE ML was +110 estimated, real was -170 (no value edge). BOS -230 and DEN -258 priced higher than our 61% model. Jokic O/U 29.5 (not 24.5). True value lives in underdogs: LAL +150 (12% edge), ORL +136 (7.6%), MIN +210 (6.7%). All parlays recalculated with real odds.',
+    'Phase 44': 'G6 Post-Game Attribution — Model went 1/3 on Thu G6 picks (worst day). NYK ✅ 140-89 (margin miss +40), BOS ❌ (PHI 106-93, Maxey 30pts), DEN ❌ (MIN 110-98, Murray 4-17). Props 2/6. Key concept: Star Elevation Modes — stars elevate through facilitating/efficiency, not just scoring volume. Embiid 19pts but 10reb/8ast. Murray Inconsistency Factor added. P&L: -$698.47.',
     'Phase 42': 'Multi-Round Scalability + Projection Lineage — Round-level navigation (R1/R2/CF/Finals), series graduation with fatigue/injury carryover, projection lineage waterfall (SVG chart showing each factor\'s margin contribution), post-game factor attribution engine (proportional error distribution), localStorage V3 (series-ID keyed, backward-compatible). Infrastructure for playoff progression without code changes.',
     'Phase 41': 'Unified Ensemble — Aligned blended model (manual picks + engine margins) with Monte Carlo chaos sim. Sim now uses blended projection as baseline instead of raw engine. Disagreement variance scaling: +20% chaos when systems disagree, -5% when strongly agree. Result: 5/6 series aligned, 1 genuine coin flip. Calibration maintained at SD = 11.6.',
     'Phase 40': 'Monte Carlo Chaos Simulation — 1000-iteration quarter-by-quarter model with interdependent chaos factors (shooting temperature, momentum runs, foul trouble cascades, fatigue decay, clutch pressure). Calibrated to ATS margin SD = 11.3. Backtest: 56.4% accuracy, 11.6 avg margin error across 39 games. Outputs win probability distributions instead of single-point predictions.',
