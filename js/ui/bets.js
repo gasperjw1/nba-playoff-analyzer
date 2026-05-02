@@ -6,7 +6,7 @@ function renderBetsPage(el) {
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — ${typeof ROUND_META !== 'undefined' && ROUND_META[currentPlayoffRound] ? ROUND_META[currentPlayoffRound].label : 'Round 1'}</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | G6: 1/3 (33.3%) | Phase 42: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | G6: 3/6 (50%) | Phase 42: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
 
     <!-- BET TABS -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -26,7 +26,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Thu May 1 | DET-ORL G6, CLE-TOR G6 | Sat May 2: BOS-PHI G7</span>
+        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Sat May 2 | BOS-PHI G7 7:30 PM ET | Sun May 3: DET-ORL G7, CLE-TOR G7</span>
       </div>
 
       <!-- ===== CHAOS SIM SPOTLIGHT — UPCOMING ===== -->
@@ -36,131 +36,190 @@ function renderBetsPage(el) {
         </div>
         <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:14px;margin-bottom:16px;">
           <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">UPCOMING WIN PROBABILITIES</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">BOS-PHI G7</div>
               <div style="font-size:18px;font-weight:700;color:#60a5fa;">BOS 65%</div>
               <div style="font-size:9px;color:#666;">108-103 | G7 OVERRIDE +5 HCA</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">DET-ORL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">ORL 58%</div>
-              <div style="font-size:9px;color:#666;">110-103 | SEPARATION</div>
+              <div style="font-size:10px;color:#888;">DET-ORL G7</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">DET 75%</div>
+              <div style="font-size:9px;color:#666;">106-94 | SEPARATION</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">CLE-TOR G6</div>
-              <div style="font-size:18px;font-weight:700;color:#ffc73a;">CLE 55%</div>
-              <div style="font-size:9px;color:#666;">112-110 | COIN FLIP</div>
-            </div>
-            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">HOU-LAL G6</div>
-              <div style="font-size:18px;font-weight:700;color:#ffc73a;">LAL 52%</div>
-              <div style="font-size:9px;color:#666;">106-104 | COIN FLIP</div>
+              <div style="font-size:10px;color:#888;">CLE-TOR G7</div>
+              <div style="font-size:18px;font-weight:700;color:#60a5fa;">CLE 68%</div>
+              <div style="font-size:9px;color:#666;">112-104 | COMPETITIVE</div>
             </div>
           </div>
           <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">SERIES OUTCOME PROBABILITIES</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:10px;">
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">BOS 65%</span> to win series<br/><span style="color:#666;">G7 only</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">ORL 58%</span> to win series<br/><span style="color:#666;">G6 close-out</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 84%</span> to win series<br/><span style="color:#666;">G6: 55% | G7: 45%</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#ffc73a;">LAL 74%</span> to win series<br/><span style="color:#666;">G6: 52% | G7: 48%</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">BOS 65%</span> to win series<br/><span style="color:#666;">G7 tonight</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">DET 75%</span> to win series<br/><span style="color:#666;">G7 Sun May 3</span></div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 68%</span> to win series<br/><span style="color:#666;">G7 Sun May 3</span></div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 42 Ensemble update: NYK advanced (4-2), MIN advanced (4-2), BOS-PHI forced G7. 4 series remain.</div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 43 update: NYK (4-2), MIN (4-2), OKC (4-0), SAS (4-1) advanced. LAL advanced (4-2). BOS-PHI, DET-ORL, CLE-TOR all at G7. May 1 G6 record: 2/3 (LAL ✅, DET ✅, CLE ❌).</div>
         </div>
       </div>
 
-      <!-- ===== UPCOMING FEATURED PARLAYS — MAY 1-2 ===== -->
-      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
+      <!-- ===== PREVIOUS PARLAYS — MAY 1-2 (RESULTS) ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING — May 1-2 | DET-ORL G6, CLE-TOR G6, BOS-PHI G7</span>
+          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">RESULTS — May 1 | LAL ✅ (4-2), DET ✅ (3-3→G7), TOR ✅ upset (3-3→G7)</span>
         </div>
 
-        <!-- $100 PLAY — G7 BLOCKBUSTER + ROAD CLOSE-OUT -->
-        <div class="parlay-card headline">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f0c040;">$100 Play — G7 Blockbuster + Road Close-Out (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+165</span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$265 return</span>
-            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">May 1-2</span>
-            <span style="font-size:10px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:600;">ENSEMBLE: ~33% hit rate | Market: 38%</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-              <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7) &star;</span>
-              <span class="parlay-leg-odds">-200</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — G7 Override +5 HCA, home teams win 78% of G7s</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
-              <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">CLE ML @ TOR (CLE-TOR G6)</span>
-              <span class="parlay-leg-odds">-140</span>
-              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — Ensemble: 55%</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>BOS's G7 Override (+5 HCA) makes them the strongest pick.</strong> Home teams have won ~78% of Game 7s historically. BOS has championship DNA (2024), TD Garden will be hostile, and Tatum/Brown have been in this exact spot before. CLE has multiple closers (Mitchell, Harden, Mobley) and the deepest rotation in the East. Combined ~33% hit rate. At +165 implied 38%, slight -EV but high conviction on both legs.</div>
-        </div>
-
-        <!-- $50 ELIMINATION NIGHT SPECIAL -->
-        <div class="parlay-card headline" style="border:1px solid #a78bfa;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">$50 Elimination Night Special (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+220</span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$50 &rarr; ~$160 return</span>
-            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Phase 42 Ensemble Pick</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
-              <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">ORL ML vs DET (DET-ORL G6 — close-out at home)</span>
-              <span class="parlay-leg-odds">-240</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — Ensemble: 58%</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
-              <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7)</span>
-              <span class="parlay-leg-odds">-200</span>
-              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — G7 Override +5 HCA</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>Two high-confidence home favorites.</strong> ORL closes out DET at home with Banchero in superstar mode (45pts G5). BOS gets the G7 Override — home teams win 78% of Game 7s. Both legs are HIGH confidence with strong home-court advantages. Combined probability makes this the safest parlay of the slate.</div>
-        </div>
-
-        <!-- $1 CHAOS — UNDERDOGS UNITE -->
+        <!-- $100 PLAY RESULT -->
         <div class="parlay-card headline" style="border:1px solid #f44336;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#f44336;">$1 Chaos — Underdogs Unite (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+2400</span>
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$100 Play — G7 Blockbuster + Road Close-Out (2-Leg) ❌ LOST</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+165 | -$100</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #888;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7) — PENDING (tonight May 2)</span>
+              <span class="parlay-leg-odds">-200</span>
+              <span class="parlay-leg-conf" style="background:#333;color:#888;">PENDING</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">CLE ML @ TOR (CLE-TOR G6) — ❌ TOR 112-110 OT</span>
+              <span class="parlay-leg-odds">-200</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS — TOR won OT thriller</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>❌ LOST — CLE leg busted.</strong> TOR won 112-110 OT behind Barnes' 14ast and Walter's 24pts. CLE's bench disappeared (14pts vs 36pts G5) and Harden's 4 TOs in a 2-point game were fatal. The model's 62% CLE probability was wrong — TOR's home court was worth more than projected.</div>
+        </div>
+
+        <!-- $50 TRIPLE THREAT RESULT -->
+        <div class="parlay-card headline" style="border:1px solid #ff9800;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$50 Triple Threat — 3 Road Favorites (3-Leg) — PARTIAL ✅✅❌</span>
+            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+300 | -$50</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">DET ML @ ORL — ✅ DET 93-79 (dominant road win)</span>
+              <span class="parlay-leg-odds">-160</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT — Cade 32/10/4stl</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">CLE ML @ TOR — ❌ TOR 112-110 OT</span>
+              <span class="parlay-leg-odds">-200</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">MISS — Barnes 25/14ast</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">LAL ML @ HOU — ✅ LAL 98-78 (series won 4-2)</span>
+              <span class="parlay-leg-odds">+140</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIT — LeBron 28pts closeout</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#ff9800;"><strong>❌ LOST — CLE leg killed the parlay.</strong> 2/3 legs hit: DET dominated ORL 93-79 and LAL blew out HOU 98-78, but CLE's loss at TOR (112-110 OT) busted the parlay. The CLE pick was the most overconfident — TOR's home court was the most underweighted factor across all models.</div>
+        </div>
+      </div>
+
+      <!-- ===== UPCOMING FEATURED PARLAYS — MAY 2-3 ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UPCOMING — May 2-3 | BOS-PHI G7, DET-ORL G7, CLE-TOR G7</span>
+        </div>
+
+        <!-- $100 PLAY — TRIPLE G7 HOME SWEEP -->
+        <div class="parlay-card headline">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f0c040;">$100 Play — Triple G7 Home Sweep (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(240,192,64,0.2);color:#f0c040;font-size:16px;">~+150</span>
           </div>
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
-            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$25 return</span>
-            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — May 1-2</span>
+            <span style="font-size:11px;color:#f0c040;background:rgba(240,192,64,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$100 &rarr; ~$250 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">May 2-3</span>
+            <span style="font-size:10px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:600;">G7 OVERRIDE: Home teams win 78% of G7s historically</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">BOS ML vs PHI (BOS-PHI G7 — Sat May 2) &star;</span>
+              <span class="parlay-leg-odds">-298</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — G7 Override +5 HCA, TD Garden fortress</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">DET ML vs ORL (DET-ORL G7 — Sun May 3)</span>
+              <span class="parlay-leg-odds">-298</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — Cade averaging 38.5pts in elimination games, Wagner OUT</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f0c040;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">CLE ML vs TOR (CLE-TOR G7 — Sun May 3)</span>
+              <span class="parlay-leg-odds">-333</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — CLE 3-0 at home but TOR has proven resilience</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f0c040;"><strong>G7 Override is the strongest signal in the model.</strong> Home teams have won ~78% of Game 7s historically. All 3 home teams (BOS, DET, CLE) have been dominant at their arenas this series. BOS won G1/G2 at TD Garden. DET won G2 98-83 at LCA. CLE is 3-0 at Rocket Mortgage. The combined probability of all 3 home teams winning is ~33% (65% × 75% × 68%). At +150 implied odds of 40%, this parlay has slight +EV if the G7 Override holds. The biggest risk is CLE — TOR has been the most resilient underdog in R1.</div>
+        </div>
+
+        <!-- $25 CADE + LEBRON SCORER PARLAY -->
+        <div class="parlay-card headline" style="border:1px solid #a78bfa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">$25 Star Props — G7 Scorers Parlay (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+500</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$25 &rarr; ~$150 return</span>
+            <span style="font-size:11px;color:#4caf50;background:rgba(76,175,80,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">Phase 43 Props</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">Cade Cunningham O30.5pts (DET-ORL G7)</span>
+              <span class="parlay-leg-odds">-110</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 38.5pts avg in G5-G6, G7 at home</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">Donovan Mitchell O24.5pts (CLE-TOR G7)</span>
+              <span class="parlay-leg-odds">-115</span>
+              <span class="parlay-leg-conf" style="background:#5a4a1a;color:#ff9800;">MED — Series avg 24.3pts, home court shooting boost</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">Jaylen Brown O24.5pts (BOS-PHI G7)</span>
+              <span class="parlay-leg-odds">-120</span>
+              <span class="parlay-leg-conf" style="background:#2d5a2d;color:#4caf50;">HIGH — 28+ PPG avg, G7 at home = legacy game</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#a78bfa;"><strong>Three stars at home in Game 7 = maximum usage.</strong> Cade has averaged 38.5pts in elimination games and is virtually guaranteed 30+ at LCA. Mitchell's home shooting (49% FG vs 38% road) gives him a significant boost. Brown has been BOS's most consistent scorer all series. All three lines are beatable at home in a G7.</div>
+        </div>
+
+        <!-- $1 CHAOS — ROAD TEAMS STEAL G7 -->
+        <div class="parlay-card headline" style="border:1px solid #f44336;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$1 Chaos — Road Underdogs Steal Game 7 (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1500</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+            <span style="font-size:11px;color:#f44336;background:rgba(244,67,54,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">$1 &rarr; ~$16 return</span>
+            <span style="font-size:11px;color:#ff9800;background:rgba(255,152,0,0.12);padding:3px 8px;border-radius:4px;font-weight:700;">CONTRARIAN — May 3</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">PHI ML @ BOS (BOS-PHI G7) — Embiid G7 monster mode</span>
-              <span class="parlay-leg-odds">+165</span>
-              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
+              <span class="parlay-leg-pick">ORL ML @ DET (DET-ORL G7) — Banchero revenge game</span>
+              <span class="parlay-leg-odds">+240</span>
+              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW — Banchero bounce-back from 4-20</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">DET ML @ ORL (DET-ORL G6) — Cade 45pts ceiling</span>
-              <span class="parlay-leg-odds">+195</span>
-              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #f44336;">
-              <span class="parlay-leg-num">3</span>
-              <span class="parlay-leg-pick">TOR ML vs CLE (CLE-TOR G6) — Scotiabank elimination energy</span>
-              <span class="parlay-leg-odds">+120</span>
-              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW</span>
+              <span class="parlay-leg-pick">TOR ML @ CLE (CLE-TOR G7) — Barnes' facilitator mode</span>
+              <span class="parlay-leg-odds">+260</span>
+              <span class="parlay-leg-conf" style="background:#5a2a2a;color:#f44336;">LOW — TOR has won 3 elimination games this series</span>
             </div>
           </div>
-          <div class="parlay-reasoning" style="border-left-color:#f44336;">Three underdogs fighting for survival. <strong>PHI ML</strong> — Embiid has been an elimination monster (33pts G5, 31pts G6). Road G7 is brutal but Embiid + Maxey can steal one. <strong>DET ML</strong> — Cade proved his 45pt ceiling in G5. Road elimination is tough but DET's young energy is unpredictable. <strong>TOR ML</strong> — Scotiabank Arena in an elimination game is deafening. Barnes at home has been elite (33pts G3, 28pts G4). All three hitting is a long shot but at +2400, the $1 price is right.</div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>The road chaos special.</strong> ORL's Banchero had a career-worst 4-20 in G6 — historically, stars bounce back hard from their worst games. TOR has won 3 elimination games already (G3, G4, G6). Barnes' 14-assist G6 showed a facilitator gear that can beat anyone. Both legs are long shots but at +1500, the $1 price is right for two teams that have proven they can defy the odds.</div>
         </div>
       </div>
 
@@ -1594,8 +1653,8 @@ function renderBetsPage(el) {
 
     <!-- ===== G6 BETS TAB ===== -->
     <div id="betContent-g6" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 6 Picks &amp; Results — G6 Record: 1/3 (33.3%)</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">G6 results (Thu Apr 30): NYK ✅ 140-89 (series 4-2), PHI ✅ 106-93 (model ❌), MIN ✅ 110-98 (model ❌). G6 ML Record: 1/3 (33.3%). Cumulative: 23/41 (56.1%). Remaining G6: DET-ORL (May 1), CLE-TOR (May 1), HOU-LAL (TBD). BOS-PHI G7 (May 2).</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 6 Picks &amp; Results — G6 Record: 3/6 (50%)</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G6 results (Thu Apr 30): NYK ✅ 140-89 (series 4-2), PHI ✅ 106-93 (model ❌), MIN ✅ 110-98 (model ❌). G6 results (Fri May 1): LAL ✅ 98-78 (model ✅ series 4-2), DET ✅ 93-79 (model ✅ series 3-3), TOR ✅ 112-110 OT (model ❌ series 3-3). G6 ML Record: 3/6 (50%). Cumulative: 25/44 (56.8%).</p>
 
     <!-- ═══════ G6 THU APR 30 ═══════ -->
     <div class="bet-section">
@@ -1691,101 +1750,101 @@ function renderBetsPage(el) {
 
     <!-- ═══════ G6 FRI MAY 1 ═══════ -->
     <div class="bet-section">
-      <h4 style="color:#888;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">G6 — Fri May 1 | DET-ORL, CLE-TOR, HOU-LAL</h4>
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">G6 Results — Fri May 1 | DET ✅ (3-3→G7), TOR ✅ upset (3-3→G7), LAL ✅ (4-2 series won)</h4>
 
       <!-- ═══ DET-ORL G6 ═══ -->
       <div style="margin:12px 0 8px;padding:6px 0;border-top:1px solid #444;">
-        <span style="color:#888;font-size:13px;font-weight:700;">DET-ORL G6 — Fri May 1 | ORL leads 3-2 — DET faces elimination @ ORL</span>
-      </div>
-
-      <div class="bet-card" style="border-left:3px solid #888;">
-        <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">DET-ORL G6 — COIN FLIP (Lean ORL at home)</div>
-        <div class="bet-line">DET -3.5 (-110) | Ensemble: ORL by 1 | <span style="color:#ff9800;">Ensemble: 50/50</span> — TRUE TOSS-UP</div>
-        <div class="bet-reasoning"><strong>Phase 41 ENSEMBLE: genuine coin flip.</strong> Engine says DET, manual analysis says ORL — the blended system gives ORL by just 1 point, and the chaos sim sees 50.6% DET / 49.4% ORL. Essentially even. Wagner's status (calf, questionable) is the swing factor. Without Wagner, Cade's 45pt ceiling vs Banchero-alone = chaos. <strong>DET -162/ORL +136. DET favored at -162 despite road game — market disagrees with our 50/50 model. ORL +136 has slight +EV if model is right. Consider ORL ML +136 as value, not DET.</strong></div>
-        <span class="bet-edge" style="background:#ff9800;color:#000;">Coin Flip — Skip ML</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Cade Cunningham Over 30.5 points</div>
-        <div class="bet-line">-105 | G5: 45pts (14-14 FT) | Elimination mode activated</div>
-        <div class="bet-reasoning">Cade exploded for 45pts in G5 — a career playoff high. Facing elimination on the road, he'll carry maximum usage. His FT mastery (14-14 G5) gives him a reliable scoring floor even if shots aren't falling. The 30.5 line respects G5 but still undervalues elimination desperation. DET lives and dies with Cade — expect 30+ in a must-win.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Paolo Banchero Over 28.5 points</div>
-        <div class="bet-line">-110 | G5: 45/9/7 | Wagner likely OUT elevates volume</div>
-        <div class="bet-reasoning">Banchero matched Cade's 45 in G5 (the historic 45-45 duel) and with Wagner likely out (calf), he IS Orlando's offense. Without secondary creation, Banchero's usage will be astronomical. He's averaged 32pts in the last 3 games — the 28.5 line is too low for a de facto solo star at home in a close-out game.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      <!-- ═══ CLE-TOR G6 ═══ -->
-      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
-        <span style="color:#888;font-size:13px;font-weight:700;">CLE-TOR G6 — Fri May 1 | CLE leads 3-2 — TOR faces elimination @ TOR</span>
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">DET-ORL G6 — Fri May 1 | ORL led 3-2 — DET won @ ORL to force G7</span>
       </div>
 
       <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">CLE ML @ TOR (Close-out on road)</div>
-        <div class="bet-line">-170 | CLE -4.5 | Model: CLE by 4 | <span style="color:#4caf50;">Ensemble: CLE 64%</span> — STRONGEST EDGE</div>
-        <div class="bet-reasoning">CLE's 3-2 lead means one win from advancing. Mobley's evolution to 3-level scorer changes matchup dynamics. CLE has multiple closers (Mitchell, Harden, Mobley) — hard to scheme for all three. TOR won both home games but CLE's bench depth (36pts G5) and Q4 defensive tightening (25-17 G5) travel. <strong>Ensemble: CLE 64% — highest G6 win probability. CLE at -170 implies 63% — nearly identical to our ensemble 64%. No value edge vs the market. The line is accurate.</strong></div>
-        <span class="bet-edge model">Model + Sim ✓</span>
+        <div class="bet-pick">DET ML @ ORL ✓ — DET 93-79 (series tied 3-3)</div>
+        <div class="bet-line">DET -3.5 (-160) | Model: DET by 6 | Actual: DET 93, ORL 79 (+14) ✓ | <span style="color:#4caf50;">Model ✅ — correct winner</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — DET 93-79.</strong> Cade 32/10/3/4stl dominated. Banchero collapsed to 4-20 FG (0-9 3PT). Ausar Thompson was a defensive force (10reb/6ast/4blk). DET's defense held ORL to 79pts (series low). The model's coin-flip framing was too conservative — DET was clearly the better team on the night. Wagner's absence (calf) proved decisive as predicted.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
-        <div class="bet-line">-115 | Series avg: 27.4pts | Close-out mentality</div>
-        <div class="bet-reasoning">Mitchell has been CLE's primary scorer (27.4pts avg) and in a close-out game, expect maximum aggression. TOR's perimeter defense has been solid at home, but Mitchell's shot-creation versatility (mid-range, 3PT, drives) makes him impossible to fully contain. He'll get his 25+ regardless of game flow.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">Cade Cunningham Over 30.5 points ✓ — 32pts (10-23 FG, 10-12 FT)</div>
+        <div class="bet-line">-105 | G5: 45pts | <span style="color:#4caf50;">Actual: 32pts ✅</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — Cade 32pts (10-23 FG, 2-4 3PT, 10-12 FT).</strong> Cade delivered again in elimination mode. His FT mastery (10-12) was the scoring floor as predicted. The 30.5 line was too low for a player averaging 38.5pts in elimination games. His 4 steals showed defensive intensity too.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Scottie Barnes Over 22.5 points</div>
-        <div class="bet-line">-110 | Home elimination: 33pts G3, 28pts G4 | Scotiabank fortress</div>
-        <div class="bet-reasoning">Barnes has been electric at home — 33pts G3 and 28pts G4. Facing elimination at Scotiabank Arena, expect another massive effort. His physical play style thrives with home crowd energy. Even in G5 on the road he scored 25 with 12reb. The 22.5 line is very beatable for a home elimination game.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">Paolo Banchero Over 28.5 points ✗ — 17pts (4-20 FG, 0-9 3PT)</div>
+        <div class="bet-line">-110 | G5: 45pts | <span style="color:#f44336;">Actual: 17pts ❌ (career-worst)</span></div>
+        <div class="bet-reasoning"><strong>❌ WRONG — Banchero 17pts (4-20 FG, 0-9 3PT, 9-12 FT).</strong> HISTORIC collapse. The model assumed "solo star at home = high volume scoring" but DET's defense (especially Ausar Thompson's 4blk) completely shut Banchero down. His 0-9 from 3PT was the worst single-game 3PT performance of his career. LESSON: star volume doesn't guarantee scoring — elite defense can shut down anyone.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
+      </div>
+
+      <!-- ═══ CLE-TOR G6 ═══ -->
+      <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">CLE-TOR G6 — Fri May 1 | CLE led 3-2 — TOR won 112-110 OT (series 3-3)</span>
+      </div>
+
+      <div class="bet-card" style="border-left:3px solid #f44336;">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">CLE ML @ TOR ✗ — TOR 112-110 OT</div>
+        <div class="bet-line">-200 | CLE -4.5 | Model: CLE by 6 | Actual: TOR 112, CLE 110 OT | <span style="color:#f44336;">Model ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ WRONG — TOR 112-110 OT.</strong> Barnes' facilitator mode (25pts/14ast career-high) transformed TOR's offense. Walter's breakout (24pts, 4-9 3PT) gave TOR a legitimate #2 scorer. CLE's bench disappeared (14pts vs 36pts G5) and Harden's 4 TOs in a 2-point OT game were fatal. The model's 64% CLE probability was wrong — TOR's Scotiabank home court was worth more than projected (now 3-0 at home this series).</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Donovan Mitchell Over 24.5 points ✗ — 24pts (11-26 FG, 2-10 3PT)</div>
+        <div class="bet-line">-115 | Series avg: 27.4pts | <span style="color:#f44336;">Actual: 24pts ❌ (missed by 0.5)</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Mitchell 24pts (11-26 FG, 2-10 3PT).</strong> Missed by just 0.5pts. Mitchell's 3PT shooting at Scotiabank continues to be suppressed (5-26, 19.2% in last 3 games). His volume was high (26 shots) but efficiency suffered on the road. Venue-adjusted 3PT projections would have flagged this.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Scottie Barnes Over 22.5 points ✓ — 25pts (11-21 FG, 14ast)</div>
+        <div class="bet-line">-110 | Home elimination | <span style="color:#4caf50;">Actual: 25pts ✅ + 14ast career-high</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — Barnes 25pts (11-21 FG, 0-2 3PT, 3-4 FT) + 14ast.</strong> Barnes exceeded the scoring line AND added a historic 14-assist performance. At Scotiabank he's been electric all series. The model correctly identified his home elimination ceiling — but even underestimated his facilitator impact. Barnes is TOR's alpha.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <!-- ═══ HOU-LAL G6 ═══ -->
       <div style="margin:20px 0 8px;padding:6px 0;border-top:1px solid #444;">
-        <span style="color:#888;font-size:13px;font-weight:700;">HOU-LAL G6 — Fri May 1 | LAL leads 3-2 — HOU faces elimination @ LAL</span>
+        <span style="color:#64b5f6;font-size:13px;font-weight:700;">HOU-LAL G6 — Fri May 1 | LAL led 3-2 — LAL won 98-78 (SERIES WON 4-2)</span>
       </div>
 
-      <div class="bet-card" style="border-left:3px solid #ff9800;">
+      <div class="bet-card" style="border-left:3px solid #4caf50;">
         <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">LAL ML vs HOU (Close-out at home)</div>
-        <div class="bet-line">+150 | HOU -3.5 | Model: LAL by 2 | <span style="color:#ff9800;">Ensemble: ~52% LAL</span> — COIN FLIP (Reaves upgrade shifts lean)</div>
-        <div class="bet-reasoning"><strong>REAVES UPGRADE FLIPS THIS PICK.</strong> Reaves' rating jumped 68→74 (oblique severity 0.6→0.35) after his G5 return game. With one game of conditioning, expect his FG% to normalize from 25% toward 35-40%. This gives LAL their 3rd scorer back alongside LeBron + Ayton. LAL's G5 3PT collapse (25.9%, 7-27) was an anomaly — regression to the mean at home adds 5-8pts. Kennard (1pt G5) is due for a home bounce-back (17ppg G1-G2). <strong>BUT: HOU is the ROAD FAVORITE at -180 ML despite facing elimination — market respects HOU's depth and LAL's shooting woes. LAL +150 as home underdog has value if Reaves' return normalizes their offense. Genuine coin flip — lean LAL because Reaves is the biggest variable change since G5.</strong></div>
-        <span class="bet-edge" style="background:#ff9800;color:#000;">Coin Flip — Slight LAL Lean</span>
+        <div class="bet-pick">LAL ML @ HOU ✓ — LAL 98-78 (SERIES WON 4-2)</div>
+        <div class="bet-line">+140 | HOU -3.5 | Model: LAL by 2 | Actual: LAL 98, HOU 78 (+20) ✓ | <span style="color:#4caf50;">Model ✅</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — LAL 98-78.</strong> The model's LAL lean was vindicated in spectacular fashion. LeBron 28pts (10-25 FG) controlled the game. Hachimura's 5-7 3PT breakout was the dagger. Reaves returned to form at 7-14 FG (50%). Sheppard collapsed to 4-19 FG (21%). HOU's home court advantage evaporated in a closeout — Toyota Center's magic ended when it mattered most. LAL +140 was VALUE — the market had HOU favored at -180 but LAL was clearly the superior team.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">LeBron James Over 25.5 points</div>
-        <div class="bet-line">-110 | G5: 25pts (0-6 3PT) | Close-out game at home — max effort</div>
-        <div class="bet-reasoning">LeBron scored 25pts in G5 despite going 0-6 from 3PT — imagine if even 2 of those fall. In a potential close-out game at Crypto.com Arena, expect vintage playoff LeBron. His scoring floor is high (13ast G1, 25pts G5) and the crowd energy + legacy narrative push him over 25.5. 3PT regression to the mean alone could push him to 30+.</div>
-        <span class="bet-edge model">Model Edge</span>
+        <div class="bet-pick">LeBron James Over 25.5 points ✓ — 28pts (10-25 FG, 2-5 3PT)</div>
+        <div class="bet-line">-110 | G5: 25pts | <span style="color:#4caf50;">Actual: 28pts ✅</span></div>
+        <div class="bet-reasoning"><strong>✅ CORRECT — LeBron 28pts (10-25 FG, 2-5 3PT, 6-8 FT).</strong> Vintage playoff LeBron in a close-out game. He hit 2 threes (improving from 0-6 G5) and attacked the basket with purpose. The 25.5 line was too low for a close-out game from a player with 4 championships. His 8 assists showed he was still creating for others while scoring 28.</div>
+        <span class="bet-edge" style="background:#4caf50;color:#fff;">Model ✓</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Austin Reaves Over 18.5 points</div>
-        <div class="bet-line">-105 | G5: 22pts (4-16 FG) | 2nd game back — expect improved efficiency</div>
-        <div class="bet-reasoning">Reaves scored 22pts in G5 despite shooting 4-16 FG (25%) — all via FTs (12-13). With one game of conditioning, his oblique should feel significantly better (severity 0.6→0.35). Historical precedent: players returning from oblique injuries typically need 2-3 games to regain shooting touch. G6 should be game 2, meaning 35-40% FG is realistic. At home with crowd energy, expect him to clear 18.5 with improved shot-making. Even if efficiency is still below normal, his FT aggression guarantees volume.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">Austin Reaves Over 18.5 points ✗ — 15pts (7-14 FG)</div>
+        <div class="bet-line">-105 | G5: 22pts | <span style="color:#f44336;">Actual: 15pts ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Reaves 15pts (7-14 FG, 50%).</strong> Reaves' efficiency improved dramatically (50% FG vs 25% G5) as the model predicted, but his volume dropped in a blowout. He only took 14 shots because LAL was dominating and didn't need him to force. His 3 blocks showed defensive impact. LESSON: In blowouts, secondary scorers' volume drops even if efficiency improves.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
 
       <div class="bet-card">
         <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jalen Smith Jr Over 12.5 points</div>
-        <div class="bet-line">+105 | G5: 22pts (4-9 3PT) | Emerging as HOU's X-factor</div>
-        <div class="bet-reasoning">Smith Jr has emerged as HOU's most dangerous offensive weapon — 22pts in G5 with elite 3PT shooting (4-9). He's been HOU's sparkplug in elimination games and his confidence is at a series high. The line undervalues his expanded role with HOU playing free in elimination mode. Even at LAL, expect 13+ if he gets 25+ minutes.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
+        <div class="bet-pick">Jabari Smith Jr Over 12.5 points ✗ — 9pts (3-11 FG)</div>
+        <div class="bet-line">+105 | G5: 22pts | <span style="color:#f44336;">Actual: 9pts ❌</span></div>
+        <div class="bet-reasoning"><strong>❌ UNDER — Smith Jr 9pts (3-11 FG, 1-6 3PT).</strong> Smith Jr's G5 breakout (22pts) didn't carry over. LAL's defensive scheme clamped down and the blowout margin meant HOU's role players never found rhythm. Smith Jr DNP'd in G6 per some rotational decisions. The "emerging X-factor" thesis was a one-game anomaly.</div>
+        <span class="bet-edge" style="background:#f44336;color:#fff;">Model ✗</span>
       </div>
     </div>
 
@@ -1837,8 +1896,8 @@ function renderBetsPage(el) {
 
     <!-- ===== G7 BETS TAB ===== -->
     <div id="betContent-g7" class="bet-content" style="display:none;">
-    <h3 style="color:#aaa;margin:0 0 4px;">Game 7 — BOS-PHI | Sat May 2 @ Boston</h3>
-    <p style="color:#666;font-size:12px;margin-bottom:16px;">G7 Override: +5 HCA (home teams win ~78% of Game 7s historically). BOS at TD Garden with championship DNA (2024). PHI forced G7 with two consecutive elimination wins — Embiid averaging 26pts in elimination games this series.</p>
+    <h3 style="color:#aaa;margin:0 0 4px;">Game 7 — BOS-PHI (May 2), DET-ORL (May 3), CLE-TOR (May 3)</h3>
+    <p style="color:#666;font-size:12px;margin-bottom:16px;">G7 Override: +5 HCA (home teams win ~78% of Game 7s historically). Three G7s this weekend — BOS tonight, DET and CLE tomorrow. All 3 home teams are heavy favorites.</p>
 
     <div class="bet-section">
       <h4 style="color:#4caf50;margin:0 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">BOS-PHI Game 7 — Sat May 2, 7:30 PM ET @ TD Garden</h4>
@@ -1889,6 +1948,80 @@ function renderBetsPage(el) {
         <div class="bet-line">-110 | G6: 25/10/5 | PHI's engine alongside Embiid</div>
         <div class="bet-reasoning">Maxey has been brilliant alongside Embiid in elimination games — 25/10/5 in G6. In G7, he'll have maximum green light as PHI's #2 option. Road game hurts slightly, but Maxey's speed and shot creation travel. His floor is 20pts given his usage, making 22.5 very beatable.</div>
         <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+
+    <!-- ═══════ DET-ORL G7 ═══════ -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">DET-ORL Game 7 — Sun May 3, 3:30 PM ET @ Little Caesars Arena</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">DET ML vs ORL (G7 at home)</div>
+        <div class="bet-line">-298 | DET -7.5 | Model: DET by 12 | <span style="color:#4caf50;">HIGH — G7 Override + Cade elimination mode + Wagner OUT</span></div>
+        <div class="bet-reasoning"><strong>DET is the model's strongest G7 pick.</strong> Cade Cunningham has averaged 38.5pts in elimination games (G5: 45, G6: 32) and is playing career-best basketball. Harris (22/10 G6) provides reliable secondary scoring. LCA crowd will be volcanic. ORL's Banchero collapsed to 4-20 FG (0-9 3PT) in G6 — worst career game — and faces a hostile road environment. Wagner STILL OUT (calf). ORL is a single-initiator team that can be shut down when Banchero is locked up. Ausar Thompson's 4-block G6 defensive masterclass gives DET a scheme advantage. DET at -298 implies 75% — the model agrees at 75%.</div>
+        <span class="bet-edge model">G7 Override + Model</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPREAD</span>
+        <div class="bet-pick">DET -7.5 vs ORL</div>
+        <div class="bet-line">-110 | Model: DET by 12 | 4.5pts cushion</div>
+        <div class="bet-reasoning">Model projects DET by 12 (106-94), giving 4.5pts of cushion on -7.5. DET won G2 at LCA by 15 (98-83) and G6 on the road by 14 (93-79). The defense has held ORL below 80 and 83 in the two biggest DET wins. With G7 home crowd energy and Wagner out, a double-digit win is the most likely outcome.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Cade Cunningham Over 30.5 points</div>
+        <div class="bet-line">-110 | G5: 45pts, G6: 32pts | G7 at home = maximum effort</div>
+        <div class="bet-reasoning">Cade has scored 32+ in 3 of the last 4 games (39 G1, 45 G5, 32 G6). In a G7 at home, expect his absolute ceiling. His FT mastery (10-12 G6, 14-14 G5) provides a scoring floor even if shots don't fall. LCA crowd energy amplifies his aggression. 30.5 is too low for a player averaging 38.5pts in elimination games.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Paolo Banchero Under 24.5 points</div>
+        <div class="bet-line">-110 | G6: 17pts (4-20 FG) | DET defense has his number</div>
+        <div class="bet-reasoning">Banchero has been held under 25pts in 4 of 6 games this series. His G6 collapse (4-20 FG, 0-9 3PT) was career-worst and the mental damage of facing a hostile LCA crowd after that performance is real. DET's defense (especially Ausar Thompson) has a proven scheme to shut him down. Without Wagner, there's no secondary creator to take pressure off. Even a bounce-back (35% FG) only gets him to ~22pts.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+
+    <!-- ═══════ CLE-TOR G7 ═══════ -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">CLE-TOR Game 7 — Sun May 3, 7:30 PM ET @ Rocket Mortgage FieldHouse</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">CLE ML vs TOR (G7 at home)</div>
+        <div class="bet-line">-333 | CLE -8.5 | Model: CLE by 8 | <span style="color:#4caf50;">MED — G7 Override + CLE 3-0 at home + talent surplus</span></div>
+        <div class="bet-reasoning"><strong>CLE is 3-0 at Rocket Mortgage with an avg +9.3pt margin.</strong> Mitchell (47% home FG vs 38% road), Mobley (26/14 G6), and Harden (potential triple-double) give CLE three star-caliber options. TOR is missing Ingram (heel) and Quickley (hamstring) — their two key depth pieces. CLE's bench depth (Schroder, Wade) performs better at home. However, confidence is MEDIUM not HIGH because TOR has been the most resilient underdog in R1 — they've won 3 elimination games (G3, G4, G6) and Barnes' 14-assist G6 showed a gear the model didn't project. TOR is 0-3 at Rocket Mortgage but their ceiling in elimination games defies prediction.</div>
+        <span class="bet-edge model">G7 Override + Model</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
+        <div class="bet-line">-115 | Home FG% boost: 49% at RM vs 38% road | G7 at home</div>
+        <div class="bet-reasoning">Mitchell's home/road split is massive: 49% FG at Rocket Mortgage vs 38% on the road this series. His 3PT shooting at home (35%) vs Scotiabank (19.2% last 3 games) is a huge venue effect. In a G7 at home, expect Mitchell to attack aggressively and hit the 25+ mark. His series avg is 24.3pts — the line is essentially his average, which means home court boost pushes him over.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Scottie Barnes Over 22.5 points</div>
+        <div class="bet-line">-110 | Series avg: 25.5pts | G7 = maximum effort regardless of venue</div>
+        <div class="bet-reasoning">Barnes has scored 23+ in 4 of 6 games and averages 25.5pts this series. Even on the road, his physical play style translates — 25pts G5 at Rocket Mortgage. In a G7, expect maximum aggression. His 14-assist G6 showed he can dominate through playmaking even if shots aren't falling. The 22.5 line is very beatable for TOR's alpha in a win-or-go-home game.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">James Harden Under 7.5 turnovers</div>
+        <div class="bet-line">-115 | G3: 8, G4: 7, G5: 6, G6: 4 TOs | Trending down but G7 pressure</div>
+        <div class="bet-reasoning">Harden's TO count has been trending down (8→7→6→4) but G7 at home with maximum pressure could spike it. His 25 TOs in the last 4 games show systemic ball security issues. The 7.5 line is carefully set — in 3 of 4 games he was under 7.5. Lean UNDER because home court reduces pressure and Harden may be more careful in a G7, but this is a genuine coin flip.</div>
+        <span class="bet-edge" style="background:#ff9800;color:#000;">Coin Flip</span>
       </div>
     </div>
     </div><!-- end betContent-g7 -->
