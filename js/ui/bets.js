@@ -3,10 +3,16 @@
 // ============================================================
 
 function renderBetsPage(el) {
+  // Route to appropriate round renderer
+  if (currentPlayoffRound === 'R2') {
+    renderR2Bets(el);
+    return;
+  }
   el.innerHTML = `
   <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
-    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — ${typeof ROUND_META !== 'undefined' && ROUND_META[currentPlayoffRound] ? ROUND_META[currentPlayoffRound].label : 'Round 1'}</h2>
-    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">Model-driven picks for all 8 first-round series | G1: 8/13 (61.5%) | G2: 6/11 (54.5%) | G3: 0/3 (0%) | G4: 3/4 (75%) | G5: 5/7 (71.4%) | G6: 3/6 (50%) | Phase 42: Unified Ensemble (blended model + chaos sim aligned, SD=11.6)</p>
+    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1 (Archived)</h2>
+    <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">R1 Final Record: ML 25/42 (59.5%) | G1: 7/8 (88%) | G4: 3/4 (75%) | G5: 6/7 (86%) | G6: 1/3 (33%) | P&amp;L: -$698.47</p>
+    <div style="text-align:center;margin-bottom:16px;"><button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('pageContent'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Switch to Round 2 Bets &rarr;</button></div>
 
     <!-- BET TABS -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -26,47 +32,114 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Sat May 2 | BOS-PHI G7 7:30 PM ET | Sun May 3: DET-ORL G7, CLE-TOR G7</span>
+        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Mon May 4 | R2 G1: PHI @ NYK 8:00 PM ET | MIN @ SAS 9:30 PM ET</span>
       </div>
 
-      <!-- ===== CHAOS SIM SPOTLIGHT — UPCOMING ===== -->
+      <!-- ===== R2 OVERVIEW ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:16px;">
         <div style="text-align:center;margin-bottom:12px;">
-          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">UNIFIED ENSEMBLE — Blended Model + Chaos Sim | Phase 42</span>
+          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">ROUND 2 — Conference Semifinals | Phase 44</span>
         </div>
         <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:14px;margin-bottom:16px;">
-          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">UPCOMING WIN PROBABILITIES</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">R2 G1 WIN PROBABILITIES</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">BOS-PHI G7</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">BOS 65%</div>
-              <div style="font-size:9px;color:#666;">108-103 | G7 OVERRIDE +5 HCA</div>
+              <div style="font-size:10px;color:#888;">NYK-PHI G1 (tonight)</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">NYK 72%</div>
+              <div style="font-size:9px;color:#666;">110-101 | CONTROL | -7.5</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">DET-ORL G7</div>
-              <div style="font-size:18px;font-weight:700;color:#3dd68c;">DET 75%</div>
-              <div style="font-size:9px;color:#666;">106-94 | SEPARATION</div>
-            </div>
-            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">CLE-TOR G7</div>
-              <div style="font-size:18px;font-weight:700;color:#60a5fa;">CLE 68%</div>
-              <div style="font-size:9px;color:#666;">112-104 | COMPETITIVE</div>
+              <div style="font-size:10px;color:#888;">SAS-MIN G1 (tonight)</div>
+              <div style="font-size:18px;font-weight:700;color:#60a5fa;">SAS 65%</div>
+              <div style="font-size:9px;color:#666;">112-105 | COMPETITIVE | -6.5</div>
             </div>
           </div>
-          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">SERIES OUTCOME PROBABILITIES</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">BOS 65%</span> to win series<br/><span style="color:#666;">G7 tonight</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">DET 75%</span> to win series<br/><span style="color:#666;">G7 Sun May 3</span></div>
-            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 68%</span> to win series<br/><span style="color:#666;">G7 Sun May 3</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;">OKC-LAL G1 (TBD)</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">OKC 82%</div>
+              <div style="font-size:9px;color:#666;">115-104 | SEPARATION | -10.5</div>
+            </div>
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;">DET-CLE G1 (TBD)</div>
+              <div style="font-size:18px;font-weight:700;color:#ff9800;">DET 54%</div>
+              <div style="font-size:9px;color:#666;">106-103 | GRIND | -1.5</div>
+            </div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 43 update: NYK (4-2), MIN (4-2), OKC (4-0), SAS (4-1) advanced. LAL advanced (4-2). BOS-PHI, DET-ORL, CLE-TOR all at G7. May 1 G6 record: 2/3 (LAL ✅, DET ✅, CLE ❌).</div>
+          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">R1 FINAL RESULTS</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;font-size:10px;">
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">DET 4-3</span><br/>G7: 116-94 ✅</div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#3dd68c;">CLE 4-3</span><br/>G7: 114-102 ✅</div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#f44336;">PHI 4-3</span><br/>BOS upset ❌</div>
+            <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#4caf50;">R1 Done</span><br/>All 8 series</div>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 44: All 8 R1 series complete. R2 set: OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI. Key: J.Williams (OKC) OUT, Edwards (MIN) EXPECTED TO PLAY, Embiid (PHI) PROBABLE, Dosunmu (MIN) OUT G1.</div>
         </div>
       </div>
 
-      <!-- ===== PREVIOUS PARLAYS — MAY 1-2 (RESULTS) ===== -->
+      <!-- ===== R2 FEATURED PARLAYS — MAY 4 ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 FEATURED PARLAYS — Mon May 4</span>
+        </div>
+
+        <!-- $100 BEST BET PARLAY -->
+        <div class="parlay-card headline" style="border:1px solid #4caf50;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — R2 Home Court (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(76,175,80,0.2);color:#4caf50;font-size:16px;">~+200 | +$200</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">NYK ML vs PHI (R2 G1 at MSG) — PHI on 48hrs rest, Embiid compromised</span>
+              <span class="parlay-leg-odds">-310</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">MED — Rest + depth edge</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">SAS ML vs MIN (R2 G1 at Frost Bank) — Wemby dominant + Edwards limited + no Dosunmu</span>
+              <span class="parlay-leg-odds">-300</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">MED — Wemby advantage</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning"><strong>High-floor parlay.</strong> Both home teams have significant structural advantages: NYK has 6 days rest vs PHI's 2 (classic emotional letdown after 3-1 comeback), deeper rotation, and MSG (9.2 clutch NetRtg). SAS has Wemby (34ppg vs MIN), 9 days rest, Frost Bank Center fortress (62-20). Edwards is playing but at ~80% on a bum knee and Dosunmu is OUT. Combined implied odds ~60%. Model gives ~65%.</div>
+        </div>
+
+        <!-- $1 CHAOS TICKET -->
+        <div class="parlay-card" style="border:1px solid #ff9800;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — Road Warriors (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+2000 | +$20</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">PHI ML @ NYK — Embiid+Maxey 3-1 momentum carry-over</span>
+              <span class="parlay-leg-odds">+250</span>
+              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">MIN ML @ SAS — Edwards adrenaline game + McDaniels hot streak</span>
+              <span class="parlay-leg-odds">+240</span>
+              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">CLE ML @ DET — Mitchell 8.5 clutch + triple-initiator road steal</span>
+              <span class="parlay-leg-odds">+135</span>
+              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning"><strong>Road warrior special.</strong> All 3 underdogs have upset paths: PHI's emotional momentum from historic comeback, Edwards' adrenaline from returning, CLE's triple-initiator system. ~5% probability but $1 for $20.</div>
+        </div>
+      </div>
+
+      <!-- ===== PREVIOUS PARLAYS — MAY 1-3 (RESULTS) ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">RESULTS — May 1 | LAL ✅ (4-2), DET ✅ (3-3→G7), TOR ✅ upset (3-3→G7)</span>
+          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R1 RESULTS — G7: DET ✅ (4-3), CLE ✅ (4-3), PHI ✅ upset (4-3 vs BOS)</span>
         </div>
 
         <!-- $100 PLAY RESULT -->

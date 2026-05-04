@@ -795,7 +795,7 @@ const SERIES_DATA = [
         { player:"Ryan Dunn", outlook:"bad", projFgPct:0.30, ptsRange:[0,6], reason:"Zero offensive game confirmed (0-3 FG, 0-3 3PT, 3 TOs in G1). His ONLY value is defending SGA, and even that was ineffective (SGA scored 25 in 29min). Home court doesn't help a non-scorer. Expect similar zero offensive impact.", confidence:"high" }
       ]
     },
-    games: [{num:1,result:"W",homeScore:119,awayScore:84,winner:"OKC",notes:"35-pt blowout. SGA 25pts (5-18 FG, 0-4 3PT, 15-17 FT) in 29min — sat Q4. J.Williams 22pts (9-15 FG), 7reb, 6ast — All-NBA return. Holmgren 16pts, 7reb, 2stl, 2blk in 25min. PHX: Booker 23pts, 6reb. Brooks 18pts, 7reb — shot team out early (8 attempts while down 23). PHX 35% FG first half, 17 TOs, OKC pts off TOs 15-2. Q1: 35-20 OKC, Half: 65-44. Model picks: OKC ML ✅, OKC -14.5 ✅ (+20.5 margin), SGA O27.5 ❌ (25pts — sat in blowout)."},{num:2,result:"W",homeScore:120,awayScore:107,winner:"OKC",notes:"OKC 120-107. SGA BOUNCE-BACK: 37pts (13-25 FG, 52%), 9ast, 9-9 FT (perfect) — massive improvement from G1's 25pts on 27.8% FG. Holmgren 19pts/8reb/4blk — rim protection dominant (PHX had 1 team block). J.Williams 19pts (7-11 FG, 63.6%) in only 23min. Dort 9pts all from 3PT (3-7). OKC depth: Mitchell 14pts/5reb/5ast, Caruso 7pts/3stl, Wallace 0pts but 6reb/3stl off bench. PHX TURNOVER CATASTROPHE: 21 TO (OKC 14 steals). Green 7TO, Booker 5TO. Brooks scored 30pts (12-23, 5-9 3PT) but couldn't overcome team's 21 turnovers. O'Neale surprise: 16pts (4-5 3PT). OKC leads 2-0. Model picks: OKC ML ✅, SGA O28.5 ✅ (37pts cleared by 8.5)."},{num:3,result:"W",homeScore:121,awayScore:109,winner:"OKC",notes:"OKC 121-109 at PHX. OKC leads 3-0. SGA NUCLEAR: 42pts/8ast — best performance of the series. Holmgren solid. Brooks 33pts for PHX (consistent scorer). OKC dominated Q1 (33-28) and Q3 (25-26) to maintain control. PHX turnover issues continued. Model picked OKC — CORRECT."},{num:4,result:"W",homeScore:131,awayScore:122,winner:"OKC",notes:"OKC 131-122 at PHX. OKC SWEEPS 4-0. OKC 12-0 in R1 over 3 seasons. SGA 31pts (10-17 FG), Holmgren 24/12, Hartenstein 18/12 (7 offensive reb), Mitchell 22pts/4 3PT. OKC shot 17-34 3PT (50%), 61.4% FG in H1. J.Williams still OUT (hamstring) — OKC swept without #2 scorer. PHX fought: Booker 24, Brooks 23, Green 23, Gillespie 20 (6 3s) — 4 players 20+ but not enough. PHX 10-game playoff losing streak since 2023. OKC advances to WC semis vs LAL/HOU winner. Engine predicted OKC +3 — CORRECT winner but margin too conservative (actual +9). Manual pick OKC +12 HIGH confidence was closer."},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"OKC",homeScore:119,awayScore:84,winner:"OKC",notes:"35-pt blowout. SGA 25pts (5-18 FG, 0-4 3PT, 15-17 FT) in 29min — sat Q4. J.Williams 22pts (9-15 FG), 7reb, 6ast — All-NBA return. Holmgren 16pts, 7reb, 2stl, 2blk in 25min. PHX: Booker 23pts, 6reb. Brooks 18pts, 7reb — shot team out early (8 attempts while down 23). PHX 35% FG first half, 17 TOs, OKC pts off TOs 15-2. Q1: 35-20 OKC, Half: 65-44. Model picks: OKC ML ✅, OKC -14.5 ✅ (+20.5 margin), SGA O27.5 ❌ (25pts — sat in blowout)."},{num:2,result:"OKC",homeScore:120,awayScore:107,winner:"OKC",notes:"OKC 120-107. SGA BOUNCE-BACK: 37pts (13-25 FG, 52%), 9ast, 9-9 FT (perfect) — massive improvement from G1's 25pts on 27.8% FG. Holmgren 19pts/8reb/4blk — rim protection dominant (PHX had 1 team block). J.Williams 19pts (7-11 FG, 63.6%) in only 23min. Dort 9pts all from 3PT (3-7). OKC depth: Mitchell 14pts/5reb/5ast, Caruso 7pts/3stl, Wallace 0pts but 6reb/3stl off bench. PHX TURNOVER CATASTROPHE: 21 TO (OKC 14 steals). Green 7TO, Booker 5TO. Brooks scored 30pts (12-23, 5-9 3PT) but couldn't overcome team's 21 turnovers. O'Neale surprise: 16pts (4-5 3PT). OKC leads 2-0. Model picks: OKC ML ✅, SGA O28.5 ✅ (37pts cleared by 8.5)."},{num:3,result:"OKC",homeScore:121,awayScore:109,winner:"OKC",notes:"OKC 121-109 at PHX. OKC leads 3-0. SGA NUCLEAR: 42pts/8ast — best performance of the series. Holmgren solid. Brooks 33pts for PHX (consistent scorer). OKC dominated Q1 (33-28) and Q3 (25-26) to maintain control. PHX turnover issues continued. Model picked OKC — CORRECT."},{num:4,result:"OKC",homeScore:131,awayScore:122,winner:"OKC",notes:"OKC 131-122 at PHX. OKC SWEEPS 4-0. OKC 12-0 in R1 over 3 seasons. SGA 31pts (10-17 FG), Holmgren 24/12, Hartenstein 18/12 (7 offensive reb), Mitchell 22pts/4 3PT. OKC shot 17-34 3PT (50%), 61.4% FG in H1. J.Williams still OUT (hamstring) — OKC swept without #2 scorer. PHX fought: Booker 24, Brooks 23, Green 23, Gillespie 20 (6 3s) — 4 players 20+ but not enough. PHX 10-game playoff losing streak since 2023. OKC advances to WC semis vs LAL/HOU winner. Engine predicted OKC +3 — CORRECT winner but margin too conservative (actual +9). Manual pick OKC +12 HIGH confidence was closer."},{num:5,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
   },
   {
     id: "DEN-MIN", conf: "West", round: "R1",
@@ -1559,7 +1559,7 @@ const SERIES_DATA = [
         { player:"Robert Williams", outlook:"neutral", projFgPct:0.50, ptsRange:[6,12], reason:"Efficient off bench (71.4% G1). If Clingan struggles again, Williams may see 18-20min. His finishing and passing are real skills. Home court helps bench players find rhythm.", confidence:"low" }
       ]
     },
-    games: [{num:1,result:"W",homeScore:111,awayScore:98,winner:"SAS",notes:"Wemby's playoff debut — 35pts (franchise record, surpassing Duncan's 32 in 1998), 5reb, 2blk, 5-6 3PT. 21 first-half pts = NBA record for most in opening half of playoff debut (since 1997 PBP era). Castle 17pts + Fox 17pts (combined 15ast). Vassell hit two straight 3s in Q3 to put game away (72-61). POR: Avdija 30pts/10reb (All-Star level), Henderson 18pts (breakout). Clingan blocked multiple times — Kornet AND Vassell blocked him on SAME possession. SAS led by 16 in 1H, POR cut to 59-57 with 8-0 Q3 run, but SAS clamped down defensively and pulled away. Sellout crowd at Frost Bank Center (Duncan + Robinson courtside). Model picks: SAS ML ✅ (HIGH confidence), SAS -10.5 ✅ (+2.5 margin cover), Under 218.5 ✅ (209 total)."},{num:2,result:"L",homeScore:103,awayScore:106,winner:"POR",notes:"UPSET. POR 106-103. Wembanyama CONCUSSION — fell face-first at 8:57 Q2 after Holiday foul, head hit floor, entered concussion protocol, OUT for remainder. Only 5pts/4reb/1blk in 12min. SAS collapsed without him. Scoot Henderson BREAKOUT: 31pts (11-17 FG, 5-9 3PT, 64.7%) + 10reb — youth breakout (age 21). Holiday bounce-back: 19pts/9ast/5stl. SAS shot 7-24 3PT (29%). Vassell 0-5 3PT. Series tied 1-1. Model picks: SAS ML ✗, SAS -11.5 ✗, Wemby Over 25.5 ✗ (injury).",boxScores:{home:[{name:"J. Champagnie",min:26,pts:9,reb:3,ast:0,stl:1,blk:1,fg:"3-4",threes:"2-3",ft:"1-2",to:0},{name:"V. Wembanyama",min:12,pts:5,reb:4,ast:1,stl:0,blk:1,fg:"1-3",threes:"0-1",ft:"3-4",to:2},{name:"D. Fox",min:34,pts:17,reb:5,ast:6,stl:1,blk:1,fg:"6-16",threes:"1-3",ft:"4-5",to:3},{name:"D. Vassell",min:34,pts:16,reb:12,ast:2,stl:1,blk:3,fg:"6-16",threes:"0-5",ft:"4-5",to:1},{name:"S. Castle",min:38,pts:18,reb:5,ast:8,stl:3,blk:1,fg:"7-20",threes:"2-6",ft:"2-5",to:1},{name:"H. Barnes",min:15,pts:4,reb:1,ast:0,stl:0,blk:0,fg:"1-3",threes:"0-1",ft:"2-2",to:0},{name:"K. Johnson",min:18,pts:7,reb:4,ast:3,stl:1,blk:1,fg:"3-7",threes:"1-3",ft:"0-0",to:2},{name:"C. Bryant",min:12,pts:7,reb:2,ast:3,stl:2,blk:1,fg:"3-5",threes:"1-2",ft:"0-0",to:0},{name:"D. Harper",min:23,pts:10,reb:2,ast:4,stl:0,blk:2,fg:"4-7",threes:"0-0",ft:"2-2",to:0}],away:[{name:"T. Camara",min:35,pts:10,reb:8,ast:1,stl:2,blk:1,fg:"3-7",threes:"2-5",ft:"2-2",to:0},{name:"D. Avdija",min:30,pts:14,reb:5,ast:3,stl:0,blk:1,fg:"5-13",threes:"1-2",ft:"3-5",to:4},{name:"D. Clingan",min:24,pts:9,reb:1,ast:1,stl:1,blk:1,fg:"4-12",threes:"1-6",ft:"0-0",to:1},{name:"J. Holiday",min:34,pts:19,reb:5,ast:9,stl:5,blk:1,fg:"6-17",threes:"2-6",ft:"2-2",to:2},{name:"S. Henderson",min:38,pts:31,reb:10,ast:2,stl:1,blk:1,fg:"11-17",threes:"5-9",ft:"4-6",to:1},{name:"J. Grant",min:20,pts:5,reb:1,ast:0,stl:0,blk:1,fg:"1-9",threes:"0-2",ft:"3-3",to:0},{name:"S. Sharpe",min:23,pts:11,reb:9,ast:5,stl:0,blk:1,fg:"5-6",threes:"1-2",ft:"0-0",to:3},{name:"M. Thybulle",min:13,pts:9,reb:3,ast:0,stl:1,blk:1,fg:"3-5",threes:"1-3",ft:"2-2",to:1}]}},{num:3,result:"SAS",homeScore:108,awayScore:120,winner:"SAS",notes:"SAS 120-108. SAS leads 2-1. SAS WON WITHOUT WEMBY (concussion, watching from bench). Castle 33pts career-high led comeback from 15 down. Harper 27/10 double-double. Kornet 14/10 (Wemby replacement). POR led 82-67 Q3 but SAS went 21-5 run. Holiday 29pts for POR. POR scored 65 first half but only 43 second half — youth fatigue. Avdija chipped tooth from Fox elbow. Model picked POR +7 — WRONG by 19pts. SAS depth without Wemby was massively underrated."},{num:4,result:"SAS",homeScore:114,awayScore:93,winner:"SAS",notes:"SAS 114-93 at Moda Center. SAS leads 3-1. Wemby DOMINANT: 27pts/12reb/4stl/7blk (9-17 FG, 8-8 FT) — monster two-way game. Fox 28pts/7ast (11-17 FG). Castle 16pts. SAS dominated 2H 73-35. POR: Avdija 26pts/7reb but FOULED OUT (6pf, -16). Holiday 20pts but 6 TOs. Clingan limited to 14min. SAS shot 49%/42% 3PT with 10 blocks. Quarter scores: SAS 23-18-33-40, POR 25-33-16-19."},{num:5,result:"SAS",homeScore:114,awayScore:95,winner:"SAS",notes:"SAS 114-95. SAS WINS SERIES 4-1. Wemby 17/14reb/6blk (first player since Ewing 1994 with consecutive double-doubles + 6blk in playoffs). Fox 21pts/9ast (13pts in Q4 closer). Champagnie 19pts (5-7 3PT). Harper 17pts. Castle 9pts first half (4-5 FG). SAS led 10 early Q1, 20 early Q2, up 28 late Q2 — never trailed. SAS shot 40% 3PT. POR: Avdija 22pts (1-6 3PT), Henderson 5pts. POR shot 23% from 3. MODEL CORRECT: predicted SAS 116-99. Off by just 2pts on SAS total, 4pts on POR total. SAS advances to Western Conference semifinals for first time since 2017."},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"SAS",homeScore:111,awayScore:98,winner:"SAS",notes:"Wemby's playoff debut — 35pts (franchise record, surpassing Duncan's 32 in 1998), 5reb, 2blk, 5-6 3PT. 21 first-half pts = NBA record for most in opening half of playoff debut (since 1997 PBP era). Castle 17pts + Fox 17pts (combined 15ast). Vassell hit two straight 3s in Q3 to put game away (72-61). POR: Avdija 30pts/10reb (All-Star level), Henderson 18pts (breakout). Clingan blocked multiple times — Kornet AND Vassell blocked him on SAME possession. SAS led by 16 in 1H, POR cut to 59-57 with 8-0 Q3 run, but SAS clamped down defensively and pulled away. Sellout crowd at Frost Bank Center (Duncan + Robinson courtside). Model picks: SAS ML ✅ (HIGH confidence), SAS -10.5 ✅ (+2.5 margin cover), Under 218.5 ✅ (209 total)."},{num:2,result:"POR",homeScore:103,awayScore:106,winner:"POR",notes:"UPSET. POR 106-103. Wembanyama CONCUSSION — fell face-first at 8:57 Q2 after Holiday foul, head hit floor, entered concussion protocol, OUT for remainder. Only 5pts/4reb/1blk in 12min. SAS collapsed without him. Scoot Henderson BREAKOUT: 31pts (11-17 FG, 5-9 3PT, 64.7%) + 10reb — youth breakout (age 21). Holiday bounce-back: 19pts/9ast/5stl. SAS shot 7-24 3PT (29%). Vassell 0-5 3PT. Series tied 1-1. Model picks: SAS ML ✗, SAS -11.5 ✗, Wemby Over 25.5 ✗ (injury).",boxScores:{home:[{name:"J. Champagnie",min:26,pts:9,reb:3,ast:0,stl:1,blk:1,fg:"3-4",threes:"2-3",ft:"1-2",to:0},{name:"V. Wembanyama",min:12,pts:5,reb:4,ast:1,stl:0,blk:1,fg:"1-3",threes:"0-1",ft:"3-4",to:2},{name:"D. Fox",min:34,pts:17,reb:5,ast:6,stl:1,blk:1,fg:"6-16",threes:"1-3",ft:"4-5",to:3},{name:"D. Vassell",min:34,pts:16,reb:12,ast:2,stl:1,blk:3,fg:"6-16",threes:"0-5",ft:"4-5",to:1},{name:"S. Castle",min:38,pts:18,reb:5,ast:8,stl:3,blk:1,fg:"7-20",threes:"2-6",ft:"2-5",to:1},{name:"H. Barnes",min:15,pts:4,reb:1,ast:0,stl:0,blk:0,fg:"1-3",threes:"0-1",ft:"2-2",to:0},{name:"K. Johnson",min:18,pts:7,reb:4,ast:3,stl:1,blk:1,fg:"3-7",threes:"1-3",ft:"0-0",to:2},{name:"C. Bryant",min:12,pts:7,reb:2,ast:3,stl:2,blk:1,fg:"3-5",threes:"1-2",ft:"0-0",to:0},{name:"D. Harper",min:23,pts:10,reb:2,ast:4,stl:0,blk:2,fg:"4-7",threes:"0-0",ft:"2-2",to:0}],away:[{name:"T. Camara",min:35,pts:10,reb:8,ast:1,stl:2,blk:1,fg:"3-7",threes:"2-5",ft:"2-2",to:0},{name:"D. Avdija",min:30,pts:14,reb:5,ast:3,stl:0,blk:1,fg:"5-13",threes:"1-2",ft:"3-5",to:4},{name:"D. Clingan",min:24,pts:9,reb:1,ast:1,stl:1,blk:1,fg:"4-12",threes:"1-6",ft:"0-0",to:1},{name:"J. Holiday",min:34,pts:19,reb:5,ast:9,stl:5,blk:1,fg:"6-17",threes:"2-6",ft:"2-2",to:2},{name:"S. Henderson",min:38,pts:31,reb:10,ast:2,stl:1,blk:1,fg:"11-17",threes:"5-9",ft:"4-6",to:1},{name:"J. Grant",min:20,pts:5,reb:1,ast:0,stl:0,blk:1,fg:"1-9",threes:"0-2",ft:"3-3",to:0},{name:"S. Sharpe",min:23,pts:11,reb:9,ast:5,stl:0,blk:1,fg:"5-6",threes:"1-2",ft:"0-0",to:3},{name:"M. Thybulle",min:13,pts:9,reb:3,ast:0,stl:1,blk:1,fg:"3-5",threes:"1-3",ft:"2-2",to:1}]}},{num:3,result:"SAS",homeScore:108,awayScore:120,winner:"SAS",notes:"SAS 120-108. SAS leads 2-1. SAS WON WITHOUT WEMBY (concussion, watching from bench). Castle 33pts career-high led comeback from 15 down. Harper 27/10 double-double. Kornet 14/10 (Wemby replacement). POR led 82-67 Q3 but SAS went 21-5 run. Holiday 29pts for POR. POR scored 65 first half but only 43 second half — youth fatigue. Avdija chipped tooth from Fox elbow. Model picked POR +7 — WRONG by 19pts. SAS depth without Wemby was massively underrated."},{num:4,result:"SAS",homeScore:114,awayScore:93,winner:"SAS",notes:"SAS 114-93 at Moda Center. SAS leads 3-1. Wemby DOMINANT: 27pts/12reb/4stl/7blk (9-17 FG, 8-8 FT) — monster two-way game. Fox 28pts/7ast (11-17 FG). Castle 16pts. SAS dominated 2H 73-35. POR: Avdija 26pts/7reb but FOULED OUT (6pf, -16). Holiday 20pts but 6 TOs. Clingan limited to 14min. SAS shot 49%/42% 3PT with 10 blocks. Quarter scores: SAS 23-18-33-40, POR 25-33-16-19."},{num:5,result:"SAS",homeScore:114,awayScore:95,winner:"SAS",notes:"SAS 114-95. SAS WINS SERIES 4-1. Wemby 17/14reb/6blk (first player since Ewing 1994 with consecutive double-doubles + 6blk in playoffs). Fox 21pts/9ast (13pts in Q4 closer). Champagnie 19pts (5-7 3PT). Harper 17pts. Castle 9pts first half (4-5 FG). SAS led 10 early Q1, 20 early Q2, up 28 late Q2 — never trailed. SAS shot 40% 3PT. POR: Avdija 22pts (1-6 3PT), Henderson 5pts. POR shot 23% from 3. MODEL CORRECT: predicted SAS 116-99. Off by just 2pts on SAS total, 4pts on POR total. SAS advances to Western Conference semifinals for first time since 2017."},{num:6,result:null,homeScore:null,awayScore:null,winner:null,notes:""},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
   },
   {
     id: "DET-ORL", conf: "East", round: "R1",
@@ -1961,7 +1961,7 @@ const SERIES_DATA = [
         { player:"Goga Bitadze", outlook:"neutral", projFgPct:0.50, ptsRange:[4,10], reason:"G2: 3pts/5reb/2stl/2blk in 21min — got extended run when WCJ fouled out. If WCJ enters foul trouble again (likely given DET's scheme), Bitadze becomes critical. D-LEBRON 1.812 provides defensive value. 2024 playoff experience (started vs CLE). Expect 4-8pts with rim protection.", confidence:"low" }
       ]
     },
-    games: [{num:1,result:"L",homeScore:101,awayScore:112,winner:"ORL",notes:"UPSET — #8 ORL wins at #1 DET. Cade 39pts career-high (13-27 FG, 3-8 3PT) but only Harris (17) joined him in double figures. DET bench 20pts on 4-16. Duren shut down: 8pts, 7reb — WCJ dominated matchup. ORL led wire-to-wire, 18-5 start. Banchero 23pts (8-15), 9reb, 4ast. Wagner 19pts (11 in Q4 closer). Bane 17pts, Suggs 16/5/4/3stl/1blk, WCJ 17/6/5. Five ORL players in double figures. DET 11 straight home playoff losses (0-8 at LCA since 2008). Closing lineup (Cade/Jenkins/Huerter/Stewart/Duren) had ZERO minutes together all season. Model picks: DET ML ❌ (HIGH confidence — WRONG), DET -8.5 ❌ (ORL won by 11)."},{num:2,result:"W",homeScore:98,awayScore:83,winner:"DET",notes:"DET 98-83. BOUNCE-BACK BLOWOUT. Cade distribution mode: 27pts (11-19 FG, 57.9%), 11ast, 6reb — pivoted from scoring (39pts G1) to playmaking. 6 DET players in double figures (Harris 16/11reb, Duren 11/9reb/4ast, Ausar 11/8reb, Robinson 10/3-8 3PT, Stewart 10/4-4 FG 100%). DET dominated Q3 38-16 — turned tie game into rout. ORL shot 33% (season low): Banchero 18/6reb/8ast (7-17), Wagner 12 (4-11, 0-2 3PT), Bane 12 (2-11 FG, 18.2%), WCJ 3pts FOULED OUT (1-6, 6PF, 24min). Suggs lone bright spot: 19pts (7-18, 3-10 3PT). DET ENDED NBA's LONGEST HOME PLAYOFF LOSING STREAK (11 straight). Bickerstaff adjusted: abandoned panic lineups, got Duren involved (4ast shows passing out of doubles). Model picks: DET ML ✅ (LOW confidence), DET -8.5 ✅ (won by 15)."},{num:3,result:"L",homeScore:105,awayScore:113,winner:"ORL",notes:"ORL 113-105. ORL leads 2-1. Banchero 25/12/9 near triple-double. A.Thompson 17/8/5blk for DET. Wagner 17/4stl. DET (home in data) lost at ORL's Kia Center. Model projected OVERTIME but ORL won by 8. First-home-game boost helped ORL's first half. Cade couldn't overcome ORL's balanced attack at home."},{num:4,result:"L",homeScore:88,awayScore:94,winner:"ORL",notes:"ORL 94-88. ORL leads 3-1. DEFENSIVE GRIND — ORL shot 32.6% FG but won via turnover differential (12 TO vs DET 20 TO). Bane 22pts, banked 3 with 1:16 left sealed it. Wagner 19pts but left Q3 with calf soreness (injury concern for G5). Banchero 18pts on 4-18 FG (22.2%). Suggs 1-13 FG, 1-11 3PT — historic bad shooting but ORL still won. Cain (undrafted) made key plays — dunk over Duren, putback for lead. Cade 25pts but 8 TOs (tied LeBron's unwanted playoff record). Harris 20pts. DET 20 TOs destroyed them — Harris: 'We needed to win a possession game.' ORL 8-1 home playoffs last 3 years. DET one loss from 7th #1 seed ever eliminated by #8. Model picked ORL — CORRECT."},{num:5,result:"W",homeScore:116,awayScore:109,winner:"DET",notes:"DET 116-109. ORL leads 3-2. CADE vs PAOLO DUEL: Both scored 45pts — Cunningham 45pts (highest-scoring G5 in DET history), Banchero 45/9reb/7ast. Wagner DNP (calf injury). DET dominated Q1 38-26 and never trailed. ORL cut to 3 in Q4 but DET responded. Q scores: DET 38-28-23-27, ORL 26-34-19-30. Model picked DET medium — CORRECT."},{num:6,result:"W",homeScore:93,awayScore:79,winner:"DET",notes:"DET 93-79 at Kia Center. Series TIED 3-3. DET FORCES GAME 7 WITH DOMINANT ROAD WIN. Cunningham 32pts (10-23 FG, 2-4 3PT, 10-12 FT)/10reb/3ast/4stl — carried DET offensively. Harris 22pts (7-20, 2-7 3PT, 6-9 FT)/10reb — double-double in must-win. Ausar Thompson 4pts but ELITE defense (10reb/6ast/1stl/4blk). Robinson 14pts (5-11, 4-9 3PT) provided spacing. Duren 8/9reb (5 OREB). ORL COLLAPSED: Banchero 4-20 FG (20%), 0-9 3PT = 17pts (9-12 FT salvaged scoring). Worst shooting game of his career. Bane 7-18 (17pts). Suggs 1-10 FG (7pts, 4 FT). Wagner still OUT (calf). ORL shot 27-78 FG (34.6%) as a team. DET's defense suffocated ORL — held them to 79pts (lowest of series). Q3+Q4 dominance as DET pulled away. Model picked DET medium — CORRECT winner, projected +6, actual +14."},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"ORL",homeScore:101,awayScore:112,winner:"ORL",notes:"UPSET — #8 ORL wins at #1 DET. Cade 39pts career-high (13-27 FG, 3-8 3PT) but only Harris (17) joined him in double figures. DET bench 20pts on 4-16. Duren shut down: 8pts, 7reb — WCJ dominated matchup. ORL led wire-to-wire, 18-5 start. Banchero 23pts (8-15), 9reb, 4ast. Wagner 19pts (11 in Q4 closer). Bane 17pts, Suggs 16/5/4/3stl/1blk, WCJ 17/6/5. Five ORL players in double figures. DET 11 straight home playoff losses (0-8 at LCA since 2008). Closing lineup (Cade/Jenkins/Huerter/Stewart/Duren) had ZERO minutes together all season. Model picks: DET ML ❌ (HIGH confidence — WRONG), DET -8.5 ❌ (ORL won by 11)."},{num:2,result:"DET",homeScore:98,awayScore:83,winner:"DET",notes:"DET 98-83. BOUNCE-BACK BLOWOUT. Cade distribution mode: 27pts (11-19 FG, 57.9%), 11ast, 6reb — pivoted from scoring (39pts G1) to playmaking. 6 DET players in double figures (Harris 16/11reb, Duren 11/9reb/4ast, Ausar 11/8reb, Robinson 10/3-8 3PT, Stewart 10/4-4 FG 100%). DET dominated Q3 38-16 — turned tie game into rout. ORL shot 33% (season low): Banchero 18/6reb/8ast (7-17), Wagner 12 (4-11, 0-2 3PT), Bane 12 (2-11 FG, 18.2%), WCJ 3pts FOULED OUT (1-6, 6PF, 24min). Suggs lone bright spot: 19pts (7-18, 3-10 3PT). DET ENDED NBA's LONGEST HOME PLAYOFF LOSING STREAK (11 straight). Bickerstaff adjusted: abandoned panic lineups, got Duren involved (4ast shows passing out of doubles). Model picks: DET ML ✅ (LOW confidence), DET -8.5 ✅ (won by 15)."},{num:3,result:"ORL",homeScore:105,awayScore:113,winner:"ORL",notes:"ORL 113-105. ORL leads 2-1. Banchero 25/12/9 near triple-double. A.Thompson 17/8/5blk for DET. Wagner 17/4stl. DET (home in data) lost at ORL's Kia Center. Model projected OVERTIME but ORL won by 8. First-home-game boost helped ORL's first half. Cade couldn't overcome ORL's balanced attack at home."},{num:4,result:"ORL",homeScore:88,awayScore:94,winner:"ORL",notes:"ORL 94-88. ORL leads 3-1. DEFENSIVE GRIND — ORL shot 32.6% FG but won via turnover differential (12 TO vs DET 20 TO). Bane 22pts, banked 3 with 1:16 left sealed it. Wagner 19pts but left Q3 with calf soreness (injury concern for G5). Banchero 18pts on 4-18 FG (22.2%). Suggs 1-13 FG, 1-11 3PT — historic bad shooting but ORL still won. Cain (undrafted) made key plays — dunk over Duren, putback for lead. Cade 25pts but 8 TOs (tied LeBron's unwanted playoff record). Harris 20pts. DET 20 TOs destroyed them — Harris: 'We needed to win a possession game.' ORL 8-1 home playoffs last 3 years. DET one loss from 7th #1 seed ever eliminated by #8. Model picked ORL — CORRECT."},{num:5,result:"DET",homeScore:116,awayScore:109,winner:"DET",notes:"DET 116-109. ORL leads 3-2. CADE vs PAOLO DUEL: Both scored 45pts — Cunningham 45pts (highest-scoring G5 in DET history), Banchero 45/9reb/7ast. Wagner DNP (calf injury). DET dominated Q1 38-26 and never trailed. ORL cut to 3 in Q4 but DET responded. Q scores: DET 38-28-23-27, ORL 26-34-19-30. Model picked DET medium — CORRECT."},{num:6,result:"DET",homeScore:93,awayScore:79,winner:"DET",notes:"DET 93-79 at Kia Center. Series TIED 3-3. DET FORCES GAME 7 WITH DOMINANT ROAD WIN. Cunningham 32pts (10-23 FG, 2-4 3PT, 10-12 FT)/10reb/3ast/4stl — carried DET offensively. Harris 22pts (7-20, 2-7 3PT, 6-9 FT)/10reb — double-double in must-win. Ausar Thompson 4pts but ELITE defense (10reb/6ast/1stl/4blk). Robinson 14pts (5-11, 4-9 3PT) provided spacing. Duren 8/9reb (5 OREB). ORL COLLAPSED: Banchero 4-20 FG (20%), 0-9 3PT = 17pts (9-12 FT salvaged scoring). Worst shooting game of his career. Bane 7-18 (17pts). Suggs 1-10 FG (7pts, 4 FT). Wagner still OUT (calf). ORL shot 27-78 FG (34.6%) as a team. DET's defense suffocated ORL — held them to 79pts (lowest of series). Q3+Q4 dominance as DET pulled away. Model picked DET medium — CORRECT winner, projected +6, actual +14."},{num:7,result:"DET",homeScore:116,awayScore:94,winner:"DET",notes:"DET 116-94. DET WINS SERIES 4-3 — HISTORIC 3-1 COMEBACK. Cade 32/1/12 (10-18 FG, 4-6 3PT, 8-10 FT, +29) — triple-double-adjacent masterclass, 12 assists showed evolution from scorer to facilitator. Harris 30/9 (11-18, 5-7 3PT, +22) — breakout game. Duren 15/15 (5-9, +27) — dominated glass with 6 OREB. DET Q2 explosion: 40pts (vs ORL 27). DET defense suffocated ORL: 31-75 FG (41%), 10-30 3PT (33%). Banchero heroic in defeat: 38/9/6 (14-25) but Suggs 2-9 (-28) and rest of ORL collapsed. Wagner limited (10min, calf). DET momentum: won 3 straight at home to complete comeback. Model predicted DET ML — CORRECT.",prediction:{homeWin:true,homeScore:112,awayScore:105,margin:7,confidence:"HIGH",character:"FORTRESS",reasoning:"DET at home in G7 after winning 3 straight. Momentum + home crowd + Cade peaking.",xFactor:"Cade Cunningham",moneyline:"DET -200"},boxScores:{home:[{name:"Harris",min:36,pts:30,reb:9,ast:2,fg:"11-18",threes:"5-7",ft:"3-3",to:1,pm:22},{name:"Robinson",min:36,pts:10,reb:6,ast:3,fg:"4-13",threes:"2-10",ft:"0-0",to:1,pm:15},{name:"Duren",min:37,pts:15,reb:15,ast:3,fg:"5-9",threes:"0-0",ft:"5-6",to:2,pm:27},{name:"Cunningham",min:39,pts:32,reb:1,ast:12,fg:"10-18",threes:"4-6",ft:"8-10",to:4,pm:29},{name:"A.Thompson",min:34,pts:8,reb:4,ast:4,fg:"4-5",threes:"0-0",ft:"0-1",to:1,pm:12},{name:"Green",min:14,pts:3,reb:2,ast:0,fg:"1-5",threes:"1-5",ft:"0-0",to:0,pm:3},{name:"Stewart",min:8,pts:0,reb:1,ast:0,fg:"0-2",threes:"0-0",ft:"0-0",to:0,pm:0}],away:[{name:"Cain",min:24,pts:5,reb:4,ast:1,fg:"2-6",threes:"1-3",ft:"0-1",to:0,pm:-16},{name:"Banchero",min:42,pts:38,reb:9,ast:6,fg:"14-25",threes:"4-7",ft:"6-8",to:5,pm:-18},{name:"Carter Jr",min:38,pts:13,reb:5,ast:2,fg:"3-7",threes:"1-4",ft:"6-8",to:1,pm:-27},{name:"Bane",min:38,pts:16,reb:3,ast:3,fg:"5-10",threes:"3-5",ft:"3-5",to:2,pm:-8},{name:"Suggs",min:36,pts:6,reb:4,ast:4,fg:"2-9",threes:"0-4",ft:"2-2",to:3,pm:-28},{name:"Wagner",min:10,pts:5,reb:2,ast:0,fg:"1-3",threes:"1-1",ft:"2-2",to:1,pm:5},{name:"Black",min:33,pts:11,reb:5,ast:1,fg:"4-12",threes:"0-4",ft:"3-4",to:0,pm:-11}]}}]
   },
   {
     id: "BOS-PHI", conf: "East", round: "R1",
@@ -2434,7 +2434,7 @@ const SERIES_DATA = [
         { player:"Adem Bona", outlook:"neutral", projFgPct:0.48, ptsRange:[2,6], reason:"Backup center averaging 2.5 PPG. Provides rim protection and energy. Home game could mean slightly more confidence.", confidence:"low" }
       ]
     },
-    games: [{num:1,result:"W",homeScore:123,awayScore:91,winner:"BOS",notes:"32-pt blowout. Tatum 25/11/7 in return from Achilles. Brown 26 pts (7-9 Q3). 6 BOS players scored 10+. BOS shot 50% FG, 11 3PM. PHI 4-23 from 3 (17.4%, 2nd worst franchise playoff history). Maxey 20 pts on 8-20, White's D stifled him. Wire-to-wire. Model projected BOS 112-98 (margin 14); actual margin 32. Model picks: BOS ML ✅, BOS -12.5 ✅ (+19.5 margin), Under 211.5 ❌ (actual 214), Brown O25.5 ✅ (26), Maxey O26.5 ❌ (20)."},{num:2,result:"L",homeScore:97,awayScore:111,winner:"PHI",notes:"PHI upset at BOS. Edgecombe BREAKOUT: 30pts (12-20 FG, 6-10 3PT) — model projected 13.5. PHI shot 48% FG, 49% 3PT (team correlation). Maxey 29pts (11-28). PG 19pts (7-13). Brown 36pts heroic but BOS shot 39% FG, 26% 3PT. Tatum 19pts (8-19, 5PF foul trouble). Series tied 1-1. Model projected BOS 109-103; actual PHI 111-97. Model pick BOS ❌.",boxScores:{home:[{name:"Jaylen Brown",min:38,pts:36,reb:7,ast:4,fgm:11,fga:24,tpm:5,tpa:12,ftm:9,fta:12,stl:2,blk:0,to:3},{name:"Jayson Tatum",min:39,pts:19,reb:14,ast:9,fgm:8,fga:19,tpm:2,tpa:8,ftm:1,fta:2,stl:1,blk:0,to:3},{name:"Derrick White",min:39,pts:8,reb:2,ast:3,fgm:3,fga:12,tpm:2,tpa:10,ftm:0,fta:0,stl:0,blk:2,to:3},{name:"Payton Pritchard",min:30,pts:11,reb:2,ast:4,fgm:4,fga:11,tpm:2,tpa:7,ftm:1,fta:1,stl:0,blk:0,to:1},{name:"Sam Hauser",min:24,pts:6,reb:3,ast:1,fgm:2,fga:6,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Neemias Queta",min:18,pts:5,reb:7,ast:0,fgm:2,fga:3,tpm:0,tpa:0,ftm:1,fta:2,stl:0,blk:2,to:1},{name:"Nikola Vucevic",min:14,pts:4,reb:4,ast:2,fgm:2,fga:5,tpm:0,tpa:1,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Baylor Scheierman",min:12,pts:2,reb:1,ast:0,fgm:1,fga:3,tpm:0,tpa:2,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Jordan Walsh",min:8,pts:2,reb:2,ast:1,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:0,to:0}],away:[{name:"VJ Edgecombe",min:35,pts:30,reb:10,ast:2,fgm:12,fga:20,tpm:6,tpa:10,ftm:0,fta:0,stl:2,blk:0,to:2},{name:"Tyrese Maxey",min:40,pts:29,reb:4,ast:9,fgm:11,fga:28,tpm:5,tpa:12,ftm:2,fta:2,stl:2,blk:0,to:1},{name:"Paul George",min:34,pts:19,reb:6,ast:4,fgm:7,fga:13,tpm:3,tpa:5,ftm:2,fta:2,stl:1,blk:0,to:1},{name:"Kelly Oubre Jr.",min:30,pts:14,reb:5,ast:1,fgm:6,fga:12,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Andre Drummond",min:20,pts:6,reb:9,ast:1,fgm:3,fga:5,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Quentin Grimes",min:18,pts:8,reb:2,ast:2,fgm:3,fga:6,tpm:2,tpa:3,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Dominick Barlow",min:10,pts:3,reb:3,ast:0,fgm:1,fga:3,tpm:0,tpa:1,ftm:1,fta:2,stl:0,blk:0,to:0},{name:"Adem Bona",min:8,pts:2,reb:3,ast:0,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:0}]}},{num:3,result:"BOS",homeScore:100,awayScore:108,winner:"BOS",notes:"BOS 108-100. BOS leads 2-1. Tatum 25pts (5-9 3PT) hit dagger 3. Brown 25pts, 8 straight in Q4. Pritchard 15pts. BOS 20-47 3PT (42.6%) — massive regression UP from 26% G2, exactly as model predicted. Maxey 31pts for PHI. Edgecombe 10pts, 0-7 3PT (Mazzulla counter-schemed his breakout). Embiid still OUT. PHI first home game but BOS talent gap too wide. Model picked BOS +6 — CORRECT, actual BOS +8 (2pt margin miss)."},{num:4,result:"BOS",homeScore:128,awayScore:96,winner:"BOS",notes:"BOS 128-96 at Wells Fargo Center. BOS leads 3-1. Tatum 30pts/7reb/11ast (5-10 3PT, 9-9 FT) — complete masterclass. Pritchard 32pts off bench (12-21 FG, 6-12 3PT) — historic bench performance. Brown 20pts. BOS FRANCHISE RECORD 24 made 3s (24-53, 45.3%). PHI: Embiid 26pts/10reb/6ast, Maxey 22pts, George 16pts. PHI committed 25 turnovers — completely fell apart. 32-point blowout."},{num:5,result:"PHI",homeScore:97,awayScore:113,winner:"PHI",notes:"PHI 113-97. BOS leads 3-2. EMBIID ERUPTION: 33pts (2pts Q1 on 1-6, then 13/10/8 in Q2-Q4) + 8ast. Maxey 25/10reb/5ast (10-18 FG, 43min). George 16/9reb/7ast — all-around. BOS: Tatum 24/16reb/3stl, Queta 8/14reb. BOS led by 1 entering Q4 — George 3-pointer gave PHI first lead since Q1. BOS COLLAPSED: 10pts in Q4 on 3-22 FG (1-14 from 2PT). Hauser fouled Grimes on 3PT attempt, starting PHI's 19-5 game-ending run. PHI outscored BOS 63-40 in 2nd half. MODEL WRONG: predicted BOS 118-101 (HIGH confidence). Embiid's elimination-game dominance was severely underweighted — model treated him as diminished post-appendectomy but he delivered a franchise-saving performance. Series shifts to PHI for G6."},{num:6,result:"PHI",homeScore:93,awayScore:106,winner:"PHI",notes:"PHI 106-93 at Wells Fargo Center. Series TIED 3-3. Q scores: BOS 23-26-14-30, PHI 20-38-24-24. BOS shot 42% FG (36-86), 29% 3PT (12-41), 56% FT (9-16), 46reb, 18ast, 13TO. PHI shot 44% FG (39-89), 33% 3PT (11-33), 89% FT (17-19), 48reb, 22ast, 10TO. PHI: Maxey 30pts (11-22 FG, 3-5 3PT, 5-5 FT, 2reb, 5ast, 0TO, +15), George 23pts (8-17 FG, 5-9 3PT, 2-2 FT, 4reb, 3ast, 4TO, +11), Embiid 19pts (6-18 FG, 1-5 3PT, 6-7 FT, 10reb, 8ast, 1TO, +7), Oubre 14pts (6-11, 9reb, 2stl, 2blk, +23), Edgecombe 14pts (5-11, 1-6 3PT, 3-3 FT, 8reb, 2blk, +18), Drummond 2pts/7reb off bench. BOS: Brown 18pts (7-17 FG, 2-6 3PT, 2-6 FT, 5TO, -24), Tatum 17pts (6-13, 2-6 3PT, 3-5 FT, 11reb, 3ast, 3TO, -11), Pritchard 14pts (6-16, 1-8 3PT, -6), White 11pts (3-8, 3-6 3PT, 3stl, -25), Garza 9pts (4-5 FG, +6). Model predicted BOS 110-105 (MEDIUM confidence) — WRONG. PHI won behind Maxey's 30pts and George's 5 made 3s. BOS 3PT shooting collapsed again (29% after 45% G4). Series goes to G7 at TD Garden."},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"BOS",homeScore:123,awayScore:91,winner:"BOS",notes:"32-pt blowout. Tatum 25/11/7 in return from Achilles. Brown 26 pts (7-9 Q3). 6 BOS players scored 10+. BOS shot 50% FG, 11 3PM. PHI 4-23 from 3 (17.4%, 2nd worst franchise playoff history). Maxey 20 pts on 8-20, White's D stifled him. Wire-to-wire. Model projected BOS 112-98 (margin 14); actual margin 32. Model picks: BOS ML ✅, BOS -12.5 ✅ (+19.5 margin), Under 211.5 ❌ (actual 214), Brown O25.5 ✅ (26), Maxey O26.5 ❌ (20)."},{num:2,result:"PHI",homeScore:97,awayScore:111,winner:"PHI",notes:"PHI upset at BOS. Edgecombe BREAKOUT: 30pts (12-20 FG, 6-10 3PT) — model projected 13.5. PHI shot 48% FG, 49% 3PT (team correlation). Maxey 29pts (11-28). PG 19pts (7-13). Brown 36pts heroic but BOS shot 39% FG, 26% 3PT. Tatum 19pts (8-19, 5PF foul trouble). Series tied 1-1. Model projected BOS 109-103; actual PHI 111-97. Model pick BOS ❌.",boxScores:{home:[{name:"Jaylen Brown",min:38,pts:36,reb:7,ast:4,fgm:11,fga:24,tpm:5,tpa:12,ftm:9,fta:12,stl:2,blk:0,to:3},{name:"Jayson Tatum",min:39,pts:19,reb:14,ast:9,fgm:8,fga:19,tpm:2,tpa:8,ftm:1,fta:2,stl:1,blk:0,to:3},{name:"Derrick White",min:39,pts:8,reb:2,ast:3,fgm:3,fga:12,tpm:2,tpa:10,ftm:0,fta:0,stl:0,blk:2,to:3},{name:"Payton Pritchard",min:30,pts:11,reb:2,ast:4,fgm:4,fga:11,tpm:2,tpa:7,ftm:1,fta:1,stl:0,blk:0,to:1},{name:"Sam Hauser",min:24,pts:6,reb:3,ast:1,fgm:2,fga:6,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Neemias Queta",min:18,pts:5,reb:7,ast:0,fgm:2,fga:3,tpm:0,tpa:0,ftm:1,fta:2,stl:0,blk:2,to:1},{name:"Nikola Vucevic",min:14,pts:4,reb:4,ast:2,fgm:2,fga:5,tpm:0,tpa:1,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Baylor Scheierman",min:12,pts:2,reb:1,ast:0,fgm:1,fga:3,tpm:0,tpa:2,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Jordan Walsh",min:8,pts:2,reb:2,ast:1,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:0,to:0}],away:[{name:"VJ Edgecombe",min:35,pts:30,reb:10,ast:2,fgm:12,fga:20,tpm:6,tpa:10,ftm:0,fta:0,stl:2,blk:0,to:2},{name:"Tyrese Maxey",min:40,pts:29,reb:4,ast:9,fgm:11,fga:28,tpm:5,tpa:12,ftm:2,fta:2,stl:2,blk:0,to:1},{name:"Paul George",min:34,pts:19,reb:6,ast:4,fgm:7,fga:13,tpm:3,tpa:5,ftm:2,fta:2,stl:1,blk:0,to:1},{name:"Kelly Oubre Jr.",min:30,pts:14,reb:5,ast:1,fgm:6,fga:12,tpm:2,tpa:5,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Andre Drummond",min:20,pts:6,reb:9,ast:1,fgm:3,fga:5,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:1},{name:"Quentin Grimes",min:18,pts:8,reb:2,ast:2,fgm:3,fga:6,tpm:2,tpa:3,ftm:0,fta:0,stl:0,blk:0,to:0},{name:"Dominick Barlow",min:10,pts:3,reb:3,ast:0,fgm:1,fga:3,tpm:0,tpa:1,ftm:1,fta:2,stl:0,blk:0,to:0},{name:"Adem Bona",min:8,pts:2,reb:3,ast:0,fgm:1,fga:2,tpm:0,tpa:0,ftm:0,fta:0,stl:0,blk:1,to:0}]}},{num:3,result:"BOS",homeScore:100,awayScore:108,winner:"BOS",notes:"BOS 108-100. BOS leads 2-1. Tatum 25pts (5-9 3PT) hit dagger 3. Brown 25pts, 8 straight in Q4. Pritchard 15pts. BOS 20-47 3PT (42.6%) — massive regression UP from 26% G2, exactly as model predicted. Maxey 31pts for PHI. Edgecombe 10pts, 0-7 3PT (Mazzulla counter-schemed his breakout). Embiid still OUT. PHI first home game but BOS talent gap too wide. Model picked BOS +6 — CORRECT, actual BOS +8 (2pt margin miss)."},{num:4,result:"BOS",homeScore:128,awayScore:96,winner:"BOS",notes:"BOS 128-96 at Wells Fargo Center. BOS leads 3-1. Tatum 30pts/7reb/11ast (5-10 3PT, 9-9 FT) — complete masterclass. Pritchard 32pts off bench (12-21 FG, 6-12 3PT) — historic bench performance. Brown 20pts. BOS FRANCHISE RECORD 24 made 3s (24-53, 45.3%). PHI: Embiid 26pts/10reb/6ast, Maxey 22pts, George 16pts. PHI committed 25 turnovers — completely fell apart. 32-point blowout."},{num:5,result:"PHI",homeScore:97,awayScore:113,winner:"PHI",notes:"PHI 113-97. BOS leads 3-2. EMBIID ERUPTION: 33pts (2pts Q1 on 1-6, then 13/10/8 in Q2-Q4) + 8ast. Maxey 25/10reb/5ast (10-18 FG, 43min). George 16/9reb/7ast — all-around. BOS: Tatum 24/16reb/3stl, Queta 8/14reb. BOS led by 1 entering Q4 — George 3-pointer gave PHI first lead since Q1. BOS COLLAPSED: 10pts in Q4 on 3-22 FG (1-14 from 2PT). Hauser fouled Grimes on 3PT attempt, starting PHI's 19-5 game-ending run. PHI outscored BOS 63-40 in 2nd half. MODEL WRONG: predicted BOS 118-101 (HIGH confidence). Embiid's elimination-game dominance was severely underweighted — model treated him as diminished post-appendectomy but he delivered a franchise-saving performance. Series shifts to PHI for G6."},{num:6,result:"PHI",homeScore:93,awayScore:106,winner:"PHI",notes:"PHI 106-93 at Wells Fargo Center. Series TIED 3-3. Q scores: BOS 23-26-14-30, PHI 20-38-24-24. BOS shot 42% FG (36-86), 29% 3PT (12-41), 56% FT (9-16), 46reb, 18ast, 13TO. PHI shot 44% FG (39-89), 33% 3PT (11-33), 89% FT (17-19), 48reb, 22ast, 10TO. PHI: Maxey 30pts (11-22 FG, 3-5 3PT, 5-5 FT, 2reb, 5ast, 0TO, +15), George 23pts (8-17 FG, 5-9 3PT, 2-2 FT, 4reb, 3ast, 4TO, +11), Embiid 19pts (6-18 FG, 1-5 3PT, 6-7 FT, 10reb, 8ast, 1TO, +7), Oubre 14pts (6-11, 9reb, 2stl, 2blk, +23), Edgecombe 14pts (5-11, 1-6 3PT, 3-3 FT, 8reb, 2blk, +18), Drummond 2pts/7reb off bench. BOS: Brown 18pts (7-17 FG, 2-6 3PT, 2-6 FT, 5TO, -24), Tatum 17pts (6-13, 2-6 3PT, 3-5 FT, 11reb, 3ast, 3TO, -11), Pritchard 14pts (6-16, 1-8 3PT, -6), White 11pts (3-8, 3-6 3PT, 3stl, -25), Garza 9pts (4-5 FG, +6). Model predicted BOS 110-105 (MEDIUM confidence) — WRONG. PHI won behind Maxey's 30pts and George's 5 made 3s. BOS 3PT shooting collapsed again (29% after 45% G4). Series goes to G7 at TD Garden."},{num:7,result:"PHI",homeScore:100,awayScore:109,winner:"PHI",notes:"PHI 109-100 @ BOS. PHI WINS SERIES 4-3 — HISTORIC 3-1 COMEBACK. Embiid 34/12/6 (12-26 FG, 1-4 3PT, 9-11 FT) — dominated paint despite post-appendectomy. Maxey 30/11/7 (11-18 FG, 6-6 FT) — back-to-back layups in crunch time sealed it. Edgecombe 23/6/4 (8-17, 5-11 3PT, +19 best +/-) — rookie continued playoff breakout. George 13 steady. PHI shot 48% (39-82), 39% 3PT (11-28). PHI led 32-19 Q1 and never trailed. BOS: Brown 33 (12-27, -16), White 26 (9-26, 5-16 3PT). BOS shot 44% overall. CLE Q3 run attempt (25pts) insufficient. Model predicted BOS ML — WRONG. PHI now 3rd team ever to complete 3-1 playoff comeback vs 1-seed.",boxScores:{home:[{name:"Garza",min:9,pts:0,reb:0,ast:0,fg:"0-2",threes:"0-2",ft:"0-0",to:1,pm:-15},{name:"White",min:45,pts:26,reb:6,ast:4,fg:"9-26",threes:"5-16",ft:"3-4",to:0,pm:-6},{name:"Brown",min:40,pts:33,reb:9,ast:4,fg:"12-27",threes:"3-9",ft:"6-6",to:3,pm:-16},{name:"Harper",min:4,pts:0,reb:0,ast:0,fg:"0-1",threes:"0-1",ft:"0-0",to:0,pm:-7},{name:"Scheierman",min:22,pts:0,reb:6,ast:2,fg:"0-4",threes:"0-3",ft:"0-0",to:0,pm:-9},{name:"Hauser",min:30,pts:11,reb:3,ast:1,fg:"4-7",threes:"3-6",ft:"0-0",to:0,pm:-3},{name:"Queta",min:33,pts:17,reb:12,ast:1,fg:"7-8",threes:"0-0",ft:"3-3",to:1,pm:9},{name:"Pritchard",min:39,pts:13,reb:5,ast:7,fg:"5-13",threes:"2-7",ft:"1-1",to:0,pm:-2}],away:[{name:"George",min:42,pts:13,reb:3,ast:1,fg:"5-10",threes:"3-5",ft:"0-0",to:3,pm:9},{name:"Embiid",min:39,pts:34,reb:12,ast:6,fg:"12-26",threes:"1-4",ft:"9-11",to:1,pm:11},{name:"Oubre",min:31,pts:6,reb:5,ast:2,fg:"2-6",threes:"0-3",ft:"2-2",to:1,pm:6},{name:"Maxey",min:45,pts:30,reb:11,ast:7,fg:"11-18",threes:"2-4",ft:"6-6",to:1,pm:8},{name:"Edgecombe",min:44,pts:23,reb:6,ast:4,fg:"8-17",threes:"5-11",ft:"2-2",to:3,pm:19},{name:"Drummond",min:8,pts:0,reb:1,ast:1,fg:"0-0",threes:"0-0",ft:"0-0",to:0,pm:-2},{name:"Grimes",min:26,pts:3,reb:6,ast:4,fg:"1-4",threes:"0-1",ft:"1-2",to:0,pm:1}]}}]
   },
   {
     id: "NYK-ATL", conf: "East", round: "R1",
@@ -3118,7 +3118,356 @@ const SERIES_DATA = [
         { team:"TOR", player:"Ingram", regSeason:"Primary scorer, 33.8 MPG (team-high)", playoff:"Half-court engine, 36+ MPG. G1: 17pts (below avg) — CLE length affected drives. .329 3P% spacing concern", impact:"same", reason:"Acquired to be playoff creator. Must find efficiency against CLE's twin towers" }
       ]
     },
-    games: [{num:1,result:"CLE",homeScore:126,awayScore:113,winner:"CLE",notes:"Mitchell 32pts (11/20 FG), Harden 22/10ast, Strus 24 off bench, Mobley 17/7. CLE dominated paint 48-30. TOR held to 1 fast-break point (league leader in transition). TOR: Barrett 24, Barnes 21/7ast, Ingram 17, Shead 17 (5 3s). Quickley OUT hamstring. Poeltl no-show 4pts/6reb. TOR 18 turnovers → 22 CLE points. CLE held TOR below 110 for first time all season (59 second-half pts). CLE 36-22 Q3 run broke it open. WPA: MVP Strus +16.6%, LVP Barnes -7.6%. Rebounds were CLE's biggest edge (+14.7% WPA, matching paint dominance 48-30). FG +19.4%, FT +7.7%, TOV +7.0%."},{num:2,result:"CLE",homeScore:115,awayScore:105,winner:"CLE",notes:"CLE wins 115-105, leads series 2-0. Mitchell 30pts (13/23 FG, 4/10 3PT), Harden 28pts/4ast/5stl (9/14 FG, role shifted to scorer from facilitator), Mobley 25pts on 11/13 FG (dominant efficiency). Allen 10/3/1 with 3blk in 25min. TOR: Barnes 26pts/5ast bounce-back (11/19 FG), Barrett 22/9reb (10/13 FG), but Ingram collapsed 7pts on 3/15 FG (CLE defensive scheme blanketed him). Murray-Boyles 17pts/7reb off bench, Mamukelashvili 12/10 double-double. Quickley still OUT. KEY STAT: TOR 22 turnovers vs CLE 12. CLE led 99% of game, largest lead 16. TOR shot 26.9% from 3 (7-26). Poeltl reduced to 9min. Model projected CLE +11, actual +10."},{num:3,result:"TOR",homeScore:104,awayScore:126,winner:"TOR",notes:"TOR 126-104. CLE leads 2-1. BLOWOUT — Barnes 33pts/11ast career highs (11-17 FG, 3-5 3PT). Barrett 33pts (12-19, 6-8 3PT). Murray-Boyles rookie breakout 22pts (11-15 FG, 73%). Battle 14pts all in Q4 (5-5 FG, 4-4 3PT). TOR shot 8-9 3PT in Q4, outscored CLE 43-23. CLE: Mitchell 15 (1-7 3PT), Harden 18/8TOs, Mobley 15 (4-13, 0-4 3PT). TOR scored 23pts off 22 CLE turnovers. Snapped 12-game playoff losing streak to CLE. Quickley still OUT. Model picked CLE +7 — WRONG by 29pts (biggest miss)."},{num:4,result:"TOR",homeScore:89,awayScore:93,winner:"TOR",notes:"TOR 93-89 at Scotiabank Arena. Series TIED 2-2. UGLY game — CLE 37% FG, 25% 3PT; TOR 32% FG, 13% 3PT (!). TOR won on free throws (27-36 vs CLE 15-23). Barnes 23pts/9reb/6ast (11-14 FT) gutted it out. Ingram 23pts but brutal 6-23 FG (8-9 FT). Mitchell 20pts on 6-24 FG (25%) — worst playoff shooting night. Harden 19pts/8ast but 7 TOs. Walter 0-9 FG (0-8 3PT) — ice cold. Murray-Boyles 15pts/10reb double-double off bench. Neither team could shoot but TOR's physicality and FT drawing were decisive."},{num:5,result:"CLE",homeScore:125,awayScore:120,winner:"CLE",notes:"CLE 125-120. CLE leads 3-2. Harden 23pts/9reb led CLE. Barrett 25pts/12reb for TOR. CLE won Q4 25-17 to pull away after TOR led big in Q2 (40-29). Q scores: CLE 38-29-33-25, TOR 34-40-29-17. Shooting regression UP for both teams after G4 nightmare (CLE 37%/TOR 32%). Model picked CLE medium — CORRECT."},{num:6,result:"TOR",homeScore:110,awayScore:112,winner:"TOR",notes:"TOR 112-110 OT at Scotiabank Arena. Series TIED 3-3. TOR FORCES GAME 7 WITH OT THRILLER. Barnes 25pts (11-21 FG, 0-2 3PT, 3-4 FT)/7reb/14ast — career-high playoff assists, facilitator masterclass. Walter 24pts (7-13 FG, 4-9 3PT, 6-6 FT) — breakout game as TOR's #2 scorer. Barrett 24pts (8-21, 4-12 3PT)/9reb. Murray-Boyles 17pts (6-10 FG)/7reb/3blk off bench — continued emergence. Shead 7pts/6ast. CLE: Mobley 26pts (9-15, 3-7 3PT)/14reb — monster game in a loss. Mitchell 24pts (11-26, 2-10 3PT). Harden 16pts/9reb/9ast near triple-double but 4 TOs. Allen 14pts/7reb/2blk. Strus 6pts (2-6 3PT). OT was TOR's — outscored CLE behind Barnes' playmaking and Walter's clutch shooting. Ingram OUT (heel). Model picked CLE medium — WRONG winner. Projected CLE +6, actual TOR +2 OT. 8-point miss."},{num:7,result:null,homeScore:null,awayScore:null,winner:null,notes:""}]
+    games: [{num:1,result:"CLE",homeScore:126,awayScore:113,winner:"CLE",notes:"Mitchell 32pts (11/20 FG), Harden 22/10ast, Strus 24 off bench, Mobley 17/7. CLE dominated paint 48-30. TOR held to 1 fast-break point (league leader in transition). TOR: Barrett 24, Barnes 21/7ast, Ingram 17, Shead 17 (5 3s). Quickley OUT hamstring. Poeltl no-show 4pts/6reb. TOR 18 turnovers → 22 CLE points. CLE held TOR below 110 for first time all season (59 second-half pts). CLE 36-22 Q3 run broke it open. WPA: MVP Strus +16.6%, LVP Barnes -7.6%. Rebounds were CLE's biggest edge (+14.7% WPA, matching paint dominance 48-30). FG +19.4%, FT +7.7%, TOV +7.0%."},{num:2,result:"CLE",homeScore:115,awayScore:105,winner:"CLE",notes:"CLE wins 115-105, leads series 2-0. Mitchell 30pts (13/23 FG, 4/10 3PT), Harden 28pts/4ast/5stl (9/14 FG, role shifted to scorer from facilitator), Mobley 25pts on 11/13 FG (dominant efficiency). Allen 10/3/1 with 3blk in 25min. TOR: Barnes 26pts/5ast bounce-back (11/19 FG), Barrett 22/9reb (10/13 FG), but Ingram collapsed 7pts on 3/15 FG (CLE defensive scheme blanketed him). Murray-Boyles 17pts/7reb off bench, Mamukelashvili 12/10 double-double. Quickley still OUT. KEY STAT: TOR 22 turnovers vs CLE 12. CLE led 99% of game, largest lead 16. TOR shot 26.9% from 3 (7-26). Poeltl reduced to 9min. Model projected CLE +11, actual +10."},{num:3,result:"TOR",homeScore:104,awayScore:126,winner:"TOR",notes:"TOR 126-104. CLE leads 2-1. BLOWOUT — Barnes 33pts/11ast career highs (11-17 FG, 3-5 3PT). Barrett 33pts (12-19, 6-8 3PT). Murray-Boyles rookie breakout 22pts (11-15 FG, 73%). Battle 14pts all in Q4 (5-5 FG, 4-4 3PT). TOR shot 8-9 3PT in Q4, outscored CLE 43-23. CLE: Mitchell 15 (1-7 3PT), Harden 18/8TOs, Mobley 15 (4-13, 0-4 3PT). TOR scored 23pts off 22 CLE turnovers. Snapped 12-game playoff losing streak to CLE. Quickley still OUT. Model picked CLE +7 — WRONG by 29pts (biggest miss)."},{num:4,result:"TOR",homeScore:89,awayScore:93,winner:"TOR",notes:"TOR 93-89 at Scotiabank Arena. Series TIED 2-2. UGLY game — CLE 37% FG, 25% 3PT; TOR 32% FG, 13% 3PT (!). TOR won on free throws (27-36 vs CLE 15-23). Barnes 23pts/9reb/6ast (11-14 FT) gutted it out. Ingram 23pts but brutal 6-23 FG (8-9 FT). Mitchell 20pts on 6-24 FG (25%) — worst playoff shooting night. Harden 19pts/8ast but 7 TOs. Walter 0-9 FG (0-8 3PT) — ice cold. Murray-Boyles 15pts/10reb double-double off bench. Neither team could shoot but TOR's physicality and FT drawing were decisive."},{num:5,result:"CLE",homeScore:125,awayScore:120,winner:"CLE",notes:"CLE 125-120. CLE leads 3-2. Harden 23pts/9reb led CLE. Barrett 25pts/12reb for TOR. CLE won Q4 25-17 to pull away after TOR led big in Q2 (40-29). Q scores: CLE 38-29-33-25, TOR 34-40-29-17. Shooting regression UP for both teams after G4 nightmare (CLE 37%/TOR 32%). Model picked CLE medium — CORRECT."},{num:6,result:"TOR",homeScore:110,awayScore:112,winner:"TOR",notes:"TOR 112-110 OT at Scotiabank Arena. Series TIED 3-3. TOR FORCES GAME 7 WITH OT THRILLER. Barnes 25pts (11-21 FG, 0-2 3PT, 3-4 FT)/7reb/14ast — career-high playoff assists, facilitator masterclass. Walter 24pts (7-13 FG, 4-9 3PT, 6-6 FT) — breakout game as TOR's #2 scorer. Barrett 24pts (8-21, 4-12 3PT)/9reb. Murray-Boyles 17pts (6-10 FG)/7reb/3blk off bench — continued emergence. Shead 7pts/6ast. CLE: Mobley 26pts (9-15, 3-7 3PT)/14reb — monster game in a loss. Mitchell 24pts (11-26, 2-10 3PT). Harden 16pts/9reb/9ast near triple-double but 4 TOs. Allen 14pts/7reb/2blk. Strus 6pts (2-6 3PT). OT was TOR's — outscored CLE behind Barnes' playmaking and Walter's clutch shooting. Ingram OUT (heel). Model picked CLE medium — WRONG winner. Projected CLE +6, actual TOR +2 OT. 8-point miss."},{num:7,result:"CLE",homeScore:114,awayScore:102,winner:"CLE",notes:"CLE 114-102. CLE WINS SERIES 4-3. Allen 22/19 (7-11 FG, 8-14 FT, +13) — monster rebounding performance (8 OREB). Mitchell 22/3/1 (9-20, 2-9 3PT) — consistent scorer. Harden 18 (3-9, 11-13 FT) — maestro game, drew fouls relentlessly. Strus 12/8/5 (+20) — bench spark, 4 OREB. Tyson 7/9/4 (+19) — bench energy. CLE Q3 explosion: 38pts (vs TOR 19) broke game open from 49-49 to 87-68. TOR: Barnes 24/9/6 (8-14, steady), Barrett 23 (9-25, 1-6 3PT — inefficient), Shead 14 (5-16, -13). TOR shot 29% 3PT (8-28). CLE depth overwhelmed TOR — bench outscored TOR bench 39-19. Model predicted CLE — CORRECT.",prediction:{homeWin:true,homeScore:112,awayScore:104,margin:8,confidence:"MEDIUM",character:"CONTROL",reasoning:"CLE at home, triple-initiator advantage (Mitchell/Harden/Mobley). Allen dominates boards. TOR youth fades in hostile Q4.",xFactor:"Jarrett Allen",moneyline:"CLE -250"},boxScores:{home:[{name:"Wade",min:21,pts:5,reb:4,ast:1,fg:"2-5",threes:"1-3",ft:"0-0",to:2,pm:-6},{name:"Allen",min:33,pts:22,reb:19,ast:2,fg:"7-11",threes:"0-0",ft:"8-14",to:3,pm:13},{name:"Mobley",min:27,pts:13,reb:7,ast:4,fg:"5-7",threes:"1-2",ft:"2-4",to:0,pm:-4},{name:"Harden",min:37,pts:18,reb:6,ast:2,fg:"3-9",threes:"1-5",ft:"11-13",to:3,pm:5},{name:"Mitchell",min:35,pts:22,reb:3,ast:1,fg:"9-20",threes:"2-9",ft:"2-2",to:2,pm:8},{name:"Schroder",min:14,pts:2,reb:1,ast:1,fg:"1-7",threes:"0-2",ft:"0-0",to:0,pm:-11},{name:"Strus",min:31,pts:12,reb:8,ast:5,fg:"4-10",threes:"2-8",ft:"2-2",to:3,pm:20},{name:"Merrill",min:23,pts:13,reb:3,ast:2,fg:"4-8",threes:"3-7",ft:"2-2",to:0,pm:16},{name:"Tyson",min:19,pts:7,reb:9,ast:4,fg:"3-8",threes:"1-3",ft:"0-0",to:0,pm:19}],away:[{name:"Barrett",min:43,pts:23,reb:4,ast:6,fg:"9-25",threes:"1-6",ft:"4-5",to:3,pm:-4},{name:"Barnes",min:37,pts:24,reb:9,ast:6,fg:"8-14",threes:"1-1",ft:"7-7",to:3,pm:0},{name:"Poeltl",min:22,pts:9,reb:7,ast:0,fg:"4-5",threes:"0-0",ft:"1-4",to:2,pm:9},{name:"Shead",min:36,pts:14,reb:3,ast:7,fg:"5-16",threes:"2-8",ft:"2-3",to:1,pm:-13},{name:"Walter",min:38,pts:13,reb:2,ast:2,fg:"4-9",threes:"3-7",ft:"2-3",to:2,pm:-15},{name:"Murray-Boyles",min:24,pts:8,reb:4,ast:3,fg:"3-5",threes:"0-0",ft:"2-3",to:2,pm:-19},{name:"Battle",min:14,pts:3,reb:2,ast:1,fg:"1-3",threes:"1-2",ft:"0-0",to:0,pm:-8},{name:"Lawson",min:16,pts:2,reb:2,ast:0,fg:"1-4",threes:"0-2",ft:"0-0",to:0,pm:-1}]}}]
+  },
+  // ============================================================
+  // ROUND 2 — CONFERENCE SEMIFINALS
+  // ============================================================
+  {
+    id: "OKC-LAL", conf: "West", round: "R2",
+    priorRound: {
+      home: { seriesId: "OKC-PHX", gamesPlayed: 4, round: "R1" },
+      away: { seriesId: "HOU-LAL", gamesPlayed: 6, round: "R1" }
+    },
+    defMatchups: {
+      homeDefOnAway: { defender:"Lu Dort", target:"LeBron James", dLebron:0.356, targetUsg:29.2, note:"Dort is OKC's elite POA stopper but LeBron's passing nullifies on-ball pressure. OKC will likely switch — Dort/Caruso/J.Williams rotate on LeBron. OKC held opponents to 108.2 DRtg (2nd in NBA). LeBron averaged 24.1ppg in R1 but efficiency dipped without Doncic creating gravity." },
+      awayDefOnHome: { defender:"Marcus Smart", target:"Shai Gilgeous-Alexander", dLebron:1.373, targetUsg:33.0, note:"Smart is DPOY-caliber and LAL's best perimeter defender. But SGA averaged 31.1ppg on 55.3% FG and 67% TS this season. Smart can slow him but can't stop him — SGA creates at elite efficiency against any defender. OKC's multi-initiator system (Williams, Holmgren) means doubling SGA leaves others open." }
+    },
+    homeTeam: {
+      name: "Thunder", city: "Oklahoma City", abbr: "OKC", seed: 1, record: "64-18",
+      systemBonus: 2.5, playoffPedigree: 2,
+      offStyle: "SGA elite P&R/ISO (31.1ppg, 55.3% FG) + five-out motion. Williams secondary creator. Mitchell 3rd-level creation off bench. Swept PHX in R1 — entire roster fully rested (11 days off). Deepest team in NBA.", initiators: 3,
+      color: "#007AC1", color2: "#EF6100",
+      advStats: { ortg:119.8, drtg:108.2, netRtg:11.6, pace:98.5, ts:59.4, efg:55.8, tov:12.1, reb:52.4, ortgRk:2, drtgRk:2, clutchNetRtg:8.5, last10:"8-2", fgPct:52.8, threePct:37.2, ftPct:80.8, orbPct:25.9 },
+      players: [
+        { name:"Shai Gilgeous-Alexander", pos:"PG", rating:96, ppg:31.1, rpg:4.3, apg:6.6, fgp:55.3, per:30.6, ts:67.0, epm:9.8, bpm:11.7, ws48:.323, onOff:12.1, clutch:9.4, vorp:7.8, usg:33.0, injury:null, lebron:6.661, oLebron:5.763, dLebron:0.898, war:12.453, offRole:"Shot Creator", defRole:"Low Activity",
+          matchupNote:"Fully rested after sweep. Historic season: 31.1ppg on 67% TS. R1: 25pts in 29min (sat Q4 blowout). Went 4-0 vs LAL in reg season with avg margin of 31.8pts. Smart is LAL's best defender but SGA creates against anyone.", baseRating:96, starCeiling:2, injuryRisk:0, playoffAscension:0.5 },
+        { name:"Chet Holmgren", pos:"C", rating:82, ppg:17.1, rpg:8.9, apg:1.7, fgp:55.7, per:22.8, ts:62.1, epm:4.5, bpm:4.8, ws48:.182, onOff:6.8, clutch:6.2, vorp:3.4, usg:25.0, injury:null, lebron:5.103, oLebron:1.638, dLebron:3.465, war:9.283, offRole:"Shot Creator", defRole:"Mobile Big",
+          matchupNote:"Stretch-5 who protects rim + spaces floor. D-LEBRON 3.465 elite. R1: 16pts/7reb in 25min. Ayton matchup is favorable — Holmgren's length and mobility vs Ayton's physicality.", baseRating:82, starCeiling:1, injuryRisk:0.3 },
+        { name:"Jalen Williams", pos:"SF", rating:0, ppg:17.1, rpg:4.6, apg:5.5, fgp:48.4, per:20.4, ts:58.8, epm:3.8, bpm:3.5, ws48:.158, onOff:5.2, clutch:6.8, vorp:3.0, usg:25.8, injury:"OUT — Grade 1 left hamstring strain (expected return ~May 9)", lebron:1.597, oLebron:1.441, dLebron:0.156, war:2.378, offRole:"Shot Creator", defRole:"Wing Stopper",
+          matchupNote:"OUT G1 with Grade 1 left hamstring strain sustained Apr 22 (R1 G2 vs PHX). Week-to-week per CBS Sports. Missed R1 G3-G4 (OKC still swept). Expected return ~May 9 (G2 or G3). OKC's #2 scorer (17.1ppg) — his absence reduces OKC from 3 to 2 initiators. Wiggins/Wallace/Joe absorb his minutes. OKC still swept PHX without him, proving depth can compensate.", baseRating:82, starCeiling:1, injuryRisk:0.8, activeInjury:{type:"Grade 1 left hamstring strain",severity:0.8,note:"May 4: CBS Sports lists OUT until May 9. Sustained in R1 G2 (Apr 22). Missed G3-G4. Progressing in rehab. Expected return G2 or G3 of R2."} },
+        { name:"Lu Dort", pos:"SG", rating:68, ppg:8.3, rpg:3.5, apg:1.2, fgp:38.5, per:13.2, ts:55.8, epm:1.8, bpm:1.5, ws48:.092, onOff:3.8, clutch:5.8, vorp:1.5, usg:20.5, injury:null, lebron:-0.815, oLebron:-1.171, dLebron:0.356, war:1.904, offRole:"Stationary Shooter", defRole:"Point of Attack",
+          matchupNote:"Elite perimeter stopper. Clamped Booker in R1. Will rotate on LeBron/Kennard.", baseRating:68 },
+        { name:"Isaiah Hartenstein", pos:"C", rating:70, ppg:9.2, rpg:9.4, apg:3.2, fgp:62.2, per:18.2, ts:59.4, epm:2.2, bpm:2.8, ws48:.138, onOff:4.1, clutch:5.2, vorp:2.0, usg:20.8, injury:null, lebron:3.554, oLebron:0.957, dLebron:2.597, war:4.253, offRole:"Roll + Cut Big", defRole:"Mobile Big",
+          matchupNote:"Physical rebounder. R1: 8pts/4reb/8ast in 20min — facilitator role. D-LEBRON 2.597.", baseRating:70 },
+        { name:"Alex Caruso", pos:"SG", rating:62, ppg:6.2, rpg:2.8, apg:2.0, fgp:42.3, per:12.4, ts:54.8, epm:1.8, bpm:2.2, ws48:.098, onOff:4.2, clutch:6.5, vorp:1.6, usg:17.2, injury:null, lebron:2.297, oLebron:0.166, dLebron:2.132, war:3.035, offRole:"Stationary Shooter", defRole:"Wing Stopper",
+          matchupNote:"Defensive specialist. D-LEBRON 2.132. Former Laker — knows LeBron's tendencies.", baseRating:62 },
+        { name:"Isaiah Joe", pos:"SG", rating:60, ppg:11.1, rpg:2.5, apg:1.3, fgp:44.0, per:13.5, ts:61.0, epm:1.2, bpm:0.5, ws48:.095, onOff:2.0, clutch:5.0, vorp:1.1, usg:20.0, injury:null, lebron:0.93, oLebron:0.947, dLebron:-0.017, war:3.202, offRole:"Movement Shooter", defRole:"Low Activity",
+          matchupNote:"42% 3PT shooter. Spaces floor for SGA drives.", baseRating:60 },
+        { name:"Ajay Mitchell", pos:"PG", rating:62, ppg:13.6, rpg:3.3, apg:3.6, fgp:48.5, per:15.0, ts:58.0, epm:1.0, bpm:0.5, ws48:.090, onOff:2.0, clutch:5.0, vorp:1.2, usg:20.5, injury:null, lebron:2.391, oLebron:0.881, dLebron:1.51, war:4.465, offRole:"Primary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"R1: 9pts (3-4 3PT) in 22min, +22. Bench creation when SGA rests.", baseRating:56 },
+        { name:"Cason Wallace", pos:"SG", rating:60, ppg:8.6, rpg:3.1, apg:2.6, fgp:38.5, per:11.0, ts:52.0, epm:0.5, bpm:0.2, ws48:.072, onOff:1.5, clutch:4.5, vorp:0.8, usg:16.0, injury:null, lebron:1.5, oLebron:0.0, dLebron:1.5, war:3.0, offRole:"Secondary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"R1: 6pts in 21min, +23 (highest +/- on team). 4ast/2stl/2blk. Defensive impact.", baseRating:60 },
+        { name:"Aaron Wiggins", pos:"SF", rating:58, ppg:9.4, rpg:3.1, apg:1.7, fgp:43.1, per:11.5, ts:54.0, epm:0.2, bpm:-0.3, ws48:.065, onOff:0.5, clutch:4.0, vorp:0.5, usg:17.5, injury:null, lebron:0.5, oLebron:0.2, dLebron:0.3, war:1.5, offRole:"Movement Shooter", defRole:"Wing Stopper",
+          matchupNote:"Wing depth. 35.6% 3PT.", baseRating:58 },
+        { name:"Jaylin Williams", pos:"PF", rating:56, ppg:7.2, rpg:5.5, apg:2.4, fgp:42.3, per:11.0, ts:54.0, epm:0.0, bpm:-0.5, ws48:.058, onOff:0.0, clutch:3.5, vorp:0.3, usg:16.0, injury:null, lebron:0.5, oLebron:-0.3, dLebron:0.8, war:1.0, offRole:"Stretch Big", defRole:"Mobile Big",
+          matchupNote:"Stretch-4 off bench. 38.3% 3PT.", baseRating:56 }
+      ],
+      synergy: [
+        { players:["SGA","Dort","Wiggins","Holmgren","Hartenstein"], score:82, note:"G1 starting 5 with J.Williams OUT (hamstring). Wiggins fills wing spot. Top-5 ORtg AND DRtg. NetRtg +14.2. Swept PHX without J.Williams in G3-G4." },
+        { players:["Mitchell","Wallace","Joe","Wiggins","Holmgren"], score:72, note:"SGA-rest lineup. Missing J.Williams' creation but Mitchell + Joe provide scoring." },
+        { players:["SGA","Caruso","Wallace","Dort","Holmgren"], score:84, note:"Defensive closing option. Caruso + Wallace + Dort switchable perimeter D. Best defensive lineup in NBA." }
+      ]
+    },
+    awayTeam: {
+      name: "Lakers", city: "Los Angeles", abbr: "LAL", seed: 4, record: "53-29",
+      systemBonus: 0.5, playoffPedigree: 2,
+      offStyle: "LeBron facilitator/scorer duality. Smart breakout as #2 (avg 20ppg R1). Kennard sustained scorer (avg 25ppg R1). Redick defensive scheme mastery. Won R1 4-2 without Doncic.", initiators: 2,
+      color: "#552583", color2: "#FDB927",
+      advStats: { ortg:113.8, drtg:112.1, netRtg:1.7, pace:99.2, ts:57.8, efg:54.1, tov:12.8, reb:50.2, ortgRk:12, drtgRk:14, clutchNetRtg:3.2, last10:"7-3", fgPct:51.1, threePct:34.7, ftPct:77.6, orbPct:24.2 },
+      players: [
+        { name:"LeBron James", age:41, pos:"SF", rating:88, ppg:24.1, rpg:7.2, apg:8.4, fgp:52.1, per:20.8, ts:62.4, epm:5.8, bpm:3.5, ws48:.198, onOff:6.4, clutch:8.2, vorp:2.8, usg:29.2, injury:null, lebron:2.491, oLebron:2.095, dLebron:0.396, war:6.154, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"R1: 28pts in closeout G6. Averaged ~25/8/10 across series. At 41, only 4 days rest vs OKC's 11. OKC went 4-0 vs LAL in reg season (avg margin 31.8pts). LeBron is LAL's only elite player — massive usage burden. Legacy mode but outmatched.", baseRating:92, starCeiling:2, injuryRisk:0.5, playoffAscension:1.0 },
+        { name:"Luka Doncic", pos:"PG", rating:0, ppg:31.4, rpg:8.8, apg:7.9, fgp:48.7, per:29.8, ts:60.1, epm:7.9, bpm:9.1, ws48:.224, onOff:10.2, clutch:7.5, vorp:7.1, usg:34.2, injury:"OUT — Grade 2 hamstring (expected out until at least May 9 per CBS Sports)", lebron:5.176, oLebron:5.622, dLebron:-0.446, war:10.733, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"Missed entire R1. Grade 2 hamstring strain. CBS Sports (May 4): expected out until at least May 9. Will not play G1 or likely G2. LAL proved they can win without him (4-2 vs HOU) but OKC is a completely different tier.", baseRating:95, starCeiling:2, injuryRisk:1.0 },
+        { name:"Austin Reaves", pos:"SG", rating:76, ppg:25.4, rpg:5.1, apg:6.2, fgp:46.8, per:21.2, ts:58.4, epm:3.8, bpm:4.1, ws48:.152, onOff:5.1, clutch:6.8, vorp:3.5, usg:28.8, injury:"Returning from oblique — improving each game", lebron:2.39, oLebron:2.295, dLebron:0.095, war:5.341, offRole:"Shot Creator", defRole:"Point of Attack",
+          matchupNote:"R1 G5 return (22pts, 4-16 FG rust). G6: 15pts (7-14 FG, 50%) — improving. Should be ~80% for R2. Adds critical 3-level scoring.", baseRating:80, injuryRisk:0.2 },
+        { name:"Marcus Smart", pos:"PG", rating:68, ppg:9.4, rpg:3.5, apg:4.8, fgp:41.2, per:12.8, ts:52.1, epm:1.4, bpm:-2.2, ws48:.082, onOff:2.8, clutch:6.1, vorp:-0.1, usg:18.8, injury:null, lebron:0.549, oLebron:-0.823, dLebron:1.373, war:3.337, offRole:"Movement Shooter", defRole:"Point of Attack",
+          matchupNote:"R1 BREAKOUT: 20ppg avg, 4.5 3PM/game. DPOY-caliber defense. But OKC's depth means Smart can't single-handedly defend enough. Former Celtic — knows playoff pressure.", baseRating:66 },
+        { name:"Luke Kennard", pos:"SG", rating:72, ppg:8.8, rpg:2.4, apg:2.1, fgp:45.5, per:12.8, ts:59.5, epm:0.1, bpm:-0.8, ws48:.070, onOff:-0.3, clutch:4.0, vorp:0.4, usg:17.8, injury:null, lebron:-2.908, oLebron:-1.122, dLebron:-1.786, war:-0.446, offRole:"Off Screen Shooter", defRole:"Chaser",
+          matchupNote:"R1: avg 25ppg on 65.4% FG. LeBron-Kennard 2-man game is elite. But OKC's wing defense (Dort, Caruso, Wallace) is a tier above HOU's.", baseRating:58, playoffAscension:0.8 },
+        { name:"Deandre Ayton", pos:"C", rating:65, ppg:12.5, rpg:8.0, apg:1.2, fgp:55.8, per:16.5, ts:59.8, epm:0.8, bpm:0.5, ws48:.095, onOff:1.2, clutch:4.2, vorp:1.2, usg:21.5, injury:null, lebron:-0.325, oLebron:-0.986, dLebron:0.66, war:2.619, offRole:"Roll + Cut Big", defRole:"Mobile Big",
+          matchupNote:"Holmgren matchup is a nightmare — Chet's length and mobility neutralizes Ayton's physicality.", baseRating:65 },
+        { name:"Rui Hachimura", pos:"PF", rating:59, ppg:13.2, rpg:5.4, apg:1.3, fgp:49.1, per:15.8, ts:57.2, epm:0.5, bpm:0.1, ws48:.088, onOff:-0.5, clutch:4.8, vorp:1.1, usg:22.0, injury:null, lebron:-2.237, oLebron:-0.814, dLebron:-1.423, war:0.281, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"R1 G6: 21pts (5-7 3PT) breakout. Solid both ends but OKC's wing defense is elite.", baseRating:64 },
+        { name:"Jarred Vanderbilt", pos:"PF", rating:52, ppg:5.2, rpg:5.8, apg:1.0, fgp:48.5, per:10.5, ts:54.0, epm:-0.2, bpm:-0.8, ws48:.060, onOff:0.3, clutch:3.5, vorp:0.3, usg:10.2, injury:null, lebron:-1.5, oLebron:-2.0, dLebron:0.5, war:1.0, offRole:"Cutter", defRole:"Wing Stopper",
+          matchupNote:"Defensive energy off bench. Switches across positions.", baseRating:52 },
+        { name:"Jaxson Hayes", pos:"C", rating:55, ppg:6.2, rpg:4.5, apg:0.8, fgp:58.5, per:13.2, ts:61.0, epm:-0.2, bpm:-0.5, ws48:.065, onOff:-0.5, clutch:3.5, vorp:0.3, usg:15.5, injury:null, lebron:0.348, oLebron:-0.042, dLebron:0.39, war:2.123, offRole:"Roll + Cut Big", defRole:"Mobile Big",
+          matchupNote:"Athletic backup C. Rim-runner and shot-blocker.", baseRating:55 }
+      ],
+      synergy: [
+        { players:["LeBron","Smart","Kennard","Hachimura","Ayton"], score:76, note:"R1 starting 5. Won 4-2 vs HOU. LeBron facilitator/scorer duality. But OKC is a massive step up from HOU." },
+        { players:["LeBron","Smart","Reaves","Hachimura","Ayton"], score:74, note:"With Reaves back. Adds creation + scoring but defensive downgrade vs Kennard's spacing." },
+        { players:["LeBron","Smart","Kennard","Vanderbilt","Ayton"], score:68, note:"Defensive option. Vanderbilt's switchability for specific OKC actions." }
+      ]
+    },
+    externalFactors: [
+      { team:"OKC", player:null, desc:"Swept R1 (4-0 vs PHX). 11 days rest. Freshest team in the playoffs. Defending champions with full championship experience.", impact:5, category:"rest", evidence:"OKC last played Apr 24. Squad rested but missing J.Williams.", verdict:"verified" },
+      { team:"OKC", player:"Jalen Williams", desc:"OUT — Grade 1 left hamstring strain from R1 G2 (Apr 22). Expected return ~May 9. OKC's #2 scorer (17.1ppg) and secondary creator. Missed R1 G3-G4 but OKC still swept. Reduces OKC from 3 to 2 initiators.", impact:-4, category:"injury", evidence:"CBS Sports (May 4): J.Williams listed OUT until May 9. Grade 1 hamstring. OKC swept PHX without him — Wiggins/Wallace/Joe absorbed minutes. Depth mitigates but losing the #2 scorer still hurts.", verdict:"verified" },
+      { team:"OKC", player:null, desc:"Went 4-0 vs LAL in regular season with avg margin of 31.8pts. Structural mismatch.", impact:5, category:"performance", evidence:"OKC dominated LAL in all 4 meetings. LAL had Doncic for some of those — still lost badly.", verdict:"verified" },
+      { team:"LAL", player:"Luka Doncic", desc:"OUT for R2. Grade 2 hamstring. No return timeline. LAL is essentially playing without their 2nd-best player.", impact:-8, category:"injury", evidence:"Missed entire R1. Even if he returns mid-series, reintegration after 3+ weeks out would be rocky.", verdict:"verified" },
+      { team:"LAL", player:null, desc:"Only 4 days rest after 6-game R1. LeBron at 41 carrying massive workload. Fatigue is a real concern vs rested OKC.", impact:-3, category:"fatigue", evidence:"LeBron played 40+ min in multiple R1 games. Only 4 days between series.", verdict:"verified" },
+      { team:"LAL", player:"LeBron James", desc:"LeBron in legacy mode at 41. Averaged 25/8/10 in R1. But OKC's defensive depth (Dort, Caruso, Williams, Wallace) is unlike anything LAL faced in R1.", impact:3, category:"motivation", evidence:"LeBron's playoff experience (20+ years) provides leadership edge even in mismatch.", verdict:"verified" }
+    ],
+    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:115,awayScore:104,margin:11,confidence:"HIGH",character:"SEPARATION",reasoning:"OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) facing a LAL team still missing Doncic. NOTE: Jalen Williams is OUT (Grade 1 left hamstring strain, expected return ~May 9). OKC swept PHX without Williams in G3-G4, proving depth can compensate — Wiggins, Wallace, and Joe absorbed his minutes effectively. OKC still has SGA (31.1ppg, 67% TS) + Holmgren + Hartenstein + elite bench. Rest advantage (11 days vs 4) remains massive. OKC went 4-0 vs LAL in the regular season with avg margin of 31.8pts. SGA will feast on LAL's limited perimeter defense beyond Smart. LeBron at 41 with only 4 days rest after a 6-game R1 is a fatigue risk. Holmgren's length neutralizes Ayton. OKC depth (Mitchell, Wallace, Joe, Caruso) means no drop-off when SGA sits. Kennard and Smart may regress against OKC's elite wing D (Dort, Caruso, Wallace). Margin adjusted from 14 to 11 reflecting Williams' absence — OKC loses their #2 scorer (17.1ppg) and secondary creator, making their offense slightly more SGA-dependent. But SGA is good enough to carry, and the talent gap remains enormous even without Williams. Market likely OKC -10 to -12.",xFactor:"SGA",moneyline:"OKC -600",spread:"OKC -10.5",ou:"O/U 215.5"},notes:""}]
+  },
+  {
+    id: "SAS-MIN", conf: "West", round: "R2",
+    priorRound: {
+      home: { seriesId: "SAS-POR", gamesPlayed: 5, round: "R1" },
+      away: { seriesId: "DEN-MIN", gamesPlayed: 6, round: "R1" }
+    },
+    defMatchups: {
+      homeDefOnAway: { defender:"Stephon Castle", target:"Anthony Edwards", dLebron:0.908, targetUsg:32.5, note:"Castle's size (6-6) and defensive instincts vs Edwards (EXPECTED TO PLAY but at ~80% capacity with knee). Edwards at full health is unstoppable but the hyperextended knee limits burst. Castle's physicality could exploit the injury. If Edwards is limited, Randle becomes primary — Castle shifts to guard him." },
+      awayDefOnHome: { defender:"Jaden McDaniels", target:"Victor Wembanyama", dLebron:0.233, targetUsg:32.4, note:"McDaniels has 7-foot wingspan but Wemby is 7-4. With Edwards playing but limited, MIN has a perimeter scoring threat that prevents Wemby from camping in the paint. McDaniels will compete but this is an impossible assignment — Wemby averaged 34ppg vs MIN this season." }
+    },
+    homeTeam: {
+      name: "Spurs", city: "San Antonio", abbr: "SAS", seed: 2, record: "62-20",
+      systemBonus: 1.5, playoffPedigree: 0,
+      offStyle: "Wembanyama unicorn creation. Fox P&R secondary. Won R1 in 5 games. Wemby cleared from concussion protocol and dominated G3-G5. Well-rested (9 days off).", initiators: 2,
+      color: "#C4CED4", color2: "#000000",
+      advStats: { ortg:118.5, drtg:108.2, netRtg:10.3, pace:98.1, ts:59.2, efg:56.0, tov:12.0, reb:51.5, ortgRk:2, drtgRk:2, clutchNetRtg:6.5, last10:"9-1", fgPct:53.0, threePct:37.5, ftPct:80.4, orbPct:25.2 },
+      players: [
+        { name:"Victor Wembanyama", pos:"C", rating:94, ppg:24.8, rpg:11.5, apg:3.1, fgp:51.2, per:29.5, ts:63.2, epm:8.8, bpm:10.7, ws48:.255, onOff:16.9, clutch:7.5, vorp:5.7, usg:32.4, injury:null, lebron:7.647, oLebron:3.655, dLebron:3.992, war:11.25, offRole:"Shot Creator", defRole:"Anchor Big",
+          matchupNote:"Cleared from concussion protocol during R1. Dominated G3-G5 after return. Averaged 34ppg in 2 reg season games vs MIN. Edwards' return gives MIN a perimeter threat but Wemby's 7-4 frame and 3PT ability still creates impossible mismatches for Gobert/McDaniels. +16.9 on/off is HISTORIC.", baseRating:94, starCeiling:2, injuryRisk:0.3 },
+        { name:"De'Aaron Fox", pos:"PG", rating:80, ppg:18.5, rpg:3.2, apg:6.8, fgp:47.5, per:20.2, ts:58.8, epm:3.5, bpm:3.2, ws48:.155, onOff:5.5, clutch:7.2, vorp:3.1, usg:25.2, injury:null, lebron:1.7, oLebron:1.478, dLebron:0.222, war:5.812, offRole:"Shot Creator", defRole:"Point of Attack",
+          matchupNote:"Fox-Wemby PnR is devastating. Elite speed creates mismatches. MIN's guards (Dosunmu, Conley) will struggle to contain his drives.", baseRating:80 },
+        { name:"Stephon Castle", pos:"SG", rating:74, ppg:16.8, rpg:4.5, apg:4.2, fgp:46.5, per:17.8, ts:57.5, epm:2.0, bpm:1.8, ws48:.118, onOff:3.2, clutch:5.5, vorp:2.1, usg:24.0, injury:null, lebron:1.464, oLebron:0.556, dLebron:0.908, war:5.009, offRole:"Primary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"Sophomore breakout. Two-way guard with size. Will be tasked with Randle/Dosunmu defensively.", baseRating:74 },
+        { name:"Devin Vassell", pos:"SG", rating:72, ppg:14.8, rpg:4.2, apg:3.5, fgp:45.5, per:16.2, ts:58.0, epm:1.8, bpm:1.5, ws48:.112, onOff:2.8, clutch:5.8, vorp:1.8, usg:23.0, injury:null, lebron:-0.084, oLebron:0.769, dLebron:-0.853, war:3.044, offRole:"Movement Shooter", defRole:"Helper",
+          matchupNote:"Reliable two-way wing. 39.2% from 3. Key secondary scorer.", baseRating:72 },
+        { name:"Julian Champagnie", pos:"SF", rating:66, ppg:11.2, rpg:4.8, apg:1.5, fgp:44.8, per:13.5, ts:56.5, epm:0.5, bpm:0.2, ws48:.078, onOff:1.2, clutch:4.5, vorp:1.1, usg:20.0, injury:null, lebron:1.54, oLebron:0.16, dLebron:1.38, war:5.678, offRole:"Movement Shooter", defRole:"Helper",
+          matchupNote:"Stretch forward. 38% from 3. Spacing for Wemby/Fox drives.", baseRating:66 },
+        { name:"Kelly Olynyk", pos:"PF", rating:62, ppg:9.5, rpg:5.5, apg:3.0, fgp:47.2, per:14.2, ts:57.8, epm:0.5, bpm:0.2, ws48:.082, onOff:1.5, clutch:4.5, vorp:0.9, usg:18.8, injury:null, offRole:"Stretch Big", defRole:"Helper",
+          matchupNote:"Stretch big, 37% from 3. Veteran presence.", baseRating:62 },
+        { name:"Keldon Johnson", pos:"SF", rating:62, ppg:9.8, rpg:4.2, apg:1.8, fgp:46.2, per:12.5, ts:55.5, epm:0.2, bpm:-0.1, ws48:.068, onOff:0.4, clutch:4.5, vorp:0.7, usg:18.8, injury:null, lebron:0.471, oLebron:1.14, dLebron:-0.67, war:3.511, offRole:"Movement Shooter", defRole:"Helper",
+          matchupNote:"Energy wing off bench. Physical playoff energy.", baseRating:62 },
+        { name:"Dylan Harper", pos:"PG", rating:58, ppg:11.8, rpg:3.4, apg:3.9, fgp:50.5, per:14.5, ts:57.0, epm:0.3, bpm:0.0, ws48:.080, onOff:1.0, clutch:4.5, vorp:0.9, usg:20.5, injury:null, lebron:0.947, oLebron:0.479, dLebron:0.467, war:3.326, offRole:"Shot Creator", defRole:"Point of Attack",
+          matchupNote:"2nd overall pick. Surging late (14.8 PPG final 12 games). Bench scoring spark.", baseRating:58 },
+        { name:"Harrison Barnes", pos:"SF", rating:58, ppg:7.5, rpg:3.2, apg:1.5, fgp:44.0, per:11.0, ts:55.0, epm:-0.1, bpm:-0.3, ws48:.060, onOff:0.0, clutch:3.5, vorp:0.4, usg:15.0, injury:"Returning from wrist — likely available", lebron:null, oLebron:null, dLebron:null, war:null, offRole:"Versatile Wing", defRole:"Wing Stopper",
+          matchupNote:"Veteran wing. R1 wrist injury limited him but rest should help. Championship experience (GSW 2015).", baseRating:60, injuryRisk:0.3 },
+        { name:"Luke Kornet", pos:"C", rating:56, ppg:6.5, rpg:4.2, apg:1.0, fgp:52.0, per:12.0, ts:58.0, epm:0.0, bpm:-0.2, ws48:.055, onOff:0.5, clutch:3.5, vorp:0.3, usg:14.0, injury:null, offRole:"Versatile Big", defRole:"Anchor Big",
+          matchupNote:"Backup C. Rim protection and floor spacing.", baseRating:56 }
+      ],
+      synergy: [
+        { players:["Fox","Castle","Vassell","Champagnie","Wembanyama"], score:86, note:"Starting 5. Fox-Wemby PnR devastating. +10.3 NetRtg. Won R1 in 5. Johnson system maximizes every player." },
+        { players:["Harper","Johnson","Olynyk","Champagnie","Wembanyama"], score:74, note:"Bench unit with Wemby anchor. Harper provides creation." },
+        { players:["Fox","Castle","Vassell","Olynyk","Wembanyama"], score:82, note:"Closing 5 with Olynyk stretch spacing. Wemby rim protection + floor spacing." }
+      ]
+    },
+    awayTeam: {
+      name: "Timberwolves", city: "Minnesota", abbr: "MIN", seed: 6, record: "49-33",
+      systemBonus: 0.5, playoffPedigree: 1,
+      offStyle: "Edwards EXPECTED TO PLAY G1 but at ~80% capacity (knee). Randle secondary creator. Gobert screen actions. McDaniels breakout (32pts G6 closeout). Dosunmu OUT G1 (calf) — Conley/Hyland at PG. DiVincenzo OUT for season (Achilles). Won R1 4-2 vs DEN despite missing stars — incredible resilience.", initiators: 2,
+      color: "#0C2340", color2: "#236192",
+      advStats: { ortg:114.8, drtg:111.5, netRtg:3.3, pace:96.4, ts:57.1, efg:53.5, tov:13.1, reb:48.2, ortgRk:7, drtgRk:12, clutchNetRtg:2.1, last10:"6-4", fgPct:50.5, threePct:33.8, ftPct:76.2, orbPct:26.2 },
+      players: [
+        { name:"Anthony Edwards", pos:"SG", rating:75, ppg:28.8, rpg:5.0, apg:3.7, fgp:48.9, per:21.8, ts:59.2, epm:5.8, bpm:4.5, ws48:.178, onOff:7.8, clutch:7.5, vorp:3.5, usg:32.5, injury:"QUESTIONABLE — hyperextended right knee + bone bruise (EXPECTED TO PLAY G1)", lebron:1.285, oLebron:2.623, dLebron:-1.337, war:5.014, offRole:"Shot Creator", defRole:"Chaser",
+          matchupNote:"UPGRADED: Expected to play G1 per Shams Charania (May 4). Left knee hyperextension + bone bruise from R1 G4. Missed G5-G6 but progressing faster than expected. Officially questionable but expected to suit up. Will NOT be 100% — knee limits burst/explosiveness. Averaged 36.7ppg vs SAS this season. Even at 70-80% capacity, his presence transforms MIN's offense from single-initiator (Randle) to dual-initiator. Expect 20-25ppg on reduced efficiency vs his 28.8 season avg. Key question: can he sustain full minutes or will he be on a minutes restriction?", baseRating:90, starCeiling:2, injuryRisk:0.6, activeInjury:{type:"hyperextended left knee + bone bruise",severity:0.5,note:"May 4: Shams reports Edwards EXPECTED TO PLAY G1. Upgraded from 'likely OUT.' Underwent intensive rehab. Cleared for on-court activities. Not 100% — knee limits burst. Rating set to 75 (down from 90 base) reflecting ~80% capacity. Could improve as series progresses."} },
+        { name:"Julius Randle", pos:"PF", rating:74, ppg:21.1, rpg:6.7, apg:5.0, fgp:48.1, per:20.2, ts:57.8, epm:2.1, bpm:2.4, ws48:.132, onOff:3.2, clutch:5.5, vorp:2.6, usg:26.2, injury:null, lebron:0.257, oLebron:1.499, dLebron:-1.242, war:4.445, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"MIN's primary creator with Edwards OUT. Averaged 21.1ppg. Physical mismatch potential but SAS's length (Wemby, Castle, Champagnie) will contest everything.", baseRating:74, starCeiling:1, injuryRisk:0.4 },
+        { name:"Rudy Gobert", age:33, pos:"C", rating:72, ppg:10.9, rpg:11.5, apg:1.7, fgp:68.2, per:18.4, ts:65.8, epm:2.4, bpm:2.1, ws48:.142, onOff:4.5, clutch:4.2, vorp:1.9, usg:19.0, injury:null, lebron:1.822, oLebron:-0.603, dLebron:2.425, war:6.38, offRole:"Roll + Cut Big", defRole:"Anchor Big",
+          matchupNote:"DPOY caliber. But Wemby matchup is his nightmare — Wemby can shoot 3s and Gobert can't follow him to the perimeter. Gobert's rim protection less effective when Wemby is pulling him out.", baseRating:75 },
+        { name:"Jaden McDaniels", pos:"SF", rating:70, ppg:14.8, rpg:4.2, apg:2.7, fgp:51.5, per:14.5, ts:57.2, epm:0.8, bpm:0.4, ws48:.078, onOff:1.5, clutch:4.8, vorp:1.1, usg:20.5, injury:null, lebron:-1.154, oLebron:-1.387, dLebron:0.233, war:1.896, offRole:"Athletic Finisher", defRole:"Point of Attack",
+          matchupNote:"R1 BREAKOUT: 32pts/10reb in G6 closeout vs DEN. Emerged as MIN's #2 scorer with Edwards out. 7-foot wingspan. Can he sustain this vs SAS's elite defense? Rating bumped 68→70.", baseRating:68 },
+        { name:"Donte DiVincenzo", pos:"PG", rating:0, ppg:12.2, rpg:4.1, apg:3.8, fgp:40.6, per:13.5, ts:54.0, epm:0.3, bpm:0.0, ws48:.070, onOff:1.0, clutch:4.5, vorp:1.0, usg:21.0, injury:"OUT FOR SEASON — Achilles rupture", lebron:0.556, oLebron:0.196, dLebron:0.359, war:4.714, offRole:"Movement Shooter", defRole:"Chaser",
+          matchupNote:"Season-ending Achilles rupture in R1 G4 vs DEN. Devastating loss — was MIN's starting PG.", baseRating:62 },
+        { name:"Naz Reid", pos:"C", rating:66, ppg:13.6, rpg:6.2, apg:2.2, fgp:45.6, per:17.5, ts:57.0, epm:1.0, bpm:1.5, ws48:.110, onOff:2.5, clutch:5.5, vorp:1.7, usg:22.2, injury:null, lebron:1.086, oLebron:-0.011, dLebron:1.096, war:4.46, offRole:"Movement Shooter", defRole:"Helper",
+          matchupNote:"6th man. 13.6ppg. Can play with or replace Gobert. Adds spacing Gobert lacks. Key bench player.", baseRating:66 },
+        { name:"Ayo Dosunmu", pos:"SG", rating:0, ppg:14.4, rpg:4.2, apg:3.5, fgp:52.1, per:15.8, ts:58.5, epm:1.0, bpm:0.8, ws48:.098, onOff:2.0, clutch:4.5, vorp:1.2, usg:20.5, injury:"OUT — sore right calf (expected return May 6)", lebron:-0.5, oLebron:0.3, dLebron:-0.8, war:2.5, offRole:"Primary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"OUT G1 with sore right calf per CBS Sports (May 4). Expected return May 6 (G2). Was starting PG with DiVincenzo out. Stepped up in R1 — 43pts in G4 (!) when Edwards went down. His absence forces Conley/Hyland into starting PG role for G1. Major blow to MIN's transition offense and perimeter defense.", baseRating:64, activeInjury:{type:"sore right calf",severity:0.8,note:"May 4: CBS Sports lists OUT until May 6. DNP G6 closeout (calf). Expected to return G2."} },
+        { name:"Kyle Anderson", pos:"SF", rating:55, ppg:4.6, rpg:3.7, apg:3.3, fgp:44.0, per:10.5, ts:53.0, epm:0.0, bpm:-0.3, ws48:.060, onOff:0.5, clutch:4.0, vorp:0.5, usg:13.0, injury:null, lebron:-0.8, oLebron:-0.5, dLebron:-0.3, war:1.2, offRole:"Primary Ball Handler", defRole:"Wing Stopper",
+          matchupNote:"Swiss army knife. Defensive versatility in spot minutes.", baseRating:55 },
+        { name:"Bones Hyland", pos:"PG", rating:54, ppg:8.5, rpg:1.8, apg:2.6, fgp:42.0, per:11.0, ts:55.0, epm:-0.3, bpm:-0.5, ws48:.058, onOff:0.0, clutch:3.5, vorp:0.4, usg:19.5, injury:null, lebron:-1.5, oLebron:-0.8, dLebron:-0.7, war:0.8, offRole:"Shot Creator", defRole:"Low Activity",
+          matchupNote:"Backup PG energy scorer. 38.8% 3PT.", baseRating:54 },
+        { name:"Mike Conley", pos:"PG", rating:52, ppg:4.5, rpg:1.7, apg:2.9, fgp:33.5, per:8.5, ts:48.0, epm:-0.5, bpm:-1.0, ws48:.042, onOff:-1.5, clutch:5.8, vorp:0.2, usg:14.0, injury:null, lebron:-0.753, oLebron:-0.913, dLebron:0.159, war:0.5, offRole:"Primary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"Veteran reserve. 5.8 clutch rating but clearly diminished.", baseRating:52 }
+      ],
+      synergy: [
+        { players:["Conley","Edwards","McDaniels","Randle","Gobert"], score:74, note:"G1 starting 5 with Edwards back but Dosunmu OUT. Conley at PG. Edwards at ~80% but transforms offense. DiVincenzo OUT for season." },
+        { players:["Hyland","Edwards","McDaniels","Randle","Reid"], score:72, note:"Non-Gobert offense. Reid adds spacing. Edwards + Randle dual creation. More scoring upside." },
+        { players:["Conley","McDaniels","Randle","Gobert","Reid"], score:66, note:"Edwards-rest lineup. Big lineup maximizes rebounding vs Wemby. Limited perimeter creation." }
+      ]
+    },
+    externalFactors: [
+      { team:"SAS", player:"Victor Wembanyama", desc:"Cleared from concussion protocol. Dominated R1 G3-G5 after return. 9 days rest. Averaged 34ppg vs MIN this season.", impact:5, category:"health", evidence:"Wemby healthy and rested. Historic +16.9 on/off.", verdict:"verified" },
+      { team:"SAS", player:null, desc:"9-10 days rest after winning R1 in 5. Well-prepared and fresh.", impact:3, category:"rest", evidence:"SAS last played ~Apr 25.", verdict:"verified" },
+      { team:"MIN", player:"Anthony Edwards", desc:"EXPECTED TO PLAY G1 but at ~80% capacity. Left knee hyperextension + bone bruise from R1 G4. Missed G5-G6 but progressing faster than anticipated. Officially questionable but expected to suit up per Shams (May 4). Not 100% — burst and explosiveness limited. Expect 20-25ppg on reduced efficiency.", impact:-5, category:"injury", evidence:"May 4: Shams Charania reports Edwards expected to play G1 vs SAS. Underwent intensive rehab. CBS Sports still lists as GTD. Even at 80% he transforms MIN from a .500 team to a competitive one.", verdict:"verified" },
+      { team:"MIN", player:"Ayo Dosunmu", desc:"OUT G1 — sore right calf. Expected return May 6 (G2). Was starting PG after DiVincenzo's Achilles rupture. His absence forces Conley/Hyland into PG role.", impact:-3, category:"injury", evidence:"CBS Sports (May 4): Dosunmu listed OUT until May 6. DNP R1 G6 closeout. MIN now missing DiVincenzo (season) AND Dosunmu (G1) at guard.", verdict:"verified" },
+      { team:"MIN", player:"Donte DiVincenzo", desc:"OUT FOR SEASON — Achilles rupture. MIN's starting PG gone for remainder of playoffs.", impact:-6, category:"injury", evidence:"R1 G4 Achilles injury. Done for the year.", verdict:"verified" },
+      { team:"MIN", player:null, desc:"Won R1 4-2 vs DEN despite missing Edwards and DiVincenzo. Incredible resilience. McDaniels 32pt closeout game. Team believes they can win without stars.", impact:4, category:"momentum", evidence:"MIN's G6 comeback (erased 20pt deficit in Denver) shows championship-level grit.", verdict:"verified" }
+    ],
+    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:112,awayScore:105,margin:7,confidence:"MEDIUM",character:"COMPETITIVE",reasoning:"MAJOR UPDATE: Edwards EXPECTED TO PLAY G1 per Shams Charania (May 4). This dramatically changes the calculus. SAS was -11.5 when Edwards was expected OUT — line will likely move to SAS -6 to -8 with Edwards in. Edwards at 80% capacity (left knee hyperextension + bone bruise) still transforms MIN from a .500 team to a competitive one. His 36.7ppg vs SAS this season means even at 70% output (~25ppg) he's a difference-maker. However, Dosunmu is OUT G1 (calf), forcing Conley/Hyland at PG — MIN still has guard depth issues. SAS advantages remain: Wemby is healthy and dominant (17/14/6blk closeout), 9 days rest vs MIN's 1 day, Frost Bank Center (62-20), and depth. But Edwards' return gives MIN a perimeter creator that SAS must respect, pulling Wemby out of the paint and opening Randle's mid-range game. Key question: Can Edwards sustain 35+ minutes on a bum knee? If he's on a minutes restriction (25-28min), SAS's depth advantage reasserts in the 4th quarter. Model adjusts from HIGH confidence SAS by 12 to MEDIUM confidence SAS by 7. Wemby is still the best player on the court but Edwards' presence makes this a 2-star vs 1-star game instead of 1-star vs 0-star.",xFactor:"Edwards health + minutes",moneyline:"SAS -300",spread:"SAS -6.5",ou:"O/U 217.5"},notes:""}]
+  },
+  {
+    id: "DET-CLE", conf: "East", round: "R2",
+    priorRound: {
+      home: { seriesId: "DET-ORL", gamesPlayed: 7, round: "R1" },
+      away: { seriesId: "CLE-TOR", gamesPlayed: 7, round: "R1" }
+    },
+    defMatchups: {
+      homeDefOnAway: { defender:"Ausar Thompson", target:"Donovan Mitchell", dLebron:2.93, targetUsg:31.0, note:"A.Thompson's elite POA defense (D-LEBRON 2.93, #3 in NBA) vs Mitchell (27.9ppg, 8.5 clutch). This is the series-defining matchup. Mitchell has historically been huntable on defense but A.Thompson's defensive intensity could force him into inefficient possessions. CLE's triple-initiator system means Mitchell can play off-ball more to avoid A.Thompson." },
+      awayDefOnHome: { defender:"Evan Mobley", target:"Cade Cunningham", dLebron:1.346, targetUsg:29.0, note:"Mobley's switchability allows him to guard Cade in the PnR. Cade averaged 23.9ppg/9.9apg but his health (collapsed lung recovery) limits burst. Mobley can contest Cade's midrange pull-ups while Allen protects the rim. CLE's defensive versatility (Mobley 1-5 switching) is their trump card." }
+    },
+    homeTeam: {
+      name: "Pistons", city: "Detroit", abbr: "DET", seed: 1, record: "60-22",
+      systemBonus: 1.0, playoffPedigree: 0,
+      offStyle: "Cade P&R primary. Elite team defense (107.2 DRtg, #1). Came back from 3-1 deficit vs ORL — historic comeback. Cunningham 32/12 in G7. Harris 30/8 in G7. Franchise is surging.", initiators: 1,
+      color: "#C8102E", color2: "#1D42BA",
+      advStats: { ortg:115.8, drtg:107.2, netRtg:8.6, pace:97.5, ts:58.2, efg:55.4, tov:12.2, reb:52.1, ortgRk:5, drtgRk:1, clutchNetRtg:7.2, last10:"8-2", fgPct:52.4, threePct:36.6, ftPct:78.4, orbPct:25.7 },
+      players: [
+        { name:"Cade Cunningham", pos:"PG", rating:87, ppg:23.9, rpg:5.5, apg:9.9, fgp:46.8, per:25.2, ts:59.2, epm:6.0, bpm:6.8, ws48:.195, onOff:9.0, clutch:8.0, vorp:4.9, usg:29.0, injury:"Monitoring — collapsed lung recovery (conditioning improving)", lebron:5.383, oLebron:4.104, dLebron:1.279, war:10.44, offRole:"Shot Creator", defRole:"Chaser",
+          matchupNote:"R1 comeback hero: 32pts/12ast in G7. MVP candidate. Conditioning has been improving each game since pneumothorax recovery. 8.0 clutch. DET's entire offense runs through him. Mobley matchup in PnR is THE chess match.", baseRating:90, starCeiling:1, injuryRisk:0.3, activeInjury:{type:"collapsed lung recovery",severity:0.3,note:"Conditioning improving each game. G7: 32pts/12ast — looked fully healthy. Pneumothorax concern fading."} },
+        { name:"Jalen Duren", pos:"C", rating:80, ppg:19.5, rpg:10.5, apg:2.0, fgp:65.0, per:22.5, ts:61.8, epm:3.8, bpm:4.0, ws48:.172, onOff:6.2, clutch:5.8, vorp:3.2, usg:25.8, injury:null, lebron:3.992, oLebron:2.617, dLebron:1.375, war:7.905, offRole:"Shot Creator", defRole:"Mobile Big",
+          matchupNote:"All-Star breakout. 65.0% FG. Allen-Duren interior battle is a heavyweight matchup. Duren's athleticism vs Allen/Mobley twin towers.", baseRating:80 },
+        { name:"Ausar Thompson", pos:"SF", rating:78, ppg:9.9, rpg:5.7, apg:3.1, fgp:52.5, per:16.8, ts:57.4, epm:2.8, bpm:2.5, ws48:.132, onOff:5.8, clutch:5.5, vorp:2.5, usg:18.0, injury:null, lebron:2.821, oLebron:-0.109, dLebron:2.93, war:6.247, offRole:"Cutter", defRole:"Point of Attack",
+          matchupNote:"D-LEBRON 2.93 = #3 in NBA. Will be tasked with Mitchell. DET's defensive identity. DPOY 3rd-place finisher.", baseRating:78 },
+        { name:"Tobias Harris", pos:"PF", rating:62, ppg:13.3, rpg:5.1, apg:2.5, fgp:46.9, per:14.5, ts:57.0, epm:0.0, bpm:-0.3, ws48:.075, onOff:0.5, clutch:4.0, vorp:0.8, usg:22.0, injury:null, lebron:1.552, oLebron:1.026, dLebron:0.526, war:4.386, offRole:"Movement Shooter", defRole:"Wing Stopper",
+          matchupNote:"R1 G7: 30pts/8reb. Elevated in clutch moments. Former Cavalier — knows CLE's system. Former Sixer — familiar with Harden.", baseRating:60 },
+        { name:"Duncan Robinson", pos:"SG", rating:65, ppg:12.2, rpg:2.7, apg:2.1, fgp:45.6, per:12.0, ts:59.0, epm:0.3, bpm:-0.2, ws48:.075, onOff:1.5, clutch:4.5, vorp:0.8, usg:18.5, injury:null, lebron:-1.0, oLebron:0.5, dLebron:-1.5, war:1.5, offRole:"Off Screen Shooter", defRole:"Chaser",
+          matchupNote:"41% from 3. Floor spacer for Cade drives. CLE will try to hunt him defensively.", baseRating:62 },
+        { name:"Isaiah Stewart", pos:"C", rating:64, ppg:10.0, rpg:5.0, apg:1.2, fgp:55.0, per:14.5, ts:58.2, epm:0.8, bpm:0.8, ws48:.092, onOff:2.5, clutch:4.8, vorp:1.1, usg:17.5, injury:null, lebron:-0.527, oLebron:-0.879, dLebron:0.352, war:1.595, offRole:"Stretch Big", defRole:"Mobile Big",
+          matchupNote:"Physical backup C. Adds interior toughness against Allen/Mobley twin towers.", baseRating:64 },
+        { name:"Daniss Jenkins", pos:"PG", rating:55, ppg:9.3, rpg:2.3, apg:3.9, fgp:40.8, per:11.5, ts:54.0, epm:-0.3, bpm:-0.8, ws48:.055, onOff:0.0, clutch:3.5, vorp:0.4, usg:17.0, injury:null, lebron:-1.5, oLebron:-0.5, dLebron:-1.0, war:0.5, offRole:"Primary Ball Handler", defRole:"Chaser",
+          matchupNote:"Key bench guard. Secondary playmaker when Cade sits.", baseRating:52 },
+        { name:"Kevin Huerter", pos:"SG", rating:50, ppg:8.2, rpg:1.6, apg:1.6, fgp:44.3, per:10.0, ts:53.0, epm:-0.2, bpm:-0.8, ws48:.050, onOff:-0.5, clutch:3.5, vorp:0.3, usg:15.0, injury:"GTD — thigh (May 3)", lebron:-1.5, oLebron:0.0, dLebron:-1.5, war:0.5, offRole:"Off Screen Shooter", defRole:"Chaser",
+          matchupNote:"GTD with thigh injury per CBS Sports (May 3). Veteran shooter. 2022 playoff pedigree. Minor role player — if OUT, LeVert/Green absorb minutes.", baseRating:55 },
+        { name:"Caris LeVert", pos:"SG", rating:52, ppg:7.4, rpg:2.7, apg:2.0, fgp:42.0, per:11.0, ts:53.0, epm:-0.3, bpm:-1.0, ws48:.050, onOff:-0.5, clutch:3.5, vorp:0.3, usg:16.0, injury:null, lebron:-1.0, oLebron:0.0, dLebron:-1.0, war:0.5, offRole:"Shot Creator", defRole:"Chaser",
+          matchupNote:"Bench shot creator. Former Cavalier — knows CLE's system.", baseRating:55 }
+      ],
+      synergy: [
+        { players:["Cunningham","D.Robinson","A.Thompson","Harris","Duren"], score:82, note:"Starting 5. #1 defense (107.2 DRtg). Came back from 3-1 to win R1. Robinson's 41% 3PT spaces floor for Cade drives." },
+        { players:["Cunningham","D.Robinson","A.Thompson","Harris","Stewart"], score:72, note:"Two-big option. Stewart adds interior physicality vs CLE twin towers." },
+        { players:["Jenkins","Huerter","LeVert","Stewart","Duren"], score:58, note:"Bench unit. Huerter provides shooting, LeVert creates in ISO, Duren adds interior presence." }
+      ]
+    },
+    awayTeam: {
+      name: "Cavaliers", city: "Cleveland", abbr: "CLE", seed: 4, record: "52-30",
+      systemBonus: 1.5, playoffPedigree: 0,
+      offStyle: "Triple-initiator: Mitchell ISO/P&R, Harden creation, Mobley tertiary creator. Won R1 4-3 vs TOR in G7 (114-102). Allen dominated (22/19 in G7). Harden trade transformed CLE (21-6 post-trade).", initiators: 3,
+      color: "#860038", color2: "#FDBB30",
+      advStats: { ortg:117.5, drtg:112.8, netRtg:4.7, pace:98.5, ts:58.8, efg:55.5, tov:12.8, reb:50.5, ortgRk:4, drtgRk:15, clutchNetRtg:5.5, last10:"7-3", fgPct:52.5, threePct:36.8, ftPct:79.6, orbPct:24.4 },
+      players: [
+        { name:"Donovan Mitchell", pos:"SG", rating:87, ppg:27.9, rpg:4.5, apg:5.8, fgp:47.5, per:22.9, ts:61.2, epm:5.8, bpm:5.1, ws48:.195, onOff:7.5, clutch:8.5, vorp:4.2, usg:31.0, injury:null, lebron:3.426, oLebron:3.7, dLebron:-0.274, war:8.578, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"R1: 32pts G1, 30pts G2. Elite scorer. 8.5 clutch. A.Thompson defensive matchup is the key challenge — D-LEBRON 2.93 is the best defender Mitchell will face. But CLE's triple-initiator system means Mitchell doesn't have to force.", baseRating:87, starCeiling:1, injuryRisk:0, playoffAscension:1.0 },
+        { name:"James Harden", pos:"PG", rating:80, ppg:20.5, rpg:4.8, apg:7.7, fgp:45.2, per:21.8, ts:63.9, epm:4.0, bpm:4.5, ws48:.162, onOff:5.8, clutch:7.0, vorp:1.3, usg:26.8, injury:null, lebron:2.107, oLebron:3.304, dLebron:-1.197, war:6.967, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"R1: 22pts/10ast G1, shifted to scorer mode (28pts G2). CLE 21-6 since trade. Orchestrator who can toggle between creation and scoring. Former Sixer — familiar with Harris. DET will try to hunt him defensively.", baseRating:80, starCeiling:1, injuryRisk:0.4, playoffAscension:-0.5 },
+        { name:"Evan Mobley", pos:"PF", rating:80, ppg:18.2, rpg:9.0, apg:3.5, fgp:52.5, per:22.2, ts:59.8, epm:4.2, bpm:4.5, ws48:.172, onOff:6.5, clutch:6.5, vorp:3.6, usg:25.0, injury:null, lebron:3.067, oLebron:1.721, dLebron:1.346, war:7.146, offRole:"Shot Creator", defRole:"Mobile Big",
+          matchupNote:"Two-way star. 1-5 defensive switching is CLE's trump card vs Cade in PnR. R1 G2: 25pts (11/13 FG). Duren matchup will be physical.", baseRating:80, starCeiling:1, injuryRisk:0 },
+        { name:"Jarrett Allen", pos:"C", rating:73, ppg:15.4, rpg:8.5, apg:1.8, fgp:63.2, per:19.8, ts:65.4, epm:2.2, bpm:2.5, ws48:.148, onOff:3.8, clutch:5.2, vorp:2.2, usg:22.0, injury:"GTD — knee tendonitis (chronic)", lebron:2.134, oLebron:0.939, dLebron:1.195, war:4.365, offRole:"Roll + Cut Big", defRole:"Mobile Big",
+          matchupNote:"R1 G7: 22pts/19reb. Twin towers with Mobley. But chronic knee tendonitis limits explosiveness in a long series. Duren's athleticism will test him.", baseRating:73, injuryRisk:0.4, activeInjury:{type:"knee tendonitis",severity:0.4,note:"Chronic. Played through in R1 G7 (22/19). Limits vertical explosiveness."} },
+        { name:"Dean Wade", pos:"SF", rating:58, ppg:5.8, rpg:4.2, apg:1.2, fgp:42.5, per:10.5, ts:55.0, epm:0.0, bpm:-0.5, ws48:.058, onOff:0.5, clutch:3.5, vorp:0.3, usg:14.0, injury:null, lebron:0.5, oLebron:-0.2, dLebron:0.7, war:2.0, offRole:"Stationary Shooter", defRole:"Wing Stopper",
+          matchupNote:"Starting SF. Defense + floor-stretching. CLE's weakest link — A.Thompson matchup if Wade guards him.", baseRating:58 },
+        { name:"Max Strus", pos:"SG", rating:65, ppg:11.2, rpg:5.4, apg:1.5, fgp:43.8, per:13.5, ts:58.5, epm:0.5, bpm:0.2, ws48:.078, onOff:1.2, clutch:5.5, vorp:0.9, usg:19.5, injury:null, lebron:-0.409, oLebron:0.15, dLebron:-0.559, war:0.37, offRole:"Movement Shooter", defRole:"Wing Stopper",
+          matchupNote:"R1 G1: 24pts (8/10 FG). 40.2% 3PT. First forward off bench. May start over Wade.", baseRating:65 },
+        { name:"Sam Merrill", pos:"SG", rating:65, ppg:12.8, rpg:2.8, apg:1.8, fgp:44.2, per:14.2, ts:60.5, epm:0.5, bpm:0.2, ws48:.078, onOff:1.0, clutch:5.0, vorp:0.9, usg:20.0, injury:null, lebron:1.289, oLebron:1.567, dLebron:-0.278, war:3.235, offRole:"Movement Shooter", defRole:"Chaser",
+          matchupNote:"42.4% 3PT. Best bench shooter. Provides spacing for Harden/Mitchell drives.", baseRating:65 },
+        { name:"Dennis Schroder", pos:"PG", rating:62, ppg:8.2, rpg:2.5, apg:4.3, fgp:43.5, per:13.0, ts:55.0, epm:0.2, bpm:0.0, ws48:.068, onOff:0.5, clutch:4.5, vorp:0.5, usg:18.0, injury:null, lebron:0.5, oLebron:0.3, dLebron:0.2, war:1.5, offRole:"Secondary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"Backup creation when Harden rests. Playoff-experienced veteran.", baseRating:62 },
+        { name:"Jaylon Tyson", pos:"SF", rating:64, ppg:13.2, rpg:5.1, apg:2.0, fgp:44.8, per:13.8, ts:55.5, epm:0.2, bpm:-0.1, ws48:.072, onOff:0.5, clutch:4.5, vorp:0.7, usg:19.5, injury:null, lebron:0.604, oLebron:0.804, dLebron:-0.2, war:3.414, offRole:"Movement Shooter", defRole:"Chaser",
+          matchupNote:"Bench wing scorer. 13.2ppg provides bench punch.", baseRating:64 }
+      ],
+      synergy: [
+        { players:["Harden","Mitchell","Wade","Mobley","Allen"], score:82, note:"Starting 5. Triple-initiator system. +26.7 NetRtg in Mitchell-Harden minutes. G7: Allen 22/19 anchored interior." },
+        { players:["Harden","Mitchell","Strus","Mobley","Allen"], score:80, note:"Strus may replace Wade for more shooting. Maximizes Harden's playmaking." },
+        { players:["Schroder","Merrill","Strus","Tyson","Mobley"], score:68, note:"Bench unit. Schroder handles ball. 3PT shooters around Mobley anchor." }
+      ]
+    },
+    externalFactors: [
+      { team:"DET", player:null, desc:"Historic 3-1 comeback vs ORL in R1. Momentum and confidence are sky-high. But exhaustion from 7-game series with short rest (2 days).", impact:2, category:"momentum", evidence:"Came back from 3-1. G7 at home 116-94. Franchise hasn't been in East semis since 2008.", verdict:"verified" },
+      { team:"DET", player:null, desc:"31-9 home record (best in East). Home court advantage is substantial for young team feeding off crowd.", impact:3, category:"home_court", evidence:"DET's home NetRtg is elite. Crowd energy fueled comeback.", verdict:"verified" },
+      { team:"CLE", player:null, desc:"Won R1 G7 114-102 vs TOR. But required OT in G6 and faced elimination. Equal fatigue to DET (both played G7 May 3).", impact:1, category:"momentum", evidence:"Allen 22/19 in G7. Mitchell 22 (15 in 2H). Team proved resilience.", verdict:"verified" },
+      { team:"CLE", player:"James Harden", desc:"Harden's playoff history is a concern — Game 7 moments have historically been his weakness. But as 2nd option behind Mitchell, pressure is reduced.", impact:-2, category:"performance", evidence:"Harden's playoff reputation precedes him. CLE 21-6 post-trade mitigates concerns.", verdict:"verified" },
+      { team:"DET", player:"Cade Cunningham", desc:"Collapsed lung recovery improving each game. G7: 32pts/12ast — looked fully healthy. But 7 games of heavy minutes takes a toll on a player recovering from pneumothorax.", impact:-1, category:"injury", evidence:"Cunningham's conditioning has been the key variable. Getting better but a deep playoff run tests limits.", verdict:"verified" },
+      { team:"CLE", player:"Jarrett Allen", desc:"Chronic knee tendonitis. GTD throughout R1. Limits rim protection energy in a long series. Only reliable backup is Thomas Bryant.", impact:-2, category:"injury", evidence:"Played through G7 (22/19) but knee limits burst. Long series fatigue compounds.", verdict:"verified" }
+    ],
+    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:106,awayScore:103,margin:3,confidence:"LOW",character:"GRIND",reasoning:"The closest R2 matchup — could go either way. Both teams just finished grueling 7-game R1 series on May 3 (DET: 3-1 comeback vs ORL, 116-94; CLE: survived TOR, 114-102). Equal rest (~3 days). Huerter (DET) is GTD with thigh — minor impact. G7 TAKEAWAYS: (1) Cade dual-mode evolution — scored 45 in G5 then facilitated 32/12ast in G7. DET coaching can toggle Cade's role based on matchup. (2) CLE depth is elite — bench outscored TOR bench 39-19 in G7 (Strus +20, Tyson +19, Merrill +16). (3) Allen 22/19 (8 OREB) interior dominance will test Duren physically. Allen's chronic knee tendonitis (GTD) is a concern for a long series. (4) Harris breakout (30pts G7, 5-7 3PT) gives DET a legitimate #2 scorer. Key matchup: A.Thompson (D-LEBRON 2.93) on Mitchell vs Cade vs CLE rotating defenders. DET has #1 defense (107.2 DRtg) and best home record (31-9). CLE has triple-initiator offense (Mitchell/Harden/Mobley). DET home court provides narrow edge. Expect low-scoring, physical game with late-game execution deciding it. Mitchell 8.5 clutch rating gives CLE Q4 edge but DET crowd at LCA is deafening. Coin flip with slight home tilt.",xFactor:"Cade Cunningham",moneyline:"DET -155",spread:"DET -1.5",ou:"O/U 209.5"},notes:""}]
+  },
+  {
+    id: "NYK-PHI", conf: "East", round: "R2",
+    priorRound: {
+      home: { seriesId: "NYK-ATL", gamesPlayed: 6, round: "R1" },
+      away: { seriesId: "BOS-PHI", gamesPlayed: 7, round: "R1" }
+    },
+    defMatchups: {
+      homeDefOnAway: { defender:"OG Anunoby", target:"Tyrese Maxey", dLebron:1.724, targetUsg:31.5, note:"OG is the best wing defender in the East. Maxey's speed is his weapon but OG's length (6-7, 7-2 wingspan) and lateral quickness has historically given quick guards trouble. NYK's switching scheme means Maxey can't just blow by — help is always there. Maxey averaged 30ppg vs BOS but that defense was compromised." },
+      awayDefOnHome: { defender:"Paul George", target:"Jalen Brunson", dLebron:0.469, targetUsg:29.8, note:"George's experience defending elite PGs (Kawhi era, PHX matchups) makes him PHI's best option on Brunson. But Brunson has 8 career 40-pt playoff games and a 9.2 clutch rating — he elevation in playoffs is historic. MSG crowd amplifies his performance. PHI may need to double Brunson and dare others to beat them." }
+    },
+    homeTeam: {
+      name: "Knicks", city: "New York", abbr: "NYK", seed: 3, record: "53-29",
+      systemBonus: 1.5, playoffPedigree: 1,
+      offStyle: "Brunson P&R primary + elite cutting/motion. Won R1 4-2 with HISTORIC 140-89 G6 blowout (NBA record 47pt halftime lead). Starters rested in G6 blowout. 4 days rest. Deepest wing rotation in NBA.", initiators: 2,
+      color: "#006BB6", color2: "#F58426",
+      advStats: { ortg:116.8, drtg:110.5, netRtg:6.3, pace:97.2, ts:58.4, efg:55.2, tov:12.8, reb:51.8, ortgRk:4, drtgRk:6, clutchNetRtg:9.2, last10:"7-3", fgPct:52.2, threePct:36.3, ftPct:78.8, orbPct:25.4 },
+      players: [
+        { name:"Jalen Brunson", pos:"PG", rating:87, ppg:26.0, rpg:3.3, apg:6.8, fgp:47.8, per:20.1, ts:61.0, epm:6.0, bpm:3.1, ws48:.200, onOff:8.5, clutch:9.2, vorp:3.3, usg:29.8, injury:null, lebron:2.077, oLebron:3.528, dLebron:-1.45, war:7.351, offRole:"Shot Creator", defRole:"Low Activity",
+          matchupNote:"8 career 40pt playoff games (most in NBA). 9.2 clutch rating. MSG amplifies everything. Against PHI's defense, Brunson will feast in PnR — Drummond can't switch and Embiid's lateral movement is limited post-appendectomy.", baseRating:87, starCeiling:1, injuryRisk:0.3, playoffAscension:1.5 },
+        { name:"Karl-Anthony Towns", pos:"C", rating:79, ppg:20.1, rpg:11.9, apg:3.0, fgp:49.8, per:22.5, ts:60.8, epm:3.5, bpm:3.8, ws48:.168, onOff:5.0, clutch:6.0, vorp:3.1, usg:26.0, injury:null, lebron:3.044, oLebron:2.152, dLebron:0.893, war:7.966, offRole:"Versatile Big", defRole:"Mobile Big",
+          matchupNote:"R1 G6: triple-double in blowout. Stretch-5, 37.5% from 3. Embiid/Drummond matchup — KAT's mobility and shooting creates nightmares for PHI's bigs.", baseRating:79, starCeiling:1, injuryRisk:0 },
+        { name:"OG Anunoby", pos:"SF", rating:74, ppg:16.7, rpg:4.8, apg:2.2, fgp:48.5, per:17.2, ts:58.5, epm:2.5, bpm:2.2, ws48:.132, onOff:4.2, clutch:5.8, vorp:2.2, usg:23.8, injury:null, lebron:1.821, oLebron:0.096, dLebron:1.724, war:5.96, offRole:"Stationary Shooter", defRole:"Wing Stopper",
+          matchupNote:"R1 G6: 29pts in 27min. Elite wing D — will guard Maxey/George. DRtg 104.2 when on court. 39.1% from 3.", baseRating:74 },
+        { name:"Mikal Bridges", pos:"SF", rating:72, ppg:14.4, rpg:3.8, apg:3.7, fgp:46.2, per:15.5, ts:57.2, epm:1.5, bpm:1.2, ws48:.105, onOff:2.8, clutch:5.2, vorp:1.6, usg:22.5, injury:null, lebron:2.232, oLebron:1.336, dLebron:0.896, war:7.898, offRole:"Movement Shooter", defRole:"Point of Attack",
+          matchupNote:"Former Sixer (draft night trade). NYK traded 6 FRPs for him — needs to produce. R1 was inconsistent but defensive impact (WAR 7.898) remains elite. Matchup motivation vs PHI.", baseRating:72 },
+        { name:"Josh Hart", pos:"SG", rating:68, ppg:12.0, rpg:7.4, apg:4.8, fgp:44.8, per:14.8, ts:56.2, epm:1.2, bpm:1.0, ws48:.092, onOff:3.0, clutch:6.2, vorp:1.4, usg:20.8, injury:null, lebron:1.317, oLebron:0.271, dLebron:1.046, war:4.718, offRole:"Stationary Shooter", defRole:"Wing Stopper",
+          matchupNote:"Hustle engine. 7.4 RPG from guard spot. Won't shrink at MSG. 6.2 clutch rating.", baseRating:68 },
+        { name:"Miles McBride", pos:"SG", rating:62, ppg:12.0, rpg:2.4, apg:2.6, fgp:42.3, per:14.0, ts:58.0, epm:0.8, bpm:0.5, ws48:.090, onOff:2.0, clutch:5.5, vorp:1.0, usg:20.8, injury:null, lebron:0.971, oLebron:1.331, dLebron:-0.36, war:2.323, offRole:"Secondary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"41.3% 3PT. Key 6th man. Tenacious defender.", baseRating:62 },
+        { name:"Mitchell Robinson", pos:"C", rating:56, ppg:5.7, rpg:8.8, apg:0.9, fgp:72.3, per:16.0, ts:68.0, epm:0.5, bpm:0.5, ws48:.110, onOff:1.5, clutch:3.0, vorp:0.7, usg:14.5, injury:null, lebron:2.234, oLebron:0.646, dLebron:1.588, war:3.447, offRole:"Athletic Finisher", defRole:"Mobile Big",
+          matchupNote:"Elite OREB and rim protection. Backup to KAT.", baseRating:56 },
+        { name:"Guerschon Yabusele", pos:"PF", rating:58, ppg:7.2, rpg:4.5, apg:1.2, fgp:46.5, per:13.0, ts:56.0, epm:0.2, bpm:0.0, ws48:.065, onOff:0.5, clutch:4.0, vorp:0.5, usg:16.5, injury:null, offRole:"Stretch Big", defRole:"Helper",
+          matchupNote:"Stretch-4 off bench. 37% from 3. Former Sixer — familiar with PHI system.", baseRating:58 },
+        { name:"Jordan Clarkson", pos:"SG", rating:60, ppg:8.6, rpg:2.2, apg:2.5, fgp:43.5, per:12.5, ts:55.0, epm:-0.2, bpm:-0.5, ws48:.058, onOff:0.5, clutch:4.0, vorp:0.4, usg:20.0, injury:null, offRole:"Shot Creator", defRole:"Low Activity",
+          matchupNote:"Bench guard scorer. Microwave off bench.", baseRating:60 },
+        { name:"Landry Shamet", pos:"SG", rating:58, ppg:9.3, rpg:2.0, apg:1.5, fgp:44.0, per:11.5, ts:57.0, epm:0.0, bpm:-0.5, ws48:.058, onOff:0.3, clutch:3.8, vorp:0.3, usg:18.0, injury:null, offRole:"Movement Shooter", defRole:"Helper",
+          matchupNote:"Reliable 3-and-D wing off bench.", baseRating:58 }
+      ],
+      synergy: [
+        { players:["Brunson","Hart","Bridges","Anunoby","Towns"], score:84, note:"Closing 5. Best 4th-Q NetRtg in PBP era. Brunson 9.2 clutch. MSG crowd adds 3+ points. R1 G6: rested starters in 140-89 blowout." },
+        { players:["Brunson","McBride","Hart","Anunoby","Robinson"], score:78, note:"Defensive lineup. Robinson rim protection + OG perimeter lockdown." },
+        { players:["McBride","Clarkson","Shamet","Yabusele","Robinson"], score:62, note:"Bench unit. McBride shooting + Clarkson microwave scoring." }
+      ]
+    },
+    awayTeam: {
+      name: "76ers", city: "Philadelphia", abbr: "PHI", seed: 7, record: "45-37",
+      systemBonus: 0.5, playoffPedigree: 0,
+      offStyle: "Embiid + Maxey dual-star. Came back from 3-1 deficit vs BOS — first in franchise history. Embiid returned from appendectomy and scored 100+ pts in final 4 games. G7: Embiid 34/12/6, Maxey 30/11/7. But only 2 days rest. Edgecombe rookie breakout.", initiators: 2,
+      color: "#006BB6", color2: "#ED174C",
+      advStats: { ortg:113.2, drtg:112.5, netRtg:0.7, pace:97.8, ts:56.8, efg:53.1, tov:13.5, reb:49.5, ortgRk:16, drtgRk:17, clutchNetRtg:0.8, last10:"5-5", fgPct:50.1, threePct:33.2, ftPct:75.6, orbPct:23.6 },
+      players: [
+        { name:"Joel Embiid", pos:"C", rating:82, ppg:26.9, rpg:7.7, apg:3.9, fgp:49.2, per:29.2, ts:64.5, epm:7.8, bpm:9.0, ws48:.250, onOff:13.2, clutch:8.8, vorp:6.2, usg:33.0, injury:"PROBABLE — hip contusion + post-appendectomy (G7: 34pts, expected to play G1)", lebron:1.736, oLebron:2.452, dLebron:-0.716, war:3.154, offRole:"Shot Creator", defRole:"Anchor Big",
+          matchupNote:"R1: returned G3 from appendectomy. G7 in Boston: 34/12/6 — franchise-defining performance. PROBABLE for G1 per ESPN (May 3). Hip contusion from G7 contact. Scored 100+ pts in final 4 R1 games. Post-appendectomy recovery + hip + only 2 days rest = fatigue concern but Embiid has proven he'll play through it. Rating maintained at 82 reflecting dominant R1 finish but fatigue/injury drag.", baseRating:92, starCeiling:2, injuryRisk:0.5, activeInjury:{type:"hip contusion + post-appendectomy",severity:0.4,note:"May 3: ESPN lists Embiid as PROBABLE for G1. Hip contusion from G7. Only 48 hours rest. Expected to play but at reduced capacity."} },
+        { name:"Tyrese Maxey", pos:"PG", rating:84, ppg:28.3, rpg:4.1, apg:6.6, fgp:45.5, per:25.2, ts:60.5, epm:5.5, bpm:6.0, ws48:.185, onOff:8.0, clutch:7.8, vorp:4.7, usg:31.5, injury:null, lebron:2.933, oLebron:3.584, dLebron:-0.651, war:8.951, offRole:"Shot Creator", defRole:"Chaser",
+          matchupNote:"G7: 30/11/7 — historic performance alongside Embiid. PHI's engine. Elite speed. OG/Bridges matchup will test him — NYK's wing defense is elite. Only 2 days rest after G7.", baseRating:84, starCeiling:1, injuryRisk:0 },
+        { name:"Paul George", pos:"SF", rating:72, ppg:17.3, rpg:5.3, apg:3.6, fgp:44.2, per:17.2, ts:57.5, epm:2.0, bpm:1.8, ws48:.115, onOff:2.2, clutch:4.8, vorp:2.2, usg:24.5, injury:null, lebron:1.746, oLebron:1.277, dLebron:0.469, war:2.989, offRole:"Shot Creator", defRole:"Helper",
+          matchupNote:"Returning from 25-game suspension. Looked sharper as R1 progressed. 4.8 clutch rating is concerning in big moments. PHI needs his 3rd-star production to compete.", baseRating:75 },
+        { name:"VJ Edgecombe", pos:"SG", rating:72, ppg:16.0, rpg:5.6, apg:4.2, fgp:44.2, per:16.5, ts:55.8, epm:0.5, bpm:0.2, ws48:.078, onOff:1.2, clutch:4.5, vorp:0.9, usg:21.2, injury:null, lebron:0.001, oLebron:-0.079, dLebron:0.08, war:4.046, offRole:"Primary Ball Handler", defRole:"Point of Attack",
+          matchupNote:"Breakout rookie. R1 G2: 30pts (12-20 FG, 6-10 3PT). PHI's long-term backcourt partner with Maxey. Energy and motor. Rating bumped 70→72 for playoff emergence.", baseRating:70 },
+        { name:"Kelly Oubre Jr.", pos:"SF", rating:64, ppg:14.1, rpg:5.0, apg:1.8, fgp:44.5, per:13.5, ts:55.5, epm:0.2, bpm:-0.3, ws48:.068, onOff:0.5, clutch:4.0, vorp:0.6, usg:20.0, injury:null, offRole:"Movement Shooter", defRole:"Wing Stopper",
+          matchupNote:"Starting wing. Physicality and scoring. Interchangeable with Edgecombe.", baseRating:64 },
+        { name:"Andre Drummond", age:32, pos:"C", rating:58, ppg:6.4, rpg:8.4, apg:1.2, fgp:54.5, per:14.2, ts:56.5, epm:-0.2, bpm:-0.5, ws48:.068, onOff:-0.5, clutch:3.5, vorp:0.3, usg:16.5, injury:null, offRole:"Roll + Cut Big", defRole:"Anchor Big",
+          matchupNote:"Starting C when Embiid rests. KAT will feast on him — Drummond can't guard stretch-5s.", baseRating:58 },
+        { name:"Quentin Grimes", pos:"SG", rating:60, ppg:13.4, rpg:3.6, apg:3.3, fgp:43.0, per:13.5, ts:55.0, epm:-0.2, bpm:-0.5, ws48:.060, onOff:0.0, clutch:3.8, vorp:0.4, usg:19.5, injury:null, offRole:"Movement Shooter", defRole:"Chaser",
+          matchupNote:"First name off bench. 13.4ppg. Versatile swingman.", baseRating:60 },
+        { name:"Dominick Barlow", pos:"PF", rating:58, ppg:7.7, rpg:4.8, apg:1.5, fgp:47.5, per:12.5, ts:55.5, epm:0.0, bpm:-0.2, ws48:.065, onOff:0.2, clutch:4.0, vorp:0.6, usg:18.8, injury:null, offRole:"Athletic Finisher", defRole:"Wing Stopper",
+          matchupNote:"Bench big. Athletic PF with length.", baseRating:58 },
+        { name:"Justin Edwards", pos:"SF", rating:52, ppg:6.0, rpg:1.5, apg:1.3, fgp:42.0, per:9.5, ts:53.0, epm:-0.5, bpm:-1.0, ws48:.045, onOff:-0.5, clutch:3.5, vorp:0.1, usg:14.5, injury:null, offRole:"Movement Shooter", defRole:"Wing Stopper",
+          matchupNote:"Role-playing forward. Depth option.", baseRating:52 }
+      ],
+      synergy: [
+        { players:["Maxey","Edgecombe","Oubre","George","Embiid"], score:78, note:"Full-strength closing 5. Embiid 34/12/6 in G7. Maxey 30/11/7. When both are healthy and engaged, PHI can beat anyone. But Embiid's health is THE variable." },
+        { players:["Maxey","Edgecombe","Oubre","George","Drummond"], score:60, note:"Embiid-rest lineup. Significant drop-off. Drummond can't space the floor or protect the rim at elite level." },
+        { players:["Grimes","Barlow","J.Edwards","Drummond","Oubre"], score:48, note:"Bench unit. Thin depth. NYK's bench will dominate this group." }
+      ]
+    },
+    externalFactors: [
+      { team:"NYK", player:null, desc:"4 days rest. Starters rested in R1 G6 blowout (140-89). Freshest team in the East besides the round structure. MSG home court is worth 3+ points.", impact:5, category:"rest", evidence:"NYK's R1 G6 was a historic 51-point blowout. Starters played ~27min each. Fully rested.", verdict:"verified" },
+      { team:"NYK", player:null, desc:"Deepest wing rotation in NBA: OG, Bridges, Hart, McBride, Shamet, Clarkson. PHI's lack of depth will be exposed over 48 minutes.", impact:3, category:"depth", evidence:"NYK's 9-man rotation outperformed ATL's bench by 20+ pts in R1.", verdict:"verified" },
+      { team:"PHI", player:"Joel Embiid", desc:"PROBABLE G1 but hip contusion + post-appendectomy + only 2 days rest after grueling G7 in Boston. Health is 75-80%. Scored 100+ pts in last 4 R1 games but at what cost?", impact:-4, category:"injury", evidence:"G7: 34/12/6 but knee rolled into twice. Hip contusion from contact. Post-surgery conditioning still building.", verdict:"verified" },
+      { team:"PHI", player:null, desc:"Historic 3-1 comeback vs BOS. Emotional momentum is real but physical toll of 7 games + travel + only 2 days rest could produce a letdown.", impact:2, category:"momentum", evidence:"PHI first franchise 3-1 comeback. Embiid and Maxey played 40+ minutes in G6 and G7.", verdict:"verified" },
+      { team:"NYK", player:null, desc:"Line moved from NYK -5.5 to -7.5. Sharp money on NYK. Market pricing in PHI fatigue and Embiid health uncertainty.", impact:2, category:"market", evidence:"DraftKings spread movement: -5.5 open → -7.5 current. 68% of bets on NYK.", verdict:"verified" },
+      { team:"PHI", player:null, desc:"Only 2 days rest after G7 in Boston. Maxey and Embiid both played 40+ minutes. Physical toll is severe vs a rested, deep NYK team.", impact:-5, category:"fatigue", evidence:"G7 was May 2. G1 is May 4. Only 48 hours between games — barely time to recover.", verdict:"verified" }
+    ],
+    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:110,awayScore:101,margin:9,confidence:"MEDIUM",character:"CONTROL",reasoning:"NYK -7.5 (O/U 213.5) per DraftKings. NYK has massive structural advantages: 6 days rest vs PHI's 2 (after grueling G7 in Boston where Embiid played 39min, Maxey 45min). MSG home court (9.2 clutch NetRtg). Embiid is PROBABLE per ESPN (May 3) — expected to play but hip contusion + post-appendectomy + 48hr turnaround is a ticking time bomb. Sochan (NYK) is QUESTIONABLE with hamstring — if OUT, NYK adjusts rotation slightly but has elite depth to compensate. Edgecombe (23pts, +19 in G7) is a legit weapon but a rookie on 2 days rest at MSG is a different animal. PHI's 3-1 comeback proves mental toughness but the physical toll is severe — this is the classic emotional letdown spot after a historic achievement. NYK depth (OG/Bridges/Hart/McBride/Shamet) will grind PHI's 7-man rotation into dust by Q3. KAT stretch-5 game forces Drummond out of the paint. Brunson (9.2 clutch, playoff ascension 1.5) feasts in PnR vs compromised Embiid laterally. Model aligns with market: NYK by 9. Lower total (213.5) reflects PHI fatigue depressing pace.",xFactor:"Brunson",moneyline:"NYK -310",spread:"NYK -7.5",ou:"O/U 213.5"},notes:""}]
   }
 ];
 
@@ -3155,7 +3504,7 @@ const TURNOVER_FOUL_DATA = {
       ],
       away: [
         { player: "LeBron", pfPG: 3.0, foulOutRisk: "LOW", impactIfOut: "Only 2 games with 6 PF in 293 career playoff games. Elite foul avoidance." },
-        { player: "AD", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "AD in foul trouble = LAL rim protection vanishes. Critical for containing Sengun drives." }
+        { player: "Ayton", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "Ayton in foul trouble = LAL rim protection vanishes. Critical for containing Sengun drives." }
       ],
       modelImpact: "Sengun's 5.0 PF in G1 is alarming — Smart's physical defense draws fouls. If Sengun picks up 2 early fouls, Udoka must bench him, and HOU's offense flatlines."
     }
@@ -3326,6 +3675,71 @@ const TURNOVER_FOUL_DATA = {
         { player: "Poeltl", pfPG: 3.0, foulOutRisk: "MEDIUM", impactIfOut: "Already marginalized (9min G2). Foul trouble would end any chance of a Poeltl return to the rotation." }
       ],
       modelImpact: "TOR's foul situation compounds their turnover problem. Shead at 4.5 PF/game as the ONLY healthy PG is terrifying — one early foul trouble game and TOR literally has no ballhandler. CLE should attack Shead aggressively in P&R to draw fouls."
+    }
+  }
+,
+  "OKC-LAL": {
+    turnover: {
+      home: { teamTOV: 11.8, tovPct: 11.2, keyRisks: [
+        { player: "SGA", tovPG: 2.8, careerPlayoffTOV: 2.5, pressureNote: "Handles pressure well, elite ball security in iso" },
+        { player: "Holmgren", tovPG: 1.8, careerPlayoffTOV: 1.5, pressureNote: "Occasional post-up TOs but improving" }
+      ]},
+      away: { teamTOV: 14.5, tovPct: 13.8, keyRisks: [
+        { player: "LeBron", tovPG: 3.8, careerPlayoffTOV: 3.5, pressureNote: "High usage = more TOs, but veteran poise" },
+        { player: "Ayton", tovPG: 2.2, careerPlayoffTOV: 2.0, pressureNote: "Post-up fumbles vs elite length" }
+      ]}
+    },
+    foulTrouble: {
+      home: [{ player: "Holmgren", fpg: 3.2, foulRate: "high", note: "Length leads to reach fouls" }],
+      away: [{ player: "Ayton", fpg: 3.5, foulRate: "high", note: "Physical play draws fouls vs OKC length" }]
+    }
+  },
+  "SAS-MIN": {
+    turnover: {
+      home: { teamTOV: 12.5, tovPct: 12.0, keyRisks: [
+        { player: "Wembanyama", tovPG: 2.5, careerPlayoffTOV: 2.2, pressureNote: "Occasionally rushed passing from post" },
+        { player: "Fox", tovPG: 3.0, careerPlayoffTOV: 2.8, pressureNote: "Transition turnovers when pushing pace" }
+      ]},
+      away: { teamTOV: 13.8, tovPct: 13.2, keyRisks: [
+        { player: "Randle", tovPG: 3.2, careerPlayoffTOV: 3.5, pressureNote: "Isolation TOs spike under pressure" },
+        { player: "Conley", tovPG: 2.0, careerPlayoffTOV: 2.2, pressureNote: "Veteran but aging — slower decisions" }
+      ]}
+    },
+    foulTrouble: {
+      home: [{ player: "Wembanyama", fpg: 3.0, foulRate: "moderate", note: "Shot-blocking aggressiveness" }],
+      away: [{ player: "Randle", fpg: 3.8, foulRate: "high", note: "Physical play, frustration fouls" }]
+    }
+  },
+  "DET-CLE": {
+    turnover: {
+      home: { teamTOV: 12.0, tovPct: 11.5, keyRisks: [
+        { player: "Cunningham", tovPG: 3.5, careerPlayoffTOV: 3.2, pressureNote: "High usage creates TO exposure but improving" },
+        { player: "Huerter", tovPG: 1.5, careerPlayoffTOV: 1.3, pressureNote: "Low risk, spot-up role" }
+      ]},
+      away: { teamTOV: 13.0, tovPct: 12.5, keyRisks: [
+        { player: "Harden", tovPG: 4.0, careerPlayoffTOV: 3.8, pressureNote: "Dribble-heavy style creates TO risk" },
+        { player: "Mitchell", tovPG: 3.0, careerPlayoffTOV: 2.8, pressureNote: "Shot-hunting leads to live-ball TOs" }
+      ]}
+    },
+    foulTrouble: {
+      home: [{ player: "Duren", fpg: 3.5, foulRate: "high", note: "Young center, physical play" }],
+      away: [{ player: "Allen", fpg: 3.0, foulRate: "moderate", note: "Knee tendonitis may limit aggression" }]
+    }
+  },
+  "NYK-PHI": {
+    turnover: {
+      home: { teamTOV: 11.5, tovPct: 11.0, keyRisks: [
+        { player: "Brunson", tovPG: 2.5, careerPlayoffTOV: 2.3, pressureNote: "Elite ball security, rarely fumbles" },
+        { player: "Towns", tovPG: 2.0, careerPlayoffTOV: 1.8, pressureNote: "Post-up passing occasionally erratic" }
+      ]},
+      away: { teamTOV: 14.0, tovPct: 13.5, keyRisks: [
+        { player: "Maxey", tovPG: 3.0, careerPlayoffTOV: 2.8, pressureNote: "Speed creates TO risk on drives" },
+        { player: "Embiid", tovPG: 3.5, careerPlayoffTOV: 3.2, pressureNote: "Fatigue + double teams = fumbles" }
+      ]}
+    },
+    foulTrouble: {
+      home: [{ player: "Towns", fpg: 3.2, foulRate: "moderate", note: "Defensive fouls guarding bigs" }],
+      away: [{ player: "Drummond", fpg: 4.0, foulRate: "high", note: "Physical center, foul-prone" }]
     }
   }
 };
@@ -3527,6 +3941,79 @@ const THREE_POINT_VARIANCE_DATA = {
       modelNote: "TOR's 3PT story is mixed: Barnes hot (.500 vs .320 career), Walter cold (.364 vs .409), Ingram cold (.250). TOR's low volume (26.5 3PA vs 36 for CLE) means 3PT variance has less total impact on their scoring. TOR's path to competitiveness runs through the paint, not the arc."
     },
     seriesImpact: "CLE has more regression DOWN risk (Mitchell/Harden/Strus all hot) than TOR has regression UP potential (low 3PA volume). Net: CLE's G3 scoring may dip 3-4 points from 3PT regression alone. However, CLE's overall offensive machine is paint-dominant (48-30 paint advantage in G1), so 3PT regression is a secondary factor. LOW-MODERATE IMPACT."
+  }
+,
+  "OKC-LAL": {
+    home: {
+      team: { regSeason3Pct: .382, playoff3Pct: .395, threePA: 38, delta: .013, verdict: "HOT" },
+      keyShooters: [
+        { player: "SGA", playoff3: "12/28 (.429)", season3Pct: .352, verdict: "HOT — playoff surge" },
+        { player: "Joe", playoff3: "8/18 (.444)", season3Pct: .398, verdict: "HOT — role player elevation" },
+        { player: "Wallace", playoff3: "5/12 (.417)", season3Pct: .365, verdict: "SLIGHTLY HOT" }
+      ]
+    },
+    away: {
+      team: { regSeason3Pct: .355, playoff3Pct: .342, threePA: 30, delta: -.013, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "Kennard", playoff3: "14/32 (.438)", season3Pct: .445, verdict: "NORMAL" },
+        { player: "Smart", playoff3: "8/22 (.364)", season3Pct: .338, verdict: "SLIGHTLY HOT" },
+        { player: "Reaves", playoff3: "7/20 (.350)", season3Pct: .362, verdict: "SLIGHTLY COLD — oblique limiting" }
+      ]
+    }
+  },
+  "SAS-MIN": {
+    home: {
+      team: { regSeason3Pct: .368, playoff3Pct: .375, threePA: 32, delta: .007, verdict: "NORMAL" },
+      keyShooters: [
+        { player: "Champagnie", playoff3: "10/24 (.417)", season3Pct: .385, verdict: "SLIGHTLY HOT" },
+        { player: "Castle", playoff3: "6/15 (.400)", season3Pct: .358, verdict: "HOT — youth breakout" },
+        { player: "Fox", playoff3: "5/18 (.278)", season3Pct: .325, verdict: "COLD" }
+      ]
+    },
+    away: {
+      team: { regSeason3Pct: .358, playoff3Pct: .345, threePA: 34, delta: -.013, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "Conley", playoff3: "8/22 (.364)", season3Pct: .378, verdict: "SLIGHTLY COLD" },
+        { player: "Randle", playoff3: "4/14 (.286)", season3Pct: .312, verdict: "COLD" },
+        { player: "Gobert", playoff3: "0/0", season3Pct: .000, verdict: "N/A" }
+      ]
+    }
+  },
+  "DET-CLE": {
+    home: {
+      team: { regSeason3Pct: .372, playoff3Pct: .365, threePA: 31, delta: -.007, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "D.Robinson", playoff3: "15/36 (.417)", season3Pct: .412, verdict: "NORMAL" },
+        { player: "Harris", playoff3: "12/30 (.400)", season3Pct: .388, verdict: "SLIGHTLY HOT — G7 breakout 5/7" },
+        { player: "Huerter", playoff3: "6/16 (.375)", season3Pct: .392, verdict: "SLIGHTLY COLD" }
+      ]
+    },
+    away: {
+      team: { regSeason3Pct: .365, playoff3Pct: .358, threePA: 33, delta: -.007, verdict: "SLIGHTLY COLD" },
+      keyShooters: [
+        { player: "Strus", playoff3: "14/35 (.400)", season3Pct: .378, verdict: "SLIGHTLY HOT" },
+        { player: "Mitchell", playoff3: "10/28 (.357)", season3Pct: .365, verdict: "NORMAL" },
+        { player: "Merrill", playoff3: "8/20 (.400)", season3Pct: .412, verdict: "SLIGHTLY COLD" }
+      ]
+    }
+  },
+  "NYK-PHI": {
+    home: {
+      team: { regSeason3Pct: .375, playoff3Pct: .382, threePA: 35, delta: .007, verdict: "SLIGHTLY HOT" },
+      keyShooters: [
+        { player: "Brunson", playoff3: "12/30 (.400)", season3Pct: .378, verdict: "SLIGHTLY HOT" },
+        { player: "Towns", playoff3: "10/26 (.385)", season3Pct: .368, verdict: "SLIGHTLY HOT" },
+        { player: "McBride", playoff3: "8/18 (.444)", season3Pct: .412, verdict: "HOT" }
+      ]
+    },
+    away: {
+      team: { regSeason3Pct: .352, playoff3Pct: .338, threePA: 30, delta: -.014, verdict: "COLD" },
+      keyShooters: [
+        { player: "Maxey", playoff3: "12/32 (.375)", season3Pct: .388, verdict: "SLIGHTLY COLD" },
+        { player: "George", playoff3: "8/24 (.333)", season3Pct: .368, verdict: "COLD" },
+        { player: "Edgecombe", playoff3: "5/12 (.417)", season3Pct: .350, verdict: "HOT — rookie surge" }
+      ]
+    }
   }
 };
 
@@ -3862,5 +4349,118 @@ const ROLE_FLEXIBILITY_DATA = {
     flexDifferential: 2.5,
     modelAdjustment: 1.0,
     seriesNote: "CLE's ability to toggle between Harden-as-facilitator and Harden-as-scorer gives them unique offensive flexibility. Mobley's 1-5 defensive switching is a structural advantage TOR has no answer for. TOR's lineup experimentation (benching Poeltl, trying small-ball, starting Mamukelashvili) shows they're SEARCHING for flexibility but haven't found it. Quickley's return for G3 could narrow this gap by adding a second ball-handler."
+  }
+,
+  "OKC-LAL": {
+    home: {
+      team: "OKC",
+      switchDefense: 9.0,
+      offRoleFlex: 8.5,
+      lineupOptions: 9.0,
+      positionalVersatility: 8.5,
+      overallFlex: 8.8,
+      keyFlexPlayers: [
+        { player: "SGA", flexNote: "6-6 guard — plays 1-3, elite iso and PnR" },
+        { player: "Dort", flexNote: "6-4 tank — guards 1-4, switchable on every screen" },
+        { player: "Caruso", flexNote: "6-5 wing — defends 1-3, secondary playmaker" }
+      ]
+    },
+    away: {
+      team: "LAL",
+      switchDefense: 6.5,
+      offRoleFlex: 7.0,
+      lineupOptions: 5.5,
+      positionalVersatility: 7.0,
+      overallFlex: 6.5,
+      keyFlexPlayers: [
+        { player: "LeBron", flexNote: "6-9 — plays 1-5, ultimate Swiss army knife at 41" },
+        { player: "Smart", flexNote: "6-3 PG — guards 1-3, pest defender" },
+        { player: "Reaves", flexNote: "6-5 SG — scoring and playmaking from wing" }
+      ]
+    }
+  },
+  "SAS-MIN": {
+    home: {
+      team: "SAS",
+      switchDefense: 8.5,
+      offRoleFlex: 8.0,
+      lineupOptions: 8.5,
+      positionalVersatility: 9.0,
+      overallFlex: 8.5,
+      keyFlexPlayers: [
+        { player: "Wembanyama", flexNote: "7-4 — plays 4-5, guards 1-5, ultimate positional disruptor" },
+        { player: "Fox", flexNote: "6-3 PG — elite transition, primary creator" },
+        { player: "Castle", flexNote: "6-6 guard — defends 1-3, secondary playmaker" }
+      ]
+    },
+    away: {
+      team: "MIN",
+      switchDefense: 7.0,
+      offRoleFlex: 5.5,
+      lineupOptions: 5.0,
+      positionalVersatility: 6.5,
+      overallFlex: 6.0,
+      keyFlexPlayers: [
+        { player: "Gobert", flexNote: "7-1 rim protector — elite at one role" },
+        { player: "Randle", flexNote: "6-8 PF — iso scorer, limited range" },
+        { player: "Conley", flexNote: "6-1 PG — savvy veteran, declining mobility" }
+      ]
+    }
+  },
+  "DET-CLE": {
+    home: {
+      team: "DET",
+      switchDefense: 8.5,
+      offRoleFlex: 7.5,
+      lineupOptions: 7.5,
+      positionalVersatility: 8.0,
+      overallFlex: 7.9,
+      keyFlexPlayers: [
+        { player: "Cunningham", flexNote: "6-6 PG — plays 1-3, scorer and facilitator modes" },
+        { player: "A.Thompson", flexNote: "6-7 wing — elite perimeter D, guards 1-4" },
+        { player: "Harris", flexNote: "6-7 PF — stretch 4, solid defender" }
+      ]
+    },
+    away: {
+      team: "CLE",
+      switchDefense: 7.5,
+      offRoleFlex: 8.0,
+      lineupOptions: 8.0,
+      positionalVersatility: 7.5,
+      overallFlex: 7.8,
+      keyFlexPlayers: [
+        { player: "Mitchell", flexNote: "6-1 SG — primary scorer, clutch performer" },
+        { player: "Harden", flexNote: "6-5 PG — playmaker, secondary scorer, craft" },
+        { player: "Mobley", flexNote: "6-11 PF — guards 1-5, switchable, developing jumper" }
+      ]
+    }
+  },
+  "NYK-PHI": {
+    home: {
+      team: "NYK",
+      switchDefense: 8.5,
+      offRoleFlex: 8.0,
+      lineupOptions: 8.5,
+      positionalVersatility: 8.5,
+      overallFlex: 8.4,
+      keyFlexPlayers: [
+        { player: "OG Anunoby", flexNote: "6-7 wing — elite switch defender, 3&D" },
+        { player: "Bridges", flexNote: "6-6 wing — ironman, guards 1-4" },
+        { player: "Hart", flexNote: "6-5 SG — hustle, rebounding guard, defends 1-3" }
+      ]
+    },
+    away: {
+      team: "PHI",
+      switchDefense: 6.0,
+      offRoleFlex: 6.5,
+      lineupOptions: 6.0,
+      positionalVersatility: 6.5,
+      overallFlex: 6.3,
+      keyFlexPlayers: [
+        { player: "Embiid", flexNote: "7-0 C — dominant post, but limited mobility post-surgery" },
+        { player: "Maxey", flexNote: "6-2 PG — speed demon, primary creator" },
+        { player: "Edgecombe", flexNote: "6-5 rookie — athletic, raw but explosive" }
+      ]
+    }
   }
 };

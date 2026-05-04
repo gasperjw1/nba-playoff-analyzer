@@ -6,9 +6,9 @@
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 45-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 45 introduced deep lineage attribution fixes: Psychological Collapse, Fortress Venue Bonus, Liberation Factor, Elimination Streak Momentum, Player Inconsistency Variance, Capitulation Threshold, and Cascading Collapse.
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 46-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 46 scales the model to Round 2 with 4 new series (OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI), full roster graduation from R1, and research-backed G1 predictions.
 
-**Current model accuracy: G1-G6 ML record 25/42 (59.5%) | G1 7/8 (88%) | G4 3/4 (75%) | G5 6/7 (86%) | G6 1/3 (33.3%)**
+**R1 model accuracy: G1-G6 ML record 25/42 (59.5%) | G1 7/8 (88%) | G4 3/4 (75%) | G5 6/7 (86%) | G6 1/3 (33.3%)**
 
 ---
 
@@ -102,25 +102,36 @@ After a game completes, `buildGameAttribution()` distributes prediction error pr
 
 ---
 
-## Series Status (as of April 30, 2026)
+## Series Status (as of May 4, 2026)
 
+### Round 1 (Complete)
+| Series | Result | Winner |
+|--------|--------|--------|
+| OKC-PHX | OKC 4-0 | OKC (sweep) |
+| SAS-POR | SAS 4-1 | SAS |
+| DEN-MIN | MIN 4-2 | MIN |
+| HOU-LAL | LAL 4-2 | LAL |
+| DET-ORL | DET 4-3 | DET (3-1 comeback) |
+| BOS-PHI | PHI 4-3 | PHI (3-1 comeback) |
+| NYK-ATL | NYK 4-2 | NYK |
+| CLE-TOR | CLE 4-3 | CLE |
+
+### Round 2 (Active — G1 starting May 4)
 | Series | Score | Status | Next |
 |--------|-------|--------|------|
-| BOS-PHI | Tied 3-3 | Active | G7 Sat May 2 @ BOS |
-| NYK-ATL | NYK 4-2 | Complete | NYK wins |
-| DEN-MIN | MIN 4-2 | Complete | MIN wins |
-| HOU-LAL | LAL 3-2 | Active | G6 Fri May 1 @ LAL |
-| DET-ORL | ORL 3-2 | Active | G6 Fri May 1 @ ORL |
-| CLE-TOR | CLE 3-2 | Active | G6 Fri May 1 @ TOR |
-| OKC-PHX | OKC 4-0 | Complete | Sweep |
-| SAS-POR | SAS 4-1 | Complete | SAS won G5 |
+| (1) OKC vs (4) LAL | 0-0 | Pre-series | G1 Tue May 6 |
+| (2) SAS vs (6) MIN | 0-0 | Pre-series | G1 Sun May 4 |
+| (1) DET vs (4) CLE | 0-0 | Pre-series | G1 Tue May 6 |
+| (3) NYK vs (7) PHI | 0-0 | Pre-series | G1 Sun May 4 |
 
 ### Key Injury Notes (current)
-- **Edwards (MIN)**: OUT until May 9 (knee)
+- **Doncic (LAL)**: OUT — Grade 2 hamstring (no return timeline)
+- **Edwards (MIN)**: QUESTIONABLE — knee, likely OUT for G1 (target May 9 return)
 - **DiVincenzo (MIN)**: OUT for season (Achilles)
-- **Wagner (ORL)**: Questionable (calf)
-- **Reaves (LAL)**: ACTIVE — returned G5 from oblique strain (22pts, 4-16 FG, rusty)
-- **Embiid (PHI)**: Active since G2 (appendectomy recovery, baseRating 92, rating 80)
+- **Embiid (PHI)**: PROBABLE — appendectomy + hip contusion, 2 days rest after G7, rating 82
+- **Reaves (LAL)**: ACTIVE — oblique improving each game, ~80% for R2
+- **Allen (CLE)**: GTD — chronic knee tendonitis
+- **Cade (DET)**: ACTIVE — improving, rating 87
 
 ---
 
@@ -209,6 +220,7 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 | 43 | Market odds calibration — all G6 bets updated vs real DraftKings lines. CLE ML +110→-170, Jokic O24.5→O29.5, parlays recalculated |
 | 44 | G6 post-game attribution — 1/3 ML (worst day), 2/6 props. Star Elevation Modes concept (stars elevate via facilitating, not just scoring). Murray Inconsistency Factor. P&L -$698.47 |
 | 45 | Deep lineage attribution — 19 engine/sim fixes validated at 25/42 (59.5%, +3.4pp). New concepts: Psychological Collapse (+0.4/pt above 12), Fortress Venue (+1.5), Liberation Factor (45% clawback), Elimination Streak (+1.5/win), Player Inconsistency (margin compression), Capitulation (25pt threshold), Cascading Collapse (1.3x compound). Sim upgraded to 10K iterations with wider chaos ranges. |
+| 46 | Round 2 scaling — 4 new R2 series added (OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI) with full rosters graduated from R1, updated injury statuses, defensive matchups, synergy lineups, external factors, and research-backed G1 predictions. Round navigation auto-detects R2 tab. |
 
 ---
 

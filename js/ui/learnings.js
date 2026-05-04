@@ -819,6 +819,21 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 46 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 46 — Round 2 Scaling: 4 New Series + G1 Predictions</div>
+        <div class="learning-date">May 4, 2026</div>
+        <div class="learning-body">
+          <strong>Round 1 is complete. All 8 R1 series resolved. Model scaled to Round 2 with 4 new series, full roster graduation from R1, updated injuries, and research-backed G1 predictions.</strong><br><br>
+          <strong>1. R1 FINAL RECAP:</strong> OKC swept PHX (4-0). SAS beat POR (4-1). MIN upset DEN (4-2, without Edwards). LAL beat HOU (4-2, without Doncic). DET completed 3-1 comeback vs ORL (4-3). PHI completed 3-1 comeback vs BOS (4-3). NYK beat ATL (4-2). CLE beat TOR (4-3). Model accuracy: 25/42 ML picks (59.5%).<br><br>
+          <strong>2. R2 MATCHUPS:</strong> West: (1) OKC vs (4) LAL — massive mismatch, OKC favored by ~16pts. (2) SAS vs (6) MIN — Wemby vs Edwards-less MIN, SAS by ~12. East: (1) DET vs (4) CLE — closest series, both exhausted from G7s, DET by ~3. (3) NYK vs (7) PHI — rest advantage (4 days vs 2), MSG, NYK by ~9.<br><br>
+          <strong>3. KEY INJURY WATCH:</strong> Doncic OUT (Grade 2 hamstring, no timeline). Edwards QUESTIONABLE (knee, likely OUT G1, targeting May 9). Embiid PROBABLE (appendectomy + hip contusion + 2 days rest). Allen GTD (knee tendonitis). Reaves improving (~80%).<br><br>
+          <strong>4. G1 PREDICTIONS:</strong> OKC 118-102 LAL (HIGH, SEPARATION). SAS 113-101 MIN (HIGH, SEPARATION). DET 108-105 CLE (LOW, GRIND). NYK 112-103 PHI (MEDIUM, CONTROL). Model expects chalk in G1 — home teams 4/4 with HCA reduced to 2.0pts for R2 (per HCA_BY_ROUND).<br><br>
+          <strong>5. GRADUATION SYSTEM:</strong> Phase 42's series graduation infrastructure (graduation.js) used to carry forward player data, fatigue, injuries from R1 to R2. carriedFatigue applied per player based on R1 games played, rest days, age/injury multipliers.
+        </div>
+        <span class="learning-tag correct">R2 Scaling</span><span class="learning-tag model">4 New Series</span><span class="learning-tag milestone">Phase 46</span>
+      </div>
+
       <!-- Phase 45 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 45 — Deep Lineage Overhaul: Blowout Suppression Fixes + 9 Engine Upgrades</div>
@@ -1004,6 +1019,7 @@ function renderLearningsPage(el) {
     'Phase 37': 'Series Scoring Context + Score Range Bands: Engine now blends projected scores with actual series averages (low-scoring series project lower, high-scoring project higher). Score ranges show ±12% variance bands. Macro analysis: ESPN reports "15 of 16 teams won a game" — historic parity. Injuries dominate every series. OKC 12-0 in R1 over 3 years, clear R2 favorite.',
     'Phase 38': 'G5 deep analysis — 3 new concepts: (1) Elimination Game Star Elevation (Embiid 33pts facing elimination after 2pts Q1), (2) Closeout Pressure Inversion (BOS 3-22 FG in Q4 trying to clinch), (3) Home Star Ceiling Games (Brunson 39pts at MSG, Embiid 33 at WFC). Model went 1/2 on G5 picks. SAS-POR nearly perfect prediction (116-99 vs 114-95). Henderson youth breakout NOT persistent (31pts G2 → 5pts G5). SAS wins series 4-1.',
     'Phase 43': 'Market Odds Calibration — Calibrated all G6 bets against real DraftKings lines. Key findings: CLE ML was +110 estimated, real was -170 (no value edge). BOS -230 and DEN -258 priced higher than our 61% model. Jokic O/U 29.5 (not 24.5). True value lives in underdogs: LAL +150 (12% edge), ORL +136 (7.6%), MIN +210 (6.7%). All parlays recalculated with real odds.',
+    'Phase 46': 'Round 2 Scaling — 4 new R2 series (OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI) with full rosters graduated from R1, updated injuries (Doncic OUT, Edwards likely OUT G1, Embiid PROBABLE), defensive matchups, synergy lineups, external factors, and research-backed G1 predictions. HCA reduced to 2.0 for R2 per HCA_BY_ROUND. Home teams favored 4/4 in G1.',
     'Phase 45': 'Deep Lineage Overhaul — 19 code-level fixes across engine and simulation. Talent gap threshold lowered, turnover/3PT caps doubled, star elevation bidirectional, psychological collapse + elimination streak momentum + player inconsistency factors added. Sim: 10K iterations, capitulation threshold, cascading collapse, reduced blowout suppression. Accuracy 25/42 (59.5%), +3.4pp from Phase 44.',
     'Phase 44': 'G6 Post-Game Attribution — Model went 1/3 on Thu G6 picks (worst day). NYK ✅ 140-89 (margin miss +40), BOS ❌ (PHI 106-93, Maxey 30pts), DEN ❌ (MIN 110-98, Murray 4-17). Props 2/6. Key concept: Star Elevation Modes — stars elevate through facilitating/efficiency, not just scoring volume. Embiid 19pts but 10reb/8ast. Murray Inconsistency Factor added. P&L: -$698.47.',
     'Phase 42': 'Multi-Round Scalability + Projection Lineage — Round-level navigation (R1/R2/CF/Finals), series graduation with fatigue/injury carryover, projection lineage waterfall (SVG chart showing each factor\'s margin contribution), post-game factor attribution engine (proportional error distribution), localStorage V3 (series-ID keyed, backward-compatible). Infrastructure for playoff progression without code changes.',
