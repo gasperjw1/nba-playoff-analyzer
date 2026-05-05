@@ -2105,3 +2105,422 @@ function renderBetsPage(el) {
     </div>
   </div>`;
 }
+
+// ============================================================
+// ROUND 2 BETS PAGE
+// ============================================================
+function renderR2Bets(el) {
+  el.innerHTML = `
+  <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
+
+    <!-- R2 HEADER -->
+    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 2</h2>
+    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:6px;">4 series | Odds by DraftKings (May 4) | R1 Model: 25/42 ML (59.5%), G1: 7/8 (88%)</p>
+
+    <!-- ROUND TOGGLE -->
+    <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
+      <button onclick="currentPlayoffRound='R1';renderBetsPage(document.getElementById('pageContent'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
+      <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:default;font-size:12px;font-weight:700;">Round 2</button>
+    </div>
+
+    <!-- R2 BET TABS -->
+    <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
+      <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Featured Parlays</div>
+      <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 1 Bets</div>
+    </div>
+
+    <!-- ═══════ FEATURED PARLAYS TAB ═══════ -->
+    <div id="betContent-parlays" class="bet-content">
+
+      <!-- R2 WIN PROBABILITIES -->
+      <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 WIN PROBABILITIES — Phase 47 Ensemble</span>
+        </div>
+        <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:14px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;margin-bottom:2px;">SUN MAY 4 &mdash; 8:00 PM ET</div>
+              <div style="font-size:11px;color:#60a5fa;font-weight:700;">NYK vs PHI</div>
+              <div style="font-size:22px;font-weight:700;color:#3dd68c;">NYK 78%</div>
+              <div style="font-size:10px;color:#888;">110-101 | -7.5 (-290)</div>
+            </div>
+            <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;margin-bottom:2px;">SUN MAY 4 &mdash; 9:30 PM ET</div>
+              <div style="font-size:11px;color:#60a5fa;font-weight:700;">SAS vs MIN</div>
+              <div style="font-size:22px;font-weight:700;color:#3dd68c;">SAS 72%</div>
+              <div style="font-size:10px;color:#888;">112-105 | -9.5 (-345)</div>
+            </div>
+            <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;margin-bottom:2px;">MON MAY 5 &mdash; 7:00 PM ET</div>
+              <div style="font-size:11px;color:#60a5fa;font-weight:700;">DET vs CLE</div>
+              <div style="font-size:22px;font-weight:700;color:#f59e0b;">DET 55%</div>
+              <div style="font-size:10px;color:#888;">106-103 | -3.5 (-155)</div>
+            </div>
+            <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#888;margin-bottom:2px;">MON MAY 5 &mdash; 8:30 PM ET</div>
+              <div style="font-size:11px;color:#60a5fa;font-weight:700;">OKC vs LAL</div>
+              <div style="font-size:22px;font-weight:700;color:#3dd68c;">OKC 92%</div>
+              <div style="font-size:10px;color:#888;">117-103 | -15.5 (-1050)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- R2 G1 FEATURED PARLAYS -->
+      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 GAME 1 FEATURED PARLAYS &mdash; Sun May 4 &amp; Mon May 5</span>
+        </div>
+
+        <!-- $100 BEST BET -->
+        <div class="parlay-card headline" style="border:2px solid #4caf50;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;">$100 Best Bet &mdash; R2 G1 Chalk Sweep (3-Leg)</span>
+            <span class="parlay-odds" style="font-size:16px;">+175 | To Win: $175</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>NYK ML</strong> vs PHI</div>
+                <div class="parlay-leg-line">-290 | Model: NYK by 9 | PHI on 2 days rest after G7, Embiid health risk</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SAS ML</strong> vs MIN</div>
+                <div class="parlay-leg-line">-345 | Model: SAS by 7 | Edwards at ~80%, MIN depth gutted without DiVincenzo</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL</div>
+                <div class="parlay-leg-line">-1050 | Model: OKC by 14 | 11-day rest, 4-0 vs LAL this year, no Doncic</div>
+              </div>
+              <span class="parlay-leg-conf high">LOCK</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Why this hits:</strong> Three massive home favorites with structural advantages. NYK has 6 days rest vs PHI's 2, MSG is a fortress. SAS has Wemby at home (62-20) even with Edwards back at reduced capacity. OKC is the best team in the NBA, rested 11 days, facing Doncic-less LAL. The +175 payout on three near-locks is excellent value. <strong>R1 G1 chalk went 7/8 (88%).</strong>
+          </div>
+        </div>
+
+        <!-- $50 ENSEMBLE EDGE -->
+        <div class="parlay-card" style="border:1px solid #60a5fa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#60a5fa;">$50 Ensemble Edge &mdash; Spread + Total (4-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(96,165,250,0.15);color:#60a5fa;">+550 | To Win: $275</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>NYK -7.5</strong> vs PHI</div>
+                <div class="parlay-leg-line">-112 | Model: NYK by 9 | Covers by 1.5pts</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Under 220.5</strong> SAS-MIN</div>
+                <div class="parlay-leg-line">-105 | Model total: 217 | Edwards limited = reduced pace</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Under 214.5</strong> DET-CLE</div>
+                <div class="parlay-leg-line">-110 | Model total: 209 | DET #1 defense, both exhausted from G7s</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">4</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>OKC -15.5</strong> vs LAL</div>
+                <div class="parlay-leg-line">-110 | Model: OKC by 14 | Tight but OKC 31.8pt avg margin vs LAL</div>
+              </div>
+              <span class="parlay-leg-conf low">LOW</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Edge thesis:</strong> Unders hit at higher rate in R2 historically. DET-CLE Under 214.5 with both teams' defensive identities is the strongest leg. NYK -7.5 aligns with our 9-pt model margin. OKC -15.5 is the risky leg (model says 14).
+          </div>
+        </div>
+
+        <!-- $1 CHAOS TICKET -->
+        <div class="parlay-card" style="border:1px solid #f59e0b;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#f59e0b;">$1 Chaos Ticket &mdash; R2 Upset Special (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">+4200 | To Win: $42</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET</div>
+                <div class="parlay-leg-line">+130 | Model: DET by 3 (LOW conf) | CLE triple-initiator offense is dangerous</div>
+              </div>
+              <span class="parlay-leg-conf low">CHAOS</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>PHI +7.5</strong></div>
+                <div class="parlay-leg-line">-108 | Embiid dropped 34/12/6 in G7 at Boston &mdash; if healthy, PHI covers</div>
+              </div>
+              <span class="parlay-leg-conf low">CHAOS</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Over 213.5</strong> OKC-LAL</div>
+                <div class="parlay-leg-line">-110 | Model total: 220 | OKC pace + LeBron legacy scoring = points</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Chaos path:</strong> CLE is genuinely live at +130. PHI +7.5 hedges on Embiid health. OKC-LAL Over is the safest leg &mdash; OKC plays fast and even blowouts generate points.
+          </div>
+        </div>
+
+        <!-- $25 PROPS PARLAY -->
+        <div class="parlay-card" style="border:1px solid #a78bfa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#a78bfa;">$25 Props Parlay &mdash; R2 Stars Shine (4-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">+650 | To Win: $162.50</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Brunson Over 27.5 pts</strong></div>
+                <div class="parlay-leg-line">-115 | Playoff avg 28.6pts, MSG x-factor</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Wembanyama Over 24.5 pts</strong></div>
+                <div class="parlay-leg-line">-110 | 34ppg vs MIN reg season, healthy + rested</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SGA Over 28.5 pts</strong></div>
+                <div class="parlay-leg-line">-115 | 31.1ppg R1, 11 days rest, LAL has no answer</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">4</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Mitchell Over 24.5 pts</strong></div>
+                <div class="parlay-leg-line">-115 | 8.5 clutch rating, CLE primary scorer</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Star power thesis:</strong> R2 G1 is where stars assert. All four are at home, all four are the best players in their series. Mitchell is the weakest leg due to DET's #1 defense.
+          </div>
+        </div>
+      </div>
+
+      <!-- R1 P&L SUMMARY -->
+      <div style="margin-top:20px;border-top:2px solid #555;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R1 BETTING SUMMARY</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
+            <div style="font-size:10px;color:#888;">$100 Plays</div>
+            <div style="font-size:18px;font-weight:700;color:#f44336;">0-6</div>
+            <div style="font-size:10px;color:#f44336;">-$600</div>
+          </div>
+          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
+            <div style="font-size:10px;color:#888;">$1 Chaos</div>
+            <div style="font-size:18px;font-weight:700;color:#4caf50;">2-4</div>
+            <div style="font-size:10px;color:#4caf50;">+$1.53</div>
+          </div>
+          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
+            <div style="font-size:10px;color:#888;">Net P&amp;L</div>
+            <div style="font-size:18px;font-weight:700;color:#f44336;">-$698.47</div>
+            <div style="font-size:10px;color:#888;">R1 Final</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#666;text-align:center;font-style:italic;">R1 lesson: Parlays are high-risk. R2 strategy: smaller 3-leg chalk, add $50 spread and $25 props parlays for diversification.</div>
+      </div>
+
+    </div><!-- end betContent-parlays -->
+
+    <!-- ═══════ R2 GAME 1 BETS TAB ═══════ -->
+    <div id="betContent-g1" class="bet-content" style="display:none;">
+
+    <!-- NYK-PHI G1 -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:0 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(3) NYK vs (7) PHI &mdash; G1 Sun May 4, 8:00 PM ET @ MSG</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">NYK ML vs PHI</div>
+        <div class="bet-line">-290 | NYK -7.5 | O/U 213.5 | Model: NYK by 9 | <span style="color:#4caf50;">MEDIUM &mdash; fatigue + MSG fortress</span></div>
+        <div class="bet-reasoning"><strong>NYK has 6 days rest vs PHI's 2 after a grueling G7 in Boston.</strong> Embiid played 39min in G7 (hip contusion + post-appendectomy) with a 48-hour turnaround to MSG. PHI's 3-1 comeback proves mental toughness but the physical toll is severe. NYK depth (OG/Bridges/Hart/McBride/Shamet) grinds PHI's 7-man rotation by Q3. Brunson (9.2 clutch NetRtg) feasts in PnR vs compromised Embiid. R1 G1 home favorites covered 7/8 (88%).</div>
+        <span class="bet-edge model">Model + Market</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">NYK -7.5</div>
+        <div class="bet-line">-112 | Model margin: 9pts | PHI fatigue Q3 collapse risk</div>
+        <div class="bet-reasoning">Model says NYK by 9 &mdash; covers -7.5 with 1.5pts cushion. PHI will compete early but fatigue hits in Q3. Embiid CAN dominate on the road (34/12 vs BOS G7) but at what physical cost? NYK bench depth (McBride, Shamet, Clarkson vs PHI's Grimes/Barlow) is a massive quality gap.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Jalen Brunson Over 27.5 points</div>
+        <div class="bet-line">-115 | Playoff avg 28.6pts | MSG home = elite efficiency | PnR vs tired Embiid</div>
+        <div class="bet-reasoning">Brunson averaged 28.6pts in R1 with 9.2 clutch net rating at MSG. PHI perimeter defense will be compromised by fatigue. Brunson's PnR with KAT creates open lanes. The 27.5 line is below his playoff average &mdash; one of the safest props on the board.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Embiid Under 28.5 points</div>
+        <div class="bet-line">-110 | 48hr turnaround after 39min G7 | Hip contusion limits burst moves</div>
+        <div class="bet-reasoning">Embiid dropped 34/12/6 in G7 but that was an elimination game with adrenaline. G1 on 2 days rest with a hip contusion is different. OG Anunoby is an elite post defender. Expect 22-26pts on lower efficiency as Embiid conserves energy for a long series.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+
+    <!-- SAS-MIN G1 -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(2) SAS vs (6) MIN &mdash; G1 Sun May 4, 9:30 PM ET @ Frost Bank Center</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">SAS ML vs MIN</div>
+        <div class="bet-line">-345 | SAS -9.5 | O/U 220.5 | Model: SAS by 7 | <span style="color:#4caf50;">MEDIUM &mdash; Edwards playing changes calculus</span></div>
+        <div class="bet-reasoning"><strong>Edwards is expected to play (Shams, May 4).</strong> Line moved from -11.5 to -9.5. Edwards at 80% (knee) still transforms MIN, but SAS at Frost Bank Center (62-20) with Wemby healthy (34ppg vs MIN) is extremely tough. DiVincenzo OUT for the season &mdash; MIN 3PT depth is gutted. Fox/Castle/Champagnie give SAS bench advantage.</div>
+        <span class="bet-edge model">Model + Market</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type total">TOT</span>
+        <div class="bet-pick">Under 220.5</div>
+        <div class="bet-line">-105 | Model total: 217 | Edwards limited = reduced pace</div>
+        <div class="bet-reasoning">Edwards at 80% means fewer transition opportunities. SAS plays half-court controlling pace. Both teams have elite rim protectors (Wemby, Gobert). Model projects 217 total &mdash; 3.5pts under the line.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Wembanyama Over 24.5 points</div>
+        <div class="bet-line">-110 | 34ppg vs MIN reg season | Gobert matchup = mid-range feast</div>
+        <div class="bet-reasoning">Wemby averaged 34ppg vs MIN &mdash; Gobert protects the rim but Wemby's mid-range is unguardable at 7-4. Had 17/14/6blk in closeout G5 while coasting. In a competitive R2 G1, expect him to assert early. One of the strongest props on the slate.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Edwards Under 26.5 points (if playing)</div>
+        <div class="bet-line">-115 | ~80% capacity | Knee limits explosion, may play 28-32min</div>
+        <div class="bet-reasoning">Edwards coming off knee hyperextension + bone bruise will play limited minutes (28-32) without usual explosion. SAS wing D (Castle, Barnes, Champagnie) is elite. Expect jump shots over rim attacks. At 80%, efficiency drops to 20-24pt range.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+
+    <!-- DET-CLE G1 -->
+    <div class="bet-section">
+      <h4 style="color:#f59e0b;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #f59e0b;padding-bottom:6px;">(1) DET vs (4) CLE &mdash; G1 Mon May 5, 7:00 PM ET @ LCA</h4>
+
+      <div class="bet-card">
+        <span class="bet-type moneyline">ML</span>
+        <div class="bet-pick">DET ML vs CLE</div>
+        <div class="bet-line">-155 | DET -3.5 | O/U 214.5 | Model: DET by 3 | <span style="color:#f59e0b;">LOW &mdash; genuine coin flip with home tilt</span></div>
+        <div class="bet-reasoning"><strong>The closest R2 matchup.</strong> Both finished grueling G7s with equal rest (3 days). DET has #1 defense (107.2 DRtg) and best home record (31-9). CLE has triple-initiator offense (Mitchell/Harden/Mobley). Cade showed dual-mode (45pts G5, 32/12ast G7). Harris G7 breakout (30pts, 5/7 3PT) gives DET a legit #2. But CLE bench (Strus, Tyson, Merrill) is elite. NOT a best bet &mdash; small play or skip.</div>
+        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Lean Only</span>
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type total">TOT ★ VALUE</span>
+        <div class="bet-pick">Under 214.5</div>
+        <div class="bet-line">-110 | Model total: 209 | DET #1 defense | Both exhausted from G7s | 5.5pt edge</div>
+        <div class="bet-reasoning"><strong>Best value bet on the R2 G1 slate.</strong> DET has #1 defense (107.2 DRtg). Both teams just played 7-game series with 3 days rest. G1s in R2 after 7-game R1s historically run ~5pts under total. CLE relies on Mitchell/Harden creation but DET perimeter D (A.Thompson, D-LEBRON 2.93) will suppress first-option scoring. Model at 209 vs line at 214.5 = 5.5pts of edge.</div>
+        <span class="bet-edge model">Strong Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Cade Cunningham Over 24.5 points</div>
+        <div class="bet-line">-115 | G7: 32pts | Scored 25+ in 5 of 7 R1 games | Home at LCA</div>
+        <div class="bet-reasoning">Cade showed dual-mode dominance (45 G5, 32/12ast G7). Against CLE, expect scorer mode &mdash; Mitchell/Harden won't guard him. At home in LCA, he attacks early to set the tone. The 24.5 line is very beatable.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
+        <div class="bet-line">-115 | 8.5 clutch rating | 26.8ppg R1 avg | Physical series = free throws</div>
+        <div class="bet-reasoning">Mitchell has 8.5 clutch rating and averaged 26.8pts in R1. Against DET defense, he'll need to be aggressive &mdash; expect 7+ FTA. His mid-range game is harder to suppress than 3PT. Even in losses, Mitchell consistently scores 25+.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+    </div>
+
+    <!-- OKC-LAL G1 -->
+    <div class="bet-section">
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) OKC vs (4) LAL &mdash; G1 Mon May 5, 8:30 PM ET @ Paycom Center</h4>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML ★ BEST BET</span>
+        <div class="bet-pick">OKC ML vs LAL</div>
+        <div class="bet-line">-1050 | OKC -15.5 | O/U 213.5 | Model: OKC by 14 | <span style="color:#4caf50;">HIGH &mdash; most lopsided R2 matchup</span></div>
+        <div class="bet-reasoning"><strong>OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) vs Doncic-less LAL.</strong> OKC went 4-0 vs LAL with 31.8pt avg margin. Swept PHX in R1 with 11 days rest. SGA (31.1ppg, 67% TS) feasts on LAL's limited perimeter D. LeBron at 41 is a fatigue risk. Holmgren neutralizes Ayton. OKC depth means no drop-off. ML is safe but expensive &mdash; best in a parlay.</div>
+        <span class="bet-edge model">Model + Market</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">OKC -15.5</div>
+        <div class="bet-line">-110 | Model: OKC by 14 | <span style="color:#f59e0b;">RISKY &mdash; 1.5pt gap vs model, LeBron floor</span></div>
+        <div class="bet-reasoning">Model says OKC by 14 &mdash; half a point short. OKC's 31.8pt avg margin vs LAL suggests upside, but LeBron provides a floor. The smart play is ML in a parlay, not the spread alone.</div>
+        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Risky Lean</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">SGA Over 28.5 points</div>
+        <div class="bet-line">-115 | 31.1ppg R1 | 11 days rest | LAL has no primary defender without Doncic</div>
+        <div class="bet-reasoning">SGA averaged 31.1ppg on 67% TS in R1 vs PHX's better defense. With 11 days rest, he'll be fully loaded. Smart is solid but can't contain SGA for 36min. The 28.5 line is well below his playoff average.</div>
+        <span class="bet-edge matchup">Matchup Edge</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">LeBron Over 25.5 points</div>
+        <div class="bet-line">-110 | Legacy mode | Higher usage without Doncic | Hits in both competitive and blowout scripts</div>
+        <div class="bet-reasoning">LeBron carries massive usage without Doncic (28.2ppg R1 at 41). In a blowout, OKC pulls starters and LeBron scores against the bench. In a competitive game, he scores on volume. The over hits regardless of game script.</div>
+        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Game Script Hedge</span>
+      </div>
+    </div>
+
+    </div><!-- end betContent-g1 -->
+
+    <!-- DISCLAIMER -->
+    <div class="bets-disclaimer">
+      <strong>Disclaimer:</strong> Model-driven picks using a 46-phase prediction system calibrated against R1 results (59.5% ML, 88% G1). All lines from DraftKings as of May 4, 2026. Bet responsibly.
+    </div>
+  </div>`;
+}
