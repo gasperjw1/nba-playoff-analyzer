@@ -24,13 +24,46 @@ function calcTeamRating(team, series, seriesId) {
     return rb - ra;
   });
 
+  // PHASE 50: Determine coaching context for dynamic adjustments
+  const teamSide = (series && series.homeTeam === team) ? 'home' : 'away';
+  const coaching = series && series.coaching && series.coaching[teamSide];
+  const coachAdjRating = coaching ? (coaching.adjustmentRating || 5) : 5;
+
   let totalWeight = 0, weightedSum = 0;
   sorted.forEach((p, i) => {
     // Determine if this player is active (not injured AND not toggled out)
     const effectiveR = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
     const isActive = effectiveR > 0;
     // Use their actual rating if active, replacement-level if not
-    const r = isActive ? (p.baseRating || p.rating) : REPLACEMENT_LEVEL;
+    let r = isActive ? (p.baseRating || p.rating) : REPLACEMENT_LEVEL;
+
+    // PHASE 50: Dynamic Rating Adjustments (Option A)
+    // Adjust each player's effective rating BEFORE it enters the weighted composite.
+    // This fixes win probabilities at the root rather than compensating downstream.
+    if (isActive) {
+      // 1. Active Injury Reduction — playing through a known injury
+      //    Severity 0-1 maps to 0-25% rating reduction.
+      //    Edwards G1: base 90, severity 0.3 → 90*(1-0.075) = 83.3
+      if (p.activeInjury && p.activeInjury.severity > 0) {
+        r = r * (1 - p.activeInjury.severity * 0.25);
+      }
+      // 2. Playoff Ascension — sustained per-series elevation above regular season
+      //    Replaces the old team-level flat bonus (was lines 115-120).
+      //    Now weighted by slot importance: a star's ascension matters more than a bench player's.
+      //    Edwards: ascension 1.5 → +3.75 pts. McDaniels: ascension 1.0 → +2.5 pts.
+      if (p.playoffAscension && p.playoffAscension > 0) {
+        r += p.playoffAscension * 2.5;
+      }
+      // 3. Coaching Scheme Effect — elite coaches unlock additional player value
+      //    adjustmentRating 8 (Finch) → +0.9/player for top 5 rotation.
+      //    adjustmentRating 5 (avg)  → +0.0/player.
+      //    adjustmentRating 3 (poor) → -0.6/player.
+      //    Only applies to top 5 rotation players (i < 5) to avoid inflating bench.
+      if (i < 5) {
+        r += (coachAdjRating - 5) * 0.3;
+      }
+    }
+
     const w = Math.max(1, 5 - i);
     weightedSum += r * w;
     totalWeight += w;
@@ -107,17 +140,10 @@ function calcTeamRating(team, series, seriesId) {
         base += 1.0; // significant two-star synergy (BOS Tatum+Brown, CLE Mitchell+Harden)
       }
 
-      // 2024 BACKTEST LESSON: Playoff Ascension Modifier
-      // Some players consistently elevate beyond regular-season ceilings in playoffs.
-      // Brunson +4.6 PPG (2024), Butler +5 PPG (2023), Luka +3.2 PPG (2024).
-      // playoffAscension field (0-1.5) represents this sustained elevation.
-      // Distinct from starCeiling (which models single-game variance); this is per-series elevation.
-      const ascensionBonus = playersWithWar
-        .filter(p => p.playoffAscension && (seriesId ? getEffectiveRating(p, seriesId) : p.rating) > 0)
-        .reduce((s, p) => s + (p.playoffAscension || 0), 0);
-      if (ascensionBonus > 0) {
-        base += ascensionBonus * 0.6; // scaled to avoid overpowering other signals
-      }
+      // PHASE 50: Playoff Ascension Modifier — MOVED to per-player weighted sum (lines 27-55)
+      // Was: flat team-level bonus (ascension * 0.6). Now weighted by roster slot importance.
+      // A star's ascension (slot weight 5) contributes 5x more than a bench player's (slot weight 1).
+      // This is both more accurate and avoids the need for manual rating adjustments.
     }
   }
 
@@ -374,12 +400,90 @@ function calcWinProb(series, seriesId) {
   else if (awayPedigree === 0 && homePedigree > 0) pedigreeFloorAdj = 0.5;
 
   const diff = (hr + hca + ceilingDiff + statDiffBonus + pedigreeEdge + paceMatchup + defMatchupAdj + initiatorAdj + pedigreeFloorAdj) - ar;
-  const prob = 1 / (1 + Math.pow(10, -diff / 15));
+
+  // PHASE 49 v2: Calibrated WIN_PROB_SCALE. Backtest showed scale=25 still too extreme
+  // (avg fav WP 83.1%). Scale=35 produces 76.0% avg fav WP — within 55-82% target.
+  const scale = (typeof WIN_PROB_SCALE !== 'undefined') ? WIN_PROB_SCALE : 35;
+  let prob = 1 / (1 + Math.pow(10, -diff / scale));
+
+  // PHASE 49: Playoff Upset Compression — pull toward 50%
+  // 2025+2026 validation: underdogs win 42% of games. No team is truly unbeatable.
+  const upsetComp = (typeof PLAYOFF_UPSET_COMPRESSION !== 'undefined') ? PLAYOFF_UPSET_COMPRESSION : 0.18;
+  prob = prob * (1 - upsetComp) + 0.5 * upsetComp;
+
+  // PHASE 49: Resilience Modifier — underdog's proven adversity-overcoming ability
+  // compresses the favorite's probability further toward 50%.
+  // Resilience score is derived from: coaching quality, playoff pedigree, bounce-back history.
+  const resMax = (typeof RESILIENCE_MAX_COMPRESSION !== 'undefined') ? RESILIENCE_MAX_COMPRESSION : 0.10;
+  const homeRes = calcTeamResilience(series.homeTeam, series);
+  const awayRes = calcTeamResilience(series.awayTeam, series);
+  // The UNDERDOG's resilience compresses the favorite's probability.
+  // If home is favored (prob > 0.5), away team's resilience compresses prob toward 0.5.
+  // If away is favored (prob < 0.5), home team's resilience compresses prob toward 0.5.
+  if (prob > 0.5) {
+    const dogResilience = awayRes;
+    prob = prob * (1 - dogResilience * resMax) + 0.5 * dogResilience * resMax;
+  } else {
+    const dogResilience = homeRes;
+    prob = prob * (1 - dogResilience * resMax) + 0.5 * dogResilience * resMax;
+  }
+
   return {
     home: Math.round(prob * 100), away: Math.round((1 - prob) * 100),
     homeRating: hr, awayRating: ar,
     hcaUsed: +hca.toFixed(1), round: round
   };
+}
+
+// PHASE 49: Team Resilience Score (0-1)
+// Measures a team's ability to overcome adversity — used to compress extreme probabilities.
+// Components:
+//   1. Playoff pedigree (0-2) — championship DNA, proven clutch performers
+//   2. Coaching quality — elite coaches extract better adjustments
+//   3. Star playoff ascension — stars who elevate in playoffs signal resilience
+//   4. Series momentum — teams that have bounced back in THIS series
+// A resilience score of 1.0 means the team has maximum proven adversity-overcoming ability.
+// 2025 validation: CLE(1) swept MIA in R1 but lost 4-1 to IND(4) in R2 — dominance ≠ resilience.
+// IND had higher coaching quality + multiple initiators + Haliburton's playoff ascension.
+function calcTeamResilience(team, series) {
+  let resilience = 0;
+
+  // 1. Playoff pedigree (max 0.30)
+  const pedigree = team.playoffPedigree || 0;
+  resilience += Math.min(0.30, pedigree * 0.15);
+
+  // 2. Coaching adjustment quality (max 0.25)
+  const side = team === series.homeTeam ? 'home' : 'away';
+  const coaching = series.coaching && series.coaching[side];
+  const adjRating = coaching ? (coaching.adjustmentRating || 5) : 5;
+  resilience += Math.min(0.25, (adjRating - 3) * 0.04); // 3→0, 5→0.08, 8→0.20, 10→0.25
+
+  // 3. Star playoff ascension (max 0.20)
+  const activePlayers = getActivePlayers(team, series.id);
+  const totalAscension = activePlayers.reduce((s, p) => s + (p.playoffAscension || 0), 0);
+  resilience += Math.min(0.20, totalAscension * 0.08);
+
+  // 4. Initiator redundancy (max 0.15) — teams with 3+ creators are harder to scheme out
+  const initiators = team.initiators || 2;
+  if (initiators >= 3) resilience += 0.15;
+  else if (initiators >= 2) resilience += 0.08;
+
+  // 5. Series bounce-back history (max 0.10) — if this team has already bounced back in this series
+  const score = getSeriesScore(series);
+  const gamesPlayed = score.home + score.away;
+  if (gamesPlayed >= 2 && series.games) {
+    let bouncebacks = 0;
+    const teamAbbr = team.abbr;
+    for (let i = 1; i < series.games.length; i++) {
+      if (series.games[i] && series.games[i].winner === teamAbbr &&
+          series.games[i-1] && series.games[i-1].winner && series.games[i-1].winner !== teamAbbr) {
+        bouncebacks++;
+      }
+    }
+    resilience += Math.min(0.10, bouncebacks * 0.05);
+  }
+
+  return Math.min(1.0, Math.max(0, resilience));
 }
 
 function getSeriesScore(series) {

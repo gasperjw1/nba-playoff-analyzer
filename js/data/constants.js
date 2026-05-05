@@ -44,6 +44,37 @@ const SPM_COEFF = {
 // declining significantly in the modern NBA. Values reduced ~15% from original calibration.
 // López-García et al. (2024): team ability matters more than crowd support for HCA.
 const HCA_BY_ROUND = { 'R1': 3.0, 'R2': 2.0, 'CF': 1.5, 'Finals': 1.0 };
+
+// PHASE 49: Win Probability Recalibration (2025 + 2026 cross-year validation)
+// The logistic scale factor converts rating differentials into win probabilities.
+// Old value (15) produced extreme probabilities: 15pt diff → 90.9%, 20pt diff → 96.8%.
+// 2025 validation: underdogs won 41.7% of all playoff games. 2026 R1: also 41.7%.
+// Seed-based probabilities (57-87%) predicted series lengths accurately (5.4 avg vs 5.6 actual).
+// Our old model: predicted 4.2 avg series length vs 5.9 actual (+1.7 error).
+// Backtest v1 (scale=25, compression=0.12): avg fav WP 83.1%, series length 4.8 — still too extreme.
+// Backtest v2 (scale=35, compression=0.18): model rating diffs are large (6-30pts), so the
+// logistic needs a wider scale to convert them into competitive probabilities.
+// 30pt diff → raw 87.8% → compressed 81.0%. 16pt diff → raw 74.1% → compressed 69.8%.
+// 6pt diff → raw 59.7% → compressed 58.0%. Range ≈ 58-81%, matching 55-82% target.
+// Expected series length rises to ~5.2, much closer to the 5.4-5.6 actual.
+const WIN_PROB_SCALE = 35; // v1=25 still too extreme, v2=35 matches cross-year validation
+
+// PHASE 49: Playoff Upset Compression
+// Cross-year validation: underdogs win 42% of games regardless of seed differential.
+// This means even the strongest favorites only win ~75-80% of individual games.
+// PLAYOFF_UPSET_COMPRESSION pulls all win probabilities toward 50% by this fraction.
+// A value of 0.18 means: 90% → 82.8%. 80% → 74.6%. 60% → 58.2%.
+// Combined with WIN_PROB_SCALE=35, this produces a realistic 55-82% probability range.
+const PLAYOFF_UPSET_COMPRESSION = 0.18;
+
+// PHASE 49: Resilience Modifier
+// Teams with proven ability to overcome adversity (playoff pedigree, elite coaching,
+// post-blowout bounce-back history) should have their opponent's win probability compressed.
+// The resilience score (0-1) represents how much to further compress the favorite's probability.
+// 0.0 = no resilience (expansion draft team), 1.0 = maximum resilience (proven champion).
+// Applied as: adjustedProb = prob * (1 - resilience * 0.10) + 0.50 * resilience * 0.10
+// This pulls the probability toward 50% by up to 10% for maximum-resilience underdogs.
+const RESILIENCE_MAX_COMPRESSION = 0.10;
 // PHASE 45: Fortress Venue Bonus — some arenas provide HCA far above league average.
 // Evidence: MIN Target Center +17 and +16 in home games; PHI Wells Fargo +13 in G6.
 // Applied on top of HCA_BY_ROUND when series has fortressVenue flag.

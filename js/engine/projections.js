@@ -30,14 +30,39 @@ function calcGameProjection(series, seriesId, gameNum) {
     }
   }
 
+  // --- PHASE 51: MULTIPLICATIVE CONTEXT ARCHITECTURE ---
+  // Context factors (fatigue, scheme persistence, inconsistency) now scale
+  // PROPORTIONALLY with the base talent edge rather than adding fixed point values.
+  // This is more physically accurate:
+  //   - A fatigued team loses a FRACTION of their effectiveness, not a fixed 2pts
+  //   - Scheme persistence amplifies/dampens edges proportionally to the matchup gap
+  //   - Inconsistency creates variance that compresses edges by a percentage
+  //
+  // Implementation: "proportional-additive" for directional factors —
+  //   adj = |baseMargin| × clamped_percentage × sign(factor_direction)
+  // This preserves correct directionality (benefits the right team regardless of
+  // which team is favored) while scaling impact with margin size.
+  // Pure multiplicative (baseMargin *= factor) is used for compression-only factors
+  // where the effect always pushes toward zero.
+  //
+  // Architecture:
+  //   Steps 1-5a, 5c-5g, 5i-5l: ADDITIVE (independent scoring sources / talent)
+  //   Steps 5b, 5h, 5m: PROPORTIONAL-MULTIPLICATIVE (context modifiers)
+  //   Steps 7, 8, 9: MULTIPLICATIVE (already were — coaching, elimination, clutch)
+  // ----------------------------------------------------------------
+
   // --- STEP 1: Base Expected Margin ---
   // Team ratings are on a 20-100 scale (not 0-10 Net Rating), so diff can be large.
   // Use win probability to derive margin: logit-based conversion.
   // NBA research: P(win) maps to expected margin via ~30pt logistic scale.
   // margin ≈ 15 * log10(P/(1-P)) — inverse of our win prob formula, gives points.
   const winP = Math.max(0.02, Math.min(0.98, prob.home / 100));
-  let baseMargin = 15 * Math.log10(winP / (1 - winP)); // exact inverse of the logistic
-  // This naturally produces: 50% → 0pts, 60% → 2.6pts, 70% → 5.6pts, 80% → 9.1pts, 90% → 14.3pts
+  // PHASE 49: Use calibrated WIN_PROB_SCALE for the inverse logistic (must match ratings.js).
+  // Backtest v2: scale=35, combined with lower WPs (55-84%), produces base margins of 2-15pts.
+  // After talent amp and depth, typical margins are 5-16pts — matching real NBA spreads.
+  const wpScale = (typeof WIN_PROB_SCALE !== 'undefined') ? WIN_PROB_SCALE : 35;
+  let baseMargin = wpScale * Math.log10(winP / (1 - winP)); // exact inverse of the logistic
+  // With scale=25: 55% → 2.1pts, 60% → 4.4pts, 65% → 6.8pts, 70% → 9.3pts, 75% → 11.9pts
   trackStep('base', 'Win Prob → Base Margin', 0, baseMargin, `HR=${hr} AR=${ar} WP=${prob.home}%`);
 
   // --- STEP 2: Talent Gap Amplifier ---
@@ -107,15 +132,23 @@ function calcGameProjection(series, seriesId, gameNum) {
   });
   { const pre = baseMargin; baseMargin += (awayInjuryDrag - homeInjuryDrag); trackStep('injuryDrag', 'Active Injury Drag', pre, baseMargin, `homeDrag=${homeInjuryDrag.toFixed(2)} awayDrag=${awayInjuryDrag.toFixed(2)}`); }
 
-  // --- STEP 5b: Fatigue Differential (MEDIUM CONFIDENCE) ---
+  // --- STEP 5b: Fatigue Differential (PHASE 51: PROPORTIONAL-MULTIPLICATIVE) ---
   // Teams with higher cumulative fatigue lose margin points.
   // G1 validation: altitude fatigue (MIN@DEN), age fatigue (LeBron),
   // injury-compounded fatigue (Sharpe fibula, Tatum Achilles).
-  // Fatigue differentials widen margins when one team is significantly more rested.
+  //
+  // PHASE 51: Converted from fixed additive (±2pts) to proportional-additive.
+  // Old: baseMargin += (awayFat - homeFat) * 4.0 → same 2pts whether margin is 3 or 20.
+  // New: fatigue adjustment = |baseMargin| × fatigue_pct (capped ±12%).
+  // On a 15pt margin: max ±1.8pts. On a 5pt margin: max ±0.6pts.
+  // This correctly models that fatigue erodes a FRACTION of a team's advantage.
+  // Direction is independent of margin sign (benefits the less-tired team always).
   const homeFat = calcTeamFatigue(series.homeTeam, series, seriesId || series.id);
   const awayFat = calcTeamFatigue(series.awayTeam, series, seriesId || series.id);
-  const fatigueDiff = (awayFat.index - homeFat.index) * 4.0; // max ~0.5 index → 2.0 pts
-  { const pre = baseMargin; baseMargin += fatigueDiff; trackStep('fatigue', 'Fatigue Differential', pre, baseMargin, `homeFat=${homeFat.index.toFixed(3)} awayFat=${awayFat.index.toFixed(3)}`); }
+  const fatigueRef = Math.max(2, Math.abs(baseMargin)); // floor of 2pts prevents near-zero issues
+  const fatiguePct = Math.max(-0.12, Math.min(0.12, (awayFat.index - homeFat.index) * 0.20));
+  const fatigueAdj = fatigueRef * fatiguePct; // positive = home benefits (away more tired)
+  { const pre = baseMargin; baseMargin += fatigueAdj; trackStep('fatigue', 'Fatigue (proportional)', pre, baseMargin, `homeFat=${homeFat.index.toFixed(3)} awayFat=${awayFat.index.toFixed(3)} pct=${(fatiguePct*100).toFixed(1)}%`); }
 
   // --- STEP 5c: 3PT Variance Regression Adjustment (Phase 25) ---
   // When teams are shooting significantly above/below their season 3P% baseline,
@@ -257,32 +290,41 @@ function calcGameProjection(series, seriesId, gameNum) {
     if (Math.abs(icAdj) > 0.1) { const pre = baseMargin; baseMargin += icAdj; trackStep('initiators', 'Initiator Count', pre, baseMargin, `homeIC=${homeIC} awayIC=${awayIC}`); }
   }
 
-  // --- STEP 5h: Scheme Persistence Factor (Phase 32) ---
+  // --- STEP 5h: Scheme Persistence Factor (PHASE 51: PROPORTIONAL-MULTIPLICATIVE) ---
   // Research: When G1 FG% suppression is scheme-driven (identifiable defensive
   // strategy), it persists at ~70% effectiveness in subsequent games.
   // Evidence: LAL zone held HOU to 37.6% G1 → 40.4% G2 (persisted across both).
   // Gobert held Jokic 1-of-8 individually in DEN-MIN G2 (structural assignment).
   // Spoelstra's "Giannis Wall" 2023: Giannis dropped to 21ppg for entire series.
   // PHI suppressed BOS 3PT to 26% in G2 after schemed denial.
+  //
+  // PHASE 51: Converted from fixed additive (±4pts cap) to proportional-additive.
+  // Old: baseMargin += schemeAdj → same ±3pts whether margin is 5 or 25.
+  // New: scheme effect scales with margin size (capped at ±20% of |baseMargin|).
+  // On a 15pt margin: max ±3.0pts (same as old for typical margins).
+  // On a 5pt margin: max ±1.0pts (old was still ±3.0, often too large for close games).
+  // On a 25pt margin: max ±5.0pts (scheme amplifies blowout edge, old capped at 4).
   // schemePersistence: { home: { fg%Suppression, isSchemedriven }, away: {...} }
-  // If the prior game showed scheme-driven suppression, carry forward 70% of impact.
   if (gameNum > 1 && series.schemePersistence) {
     const sp = series.schemePersistence;
-    let schemeAdj = 0;
+    let schemeRawAdj = 0;
     // Home team's scheme suppresses away team's scoring
     if (sp.home && sp.home.isSchemeDriven && sp.home.fgSuppression) {
       // fgSuppression is the FG% drop caused by the scheme (e.g., 0.08 = 8pp drop)
-      // Each 1pp of FG% ≈ 0.8pts on ~80 FGA → but capped at 3pts max impact
+      // Each 1pp of FG% ≈ 0.8pts on ~80 FGA → but capped at 3pts max raw impact
       const impact = sp.home.fgSuppression * 80 * 0.7; // 70% persistence
-      schemeAdj += Math.min(3.0, impact);
+      schemeRawAdj += Math.min(3.0, impact);
     }
     // Away team's scheme suppresses home team's scoring
     if (sp.away && sp.away.isSchemeDriven && sp.away.fgSuppression) {
       const impact = sp.away.fgSuppression * 80 * 0.7;
-      schemeAdj -= Math.min(3.0, impact);
+      schemeRawAdj -= Math.min(3.0, impact);
     }
-    schemeAdj = Math.max(-4.0, Math.min(4.0, schemeAdj));
-    if (Math.abs(schemeAdj) > 0.1) { const pre = baseMargin; baseMargin += schemeAdj; trackStep('schemePersist', 'Scheme Persistence', pre, baseMargin, `adj=${schemeAdj.toFixed(2)}`); }
+    // Proportional conversion: raw adj → percentage of |baseMargin|, capped at ±20%
+    const schemeRef = Math.max(3, Math.abs(baseMargin)); // floor of 3pts
+    const schemePct = Math.max(-0.20, Math.min(0.20, schemeRawAdj / schemeRef));
+    const schemeAdj = schemeRef * schemePct; // preserves correct direction
+    if (Math.abs(schemeAdj) > 0.1) { const pre = baseMargin; baseMargin += schemeAdj; trackStep('schemePersist', 'Scheme Persistence (proportional)', pre, baseMargin, `rawAdj=${schemeRawAdj.toFixed(2)} pct=${(schemePct*100).toFixed(1)}%`); }
   }
 
   // --- STEP 5i: Star Absence Role Player Elevation (Phase 32) ---
@@ -370,12 +412,18 @@ function calcGameProjection(series, seriesId, gameNum) {
     }
   }
 
-  // --- STEP 5m: Player Inconsistency Variance (Phase 45) ---
+  // --- STEP 5m: Player Inconsistency Variance (PHASE 51: MULTIPLICATIVE COMPRESSION) ---
   // Some stars have wider game-to-game variance than their rating suggests.
   // Evidence: Murray went 4-17 (12pts, -18) in DEN-MIN G6 elimination game.
   // Players with inconsistencyFactor > 0 widen the margin uncertainty.
-  // When these players are on the FAVORED team, reduce margin by up to 2pts
+  // When these players are on the FAVORED team, reduce margin proportionally
   // (their floor is lower than rating suggests).
+  //
+  // PHASE 51: Converted from fixed additive (up to -2pts) to multiplicative compression.
+  // Old: baseMargin -= min(2.0, inconsistency × 0.8) → same 2pts whether margin is 5 or 20.
+  // New: baseMargin *= (1 - inconsistencyPct) → proportional compression up to 15%.
+  // On a 15pt margin: max -2.25pts. On a 5pt margin: max -0.75pts. On a 25pt margin: max -3.75pts.
+  // This correctly models that inconsistency creates proportional confidence loss in the edge.
   { const pre = baseMargin;
   let homeInconsistency = 0, awayInconsistency = 0;
   series.homeTeam.players.forEach(p => {
@@ -390,24 +438,28 @@ function calcGameProjection(series, seriesId, gameNum) {
       if (eff > 0) awayInconsistency += p.inconsistencyFactor;
     }
   });
-  // Inconsistency on the favored team compresses margin (their floor is lower)
-  // Inconsistency on the underdog widens it (their ceiling could steal a game)
+  // Multiplicative compression: inconsistency on the favored side compresses the edge
+  // Each inconsistency unit = ~5% compression, capped at 15% total
+  let inconsistencyMult = 1.0;
   if (baseMargin > 0 && homeInconsistency > 0) {
-    baseMargin -= Math.min(2.0, homeInconsistency * 0.8);
+    inconsistencyMult = 1 - Math.min(0.15, homeInconsistency * 0.05);
   } else if (baseMargin < 0 && awayInconsistency > 0) {
-    baseMargin += Math.min(2.0, awayInconsistency * 0.8);
+    inconsistencyMult = 1 - Math.min(0.15, awayInconsistency * 0.05);
+  }
+  if (inconsistencyMult < 1.0) {
+    baseMargin *= inconsistencyMult;
   }
   if (homeInconsistency > 0 || awayInconsistency > 0) {
-    trackStep('inconsistency', 'Player Inconsistency', pre, baseMargin, `homeInc=${homeInconsistency.toFixed(1)} awayInc=${awayInconsistency.toFixed(1)}`);
+    trackStep('inconsistency', 'Inconsistency (multiplicative)', pre, baseMargin, `homeInc=${homeInconsistency.toFixed(1)} awayInc=${awayInconsistency.toFixed(1)} mult=${inconsistencyMult.toFixed(3)}`);
   }
   }
 
-  // --- STEP 6: Pre-compression cap ---
-  // Cap the "raw talent edge" margin before applying game-context adjustments.
-  // This ensures coaching adjustments, clutch compression, and elimination intensity
-  // can still REDUCE the margin below the cap for G2+, creating game-to-game variety.
-  // PHASE 45: Raised cap from ±18 to ±22 to allow bigger blowout projections.
-  { const pre = baseMargin; baseMargin = Math.max(-22, Math.min(22, baseMargin)); trackStep('cap', 'Pre-Compression Cap (±22)', pre, baseMargin); }
+  // --- STEP 6: Pre-compression cap (REMOVED Phase 49 v2) ---
+  // Previously capped at ±22 (Phase 45) then ±16 (Phase 49) to prevent absurd margins.
+  // Now that WIN_PROB_SCALE=35 and upset compression fix the root cause, no cap needed.
+  // Real NBA playoff margins regularly exceed 30+ (NYK blowouts, 2025 CLE 138-83, etc.)
+  // Keeping a tracking step for lineage but no longer clamping.
+  trackStep('cap', 'No Cap (removed Phase 49v2)', baseMargin, baseMargin);
 
   // --- STEP 7: Coaching Adjustment Quality (CAQ) Compression (Phase 32 upgrade) ---
   // 2025 evidence: OKC-MEM margins went 51→19→6→2 as Taylor adjusted

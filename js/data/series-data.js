@@ -3273,6 +3273,30 @@ const SERIES_DATA = [
       homeDefOnAway: { defender:"Stephon Castle", target:"Anthony Edwards", dLebron:0.908, targetUsg:32.5, note:"Castle's size (6-6) and defensive instincts vs Edwards (EXPECTED TO PLAY but at ~80% capacity with knee). Edwards at full health is unstoppable but the hyperextended knee limits burst. Castle's physicality could exploit the injury. If Edwards is limited, Randle becomes primary — Castle shifts to guard him." },
       awayDefOnHome: { defender:"Jaden McDaniels", target:"Victor Wembanyama", dLebron:0.233, targetUsg:32.4, note:"McDaniels has 7-foot wingspan but Wemby is 7-4. With Edwards playing but limited, MIN has a perimeter scoring threat that prevents Wemby from camping in the paint. McDaniels will compete but this is an impossible assignment — Wemby averaged 34ppg vs MIN this season." }
     },
+    coaching: {
+      home: {
+        coach: "Gregg Popovich (Mitch Johnson HC)",
+        adjustmentRating: 7,
+        schemeCreativity: 7,
+        urgency: 6,
+        playoffRecord: "First R2 for this core",
+        tendency: "Popovich-tree system. Ball movement, read-and-react. Wemby-centric but not ISO-heavy. Won R1 in 5 convincingly. Johnson runs Pop's system effectively.",
+        rotationPlan: "10-man rotation with Harper and K.Johnson off bench. May tighten to 8-9 in crunch time.",
+        keyAdjustment: "After G1 loss: Wemby must attack rim (0-8 3PT was disastrous variance). Fox must be aggressive in PnR. Need to exploit MIN's guard depth crisis.",
+        g1Performance: "D+ | Lost at home 102-104. Wemby's 0-8 3PT (11pts on 5-17 FG) was catastrophic, but coaching didn't adjust to get him easier looks at the rim. Fox was -13 with 6TO — no adjustment to protect the ball. SAS shot 28% 3PT (10-36) team-wide. Credit: bench (Harper 18, Castle 17, Champagnie 17) kept them in it. But letting Edwards come off bench and dominate Q4 was a schematic failure — should have prepared for that wrinkle."
+      },
+      away: {
+        coach: "Chris Finch",
+        adjustmentRating: 8,
+        schemeCreativity: 8,
+        urgency: 8,
+        playoffRecord: "WCF 2025 + R2 2026 (back-to-back deep runs)",
+        tendency: "Elite adjustment coach. Edwards-off-bench in G1 was masterclass. Beat DEN 4-2 in R1 despite losing Edwards G5-G6 AND DiVincenzo to Achilles. Creative with limited roster. Historical: took MIN to WCF in 2025, adjusted through Conley's decline, maximized Gobert-Edwards pairing.",
+        rotationPlan: "Edwards off bench for fresh legs (25→30+ min). McDaniels emerging as #2. Reid 6th man. Conley/Hyland PG rotation until Dosunmu returns.",
+        keyAdjustment: "G1 masterstroke: Edwards off bench for Q4 fresh legs (8 of final 16pts). Forced Wemby into 3PT attempts (0-8) instead of rim attacks. Gobert + McDaniels wall on Wemby interior. Must maintain defensive intensity on Wemby — keep him outside.",
+        g1Performance: "A | Won on the road 104-102 as 6.5-point underdog. Edwards-off-bench strategy was brilliant — fresh legs in Q4 when SAS's starters fatigued. Defensive scheme on Wemby was elite: forced him into 0-8 3PT, only 11pts. Gobert rim protection + McDaniels length created a wall. Conley (12pts, 4-7 3PT) as surprise starter was effective. Reid (+15 best +/-) off bench was perfect usage. Only negative: Randle's 8-20 FG efficiency and 5TO."
+      }
+    },
     game1: {
       spread: "SAS -6.5",
       moneyline: "SAS -300",
@@ -3399,19 +3423,19 @@ const SERIES_DATA = [
     },
     awayTeam: {
       name: "Timberwolves", city: "Minnesota", abbr: "MIN", seed: 6, record: "49-33",
-      systemBonus: 0.5, playoffPedigree: 1,
-      offStyle: "Edwards EXPECTED TO PLAY G1 but at ~80% capacity (knee). Randle secondary creator. Gobert screen actions. McDaniels breakout (32pts G6 closeout). Dosunmu OUT G1 (calf) — Conley/Hyland at PG. DiVincenzo OUT for season (Achilles). Won R1 4-2 vs DEN despite missing stars — incredible resilience.", initiators: 2,
+      systemBonus: 1.5, playoffPedigree: 2,
+      offStyle: "Edwards active and effective (18pts/25min G1 on 61.5% FG). Randle secondary creator. McDaniels emerged as legit 3rd option (32pts G6 closeout, 16pts G1 vs SAS). Gobert screen actions + elite rim protection. Won R1 4-2 vs DEN despite missing Edwards G5-G6 AND DiVincenzo (Achilles) — incredible resilience. Back-to-back WCF/deep playoff runs under Finch.", initiators: 3,
       color: "#0C2340", color2: "#236192",
       advStats: { ortg:114.8, drtg:111.5, netRtg:3.3, pace:96.4, ts:57.1, efg:53.5, tov:13.1, reb:48.2, ortgRk:7, drtgRk:12, clutchNetRtg:2.1, last10:"6-4", fgPct:50.5, threePct:33.8, ftPct:76.2, orbPct:26.2 },
       players: [
-        { name:"Anthony Edwards", pos:"SG", rating:75, ppg:28.8, rpg:5.0, apg:3.7, fgp:48.9, per:21.8, ts:59.2, epm:5.8, bpm:4.5, ws48:.178, onOff:7.8, clutch:7.5, vorp:3.5, usg:32.5, injury:"QUESTIONABLE — hyperextended right knee + bone bruise (EXPECTED TO PLAY G1)", lebron:1.285, oLebron:2.623, dLebron:-1.337, war:5.014, offRole:"Shot Creator", defRole:"Chaser",
-          matchupNote:"UPGRADED: Expected to play G1 per Shams Charania (May 4). Left knee hyperextension + bone bruise from R1 G4. Missed G5-G6 but progressing faster than expected. Officially questionable but expected to suit up. Will NOT be 100% — knee limits burst/explosiveness. Averaged 36.7ppg vs SAS this season. Even at 70-80% capacity, his presence transforms MIN's offense from single-initiator (Randle) to dual-initiator. Expect 20-25ppg on reduced efficiency vs his 28.8 season avg. Key question: can he sustain full minutes or will he be on a minutes restriction?", baseRating:90, starCeiling:2, injuryRisk:0.6, activeInjury:{type:"hyperextended left knee + bone bruise",severity:0.5,note:"May 4: Shams reports Edwards EXPECTED TO PLAY G1. Upgraded from 'likely OUT.' Underwent intensive rehab. Cleared for on-court activities. Not 100% — knee limits burst. Rating set to 75 (down from 90 base) reflecting ~80% capacity. Could improve as series progresses."} },
+        { name:"Anthony Edwards", pos:"SG", rating:90, ppg:28.8, rpg:5.0, apg:3.7, fgp:48.9, per:21.8, ts:59.2, epm:5.8, bpm:4.5, ws48:.178, onOff:7.8, clutch:7.5, vorp:3.5, usg:32.5, injury:"Active — knee managed (played 25min G1, 18pts on 8-13 FG)", lebron:1.285, oLebron:2.623, dLebron:-1.337, war:5.014, offRole:"Shot Creator", defRole:"Chaser",
+          matchupNote:"G1 PROVED IT: 18pts in 25min (8-13 FG, 2-3 3PT) — 26pts/36min pace at 61.5% FG. Knee limits minutes not effectiveness. Back-to-back WCF appearances (2025 + 2026). Averaged 36.7ppg vs SAS this season. Coaching masterstroke: came off bench for fresh legs in Q4 — scored 8 of MIN's final 16pts. Expect expanded minutes (30+) as knee strengthens through series.", baseRating:90, starCeiling:2, injuryRisk:0.4, playoffAscension:1.5, activeInjury:{type:"hyperextended left knee + bone bruise",severity:0.3,note:"G1 performance (8-13 FG, 18pts/25min) proves knee is manageable. Efficiency was elite. Minutes will expand. Rating 84 = ~93% of base 90, reflecting slight minutes restriction but near-full effectiveness."} },
         { name:"Julius Randle", pos:"PF", rating:74, ppg:21.1, rpg:6.7, apg:5.0, fgp:48.1, per:20.2, ts:57.8, epm:2.1, bpm:2.4, ws48:.132, onOff:3.2, clutch:5.5, vorp:2.6, usg:26.2, injury:null, lebron:0.257, oLebron:1.499, dLebron:-1.242, war:4.445, offRole:"Shot Creator", defRole:"Helper",
           matchupNote:"MIN's primary creator with Edwards OUT. Averaged 21.1ppg. Physical mismatch potential but SAS's length (Wemby, Castle, Champagnie) will contest everything.", baseRating:74, starCeiling:1, injuryRisk:0.4 },
-        { name:"Rudy Gobert", age:33, pos:"C", rating:72, ppg:10.9, rpg:11.5, apg:1.7, fgp:68.2, per:18.4, ts:65.8, epm:2.4, bpm:2.1, ws48:.142, onOff:4.5, clutch:4.2, vorp:1.9, usg:19.0, injury:null, lebron:1.822, oLebron:-0.603, dLebron:2.425, war:6.38, offRole:"Roll + Cut Big", defRole:"Anchor Big",
-          matchupNote:"DPOY caliber. But Wemby matchup is his nightmare — Wemby can shoot 3s and Gobert can't follow him to the perimeter. Gobert's rim protection less effective when Wemby is pulling him out.", baseRating:75 },
-        { name:"Jaden McDaniels", pos:"SF", rating:70, ppg:14.8, rpg:4.2, apg:2.7, fgp:51.5, per:14.5, ts:57.2, epm:0.8, bpm:0.4, ws48:.078, onOff:1.5, clutch:4.8, vorp:1.1, usg:20.5, injury:null, lebron:-1.154, oLebron:-1.387, dLebron:0.233, war:1.896, offRole:"Athletic Finisher", defRole:"Point of Attack",
-          matchupNote:"R1 BREAKOUT: 32pts/10reb in G6 closeout vs DEN. Emerged as MIN's #2 scorer with Edwards out. 7-foot wingspan. Can he sustain this vs SAS's elite defense? Rating bumped 68→70.", baseRating:68 },
+        { name:"Rudy Gobert", age:33, pos:"C", rating:75, ppg:10.9, rpg:11.5, apg:1.7, fgp:68.2, per:18.4, ts:65.8, epm:2.4, bpm:2.1, ws48:.142, onOff:4.5, clutch:4.2, vorp:1.9, usg:19.0, injury:null, lebron:1.822, oLebron:-0.603, dLebron:2.425, war:6.38, offRole:"Roll + Cut Big", defRole:"Anchor Big",
+          matchupNote:"DPOY caliber. G1: 7pts but 10reb/4stl/1blk — elite defensive impact on Wemby. Wemby matchup is challenging (3PT) but Gobert's rim protection + Finch scheming kept Wemby to 11pts. Consistently elite defensive anchor.", baseRating:75 },
+        { name:"Jaden McDaniels", pos:"SF", rating:73, ppg:14.8, rpg:4.2, apg:2.7, fgp:51.5, per:14.5, ts:57.2, epm:0.8, bpm:0.4, ws48:.078, onOff:1.5, clutch:4.8, vorp:1.1, usg:20.5, injury:null, lebron:-1.154, oLebron:-1.387, dLebron:0.233, war:1.896, offRole:"Athletic Finisher", defRole:"Point of Attack",
+          matchupNote:"R1 BREAKOUT: 32pts/10reb in G6 closeout vs DEN. Continued in R2 G1: 16pts on 7-14 FG. Emerged as legitimate 3rd scoring option. 7-foot wingspan makes him key Wemby defender. Rating reflects sustained playoff elevation.", baseRating:68, playoffAscension:1.0 },
         { name:"Donte DiVincenzo", pos:"PG", rating:0, ppg:12.2, rpg:4.1, apg:3.8, fgp:40.6, per:13.5, ts:54.0, epm:0.3, bpm:0.0, ws48:.070, onOff:1.0, clutch:4.5, vorp:1.0, usg:21.0, injury:"OUT FOR SEASON — Achilles rupture", lebron:0.556, oLebron:0.196, dLebron:0.359, war:4.714, offRole:"Movement Shooter", defRole:"Chaser",
           matchupNote:"Season-ending Achilles rupture in R1 G4 vs DEN. Devastating loss — was MIN's starting PG.", baseRating:62 },
         { name:"Naz Reid", pos:"C", rating:66, ppg:13.6, rpg:6.2, apg:2.2, fgp:45.6, per:17.5, ts:57.0, epm:1.0, bpm:1.5, ws48:.110, onOff:2.5, clutch:5.5, vorp:1.7, usg:22.2, injury:null, lebron:1.086, oLebron:-0.011, dLebron:1.096, war:4.46, offRole:"Movement Shooter", defRole:"Helper",

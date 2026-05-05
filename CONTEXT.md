@@ -1,12 +1,12 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 1, 2026 (Phase 45 complete, deep lineage attribution fixes validated).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 5, 2026 (Phase 51 complete — win probability recalibration, dynamic ratings, multiplicative architecture).
 
 ---
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 46-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 46 scales the model to Round 2 with 4 new series (OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI), full roster graduation from R1, and research-backed G1 predictions.
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 51-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 51 introduces win probability recalibration (WIN_PROB_SCALE=35, PLAYOFF_UPSET_COMPRESSION=0.18), per-player dynamic rating adjustments in calcTeamRating (injury severity, playoff ascension, coaching scheme), and a proportional-multiplicative context architecture replacing fixed additive factors (fatigue ±12%, scheme ±20%, inconsistency 15% compression). Backtest: 87.5% G1 winner accuracy, 75.0% avg favorite WP (was 90-95%), 5.1 expected series length (was 4.2, actual 5.4-5.6).
 
 **R1 model accuracy: G1-G6 ML record 25/42 (59.5%) | G1 7/8 (88%) | G4 3/4 (75%) | G5 6/7 (86%) | G6 1/3 (33.3%)**
 

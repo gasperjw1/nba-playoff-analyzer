@@ -547,7 +547,10 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
     .sort((a, b) => a.margin - b.margin);
 
   // Cross-check vs logistic (uses blended margin now)
-  const logisticWinProb = 1 / (1 + Math.exp(-0.14 * simMargin));
+  // PHASE 49: Use calibrated scale. Old: 0.14 (≈ ln(10)/15 ≈ 0.1535, approximated as 0.14).
+  // PHASE 49 v2: ln(10)/WIN_PROB_SCALE ≈ 2.3026/35 ≈ 0.066. Matches recalibrated ratings.js.
+  const logScale = (typeof WIN_PROB_SCALE !== 'undefined') ? Math.LN10 / WIN_PROB_SCALE : 0.066;
+  const logisticWinProb = 1 / (1 + Math.exp(-logScale * simMargin));
 
   const homeFavored = homeWinPct >= 0.5;
   const favTeam = homeFavored ? series.homeTeam.abbr : series.awayTeam.abbr;
