@@ -7,8 +7,6 @@ function renderSeries() {
   const prob = calcWinProb(s, s.id);
   const hr = calcTeamRating(s.homeTeam, s, s.id), ar = calcTeamRating(s.awayTeam, s, s.id);
   const score = getSeriesScore(s);
-  const g1 = s.game1;
-
   // Build game sub-tabs
   const gameTabsHtml = `<div class="game-tabs">
     <div class="game-tab ${currentGameTab==='overview'?'active':''}" onclick="switchGameTab('overview')">Overview</div>
@@ -180,6 +178,14 @@ function renderSeries() {
       const gNum = gIdx + 1;
       const gameKeyStr = 'game' + gNum;
 
+      // Shared venue + series score context (used by both branches)
+      const venueTeam = isHome ? s.homeTeam : s.awayTeam;
+      const actualVenue = s.homeCourtOverride === 'away'
+        ? (isHome ? s.awayTeam : s.homeTeam)
+        : venueTeam;
+      const score = getSeriesScore(s);
+      const seriesStr = score.home > score.away ? `${s.homeTeam.abbr} leads ${score.home}-${score.away}` : score.away > score.home ? `${s.awayTeam.abbr} leads ${score.away}-${score.home}` : `Series tied ${score.home}-${score.away}`;
+
       // Check if there's a full prediction data object (like game1/game2 have)
       if (s[gameKeyStr]) {
         // Use the same renderGamePrediction function as G1/G2
@@ -187,16 +193,6 @@ function renderSeries() {
         const gColor = gColors[gIdx] || 'var(--accent)';
         const gLabel = 'Game ' + gNum;
         const gPredData = s[gameKeyStr];
-
-        // Determine venue for this game
-        const venueTeam = isHome ? s.homeTeam : s.awayTeam;
-        const actualVenue = s.homeCourtOverride === 'away'
-          ? (isHome ? s.awayTeam : s.homeTeam)
-          : venueTeam;
-
-        // Series score context
-        const score = getSeriesScore(s);
-        const seriesStr = score.home > score.away ? `${s.homeTeam.abbr} leads ${score.home}-${score.away}` : score.away > score.home ? `${s.awayTeam.abbr} leads ${score.away}-${score.home}` : `Series tied ${score.home}-${score.away}`;
 
         // G2 Adjustments / Key Takeaways section
         const adjustmentsHtml = gPredData.g2Adjustments ? `
@@ -227,14 +223,6 @@ function renderSeries() {
           ? `${s.homeTeam.abbr} ${gProj.homeScore} — ${s.awayTeam.abbr} ${gProj.awayScore}`
           : `${s.awayTeam.abbr} ${gProj.awayScore} — ${s.homeTeam.abbr} ${gProj.homeScore}`;
 
-        const venueTeam = isHome ? s.homeTeam : s.awayTeam;
-        const actualVenue = s.homeCourtOverride === 'away'
-          ? (isHome ? s.awayTeam : s.homeTeam)
-          : venueTeam;
-
-        const score = getSeriesScore(s);
-        const seriesStr = score.home > score.away ? `${s.homeTeam.abbr} leads ${score.home}-${score.away}` : score.away > score.home ? `${s.awayTeam.abbr} leads ${score.away}-${score.home}` : `Series tied ${score.home}-${score.away}`;
-
         tabContent = `
           <div class="game-panel" style="border-color:var(--accent)40">
             <div class="game-panel-header">
@@ -262,7 +250,7 @@ function renderSeries() {
 
             <div class="game-panel-grid" style="margin-top:12px">
               <div class="gp-stat"><div class="label">Model Spread</div><div class="val">${gProj.favTeam} -${gProj.absMargin >= 1 ? (gProj.absMargin - 0.5).toFixed(1) : '0.5'}</div></div>
-              <div class="gp-stat"><div class="label">Win Prob</div><div class="val">${gProj.margin >= 0 ? Math.round(50 + gProj.absMargin * 3) : Math.round(50 + gProj.absMargin * 3)}%</div></div>
+              <div class="gp-stat"><div class="label">Win Prob</div><div class="val">${Math.min(95, Math.round(50 + (gProj.absMargin || 0) * 3))}%</div></div>
               <div class="gp-stat"><div class="label">Total</div><div class="val">${gProj.homeScore + gProj.awayScore}</div></div>
             </div>
 

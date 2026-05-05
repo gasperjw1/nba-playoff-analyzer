@@ -61,8 +61,7 @@ const HCA_GAME7_OVERRIDE = 2.5; // Li et al.: location non-significant in G7 out
 const PLAYOFF_ADJUSTMENT = {
   paceReduction: 0.95,      // playoffs slow down ~5% (was 3%, updated per Cabarkapa)
   fgWeightBoost: 1.15,      // FG% matters 15% more in playoffs than regular season
-  drbWeightBoost: 1.20,     // DRB matters 20% more in playoffs (2nd-half defensive boards decisive)
-  orbLoserBias: true         // losing teams get more ORB (trailing teams crash boards — counterintuitive)
+  drbWeightBoost: 1.20      // DRB matters 20% more in playoffs (2nd-half defensive boards decisive) — wired into ratings.js
 };
 
 // PHASE 17: Clutch Weight Adjustment (Sarlis et al. 2024, 31 citations; Iatropoulos et al. 2025)

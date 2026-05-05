@@ -3133,6 +3133,58 @@ const SERIES_DATA = [
       homeDefOnAway: { defender:"Lu Dort", target:"LeBron James", dLebron:0.356, targetUsg:29.2, note:"Dort is OKC's elite POA stopper but LeBron's passing nullifies on-ball pressure. OKC will likely switch — Dort/Caruso/J.Williams rotate on LeBron. OKC held opponents to 108.2 DRtg (2nd in NBA). LeBron averaged 24.1ppg in R1 but efficiency dipped without Doncic creating gravity." },
       awayDefOnHome: { defender:"Marcus Smart", target:"Shai Gilgeous-Alexander", dLebron:1.373, targetUsg:33.0, note:"Smart is DPOY-caliber and LAL's best perimeter defender. But SGA averaged 31.1ppg on 55.3% FG and 67% TS this season. Smart can slow him but can't stop him — SGA creates at elite efficiency against any defender. OKC's multi-initiator system (Williams, Holmgren) means doubling SGA leaves others open." }
     },
+    game1: {
+      spread: "OKC -10.5",
+      moneyline: "OKC -600",
+      ou: "O/U 215.5",
+      pick: "OKC",
+      confidence: "high",
+      projScore: "OKC 115 — LAL 104",
+      reasoning: "OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) facing LAL still missing Doncic. Jalen Williams OUT (hamstring) but OKC swept PHX without him. SGA (31.1ppg, 67% TS) + Holmgren + Hartenstein + elite bench. 11 days rest vs 4. OKC went 4-0 vs LAL in reg season (avg margin 31.8pts). LeBron fatigue risk at 41 with 4 days rest after 6-game R1.",
+      prosHome: [
+        "SGA 31.1ppg on 67% TS — best isolation scorer in NBA",
+        "11 days rest vs LAL 4 days — massive recovery advantage",
+        "4-0 vs LAL in regular season with avg margin of 31.8pts",
+        "#2 defense (108.2 DRtg) with Dort/Caruso/Wallace on wings",
+        "Deepest bench in NBA — Mitchell, Joe, Wallace absorb Williams minutes"
+      ],
+      consHome: [
+        "Jalen Williams OUT — lose #2 scorer (17.1ppg) and secondary creator",
+        "Offense becomes more SGA-dependent without Williams",
+        "Holmgren injury history — durability risk in a long series",
+        "Unproven in tight playoff elimination spots as a group"
+      ],
+      prosAway: [
+        "LeBron playoff mode — 14-6 vs HOU in last 20 (experience matters)",
+        "Kennard breakout potential — 27pts G1 R1 showed he can explode",
+        "Smart DPOY-caliber defense can slow SGA temporarily",
+        "Half-court efficiency system works against any defense when shooting hits"
+      ],
+      consAway: [
+        "Missing Doncic — 29.3ppg absence is unfillable",
+        "Only 4 days rest after grueling 6-game R1 vs HOU",
+        "Depth collapses after top 5 — no answer to OKC bench production",
+        "Ayton vs Holmgren mismatch — length disadvantage everywhere"
+      ],
+      playerProjections: {
+        home: [
+          {name:"SGA",pts:"28-34",reb:"4-6",ast:"5-8",fg:"11-22",threes:"3-7",note:"31.1ppg on 67% TS. 11 days rest. 4-0 vs LAL. Line: O28.5 (-115)"},
+          {name:"Holmgren",pts:"16-22",reb:"7-10",ast:"1-3",fg:"7-13",threes:"2-5",blk:"2-4",note:"Stretch-5 vs Ayton mismatch. Length + mobility advantage"},
+          {name:"Dort",pts:"8-12",reb:"3-5",ast:"1-2",fg:"3-8",threes:"1-4",note:"Elite perimeter D on LeBron. Offense secondary but 3PT capable"},
+          {name:"Hartenstein",pts:"8-12",reb:"8-11",ast:"3-5",fg:"4-7",threes:"0-0",note:"Physical rebounder. Facilitator from high post. D-LEBRON 2.597"},
+          {name:"Mitchell",pts:"10-14",reb:"3-4",ast:"3-5",fg:"4-9",threes:"1-4",note:"Bench creation. 9pts in R1 (3-4 3PT). Fills Williams role"},
+          {name:"Caruso",pts:"6-10",reb:"2-4",ast:"1-3",fg:"2-6",threes:"1-3",note:"Former Laker — knows LeBron tendencies. D-LEBRON 2.132"}
+        ],
+        away: [
+          {name:"LeBron",pts:"24-30",reb:"6-9",ast:"7-10",fg:"9-20",threes:"2-6",note:"Legacy mode at 41 but 4 days rest vs 11. Line: O25.5 (-110). Volume scorer"},
+          {name:"Reaves",pts:"16-22",reb:"4-6",ast:"4-6",fg:"6-15",threes:"2-5",note:"Returning from oblique — 80% capacity. Adds creation + scoring"},
+          {name:"Smart",pts:"12-16",reb:"3-5",ast:"3-5",fg:"4-10",threes:"2-5",note:"R1 breakout 20ppg avg. DPOY defense on SGA but can't stop him solo"},
+          {name:"Kennard",pts:"14-20",reb:"2-3",ast:"1-3",fg:"5-12",threes:"3-7",note:"R1 avg 25ppg on 65% FG. OKC wing D (Dort/Caruso) is tougher"},
+          {name:"Hachimura",pts:"10-14",reb:"4-6",ast:"1-2",fg:"4-10",threes:"1-4",note:"R1 G6: 21pts (5-7 3PT). Solid both ends"},
+          {name:"Ayton",pts:"8-12",reb:"6-9",ast:"0-2",fg:"3-8",threes:"0-1",note:"Holmgren matchup nightmare. Length disadvantage everywhere"}
+        ]
+      },
+    },
     homeTeam: {
       name: "Thunder", city: "Oklahoma City", abbr: "OKC", seed: 1, record: "64-18",
       systemBonus: 2.5, playoffPedigree: 2,
@@ -3221,6 +3273,96 @@ const SERIES_DATA = [
       homeDefOnAway: { defender:"Stephon Castle", target:"Anthony Edwards", dLebron:0.908, targetUsg:32.5, note:"Castle's size (6-6) and defensive instincts vs Edwards (EXPECTED TO PLAY but at ~80% capacity with knee). Edwards at full health is unstoppable but the hyperextended knee limits burst. Castle's physicality could exploit the injury. If Edwards is limited, Randle becomes primary — Castle shifts to guard him." },
       awayDefOnHome: { defender:"Jaden McDaniels", target:"Victor Wembanyama", dLebron:0.233, targetUsg:32.4, note:"McDaniels has 7-foot wingspan but Wemby is 7-4. With Edwards playing but limited, MIN has a perimeter scoring threat that prevents Wemby from camping in the paint. McDaniels will compete but this is an impossible assignment — Wemby averaged 34ppg vs MIN this season." }
     },
+    game1: {
+      spread: "SAS -6.5",
+      moneyline: "SAS -300",
+      ou: "O/U 217.5",
+      pick: "SAS",
+      confidence: "medium",
+      projScore: "SAS 112 — MIN 105",
+      reasoning: "Edwards EXPECTED TO PLAY per Shams (May 4) — changes calculus from HIGH to MEDIUM confidence. Edwards at 80% capacity still transforms MIN. SAS advantages remain: Wemby healthy + dominant, 9 days rest vs 1, Frost Bank Arena (62-20), elite depth. Key: can Edwards sustain 35+ min on bum knee? If minutes-restricted, SAS depth reasserts in Q4.",
+      prosHome: [
+        "Wemby healthy and dominant — 17/14/6blk in closeout game",
+        "9 days rest vs MIN 1 day — enormous recovery edge",
+        "Frost Bank Center: 62-20 home record this season",
+        "Depth: Jones/Sochan/Castle/Johnson all contribute at high level",
+        "5 games in 5 rounds without Williams calibrated team's identity"
+      ],
+      consHome: [
+        "Edwards' presence pulls Wemby from paint — creates space for Randle",
+        "MIN has nothing to lose — playing with house money as underdogs",
+        "Young team's first 2nd round experience — pressure could matter",
+        "Wemby foul trouble risk vs physical MIN interior"
+      ],
+      prosAway: [
+        "Edwards PLAYING — 36.7ppg vs SAS this season, game-changer even at 80%",
+        "Randle mid-range game benefits from Edwards gravity",
+        "Nothing-to-lose mentality after surviving R1 vs DEN",
+        "Gobert rim protection limits Wemby at basket"
+      ],
+      consAway: [
+        "Edwards knee: hyperextension + bone bruise — minutes restriction likely",
+        "Dosunmu OUT (calf) — guard depth is paper thin",
+        "Only 1 day rest — worst rest disadvantage in R2",
+        "No reliable 3rd scorer behind Edwards and Randle"
+      ]
+    },
+    game2: {
+      spread: "SAS -5.5",
+      moneyline: "SAS -220",
+      ou: "O/U 216.5",
+      pick: "SAS",
+      confidence: "medium",
+      projScore: "SAS 111 — MIN 106",
+      reasoning: "G1 TAKEAWAYS: MIN upset SAS 104-102 on the road. Wemby's 0-8 3PT (11pts on 5-17 FG) was catastrophic variance — his season avg is 37.5% from 3. This WILL regress to the mean. Edwards off bench was a coaching masterstroke (18pts in 25min, 8-13 FG) but his knee limited minutes. Fox struggled badly (-13, 0-4 3PT) and must be better. SAS shot 28% 3PT as a team (10-36) — historic cold shooting that won't repeat. KEY G2 ADJUSTMENTS: (1) Wemby will attack the rim more instead of settling for 3s — expect 25+ pts. (2) Fox needs to be aggressive in the PnR instead of settling for jumpers. (3) Dosunmu returns for MIN (expected May 6) which gives them a real PG. (4) Edwards likely gets more minutes (30+) if knee held up. (5) SAS bench (Harper 18pts, Castle 17pts) proved reliable — Champagnie/Castle will attack MIN's limited wing depth. Model adjusts from G1's SAS by 7 prediction to SAS by 5 — respecting MIN's proven competitiveness and Edwards' effectiveness, but expecting SAS's shooting to normalize (28% → 36%+).",
+      prosHome: [
+        "Wemby's 0-8 3PT was historic variance — his 37.5% season avg ensures bounce-back",
+        "Fox due for correction — 0-4 3PT, -13 in G1 was his worst game all playoffs",
+        "SAS shot 28% 3PT (10-36) as team — massive regression to mean expected",
+        "Home court advantage still intact — Frost Bank Center (62-20 record)",
+        "Harper (18pts) and Castle (17pts) proved bench depth is elite"
+      ],
+      consHome: [
+        "MIN proved they can win in Frost Bank Center — crowd pressure lessened",
+        "Edwards effective even at 80% — 18pts in 25min on 62% FG",
+        "Dosunmu returns for G2 — MIN guard depth significantly improved",
+        "Wemby's defensive dominance (12blk) didn't translate to winning — need more offense",
+        "Fox's confidence may be shaken after -13 performance"
+      ],
+      prosAway: [
+        "Series lead 1-0 — playing with house money, pressure on SAS",
+        "Edwards off-bench strategy worked — expect expanded role (30+ min)",
+        "Dosunmu returns — gives MIN a real PG (43pts in R1 G4)",
+        "Naz Reid +15 in G1 — 6th man provides crucial spacing vs Wemby",
+        "MIN's defensive scheme on Wemby (contest everything) proved effective"
+      ],
+      consAway: [
+        "SAS's 28% 3PT will normalize — expect 36%+ shooting in G2",
+        "Wemby motivated after worst shooting game of career — dangerous",
+        "Randle inefficient (8-20 FG, 5TO) — can't sustain that and win",
+        "Conley/Hyland at PG inadequate even with Dosunmu back",
+        "Road teams historically lose G2 after stealing G1 — SAS desperate"
+      ],
+      playerProjections: {
+        home: [
+          {name:"Wembanyama",pts:"26-32",reb:"10-14",ast:"3-5",fg:"10-20",threes:"2-6",blk:"3-5",note:"MASSIVE bounce-back from 11pt G1 (0-8 3PT). Season avg 24.8ppg, 34ppg vs MIN. Line: O22.5 (-125)"},
+          {name:"Fox",pts:"18-24",reb:"3-5",ast:"5-8",fg:"7-16",threes:"1-4",note:"Must be aggressive in PnR. 6TO in G1 was career-worst — correction expected. Line: O17.5 (-110)"},
+          {name:"Castle",pts:"14-18",reb:"4-6",ast:"4-6",fg:"5-10",threes:"2-4",note:"17pts G1 was efficient (4-8). Sophomore rising — will attack more with Fox's PnR"},
+          {name:"Vassell",pts:"12-16",reb:"3-5",ast:"2-4",fg:"5-12",threes:"3-6",note:"14pts G1 with 3stl/1blk. Defensive impact + 3PT shooting. Steady contributor"},
+          {name:"Champagnie",pts:"10-14",reb:"5-7",ast:"0-1",fg:"4-10",threes:"2-5",note:"17pts G1 on 7-12. 3PT shooting may regress but energy stays high"},
+          {name:"Harper",pts:"12-16",reb:"3-5",ast:"3-5",fg:"5-12",threes:"1-3",note:"18pts G1 off bench (7-13). Bench creation spark. Key if Fox struggles again"}
+        ],
+        away: [
+          {name:"Edwards",pts:"20-26",reb:"3-5",ast:"3-5",fg:"8-16",threes:"2-5",note:"Expanded from 25min G1 to 30+ G2. Knee holding up. 8-13 FG efficiency. Line: O19.5 (-115)"},
+          {name:"Randle",pts:"18-24",reb:"8-11",ast:"2-4",fg:"7-18",threes:"1-4",note:"21pts G1 but 8-20 FG inefficient. Volume scorer — needs better shot selection"},
+          {name:"McDaniels",pts:"12-16",reb:"4-6",ast:"1-3",fg:"5-12",threes:"0-2",note:"16pts G1 on 7-14. R1 breakout continues. Defensive energy on Wemby"},
+          {name:"Gobert",pts:"6-10",reb:"9-12",ast:"2-3",fg:"3-6",threes:"0-0",note:"7pts but 4stl/1blk/10reb in G1. Elite defensive impact"},
+          {name:"Reid",pts:"10-14",reb:"6-9",ast:"1-2",fg:"4-8",threes:"1-3",note:"+15 best +/- in G1. Spacing vs Wemby is key. Line: reliable 6th man"},
+          {name:"Conley",pts:"8-12",reb:"1-3",ast:"4-6",fg:"3-8",threes:"2-5",note:"12pts G1 with 4-7 3PT. Veteran steadiness. Dosunmu return may reduce his role"}
+        ]
+      },
+    },
+
     homeTeam: {
       name: "Spurs", city: "San Antonio", abbr: "SAS", seed: 2, record: "62-20",
       systemBonus: 1.5, playoffPedigree: 0,
@@ -3297,7 +3439,7 @@ const SERIES_DATA = [
       { team:"MIN", player:"Donte DiVincenzo", desc:"OUT FOR SEASON — Achilles rupture. MIN's starting PG gone for remainder of playoffs.", impact:-6, category:"injury", evidence:"R1 G4 Achilles injury. Done for the year.", verdict:"verified" },
       { team:"MIN", player:null, desc:"Won R1 4-2 vs DEN despite missing Edwards and DiVincenzo. Incredible resilience. McDaniels 32pt closeout game. Team believes they can win without stars.", impact:4, category:"momentum", evidence:"MIN's G6 comeback (erased 20pt deficit in Denver) shows championship-level grit.", verdict:"verified" }
     ],
-    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:112,awayScore:105,margin:7,confidence:"MEDIUM",character:"COMPETITIVE",reasoning:"MAJOR UPDATE: Edwards EXPECTED TO PLAY G1 per Shams Charania (May 4). This dramatically changes the calculus. SAS was -11.5 when Edwards was expected OUT — line will likely move to SAS -6 to -8 with Edwards in. Edwards at 80% capacity (left knee hyperextension + bone bruise) still transforms MIN from a .500 team to a competitive one. His 36.7ppg vs SAS this season means even at 70% output (~25ppg) he's a difference-maker. However, Dosunmu is OUT G1 (calf), forcing Conley/Hyland at PG — MIN still has guard depth issues. SAS advantages remain: Wemby is healthy and dominant (17/14/6blk closeout), 9 days rest vs MIN's 1 day, Frost Bank Center (62-20), and depth. But Edwards' return gives MIN a perimeter creator that SAS must respect, pulling Wemby out of the paint and opening Randle's mid-range game. Key question: Can Edwards sustain 35+ minutes on a bum knee? If he's on a minutes restriction (25-28min), SAS's depth advantage reasserts in the 4th quarter. Model adjusts from HIGH confidence SAS by 12 to MEDIUM confidence SAS by 7. Wemby is still the best player on the court but Edwards' presence makes this a 2-star vs 1-star game instead of 1-star vs 0-star.",xFactor:"Edwards health + minutes",moneyline:"SAS -300",spread:"SAS -6.5",ou:"O/U 217.5"},notes:""}]
+    games: [{num:1,result:"MIN",homeScore:102,awayScore:104,winner:"MIN",prediction:{homeWin:true,homeScore:112,awayScore:105,margin:7,confidence:"MEDIUM",character:"COMPETITIVE",reasoning:"MAJOR UPDATE: Edwards EXPECTED TO PLAY G1 per Shams Charania (May 4). This dramatically changes the calculus. SAS was -11.5 when Edwards was expected OUT — line will likely move to SAS -6 to -8 with Edwards in. Edwards at 80% capacity (left knee hyperextension + bone bruise) still transforms MIN from a .500 team to a competitive one. His 36.7ppg vs SAS this season means even at 70% output (~25ppg) he's a difference-maker. However, Dosunmu is OUT G1 (calf), forcing Conley/Hyland at PG — MIN still has guard depth issues. SAS advantages remain: Wemby is healthy and dominant (17/14/6blk closeout), 9 days rest vs MIN's 1 day, Frost Bank Center (62-20), and depth. But Edwards' return gives MIN a perimeter creator that SAS must respect, pulling Wemby out of the paint and opening Randle's mid-range game. Key question: Can Edwards sustain 35+ minutes on a bum knee? If he's on a minutes restriction (25-28min), SAS's depth advantage reasserts in the 4th quarter. Model adjusts from HIGH confidence SAS by 12 to MEDIUM confidence SAS by 7. Wemby is still the best player on the court but Edwards' presence makes this a 2-star vs 1-star game instead of 1-star vs 0-star.",xFactor:"Edwards health + minutes",moneyline:"SAS -300",spread:"SAS -6.5",ou:"O/U 217.5"},notes:"MIN 104-102 upset at Frost Bank Center. Edwards came off bench (25min) but scored 18pts (8-13 FG, 2-3 3PT) — effective despite knee. Randle 21pts/10reb but 8-20 FG (volume scorer). Shannon Jr 16pts (5-13, 6-8 FT). Conley 12pts (4-8, 4-7 3PT) key spacing. Naz Reid 12pts/9reb off bench (+15 best +/-). MIN shot 46% FG, 38% 3PT. SAS: Wemby 11pts (5-17 FG, 0-8 3PT!) but 15reb/12blk — historic block game but shooting was horrendous. Champagnie 17pts (3-7 3PT). Castle 17pts (4-8, 3-5 3PT, 6-8 FT). Harper 18pts off bench (7-13). Fox 10pts (5-14, 0-4 3PT, 6TO, -13). SAS shot 41% FG, 28% 3PT (10-36). Q scores: MIN 24-21-24-35, SAS 23-22-27-30. MIN won Q4 35-30 — Edwards + Randle closed it out. Model predicted SAS by 7 — WRONG WINNER. 9-point miss. Key lesson: Wemby's 3PT shooting (0-8) was catastrophic variance. MIN's defensive intensity on Wemby was elite. Edwards off bench was a coaching masterstroke — fresh legs in Q4.",boxScores:{home:[{name:"Champagnie",min:32,pts:17,reb:7,ast:0,fg:"7-12",threes:"3-7",ft:"0-0",to:1,stl:0,blk:0,pm:7},{name:"Wembanyama",min:40,pts:11,reb:15,ast:5,fg:"5-17",threes:"0-8",ft:"1-2",to:3,stl:0,blk:12,pm:5},{name:"Fox",min:33,pts:10,reb:3,ast:6,fg:"5-14",threes:"0-4",ft:"0-0",to:6,stl:1,blk:0,pm:-13},{name:"Vassell",min:36,pts:14,reb:5,ast:3,fg:"5-11",threes:"3-6",ft:"1-1",to:1,stl:3,blk:1,pm:7},{name:"Castle",min:28,pts:17,reb:5,ast:5,fg:"4-8",threes:"3-5",ft:"6-8",to:0,stl:0,blk:0,pm:4},{name:"Barnes",min:10,pts:2,reb:4,ast:0,fg:"1-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:1,pm:4},{name:"K.Johnson",min:24,pts:11,reb:2,ast:1,fg:"5-10",threes:"0-2",ft:"1-2",to:0,stl:0,blk:0,pm:-13},{name:"Kornet",min:8,pts:2,reb:2,ast:0,fg:"0-1",threes:"0-0",ft:"2-2",to:2,stl:0,blk:0,pm:-7},{name:"Harper",min:29,pts:18,reb:4,ast:4,fg:"7-13",threes:"1-4",ft:"3-3",to:0,stl:0,blk:0,pm:-4}],away:[{name:"Randle",min:41,pts:21,reb:10,ast:2,fg:"8-20",threes:"2-6",ft:"3-6",to:5,stl:1,blk:0,pm:-3},{name:"McDaniels",min:36,pts:16,reb:5,ast:2,fg:"7-14",threes:"0-2",ft:"2-2",to:1,stl:1,blk:1,pm:-2},{name:"Gobert",min:30,pts:7,reb:10,ast:3,fg:"3-7",threes:"0-0",ft:"1-5",to:1,stl:4,blk:1,pm:2},{name:"Conley",min:24,pts:12,reb:2,ast:6,fg:"4-8",threes:"4-7",ft:"0-0",to:0,stl:0,blk:0,pm:13},{name:"Shannon",min:35,pts:16,reb:5,ast:1,fg:"5-13",threes:"0-1",ft:"6-8",to:0,stl:0,blk:0,pm:-10},{name:"Reid",min:30,pts:12,reb:9,ast:1,fg:"5-8",threes:"2-3",ft:"0-0",to:2,stl:0,blk:1,pm:15},{name:"Clark",min:7,pts:2,reb:1,ast:0,fg:"1-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:-1},{name:"Hyland",min:12,pts:0,reb:1,ast:2,fg:"0-6",threes:"0-4",ft:"0-0",to:0,stl:1,blk:1,pm:-2},{name:"Edwards",min:25,pts:18,reb:3,ast:3,fg:"8-13",threes:"2-3",ft:"0-0",to:1,stl:0,blk:1,pm:-2}]}},{num:2,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:111,awayScore:106,margin:5,confidence:"MEDIUM",character:"COMPETITIVE",reasoning:"G2 at Frost Bank Center (May 7). SAS lost G1 102-104 in a home upset. KEY REGRESSION: Wemby shot 0-8 3PT (his worst career game from deep) — season avg 37.5% means massive bounce-back expected. Fox was 0-4 3PT (-13) — also due for correction. SAS team shot 28% 3PT (10-36) vs season avg 37.5%. That's a 9.5% miss rate that adds ~7 expected points to SAS's score if they shoot normally. Edwards was effective (18pts/25min) but knee limited minutes. Dosunmu returns for MIN (real PG). SAS adjustments: Wemby attacks rim more, Fox more aggressive in PnR, less 3PT reliance. MIN proved competitive but needs SAS to shoot abnormally cold again. Model: SAS by 5 — tightened from original 7 based on MIN's proven G1 competitiveness but expecting shooting regression.",xFactor:"Wemby 3PT regression + Edwards minutes",moneyline:"SAS -220",spread:"SAS -5.5",ou:"O/U 216.5"},notes:""}]
   },
   {
     id: "DET-CLE", conf: "East", round: "R2",
@@ -3308,6 +3450,59 @@ const SERIES_DATA = [
     defMatchups: {
       homeDefOnAway: { defender:"Ausar Thompson", target:"Donovan Mitchell", dLebron:2.93, targetUsg:31.0, note:"A.Thompson's elite POA defense (D-LEBRON 2.93, #3 in NBA) vs Mitchell (27.9ppg, 8.5 clutch). This is the series-defining matchup. Mitchell has historically been huntable on defense but A.Thompson's defensive intensity could force him into inefficient possessions. CLE's triple-initiator system means Mitchell can play off-ball more to avoid A.Thompson." },
       awayDefOnHome: { defender:"Evan Mobley", target:"Cade Cunningham", dLebron:1.346, targetUsg:29.0, note:"Mobley's switchability allows him to guard Cade in the PnR. Cade averaged 23.9ppg/9.9apg but his health (collapsed lung recovery) limits burst. Mobley can contest Cade's midrange pull-ups while Allen protects the rim. CLE's defensive versatility (Mobley 1-5 switching) is their trump card." }
+    },
+    game1: {
+      spread: "DET -1.5",
+      moneyline: "DET -155",
+      ou: "O/U 209.5",
+      pick: "DET",
+      confidence: "low",
+      projScore: "DET 106 — CLE 103",
+      reasoning: "Closest R2 matchup. Both finished 7-game R1 series May 3 (equal rest). G7 takeaways: Cade dual-mode (45pts G5 → 32/12ast G7), CLE depth elite (bench +39-19 G7), Allen 22/19 interior dominance, Harris breakout (30pts, 5-7 3PT). DET #1 defense + home court vs CLE triple-initiator offense. Coin flip with slight home tilt.",
+      prosHome: [
+        "Cade Cunningham dual-mode evolution — can score 45 or facilitate 12ast",
+        "#1 defense in NBA (107.2 DRtg) locks down perimeter",
+        "Best home record 31-9 — LCA crowd is deafening",
+        "Harris breakout (30pts G7) gives legitimate #2 scoring threat",
+        "A.Thompson (D-LEBRON 2.93) elite perimeter stopper on Mitchell"
+      ],
+      consHome: [
+        "Coming off 7-game series — emotional and physical fatigue",
+        "Duren vs Allen interior mismatch — Allen more dominant rebounder",
+        "CLE triple-initiator offense (Mitchell/Harden/Mobley) creates overload",
+        "Mitchell 8.5 clutch rating — CLE has Q4 execution edge"
+      ],
+      prosAway: [
+        "Triple-initiator offense: Mitchell + Harden + Mobley create mismatches",
+        "Allen interior dominance — 22/19 (8 OREB) in G7 closeout",
+        "CLE bench depth: Strus +20, Tyson +19, Merrill +16 in G7",
+        "Mitchell 8.5 clutch rating — ice in veins in Q4",
+        "Harden's playmaking creates open looks off drives"
+      ],
+      consAway: [
+        "Also coming off 7-game series — no rest advantage",
+        "Allen chronic knee tendonitis — GTD designation is concerning",
+        "DET #1 defense will force half-court grind — CLE prefers pace",
+        "Road game at hostile LCA — historically tough environment"
+      ],
+      playerProjections: {
+        home: [
+          {name:"Cunningham",pts:"24-30",reb:"5-7",ast:"8-11",fg:"9-20",threes:"2-6",note:"Dual-mode: 45pts G5 or 32/12ast G7. Line: O24.5 (-115). Expect facilitator mode vs CLE"},
+          {name:"Duren",pts:"16-20",reb:"9-12",ast:"1-3",fg:"7-12",threes:"0-0",note:"All-Star breakout. 65% FG. Allen matchup is heavyweight — physical battle"},
+          {name:"A.Thompson",pts:"8-12",reb:"5-7",ast:"2-4",fg:"4-8",threes:"0-2",note:"D-LEBRON 2.93 on Mitchell. Offense secondary — defensive identity"},
+          {name:"Harris",pts:"14-18",reb:"4-6",ast:"2-3",fg:"5-12",threes:"2-5",note:"G7 breakout: 30pts (5-7 3PT). Former Cavalier motivation. Line: O13.5 (-115)"},
+          {name:"D.Robinson",pts:"10-14",reb:"2-3",ast:"1-3",fg:"4-9",threes:"3-7",note:"41% 3PT spacer. CLE will hunt him defensively — but shooting opens floor for Cade"},
+          {name:"Stewart",pts:"8-12",reb:"4-6",ast:"0-2",fg:"3-7",threes:"0-2",note:"Physical backup C vs Allen/Mobley twin towers"}
+        ],
+        away: [
+          {name:"Mitchell",pts:"24-30",reb:"4-6",ast:"4-6",fg:"9-20",threes:"3-8",note:"8.5 clutch rating. A.Thompson D-LEBRON 2.93 is his toughest matchup. Line: O24.5 (-115)"},
+          {name:"Harden",pts:"16-22",reb:"4-6",ast:"7-10",fg:"6-14",threes:"2-6",note:"Orchestrator mode. CLE 21-6 post-trade. Former Sixer — knows Harris"},
+          {name:"Mobley",pts:"16-20",reb:"7-10",ast:"3-5",fg:"7-13",threes:"1-3",note:"Two-way star. 1-5 switching is CLE trump card vs Cade PnR"},
+          {name:"Allen",pts:"14-18",reb:"9-12",ast:"1-3",fg:"6-10",threes:"0-0",note:"G7: 22pts/19reb (8 OREB). Knee tendonitis concern but dominant interior"},
+          {name:"Wade",pts:"4-8",reb:"3-5",ast:"1-2",fg:"2-5",threes:"1-3",note:"Weakest starter. Floor stretcher. A.Thompson matchup if he guards him"},
+          {name:"Strus",pts:"10-14",reb:"4-6",ast:"1-2",fg:"4-9",threes:"2-5",note:"G1: 24pts (8/10 FG) in R1. 40% 3PT. Bench firepower"}
+        ]
+      },
     },
     homeTeam: {
       name: "Pistons", city: "Detroit", abbr: "DET", seed: 1, record: "60-22",
@@ -3393,6 +3588,96 @@ const SERIES_DATA = [
       homeDefOnAway: { defender:"OG Anunoby", target:"Tyrese Maxey", dLebron:1.724, targetUsg:31.5, note:"OG is the best wing defender in the East. Maxey's speed is his weapon but OG's length (6-7, 7-2 wingspan) and lateral quickness has historically given quick guards trouble. NYK's switching scheme means Maxey can't just blow by — help is always there. Maxey averaged 30ppg vs BOS but that defense was compromised." },
       awayDefOnHome: { defender:"Paul George", target:"Jalen Brunson", dLebron:0.469, targetUsg:29.8, note:"George's experience defending elite PGs (Kawhi era, PHX matchups) makes him PHI's best option on Brunson. But Brunson has 8 career 40-pt playoff games and a 9.2 clutch rating — he elevation in playoffs is historic. MSG crowd amplifies his performance. PHI may need to double Brunson and dare others to beat them." }
     },
+    game1: {
+      spread: "NYK -7.5",
+      moneyline: "NYK -290",
+      ou: "O/U 213.5",
+      pick: "NYK",
+      confidence: "medium",
+      projScore: "NYK 110 — PHI 101",
+      reasoning: "NYK has massive structural advantages: 6 days rest vs PHI 2 (after grueling G7 in BOS). MSG home court (9.2 clutch NetRtg). Embiid PROBABLE but hip contusion + appendectomy + 48hr turnaround is a time bomb. PHI 3-1 comeback proves toughness but physical toll is severe — classic emotional letdown spot. NYK depth grinds PHI 7-man rotation. Brunson feasts vs compromised Embiid.",
+      prosHome: [
+        "6 days rest vs PHI 2 — enormous rest/recovery advantage",
+        "MSG home court with 9.2 clutch NetRtg — best in playoffs",
+        "Brunson (9.2 clutch, playoff ascension 1.5) dominates PnR",
+        "Depth: OG/Bridges/Hart/McBride/Shamet grind opponents",
+        "KAT stretch-5 forces Drummond out of paint"
+      ],
+      consHome: [
+        "Sochan QUESTIONABLE hamstring — rotation slightly affected if OUT",
+        "PHI proved they can win in hostile environments (BOS G7)",
+        "Embiid motivated after heroic G7 — could go nuclear",
+        "PHI's momentum and belief from historic comeback"
+      ],
+      prosAway: [
+        "Embiid PROBABLE — if healthy he's a 30/10 threat anywhere",
+        "3-1 comeback vs BOS proves elite mental toughness",
+        "Edgecombe breakout — 23pts/+19 in G7 as rookie surprise",
+        "Maxey's speed creates problems for any defense",
+        "Nothing to lose — already accomplished historic feat"
+      ],
+      consAway: [
+        "Only 2 days rest after grueling 7-game series — fatigue is real",
+        "Embiid hip contusion + appendectomy recovery — durability concern",
+        "7-man rotation vs NYK 9-man — legs will fail by Q3",
+        "Emotional letdown likely after peak achievement (BOS comeback)",
+        "Edgecombe is a rookie at MSG — hostile environment debut"
+      ]
+    },
+    game2: {
+      spread: "NYK -6.5",
+      moneyline: "NYK -260",
+      ou: "O/U 214.5",
+      pick: "NYK",
+      confidence: "medium",
+      projScore: "NYK 112 — PHI 106",
+      reasoning: "G1 TAKEAWAYS: NYK 137-98 blowout was historic — 63% FG, 51% 3PT, Brunson 35pts (12-18). Embiid was a shell (3-11 FG, -24) due to fatigue from 48hr turnaround after G7 in Boston. PHI now has 2 extra days rest (May 4→6) which should improve conditioning. Embiid's hip contusion has had time to settle. BUT: MSG home court advantage remains, Brunson is locked in (9.2 clutch), NYK depth (10 players scored in G1) still overwhelms PHI's thin bench. Key G2 adjustment: PHI likely starts Edgecombe more aggressively, may reduce Drummond minutes to avoid KAT mismatches. Expect PHI to be more competitive but NYK's systemic advantages (depth, rest, home court, Brunson PnR) persist. Model tightens from G1 prediction (NYK +9) to NYK +6 reflecting PHI rest recovery.",
+      prosHome: [
+        "Brunson locked in — 35pts G1 on 67% FG, 8-8 FT, historic efficiency",
+        "10 players scored in G1 — depth advantage is structural, not fluky",
+        "MSG crowd energy after blowout — PHI faces hostile environment again",
+        "OG 7-8 FG, Bridges 7-10 FG — entire rotation clicking offensively",
+        "PHI has no answer for Brunson-KAT PnR — Drummond/Embiid can't switch"
+      ],
+      consHome: [
+        "PHI 2 extra days rest — fatigue factor from G1 diminished",
+        "G1 shooting (63% FG, 51% 3PT) will regress — unsustainable efficiency",
+        "Embiid's pride after embarrassing loss — could come out nuclear in G2",
+        "PHI coaching adjustments: more Edgecombe, less Drummond"
+      ],
+      prosAway: [
+        "2 extra days rest from G1 — Embiid hip has time to recover",
+        "Embiid motivational response — historically bounces back after bad games",
+        "Edgecombe breakout role — 12pts G1 in 28min despite loss, showed poise",
+        "George 17pts on 6-11 (4-6 3PT) was actually efficient in G1 — can build on it"
+      ],
+      consAway: [
+        "Maxey's confidence shaken — 3-9 FG, 4TO, -28 in G1",
+        "PHI bench remains thin — Grimes/Barlow/J.Edwards can't match NYK depth",
+        "MSG is a fortress — NYK's home clutch NetRtg 9.2 is best in playoffs",
+        "Embiid's conditioning still compromised — post-appendectomy limits endurance",
+        "NYK defensive scheme exposed PHI: OG on Maxey, help on Embiid"
+      ],
+      playerProjections: {
+        home: [
+          {name:"Brunson",pts:"28-34",reb:"3-4",ast:"5-7",fg:"11-20",threes:"3-7",note:"Locked in after 35pt G1. PHI has no PnR answer. Line: O26.5 (-120)"},
+          {name:"Towns",pts:"16-22",reb:"8-11",ast:"4-6",fg:"7-14",threes:"2-5",note:"Stretch-5 feasts on Drummond. Expect regression from 6ast G1 but still productive"},
+          {name:"Anunoby",pts:"14-18",reb:"3-5",ast:"1-2",fg:"6-10",threes:"2-4",note:"Elite efficiency continues — PHI can't guard him. 7-8 FG in G1"},
+          {name:"Bridges",pts:"12-16",reb:"2-4",ast:"3-5",fg:"5-11",threes:"2-5",note:"Former Sixer motivation. 7-10 G1 regresses slightly but stays efficient"},
+          {name:"Hart",pts:"8-12",reb:"6-9",ast:"4-6",fg:"3-8",threes:"1-3",note:"Hustle stats reliable. 8reb/6ast G1 floor. Energy engine"},
+          {name:"McBride",pts:"8-12",reb:"1-2",ast:"2-3",fg:"3-7",threes:"2-5",note:"41% 3PT. Key 6th man production"}
+        ],
+        away: [
+          {name:"Embiid",pts:"24-30",reb:"8-11",ast:"3-5",fg:"9-18",threes:"1-3",note:"Bounce-back from 14pt G1. 2 extra days rest helps hip. Line: O22.5 (-115)"},
+          {name:"Maxey",pts:"18-24",reb:"3-4",ast:"4-6",fg:"7-16",threes:"2-6",note:"Must recover from 3-9 G1. Speed still creates but NYK D-scheme exposed him"},
+          {name:"George",pts:"14-18",reb:"4-6",ast:"3-4",fg:"5-12",threes:"3-6",note:"Was actually efficient in G1 (6-11). Steady 3rd option"},
+          {name:"Edgecombe",pts:"10-14",reb:"2-4",ast:"2-3",fg:"4-10",threes:"1-4",note:"Rookie poise — 12pts G1. Expanded role expected in G2"},
+          {name:"Oubre",pts:"8-12",reb:"4-6",ast:"1-2",fg:"3-8",threes:"1-3",note:"Physical wing scorer. Will try harder on boards"},
+          {name:"Grimes",pts:"6-10",reb:"1-3",ast:"2-4",fg:"2-6",threes:"1-4",note:"First off bench. 24min in G1 blowout — role solidified"}
+        ]
+      },
+    },
+
     homeTeam: {
       name: "Knicks", city: "New York", abbr: "NYK", seed: 3, record: "53-29",
       systemBonus: 1.5, playoffPedigree: 1,
@@ -3467,7 +3752,7 @@ const SERIES_DATA = [
       { team:"NYK", player:null, desc:"Line moved from NYK -5.5 to -7.5. Sharp money on NYK. Market pricing in PHI fatigue and Embiid health uncertainty.", impact:2, category:"market", evidence:"DraftKings spread movement: -5.5 open → -7.5 current. 68% of bets on NYK.", verdict:"verified" },
       { team:"PHI", player:null, desc:"Only 2 days rest after G7 in Boston. Maxey and Embiid both played 40+ minutes. Physical toll is severe vs a rested, deep NYK team.", impact:-5, category:"fatigue", evidence:"G7 was May 2. G1 is May 4. Only 48 hours between games — barely time to recover.", verdict:"verified" }
     ],
-    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:110,awayScore:101,margin:9,confidence:"MEDIUM",character:"CONTROL",reasoning:"NYK -7.5 (O/U 213.5) per DraftKings. NYK has massive structural advantages: 6 days rest vs PHI's 2 (after grueling G7 in Boston where Embiid played 39min, Maxey 45min). MSG home court (9.2 clutch NetRtg). Embiid is PROBABLE per ESPN (May 3) — expected to play but hip contusion + post-appendectomy + 48hr turnaround is a ticking time bomb. Sochan (NYK) is QUESTIONABLE with hamstring — if OUT, NYK adjusts rotation slightly but has elite depth to compensate. Edgecombe (23pts, +19 in G7) is a legit weapon but a rookie on 2 days rest at MSG is a different animal. PHI's 3-1 comeback proves mental toughness but the physical toll is severe — this is the classic emotional letdown spot after a historic achievement. NYK depth (OG/Bridges/Hart/McBride/Shamet) will grind PHI's 7-man rotation into dust by Q3. KAT stretch-5 game forces Drummond out of the paint. Brunson (9.2 clutch, playoff ascension 1.5) feasts in PnR vs compromised Embiid laterally. Model aligns with market: NYK by 9. Lower total (213.5) reflects PHI fatigue depressing pace.",xFactor:"Brunson",moneyline:"NYK -290",spread:"NYK -7.5",ou:"O/U 213.5"},notes:""}]
+    games: [{num:1,result:"NYK",homeScore:137,awayScore:98,winner:"NYK",prediction:{homeWin:true,homeScore:110,awayScore:101,margin:9,confidence:"MEDIUM",character:"CONTROL",reasoning:"NYK -7.5 (O/U 213.5) per DraftKings. NYK has massive structural advantages: 6 days rest vs PHI's 2 (after grueling G7 in Boston where Embiid played 39min, Maxey 45min). MSG home court (9.2 clutch NetRtg). Embiid is PROBABLE per ESPN (May 3) — expected to play but hip contusion + post-appendectomy + 48hr turnaround is a ticking time bomb. Sochan (NYK) is QUESTIONABLE with hamstring — if OUT, NYK adjusts rotation slightly but has elite depth to compensate. Edgecombe (23pts, +19 in G7) is a legit weapon but a rookie on 2 days rest at MSG is a different animal. PHI's 3-1 comeback proves mental toughness but the physical toll is severe — this is the classic emotional letdown spot after a historic achievement. NYK depth (OG/Bridges/Hart/McBride/Shamet) will grind PHI's 7-man rotation into dust by Q3. KAT stretch-5 game forces Drummond out of the paint. Brunson (9.2 clutch, playoff ascension 1.5) feasts in PnR vs compromised Embiid laterally. Model aligns with market: NYK by 9. Lower total (213.5) reflects PHI fatigue depressing pace.",xFactor:"Brunson",moneyline:"NYK -290",spread:"NYK -7.5",ou:"O/U 213.5"},notes:"NYK 137-98 BLOWOUT at MSG. Biggest R2 G1 blowout. Brunson 35pts (12-18 FG, 3-6 3PT, 8-8 FT, +27) — DOMINANT. Bridges 17pts (7-10 FG, 3-5 3PT, +19). OG 18pts (7-8, 2-2 3PT, +22). KAT 17pts (7-11, 3-5 3PT). Hart 8pts/8reb/6ast (+24). NYK shot 63% FG (53-84), 51% 3PT (19-37) — absurd. 10 NYK players scored. McBride 8pts (3-6, 2-5 3PT, +16). Kolek 8pts (3-5, 2-2 3PT, +8). PHI: George 17pts (6-11, 4-6 3PT, -26). Embiid 14pts (3-11, 0-2 3PT, 8-9 FT, -24) — fatigue was REAL. Maxey 13pts (3-9, 0-3 3PT, -28, 4TO). Edgecombe 12pts (5-11, 2-5 3PT, -15). Oubre 12pts. J.Edwards (PHI bench) 8pts. PHI shot 41% FG, 37% 3PT. Q scores: NYK 33-41-35-28, PHI 25-26-27-20. NYK led every quarter. Model predicted NYK by 9 — RIGHT WINNER but 30-point margin miss. Key lesson: rest differential (6 days vs 2) produced catastrophic PHI fatigue. Embiid was a shell. NYK depth (10 scorers) overwhelmed PHI 7-man rotation exactly as predicted but magnitude was unprecedented.",boxScores:{home:[{name:"Anunoby",min:30,pts:18,reb:3,ast:1,fg:"7-8",threes:"2-2",ft:"2-2",to:2,stl:0,blk:1,pm:22},{name:"Towns",min:20,pts:17,reb:6,ast:6,fg:"7-11",threes:"3-5",ft:"0-0",to:3,stl:0,blk:2,pm:11},{name:"Hart",min:26,pts:8,reb:8,ast:6,fg:"3-7",threes:"1-2",ft:"1-2",to:1,stl:3,blk:1,pm:24},{name:"Bridges",min:27,pts:17,reb:2,ast:5,fg:"7-10",threes:"3-5",ft:"0-0",to:0,stl:1,blk:0,pm:19},{name:"Brunson",min:31,pts:35,reb:1,ast:3,fg:"12-18",threes:"3-6",ft:"8-8",to:1,stl:0,blk:0,pm:27},{name:"Dadiet",min:9,pts:4,reb:1,ast:2,fg:"2-3",threes:"0-1",ft:"0-0",to:0,stl:1,blk:0,pm:7},{name:"Diawara",min:8,pts:5,reb:2,ast:1,fg:"2-3",threes:"1-2",ft:"0-0",to:0,stl:0,blk:0,pm:9},{name:"Robinson",min:12,pts:2,reb:4,ast:1,fg:"1-1",threes:"0-0",ft:"0-4",to:0,stl:0,blk:0,pm:6},{name:"Hukporti",min:17,pts:5,reb:9,ast:0,fg:"2-2",threes:"0-0",ft:"1-1",to:1,stl:0,blk:2,pm:22},{name:"Clarkson",min:14,pts:2,reb:2,ast:0,fg:"1-2",threes:"0-1",ft:"0-0",to:4,stl:1,blk:0,pm:11},{name:"Shamet",min:12,pts:3,reb:0,ast:2,fg:"1-4",threes:"1-3",ft:"0-0",to:1,stl:1,blk:0,pm:8},{name:"Alvarado",min:9,pts:5,reb:1,ast:1,fg:"2-4",threes:"1-3",ft:"0-0",to:0,stl:1,blk:0,pm:5},{name:"McBride",min:16,pts:8,reb:0,ast:2,fg:"3-6",threes:"2-5",ft:"0-0",to:0,stl:0,blk:0,pm:16},{name:"Kolek",min:10,pts:8,reb:0,ast:4,fg:"3-5",threes:"2-2",ft:"0-0",to:1,stl:0,blk:0,pm:8}],away:[{name:"George",min:26,pts:17,reb:3,ast:3,fg:"6-11",threes:"4-6",ft:"1-1",to:1,stl:0,blk:0,pm:-26},{name:"Embiid",min:25,pts:14,reb:4,ast:1,fg:"3-11",threes:"0-2",ft:"8-9",to:1,stl:0,blk:0,pm:-24},{name:"Oubre",min:27,pts:12,reb:5,ast:1,fg:"5-8",threes:"1-2",ft:"1-1",to:2,stl:1,blk:1,pm:-25},{name:"Maxey",min:27,pts:13,reb:3,ast:2,fg:"3-9",threes:"0-3",ft:"7-7",to:4,stl:0,blk:0,pm:-28},{name:"Edgecombe",min:28,pts:12,reb:1,ast:2,fg:"5-11",threes:"2-5",ft:"0-2",to:1,stl:1,blk:0,pm:-15},{name:"Watford",min:14,pts:5,reb:1,ast:1,fg:"1-4",threes:"0-1",ft:"3-4",to:2,stl:1,blk:0,pm:-12},{name:"Walker",min:10,pts:2,reb:2,ast:0,fg:"0-2",threes:"0-0",ft:"2-2",to:1,stl:0,blk:0,pm:-8},{name:"Terry",min:12,pts:3,reb:0,ast:1,fg:"1-4",threes:"1-2",ft:"0-0",to:0,stl:1,blk:0,pm:-8},{name:"Broome",min:5,pts:0,reb:1,ast:0,fg:"0-1",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:0},{name:"J.Edwards",min:16,pts:8,reb:0,ast:0,fg:"2-4",threes:"2-4",ft:"2-4",to:2,stl:0,blk:0,pm:-10},{name:"Barlow",min:13,pts:7,reb:3,ast:0,fg:"3-3",threes:"0-0",ft:"1-2",to:1,stl:1,blk:0,pm:-8},{name:"Drummond",min:9,pts:0,reb:3,ast:0,fg:"0-1",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:-3},{name:"Bona",min:4,pts:0,reb:1,ast:0,fg:"0-0",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:-4},{name:"Grimes",min:24,pts:5,reb:1,ast:4,fg:"1-4",threes:"1-3",ft:"2-2",to:0,stl:1,blk:0,pm:-24}]}},{num:2,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:112,awayScore:106,margin:6,confidence:"MEDIUM",character:"CONTROL",reasoning:"G2 at MSG (May 6). PHI has 2 extra days rest since G1 blowout (137-98). Embiid's hip has settled but conditioning still compromised post-appendectomy. NYK shooting will regress from 63% FG (unsustainable) — expect tighter game. Brunson remains dominant in PnR vs PHI's compromised switching. NYK depth (10 scorers in G1) still overwhelms PHI's thin bench. PHI adjustments: more Edgecombe, less Drummond, Maxey off-ball more. But NYK's systemic advantages persist. Model: NYK by 6.",xFactor:"Embiid bounce-back vs Brunson consistency",moneyline:"NYK -260",spread:"NYK -6.5",ou:"O/U 214.5"},notes:""}]
   }
 ];
 

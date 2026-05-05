@@ -308,9 +308,10 @@ function calcWinProb(series, seriesId) {
   const aAdv = series.awayTeam.advStats;
   if (hAdv.fgPct && aAdv.fgPct) {
     const fgBoost = (typeof PLAYOFF_ADJUSTMENT !== 'undefined') ? PLAYOFF_ADJUSTMENT.fgWeightBoost : 1.0;
+    const drbBoost = (typeof PLAYOFF_ADJUSTMENT !== 'undefined') ? PLAYOFF_ADJUSTMENT.drbWeightBoost : 1.0;
     const fgDiff = (hAdv.fgPct - aAdv.fgPct) * 0.4 * fgBoost; // boosted for playoffs
     const threeDiff = ((hAdv.threePct||35) - (aAdv.threePct||35)) * 0.25;
-    const orbDiff = ((hAdv.orbPct||25) - (aAdv.orbPct||25)) * 0.15;
+    const orbDiff = ((hAdv.orbPct||25) - (aAdv.orbPct||25)) * 0.15 * drbBoost; // DRB boosted for playoffs — 2nd-half defensive boards decisive
     const tovDiff = ((aAdv.tov||13) - (hAdv.tov||13)) * 0.2;
     statDiffBonus = Math.max(-3, Math.min(3, fgDiff + threeDiff + orbDiff + tovDiff));
   }

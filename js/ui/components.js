@@ -568,9 +568,49 @@ function renderGamePrediction(s, gameKey, gameNum, color, label) {
       ${g.prosAway.map(p=>'<div style="color:var(--green);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,0.2)">+ '+s.awayTeam.abbr+': '+p+'</div>').join('')}
       ${g.consAway.map(p=>'<div style="color:var(--red);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,0.2)">- '+s.awayTeam.abbr+': '+p+'</div>').join('')}
     </div>` : ''}
+    ${renderPlayerProjections(g, s)}
     ${renderSimulationPanel(s, gameNum)}
     ${renderProjectionWaterfall(blend)}
     ${renderGameAttribution(s, gameNum)}
+  </div>`;
+}
+
+// ============================================================
+// PLAYER PROJECTIONS TABLE (Phase 47)
+// ============================================================
+function renderPlayerProjections(g, s) {
+  if (!g || !g.playerProjections) return '';
+  const pp = g.playerProjections;
+  const renderTeam = (players, teamAbbr, isHome) => {
+    const accent = isHome ? 'var(--accent)' : 'var(--yellow)';
+    const rows = players.map(p => {
+      const noteHtml = p.note ? `<div style="font-size:10px;color:var(--text-dim);margin-top:2px;line-height:1.3">${p.note}</div>` : '';
+      return `<div style="display:grid;grid-template-columns:70px 52px 38px 38px 48px 42px 1fr;gap:4px;align-items:start;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px">
+        <div style="font-weight:600;color:${accent}">${p.name}</div>
+        <div style="color:var(--text)">${p.pts}</div>
+        <div style="color:var(--text-dim)">${p.reb}</div>
+        <div style="color:var(--text-dim)">${p.ast}</div>
+        <div style="color:var(--text-dim)">${p.fg}</div>
+        <div style="color:var(--text-dim)">${p.threes}</div>
+        <div>${noteHtml}</div>
+      </div>`;
+    }).join('');
+
+    return `<div style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:600;color:${accent};margin-bottom:4px">${teamAbbr} ${isHome ? '(Home)' : '(Away)'}</div>
+      <div style="display:grid;grid-template-columns:70px 52px 38px 38px 48px 42px 1fr;gap:4px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.1);font-size:10px;color:var(--text-dim)">
+        <div>Player</div><div>PTS</div><div>REB</div><div>AST</div><div>FG</div><div>3PT</div><div>Notes</div>
+      </div>
+      ${rows}
+    </div>`;
+  };
+
+  return `<div style="background:rgba(0,0,0,0.15);border-radius:8px;padding:12px;margin-top:12px">
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">🎯 Player Projections</div>
+    <div class="scrollable-table-wrapper">
+      ${pp.home ? renderTeam(pp.home, s.homeTeam.abbr, true) : ''}
+      ${pp.away ? renderTeam(pp.away, s.awayTeam.abbr, false) : ''}
+    </div>
   </div>`;
 }
 

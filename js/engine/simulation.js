@@ -129,8 +129,10 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
   // PHASE 45: Increased from 3.0→5.0 pts per SD of shooting temp.
   // Evidence: NYK shot 59% FG while ATL shot 38% — a 21pp differential = ~20+ pts.
   // At 3.0/SD, max impact was ~9pts (3 SDs). At 5.0/SD, max is ~15pts — more realistic.
-  const homeShootingSwing = homeShootingTemp * 5.0;
-  const awayShootingSwing = awayShootingTemp * 5.0;
+  // Derive per-SD swing from config.shootingSwingMax (default 12 → 5.0 per SD)
+  const shootingSwingPerSD = (config.shootingSwingMax || 12) / 2.4;
+  const homeShootingSwing = homeShootingTemp * shootingSwingPerSD;
+  const awayShootingSwing = awayShootingTemp * shootingSwingPerSD;
 
   // ============================================
   // QUARTER-BY-QUARTER SIMULATION
@@ -433,7 +435,7 @@ function extractTeamContext(series, seriesId, gameNum) {
 
   // Series fatigue adjustment
   const score = getSeriesScore(series);
-  const gamesPlayed = score.home + score.away;
+  const gamesPlayed = getGamesPlayed(series);
   const seriesFatigueAdj = gamesPlayed >= 4
     ? (gamesPlayed - 4) * SIM_CONFIG.seriesFatiguePerGame
     : 0;
@@ -581,73 +583,4 @@ function runMonteCarloSimulation(series, seriesId, gameNum, iterations) {
 }
 
 // ============================================================
-// SERIES OUTCOME SIMULATION (UTILITY — not called from app UI)
-// Used by test scripts and offline analysis. Could be wired into
-// the Chaos Sim Spotlight for dynamic series outcome probabilities.
-// ============================================================
-function simulateSeriesOutcome(series, seriesId, iterations) {
-  const n = iterations || 500;
-  const score = getSeriesScore(series);
-
-  if (score.home >= 4 || score.away >= 4) {
-    return {
-      homeSeriesWinPct: score.home >= 4 ? 100 : 0,
-      awaySeriesWinPct: score.away >= 4 ? 100 : 0,
-      expectedGames: score.home + score.away,
-      gamesDistribution: {},
-      winner: score.home >= 4 ? series.homeTeam.abbr : series.awayTeam.abbr
-    };
-  }
-
-  let homeSeriesWins = 0;
-  const gamesDistribution = { 4: 0, 5: 0, 6: 0, 7: 0 };
-
-  for (let i = 0; i < n; i++) {
-    let hWins = score.home;
-    let aWins = score.away;
-    let gameNum = hWins + aWins + 1;
-
-    while (hWins < 4 && aWins < 4 && gameNum <= 7) {
-      const rng = createRNG(42 + i * 7919 + gameNum * 1013);
-      const ctx = extractTeamContext(series, seriesId, gameNum);
-      const config = { ...SIM_CONFIG };
-      if (ctx.isElimination || hWins === 3 || aWins === 3) {
-        config.runProb *= 0.7;
-        config.clutchSwing *= 1.3;
-      }
-      // Phase 41: use blended baseline for series simulation too
-      if (ctx.consensus === 'disagree') {
-        config.quarterScoreSD *= 1.20;
-        config.shootingSwingMax *= 1.15;
-      } else if (ctx.consensus === 'strong-agree') {
-        config.quarterScoreSD *= 0.95;
-      }
-      const result = simulateGame(ctx.blendedMargin, ctx.blendedHomeScore, ctx.blendedAwayScore, ctx, rng, config);
-      if (result.margin > 0) hWins++; else aWins++;
-      gameNum++;
-    }
-
-    const total = hWins + aWins;
-    if (hWins >= 4) {
-      homeSeriesWins++;
-      gamesDistribution[total] = (gamesDistribution[total] || 0) + 1;
-    } else {
-      gamesDistribution[total] = (gamesDistribution[total] || 0) + 1;
-    }
-  }
-
-  const pct = (homeSeriesWins / n) * 100;
-  const expectedGames = Object.entries(gamesDistribution)
-    .reduce((sum, [g, c]) => sum + (+g * c), 0) / n;
-
-  return {
-    homeSeriesWinPct: +pct.toFixed(1),
-    awaySeriesWinPct: +(100 - pct).toFixed(1),
-    expectedGames: +expectedGames.toFixed(1),
-    gamesDistribution: Object.fromEntries(
-      Object.entries(gamesDistribution).map(([k, v]) => [k, +((v / n) * 100).toFixed(1)])
-    ),
-    winner: pct > 50 ? series.homeTeam.abbr : series.awayTeam.abbr,
-    iterations: n
-  };
-}
+// simulateSeriesOutcome — removed in Phase 48 refactor (was never called from app UI)
