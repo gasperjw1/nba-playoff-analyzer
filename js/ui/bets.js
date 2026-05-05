@@ -32,7 +32,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Mon May 5 | R2 G1: CLE @ DET 7:00 PM ET | LAL @ OKC 9:30 PM ET</span>
+        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Tue May 5 | R2 G1: CLE @ DET 7:00 PM ET (NBCSN) | LAL @ OKC 8:30 PM ET (NBC)</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -58,7 +58,7 @@ function renderBetsPage(el) {
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">OKC-LAL G1 (tonight)</div>
               <div style="font-size:18px;font-weight:700;color:#3dd68c;">OKC 82%</div>
-              <div style="font-size:9px;color:#666;">115-104 | SEPARATION | -15.5</div>
+              <div style="font-size:9px;color:#666;">116-101 | BLOWOUT RISK | -15.5</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
               <div style="font-size:10px;color:#888;">DET-CLE G1 (tonight)</div>
@@ -73,66 +73,119 @@ function renderBetsPage(el) {
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#f44336;">PHI 4-3</span><br/>BOS upset ❌</div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#4caf50;">R1 Done</span><br/>All 8 series</div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 44: All 8 R1 series complete. R2 set: OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI. Key: J.Williams (OKC) OUT, Edwards (MIN) EXPECTED TO PLAY, Embiid (PHI) PROBABLE, Dosunmu (MIN) OUT G1.</div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 44: All 8 R1 series complete. R2 set: OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI. Key: J.Williams (OKC) OUT G1 (return ~May 7), Edwards (MIN) active, Embiid (PHI) PROBABLE, Dosunmu (MIN) GTD for G2, Nick Nurse (PHI) at brother's funeral — expected back for G2.</div>
         </div>
       </div>
 
-      <!-- ===== R2 FEATURED PARLAYS — MAY 4 ===== -->
+      <!-- ===== R2 FEATURED PARLAYS — MAY 5 (TONIGHT) ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 FEATURED PARLAYS — Mon May 4</span>
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 FEATURED PARLAYS — Tue May 5</span>
         </div>
 
         <!-- $100 BEST BET PARLAY -->
         <div class="parlay-card headline" style="border:1px solid #4caf50;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — R2 Home Court (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(76,175,80,0.2);color:#4caf50;font-size:16px;">~+200 | +$200</span>
+            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — OKC Fortress + DET Home Court (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(76,175,80,0.2);color:#4caf50;font-size:16px;">~+125 | +$125</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">NYK ML vs PHI (R2 G1 at MSG) — PHI on 48hrs rest, Embiid compromised</span>
-              <span class="parlay-leg-odds">-310</span>
-              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">MED — Rest + depth edge</span>
+              <span class="parlay-leg-pick">OKC ML vs LAL (R2 G1) — SGA + 11 days rest + 4-0 vs LAL reg season. J.Williams OUT but depth compensates.</span>
+              <span class="parlay-leg-odds">-900</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">HIGH — Massive talent gap</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">SAS ML vs MIN (R2 G1 at Frost Bank) — Wemby dominant + Edwards limited + no Dosunmu</span>
-              <span class="parlay-leg-odds">-300</span>
-              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">MED — Wemby advantage</span>
+              <span class="parlay-leg-pick">DET ML vs CLE (R2 G1) — #1 defense + 31-9 home record + Cade comeback hero. Tight game.</span>
+              <span class="parlay-leg-odds">-155</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">LOW — Coin flip with home edge</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>High-floor parlay.</strong> Both home teams have significant structural advantages: NYK has 6 days rest vs PHI's 2 (classic emotional letdown after 3-1 comeback), deeper rotation, and MSG (9.2 clutch NetRtg). SAS has Wemby (34ppg vs MIN), 9 days rest, Frost Bank Center fortress (62-20). Edwards is playing but at ~80% on a bum knee and Dosunmu is OUT. Combined implied odds ~60%. Model gives ~65%.</div>
+          <div class="parlay-reasoning"><strong>OKC leg is the anchor</strong> (~90% win probability). DET adds value at -155 — #1 defense, best home record in the East (31-9), and Cade in MVP form after 3-1 comeback. CLE is dangerous with triple-initiator offense but road game at hostile LCA is tough. Combined implied odds ~50%. Model gives ~55%.</div>
         </div>
 
         <!-- $1 CHAOS TICKET -->
         <div class="parlay-card" style="border:1px solid #ff9800;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — Road Warriors (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+2000 | +$20</span>
+            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — LeBron's Last Stand (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+1800 | +$18</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #ff9800;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">PHI ML @ NYK — Embiid+Maxey 3-1 momentum carry-over</span>
-              <span class="parlay-leg-odds">+250</span>
+              <span class="parlay-leg-pick">LAL ML @ OKC — LeBron legacy game at 41 + Smart/Kennard system</span>
+              <span class="parlay-leg-odds">+600</span>
               <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #ff9800;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">MIN ML @ SAS — Edwards adrenaline game + McDaniels hot streak</span>
-              <span class="parlay-leg-odds">+240</span>
-              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
-            </div>
-            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
-              <span class="parlay-leg-num">3</span>
-              <span class="parlay-leg-pick">CLE ML @ DET — Mitchell 8.5 clutch + triple-initiator road steal</span>
-              <span class="parlay-leg-odds">+135</span>
+              <span class="parlay-leg-pick">CLE ML @ DET — Mitchell 8.5 clutch + Harden creation + Allen interior dominance</span>
+              <span class="parlay-leg-odds">+130</span>
               <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>Road warrior special.</strong> All 3 underdogs have upset paths: PHI's emotional momentum from historic comeback, Edwards' adrenaline from returning, CLE's triple-initiator system. ~5% probability but $1 for $20.</div>
+          <div class="parlay-reasoning"><strong>Double road upset.</strong> LAL proved they can beat anyone with LeBron's playoff mode (4-2 vs HOU). OKC is massive favorite but LeBron has defied odds before. CLE's triple-initiator system (Mitchell/Harden/Mobley) can steal in DET. ~4% probability but $1 for $18.</div>
+        </div>
+      </div>
+
+      <!-- ===== R2 G1 PARLAYS — MAY 4 (RESULTS) ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 PARLAYS — Sun May 4 | NYK ✅ SAS ❌ | $100 Play: ❌ LOST (SAS leg busted)</span>
+        </div>
+
+        <!-- $100 PLAY RESULT -->
+        <div class="parlay-card headline" style="border:1px solid #f44336;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$100 Play — R2 Home Court (2-Leg) ❌ LOST</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+200 | -$100</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">NYK ML vs PHI ✅ — NYK 137-98 blowout. Brunson 35pts. PHI fatigue was catastrophic.</span>
+              <span class="parlay-leg-odds">-310</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">SAS ML vs MIN ❌ — MIN 104-102 upset. Wemby 0-8 3PT (!). Edwards off bench was masterclass.</span>
+              <span class="parlay-leg-odds">-300</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS — Wemby cold + Edwards clutch</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>❌ LOST — SAS leg busted.</strong> NYK crushed PHI as expected (137-98). But SAS lost 102-104 to MIN in a shocking upset. Wemby shot 0-8 from 3PT (11pts on 5-17 FG) — worst game of his career. Edwards came off the bench fresh and scored 8 of MIN's final 16pts. Finch's coaching adjustment was the difference. Model was 1/2 on winner picks but the parlay is dead.</div>
+        </div>
+
+        <!-- $1 CHAOS TICKET RESULT -->
+        <div class="parlay-card" style="border:1px solid #ff9800;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — Road Warriors (3-Leg) ❌ LOST</span>
+            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#f44336;font-size:16px;">~+2000 | -$1</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">PHI ML @ NYK ❌ — NYK 137-98. Total blowout. PHI had no chance.</span>
+              <span class="parlay-leg-odds">+250</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">MIN ML @ SAS ✅ — MIN 104-102. Edwards + Finch coaching won it.</span>
+              <span class="parlay-leg-odds">+240</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #888;">
+              <span class="parlay-leg-num">3</span>
+              <span class="parlay-leg-pick">CLE ML @ DET — Tonight (May 5, 7:00 PM ET)</span>
+              <span class="parlay-leg-odds">+130</span>
+              <span class="parlay-leg-conf" style="background:#333;color:#888;">DEAD — PHI leg killed it</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>❌ LOST — PHI leg killed it instantly.</strong> MIN did upset SAS (the Chaos call was right!) but PHI got blown out 98-137. MIN's upset at +240 would've been a great hit but the PHI blowout ended the parlay.</div>
         </div>
       </div>
 
@@ -2232,7 +2285,7 @@ function renderR2Bets(el) {
 
     <!-- R2 HEADER -->
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 2</h2>
-    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:6px;">4 series | Odds by DraftKings | R1 Model: 25/42 ML (59.5%) | R2 G1: 1/2 correct | G2 picks live</p>
+    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:6px;">4 series | Odds by DraftKings | R1 Model: 25/42 ML (59.5%) | R2: 1/2 correct (50%) | G1 tonight: DET-CLE, OKC-LAL</p>
 
     <!-- ROUND TOGGLE -->
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
@@ -2420,6 +2473,116 @@ function renderR2Bets(el) {
           </div>
           <div class="parlay-reasoning">
             <strong>Star power thesis:</strong> R2 G1 is where stars assert. All four are at home, all four are the best players in their series. Mitchell is the weakest leg due to DET's #1 defense.
+          </div>
+        </div>
+      </div>
+
+      <!-- R2 G1 FEATURED PARLAYS — TONIGHT MAY 5 -->
+      <div style="margin-bottom:20px;border-top:2px solid #22c55e;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#22c55e;background:rgba(34,197,94,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT &mdash; Mon May 5 | DET-CLE G1 7pm ET | OKC-LAL G1 8:30pm ET</span>
+        </div>
+
+        <!-- $100 BEST BET — TONIGHT -->
+        <div class="parlay-card headline" style="border:2px solid #4caf50;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;">$100 Best Bet &mdash; Chalk Doubles (2-Leg)</span>
+            <span class="parlay-odds" style="font-size:16px;">&asymp; -165 combined | To Win: ~$61</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>DET ML</strong> vs CLE (R2 G1 at Little Caesars Arena)</div>
+                <div class="parlay-leg-line">-170 | DET -3.5 | Model: DET 108-105 (LOW conf) | #1 defense, 31-9 home record</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL (R2 G1 at Paycom Center)</div>
+                <div class="parlay-leg-line">-1053 | OKC -15.5 | Model: OKC 116-101 (HIGH conf) | 11 days rest, Doncic OUT, J.Williams OUT, 4-0 vs LAL</div>
+              </div>
+              <span class="parlay-leg-conf high">LOCK</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Why this hits:</strong> Conservative 2-legger. DET ML at -170 is the swing leg &mdash; #1 defense at home in G1 with crowd advantage. OKC ML at -1053 is the near-lock &mdash; best team in the NBA, 11 days rest, facing a LAL squad missing Doncic. Combined juice is only ~-165 for two home favorites. DET -170 &times; OKC -1053 = approx -165 effective odds. Even with CLE&rsquo;s triple-initiator offense, DET&rsquo;s home court + defense should hold.
+          </div>
+        </div>
+
+        <!-- $1 CHAOS TICKET — TONIGHT -->
+        <div class="parlay-card" style="border:1px solid #f59e0b;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#f59e0b;">$1 Chaos Ticket &mdash; Road Dog + Alt Spread (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">+435 | To Win: $4.35</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET (+145)</div>
+                <div class="parlay-leg-line">+145 | Mitchell/Harden/Mobley triple-initiator offense is live on the road | DET only LOW conf favorite</div>
+              </div>
+              <span class="parlay-leg-conf low">CHAOS</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>LAL +15.5</strong> (alt spread)</div>
+                <div class="parlay-leg-line">-120 | Covers if LAL loses by &lt;16 &mdash; LeBron legacy mode + AD interior presence keep it closer than 16</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Chaos path:</strong> CLE ML at +145 is genuinely live &mdash; model only has DET at LOW confidence, and CLE&rsquo;s triple-initiator offense with Mitchell (8.5 clutch rating) can steal G1 on the road. LAL +15.5 is the safer leg &mdash; even in a blowout, LeBron + AD typically keep games within 15. Long shot but reasonable chaos for $1.
+          </div>
+        </div>
+
+        <!-- TONIGHT'S PLAYER PROPS -->
+        <div class="parlay-card" style="border:1px solid #a78bfa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#a78bfa;">Player Props &mdash; Tonight&rsquo;s G1 Stars (4-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">Individual Plays</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SGA Over 28.5 pts</strong> (-115)</div>
+                <div class="parlay-leg-line">11 days rest, 4-0 vs LAL this year, historic 31.1ppg season, no J.Williams = even more usage</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Cade Over 22.5 pts</strong> (-110)</div>
+                <div class="parlay-leg-line">Dual-mode star (45pts G5, 32/12ast G7), home G1, motivated &mdash; CLE defense allows star scoring</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>LeBron Over 25.5 pts</strong> (-110)</div>
+                <div class="parlay-leg-line">Legacy mode in what could be final playoff run &mdash; fatigue risk after G7 but LeBron historically rises in elimination-adjacent spots</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">4</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Mitchell Over 24.5 pts</strong> (-115)</div>
+                <div class="parlay-leg-line">8.5 clutch rating, CLE&rsquo;s primary scorer &mdash; but DET #1 defense (107.2 DRtg) makes this the riskiest leg</div>
+              </div>
+              <span class="parlay-leg-conf med">MED</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Props thesis:</strong> SGA O28.5 is the strongest play &mdash; 11 days rest, historic season, 4-0 vs LAL, and J.Williams OUT means even more offensive burden. Cade O22.5 is solid at home in a high-stakes G1. LeBron O25.5 is a legacy bet with fatigue risk. Mitchell O24.5 is the weakest due to DET&rsquo;s elite perimeter D. Play SGA as a standalone best prop; parlay SGA + Cade for a 2-leg prop combo at ~+195.
           </div>
         </div>
       </div>
