@@ -180,24 +180,26 @@ function renderHomePage(el) {
       <section class="home-section">
         <h2 class="home-section-title">Tonight &middot; ${homeFormatDate(today)}</h2>
         ${todaysGames.length
-          ? todaysGames.map(homeRenderGameCard).join('')
+          ? `<div class="home-game-grid">${todaysGames.map(homeRenderGameCard).join('')}</div>`
           : '<div class="home-empty">No scheduled games today.</div>'}
       </section>
 
-      <section class="home-section">
-        <h2 class="home-section-title">Latest News</h2>
-        ${recentNews.map(homeRenderNewsItem).join('')}
-      </section>
+      <div class="home-row">
+        <section class="home-section">
+          <h2 class="home-section-title">Latest News</h2>
+          ${recentNews.map(homeRenderNewsItem).join('')}
+        </section>
 
-      <section class="home-section">
-        <h2 class="home-section-title">Tonight's Bets</h2>
-        ${homeRenderBetsForDate(today)}
-      </section>
+        <section class="home-section">
+          <h2 class="home-section-title">Tonight's Bets</h2>
+          ${homeRenderBetsForDate(today)}
+        </section>
+      </div>
 
       ${tomorrowsGames.length ? `
       <section class="home-section">
         <h2 class="home-section-title">Tomorrow &middot; ${homeFormatDate(tomorrow)}</h2>
-        ${tomorrowsGames.map(homeRenderGameCard).join('')}
+        <div class="home-game-grid">${tomorrowsGames.map(homeRenderGameCard).join('')}</div>
       </section>` : ''}
 
     </div>`;
