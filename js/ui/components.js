@@ -504,6 +504,79 @@ function renderProjectedBoxScore(series, gameIdx) {
 }
 
 
+// ============================================================
+// COMPOUND HISTORICAL SCENARIOS PANEL (Phase 52)
+// ============================================================
+// Per-game lineage panel: which compound scenarios fired for each
+// player, conditions matched, deltas, and cascade effects.
+function renderCHSScenarios(series, gameIdx) {
+  if (!series || typeof calcCompoundScenarioDelta !== 'function') return '';
+  if (!series.compoundScenarios && !(series.homeTeam.players || []).some(p => p.compoundScenarios) && !(series.awayTeam.players || []).some(p => p.compoundScenarios)) return '';
+
+  const gameNum = gameIdx + 1;
+
+  function teamRows(team, side) {
+    const players = team.players.filter(p => p.rating > 0).slice(0, 8);
+    const rows = [];
+    for (const p of players) {
+      try {
+        const result = calcCompoundScenarioDelta(p, series, gameIdx, side);
+        if (!result || result.scenariosApplied.length === 0) continue;
+        const lastName = p.name.split(' ').pop();
+        const ptSign = result.ptsDelta > 0 ? '+' : '';
+        const ptColor = result.ptsDelta > 0 ? 'var(--green)' : result.ptsDelta < 0 ? 'var(--red)' : 'var(--text-dim)';
+        const details = result.scenariosApplied.map(sc => {
+          const scSign = sc.ptsDelta > 0 ? '+' : '';
+          const scColor = sc.ptsDelta > 0 ? 'var(--green)' : 'var(--red)';
+          return `<div style="margin-left:14px;margin-bottom:4px;font-size:10px;color:var(--text-dim);line-height:1.5">
+            <span style="color:var(--purple);font-weight:600">${sc.label}</span>
+            <span style="color:#666"> (${sc.conditions} conditions, n=${sc.sampleSize})</span>
+            &rarr; <span style="color:${scColor};font-weight:600">${scSign}${sc.ptsDelta.toFixed(1)} pts</span>
+          </div>`;
+        }).join('');
+        rows.push(`<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="color:var(--text);font-weight:600;font-size:12px">${lastName}</span>
+            <span style="font-size:13px;font-weight:700;color:${ptColor}">${ptSign}${result.ptsDelta} pts</span>
+          </div>
+          ${details}
+        </div>`);
+      } catch(e) { /* skip */ }
+    }
+    return rows.join('');
+  }
+
+  const homeRows = teamRows(series.homeTeam, 'home');
+  const awayRows = teamRows(series.awayTeam, 'away');
+  if (!homeRows && !awayRows) return '';
+
+  let cascadeHtml = '';
+  if (typeof getTeamScenarioSummary === 'function') {
+    const homeSummary = getTeamScenarioSummary(series, gameIdx, 'home');
+    const awaySummary = getTeamScenarioSummary(series, gameIdx, 'away');
+    const allCascades = [...(homeSummary?.cascadeEffects || []), ...(awaySummary?.cascadeEffects || [])];
+    if (allCascades.length > 0) {
+      cascadeHtml = `<div style="margin-top:10px;padding:8px;background:rgba(167,139,250,0.06);border-radius:6px;border:1px solid rgba(167,139,250,0.15)">
+        <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:4px">CASCADE EFFECTS</div>
+        ${allCascades.map(c => {
+          const sign = c.ptsDelta > 0 ? '+' : '';
+          const color = c.ptsDelta > 0 ? 'var(--green)' : 'var(--red)';
+          return `<span style="font-size:11px;color:var(--text)">${c.player}: <span style="color:${color}">${sign}${c.ptsDelta} pts</span></span>`;
+        }).join(' &nbsp;&middot;&nbsp; ')}
+      </div>`;
+    }
+  }
+
+  return `<div class="box-score-section" style="border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.04)">
+    <div class="box-score-title" style="color:var(--purple)">Game ${gameNum} Compound Historical Scenarios <span style="font-size:10px;color:var(--text-dim);font-weight:400">Phase 52</span></div>
+    <div class="adv-comp-subtitle">Stacked conditions (opponent + role + venue + health + coach + defender) narrowed by historical evidence. Feeds player projections as modifier #14.</div>
+    ${homeRows ? `<div style="font-weight:700;color:${series.homeTeam.color};font-size:11px;margin:10px 0 4px">${series.homeTeam.name}</div>${homeRows}` : ''}
+    ${awayRows ? `<div style="font-weight:700;color:${series.awayTeam.color};font-size:11px;margin:12px 0 4px">${series.awayTeam.name}</div>${awayRows}` : ''}
+    ${cascadeHtml}
+  </div>`;
+}
+
+
 function renderGamePrediction(s, gameKey, gameNum, color, label) {
   const g = s[gameKey];
   if (!g) return '';

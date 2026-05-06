@@ -153,6 +153,7 @@ function renderSeries() {
           ${s.modelLessons.map(l => `<div class="lesson-item"><span class="lesson-label ${l.type}">${l.type.toUpperCase()}</span>${l.lesson}</div>`).join('')}
         </div>` : ''}
         ${renderBoxScore(s, 0)}
+        ${renderCHSScenarios(s, 0)}
         ${renderAdvancedComparison(s, 0)}
         ${renderFatigueMonitor(s)}
       `;
@@ -169,6 +170,7 @@ function renderSeries() {
           <span style="font-size:14px;font-weight:700">${getGameResultDisplay(s, 2)}</span>
         </div>` : ''}
         ${renderProjectedBoxScore(s, 1)}
+        ${renderCHSScenarios(s, 1)}
         ${renderBoxScore(s, 1)}
         ${renderAdvancedComparison(s, 1)}
         ${renderFatigueMonitor(s)}
@@ -209,6 +211,7 @@ function renderSeries() {
           ${!gameData.winner ? '<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(' + gIdx + ')">Enter result</span></div>' : ''}
           ${gameData.notes ? '<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">' + gameData.notes + '</div>' : ''}
           ${renderProjectedBoxScore(s, gIdx)}
+          ${renderCHSScenarios(s, gIdx)}
           ${renderBoxScore(s, gIdx)}
           ${renderAdvancedComparison(s, gIdx)}
           ${renderFatigueMonitor(s)}
@@ -258,6 +261,7 @@ function renderSeries() {
             ${gameData.notes ? `<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">${gameData.notes}</div>` : ''}
           </div>
           ${renderProjectedBoxScore(s, gIdx)}
+          ${renderCHSScenarios(s, gIdx)}
           ${renderBoxScore(s, gIdx)}
           ${renderAdvancedComparison(s, gIdx)}
           ${renderFatigueMonitor(s)}

@@ -1178,7 +1178,14 @@ function calcProjectedBoxScore(series, gameIdx) {
     let activePlayers;
     if (priorBS) {
       const fromBS = priorBS.filter(p => p.min >= 5).map(bp => {
-        const rosterP = team.players.find(rp => rp.name === bp.name);
+        const bpLast = (bp.name || '').split(' ').pop().toLowerCase();
+        const rosterP = team.players.find(rp => {
+          if (rp.name === bp.name) return true;
+          const rpLast = rp.name.split(' ').pop().toLowerCase();
+          if (rpLast === bpLast && bpLast.length > 2) return true;
+          if (rp.name.toLowerCase().includes(bp.name.toLowerCase()) && bp.name.length > 2) return true;
+          return false;
+        });
         return rosterP || null;
       }).filter(Boolean);
       const bsNames = new Set(fromBS.map(p => p.name));
