@@ -73,7 +73,7 @@ function renderBetsPage(el) {
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#f44336;">PHI 4-3</span><br/>BOS upset ❌</div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#4caf50;">R1 Done</span><br/>All 8 series</div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">R2 G1 Complete: 3/4 winner picks correct (NYK ✅, DET ✅, OKC ✅, SAS ❌). Allen (CLE) limited to 18min G1 — knee tendonitis. DET forced 19 CLE TOs. G2: Thu May 7 (DET-CLE, NYK-PHI) + Sat May 9 (all 4 series G2/G3).</div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">R2 G1 Complete: 3/4 winner picks correct (NYK ✅, DET ✅, OKC ✅, SAS ❌). G2 predictions updated with G1 box score evidence. Key adjustments: Reaves downgraded (3-16 FG oblique), J.Williams active (20min +11), Allen knee QUESTIONABLE, totals adjusted down (G1 actuals below lines). G2: Thu May 7 all 4 series.</div>
         </div>
       </div>
 
@@ -3021,21 +3021,99 @@ function renderR2Bets(el) {
       </div>
     </div>
 
-    <!-- DET-CLE G2 (Pending G1 tonight) -->
+    <!-- DET-CLE G2 -->
     <div class="bet-section">
-      <h4 style="color:#888;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #555;padding-bottom:6px;">(1) DET vs (4) CLE &mdash; G2 Wed May 7 @ LCA | G1 Tonight (May 5)</h4>
-      <div style="background:rgba(136,136,136,0.06);border:1px solid rgba(136,136,136,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#888;">
-        <strong>G1 Tonight (7:00 PM ET).</strong> G2 bets will be added after G1 result is recorded.
-        <br><strong>Preliminary G2 Model:</strong> ${dml('DET-CLE', 2)}. G2 line will shift based on G1 result and model recalibration.
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) DET vs (4) CLE &mdash; G2 Thu May 7, 7:00 PM ET @ LCA | DET leads 1-0</h4>
+      <div style="background:rgba(61,214,140,0.06);border:1px solid rgba(61,214,140,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
+        <strong style="color:#3dd68c;">G1 Recap:</strong> DET 111-101. Cade 23/7ast, D.Robinson 19pts (5-8 3PT), Duren 14/14reb/clutch block. DET forced 19 CLE TOs (12 steals). Allen limited to 18min/2pts (knee tendonitis). CLE rallied from -18 to 93-93 but DET closed on a 18-8 run. <strong>Key G2 Factor:</strong> Allen's knee status (QUESTIONABLE). DET turnover generation structural or CLE adjusts? Garland bounce-back (7-21 G1).
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML &star; BEST BET</span>
+        <div class="bet-pick">DET ML vs CLE</div>
+        <div class="bet-line">-190 | DET -4.5 | O/U 214.5 | ${dml('DET-CLE', 2)} | <span style="color:#4caf50;">MEDIUM &mdash; G1 defensive dominance proven</span></div>
+        <div class="bet-reasoning"><strong>DET's #1 defense forced 19 CLE turnovers in G1 — that's structural, not variance.</strong> Ivey/Cunningham/Thompson trapping scheme overwhelms CLE's ball-handlers. Allen limited to 18min (knee) — if he's still compromised, CLE loses their rim protection + lob threat. Cade controls tempo masterfully (23pts, 7ast, only 2 TOs). DET's closing burst (18-8 run after 93-93 tie) shows killer instinct. CLE's triple-initiator attack works but DET strips the ball before plays develop.</div>
+        <span class="bet-edge model">Model + G1 Evidence</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">DET -4.5</div>
+        <div class="bet-line">-110 | Model margin: ${dmargin('DET-CLE', 2)}pts | Tighter than G1 but DET covers</div>
+        <div class="bet-reasoning">Model says ${dwinner('DET-CLE', 2)} by ${dmargin('DET-CLE', 2)}. CLE coaching adjustments expected (faster ball movement to beat traps, less Mitchell ISO). But DET's turnover generation is scheme-based — hard to adjust away from in one practice. If Allen plays 30+min, CLE's ceiling rises and this becomes a GRIND. Lean cover.</div>
+        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Lean Cover</span>
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type prop">PROP &star; HIGH CONF</span>
+        <div class="bet-pick">Cade Cunningham Over 21.5 points</div>
+        <div class="bet-line">-120 | G1: 23pts (8-16 FG) | Series avg projection: 22-26pts | PnR dominant</div>
+        <div class="bet-reasoning"><strong>Cade had 23pts + 7ast in G1 — completely controlled the game.</strong> CLE has no elite POA defender to match him. Mitchell/Garland are undersized and can't bother his size (6'6). His PnR with Duren generated 8 easy buckets. At home with crowd energy, expect 22-28pts consistently. Line is too low.</div>
+        <span class="bet-edge matchup">Strong Matchup</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
+        <div class="bet-line">-115 | G1: 24pts (8-19 FG) | Bounce-back from TOs | CLE needs volume from him</div>
+        <div class="bet-reasoning">Mitchell scored 24 but had 6 turnovers in G1. With CLE adjusting to hold the ball tighter, his scoring attempts should increase. He's a 26ppg playoff scorer who'll get more aggressive after a frustrating G1 loss. The line is set for his floor — lean over.</div>
+        <span class="bet-edge matchup">Volume Increase</span>
       </div>
     </div>
 
-    <!-- OKC-LAL G2 (Pending G1 tonight) -->
+    <!-- OKC-LAL G2 -->
     <div class="bet-section">
-      <h4 style="color:#888;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #555;padding-bottom:6px;">(1) OKC vs (4) LAL &mdash; G2 Thu May 8 @ Paycom Center | G1 Tonight (May 5)</h4>
-      <div style="background:rgba(136,136,136,0.06);border:1px solid rgba(136,136,136,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#888;">
-        <strong>G1 Tonight (8:30 PM ET).</strong> G2 bets will be added after G1 result is recorded.
-        <br><strong>Preliminary G2 Model:</strong> ${dml('OKC-LAL', 2)}. J. Williams (hamstring) may return for G2. Model recalibrates based on G1 result.
+      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) OKC vs (4) LAL &mdash; G2 Thu May 7, 9:30 PM ET @ Paycom Center | OKC leads 1-0</h4>
+      <div style="background:rgba(61,214,140,0.06);border:1px solid rgba(61,214,140,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
+        <strong style="color:#3dd68c;">G1 Recap:</strong> OKC 108-90 (+18). Holmgren 24/12/3blk (9-17 FG). SGA only 18pts (7 TOs!) but OKC still dominated. Reaves catastrophic 3-16 FG (0-5 3PT) — oblique severe. J.Williams returned (20min, +11). OKC bench: every player +11 or better. LeBron 27pts (12-17) but zero help. <strong>Key G2 Factor:</strong> SGA turnover correction (career avg 2.8 TOs). J.Williams ramp to 25-28min. Reaves still severely limited.
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type moneyline">ML &star; BEST BET</span>
+        <div class="bet-pick">OKC ML vs LAL</div>
+        <div class="bet-line">-800 | OKC -14.5 | O/U 204.5 | ${dml('OKC-LAL', 2)} | <span style="color:#4caf50;">HIGH &mdash; structural mismatch confirmed G1</span></div>
+        <div class="bet-reasoning"><strong>OKC won G1 by 18 with SGA having his WORST game of the year (7 TOs).</strong> That's the floor — and it was an 18-point win. J.Williams returns with increased minutes (20min G1 → 25-28min G2) adding secondary creation. Reaves is at 50% capacity (3-16 FG, oblique severe). LeBron can score 30 and it doesn't matter — LAL has NO depth to compete with OKC's bench (outscored LAL 34-15). Holmgren owns the Ayton matchup (24/12/3blk). The -800 is justified — this is the most lopsided matchup in R2.</div>
+        <span class="bet-edge model">Model + Structural</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type spread">SPR</span>
+        <div class="bet-pick">OKC -14.5</div>
+        <div class="bet-line">-110 | Model margin: ${dmargin('OKC-LAL', 2)}pts | G1 was +18 — G2 similar</div>
+        <div class="bet-reasoning">Model says OKC by ${dmargin('OKC-LAL', 2)}. G1 was +18 with SGA at his worst. With SGA cleaning up TOs (7→3 expected) and J.Williams ramping, OKC gets STRONGER. LAL has no adjustment available — their problem is personnel (Reaves hurt, no Doncic, no bench). Only risk: OKC garbage time gives LAL backdoor cover. Lean spread but ML is safer.</div>
+        <span class="bet-edge model">Model Edge</span>
+      </div>
+
+      <div class="bet-card best-bet">
+        <span class="bet-type prop">PROP &star; HIGH CONF</span>
+        <div class="bet-pick">Chet Holmgren Over 18.5 points</div>
+        <div class="bet-line">-125 | G1: 24pts (9-17 FG, 3-7 3PT) | Ayton matchup solved | 3blk rim dominance</div>
+        <div class="bet-reasoning"><strong>Holmgren dropped 24/12/3blk in G1 — completely dominated Ayton.</strong> His combination of 7'1 length, 3PT shooting (3-7), and rim protection gives Ayton nightmares. The matchup is solved — Ayton can't guard Holmgren's perimeter game and can't finish over his length. Even if OKC wins big and Holmgren sits Q4, he's a 20+ scorer in 3 quarters. Line too low.</div>
+        <span class="bet-edge matchup">Dominant Matchup</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">SGA Over 24.5 points</div>
+        <div class="bet-line">-115 | G1: only 18pts (7 TOs) | Career avg 31.1 | Massive bounce-back incoming</div>
+        <div class="bet-reasoning">SGA's 18pts in G1 was his worst scoring game since December — driven by 7 TOs (career avg 2.8). The 24.5 line accounts for the G1 dip but vastly underestimates his bounce-back. He's a 31.1ppg scorer who will correct his ball security. Expect 26-32pts on normal efficiency. Strongest bounce-back prop available.</div>
+        <span class="bet-edge matchup">Extreme Bounce-back</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type prop">PROP</span>
+        <div class="bet-pick">LeBron James Over 26.5 points</div>
+        <div class="bet-line">-110 | G1: 27pts (12-17 FG, 71%) | Volume increases as LAL gets desperate | Legacy scoring</div>
+        <div class="bet-reasoning">LeBron shot 71% in G1 and scored 27 — down 0-1 he'll be even more aggressive. With Reaves compromised and Kennard benched, LeBron's usage will increase. He's the only LAL player capable of scoring 25+ against OKC's defense. Expect 28-32pts on high volume even in a loss.</div>
+        <span class="bet-edge matchup">Volume + Desperation</span>
+      </div>
+
+      <div class="bet-card">
+        <span class="bet-type total">TOTAL</span>
+        <div class="bet-pick">Under 204.5</div>
+        <div class="bet-line">-110 | G1 total: 198 | OKC defense elite | LAL can't score in half-court</div>
+        <div class="bet-reasoning"><strong>G1 total was only 198 — well under the 213.5 line.</strong> OKC's defense held LAL to 42% FG and 33% 3PT. LAL can't score in the half-court against OKC's length (Holmgren, Dort, Wallace). Pace will be slow again — LAL grinds possessions trying to create vs OKC's switching. The 204.5 adjusted line still feels too high. Lean under.</div>
+        <span class="bet-edge model">G1 Evidence</span>
       </div>
     </div>
 
