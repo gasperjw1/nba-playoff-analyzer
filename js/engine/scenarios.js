@@ -154,7 +154,8 @@ function buildGameContext(player, series, gameIdx, side) {
 
   // Projected minutes (rough estimate by rank, reduced for injured players)
   let projMinutes = rank <= 1 ? 37 : rank <= 3 ? 32 : rank <= 5 ? 25 : 18;
-  if (player.activeInjury && player.activeInjury.severity >= 0.3) {
+  const injSeverity = player.activeInjury ? player.activeInjury.severity : (player.injuryRisk || 0);
+  if (injSeverity >= 0.3) {
     projMinutes = Math.min(projMinutes, 25); // Cap at 25min for significantly injured players
   }
 
@@ -175,11 +176,16 @@ function buildGameContext(player, series, gameIdx, side) {
     isHome,
     playerRole,
     isPlayoff: true,
-    hasActiveInjury: !!(player.activeInjury && player.activeInjury.severity > 0),
+    hasActiveInjury: !!(player.activeInjury && player.activeInjury.severity > 0) ||
+                     (!player.activeInjury && player.injury && !player.injury.startsWith('null') &&
+                      (player.injury.includes('LIMITED') || player.injury.includes('QUESTIONABLE') ||
+                       player.injury.includes('GTD') || player.injury.includes('ACTIVE') ||
+                       player.injury.includes('Returning') || player.injury.includes('Monitoring') ||
+                       (player.injuryRisk !== undefined && player.injuryRisk > 0))),
     restDays,
     isTrailing,
     postBlowoutLoss,
-    projMinutes: player.activeInjury && player.activeInjury.severity >= 0.3 ? 25 : projMinutes,
+    projMinutes: injSeverity >= 0.3 ? 25 : projMinutes,
     coverageType,
     gameNum,
     seriesId: series.id

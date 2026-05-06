@@ -3200,9 +3200,9 @@ function renderR2Bets(el) {
         <div style="font-size:11px;color:#666;text-align:center;font-style:italic;">R1 lesson: ML parlays are high-risk. R2 strategy: $100 standard, floor props, spread + total diversification. Ensemble Edge approach is 4/4 on non-ML legs.</div>
       </div>
 
-    </div><!-- end betContent-parlays -->
-
     ${dchsExplainer()}
+
+    </div><!-- end betContent-parlays -->
 
     <!-- ═══════ R2 GAME 1 BETS TAB ═══════ -->
     <div id="betContent-g1" class="bet-content" style="display:none;">

@@ -3126,8 +3126,8 @@ const SERIES_DATA = [
   {
     id: "OKC-LAL", conf: "West", round: "R2",
     priorRound: {
-      home: { seriesId: "OKC-PHX", gamesPlayed: 4, round: "R1" },
-      away: { seriesId: "HOU-LAL", gamesPlayed: 6, round: "R1" }
+      home: { seriesId: "OKC-PHX", gamesPlayed: 4, round: "R1", restDays: 11 },
+      away: { seriesId: "HOU-LAL", gamesPlayed: 6, round: "R1", restDays: 4 }
     },
     defMatchups: {
       homeDefOnAway: { defender:"Lu Dort", target:"LeBron James", dLebron:0.356, targetUsg:29.2, note:"Dort is OKC's elite POA stopper but LeBron's passing nullifies on-ball pressure. OKC will likely switch — Dort/Caruso/J.Williams rotate on LeBron. OKC held opponents to 108.2 DRtg (2nd in NBA). LeBron averaged 24.1ppg in R1 but efficiency dipped without Doncic creating gravity." },
@@ -3423,8 +3423,8 @@ const SERIES_DATA = [
   {
     id: "SAS-MIN", conf: "West", round: "R2",
     priorRound: {
-      home: { seriesId: "SAS-POR", gamesPlayed: 5, round: "R1" },
-      away: { seriesId: "DEN-MIN", gamesPlayed: 6, round: "R1" }
+      home: { seriesId: "SAS-POR", gamesPlayed: 5, round: "R1", restDays: 6 },
+      away: { seriesId: "DEN-MIN", gamesPlayed: 6, round: "R1", restDays: 3 }
     },
     defMatchups: {
       homeDefOnAway: { defender:"Stephon Castle", target:"Anthony Edwards", dLebron:0.908, targetUsg:32.5, note:"Castle's size (6-6) and defensive instincts vs Edwards (EXPECTED TO PLAY but at ~80% capacity with knee). Edwards at full health is unstoppable but the hyperextended knee limits burst. Castle's physicality could exploit the injury. If Edwards is limited, Randle becomes primary — Castle shifts to guard him." },
@@ -3695,8 +3695,8 @@ const SERIES_DATA = [
   {
     id: "DET-CLE", conf: "East", round: "R2",
     priorRound: {
-      home: { seriesId: "DET-ORL", gamesPlayed: 7, round: "R1" },
-      away: { seriesId: "CLE-TOR", gamesPlayed: 7, round: "R1" }
+      home: { seriesId: "DET-ORL", gamesPlayed: 7, round: "R1", restDays: 2 },
+      away: { seriesId: "CLE-TOR", gamesPlayed: 7, round: "R1", restDays: 2 }
     },
     defMatchups: {
       homeDefOnAway: { defender:"Ausar Thompson", target:"Donovan Mitchell", dLebron:2.93, targetUsg:31.0, note:"A.Thompson's elite POA defense (D-LEBRON 2.93, #3 in NBA) vs Mitchell (27.9ppg, 8.5 clutch). This is the series-defining matchup. Mitchell has historically been huntable on defense but A.Thompson's defensive intensity could force him into inefficient possessions. CLE's triple-initiator system means Mitchell can play off-ball more to avoid A.Thompson." },
@@ -3957,8 +3957,8 @@ const SERIES_DATA = [
   {
     id: "NYK-PHI", conf: "East", round: "R2",
     priorRound: {
-      home: { seriesId: "NYK-ATL", gamesPlayed: 6, round: "R1" },
-      away: { seriesId: "BOS-PHI", gamesPlayed: 7, round: "R1" }
+      home: { seriesId: "NYK-ATL", gamesPlayed: 6, round: "R1", restDays: 4 },
+      away: { seriesId: "BOS-PHI", gamesPlayed: 7, round: "R1", restDays: 2 }
     },
     defMatchups: {
       homeDefOnAway: { defender:"OG Anunoby", target:"Tyrese Maxey", dLebron:1.724, targetUsg:31.5, note:"OG is the best wing defender in the East. Maxey's speed is his weapon but OG's length (6-7, 7-2 wingspan) and lateral quickness has historically given quick guards trouble. NYK's switching scheme means Maxey can't just blow by — help is always there. Maxey averaged 30ppg vs BOS but that defense was compromised." },
