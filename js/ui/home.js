@@ -20,7 +20,7 @@ const SLATE_GAME_DATES = {
   },
   'R2-G2': {
     'NYK-PHI': '2026-05-06',
-    'SAS-MIN': '2026-05-07',
+    'SAS-MIN': '2026-05-06',  // 9:30 PM ET tonight @ Frost Bank Center
     'DET-CLE': '2026-05-07',
     'OKC-LAL': '2026-05-07',
   },
