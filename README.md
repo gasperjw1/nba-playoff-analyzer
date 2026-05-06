@@ -1,22 +1,27 @@
 # 2026 NBA Playoff Analyzer — Advanced Metrics Edition
 
-A comprehensive, research-backed NBA playoff prediction and analysis tool built with vanilla HTML, CSS, and JavaScript. Tracks all first-round matchups of the 2026 NBA Playoffs with game-by-game projections, real-time result tracking, Monte Carlo simulation, and an interactive scenario builder.
+A comprehensive, research-backed NBA playoff prediction and analysis tool built with vanilla HTML, CSS, and JavaScript. Tracks 2026 NBA Playoff series game-by-game with projections, real-time result tracking, Monte Carlo simulation, an interactive scenario builder, and a Compound Historical Scenarios engine that fires evidence-backed adjustments when stacked conditions match.
 
-**Current model accuracy: G1-G5 ML record 22/38 (57.9%) | G1 8/13 (61.5%) | G4 3/4 (75%) | G5 5/7 (71.4%)**
+**Current model accuracy:** R1 final 28/48 ML (58.3%, 9.6pt avg margin error). Series-stage curve: G1–G3 50% → G4–G7 67% — accuracy improves as in-series data accumulates. Round 2 in progress (4 series, G2 slate).
 
 ## Features
 
-- **Unified Ensemble Prediction System** (Phase 41) — blends manual analysis (72.7% winner accuracy), a multi-factor engine, and a 10,000-iteration Monte Carlo chaos simulation into a single probability output with calibrated standard deviation (SD ±11.6)
-- **18-step Game Projection Engine** incorporating home court, fatigue, chemistry, matchup suppression, star elevation, coaching adjustments, 3PT variance, role flexibility, youth breakouts, turnover tendencies, and more
-- **Monte Carlo Chaos Simulation** (Phase 40) — models correlated scoring runs, momentum swings, fatigue cascades, and foul trouble using interdependent random variables. Calibrated against 28,000+ historical playoff games
+- **Unified Ensemble Prediction System** (Phase 41) — blends manual analysis, a multi-factor engine, and a 10,000-iteration Monte Carlo chaos simulation into a single probability output with calibrated standard deviation (SD ±11.6)
+- **Compound Historical Scenario Engine** (Phase 52) — conditional-narrowing system. Each player carries stacked historical conditions (role + opponent team + venue + coach + primary defender + playoff context + health). When all conditions match, the scenario fires and adjusts projections; multiple matches compound at 70% decay. Cascade model propagates teammate adjustments when a star delta exceeds 2pts. Rendered inline on every game tab and bet card.
+- **18-step Game Projection Engine** incorporating home court, fatigue, chemistry, matchup suppression, star elevation, coaching adjustments, 3PT variance, role flexibility, youth breakouts, turnover tendencies, compound historical scenarios, and more
+- **Multiplicative Context Architecture** (Phase 51) — Fatigue, Scheme Persistence, and Inconsistency are proportional to the base talent edge (±12% / ±20% / 15% compression) instead of fixed-point additions. WIN_PROB_SCALE recalibrated 15→35 for realistic 55-82% favorite range, supported by 2025+2026 cross-year validation showing underdogs win 41.7% of playoff games.
+- **Dynamic Per-Player Rating Adjustments** (Phase 50) — injury severity, playoff ascension, and coaching scheme adjustments wired into `calcTeamRating` per player rather than as team-level flat bonuses.
+- **Monte Carlo Chaos Simulation** (Phase 40, 10K iterations Phase 45) — models correlated scoring runs, momentum swings, fatigue cascades, foul trouble, capitulation threshold, and cascading collapse using interdependent random variables.
 - **Projection Lineage Waterfall** (Phase 42) — SVG visualization showing each engine factor's delta contribution to the final predicted margin, with a running margin tracker
 - **Post-Game Factor Attribution** (Phase 42) — after a game completes, distributes prediction error proportionally across lineage steps to identify which factors over/under-predicted
 - **SPM Chemistry Engine** based on Maymin et al. (2013) — models player synergy across 8 skill dimensions
 - **Scenario Builder** — toggle players in/out to see how injuries and lineup changes shift win probability in real time
-- **Series Graduation** (Phase 42) — handles round transitions with fatigue/injury carryover when a series concludes
-- **Round-Level Navigation** — supports R1/R2/Conference Finals/Finals hierarchy with persistent state
-- **Betting Analysis** with spread picks, ML recommendations, player prop bets (O/U points, assists, rebounds), and featured parlays for every game with a running P&L tracker
-- **Model Learnings** page documenting 42 phases of model evolution with what worked, what failed, and calibration updates
+- **Series Graduation** (Phase 42) — handles round transitions with fatigue/injury carryover when a series concludes. Used to graduate all 4 R2 series from R1 winners.
+- **Round-Level Navigation** — R1/R2/Conference Finals/Finals hierarchy with persistent state
+- **Declarative Bet Card Schema** (Phase 55) — bet cards migrated from hand-styled HTML to a typed `BETS` array + `BET_SLATES` metadata + single `renderBetCard()` renderer. Type/pick/odds/facts/chs/confidence/thesis[]/narrative/result fields. 36 R2 cards through one pipeline; bets.js dropped 3578→3252 lines. Adding a new G3 slate is ~10 lines of data.
+- **Dynamic Blended Bets** (Phase 48) — every R2 ML/spread/margin pick interpolated from `calcBlendedProjection()` at render time via `dml`/`dmargin`/`dwinner` helpers. Bet cards always reflect current model state.
+- **2025 Playoffs Validation Dataset** — `playoffs_2025_validation.js` tracks game-by-game 2025 results as an independent validation set; `test-projections.js` TEST 6 covers the CHS engine with 19 new assertions (3447→3466 total, 0 failures)
+- **Model Learnings** page documenting 56 phases of model evolution with what worked, what failed, and calibration updates
 - **localStorage V3** — series-ID keyed persistence with backward-compatible V2 migration
 
 ## How It Works
@@ -36,35 +41,42 @@ The prediction model combines multiple research-backed components:
 
 ```
 nba-playoff-analyzer/
-├── index.html                  # App shell — modals, script tags in dependency order
+├── index.html                       # App shell — modals, script tags in dependency order
 ├── css/
-│   └── styles.css              # All styling with mobile-responsive breakpoints
+│   └── styles.css                   # All styling with mobile-responsive breakpoints
 ├── js/
-│   ├── app.js                  # Boot sequence — loads state, initializes, renders
-│   ├── state.js                # UI state, scenario builder, localStorage V3 persistence
-│   ├── utils.js                # Formatters, rating tiers, stat edge/note generators
+│   ├── app.js                       # Boot sequence — loads state, initializes, renders, default-round selection
+│   ├── state.js                     # UI state, scenario builder, localStorage V3 persistence
+│   ├── utils.js                     # Formatters, rating tiers, stat edge/note generators
 │   ├── data/
-│   │   ├── constants.js        # HCA values, Game 7 overrides, SPM coefficients, round metadata
-│   │   ├── series-data.js      # All series — rosters, stats, predictions, box scores, factors
-│   │   ├── boxscores.js        # Detailed per-player box score data for completed games
-│   │   └── historical.js       # Historical "what if player X was missing" data
+│   │   ├── constants.js             # HCA values, Game 7 overrides, SPM coefficients, round metadata, PLAYOFF_ADJUSTMENT, SIM_CONFIG
+│   │   ├── series-data.js           # All series — rosters, stats, predictions, box scores, factors, priorRound graduation data, CHS scenarios
+│   │   ├── bets-data.js             # Phase 55 — declarative BETS array + BET_SLATES metadata for all R2 G1/G2 cards
+│   │   ├── boxscores.js             # Detailed per-player box score data for completed games
+│   │   └── historical.js            # Historical "what if player X was missing" data
 │   ├── engine/
-│   │   ├── ratings.js          # Team rating calculation (replacement-level slot system)
-│   │   ├── projections.js      # 18-step game projection + margin variance + lineage + attribution
-│   │   ├── chemistry.js        # SPM Chemistry (Maymin et al.), on/off summaries
-│   │   ├── fatigue.js          # Player and team fatigue calculations with injury-return handling
-│   │   ├── matchups.js         # Bounce-back probability, defensive suppression, raw win prob
-│   │   ├── simulation.js       # Monte Carlo chaos simulation (10K iterations, correlated vars)
-│   │   └── graduation.js       # Series graduation for round transitions with carryover
+│   │   ├── ratings.js               # Team rating with per-player dynamic adjustments (Phase 50)
+│   │   ├── projections.js           # 18-step game projection + last-name fallback matcher + margin variance + lineage + attribution
+│   │   ├── chemistry.js             # SPM Chemistry (Maymin et al.), on/off summaries
+│   │   ├── fatigue.js               # Player and team fatigue calculations with injury-return handling
+│   │   ├── matchups.js              # Bounce-back probability, defensive suppression, raw win prob
+│   │   ├── simulation.js            # Monte Carlo chaos simulation (10K iterations, capitulation, cascading collapse)
+│   │   ├── scenarios.js             # Phase 52 — Compound Historical Scenarios engine, buildGameContext, cascade
+│   │   └── graduation.js            # Series graduation for round transitions with carryover
 │   └── ui/
-│       ├── components.js       # Reusable UI — scenario builder, stat bars, fatigue, waterfall
-│       ├── series-renderer.js  # Main series view — rosters, synergy, coaching, SPM
-│       ├── modals.js           # Game result and external factor modal handlers
-│       ├── navigation.js       # Tab switching — rounds, series, games, pages, bet tabs
-│       ├── learnings.js        # Model Learnings page — 42 phases, collapsible timeline
-│       ├── definitions.js      # Metric definitions page with category tabs
-│       └── bets.js             # Betting analysis — G1-G6, player props, parlays, P&L tracker
-├── CLAUDE.md                   # Memory file for Claude (project context and conventions)
+│       ├── components.js            # Reusable UI — scenario builder, stat bars, fatigue, waterfall, renderCHSScenarios
+│       ├── series-renderer.js       # Main series view — rosters, synergy, coaching, SPM, CHS panel per game
+│       ├── bet-card.js              # Phase 55 — renderBetCard() + renderBetSlateSeries() — single declarative renderer
+│       ├── modals.js                # Game result and external factor modal handlers
+│       ├── navigation.js            # Tab switching — rounds, series, games, pages, bet tabs
+│       ├── learnings.js             # Model Learnings page — collapsible phase timeline (currently through Phase 56)
+│       ├── definitions.js           # Metric definitions page with category tabs
+│       └── bets.js                  # Betting orchestrator — slate sections + dynamic dml/dmargin/dwinner helpers
+├── playoffs_2025_validation.js      # 2025 playoffs game-by-game results (independent validation dataset)
+├── test-projections.js              # Integration test suite — 3466 assertions incl. TEST 6 CHS coverage
+├── BACKTEST_R1.md                   # R1 backtest report (28/48, 58%, G1-3 50% → G4-7 67%)
+├── CONTEXT.md                       # Project context notes
+├── CLAUDE.md                        # Memory file for Claude (project context and conventions)
 └── README.md
 ```
 
@@ -85,17 +97,32 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 
 ## Usage
 
-1. **Series Analysis** — Select a conference round and series from the tabs. View rosters, advanced stats, synergy lineups, coaching analysis, and game-by-game projections with projection lineage waterfall charts.
+1. **Series Analysis** — Select a conference round and series from the tabs. View rosters, advanced stats, synergy lineups, coaching analysis, projection lineage waterfall, and the per-game CHS panel showing which compound scenarios fired and how they cascaded across teammates.
 2. **Scenario Builder** — Toggle players in/out to simulate injuries or lineup changes. Win probability updates instantly.
 3. **Game Results** — Click any game card to enter the actual result. The model saves your entries to localStorage V3 and recalculates downstream projections, including post-game attribution.
 4. **External Factors** — Add off-court factors (injuries, chemistry issues, motivation) with impact ratings. These feed into the projection engine.
-5. **Model Learnings** — Review 42 phases of model evolution, from initial calibration to Monte Carlo integration and ensemble unification.
-6. **Definitions** — Browse all metric definitions including Projection Lineage, Post-Game Attribution, Series Graduation, and Monte Carlo Simulation.
-7. **Bets** — View G1-G6 ML picks, player prop bets (O/U points, assists), featured parlays with player prop add-ons, and a running $100/$1 P&L tracker.
+5. **Model Learnings** — Review 56 phases of model evolution, from initial calibration through Monte Carlo integration, ensemble unification, multiplicative context architecture, and the Compound Historical Scenarios engine.
+6. **Definitions** — Browse all metric definitions including Projection Lineage, Post-Game Attribution, Series Graduation, Compound Historical Scenarios, Multiplicative Context Factors, Dynamic Rating Adjustments, and the Declarative Bet Card Schema.
+7. **Bets** — Per-game ML picks, spreads, player props, and featured parlays. All bets render through one declarative pipeline; ML/margin/winner values interpolate live from the blended model.
 
-## Model Evolution (42 Phases)
+## Model Evolution (56 Phases)
 
-The model has gone through 42 phases of development, each adding new factors, fixing biases, and recalibrating against actual results. Key milestones include Phase 22 (per-player game outlooks), Phase 28 (blended prediction system), Phase 32 (coaching adjustments and star elevation), Phase 40 (Monte Carlo chaos simulation), Phase 41 (unified ensemble), and Phase 42 (projection lineage, post-game attribution, round navigation, series graduation).
+The model has gone through 56 phases of development, each adding new factors, fixing biases, refactoring for scalability, and recalibrating against actual results. Selected milestones:
+
+- **Phase 22** — Per-player game outlooks
+- **Phase 28** — Blended prediction system
+- **Phase 32** — Coaching adjustments and star elevation
+- **Phase 40** — Monte Carlo chaos simulation
+- **Phase 41** — Unified ensemble (manual + engine + sim)
+- **Phase 42** — Projection lineage, post-game attribution, round navigation, series graduation
+- **Phase 45** — Deep lineage overhaul (19 engine fixes, 10K sim iterations)
+- **Phase 46** — Round 2 scaling (4 series graduated from R1)
+- **Phase 48** — Dynamic blended bets + R1 backtest (28/48, 58%)
+- **Phase 49–51** — Win probability recalibration, dynamic per-player rating adjustments, multiplicative context architecture
+- **Phase 52** — Compound Historical Scenarios engine
+- **Phase 53–54** — CHS injury-inference + last-name fallback matcher + CHS panel on series page
+- **Phase 55** — Declarative bet card schema
+- **Phase 56** — May 6 injury report (Embiid OUT) + void result outcome
 
 ## Data Sources and Research
 

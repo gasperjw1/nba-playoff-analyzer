@@ -819,6 +819,68 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 56 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 56 — May 6 Injury Report Application</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>Tonight's slate (NYK-PHI G2) reshaped morning-of by Embiid OUT ruling. Plus correctness sweep across all 4 R2 G2 cards as injury reports firmed up.</strong><br><br>
+          <strong>1. EMBIID OUT (NYK-PHI G2):</strong> Right ankle sprain + right hip soreness, ruled out morning of May 6 after he could not participate in shootaround. PHI starting lineup pivot: Maxey / Edgecombe / Oubre / George / Drummond. Series-data cascade: <code>player.injury</code> &rarr; OUT, <code>activeInjury.severity</code> &rarr; 1.0, <code>g2PlayerOutlook</code> entry with <code>ptsRange [0,0]</code> (Phase 33 OUT exclusion path) so the projection engine drops him from active players. NYK projects 9 active vs PHI 7. Bet impacts: NYK ML re-priced -260 &rarr; -450, spread -6.5 &rarr; -10.5, Embiid Over 22.5 prop VOIDED, new Drummond Over 11.5 reb prop added (he starts at C with no rim deterrent above him).<br><br>
+          <strong>2. NEW BET-CARD RESULT STATE — VOID:</strong> <code>renderBetCard</code> now handles <code>result.outcome: 'void'</code> with a yellow &oslash; icon (distinct from win &check;, loss &times;, push &equiv;). Required because Embiid prop was already a published bet card before he was ruled out — voiding it is more honest than retroactively deleting.<br><br>
+          <strong>3. DET-CLE G2 INJURY UPDATES:</strong> Allen reportedly OFF the injury report (knee tendonitis cleared) — his return raises CLE's ceiling, so DET ML downgraded BEST BET &rarr; MEDIUM lean. Huerter (DET) and Merrill (CLE) both GTD with thigh/hamstring strains.<br><br>
+          <strong>4. OKC-LAL G2 FACTUAL CORRECTION:</strong> Prior bet reasoning incorrectly stated J.Williams played 20min in G1. Per NBA.com he was OUT (Grade 1 hamstring), week-to-week. Corrected G1 recap and G2 ML reasoning to reflect that OKC won G1 by 18 <em>without</em> Williams — a more impressive signal for OKC, not less.<br><br>
+          <strong>5. SAS-MIN G2:</strong> Edwards QUESTIONABLE per latest reports — knee bothered him at end of G1 (he played, but on restricted minutes). Bet reasoning was already factoring his limited capacity, no card change needed.<br><br>
+          <strong>VALIDATION:</strong> 3447/3447 integration tests pass. No silent regressions in declarative bet rendering (Phase 55) or CHS panels (Phase 52).
+        </div>
+        <span class="learning-tag data">Injury Report</span><span class="learning-tag correct">Live Slate</span><span class="learning-tag milestone">Phase 56</span>
+      </div>
+
+      <!-- Phase 55 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 55 — Declarative Bet Card Schema</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>~3,500-line bets.js was a hand-styled HTML wall — every bet card duplicated layout, badge styling, and dynamic-value interpolation. Migrated all R2 G1 + G2 bets to a flat declarative schema with a single renderer. bets.js: 3578 &rarr; 3252 lines. Adding a new G3 slate is now ~10 lines of data + a 1-line render call.</strong><br><br>
+          <strong>1. SCHEMA (<code>js/data/bets-data.js</code>):</strong> Each bet is a typed record: <code>{type, pick, odds, facts, chs, confidence, thesis[], narrative, result, betId}</code>. Fields chosen from a tally of 173 existing edge labels:<br>
+          &bull; <code>thesis</code> is a multi-value array (<em>model / matchup / regression / historical / situational / market</em>) since 6+ existing labels combined theses ("Regression + Model", "Model + Structural")<br>
+          &bull; CHS data lives in its own structured field, not buried in a thesis string<br>
+          &bull; <code>confidence</code> enum (lean / coin-flip / medium / high / best-bet) extracted from edge labels<br>
+          &bull; <code>narrative</code> field for bounce-back / desperation / rest-edge framing<br><br>
+          <strong>2. RENDERER (<code>js/ui/bet-card.js</code>):</strong> 147-line <code>renderBetCard(bet, dynamics)</code> + <code>renderBetSlateSeries(slate, series, dynamics)</code>. Outputs CHS pill, type+confidence badge, multi-thesis pills, narrative tag, and dynamic model-value injection via <code>{{winner}}/{{margin}}</code> template interpolation. Same component covers all 36 cards.<br><br>
+          <strong>3. SLATES METADATA:</strong> <code>BET_SLATES</code> object stores per-series header + G1 recap text in one place, eliminating the eight hand-styled <code>&lt;h4&gt;</code> + recap divs that used to live inline in bets.js.<br><br>
+          <strong>4. COVERAGE:</strong> 16 archived R2-G1 bets + 20 live R2-G2 bets across all 4 series. Archived bets carry <code>result.outcome</code> + <code>result.actual</code>; live bets have <code>result: null</code> and resolve when games complete.<br><br>
+          <strong>5. WHY IT MATTERS:</strong> The old pipeline made it impossible to A/B-test layout changes without manually editing dozens of card blocks. Now layout fixes (Phase 56's void-icon support) ship in one place. The schema is the single source of truth — the rendered HTML is derivative.
+        </div>
+        <span class="learning-tag model">Declarative Bets</span><span class="learning-tag correct">Refactor</span><span class="learning-tag milestone">Phase 55</span>
+      </div>
+
+      <!-- Phase 54 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 54 — Empty Box Score Bug + CHS on Series Page</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>Two surfacing bugs caught by user. Both fixed; integration tests intact.</strong><br><br>
+          <strong>1. EMPTY PROJECTED BOX SCORES (R2 G2):</strong> SAS-MIN, DET-CLE, NYK-PHI G2 projected box scores rendered totals but no player rows. Root cause: prior-game box scores stored last-name-only entries ("Wembanyama") while rosters used full names ("Victor Wembanyama"). Strict equality match in <code>calcProjectedBoxScore</code> collapsed <code>activePlayers</code> to zero. Fix: added a last-name + substring fallback so the matcher tolerates both formats. Verified: SAS-MIN G2 now projects 8+7, DET-CLE 6+9, NYK-PHI 9+8.<br><br>
+          <strong>2. CHS PANEL ONLY ON BETS PAGE:</strong> Phase 52's CHS visualization was wired only into the bets panel. Users browsing series-analysis couldn't see the cascade reasoning behind their projections. Extracted a shared <code>renderCHSScenarios(series, gameIdx)</code> component and wired it into every game tab (G1, G2, future-games branches). Each R2 game now renders 2.5k-4.9k chars of CHS lineage — per-player matched scenarios, deltas, cascade effects — inline with the box score and advanced comparison.<br><br>
+          <strong>LESSON:</strong> Surfacing bugs are sneaky — the projection engine WAS computing correctly, the data flow just collapsed silently. The last-name fallback is a defensive widening because two adjacent data shapes (rosters vs. prior box scores) drifted. Should add a schema-validation test to catch future drift.
+        </div>
+        <span class="learning-tag bug">Bug Fix</span><span class="learning-tag model">CHS Surfacing</span><span class="learning-tag milestone">Phase 54</span>
+      </div>
+
+      <!-- Phase 53 -->
+      <div class="learning-entry">
+        <div class="learning-phase">Phase 53 — CHS Lineage + Landing Page Fixes</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>Three small but visible fixes after Phase 52's CHS engine landed.</strong><br><br>
+          <strong>1. INJURY INFERENCE IN buildGameContext():</strong> CHS scenarios with HEALTH conditions (e.g., "Reaves vs OKC + oblique") weren't firing because <code>buildGameContext</code> only checked the structured <code>activeInjury</code> object. When a player had a free-text <code>player.injury</code> string + <code>injuryRisk</code> but no <code>activeInjury</code> object, the health condition never matched. Fix: <code>buildGameContext</code> now infers injury state from <code>player.injury</code> + <code>injuryRisk</code> when <code>activeInjury</code> is missing.<br><br>
+          <strong>2. R2 PRIORROUND restDays:</strong> All 4 R2 series' <code>priorRound</code> objects were missing <code>restDays</code> (OKC 11d, LAL 4d, etc.). Added so REST_DAYS conditions in CHS scenarios can fire correctly.<br><br>
+          <strong>3. CHS EXPLAINER VISIBILITY:</strong> The <code>dchsExplainer()</code> was placed outside <code>betContent-parlays</code> and was rendering invisibly. Moved inside the visible div.<br><br>
+          <strong>4. LANDING PAGE DEFAULT:</strong> <code>app.js</code> now defaults <code>currentSeriesIdx</code> to the first series in the active round (R2). Previously the page sometimes opened on a stale R1 series.
+        </div>
+        <span class="learning-tag bug">CHS Wiring</span><span class="learning-tag milestone">Phase 53</span>
+      </div>
+
       <!-- Phase 52 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 52 — Compound Historical Scenario Engine</div>
@@ -855,6 +917,23 @@ function renderLearningsPage(el) {
           <strong>6. BACKTEST RESULTS:</strong> Avg favorite WP: 75.0% (was 90-95%). Expected series length: 5.1 (was 4.2). G1 winner accuracy: 87.5% (7/8). G1 margin error: 11.4pts (was 12.8). All 4 validation checks pass. SAS-MIN improved from 95-5 to 69-31 (sportsbook: 75-25).
         </div>
         <span class="learning-tag correct">Recalibration</span><span class="learning-tag model">Multiplicative Arch</span><span class="learning-tag milestone">Phase 51</span>
+      </div>
+
+      <!-- Phase 48 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 48 — Dynamic Blended Bets + R1 Backtest (28/48, 58%)</div>
+        <div class="learning-date">May 4, 2026</div>
+        <div class="learning-body">
+          <strong>Bets pages stopped being a frozen snapshot. Every R2 ML/spread/margin pick is now interpolated from <code>calcBlendedProjection()</code> at render time. The bets you see at 7pm reflect any data edits made at 6:55pm.</strong><br><br>
+          <strong>1. DYNAMIC INTERPOLATION HELPERS:</strong> <code>renderR2Bets()</code> exposes three closures — <code>dml(home, away)</code> returns the live ML pick, <code>dmargin(home, away)</code> returns the projected margin, <code>dwinner(home, away)</code> returns the named winning team. All hardcoded "OKC -8.5" strings replaced with <code>{{winner}}</code>/<code>{{margin}}</code> templates that resolve at render. Cards always reflect current model state.<br><br>
+          <strong>2. R2 OVERVIEW LIVE-WIRED:</strong> New <code>renderR2DynamicOverview()</code> builds the R2 cards directly from blended projections instead of cached data. <code>renderPlayerProjections()</code> appends a per-game player projection table to each game prediction panel.<br><br>
+          <strong>3. WIRING-UP OF UNUSED CONFIG:</strong> Two config knobs that existed in <code>constants.js</code> but were never read got wired in:<br>
+          &bull; <code>PLAYOFF_ADJUSTMENT.drbWeightBoost</code> &rarr; <code>ratings.js</code> (defensive rebound weight in playoff context)<br>
+          &bull; <code>SIM_CONFIG.shootingSwingMax</code> &rarr; <code>simulation.js</code> (shooting swing ceiling per quarter)<br><br>
+          <strong>4. DEAD CODE PURGE:</strong> Removed <code>simulateSeriesOutcome()</code> (70 lines, never called), dead CSS rules, duplicate ternaries in series-renderer. Added missing <code>--blue</code> CSS variable that several rules referenced but was undefined.<br><br>
+          <strong>5. R1 BACKTEST (BACKTEST_R1.md):</strong> Final R1 record: 28/48 ML picks correct (58%, 9.6pt avg margin error). Key insight: model accuracy curves UP through the series. G1-G3 picks: 50% (insufficient series-specific signal). G4-G7 picks: 67% (matchup data accumulates). This justifies trusting the engine more in late games and being humble in G1. The 5/8 G1 outcome (62.5%) was probably high-variance noise rather than genuine G1 strength.
+        </div>
+        <span class="learning-tag model">Dynamic Bets</span><span class="learning-tag backtest">R1 28/48</span><span class="learning-tag milestone">Phase 48</span>
       </div>
 
       <!-- Phase 46 -->
@@ -1064,7 +1143,13 @@ function renderLearningsPage(el) {
     'Phase 42': 'Multi-Round Scalability + Projection Lineage — Round-level navigation (R1/R2/CF/Finals), series graduation with fatigue/injury carryover, projection lineage waterfall (SVG chart showing each factor\'s margin contribution), post-game factor attribution engine (proportional error distribution), localStorage V3 (series-ID keyed, backward-compatible). Infrastructure for playoff progression without code changes.',
     'Phase 41': 'Unified Ensemble — Aligned blended model (manual picks + engine margins) with Monte Carlo chaos sim. Sim now uses blended projection as baseline instead of raw engine. Disagreement variance scaling: +20% chaos when systems disagree, -5% when strongly agree. Result: 5/6 series aligned, 1 genuine coin flip. Calibration maintained at SD = 11.6.',
     'Phase 40': 'Monte Carlo Chaos Simulation — 1000-iteration quarter-by-quarter model with interdependent chaos factors (shooting temperature, momentum runs, foul trouble cascades, fatigue decay, clutch pressure). Calibrated to ATS margin SD = 11.3. Backtest: 56.4% accuracy, 11.6 avg margin error across 39 games. Outputs win probability distributions instead of single-point predictions.',
-    'Phase 39': 'G5 Wed results — 3/4 engine picks correct (missed HOU-LAL). (1) DET-ORL first 45-45 dual scoring game (Cade 45, Banchero 45/9/7). (2) CLE-TOR shooting regression normalized, CLE won Q4 25-17. (3) DEN-MIN Jokic triple-double + Spencer Jones 20pts Star Absence Liberation, MIN 25 TOs. (4) HOU-LAL: Reaves return rust (4-16 FG), LeBron 0-6 3PT, Smart 6 TOs. G5 overall: 5/7 (71.4%). Injury-return rust discount and initiator-absent TO compounding identified as new factors.'
+    'Phase 39': 'G5 Wed results — 3/4 engine picks correct (missed HOU-LAL). (1) DET-ORL first 45-45 dual scoring game (Cade 45, Banchero 45/9/7). (2) CLE-TOR shooting regression normalized, CLE won Q4 25-17. (3) DEN-MIN Jokic triple-double + Spencer Jones 20pts Star Absence Liberation, MIN 25 TOs. (4) HOU-LAL: Reaves return rust (4-16 FG), LeBron 0-6 3PT, Smart 6 TOs. G5 overall: 5/7 (71.4%). Injury-return rust discount and initiator-absent TO compounding identified as new factors.',
+    'Phase 48': 'Dynamic Blended Bets + R1 Backtest — All R2 bet cards interpolate ML/margin/winner from calcBlendedProjection() at render time via dml/dmargin/dwinner helpers. New renderR2DynamicOverview() and renderPlayerProjections(). Wired PLAYOFF_ADJUSTMENT.drbWeightBoost and SIM_CONFIG.shootingSwingMax. Removed dead simulateSeriesOutcome(). R1 final: 28/48 ML (58%), 9.6pt margin error. Key insight: G1-3 50%, G4-7 67% — model accuracy curves up as series data accumulates.',
+    'Phase 52': 'Compound Historical Scenario Engine — 12-condition narrowing (role/team/coach/defender/venue/playoff/health/rest/deficit/post-blowout/minutes/coverage). Multiple matching scenarios compound at 70% decay. Cascade model propagates teammate adjustments when a star delta &gt;2pts. Wired as modifier #14 in calcExpectedPlayerStats. 15+ R2 scenarios (Reaves vs OKC, Brunson vs PHI drop, Wemby vs MIN road, SGA post-rust, Embiid post-appendectomy, Cade vs CLE blitz, Mitchell road, Edwards restricted).',
+    'Phase 53': 'CHS Lineage Fixes — buildGameContext() now infers injury from player.injury string + injuryRisk when activeInjury object missing (so HEALTH conditions fire). Added restDays to all 4 R2 priorRound objects. Moved dchsExplainer() inside betContent-parlays div. app.js defaults currentSeriesIdx to first series in active round.',
+    'Phase 54': 'Empty Box Score Bug + CHS on Series Page — Last-name + substring fallback in calcProjectedBoxScore so prior-game last-name entries ("Wembanyama") match full-name rosters ("Victor Wembanyama"). R2 G2 box scores now populate (8+7, 6+9, 9+8). Extracted renderCHSScenarios() and wired into series-analysis page (was bets-only).',
+    'Phase 55': 'Declarative Bet Card Schema — bets.js 3578 → 3252 lines. New js/data/bets-data.js (typed BETS array + BET_SLATES metadata) + js/ui/bet-card.js (renderBetCard + renderBetSlateSeries). Schema fields: type/pick/odds/facts/chs/confidence/thesis[]/narrative/result. Multi-thesis after tally of 173 existing edge labels showed 6+ combined theses. CHS in own field, lean/coin-flip extracted to confidence enum. Adding a new G3 slate is now ~10 lines of data + a 1-line render call.',
+    'Phase 56': 'May 6 Injury Report — Embiid OUT (right ankle + hip soreness) for tonight\'s NYK-PHI G2; PHI starts Maxey/Edgecombe/Oubre/George/Drummond. Series cascade: ptsRange [0,0] for Embiid, NYK 9 vs PHI 7 active. NYK ML re-priced -260 → -450, spread -6.5 → -10.5, Embiid prop voided, new Drummond rebs prop added. New void result.outcome with yellow ⊘ icon. DET-CLE: Allen back, DET BEST BET → MEDIUM. OKC-LAL: J.Williams was OUT G1 (factual fix). 3447/3447 tests pass.'
   };
 
   // Collect all entries/cards
