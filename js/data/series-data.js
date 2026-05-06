@@ -4007,7 +4007,7 @@ const SERIES_DATA = [
       pick: "NYK",
       confidence: "medium",
       projScore: "NYK 112 — PHI 106",
-      reasoning: "G1 TAKEAWAYS: NYK 137-98 blowout was historic — 63% FG, 51% 3PT, Brunson 35pts (12-18). Embiid was a shell (3-11 FG, -24) due to fatigue from 48hr turnaround after G7 in Boston. PHI now has 2 extra days rest (May 4→6) which should improve conditioning. Embiid's hip contusion has had time to settle. NOTE: Nick Nurse (PHI HC) left team to attend brother's funeral on May 5 — expected to return for G2 per ESPN. Assistant coaches managing in interim. BUT: MSG home court advantage remains, Brunson is locked in (9.2 clutch), NYK depth (10 players scored in G1) still overwhelms PHI's thin bench. Key G2 adjustment: PHI likely starts Edgecombe more aggressively, may reduce Drummond minutes to avoid KAT mismatches. Market moved line from -6.5 to -7.5 per DraftKings (May 5) — sharp money on NYK after G1 blowout. Expect PHI to be more competitive but NYK's systemic advantages (depth, rest, home court, Brunson PnR) persist. Model projects NYK +6 despite market suggesting +7.5.",
+      reasoning: "🚨 EMBIID RULED OUT G2 (May 6 morning) — right ankle sprain + right hip soreness, missed shootaround. Without their #1 scorer, PHI's ceiling collapses entirely. Drummond starts at C, projected lineup: Maxey/Edgecombe/Oubre/George/Drummond. PHI loses 26.9ppg + interior gravity + post-up offense + foul-drawing. Drummond is overwhelmed by KAT stretch-5 spacing and provides zero offensive creation. Maxey will absorb usage but already shaken from -28 G1. NYK was already favored -7.5 with healthy Embiid; with him OUT the line should be -10 or more. NOTE: Mitchell Robinson (NYK) added to injury report — questionable with illness. NYK otherwise clean. Nick Nurse (PHI HC) returning for G2 after attending brother's funeral. Market moved sharply toward NYK after G1 blowout (-6.5→-7.5) and will move again with Embiid news. Model projects NYK +12-15 with Embiid OUT.",
       prosHome: [
         "Brunson locked in — 35pts G1 on 67% FG, 8-8 FT, historic efficiency",
         "10 players scored in G1 — depth advantage is structural, not fluky",
@@ -4044,14 +4044,22 @@ const SERIES_DATA = [
           {name:"McBride",pts:"8-12",reb:"1-2",ast:"2-3",fg:"3-7",threes:"2-5",note:"41% 3PT. Key 6th man production"}
         ],
         away: [
-          {name:"Embiid",pts:"24-30",reb:"8-11",ast:"3-5",fg:"9-18",threes:"1-3",note:"Bounce-back from 14pt G1. 2 extra days rest helps hip. Line: O22.5 (-115)"},
-          {name:"Maxey",pts:"18-24",reb:"3-4",ast:"4-6",fg:"7-16",threes:"2-6",note:"Must recover from 3-9 G1. Speed still creates but NYK D-scheme exposed him"},
-          {name:"George",pts:"14-18",reb:"4-6",ast:"3-4",fg:"5-12",threes:"3-6",note:"Was actually efficient in G1 (6-11). Steady 3rd option"},
-          {name:"Edgecombe",pts:"10-14",reb:"2-4",ast:"2-3",fg:"4-10",threes:"1-4",note:"Rookie poise — 12pts G1. Expanded role expected in G2"},
-          {name:"Oubre",pts:"8-12",reb:"4-6",ast:"1-2",fg:"3-8",threes:"1-3",note:"Physical wing scorer. Will try harder on boards"},
-          {name:"Grimes",pts:"6-10",reb:"1-3",ast:"2-4",fg:"2-6",threes:"1-4",note:"First off bench. 24min in G1 blowout — role solidified"}
+          {name:"Embiid",pts:"0-0",reb:"0-0",ast:"0-0",fg:"0-0",threes:"0-0",note:"OUT — right ankle sprain + hip soreness (May 6). Did not participate in shootaround. Ruled out before tip."},
+          {name:"Maxey",pts:"24-32",reb:"3-5",ast:"6-9",fg:"9-22",threes:"3-8",note:"Usage spike with Embiid OUT — must score 30+ for PHI to compete. Speed creates against NYK switching."},
+          {name:"George",pts:"18-24",reb:"5-7",ast:"4-6",fg:"7-15",threes:"4-8",note:"Increased role with Embiid OUT — primary half-court scorer alongside Maxey. Was 6-11 G1."},
+          {name:"Edgecombe",pts:"14-20",reb:"3-5",ast:"2-4",fg:"6-13",threes:"2-5",note:"Starts SG with Embiid OUT. Rookie poise — 30pts vs BOS earlier in playoffs shows ceiling."},
+          {name:"Oubre",pts:"10-15",reb:"4-6",ast:"1-2",fg:"4-10",threes:"1-4",note:"Starting SF with Embiid OUT. Physical wing scorer; volume increases."},
+          {name:"Drummond",pts:"6-10",reb:"10-13",ast:"1-2",fg:"3-7",threes:"0-0",note:"Starts at C with Embiid OUT. Rebound + putback role — KAT stretch-5 will pull him out. 30+ min."},
+          {name:"Grimes",pts:"6-10",reb:"1-3",ast:"2-4",fg:"2-6",threes:"1-4",note:"First off bench. 24min in G1 blowout — role solidified."}
         ]
       },
+    },
+    // Phase 56: G2 player outlook — formal OUT marker for Embiid (May 6 ruling)
+    g2PlayerOutlook: {
+      home: [],
+      away: [
+        { player:"Joel Embiid", outlook:"out", projFgPct:0, ptsRange:[0,0], reason:"OUT G2 (per ESPN/NBC May 6 morning) — right ankle sprain + right hip soreness. Did not participate in shootaround. PHI projected lineup: Maxey/Edgecombe/Oubre/George/Drummond.", confidence:"high" },
+      ],
     },
     // PHASE 52: Compound Historical Scenarios — NYK-PHI
     compoundScenarios: {
@@ -4177,7 +4185,7 @@ const SERIES_DATA = [
       color: "#006BB6", color2: "#ED174C",
       advStats: { ortg:113.2, drtg:112.5, netRtg:0.7, pace:97.8, ts:56.8, efg:53.1, tov:13.5, reb:49.5, ortgRk:16, drtgRk:17, clutchNetRtg:0.8, last10:"5-5", fgPct:50.1, threePct:33.2, ftPct:75.6, orbPct:23.6 },
       players: [
-        { name:"Joel Embiid", pos:"C", rating:82, ppg:26.9, rpg:7.7, apg:3.9, fgp:49.2, per:29.2, ts:64.5, epm:7.8, bpm:9.0, ws48:.250, onOff:13.2, clutch:8.8, vorp:6.2, usg:33.0, injury:"PROBABLE — hip contusion + post-appendectomy (G7: 34pts, expected to play G1)", lebron:1.736, oLebron:2.452, dLebron:-0.716, war:3.154, offRole:"Shot Creator", defRole:"Anchor Big",
+        { name:"Joel Embiid", pos:"C", rating:82, ppg:26.9, rpg:7.7, apg:3.9, fgp:49.2, per:29.2, ts:64.5, epm:7.8, bpm:9.0, ws48:.250, onOff:13.2, clutch:8.8, vorp:6.2, usg:33.0, injury:"OUT G2 — right ankle sprain + right hip soreness (per ESPN/NBC May 6, ruled out morning of game). G1: 14pts (3-11) on -24 in NYK blowout. Increased ankle/hip soreness reported pre-shootaround.", activeInjury:{label:"Right ankle sprain + hip soreness", severity:1.0, status:"OUT"}, lebron:1.736, oLebron:2.452, dLebron:-0.716, war:3.154, offRole:"Shot Creator", defRole:"Anchor Big",
           matchupNote:"R1: returned G3 from appendectomy. G7 in Boston: 34/12/6 — franchise-defining performance. PROBABLE for G1 per ESPN (May 3). Hip contusion from G7 contact. Scored 100+ pts in final 4 R1 games. Post-appendectomy recovery + hip + only 2 days rest = fatigue concern but Embiid has proven he'll play through it. Rating maintained at 82 reflecting dominant R1 finish but fatigue/injury drag.", baseRating:92, starCeiling:2, injuryRisk:0.5, activeInjury:{type:"hip contusion + post-appendectomy",severity:0.4,note:"May 3: ESPN lists Embiid as PROBABLE for G1. Hip contusion from G7. Only 48 hours rest. Expected to play but at reduced capacity."} },
         { name:"Tyrese Maxey", pos:"PG", rating:84, ppg:28.3, rpg:4.1, apg:6.6, fgp:45.5, per:25.2, ts:60.5, epm:5.5, bpm:6.0, ws48:.185, onOff:8.0, clutch:7.8, vorp:4.7, usg:31.5, injury:null, lebron:2.933, oLebron:3.584, dLebron:-0.651, war:8.951, offRole:"Shot Creator", defRole:"Chaser",
           matchupNote:"G7: 30/11/7 — historic performance alongside Embiid. PHI's engine. Elite speed. OG/Bridges matchup will test him — NYK's wing defense is elite. Only 2 days rest after G7.", baseRating:84, starCeiling:1, injuryRisk:0 },

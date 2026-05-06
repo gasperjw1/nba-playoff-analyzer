@@ -88,10 +88,15 @@ function _renderNarrative(narrative) {
 
 function _renderResult(result) {
   if (!result) return '';
-  const color = result.outcome === 'win' ? 'var(--green)' : result.outcome === 'loss' ? 'var(--red)' : 'var(--text-dim)';
-  const icon = result.outcome === 'win' ? '✓' : result.outcome === 'loss' ? '✗' : '—';
+  const palette = {
+    win:  { color:'var(--green)',    icon:'✓' },
+    loss: { color:'var(--red)',      icon:'✗' },
+    push: { color:'var(--text-dim)', icon:'—' },
+    void: { color:'var(--yellow)',   icon:'⊘' },
+  };
+  const p = palette[result.outcome] || { color:'var(--text-dim)', icon:'—' };
   const pl = typeof result.pl === 'number' ? ` (${result.pl >= 0 ? '+' : ''}$${result.pl})` : '';
-  return `<span style="color:${color};font-weight:700;margin-left:6px">${icon} ${result.actual || ''}${pl}</span>`;
+  return `<span style="color:${p.color};font-weight:700;margin-left:6px">${p.icon} ${result.actual || ''}${pl}</span>`;
 }
 
 // Main render function — pure data → HTML, no globals beyond _BET_*.
