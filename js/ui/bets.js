@@ -3207,157 +3207,15 @@ function renderR2Bets(el) {
     <!-- ═══════ R2 GAME 1 BETS TAB ═══════ -->
     <div id="betContent-g1" class="bet-content" style="display:none;">
 
-    <!-- NYK-PHI G1 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:0 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(3) NYK vs (7) PHI &mdash; G1 Sun May 4, 8:00 PM ET @ MSG</h4>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML ★ BEST BET</span>
-        <div class="bet-pick">NYK ML vs PHI</div>
-        <div class="bet-line">-290 | NYK -7.5 | O/U 213.5 | ${dml('NYK-PHI', 1)} | <span style="color:#4caf50;">MEDIUM &mdash; fatigue + MSG fortress</span></div>
-        <div class="bet-reasoning"><strong>NYK has 6 days rest vs PHI's 2 after a grueling G7 in Boston.</strong> Embiid played 39min in G7 (hip contusion + post-appendectomy) with a 48-hour turnaround to MSG. PHI's 3-1 comeback proves mental toughness but the physical toll is severe. NYK depth (OG/Bridges/Hart/McBride/Shamet) grinds PHI's 7-man rotation by Q3. Brunson (9.2 clutch NetRtg) feasts in PnR vs compromised Embiid. R1 G1 home favorites covered 7/8 (88%).</div>
-        <span class="bet-edge model">Model + Market</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">NYK -7.5</div>
-        <div class="bet-line">-112 | Model margin: ${dmargin('NYK-PHI', 1)}pts | PHI fatigue Q3 collapse risk</div>
-        <div class="bet-reasoning">Model says ${dwinner('NYK-PHI', 1)} by ${dmargin('NYK-PHI', 1)} &mdash; covers -7.5. PHI will compete early but fatigue hits in Q3. Embiid CAN dominate on the road (34/12 vs BOS G7) but at what physical cost? NYK bench depth (McBride, Shamet, Clarkson vs PHI's Grimes/Barlow) is a massive quality gap.</div>
-        <span class="bet-edge model">Model Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Jalen Brunson Over 27.5 points</div>
-        <div class="bet-line">-115 | Playoff avg 28.6pts | MSG home = elite efficiency | PnR vs tired Embiid</div>
-        <div class="bet-reasoning">Brunson averaged 28.6pts in R1 with 9.2 clutch net rating at MSG. PHI perimeter defense will be compromised by fatigue. Brunson's PnR with KAT creates open lanes. The 27.5 line is below his playoff average &mdash; one of the safest props on the board.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Embiid Under 28.5 points</div>
-        <div class="bet-line">-110 | 48hr turnaround after 39min G7 | Hip contusion limits burst moves</div>
-        <div class="bet-reasoning">Embiid dropped 34/12/6 in G7 but that was an elimination game with adrenaline. G1 on 2 days rest with a hip contusion is different. OG Anunoby is an elite post defender. Expect 22-26pts on lower efficiency as Embiid conserves energy for a long series.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-      ${dscenarios('NYK-PHI', 1)}
-    </div>
-
-    <!-- SAS-MIN G1 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(2) SAS vs (6) MIN &mdash; G1 Sun May 4, 9:30 PM ET @ Frost Bank Center</h4>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">SAS ML vs MIN</div>
-        <div class="bet-line">-345 | SAS -9.5 | O/U 220.5 | ${dml('SAS-MIN', 1)} | <span style="color:#4caf50;">MEDIUM &mdash; Edwards playing changes calculus</span></div>
-        <div class="bet-reasoning"><strong>Edwards is expected to play (Shams, May 4).</strong> Line moved from -11.5 to -9.5. Edwards at 80% (knee) still transforms MIN, but SAS at Frost Bank Center (62-20) with Wemby healthy (34ppg vs MIN) is extremely tough. DiVincenzo OUT for the season &mdash; MIN 3PT depth is gutted. Fox/Castle/Champagnie give SAS bench advantage.</div>
-        <span class="bet-edge model">Model + Market</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type total">TOT</span>
-        <div class="bet-pick">Under 220.5</div>
-        <div class="bet-line">-105 | ${dml('SAS-MIN', 1)} | Edwards limited = reduced pace</div>
-        <div class="bet-reasoning">Edwards at 80% means fewer transition opportunities. SAS plays half-court controlling pace. Both teams have elite rim protectors (Wemby, Gobert). Model projects 217 total &mdash; 3.5pts under the line.</div>
-        <span class="bet-edge model">Model Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Wembanyama Over 24.5 points</div>
-        <div class="bet-line">-110 | 34ppg vs MIN reg season | Gobert matchup = mid-range feast</div>
-        <div class="bet-reasoning">Wemby averaged 34ppg vs MIN &mdash; Gobert protects the rim but Wemby's mid-range is unguardable at 7-4. Had 17/14/6blk in closeout G5 while coasting. In a competitive R2 G1, expect him to assert early. One of the strongest props on the slate.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Edwards Under 26.5 points (if playing)</div>
-        <div class="bet-line">-115 | ~80% capacity | Knee limits explosion, may play 28-32min</div>
-        <div class="bet-reasoning">Edwards coming off knee hyperextension + bone bruise will play limited minutes (28-32) without usual explosion. SAS wing D (Castle, Barnes, Champagnie) is elite. Expect jump shots over rim attacks. At 80%, efficiency drops to 20-24pt range.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-      ${dscenarios('SAS-MIN', 1)}
-    </div>
-
-    <!-- DET-CLE G1 -->
-    <div class="bet-section">
-      <h4 style="color:#f59e0b;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #f59e0b;padding-bottom:6px;">(1) DET vs (4) CLE &mdash; G1 Mon May 5, 7:00 PM ET @ LCA</h4>
-
-      <div class="bet-card">
-        <span class="bet-type moneyline">ML</span>
-        <div class="bet-pick">DET ML vs CLE</div>
-        <div class="bet-line">-155 | DET -3.5 | O/U 214.5 | ${dml('DET-CLE', 1)} | <span style="color:#f59e0b;">LOW &mdash; genuine coin flip with home tilt</span></div>
-        <div class="bet-reasoning"><strong>The closest R2 matchup.</strong> Both finished grueling G7s with equal rest (3 days). DET has #1 defense (107.2 DRtg) and best home record (31-9). CLE has triple-initiator offense (Mitchell/Harden/Mobley). Cade showed dual-mode (45pts G5, 32/12ast G7). Harris G7 breakout (30pts, 5/7 3PT) gives DET a legit #2. But CLE bench (Strus, Tyson, Merrill) is elite. NOT a best bet &mdash; small play or skip.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Lean Only</span>
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type total">TOT ★ VALUE</span>
-        <div class="bet-pick">Under 214.5</div>
-        <div class="bet-line">-110 | ${dml('DET-CLE', 1)} | DET #1 defense | Both exhausted from G7s</div>
-        <div class="bet-reasoning"><strong>Best value bet on the R2 G1 slate.</strong> DET has #1 defense (107.2 DRtg). Both teams just played 7-game series with 3 days rest. G1s in R2 after 7-game R1s historically run ~5pts under total. CLE relies on Mitchell/Harden creation but DET perimeter D (A.Thompson, D-LEBRON 2.93) will suppress first-option scoring. Model at 209 vs line at 214.5 = 5.5pts of edge.</div>
-        <span class="bet-edge model">Strong Model Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Cade Cunningham Over 24.5 points</div>
-        <div class="bet-line">-115 | G7: 32pts | Scored 25+ in 5 of 7 R1 games | Home at LCA</div>
-        <div class="bet-reasoning">Cade showed dual-mode dominance (45 G5, 32/12ast G7). Against CLE, expect scorer mode &mdash; Mitchell/Harden won't guard him. At home in LCA, he attacks early to set the tone. The 24.5 line is very beatable.</div>
-        <span class="bet-edge model">Model Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
-        <div class="bet-line">-115 | 8.5 clutch rating | 26.8ppg R1 avg | Physical series = free throws</div>
-        <div class="bet-reasoning">Mitchell has 8.5 clutch rating and averaged 26.8pts in R1. Against DET defense, he'll need to be aggressive &mdash; expect 7+ FTA. His mid-range game is harder to suppress than 3PT. Even in losses, Mitchell consistently scores 25+.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-      ${dscenarios('DET-CLE', 1)}
-    </div>
-
-    <!-- OKC-LAL G1 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) OKC vs (4) LAL &mdash; G1 Mon May 5, 8:30 PM ET @ Paycom Center</h4>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML ★ BEST BET</span>
-        <div class="bet-pick">OKC ML vs LAL</div>
-        <div class="bet-line">-1050 | OKC -15.5 | O/U 213.5 | ${dml('OKC-LAL', 1)} | <span style="color:#4caf50;">HIGH &mdash; most lopsided R2 matchup</span></div>
-        <div class="bet-reasoning"><strong>OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) vs Doncic-less LAL.</strong> OKC went 4-0 vs LAL with 31.8pt avg margin. Swept PHX in R1 with 11 days rest. SGA (31.1ppg, 67% TS) feasts on LAL's limited perimeter D. LeBron at 41 is a fatigue risk. Holmgren neutralizes Ayton. OKC depth means no drop-off. ML is safe but expensive &mdash; best in a parlay.</div>
-        <span class="bet-edge model">Model + Market</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">OKC -15.5</div>
-        <div class="bet-line">-110 | ${dml('OKC-LAL', 1)} | <span style="color:#f59e0b;">RISKY &mdash; tight gap vs model, LeBron floor</span></div>
-        <div class="bet-reasoning">Model says ${dwinner('OKC-LAL', 1)} by ${dmargin('OKC-LAL', 1)}. OKC's 31.8pt avg margin vs LAL suggests upside, but LeBron provides a floor. The smart play is ML in a parlay, not the spread alone.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Risky Lean</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">SGA Over 28.5 points</div>
-        <div class="bet-line">-115 | 31.1ppg R1 | 11 days rest | LAL has no primary defender without Doncic</div>
-        <div class="bet-reasoning">SGA averaged 31.1ppg on 67% TS in R1 vs PHX's better defense. With 11 days rest, he'll be fully loaded. Smart is solid but can't contain SGA for 36min. The 28.5 line is well below his playoff average.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">LeBron Over 25.5 points</div>
-        <div class="bet-line">-110 | Legacy mode | Higher usage without Doncic | Hits in both competitive and blowout scripts</div>
-        <div class="bet-reasoning">LeBron carries massive usage without Doncic (28.2ppg R1 at 41). In a blowout, OKC pulls starters and LeBron scores against the bench. In a competitive game, he scores on volume. The over hits regardless of game script.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Game Script Hedge</span>
-      </div>
-      ${dscenarios('OKC-LAL', 1)}
-    </div>
+    <!-- R2 G1 — rendered from BETS schema (Phase 55) -->
+    ${renderBetSlateSeries('R2-G1', 'NYK-PHI', { dml, dmargin, dwinner })}
+    ${dscenarios('NYK-PHI', 1)}
+    ${renderBetSlateSeries('R2-G1', 'SAS-MIN', { dml, dmargin, dwinner })}
+    ${dscenarios('SAS-MIN', 1)}
+    ${renderBetSlateSeries('R2-G1', 'DET-CLE', { dml, dmargin, dwinner })}
+    ${dscenarios('DET-CLE', 1)}
+    ${renderBetSlateSeries('R2-G1', 'OKC-LAL', { dml, dmargin, dwinner })}
+    ${dscenarios('OKC-LAL', 1)}
 
     </div><!-- end betContent-g1 -->
 
@@ -3369,158 +3227,20 @@ function renderR2Bets(el) {
     ${dbox('NYK-PHI', 2)}
     ${dscenarios('NYK-PHI', 2)}
 
-    <!-- SAS-MIN G2 -->
-    <div class="bet-section">
-      <h4 style="color:#f59e0b;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #f59e0b;padding-bottom:6px;">(2) SAS vs (6) MIN &mdash; G2 Wed May 7, 9:00 PM ET @ Frost Bank Center | MIN leads 1-0</h4>
-      <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
-        <strong style="color:#f59e0b;">G1 Recap:</strong> MIN 104-102 upset. Wemby 0-8 3PT (career worst) but 15reb/12blk. Edwards off bench: 18pts in 25min. Fox -13 (0-4 3PT). SAS shot 28% 3PT (10-36). MIN won Q4 35-30. <strong>Key G2 Factor:</strong> Wemby's 3PT regresses to 37.5% mean. Fox must be aggressive. Dosunmu returns for MIN.
-      </div>
+    <!-- SAS-MIN G2 — rendered from BETS schema -->
+    ${renderBetSlateSeries('R2-G2', 'SAS-MIN', { dml, dmargin, dwinner })}
+    ${dbox('SAS-MIN', 2)}
+    ${dscenarios('SAS-MIN', 2)}
 
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML &star; BEST BET</span>
-        <div class="bet-pick">SAS ML vs MIN</div>
-        <div class="bet-line">-220 | SAS -5.5 | O/U 216.5 | ${dml('SAS-MIN', 2)} | <span style="color:#4caf50;">MEDIUM &mdash; shooting regression + home court</span></div>
-        <div class="bet-reasoning"><strong>SAS shot 28% 3PT in G1 (10-36) vs their 37.5% season average.</strong> That's ~3.5 extra makes expected in G2 = +10.5pts of shooting regression alone. Wemby's 0-8 3PT was a career aberration — he's a 37.5% shooter who will bounce back. Fox (0-4 3PT, -13) is also due. MIN proved competitive but needed SAS to have their worst shooting game all season to win by 2. Dosunmu returns for MIN which helps, but the math strongly favors SAS regression.</div>
-        <span class="bet-edge model">Regression + Model</span>
-      </div>
+    <!-- DET-CLE G2 — rendered from BETS schema -->
+    ${renderBetSlateSeries('R2-G2', 'DET-CLE', { dml, dmargin, dwinner })}
+    ${dbox('DET-CLE', 2)}
+    ${dscenarios('DET-CLE', 2)}
 
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">SAS -5.5</div>
-        <div class="bet-line">-110 | Model margin: ${dmargin('SAS-MIN', 2)}pts | Regression supports it</div>
-        <div class="bet-reasoning">Model says ${dwinner('SAS-MIN', 2)} by ${dmargin('SAS-MIN', 2)}. If Wemby makes just 2 threes (his season avg is 2.8/game), that adds 6pts to G1's margin and SAS wins by ~8. Edwards' minutes will expand but knee limits explosiveness. Lean cover but it's razor-thin.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Lean Cover</span>
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type prop">PROP &star; HIGH CONF</span>
-        <div class="bet-pick">Victor Wembanyama Over 22.5 points</div>
-        <div class="bet-line">-125 | G1: only 11pts (5-17, 0-8 3PT) | Season avg 24.8 | 34ppg vs MIN reg season | <span style="color:#3dd68c;">CHS: +3.8pts</span></div>
-        <div class="bet-reasoning"><strong>Wemby scored only 11pts in G1 on his worst shooting night ever (0-8 3PT, 5-17 FG).</strong> This is a 24.8ppg scorer who averaged 34ppg vs MIN in the regular season. The 0-8 3PT is a statistical anomaly for a 37.5% shooter — regression alone adds 8-10pts to his scoring output. <strong style="color:#a78bfa;">CHS boost:</strong> Compound scenarios (post-bad-shooting + home court + vs-Gobert-mismatch) add +3.8pts to projection, pushing expected output to 28-30pts. CHS and statistical regression align — strongest convergence signal on the board. Expect 26-32pts in G2.</div>
-        <span class="bet-edge matchup">Extreme Bounce-back</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Anthony Edwards Over 19.5 points</div>
-        <div class="bet-line">-115 | G1: 18pts in 25min | Expect 30+ min G2 | Knee holding up | <span style="color:#ef4444;">CHS: -5.0pts</span></div>
-        <div class="bet-reasoning">Edwards scored 18pts in just 25min in G1 (8-13 FG = 62%). If knee holds, expect 30+ minutes and likely a starting role in G2. <strong style="color:#a78bfa;">CHS caution:</strong> Historical scenarios for knee-restricted players in away R2 games show -5pts suppression (limited explosion, fewer drives, more jump shots against elite rim protection). The 19.5 line is actually well-calibrated when CHS is applied — this becomes a coin flip prop rather than a clear over. Proceed with caution.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">CHS Caution</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">De'Aaron Fox Over 17.5 points</div>
-        <div class="bet-line">-110 | G1: only 10pts (5-14, 0-4 3PT, -13) | Season avg 18.5 | Aggression correction</div>
-        <div class="bet-reasoning">Fox had his worst game of the playoffs in G1 — passive, 0-4 3PT, -13. Coaching staff will demand more PnR aggression with Wemby. His season avg is 18.5ppg and he averaged 20+ in R1. The 17.5 line is deflated by G1 — bounce-back to 20+ is likely.</div>
-        <span class="bet-edge matchup">Bounce-back Spot</span>
-      </div>
-
-      ${dbox('SAS-MIN', 2)}
-      ${dscenarios('SAS-MIN', 2)}
-    </div>
-
-    <!-- DET-CLE G2 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) DET vs (4) CLE &mdash; G2 Thu May 7, 7:00 PM ET @ LCA | DET leads 1-0</h4>
-      <div style="background:rgba(61,214,140,0.06);border:1px solid rgba(61,214,140,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
-        <strong style="color:#3dd68c;">G1 Recap:</strong> DET 111-101. Cade 23/7ast, D.Robinson 19pts (5-8 3PT), Duren 14/14reb/clutch block. DET forced 19 CLE TOs (12 steals). Allen limited to 18min/2pts (knee tendonitis). CLE rallied from -18 to 93-93 but DET closed on a 18-8 run. <strong>Key G2 Factor:</strong> Allen's knee status (QUESTIONABLE). DET turnover generation structural or CLE adjusts? Garland bounce-back (7-21 G1).
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML &star; BEST BET</span>
-        <div class="bet-pick">DET ML vs CLE</div>
-        <div class="bet-line">-190 | DET -4.5 | O/U 214.5 | ${dml('DET-CLE', 2)} | <span style="color:#4caf50;">MEDIUM &mdash; G1 defensive dominance proven</span></div>
-        <div class="bet-reasoning"><strong>DET's #1 defense forced 19 CLE turnovers in G1 — that's structural, not variance.</strong> Ivey/Cunningham/Thompson trapping scheme overwhelms CLE's ball-handlers. Allen limited to 18min (knee) — if he's still compromised, CLE loses their rim protection + lob threat. Cade controls tempo masterfully (23pts, 7ast, only 2 TOs). DET's closing burst (18-8 run after 93-93 tie) shows killer instinct. CLE's triple-initiator attack works but DET strips the ball before plays develop.</div>
-        <span class="bet-edge model">Model + G1 Evidence</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">DET -4.5</div>
-        <div class="bet-line">-110 | Model margin: ${dmargin('DET-CLE', 2)}pts | Tighter than G1 but DET covers</div>
-        <div class="bet-reasoning">Model says ${dwinner('DET-CLE', 2)} by ${dmargin('DET-CLE', 2)}. CLE coaching adjustments expected (faster ball movement to beat traps, less Mitchell ISO). But DET's turnover generation is scheme-based — hard to adjust away from in one practice. If Allen plays 30+min, CLE's ceiling rises and this becomes a GRIND. Lean cover.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Lean Cover</span>
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type prop">PROP &star; HIGH CONF</span>
-        <div class="bet-pick">Cade Cunningham Over 21.5 points</div>
-        <div class="bet-line">-120 | G1: 23pts (8-16 FG) | Series avg projection: 22-26pts | <span style="color:#f59e0b;">CHS: -0.9pts</span></div>
-        <div class="bet-reasoning"><strong>Cade had 23pts + 7ast in G1 — completely controlled the game.</strong> CLE has no elite POA defender to match him. Mitchell/Garland are undersized and can't bother his size (6'6). His PnR with Duren generated 8 easy buckets. <strong style="color:#a78bfa;">CHS note:</strong> Compound scenarios show -0.9pts suppression from CLE's blitzing scheme (trapping ball-handlers, forcing turnovers). Minor enough that the Over still has edge at 21.5 — Cade's G1 floor of 23 is well above the line. CHS drag is minimal.</div>
-        <span class="bet-edge matchup">Strong Matchup</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Donovan Mitchell Over 24.5 points</div>
-        <div class="bet-line">-115 | G1: 24pts (8-19 FG) | Bounce-back from TOs | <span style="color:#3dd68c;">CHS: +4.0pts (bounce-back)</span></div>
-        <div class="bet-reasoning">Mitchell scored 24 but had 6 turnovers in G1. With CLE adjusting to hold the ball tighter, his scoring attempts should increase. <strong style="color:#a78bfa;">CHS boost:</strong> Compound scenarios for Mitchell post-loss + DET's aggressive trapping scheme historically correlate with +4pts bounce-back (volume increase + free throw aggression). CHS projects 28-30pts. The line at 24.5 is well below CHS-adjusted projection — strong over.</div>
-        <span class="bet-edge matchup">CHS Bounce-back</span>
-      </div>
-
-      ${dbox('DET-CLE', 2)}
-      ${dscenarios('DET-CLE', 2)}
-    </div>
-
-    <!-- OKC-LAL G2 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:16px 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(1) OKC vs (4) LAL &mdash; G2 Thu May 7, 9:30 PM ET @ Paycom Center | OKC leads 1-0</h4>
-      <div style="background:rgba(61,214,140,0.06);border:1px solid rgba(61,214,140,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
-        <strong style="color:#3dd68c;">G1 Recap:</strong> OKC 108-90 (+18). Holmgren 24/12/3blk (9-17 FG). SGA only 18pts (7 TOs!) but OKC still dominated. Reaves catastrophic 3-16 FG (0-5 3PT) — oblique severe. J.Williams returned (20min, +11). OKC bench: every player +11 or better. LeBron 27pts (12-17) but zero help. <strong>Key G2 Factor:</strong> SGA turnover correction (career avg 2.8 TOs). J.Williams ramp to 25-28min. Reaves still severely limited.
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML &star; BEST BET</span>
-        <div class="bet-pick">OKC ML vs LAL</div>
-        <div class="bet-line">-800 | OKC -14.5 | O/U 204.5 | ${dml('OKC-LAL', 2)} | <span style="color:#4caf50;">HIGH &mdash; structural mismatch confirmed G1</span></div>
-        <div class="bet-reasoning"><strong>OKC won G1 by 18 with SGA having his WORST game of the year (7 TOs).</strong> That's the floor — and it was an 18-point win. J.Williams returns with increased minutes (20min G1 → 25-28min G2) adding secondary creation. Reaves is at 50% capacity (3-16 FG, oblique severe). LeBron can score 30 and it doesn't matter — LAL has NO depth to compete with OKC's bench (outscored LAL 34-15). Holmgren owns the Ayton matchup (24/12/3blk). The -800 is justified — this is the most lopsided matchup in R2.</div>
-        <span class="bet-edge model">Model + Structural</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">OKC -14.5</div>
-        <div class="bet-line">-110 | Model margin: ${dmargin('OKC-LAL', 2)}pts | G1 was +18 — G2 similar</div>
-        <div class="bet-reasoning">Model says OKC by ${dmargin('OKC-LAL', 2)}. G1 was +18 with SGA at his worst. With SGA cleaning up TOs (7→3 expected) and J.Williams ramping, OKC gets STRONGER. LAL has no adjustment available — their problem is personnel (Reaves hurt, no Doncic, no bench). Only risk: OKC garbage time gives LAL backdoor cover. Lean spread but ML is safer.</div>
-        <span class="bet-edge model">Model Edge</span>
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type prop">PROP &star; HIGH CONF</span>
-        <div class="bet-pick">Chet Holmgren Over 18.5 points</div>
-        <div class="bet-line">-125 | G1: 24pts (9-17 FG, 3-7 3PT) | Ayton matchup solved | 3blk rim dominance</div>
-        <div class="bet-reasoning"><strong>Holmgren dropped 24/12/3blk in G1 — completely dominated Ayton.</strong> His combination of 7'1 length, 3PT shooting (3-7), and rim protection gives Ayton nightmares. The matchup is solved — Ayton can't guard Holmgren's perimeter game and can't finish over his length. Even if OKC wins big and Holmgren sits Q4, he's a 20+ scorer in 3 quarters. Line too low.</div>
-        <span class="bet-edge matchup">Dominant Matchup</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">SGA Over 24.5 points</div>
-        <div class="bet-line">-115 | G1: only 18pts (7 TOs) | Career avg 31.1 | <span style="color:#3dd68c;">CHS: +2.3pts</span> | Massive bounce-back incoming</div>
-        <div class="bet-reasoning">SGA's 18pts in G1 was his worst scoring game since December — driven by 7 TOs (career avg 2.8). The 24.5 line accounts for the G1 dip but vastly underestimates his bounce-back. <strong style="color:#a78bfa;">CHS boost:</strong> Compound scenarios (post-turnover correction + home court + weak perimeter defense) add +2.3pts. CHS projects 28-30pts, well above the 24.5 line. Both regression and CHS agree — this is the highest-conviction bounce-back prop on the board.</div>
-        <span class="bet-edge matchup">Extreme Bounce-back</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">LeBron James Over 26.5 points</div>
-        <div class="bet-line">-110 | G1: 27pts (12-17 FG, 71%) | Volume increases as LAL gets desperate | Legacy scoring</div>
-        <div class="bet-reasoning">LeBron shot 71% in G1 and scored 27 — down 0-1 he'll be even more aggressive. With Reaves compromised and Kennard benched, LeBron's usage will increase. He's the only LAL player capable of scoring 25+ against OKC's defense. Expect 28-32pts on high volume even in a loss.</div>
-        <span class="bet-edge matchup">Volume + Desperation</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type total">TOTAL</span>
-        <div class="bet-pick">Under 204.5</div>
-        <div class="bet-line">-110 | G1 total: 198 | OKC defense elite | LAL can't score in half-court</div>
-        <div class="bet-reasoning"><strong>G1 total was only 198 — well under the 213.5 line.</strong> OKC's defense held LAL to 42% FG and 33% 3PT. LAL can't score in the half-court against OKC's length (Holmgren, Dort, Wallace). Pace will be slow again — LAL grinds possessions trying to create vs OKC's switching. The 204.5 adjusted line still feels too high. Lean under.</div>
-        <span class="bet-edge model">G1 Evidence</span>
-      </div>
-
-      ${dbox('OKC-LAL', 2)}
-      ${dscenarios('OKC-LAL', 2)}
-    </div>
+    <!-- OKC-LAL G2 — rendered from BETS schema -->
+    ${renderBetSlateSeries('R2-G2', 'OKC-LAL', { dml, dmargin, dwinner })}
+    ${dbox('OKC-LAL', 2)}
+    ${dscenarios('OKC-LAL', 2)}
 
     </div><!-- end betContent-g2 -->
 
