@@ -3,10 +3,10 @@ function inferSPMSkills(p) {
   // Offensive Scoring: PPG-driven, TS% adjusted
   const oScr = Math.min(10, (p.ppg / 3.2) * (p.ts / 57));
   // Offensive Ball-Handling: APG-driven, turnover awareness
-  const oBH = Math.min(10, (p.apg / 1.2) + (p.epm > 3 ? 1.5 : 0));
+  const oBH = Math.min(10, ((p.apg||0) / 1.2) + (p.epm > 3 ? 1.5 : 0));
   // Offensive Rebounding: RPG for non-guards, position-adjusted
   const isGuard = p.pos === 'PG' || p.pos === 'SG';
-  const oReb = Math.min(10, isGuard ? p.rpg * 0.6 : p.rpg * 0.8);
+  const oReb = Math.min(10, isGuard ? (p.rpg||0) * 0.6 : (p.rpg||0) * 0.8);
   // NEW: 3-Point Shooting dimension (Mateus et al. — shooting balance matters)
   const o3PT = Math.min(10, ((p.fgp > 48 ? 3 : 0) + (p.ts - 54) * 0.8 + (isGuard ? 1.5 : 0)));
   // NEW: Ball Distribution / Passing dimension (touches & passes — strongest discriminator per Mateus)

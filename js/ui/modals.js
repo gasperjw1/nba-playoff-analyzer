@@ -112,7 +112,7 @@ function saveExternalFactor() {
     player: $('factorPlayer').value || null,
     desc: $('factorDesc').value,
     impact: parseInt($('factorImpact').value),
-    category: $('factorCategory').value
+    category: $('factorCategory')?.value || 'general'
   });
 
   saveState();

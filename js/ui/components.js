@@ -636,8 +636,9 @@ function renderProjectionWaterfall(blend) {
   const scale = halfWidth / (maxAbs * 1.2); // 20% padding
 
   const rowH = 24;
+  const padL = 12;
   const labelW = 140;
-  const chartX = labelW + 8;
+  const chartX = padL + labelW + 8;
   const chartW = halfWidth * 2;
   const valLabelW = 50;
   const totalW = chartX + chartW + valLabelW;
@@ -671,7 +672,7 @@ function renderProjectionWaterfall(blend) {
     return `
       <g>
         <rect x="0" y="${y}" width="${totalW}" height="${rowH}" fill="${rowBg}"/>
-        <text x="${labelW}" y="${y + 16}" fill="var(--text-dim)" font-size="10" text-anchor="end" font-family="monospace">${label}</text>
+        <text x="${padL + labelW}" y="${y + 16}" fill="var(--text-dim)" font-size="10" text-anchor="end" font-family="monospace">${label}</text>
         ${Math.abs(step.delta) >= 0.01 ? `<rect x="${barX}" y="${y + 5}" width="${Math.max(barW, 2)}" height="${rowH - 10}" rx="3" fill="${barColor}" opacity="0.85"/>` : ''}
         <line x1="${markerX}" y1="${y + 3}" x2="${markerX}" y2="${y + rowH - 3}" stroke="#fff" stroke-width="2" opacity="0.6"/>
         <circle cx="${markerX}" cy="${y + rowH / 2}" r="3" fill="#fff" opacity="0.5"/>
@@ -710,8 +711,8 @@ function renderProjectionWaterfall(blend) {
       <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Projection Lineage — How the predicted margin was built</span>
       <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(167,139,250,0.12);color:var(--purple);border:1px solid rgba(167,139,250,0.2)">Final: ${finalLabel}</span>
     </div>
-    <div style="overflow-x:auto;">
-    <svg viewBox="0 0 ${totalW} ${totalH}" style="width:100%;max-width:700px;height:auto;min-height:${containerH}px" preserveAspectRatio="xMidYMin meet">
+    <div style="overflow-x:auto;display:flex;justify-content:center;">
+    <svg viewBox="0 0 ${totalW} ${totalH}" style="width:100%;max-width:700px;height:auto;min-height:${containerH}px;overflow:visible;display:block;margin:0 auto" preserveAspectRatio="xMidYMin meet">
       <!-- Legend -->
       ${legend}
       <!-- Zero line -->
@@ -721,7 +722,7 @@ function renderProjectionWaterfall(blend) {
       <text x="${zeroX - halfWidth * 0.55}" y="${bodyStart - 8}" fill="var(--red)" font-size="9" text-anchor="middle" font-family="sans-serif">← Away favored</text>
       <text x="${zeroX + halfWidth * 0.55}" y="${bodyStart - 8}" fill="var(--green)" font-size="9" text-anchor="middle" font-family="sans-serif">Home favored →</text>
       <!-- Column headers -->
-      <text x="${labelW}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" text-anchor="end" font-weight="bold" font-family="sans-serif">Factor</text>
+      <text x="${padL + labelW}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" text-anchor="end" font-weight="bold" font-family="sans-serif">Factor</text>
       <text x="${chartX + chartW + 6}" y="${bodyStart - 8}" fill="var(--text-dim)" font-size="9" font-weight="bold" font-family="sans-serif">Delta</text>
       ${rows}
     </svg>

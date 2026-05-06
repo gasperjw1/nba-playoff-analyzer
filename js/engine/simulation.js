@@ -148,7 +148,7 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
   let awayBenchMode = false;
   let momentum = 0;           // -1 (away), 0 (neutral), +1 (home)
   let momentumStrength = 0;   // 0-1
-  let cumulativeFatigue = 0;  // builds through quarters
+  // fatigue is handled via q4FatiguePenalty config below
 
   for (let q = 1; q <= 4; q++) {
     let homeQScore = homeQBase;
@@ -274,7 +274,6 @@ function simulateGame(engineMargin, homeExpScore, awayExpScore, teamContext, rng
     // --- FATIGUE DECAY ---
     // Scoring drops in later quarters. This compounds with everything else:
     // a fatigued team is MORE vulnerable to runs, LESS likely to hit clutch shots.
-    cumulativeFatigue += 0.25;
     if (q >= 3) {
       const fatiguePts = config.q4FatiguePenalty * (q === 3 ? 0.4 : 1.0);
       // Both teams get fatigued, but unevenly

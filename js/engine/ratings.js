@@ -459,7 +459,7 @@ function calcTeamResilience(team, series) {
   resilience += Math.min(0.25, (adjRating - 3) * 0.04); // 3→0, 5→0.08, 8→0.20, 10→0.25
 
   // 3. Star playoff ascension (max 0.20)
-  const activePlayers = getActivePlayers(team, series.id);
+  const activePlayers = getActivePlayers(team, series?.id || '');
   const totalAscension = activePlayers.reduce((s, p) => s + (p.playoffAscension || 0), 0);
   resilience += Math.min(0.20, totalAscension * 0.08);
 

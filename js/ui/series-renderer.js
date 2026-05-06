@@ -40,7 +40,7 @@ function renderSeries() {
       <!-- TWO-COLUMN: Scenario + Backtest side by side -->
       <div class="series-body">
         ${renderScenarioBuilder(s)}
-        ${renderBacktestPanel(s, prob)}
+        ${renderBacktestPanel(s)}
       </div>
 
       <!-- Win Probability Bar -->
@@ -336,10 +336,11 @@ function renderSPMChemistry(series) {
   function renderTeamSPM(team, chem) {
     const active = team.players.filter(p=>p.rating>0).slice(0,8);
     // Aggregate skill profile for the lineup
-    const agg = { oScr:0, oBH:0, oReb:0, dScr:0, dBH:0, dReb:0 };
+    const agg = { oScr:0, oBH:0, oReb:0, o3PT:0, oPass:0, dScr:0, dBH:0, dReb:0 };
     active.forEach(p => {
       const sk = inferSPMSkills(p);
       agg.oScr += sk.oScr; agg.oBH += sk.oBH; agg.oReb += sk.oReb;
+      agg.o3PT += sk.o3PT; agg.oPass += sk.oPass;
       agg.dScr += sk.dScr; agg.dBH += sk.dBH; agg.dReb += sk.dReb;
     });
     // Normalize to 0-10 per player average
