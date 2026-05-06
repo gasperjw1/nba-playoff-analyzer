@@ -3364,56 +3364,10 @@ function renderR2Bets(el) {
     <!-- ═══════ R2 GAME 2 BETS TAB ═══════ -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
 
-    <!-- NYK-PHI G2 -->
-    <div class="bet-section">
-      <h4 style="color:#4caf50;margin:0 0 12px;font-size:15px;border-bottom:1px solid #4caf50;padding-bottom:6px;">(3) NYK vs (7) PHI &mdash; G2 Tue May 6, 7:30 PM ET @ MSG | NYK leads 1-0</h4>
-      <div style="background:rgba(61,214,140,0.06);border:1px solid rgba(61,214,140,0.2);border-radius:8px;padding:10px;margin-bottom:12px;font-size:11px;color:#aaa;">
-        <strong style="color:#3dd68c;">G1 Recap:</strong> NYK 137-98 blowout. Brunson 35pts (12-18 FG). NYK shot 63% FG, 51% 3PT. Embiid was a shell (3-11, -24). Maxey 3-9, 4TO. PHI fatigue from 48hr turnaround was catastrophic. <strong>Key G2 Factor:</strong> PHI has 2 extra days rest now. Shooting regression expected for NYK. Embiid's pride bounce-back is the variable.
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type moneyline">ML &star; BEST BET</span>
-        <div class="bet-pick">NYK ML vs PHI</div>
-        <div class="bet-line">-260 | NYK -6.5 | O/U 214.5 | ${dml('NYK-PHI', 2)} | <span style="color:#4caf50;">MEDIUM &mdash; tighter than G1 but NYK still dominant</span></div>
-        <div class="bet-reasoning"><strong>NYK won G1 by 39 — most lopsided R2 game in a decade.</strong> PHI gets 2 extra days rest which helps, and Embiid historically bounces back after bad games. But NYK's systemic advantages remain: MSG home court (9.2 clutch NetRtg), Brunson locked in (35pts on 67% FG), depth that suffocated PHI's 7-man rotation. NYK shooting will regress from 63%/51% — but even at normal efficiency they win by 6+. Embiid's conditioning post-appendectomy remains a Q3/Q4 concern.</div>
-        <span class="bet-edge model">Model + Structural</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type spread">SPR</span>
-        <div class="bet-pick">NYK -6.5</div>
-        <div class="bet-line">-110 | Model margin: ${dmargin('NYK-PHI', 2)}pts | Edge vs spread</div>
-        <div class="bet-reasoning">Model says ${dwinner('NYK-PHI', 2)} by ${dmargin('NYK-PHI', 2)}. PHI's rest helps but bench depth remains a fatal flaw. If Embiid has bounce-back (28+ pts), PHI covers. If not, NYK wins by 8-12. Lean NYK but this is the riskier play vs ML.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">Coin Flip Lean</span>
-      </div>
-
-      <div class="bet-card best-bet">
-        <span class="bet-type prop">PROP &star; HIGH CONF</span>
-        <div class="bet-pick">Jalen Brunson Over 26.5 points</div>
-        <div class="bet-line">-120 | G1: 35pts (12-18 FG) | Playoff avg 28.6pts | MSG home | PnR vs Embiid/Drummond | <span style="color:#3dd68c;">CHS: +2.5pts</span></div>
-        <div class="bet-reasoning"><strong>Brunson dropped 35 in G1 on 67% FG — and the line is only 26.5.</strong> PHI has no answer for the Brunson-KAT PnR. Embiid can't switch at speed post-appendectomy. Drummond is BBQ chicken. Brunson has hit O27.5 in 6 of his last 8 playoff games. At MSG, he's virtually guaranteed 25+ floor with 35+ ceiling. <strong style="color:#a78bfa;">CHS boost:</strong> Historical home-vs-PHI + PnR-mismatch scenarios add +2.5pts to projection (27→29.5). This is the strongest CHS-backed prop on the board.</div>
-        <span class="bet-edge matchup">Strong Matchup</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">Joel Embiid Over 22.5 points</div>
-        <div class="bet-line">-115 | G1: only 14pts (3-11) | Bounce-back spot | 2 extra days rest | <span style="color:#f59e0b;">CHS: MIXED (-8/+4)</span></div>
-        <div class="bet-reasoning">Embiid's 14pts in G1 was his worst playoff game in 3 years. With 2 extra days rest, his hip settles and conditioning improves. Historically bounces back hard after bad games (avg 32pts in bounce-back games). <strong style="color:#a78bfa;">CHS tension:</strong> Two competing scenarios — post-appendectomy + blowout loss historically correlates with -8pts (conditioning collapse), BUT pride bounce-back after bad games correlates with +4pts. Net CHS effect depends on which pattern dominates. The 22.5 line is set for the -8 scenario — if bounce-back wins, this smashes over. Higher variance than Brunson prop.</div>
-        <span class="bet-edge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">CHS Conflict</span>
-      </div>
-
-      <div class="bet-card">
-        <span class="bet-type prop">PROP</span>
-        <div class="bet-pick">OG Anunoby Over 14.5 points</div>
-        <div class="bet-line">-110 | G1: 18pts (7-8 FG) | Elite efficiency continues | PHI can't guard him</div>
-        <div class="bet-reasoning">OG went 7-8 from the field in G1 — PHI has no one who can match his combination of size and skill. With Brunson drawing doubles, OG gets clean looks. He's averaged 15.2pts in the last 6 playoff games. The 14.5 line undervalues his current hot streak.</div>
-        <span class="bet-edge matchup">Matchup Edge</span>
-      </div>
-
-      ${dbox('NYK-PHI', 2)}
-      ${dscenarios('NYK-PHI', 2)}
-    </div>
+    <!-- NYK-PHI G2 — Phase 55 PoC: rendered from BETS schema -->
+    ${renderBetSlateSeries('R2-G2', 'NYK-PHI', { dml, dmargin, dwinner })}
+    ${dbox('NYK-PHI', 2)}
+    ${dscenarios('NYK-PHI', 2)}
 
     <!-- SAS-MIN G2 -->
     <div class="bet-section">
