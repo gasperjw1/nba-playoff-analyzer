@@ -7,20 +7,33 @@ const fs = require('fs');
 const path = require('path');
 
 // Load all data files by evaluating them (they define globals)
-function loadGlobals() {
-  // series-data.js defines SERIES_DATA, TURNOVER_FOUL_DATA, THREE_POINT_VARIANCE_DATA, ROLE_FLEXIBILITY_DATA
-  const seriesDataCode = fs.readFileSync(path.join(__dirname, 'js/data/series-data.js'), 'utf8');
-  const constantsCode = fs.readFileSync(path.join(__dirname, 'js/data/constants.js'), 'utf8');
-  const boxscoresCode = fs.readFileSync(path.join(__dirname, 'js/data/boxscores.js'), 'utf8');
-
+function loadGlobals(includeEngine = false) {
   // Replace const/let with var so variables become context properties in vm
   const toVar = (code) => code.replace(/^(const|let) /gm, 'var ');
-
   const vm = require('vm');
   const ctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, Boolean, Number, String, RegExp, Date, Error });
-  vm.runInContext(toVar(constantsCode), ctx);
-  vm.runInContext(toVar(seriesDataCode), ctx);
-  vm.runInContext(toVar(boxscoresCode), ctx);
+
+  function load(rel) {
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
+  }
+
+  // Data layer (always loaded)
+  load('js/data/constants.js');
+  load('js/data/series-data.js');
+  load('js/data/boxscores.js');
+
+  // Engine layer (only when running engine-level tests)
+  if (includeEngine) {
+    load('js/data/historical.js');
+    load('js/utils.js');
+    load('js/state.js');
+    load('js/engine/fatigue.js');
+    load('js/engine/chemistry.js');
+    load('js/engine/matchups.js');
+    load('js/engine/ratings.js');
+    load('js/engine/scenarios.js');
+    load('js/engine/projections.js');
+  }
   return ctx;
 }
 
@@ -267,6 +280,83 @@ function runTests() {
     } else {
       passed++; // implicit pass
     }
+  });
+
+  // ============================================================
+  // TEST 6: Compound Historical Scenarios engine wiring (Phase 52)
+  // ============================================================
+  // Verifies that CHS data and matching logic stay aligned: scenarios
+  // fire for the players we expect, deltas point in the documented
+  // direction, and the projection pipeline picks up the modifier.
+  // (Replaces the ad-hoc test_scenarios.js dev script.)
+  console.log('\nTEST 6: Compound Historical Scenarios engine wiring');
+  const engineCtx = loadGlobals(true);
+  const E = engineCtx; // shorthand
+  const SD = E.SERIES_DATA;
+
+  // 6a — OKC-LAL has compound scenarios for the named players
+  const oklal = SD.find(s => s.id === 'OKC-LAL');
+  assert(!!oklal, 'OKC-LAL series exists');
+  if (oklal) {
+    const keys = Object.keys(oklal.compoundScenarios || {});
+    assert(keys.includes('Austin Reaves'), 'OKC-LAL compoundScenarios includes Austin Reaves');
+    assert(keys.includes('Shai Gilgeous-Alexander'), 'OKC-LAL compoundScenarios includes SGA');
+
+    // 6b — Reaves G1 context flags him as injured + away vs OKC + non-primary role
+    const reaves = oklal.awayTeam.players.find(p => p.name.includes('Reaves'));
+    assert(!!reaves, 'Reaves found in LAL roster');
+    if (reaves) {
+      const ctx = E.buildGameContext(reaves, oklal, 0, 'away');
+      assert(ctx.oppAbbr === 'OKC', `Reaves ctx.oppAbbr is OKC (got "${ctx.oppAbbr}")`);
+      assert(ctx.isHome === false, 'Reaves ctx.isHome is false');
+      assert(ctx.hasActiveInjury === true, 'Reaves ctx.hasActiveInjury is true (oblique)');
+      assert(['secondary','third','role'].includes(ctx.playerRole),
+        `Reaves ctx.playerRole is non-primary (got "${ctx.playerRole}")`);
+
+      // 6c — Reaves CHS fires with negative delta (vs OKC suppression)
+      const rd = E.calcCompoundScenarioDelta(reaves, oklal, 0, 'away');
+      assert(rd !== null, 'Reaves CHS delta is non-null for OKC-LAL G1 away');
+      if (rd) {
+        assert(rd.scenariosApplied.length >= 1, 'Reaves: at least 1 scenario fires');
+        assert(rd.ptsDelta < 0, `Reaves CHS ptsDelta is negative (got ${rd.ptsDelta})`);
+      }
+
+      // 6d — Reaves full projection includes the Compound modifier
+      const rf = E.calcExpectedPlayerStats(reaves, oklal, 0, 'away');
+      assert(typeof rf.pts === 'number' && rf.pts >= 0, 'Reaves full projection has numeric pts');
+      const compoundMod = rf.modifiers.find(m => m.label && m.label.includes('Compound'));
+      assert(!!compoundMod, 'Reaves projection.modifiers contains a Compound entry');
+    }
+
+    // 6e — SGA CHS fires (post-rust + vs LAL dominance)
+    const sga = oklal.homeTeam.players.find(p => p.name.includes('Gilgeous'));
+    if (sga) {
+      const sd = E.calcCompoundScenarioDelta(sga, oklal, 0, 'home');
+      assert(sd !== null && sd.scenariosApplied.length >= 1, 'SGA CHS fires for OKC-LAL G1 home');
+    }
+
+    // 6f — Cascade summary populates effects for LAL
+    const summary = E.getTeamScenarioSummary(oklal, 0, 'away');
+    assert(!!summary, 'getTeamScenarioSummary returns object for LAL G1');
+    if (summary) {
+      assert(Array.isArray(summary.cascadeEffects), 'cascadeEffects is an array');
+    }
+  }
+
+  // 6g — Other R2 series fire CHS for the headline players
+  const cases = [
+    { id:'NYK-PHI', side:'home', last:'Brunson' },
+    { id:'DET-CLE', side:'home', last:'Cunningham' },
+    { id:'SAS-MIN', side:'home', last:'Wembanyama' },
+  ];
+  cases.forEach(({ id, side, last }) => {
+    const series = SD.find(s => s.id === id);
+    if (!series) { assert(false, `${id} series exists`); return; }
+    const team = side === 'home' ? series.homeTeam : series.awayTeam;
+    const player = team.players.find(p => p.name.includes(last));
+    if (!player) { assert(false, `${id}: ${last} found in roster`); return; }
+    const d = E.calcCompoundScenarioDelta(player, series, 0, side);
+    assert(d !== null && d.scenariosApplied.length >= 1, `${id} ${last} G1: at least 1 CHS scenario fires`);
   });
 
   // ============================================================
