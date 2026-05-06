@@ -32,7 +32,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TODAY — Tue May 5 | R2 G1: CLE @ DET 7:00 PM ET (NBCSN) | LAL @ OKC 8:30 PM ET (NBC)</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">NEXT — Thu May 7 | R2 G2: CLE @ DET 7:00 PM | NYK-PHI 7:00 PM | LAL @ OKC 9:30 PM | SAS-MIN 9:30 PM</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -56,14 +56,14 @@ function renderBetsPage(el) {
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">OKC-LAL G1 (tonight)</div>
-              <div style="font-size:18px;font-weight:700;color:#3dd68c;">OKC 82%</div>
-              <div style="font-size:9px;color:#666;">116-101 | BLOWOUT RISK | -15.5</div>
+              <div style="font-size:10px;color:#3dd68c;">OKC-LAL G1 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">OKC 108-90</div>
+              <div style="font-size:9px;color:#666;">Model: OKC 116-101 | Winner ✅ margin off</div>
             </div>
             <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-              <div style="font-size:10px;color:#888;">DET-CLE G1 (tonight)</div>
-              <div style="font-size:18px;font-weight:700;color:#ff9800;">DET 54%</div>
-              <div style="font-size:9px;color:#666;">106-103 | GRIND | -3.5</div>
+              <div style="font-size:10px;color:#3dd68c;">DET-CLE G1 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">DET 111-101</div>
+              <div style="font-size:9px;color:#666;">Model: DET 108-105 | Winner ✅ margin +7</div>
             </div>
           </div>
           <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;">R1 FINAL RESULTS</div>
@@ -73,60 +73,113 @@ function renderBetsPage(el) {
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#f44336;">PHI 4-3</span><br/>BOS upset ❌</div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#4caf50;">R1 Done</span><br/>All 8 series</div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">Phase 44: All 8 R1 series complete. R2 set: OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI. Key: J.Williams (OKC) OUT G1 (return ~May 7), Edwards (MIN) active, Embiid (PHI) PROBABLE, Dosunmu (MIN) GTD for G2, Nick Nurse (PHI) at brother's funeral — expected back for G2.</div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">R2 G1 Complete: 3/4 winner picks correct (NYK ✅, DET ✅, OKC ✅, SAS ❌). Allen (CLE) limited to 18min G1 — knee tendonitis. DET forced 19 CLE TOs. G2: Thu May 7 (DET-CLE, NYK-PHI) + Sat May 9 (all 4 series G2/G3).</div>
         </div>
       </div>
 
       <!-- ===== R2 FEATURED PARLAYS — MAY 5 (TONIGHT) ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 FEATURED PARLAYS — Tue May 5</span>
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G1 RESULTS — Tue May 5 | OKC ✅ DET ✅ | $100 Play: ✅ WON (+$125)</span>
         </div>
 
-        <!-- $100 BEST BET PARLAY -->
+        <!-- $100 BEST BET PARLAY — WON -->
         <div class="parlay-card headline" style="border:1px solid #4caf50;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — OKC Fortress + DET Home Court (2-Leg)</span>
+            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — OKC Fortress + DET Home Court (2-Leg) ✅ WON</span>
             <span class="parlay-odds" style="background:rgba(76,175,80,0.2);color:#4caf50;font-size:16px;">~+125 | +$125</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">OKC ML vs LAL (R2 G1) — SGA + 11 days rest + 4-0 vs LAL reg season. J.Williams OUT but depth compensates.</span>
+              <span class="parlay-leg-pick">OKC ML vs LAL ✅ — OKC 108-90. Holmgren 24/12/3blk. LeBron 27pts but LAL shot 37% FG.</span>
               <span class="parlay-leg-odds">-900</span>
-              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">HIGH — Massive talent gap</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">DET ML vs CLE (R2 G1) — #1 defense + 31-9 home record + Cade comeback hero. Tight game.</span>
+              <span class="parlay-leg-pick">DET ML vs CLE ✅ — DET 111-101. Cade 23/7ast, D.Robinson 19pts (5-8 3PT). Duren clutch block.</span>
               <span class="parlay-leg-odds">-155</span>
-              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">LOW — Coin flip with home edge</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>OKC leg is the anchor</strong> (~90% win probability). DET adds value at -155 — #1 defense, best home record in the East (31-9), and Cade in MVP form after 3-1 comeback. CLE is dangerous with triple-initiator offense but road game at hostile LCA is tough. Combined implied odds ~50%. Model gives ~55%.</div>
+          <div class="parlay-reasoning" style="border-left-color:#4caf50;"><strong>✅ WON +$125!</strong> Both legs hit cleanly. OKC dominated LAL 108-90 behind Holmgren's 24/12/3blk — the talent gap was massive as predicted. DET beat CLE 111-101 — model picked the right winner (DET +3 predicted, actual +10). DET's #1 defense forced 19 CLE turnovers with 12 steals. Allen limited to 18min/2pts due to knee. First R2 $100 parlay WIN.</div>
         </div>
 
-        <!-- $1 CHAOS TICKET -->
+        <!-- $1 CHAOS TICKET — LOST -->
+        <div class="parlay-card" style="border:1px solid #f44336;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$1 Chaos Ticket — LeBron's Last Stand (2-Leg) ❌ LOST</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+1800 | -$1</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">LAL ML @ OKC ❌ — OKC 108-90. LAL shot 37% FG, never competitive after Q2.</span>
+              <span class="parlay-leg-odds">+600</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">CLE ML @ DET ❌ — DET 111-101. CLE rallied to 93-93 but couldn't close.</span>
+              <span class="parlay-leg-odds">+130</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>❌ LOST — both legs missed.</strong> LAL never had a chance — OKC's defense held them to 37% FG. CLE showed grit (rallied from -18 to tie 93-93) but DET closed with a Duren block + 3 dunks off Cade assists. No chaos tonight — favorites won both games convincingly.</div>
+        </div>
+      </div>
+
+      <!-- ===== R2 G2 PARLAYS — MAY 7 (UPCOMING) ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:20px;">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G2 — Thu May 7 | DET-CLE 7 PM | OKC-LAL 9:30 PM | NYK-PHI 7 PM</span>
+        </div>
+
+        <!-- $100 BEST BET — MAY 7 -->
+        <div class="parlay-card headline" style="border:1px solid #a78bfa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">$100 Play — Home Court Dominance (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+110</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+              <span class="parlay-leg-num">1</span>
+              <span class="parlay-leg-pick">OKC ML vs LAL — J.Williams ramp-up + SGA bounce-back from 7 TOs. Won G1 by 18 with SGA at floor. LAL has no answer to depth gap.</span>
+              <span class="parlay-leg-odds">-800</span>
+              <span class="parlay-leg-conf" style="background:rgba(167,139,250,0.12);color:#a78bfa;">HIGH</span>
+            </div>
+            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+              <span class="parlay-leg-num">2</span>
+              <span class="parlay-leg-pick">DET ML vs CLE — DET forced 19 CLE TOs G1. Allen limited (knee). Cade 23/7ast controls pace. Home defense suffocates.</span>
+              <span class="parlay-leg-odds">-190</span>
+              <span class="parlay-leg-conf" style="background:rgba(167,139,250,0.12);color:#a78bfa;">MEDIUM-HIGH</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning"><strong>Thesis:</strong> Both home teams dominated G1 (DET +10, OKC +18). DET's defense forced 19 TOs and OKC's depth is unsolvable for LAL. CLE may adjust but Allen's knee + DET's turnover machine is structural. OKC gets J.Williams ramping + SGA floor was 18pts/7TOs and STILL won by 18. Combined ML at ~+110 is excellent value for two teams that proved dominance in G1.</div>
+        </div>
+
+        <!-- $1 CHAOS TICKET ��� MAY 7 -->
         <div class="parlay-card" style="border:1px solid #ff9800;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — LeBron's Last Stand (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+1800 | +$18</span>
+            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — CLE Road Revenge + PHI Steal (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+800</span>
           </div>
           <div class="parlay-legs">
             <div class="parlay-leg" style="border-left:3px solid #ff9800;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">LAL ML @ OKC — LeBron legacy game at 41 + Smart/Kennard system</span>
-              <span class="parlay-leg-odds">+600</span>
-              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
+              <span class="parlay-leg-pick">CLE ML @ DET — CLE rallied from -18 to 93-93 in G1. Mitchell/Garland revenge. If Allen plays 30+ min, CLE's ceiling is higher.</span>
+              <span class="parlay-leg-odds">+160</span>
+              <span class="parlay-leg-conf" style="background:rgba(255,152,0,0.12);color:#ff9800;">CHAOS</span>
             </div>
             <div class="parlay-leg" style="border-left:3px solid #ff9800;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">CLE ML @ DET — Mitchell 8.5 clutch + Harden creation + Allen interior dominance</span>
-              <span class="parlay-leg-odds">+130</span>
-              <span class="parlay-leg-conf" style="background:#3a2a1a;color:#ff9800;">CHAOS</span>
+              <span class="parlay-leg-pick">PHI ML @ NYK — PHI lost G1 by 39 but fatigue was catastrophic (3 days rest). With 3 days between, Embiid + Maxey could steal one.</span>
+              <span class="parlay-leg-odds">+200</span>
+              <span class="parlay-leg-conf" style="background:rgba(255,152,0,0.12);color:#ff9800;">CHAOS</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>Double road upset.</strong> LAL proved they can beat anyone with LeBron's playoff mode (4-2 vs HOU). OKC is massive favorite but LeBron has defied odds before. CLE's triple-initiator system (Mitchell/Harden/Mobley) can steal in DET. ~4% probability but $1 for $18.</div>
+          <div class="parlay-reasoning"><strong>Chaos thesis:</strong> CLE showed G1 grit — rallied from -18 to tie 93-93 before DET's closing burst. If Allen's knee is better + CLE adjusts to DET's trapping, their talent can overcome. PHI's G1 was catastrophic (137-98) but they had 3 fewer days rest — fatigue was THE story. With equal rest and Embiid's playoff pride, PHI can be competitive. Long shot but +800 pays $9 on $1.</div>
         </div>
       </div>
 

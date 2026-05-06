@@ -3196,8 +3196,8 @@ const SERIES_DATA = [
           matchupNote:"Fully rested after sweep. Historic season: 31.1ppg on 67% TS. R1: 25pts in 29min (sat Q4 blowout). Went 4-0 vs LAL in reg season with avg margin of 31.8pts. Smart is LAL's best defender but SGA creates against anyone.", baseRating:96, starCeiling:2, injuryRisk:0, playoffAscension:0.5 },
         { name:"Chet Holmgren", pos:"C", rating:82, ppg:17.1, rpg:8.9, apg:1.7, fgp:55.7, per:22.8, ts:62.1, epm:4.5, bpm:4.8, ws48:.182, onOff:6.8, clutch:6.2, vorp:3.4, usg:25.0, injury:null, lebron:5.103, oLebron:1.638, dLebron:3.465, war:9.283, offRole:"Shot Creator", defRole:"Mobile Big",
           matchupNote:"Stretch-5 who protects rim + spaces floor. D-LEBRON 3.465 elite. R1: 16pts/7reb in 25min. Ayton matchup is favorable — Holmgren's length and mobility vs Ayton's physicality.", baseRating:82, starCeiling:1, injuryRisk:0.3 },
-        { name:"Jalen Williams", pos:"SF", rating:0, ppg:17.1, rpg:4.6, apg:5.5, fgp:48.4, per:20.4, ts:58.8, epm:3.8, bpm:3.5, ws48:.158, onOff:5.2, clutch:6.8, vorp:3.0, usg:25.8, injury:"OUT — Grade 1 left hamstring strain (expected return ~May 7)", lebron:1.597, oLebron:1.441, dLebron:0.156, war:2.378, offRole:"Shot Creator", defRole:"Wing Stopper",
-          matchupNote:"OUT G1 with Grade 1 left hamstring strain sustained Apr 22 (R1 G2 vs PHX). Week-to-week per CBS Sports. Missed R1 G3-G4 (OKC still swept). Expected return ~May 7 (G2). OKC's #2 scorer (17.1ppg) — his absence reduces OKC from 3 to 2 initiators. Wiggins/Wallace/Joe absorb his minutes. OKC still swept PHX without him, proving depth can compensate.", baseRating:82, starCeiling:1, injuryRisk:0.8, activeInjury:{type:"Grade 1 left hamstring strain",severity:0.8,note:"May 5: CBS Sports lists OUT until May 7 (updated from May 9). Sustained in R1 G2 (Apr 22). Missed G3-G4. Progressing in rehab — may return G2 of R2."} },
+        { name:"Jalen Williams", pos:"SF", rating:72, ppg:17.1, rpg:4.6, apg:5.5, fgp:48.4, per:20.4, ts:58.8, epm:3.8, bpm:3.5, ws48:.158, onOff:5.2, clutch:6.8, vorp:3.0, usg:25.8, injury:"ACTIVE — returning from Grade 1 left hamstring strain (20min G1, ramping up)", lebron:1.597, oLebron:1.441, dLebron:0.156, war:2.378, offRole:"Shot Creator", defRole:"Wing Stopper",
+          matchupNote:"RETURNED G1 off bench (20min, 3pts/7reb/3ast/+11). Grade 1 left hamstring strain from Apr 22. Missed R1 G3-G4 + R2 G1 start but played 20min off bench and looked solid defensively (+11 in limited minutes). Expected to ramp to 25-28min G2. Adds critical secondary creation OKC was missing — their #2 scorer (17.1ppg) returning makes OKC even more dangerous.", baseRating:82, starCeiling:1, injuryRisk:0.4, activeInjury:{type:"Grade 1 left hamstring strain",severity:0.4,note:"May 5: Played 20min off bench in R2 G1 (3/7/3, +11). Looked solid but on minutes restriction. Expected to ramp to 25-28min G2. Hamstring progressing well — severity downgraded from 0.8 to 0.4."} },
         { name:"Lu Dort", pos:"SG", rating:68, ppg:8.3, rpg:3.5, apg:1.2, fgp:38.5, per:13.2, ts:55.8, epm:1.8, bpm:1.5, ws48:.092, onOff:3.8, clutch:5.8, vorp:1.5, usg:20.5, injury:null, lebron:-0.815, oLebron:-1.171, dLebron:0.356, war:1.904, offRole:"Stationary Shooter", defRole:"Point of Attack",
           matchupNote:"Elite perimeter stopper. Clamped Booker in R1. Will rotate on LeBron/Kennard.", baseRating:68 },
         { name:"Isaiah Hartenstein", pos:"C", rating:70, ppg:9.2, rpg:9.4, apg:3.2, fgp:62.2, per:18.2, ts:59.4, epm:2.2, bpm:2.8, ws48:.138, onOff:4.1, clutch:5.2, vorp:2.0, usg:20.8, injury:null, lebron:3.554, oLebron:0.957, dLebron:2.597, war:4.253, offRole:"Roll + Cut Big", defRole:"Mobile Big",
@@ -3216,7 +3216,7 @@ const SERIES_DATA = [
           matchupNote:"Stretch-4 off bench. 38.3% 3PT.", baseRating:56 }
       ],
       synergy: [
-        { players:["SGA","Dort","Wiggins","Holmgren","Hartenstein"], score:82, note:"G1 starting 5 with J.Williams OUT (hamstring). Wiggins fills wing spot. Top-5 ORtg AND DRtg. NetRtg +14.2. Swept PHX without J.Williams in G3-G4." },
+        { players:["SGA","Dort","Mitchell","Holmgren","Hartenstein"], score:82, note:"G1 starting 5. Mitchell started with J.Williams off bench (minutes restriction). Won 108-90 (+18). Mitchell 18pts/+14 as starter." },
         { players:["Mitchell","Wallace","Joe","Wiggins","Holmgren"], score:72, note:"SGA-rest lineup. Missing J.Williams' creation but Mitchell + Joe provide scoring." },
         { players:["SGA","Caruso","Wallace","Dort","Holmgren"], score:84, note:"Defensive closing option. Caruso + Wallace + Dort switchable perimeter D. Best defensive lineup in NBA." }
       ]
@@ -3232,8 +3232,8 @@ const SERIES_DATA = [
           matchupNote:"R1: 28pts in closeout G6. Averaged ~25/8/10 across series. At 41, only 4 days rest vs OKC's 11. OKC went 4-0 vs LAL in reg season (avg margin 31.8pts). LeBron is LAL's only elite player — massive usage burden. Legacy mode but outmatched.", baseRating:92, starCeiling:2, injuryRisk:0.5, playoffAscension:1.0 },
         { name:"Luka Doncic", pos:"PG", rating:0, ppg:31.4, rpg:8.8, apg:7.9, fgp:48.7, per:29.8, ts:60.1, epm:7.9, bpm:9.1, ws48:.224, onOff:10.2, clutch:7.5, vorp:7.1, usg:34.2, injury:"OUT — Grade 2 hamstring (expected out until at least May 9 per CBS Sports)", lebron:5.176, oLebron:5.622, dLebron:-0.446, war:10.733, offRole:"Shot Creator", defRole:"Helper",
           matchupNote:"Missed entire R1. Grade 2 hamstring strain. CBS Sports (May 4): expected out until at least May 9. Will not play G1 or likely G2. LAL proved they can win without him (4-2 vs HOU) but OKC is a completely different tier.", baseRating:95, starCeiling:2, injuryRisk:1.0 },
-        { name:"Austin Reaves", pos:"SG", rating:76, ppg:25.4, rpg:5.1, apg:6.2, fgp:46.8, per:21.2, ts:58.4, epm:3.8, bpm:4.1, ws48:.152, onOff:5.1, clutch:6.8, vorp:3.5, usg:28.8, injury:"Returning from oblique — improving each game", lebron:2.39, oLebron:2.295, dLebron:0.095, war:5.341, offRole:"Shot Creator", defRole:"Point of Attack",
-          matchupNote:"R1 G5 return (22pts, 4-16 FG rust). G6: 15pts (7-14 FG, 50%) — improving. Should be ~80% for R2. Adds critical 3-level scoring.", baseRating:80, injuryRisk:0.2 },
+        { name:"Austin Reaves", pos:"SG", rating:62, ppg:25.4, rpg:5.1, apg:6.2, fgp:46.8, per:21.2, ts:58.4, epm:3.8, bpm:4.1, ws48:.152, onOff:5.1, clutch:6.8, vorp:3.5, usg:28.8, injury:"LIMITED — oblique strain (3-16 FG G1, clearly still severely impacting)", lebron:2.39, oLebron:2.295, dLebron:0.095, war:5.341, offRole:"Shot Creator", defRole:"Point of Attack",
+          matchupNote:"R2 G1: CATASTROPHIC 3-16 FG (19%), 0-5 3PT, 4 TOs, -10. Oblique clearly still severely limiting — cannot drive, explode, or finish. Was projected as LAL's #2 scorer but is operating at ~50% capacity. Model was way too optimistic at 80% — actual performance suggests 50-55% at best. OKC's physical defense (Dort, Caruso) compounds the issue.", baseRating:80, injuryRisk:0.7, activeInjury:{type:"Oblique strain",severity:0.7,note:"May 5: R2 G1 was 3-16 FG (19%), 0-5 3PT. Clearly still severely limited despite playing 31min. Cannot generate explosion for drives or pull-up jumpers. Model downgraded from 80% to 50-55% capacity. Major LAL liability — expected to remain limited G2."} },
         { name:"Marcus Smart", pos:"PG", rating:68, ppg:9.4, rpg:3.5, apg:4.8, fgp:41.2, per:12.8, ts:52.1, epm:1.4, bpm:-2.2, ws48:.082, onOff:2.8, clutch:6.1, vorp:-0.1, usg:18.8, injury:null, lebron:0.549, oLebron:-0.823, dLebron:1.373, war:3.337, offRole:"Movement Shooter", defRole:"Point of Attack",
           matchupNote:"R1 BREAKOUT: 20ppg avg, 4.5 3PM/game. DPOY-caliber defense. But OKC's depth means Smart can't single-handedly defend enough. Former Celtic — knows playoff pressure.", baseRating:66 },
         { name:"Luke Kennard", pos:"SG", rating:72, ppg:8.8, rpg:2.4, apg:2.1, fgp:45.5, per:12.8, ts:59.5, epm:0.1, bpm:-0.8, ws48:.070, onOff:-0.3, clutch:4.0, vorp:0.4, usg:17.8, injury:null, lebron:-2.908, oLebron:-1.122, dLebron:-1.786, war:-0.446, offRole:"Off Screen Shooter", defRole:"Chaser",
@@ -3248,20 +3248,109 @@ const SERIES_DATA = [
           matchupNote:"Athletic backup C. Rim-runner and shot-blocker.", baseRating:55 }
       ],
       synergy: [
-        { players:["LeBron","Smart","Kennard","Hachimura","Ayton"], score:76, note:"R1 starting 5. Won 4-2 vs HOU. LeBron facilitator/scorer duality. But OKC is a massive step up from HOU." },
+        { players:["LeBron","Smart","Reaves","Hachimura","Ayton"], score:72, note:"G1 starting 5 (Hachimura started over Kennard). Reaves severely limited (3-16 FG). LeBron only creator producing. -21 for Hachimura. OKC depth overwhelmed." },
         { players:["LeBron","Smart","Reaves","Hachimura","Ayton"], score:74, note:"With Reaves back. Adds creation + scoring but defensive downgrade vs Kennard's spacing." },
         { players:["LeBron","Smart","Kennard","Vanderbilt","Ayton"], score:68, note:"Defensive option. Vanderbilt's switchability for specific OKC actions." }
       ]
     },
     externalFactors: [
-      { team:"OKC", player:null, desc:"Swept R1 (4-0 vs PHX). 11 days rest. Freshest team in the playoffs. Defending champions with full championship experience.", impact:5, category:"rest", evidence:"OKC last played Apr 24. Squad rested but missing J.Williams.", verdict:"verified" },
-      { team:"OKC", player:"Jalen Williams", desc:"OUT G1 — Grade 1 left hamstring strain from R1 G2 (Apr 22). Expected return ~May 7 (G2). OKC's #2 scorer (17.1ppg) and secondary creator. Missed R1 G3-G4 but OKC still swept. Reduces OKC from 3 to 2 initiators.", impact:-4, category:"injury", evidence:"CBS Sports (May 5): J.Williams listed OUT until May 7 (updated from May 9). Grade 1 hamstring. OKC swept PHX without him — Wiggins/Wallace/Joe absorbed minutes. May return for G2.", verdict:"verified" },
-      { team:"OKC", player:null, desc:"Went 4-0 vs LAL in regular season with avg margin of 31.8pts. Structural mismatch.", impact:5, category:"performance", evidence:"OKC dominated LAL in all 4 meetings. LAL had Doncic for some of those — still lost badly.", verdict:"verified" },
-      { team:"LAL", player:"Luka Doncic", desc:"OUT for R2. Grade 2 hamstring. No return timeline. LAL is essentially playing without their 2nd-best player.", impact:-8, category:"injury", evidence:"Missed entire R1. Even if he returns mid-series, reintegration after 3+ weeks out would be rocky.", verdict:"verified" },
-      { team:"LAL", player:null, desc:"Only 4 days rest after 6-game R1. LeBron at 41 carrying massive workload. Fatigue is a real concern vs rested OKC.", impact:-3, category:"fatigue", evidence:"LeBron played 40+ min in multiple R1 games. Only 4 days between series.", verdict:"verified" },
-      { team:"LAL", player:"LeBron James", desc:"LeBron in legacy mode at 41. Averaged 25/8/10 in R1. But OKC's defensive depth (Dort, Caruso, Williams, Wallace) is unlike anything LAL faced in R1.", impact:3, category:"motivation", evidence:"LeBron's playoff experience (20+ years) provides leadership edge even in mismatch.", verdict:"verified" }
+      { team:"OKC", player:null, desc:"G1 confirmed structural dominance — won 108-90 (+18) with SGA having an off night (7 TOs). Rest advantage no longer a factor for G2 but talent gap is massive and proven.", impact:5, category:"performance", evidence:"G1: OKC 108-90. LAL shot 42% FG, 33% 3PT. Every OKC bench player +11 or better. Won by 18 with SGA at his worst.", verdict:"verified" },
+      { team:"OKC", player:"Jalen Williams", desc:"RETURNED G1 off bench (20min, 3/7/3, +11). Ramping up — expected 25-28min G2. Adds critical secondary creation that makes OKC even more dangerous.", impact:3, category:"injury", evidence:"G1: Played 20min, looked solid defensively (+11). 1-3 FG (still rusty) but +11 shows impact beyond scoring. Will ramp G2 with increased comfort.", verdict:"verified" },
+      { team:"OKC", player:null, desc:"Bench depth devastating — outscored LAL bench 34-15 in G1. Caruso (+15), Joe (+11), Wallace (+11), Mitchell (+14). Unsolvable for LAL.", impact:5, category:"depth", evidence:"G1: Every OKC rotation player was positive. LAL bench: Hayes -12, LaRavia -9, Vanderbilt -4, Reddish -8. No answer.", verdict:"verified" },
+      { team:"OKC", player:"Chet Holmgren", desc:"Dominated G1 with 24/12/3blk on 9-17 FG. Ayton matchup completely solved — Holmgren's length and mobility neutralizes everything Ayton does.", impact:4, category:"matchup", evidence:"G1: 24pts/12reb/3blk, +10. Best player on court. Ayton had 10/11 but couldn't impact game.", verdict:"verified" },
+      { team:"LAL", player:"Austin Reaves", desc:"Oblique strain far worse than modeled — 3-16 FG (19%), 0-5 3PT, 4 TOs, -10 in G1. Operating at ~50% capacity. LAL's #2 creator is severely compromised.", impact:-6, category:"injury", evidence:"G1: Worst shooting game of playoffs. Cannot generate explosion for drives. Model was at 80% — actual is 50-55% at best.", verdict:"verified" },
+      { team:"LAL", player:"Luka Doncic", desc:"OUT for R2. Grade 2 hamstring. No return timeline. LAL creation collapses to LeBron + severely limited Reaves.", impact:-8, category:"injury", evidence:"Missed entire R1 + R2 G1. Without Doncic and with Reaves at 50%, LAL has ONE healthy creator (LeBron).", verdict:"verified" },
+      { team:"LAL", player:"LeBron James", desc:"LeBron individually brilliant (12-17 FG, 27pts G1) but getting ZERO support. Cannot single-handedly overcome 18-point structural gap.", impact:2, category:"motivation", evidence:"G1: 27pts on 71% FG — LeBron is still LeBron. But no other Laker scored 20+. Even peak LeBron can't overcome this depth/talent gap.", verdict:"verified" },
+      { team:"LAL", player:"Luke Kennard", desc:"Benched to 14min in G1 (2-6 FG, -12). OKC wing defense (Dort/Caruso/Wallace) completely neutralized his off-screen action that torched HOU in R1.", impact:-3, category:"matchup", evidence:"G1: 5pts in 14min. R1 avg was 25ppg on 65% FG — OKC defense is a totally different tier. Hachimura starting over him.", verdict:"verified" }
     ],
-    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:116,awayScore:101,margin:15,confidence:"HIGH",character:"SEPARATION",reasoning:"OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) facing a LAL team still missing Doncic. Jalen Williams OUT (Grade 1 left hamstring strain, expected return ~May 7 per CBS Sports May 5 update). OKC swept PHX without Williams in G3-G4, proving depth can compensate — Wiggins, Wallace, and Joe absorbed his minutes effectively. OKC still has SGA (31.1ppg, 67% TS) + Holmgren + Hartenstein + elite bench. Rest advantage (11 days vs 4) remains massive. OKC went 4-0 vs LAL in the regular season with avg margin of 31.8pts. SGA will feast on LAL's limited perimeter defense beyond Smart. LeBron at 41 with only 4 days rest after a 6-game R1 is a fatigue risk. Holmgren's length neutralizes Ayton. OKC depth (Mitchell, Wallace, Joe, Caruso) means no drop-off when SGA sits. Market has OKC -15.5 / ML -900 — enormous line reflecting the talent/rest gap. OKC's defense (108.2 DRtg, #2) will suffocate LAL's limited creation without Doncic.",xFactor:"SGA",moneyline:"OKC -900 / LAL +600",spread:"OKC -15.5",ou:"O/U 213.5"},notes:""}]
+    games: [
+      {num:1,result:"OKC",homeScore:108,awayScore:90,winner:"OKC",prediction:{homeWin:true,homeScore:116,awayScore:101,margin:15,confidence:"HIGH",character:"SEPARATION",reasoning:"OKC is the most complete team in the NBA (64-18, +11.6 NetRtg) facing a LAL team still missing Doncic. Jalen Williams OUT (Grade 1 left hamstring strain, expected return ~May 7 per CBS Sports May 5 update). OKC swept PHX without Williams in G3-G4, proving depth can compensate — Wiggins, Wallace, and Joe absorbed his minutes effectively. OKC still has SGA (31.1ppg, 67% TS) + Holmgren + Hartenstein + elite bench. Rest advantage (11 days vs 4) remains massive. OKC went 4-0 vs LAL in the regular season with avg margin of 31.8pts. SGA will feast on LAL's limited perimeter defense beyond Smart. LeBron at 41 with only 4 days rest after a 6-game R1 is a fatigue risk. Holmgren's length neutralizes Ayton. OKC depth (Mitchell, Wallace, Joe, Caruso) means no drop-off when SGA sits. Market has OKC -15.5 / ML -900 — enormous line reflecting the talent/rest gap. OKC's defense (108.2 DRtg, #2) will suffocate LAL's limited creation without Doncic.",xFactor:"SGA",moneyline:"OKC -900 / LAL +600",spread:"OKC -15.5",ou:"O/U 213.5"},notes:"Winner ✅ (OKC +18 actual vs +15 predicted). Total way off: predicted 217, actual 198. Defense dominated — LAL shot 42% FG. Reaves much worse than projected (3-16 FG, 0-5 3PT). J.Williams played 20min off bench (was listed OUT). OKC bench overwhelming (+15/+11/+11/+11). SGA only 18pts (7 TOs) but OKC depth absorbed.",
+        boxScore:{
+          home:[
+            {name:"Isaiah Hartenstein",min:25,pts:8,reb:9,ast:1,stl:0,blk:0,fg:"3-3",threes:"0-0",ft:"2-4",plusMinus:5,to:2},
+            {name:"Chet Holmgren",min:31,pts:24,reb:12,ast:1,stl:0,blk:3,fg:"9-17",threes:"3-7",ft:"3-4",plusMinus:10,to:0},
+            {name:"Shai Gilgeous-Alexander",min:32,pts:18,reb:3,ast:6,stl:2,blk:0,fg:"8-15",threes:"2-5",ft:"0-0",plusMinus:9,to:7},
+            {name:"Lu Dort",min:27,pts:6,reb:6,ast:0,stl:1,blk:0,fg:"2-5",threes:"1-2",ft:"1-2",plusMinus:2,to:0},
+            {name:"Ajay Mitchell",min:30,pts:18,reb:2,ast:4,stl:0,blk:0,fg:"7-16",threes:"2-7",ft:"2-2",plusMinus:14,to:2},
+            {name:"Jalen Williams",min:20,pts:3,reb:7,ast:3,stl:1,blk:0,fg:"1-3",threes:"0-0",ft:"1-2",plusMinus:11,to:1},
+            {name:"Alex Caruso",min:21,pts:5,reb:4,ast:0,stl:2,blk:0,fg:"2-5",threes:"1-3",ft:"0-0",plusMinus:15,to:0},
+            {name:"Isaiah Joe",min:20,pts:9,reb:1,ast:0,stl:0,blk:0,fg:"4-6",threes:"1-3",ft:"0-0",plusMinus:11,to:0},
+            {name:"Cason Wallace",min:18,pts:5,reb:3,ast:2,stl:3,blk:0,fg:"2-6",threes:"1-2",ft:"0-0",plusMinus:11,to:1},
+            {name:"Nikola Topic",min:9,pts:7,reb:0,ast:1,stl:0,blk:0,fg:"2-5",threes:"1-2",ft:"2-2",plusMinus:4,to:0},
+            {name:"Kenrich Williams",min:3,pts:0,reb:0,ast:1,stl:0,blk:0,fg:"0-1",threes:"0-1",ft:"0-0",plusMinus:2,to:0},
+            {name:"Dillon Jones",min:3,pts:5,reb:0,ast:0,stl:0,blk:0,fg:"2-2",threes:"1-1",ft:"0-0",plusMinus:2,to:0}
+          ],
+          away:[
+            {name:"Deandre Ayton",min:29,pts:10,reb:11,ast:1,stl:0,blk:2,fg:"5-11",threes:"0-0",ft:"0-1",plusMinus:-4,to:0},
+            {name:"Rui Hachimura",min:30,pts:18,reb:3,ast:2,stl:1,blk:0,fg:"7-13",threes:"3-6",ft:"1-1",plusMinus:-21,to:1},
+            {name:"LeBron James",min:35,pts:27,reb:5,ast:6,stl:1,blk:2,fg:"12-17",threes:"3-6",ft:"0-0",plusMinus:-6,to:4},
+            {name:"Marcus Smart",min:33,pts:12,reb:3,ast:7,stl:4,blk:0,fg:"4-15",threes:"2-8",ft:"2-4",plusMinus:-10,to:2},
+            {name:"Austin Reaves",min:31,pts:8,reb:4,ast:3,stl:0,blk:0,fg:"3-16",threes:"0-5",ft:"2-2",plusMinus:-10,to:4},
+            {name:"Jaxson Hayes",min:18,pts:3,reb:6,ast:0,stl:1,blk:0,fg:"1-4",threes:"0-0",ft:"1-2",plusMinus:-12,to:3},
+            {name:"Scotty LaRavia",min:16,pts:3,reb:5,ast:2,stl:1,blk:0,fg:"1-3",threes:"1-2",ft:"0-0",plusMinus:-9,to:1},
+            {name:"Jarred Vanderbilt",min:8,pts:2,reb:0,ast:0,stl:0,blk:0,fg:"1-3",threes:"0-1",ft:"0-0",plusMinus:-4,to:1},
+            {name:"Luke Kennard",min:14,pts:5,reb:3,ast:3,stl:0,blk:0,fg:"2-6",threes:"1-4",ft:"0-0",plusMinus:-12,to:0},
+            {name:"Cam Reddish",min:5,pts:2,reb:0,ast:2,stl:0,blk:0,fg:"0-0",threes:"0-0",ft:"2-2",plusMinus:-8,to:1}
+          ]
+        }
+      },
+      {num:2,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:112,awayScore:94,margin:18,confidence:"HIGH",character:"SEPARATION",reasoning:"G1 confirmed OKC's structural dominance (108-90, +18). LAL shot 42% FG and 33% 3PT against OKC's elite defense. Reaves was catastrophic (3-16 FG, 0-5 3PT) — oblique clearly still limiting him significantly. J.Williams returned from hamstring (20min, 3/7/3, +11) and adds more creation for G2 with increased minutes. OKC's bench depth was devastating: every bench player finished +11 or better. SGA had 7 TOs and still won by 18 — his floor is that high with this supporting cast. Holmgren dominated (24/12/3blk) as the clear best big on the floor. LeBron put up 27pts efficiently (12-17 FG) but got ZERO help — no other Laker scored 20+. Hachimura started over Kennard and was -21. OKC's defensive versatility (Dort/Caruso/Wallace) suffocated LAL's limited creation. With J.Williams ramping up minutes in G2 and both teams on equal rest now, OKC gets even stronger. LAL has no answer to the depth/talent gap. Adjusting total DOWN — G1 actual was 198 (vs 213.5 O/U). Both defenses locked in; pace was slow as LAL ground to halt in half-court vs OKC length. SGA will be more efficient G2 (7 TOs in G1 is a massive outlier — career avg 2.8 in playoffs).",xFactor:"Jalen Williams ramp-up",moneyline:"OKC -800 / LAL +550",spread:"OKC -14.5",ou:"O/U 204.5"},notes:""}
+    ],
+    game2: {
+      spread: "OKC -14.5",
+      moneyline: "OKC -800 / LAL +550",
+      ou: "O/U 204.5",
+      pick: "OKC",
+      confidence: "high",
+      projScore: "OKC 112 — LAL 94",
+      reasoning: "G1 confirmed the structural mismatch (OKC 108-90). Reaves catastrophic 3-16 FG (oblique still severely limiting). J.Williams returned off bench (20min, +11) — will ramp to 25-28min G2 adding creation. LeBron got 27pts but had zero support (no other Laker 20+). OKC's defense held LAL to 42% FG, 33% 3PT. Holmgren dominated (24/12/3blk). Adjusting total DOWN — G1 actual was 198 vs 213.5 projected. Both defenses better than expected; pace was slow (LAL ground to halt in half-court vs OKC length). SGA will be more efficient G2 (7 TOs in G1 is an outlier — career avg 2.8).",
+      prosHome: [
+        "G1 confirmed +18 structural advantage — this was NOT a fluke",
+        "J.Williams ramp-up: 20min G1 → 25-28min G2 adds #2 creator back",
+        "Holmgren dominated Ayton (24/12/3blk) — matchup is solved",
+        "SGA had worst game of series (7 TOs) and still won by 18 — his floor is absurd",
+        "Bench depth overwhelming — Caruso (+15), Joe (+11), Wallace (+11), J.Williams (+11)"
+      ],
+      consHome: [
+        "SGA 7 turnovers shows Smart can bother him — may adjust ball security G2",
+        "J.Williams on minutes limit — hamstring could flare with increased load",
+        "Blowout tendency leads to garbage time that inflates LAL stats/confidence",
+        "Young team could get complacent after dominant G1 win"
+      ],
+      prosAway: [
+        "LeBron shot 12-17 (71% FG) — his individual brilliance remains elite at 41",
+        "Hachimura 18pts (3-6 3PT) showed he can be secondary scorer",
+        "Smart's defense (4 steals) created some OKC turnovers (13 total for OKC)",
+        "Game film advantage — Redick system known for strong Game 2 adjustments"
+      ],
+      consAway: [
+        "Reaves 3-16 FG (19%), 0-5 3PT — oblique obviously still severe, limiting explosion",
+        "Zero depth: Hayes -12, LaRavia -9, Vanderbilt -4, Reddish -8",
+        "OKC bench outscored LAL bench 34-15 — unsolvable depth gap without Doncic",
+        "Kennard demoted to 14min (2-6 FG) — OKC wing D neutralized his off-screen action",
+        "No Doncic — LAL creation is LeBron + severely compromised Reaves only"
+      ],
+      playerProjections: {
+        home: [
+          {name:"SGA",pts:"24-30",reb:"4-6",ast:"6-8",fg:"9-18",threes:"3-6",note:"G1: 18pts on 7 TOs was his floor — career avg 2.8 TOs. Will clean up ball security G2. Expect efficient 25+ game."},
+          {name:"Holmgren",pts:"18-24",reb:"8-12",ast:"1-3",fg:"7-14",threes:"2-5",blk:"2-4",note:"G1: 24/12/3blk dominated. Ayton matchup solved — length + mobility. G2 similar production."},
+          {name:"J.Williams",pts:"10-16",reb:"3-5",ast:"3-5",fg:"4-9",threes:"1-3",note:"G1: 20min/3pts on careful return. Ramp to 25-28min G2 — expect near-normal production as secondary creator."},
+          {name:"Mitchell",pts:"12-16",reb:"2-4",ast:"3-5",fg:"5-11",threes:"2-5",note:"G1: 18pts/4ast in 30min, +14. Elite bench creation. May see fewer min as J.Williams ramps."},
+          {name:"Dort",pts:"6-10",reb:"3-6",ast:"0-2",fg:"2-6",threes:"1-3",note:"G1: 6pts but defensive anchor. Primary assignment on LeBron/Reaves. Offense secondary."},
+          {name:"Caruso",pts:"6-10",reb:"2-4",ast:"1-3",fg:"2-6",threes:"1-4",note:"G1: 5pts, 2stl, +15 best on team. Former Laker revenge game. Defensive havoc."},
+          {name:"Joe",pts:"8-12",reb:"1-3",ast:"0-2",fg:"3-6",threes:"2-5",note:"G1: 9pts (4-6 FG), +11. Spacing shooter who benefits from J.Williams creation returning."}
+        ],
+        away: [
+          {name:"LeBron",pts:"26-32",reb:"6-9",ast:"7-10",fg:"10-19",threes:"2-5",note:"G1: 27pts on 12-17 FG (71%). Still elite individually but needs help that isn't coming. Volume will increase as LAL gets desperate."},
+          {name:"Reaves",pts:"8-14",reb:"3-5",ast:"3-5",fg:"3-12",threes:"1-4",note:"G1: 8pts on 3-16 FG (19%), 0-5 3PT. Oblique clearly still severe. Can't drive or finish. Major downgrade from initial projection."},
+          {name:"Hachimura",pts:"14-18",reb:"4-6",ast:"1-2",fg:"5-11",threes:"2-5",note:"G1: 18pts (7-13 FG, 3-6 3PT) but -21 overall. Started over Kennard. Best secondary option for now."},
+          {name:"Smart",pts:"10-14",reb:"3-5",ast:"4-6",fg:"4-12",threes:"2-6",note:"G1: 12pts (4-15 FG, 27%), 7ast, 4stl. Hustle/D excellent but shooting badly slumping."},
+          {name:"Ayton",pts:"8-12",reb:"8-11",ast:"0-2",fg:"4-9",threes:"0-0",note:"G1: 10/11reb but Holmgren dominated matchup. Length disadvantage persists. Rebounding only real contribution."},
+          {name:"Kennard",pts:"6-10",reb:"1-3",ast:"1-3",fg:"2-7",threes:"1-4",note:"G1: 5pts in 14min (benched). OKC wing D (Dort/Caruso/Wallace) completely neutralized his off-screen action."},
+          {name:"Hayes",pts:"4-8",reb:"4-6",ast:"0-1",fg:"2-5",threes:"0-0",note:"G1: 3pts/6reb, -12, 3 TOs. Backup C minutes hurt LAL badly — no answer to OKC depth."}
+        ]
+      }
+    }
   },
   {
     id: "SAS-MIN", conf: "West", round: "R2",
@@ -3573,8 +3662,8 @@ const SERIES_DATA = [
           matchupNote:"R1: 22pts/10ast G1, shifted to scorer mode (28pts G2). CLE 21-6 since trade. Orchestrator who can toggle between creation and scoring. Former Sixer — familiar with Harris. DET will try to hunt him defensively.", baseRating:80, starCeiling:1, injuryRisk:0.4, playoffAscension:-0.5 },
         { name:"Evan Mobley", pos:"PF", rating:80, ppg:18.2, rpg:9.0, apg:3.5, fgp:52.5, per:22.2, ts:59.8, epm:4.2, bpm:4.5, ws48:.172, onOff:6.5, clutch:6.5, vorp:3.6, usg:25.0, injury:null, lebron:3.067, oLebron:1.721, dLebron:1.346, war:7.146, offRole:"Shot Creator", defRole:"Mobile Big",
           matchupNote:"Two-way star. 1-5 defensive switching is CLE's trump card vs Cade in PnR. R1 G2: 25pts (11/13 FG). Duren matchup will be physical.", baseRating:80, starCeiling:1, injuryRisk:0 },
-        { name:"Jarrett Allen", pos:"C", rating:73, ppg:15.4, rpg:8.5, apg:1.8, fgp:63.2, per:19.8, ts:65.4, epm:2.2, bpm:2.5, ws48:.148, onOff:3.8, clutch:5.2, vorp:2.2, usg:22.0, injury:"GTD — knee tendonitis (chronic)", lebron:2.134, oLebron:0.939, dLebron:1.195, war:4.365, offRole:"Roll + Cut Big", defRole:"Mobile Big",
-          matchupNote:"R1 G7: 22pts/19reb. Twin towers with Mobley. But chronic knee tendonitis limits explosiveness in a long series. Duren's athleticism will test him.", baseRating:73, injuryRisk:0.4, activeInjury:{type:"knee tendonitis",severity:0.4,note:"Chronic. Played through in R1 G7 (22/19). Limits vertical explosiveness."} },
+        { name:"Jarrett Allen", pos:"C", rating:65, ppg:15.4, rpg:8.5, apg:1.8, fgp:63.2, per:19.8, ts:65.4, epm:2.2, bpm:2.5, ws48:.148, onOff:3.8, clutch:5.2, vorp:2.2, usg:22.0, injury:"QUESTIONABLE — knee tendonitis (limited to 18min G1)", lebron:2.134, oLebron:0.939, dLebron:1.195, war:4.365, offRole:"Roll + Cut Big", defRole:"Mobile Big",
+          matchupNote:"R2 G1: Only 18min/2pts/3reb — knee tendonitis severely limited him after G7 heroics (22/19). Extra day rest for G2 but severity is concerning. If he can't play 30min CLE has a structural hole at center.", baseRating:73, injuryRisk:0.6, activeInjury:{type:"knee tendonitis",severity:0.6,note:"G1: 18min/2pts/3reb. Severe limitation. Extra day rest for G2 but may still be restricted. Downgraded from 73 to 65."} },
         { name:"Dean Wade", pos:"SF", rating:58, ppg:5.8, rpg:4.2, apg:1.2, fgp:42.5, per:10.5, ts:55.0, epm:0.0, bpm:-0.5, ws48:.058, onOff:0.5, clutch:3.5, vorp:0.3, usg:14.0, injury:null, lebron:0.5, oLebron:-0.2, dLebron:0.7, war:2.0, offRole:"Stationary Shooter", defRole:"Wing Stopper",
           matchupNote:"Starting SF. Defense + floor-stretching. CLE's weakest link — A.Thompson matchup if Wade guards him.", baseRating:58 },
         { name:"Max Strus", pos:"SG", rating:65, ppg:11.2, rpg:5.4, apg:1.5, fgp:43.8, per:13.5, ts:58.5, epm:0.5, bpm:0.2, ws48:.078, onOff:1.2, clutch:5.5, vorp:0.9, usg:19.5, injury:null, lebron:-0.409, oLebron:0.15, dLebron:-0.559, war:0.37, offRole:"Movement Shooter", defRole:"Wing Stopper",
@@ -3593,14 +3682,71 @@ const SERIES_DATA = [
       ]
     },
     externalFactors: [
-      { team:"DET", player:null, desc:"Historic 3-1 comeback vs ORL in R1. Momentum and confidence are sky-high. But exhaustion from 7-game series with short rest (2 days).", impact:2, category:"momentum", evidence:"Came back from 3-1. G7 at home 116-94. Franchise hasn't been in East semis since 2008.", verdict:"verified" },
-      { team:"DET", player:null, desc:"31-9 home record (best in East). Home court advantage is substantial for young team feeding off crowd.", impact:3, category:"home_court", evidence:"DET's home NetRtg is elite. Crowd energy fueled comeback.", verdict:"verified" },
-      { team:"CLE", player:null, desc:"Won R1 G7 114-102 vs TOR. But required OT in G6 and faced elimination. Equal fatigue to DET (both played G7 May 3).", impact:1, category:"momentum", evidence:"Allen 22/19 in G7. Mitchell 22 (15 in 2H). Team proved resilience.", verdict:"verified" },
-      { team:"CLE", player:"James Harden", desc:"Harden's playoff history is a concern — Game 7 moments have historically been his weakness. But as 2nd option behind Mitchell, pressure is reduced.", impact:-2, category:"performance", evidence:"Harden's playoff reputation precedes him. CLE 21-6 post-trade mitigates concerns.", verdict:"verified" },
-      { team:"DET", player:"Cade Cunningham", desc:"Collapsed lung recovery improving each game. G7: 32pts/12ast — looked fully healthy. But 7 games of heavy minutes takes a toll on a player recovering from pneumothorax.", impact:-1, category:"injury", evidence:"Cunningham's conditioning has been the key variable. Getting better but a deep playoff run tests limits.", verdict:"verified" },
-      { team:"CLE", player:"Jarrett Allen", desc:"Chronic knee tendonitis. GTD throughout R1. Limits rim protection energy in a long series. Only reliable backup is Thomas Bryant.", impact:-2, category:"injury", evidence:"Played through G7 (22/19) but knee limits burst. Long series fatigue compounds.", verdict:"verified" }
+      { team:"DET", player:null, desc:"G1 WIN 111-101 — proved #1 defense is real. 19 forced TOs, 12 steals, 35 FTA. Ended 12-game postseason losing streak vs CLE dating to 2007 ECF.", impact:3, category:"momentum", evidence:"Led by 18, CLE rallied to 93-93 but DET closed on a Duren block + 3 dunks off Cade assists. Dominant Q1 (37-21).", verdict:"verified" },
+      { team:"DET", player:null, desc:"31-9 home record (best in East). G1 proved LCA atmosphere fuels fast starts — 37-21 Q1.", impact:3, category:"home_court", evidence:"G1 Q1 dominance (37-21). Crowd energy is a tangible weapon for young team.", verdict:"verified" },
+      { team:"CLE", player:null, desc:"G1 LOSS but showed resilience — rallied from -18 to 93-93 tie with 5:28 left before late DET run. CLE can compete in this series.", impact:1, category:"momentum", evidence:"Harden scored 7 straight to tie it. CLE proved they can claw back. But closing ability is a concern.", verdict:"verified" },
+      { team:"CLE", player:"James Harden", desc:"G1: 22pts/7ast but 1-7 3PT (14%). FTs saved him (9-9). Strong mid-game run (7 straight pts to tie 93-93) but couldn't sustain.", impact:-1, category:"performance", evidence:"3PT will regress up (career 36.3%). Ball-handling solid (1 TO). But DET defensive pressure is real.", verdict:"verified" },
+      { team:"DET", player:"Cade Cunningham", desc:"G1: 23pts/7ast on 6-19 FG (32%). Struggled from field but elite FT drawing (9-11 FT). Played 42min — conditioning holding up.", impact:0, category:"performance", evidence:"Shooting will improve from 32%. FT drawing shows he's attacking the paint. 42min heavy load but no conditioning issues. Dual-mode mastery continues.", verdict:"verified" },
+      { team:"CLE", player:"Jarrett Allen", desc:"G1: 2pts/3reb in only 18min — knee tendonitis severely limiting. Massive downgrade from G7 vs TOR (22/19). Extra day rest for G2 but severity is concerning.", impact:-3, category:"injury", evidence:"Bryant played 10min as backup (4pts). CLE interior demolished without Allen. If Allen can't go 30min, CLE has a structural hole at center.", verdict:"verified" },
+      { team:"DET", player:null, desc:"DET bench depth proved: Jenkins 12/7/3/4stl in 29min, Holland 6pts/+8, LeVert +13. 9-man rotation outperforms CLE 8-man.", impact:2, category:"depth", evidence:"Jenkins was the G1 X-factor. CLE bench: Schroder 4 TOs in 16min was devastating.", verdict:"verified" },
+      { team:"CLE", player:null, desc:"19 turnovers vs DET's 11 in G1 — 8 TO differential. DET's #1 defense generated 12 steals. CLE must protect the ball in G2.", impact:-2, category:"performance", evidence:"Schroder 4 TOs, Mitchell 3 TOs. DET's active hands and switching disrupted CLE initiators.", verdict:"verified" }
     ],
-    games: [{num:1,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:108,awayScore:105,margin:3,confidence:"LOW",character:"COIN FLIP",reasoning:"The closest R2 matchup — could go either way. Both teams just finished grueling 7-game R1 series on May 3 (DET: 3-1 comeback vs ORL, 116-94; CLE: survived TOR, 114-102). Equal rest (~3 days). Huerter (DET) is GTD with thigh — minor impact. G7 TAKEAWAYS: (1) Cade dual-mode evolution — scored 45 in G5 then facilitated 32/12ast in G7. DET coaching can toggle Cade's role based on matchup. (2) CLE depth is elite — bench outscored TOR bench 39-19 in G7 (Strus +20, Tyson +19, Merrill +16). (3) Allen 22/19 (8 OREB) interior dominance will test Duren physically. Allen's chronic knee tendonitis (GTD) is a concern for a long series. (4) Harris breakout (30pts G7, 5-7 3PT) gives DET a legitimate #2 scorer. Key matchup: A.Thompson (D-LEBRON 2.93) on Mitchell vs Cade vs CLE rotating defenders. DET has #1 defense (107.2 DRtg) and best home record (31-9). CLE has triple-initiator offense (Mitchell/Harden/Mobley). DET home court provides narrow edge. Expect low-scoring, physical game with late-game execution deciding it. Mitchell 8.5 clutch rating gives CLE Q4 edge but DET crowd at LCA is deafening. Coin flip with slight home tilt.",xFactor:"Cade Cunningham",moneyline:"DET -155 / CLE +130",spread:"DET -3.5",ou:"O/U 215.5"},notes:""}]
+    game2: {
+      spread: "DET -4.5",
+      moneyline: "DET -190 / CLE +160",
+      ou: "O/U 214.5",
+      pick: "DET",
+      confidence: "medium",
+      projScore: "DET 109 — CLE 105",
+      reasoning: "G1 TAKEAWAYS: DET 111-101 was more dominant than the score suggests — led by 18, CLE rallied to 93-93 tie before Duren blocked Harden and dunked 3 times off Cade assists to seal it. Key factors: (1) Allen limited to 18min/2pts/3reb due to knee tendonitis — his G7 heroics (22/19) cost him physically. (2) DET forced 19 CLE turnovers with 12 steals — #1 defense proved real. (3) DET attacked paint aggressively: 35 FTA vs CLE 16 FTA — 19 FTA gap is structural. (4) Jenkins breakout (12/7/3/4stl in 29min) — DET bench is deeper than modeled. (5) D.Robinson 5-8 3PT (62.5%) will regress toward mean. (6) Harden 1-7 3PT (14%) should regress up toward 36%. G2 ADJUSTMENTS: CLE will protect the ball (19 TOs unacceptable), get Allen more involved if knee allows (extra day helps), Harden more aggressive in paint. DET still has home court + #1 defense + Cade dual-mode. Expect tighter game as CLE adjusts but DET systemic advantages persist.",
+      prosHome: [
+        "G1 proved #1 defense is real — 19 forced TOs, 12 steals, 45% opponent FG",
+        "Still at LCA — 31-9 home record, crowd energy fueled 37-21 Q1 in G1",
+        "Duren's clutch sequence (block + 3 dunks) showed championship-level play",
+        "Jenkins emergence (12/7/3/4stl) gives DET deeper bench than expected",
+        "Cade 42min in G1 — conditioning improving, dual-mode mastery"
+      ],
+      consHome: [
+        "D.Robinson's 5-8 3PT (62.5%) will regress — can't expect that again",
+        "Cade shot 6-19 (32%) from field in G1 — CLE scheme may adapt",
+        "CLE rallied from -18 to tie at 93-93 — resilience is real",
+        "Harden's 3PT shooting (1-7) likely bounces back in G2"
+      ],
+      prosAway: [
+        "CLE proved resilience — came back from -18 to tie game at 93-93",
+        "Harden 3PT regression up: 1-7 (14%) → expect 3-7 (43%) = +6pts for CLE",
+        "Allen gets extra rest day — knee tendonitis should improve from 18min G1",
+        "Mitchell 23pts despite A.Thompson defense — can find shots off-ball",
+        "Strus 19pts (7-13, 4-8 3PT) — CLE bench has firepower"
+      ],
+      consAway: [
+        "19 TOs in G1 — Schroder 4 TOs in 16min was devastating",
+        "Allen's knee limits remain even with rest — may still be restricted",
+        "DET FTA advantage (35-16) reflects aggressive paint attacks — structural",
+        "Road game in hostile LCA after demoralizing late collapse"
+      ],
+      playerProjections: {
+        home: [
+          {name:"Cunningham",pts:"22-28",reb:"4-6",ast:"7-10",fg:"8-18",threes:"2-5",note:"Shot 6-19 G1 but still effective via FTs (9-11) and assists (7). Expect efficiency improvement. Line: O24.5"},
+          {name:"Duren",pts:"14-18",reb:"10-13",ast:"3-5",fg:"6-10",threes:"0-0",note:"G1: 11pts but 12reb/4ast/2blk/+17 — defensive anchor. Expect more scoring as CLE adjusts to perimeter"},
+          {name:"A.Thompson",pts:"8-12",reb:"5-8",ast:"3-5",fg:"4-8",threes:"0-1",note:"G1: 11pts/8reb/5ast/1blk. Defensive assignment on Mitchell remains elite"},
+          {name:"Harris",pts:"14-18",reb:"5-8",ast:"1-3",fg:"5-13",threes:"1-4",note:"G1: 20pts/8reb continues breakout. 39min — heavy load. FT machine (7-8)"},
+          {name:"D.Robinson",pts:"10-14",reb:"1-3",ast:"1-3",fg:"4-10",threes:"2-6",note:"G1: 19pts on 5-8 3PT (62.5%) — will regress. Expect 2-6 range from 3"},
+          {name:"Jenkins",pts:"8-12",reb:"4-6",ast:"2-4",fg:"3-9",threes:"0-2",note:"G1 breakout: 12pts/7reb/4stl in 29min. Now a known factor — CLE may adjust"},
+          {name:"Stewart",pts:"4-8",reb:"3-5",ast:"0-2",fg:"2-5",threes:"0-1",note:"Physical backup C. 13min G1. Increases if Duren foul trouble"}
+        ],
+        away: [
+          {name:"Mitchell",pts:"24-30",reb:"4-6",ast:"4-7",fg:"9-20",threes:"3-7",note:"G1: 23pts on 9-19 (4-10 3PT). A.Thompson D held him to low end. Expect adjustment — more off-ball, PnR"},
+          {name:"Harden",pts:"18-24",reb:"5-7",ast:"7-10",fg:"7-16",threes:"3-7",note:"G1: 22pts/7ast but 1-7 3PT (14%). FTs saved him (9-9). 3PT regression up expected. Key: reduce TOs"},
+          {name:"Mobley",pts:"16-22",reb:"8-11",ast:"3-5",fg:"7-14",threes:"1-3",note:"G1: 14pts/9reb/5ast but -18 worst +/-. Expect more assertive scoring G2"},
+          {name:"Allen",pts:"8-14",reb:"6-10",ast:"1-2",fg:"4-8",threes:"0-0",note:"G1: 2pts/3reb in 18min — knee limited badly. Extra rest helps but severity is real. Downgraded expectations"},
+          {name:"Wade",pts:"4-8",reb:"3-5",ast:"1-2",fg:"2-4",threes:"1-2",note:"G1: 5pts/3reb in 28min. Quiet but steady."},
+          {name:"Strus",pts:"12-16",reb:"4-6",ast:"1-3",fg:"5-11",threes:"3-6",note:"G1: 19pts (7-13, 4-8 3PT) — key bench scorer. CLE needs this production again"},
+          {name:"Schroder",pts:"6-10",reb:"1-3",ast:"3-5",fg:"2-6",threes:"1-3",note:"G1: 9pts but 4 TOs in 16min — MUST improve ball security or lose minutes"}
+        ]
+      },
+    },
+    games: [{num:1,result:"DET",homeScore:111,awayScore:101,winner:"DET",prediction:{homeWin:true,homeScore:108,awayScore:105,margin:3,confidence:"LOW",character:"COIN FLIP",reasoning:"The closest R2 matchup — could go either way. Both teams just finished grueling 7-game R1 series on May 3 (DET: 3-1 comeback vs ORL, 116-94; CLE: survived TOR, 114-102). Equal rest (~3 days). Huerter (DET) is GTD with thigh — minor impact. G7 TAKEAWAYS: (1) Cade dual-mode evolution — scored 45 in G5 then facilitated 32/12ast in G7. DET coaching can toggle Cade's role based on matchup. (2) CLE depth is elite — bench outscored TOR bench 39-19 in G7 (Strus +20, Tyson +19, Merrill +16). (3) Allen 22/19 (8 OREB) interior dominance will test Duren physically. Allen's chronic knee tendonitis (GTD) is a concern for a long series. (4) Harris breakout (30pts G7, 5-7 3PT) gives DET a legitimate #2 scorer. Key matchup: A.Thompson (D-LEBRON 2.93) on Mitchell vs Cade vs CLE rotating defenders. DET has #1 defense (107.2 DRtg) and best home record (31-9). CLE has triple-initiator offense (Mitchell/Harden/Mobley). DET home court provides narrow edge. Expect low-scoring, physical game with late-game execution deciding it. Mitchell 8.5 clutch rating gives CLE Q4 edge but DET crowd at LCA is deafening. Coin flip with slight home tilt.",xFactor:"Cade Cunningham",moneyline:"DET -155 / CLE +130",spread:"DET -3.5",ou:"O/U 215.5"},notes:"DET 111-101. DET led 37-21 after Q1, built 18pt lead. CLE rallied to 93-93 tie with 5:28 left (Harden 7 straight pts) before Duren blocked Harden and dunked 3 times off Cade assists. DET ended 12-game postseason losing streak vs CLE (since 2007 ECF). Mitchell's streak of 30+ in 9 straight series openers broken (23pts). Key: DET forced 19 CLE TOs with 12 steals. FTA differential 35-16 DET. Allen limited to 18min/2pts (knee). D.Robinson 5-8 3PT. Jenkins breakout 12/7/3/4stl. Cade 23/7ast on 6-19 FG but 9-11 FT. Harris 20/8.",boxScores:{home:[{name:"Harris",min:39,pts:20,reb:8,ast:1,fg:"6-14",threes:"1-5",ft:"7-8",to:2,stl:2,blk:0,pm:6},{name:"D.Robinson",min:28,pts:19,reb:0,ast:2,fg:"7-12",threes:"5-8",ft:"0-1",to:0,stl:2,blk:0,pm:6},{name:"Duren",min:35,pts:11,reb:12,ast:4,fg:"4-11",threes:"0-0",ft:"3-4",to:1,stl:0,blk:2,pm:17},{name:"Cunningham",min:42,pts:23,reb:3,ast:7,fg:"6-19",threes:"2-5",ft:"9-11",to:4,stl:2,blk:0,pm:12},{name:"A.Thompson",min:33,pts:11,reb:8,ast:5,fg:"4-6",threes:"0-0",ft:"3-4",to:1,stl:1,blk:1,pm:-9},{name:"Stewart",min:13,pts:6,reb:3,ast:1,fg:"2-2",threes:"0-0",ft:"2-2",to:2,stl:0,blk:0,pm:-7},{name:"Holland",min:10,pts:6,reb:1,ast:0,fg:"2-3",threes:"1-2",ft:"1-3",to:0,stl:1,blk:0,pm:8},{name:"Green",min:3,pts:3,reb:1,ast:0,fg:"1-3",threes:"1-3",ft:"0-0",to:0,stl:0,blk:0,pm:-4},{name:"LeVert",min:9,pts:0,reb:2,ast:0,fg:"0-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:13},{name:"Jenkins",min:29,pts:12,reb:7,ast:3,fg:"5-13",threes:"0-3",ft:"2-2",to:1,stl:4,blk:0,pm:8}],away:[{name:"Wade",min:28,pts:5,reb:3,ast:1,fg:"2-3",threes:"1-2",ft:"0-0",to:0,stl:1,blk:0,pm:-4},{name:"Allen",min:18,pts:2,reb:3,ast:1,fg:"1-4",threes:"0-0",ft:"0-0",to:1,stl:0,blk:1,pm:4},{name:"Mobley",min:35,pts:14,reb:9,ast:5,fg:"6-11",threes:"2-5",ft:"0-0",to:1,stl:0,blk:2,pm:-18},{name:"Harden",min:35,pts:22,reb:8,ast:7,fg:"6-15",threes:"1-7",ft:"9-9",to:1,stl:2,blk:0,pm:-7},{name:"Mitchell",min:35,pts:23,reb:4,ast:2,fg:"9-19",threes:"4-10",ft:"1-2",to:3,stl:1,blk:0,pm:-7},{name:"Bryant",min:10,pts:4,reb:0,ast:0,fg:"1-4",threes:"0-2",ft:"2-2",to:0,stl:1,blk:0,pm:-3},{name:"Schroder",min:16,pts:9,reb:1,ast:3,fg:"3-6",threes:"1-1",ft:"2-2",to:4,stl:0,blk:0,pm:0},{name:"Strus",min:28,pts:19,reb:5,ast:2,fg:"7-13",threes:"4-8",ft:"1-1",to:1,stl:1,blk:0,pm:-9},{name:"Merrill",min:7,pts:0,reb:0,ast:1,fg:"0-0",threes:"0-0",ft:"0-0",to:1,stl:0,blk:0,pm:-10},{name:"Tyson",min:18,pts:0,reb:5,ast:1,fg:"0-1",threes:"0-0",ft:"0-0",to:1,stl:0,blk:0,pm:9},{name:"Ellis",min:11,pts:3,reb:3,ast:0,fg:"1-4",threes:"1-3",ft:"0-0",to:0,stl:2,blk:0,pm:-5}]}},{num:2,result:null,homeScore:null,awayScore:null,winner:null,prediction:{homeWin:true,homeScore:109,awayScore:105,margin:4,confidence:"MEDIUM",character:"GRIND",reasoning:"G2 at DET (May 7). DET won G1 111-101 but CLE showed resilience — rallied from -18 to 93-93 tie before Duren sealed it. Key G1 learnings: Allen limited (18min/2pts/3reb, knee), DET forced 19 TOs (12stl), FTA gap 35-16. G2 adjustments: CLE will protect the ball (Schroder must reduce 4 TOs), get Allen more involved if knee allows (extra day rest), Harden 3PT should regress up from 1-7 (14%). D.Robinson 3PT will regress from 5-8 (62.5%). DET still has #1 defense + home court + Cade dual-mode. Jenkins established as bench factor (12/7/3/4stl). Expect tighter game — CLE adjusts turnover issues, Harden shoots better from 3, Allen gets more minutes. But DET systemic advantages (defense, home court, paint attacks) persist. DET by 4.",xFactor:"Jarrett Allen recovery",moneyline:"DET -190 / CLE +160",spread:"DET -4.5",ou:"O/U 214.5"},notes:""}]
   },
   {
     id: "NYK-PHI", conf: "East", round: "R2",
