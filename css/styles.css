@@ -798,3 +798,40 @@
     .page-nav-btn, .round-tab, .series-tab, .game-tab, .bet-tab, .player-toggle, .btn { min-height:44px; display:flex; align-items:center; justify-content:center; }
     .roster-team-tab { min-height:44px; }
   }
+
+  /* ============================================================
+     HOME / LANDING PAGE — decluttered, single-column reading view
+     ============================================================ */
+  .home-page { max-width:880px; margin:0 auto; padding:24px 16px 48px; display:flex; flex-direction:column; gap:36px; }
+  .home-section { display:flex; flex-direction:column; gap:12px; }
+  .home-section-title { font-size:14px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:1.2px; margin:0 0 4px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .home-empty { color:var(--text-dim); font-size:13px; padding:14px 4px; }
+
+  /* Game cards — compact hero row */
+  .home-game-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; cursor:pointer; transition:border-color 0.15s, transform 0.15s; }
+  .home-game-card:hover { border-color:var(--accent); transform:translateY(-1px); }
+  .home-game-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .home-game-matchup { font-size:16px; font-weight:700; color:var(--text); }
+  .home-game-when { font-size:11px; color:var(--text-dim); }
+  .home-game-pick { font-size:20px; font-weight:700; margin:8px 0 2px; }
+  .home-game-margin { font-size:13px; font-weight:500; color:var(--text-dim); }
+  .home-game-context { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px; }
+  .home-game-line { font-size:13px; color:var(--text); line-height:1.45; }
+  .home-game-link { font-size:11px; color:var(--accent); margin-top:10px; font-weight:600; }
+
+  /* News items — list, not cards */
+  .home-news-item { padding:14px 0; border-bottom:1px solid var(--border); }
+  .home-news-item:last-child { border-bottom:none; }
+  .home-news-meta { display:flex; align-items:center; gap:10px; font-size:11px; color:var(--text-dim); margin-bottom:4px; }
+  .home-news-sev { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .home-news-date { font-weight:600; }
+  .home-news-series { background:rgba(255,255,255,0.04); padding:1px 8px; border-radius:4px; font-weight:600; color:var(--text); }
+  .home-news-headline { font-size:15px; font-weight:700; color:var(--text); margin:2px 0 6px; }
+  .home-news-body { font-size:13px; color:var(--text); line-height:1.5; }
+  .home-news-source { font-size:10px; color:var(--text-dim); margin-top:6px; font-style:italic; }
+
+  /* Bets — group per series */
+  .home-bet-group { margin-bottom:18px; }
+  .home-bet-group:last-child { margin-bottom:0; }
+  .home-bet-group-head { font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
+  .home-bet-group-cards { display:flex; flex-direction:column; gap:8px; }

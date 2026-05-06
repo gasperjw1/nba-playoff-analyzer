@@ -22,6 +22,13 @@
 //   Def BallHndl × Def Rebound = +0.156 (active hands + boards)
 // ============================================================
 
+// CURRENT_DATE — the "now" the app represents.
+// Hardcoded (rather than read from Date.now()) so the landing page,
+// news feed, and "today's bets" filter remain pinned to the slate
+// the data reflects, instead of silently going stale next week.
+// Bump this when daily data updates land.
+const CURRENT_DATE = '2026-05-06';
+
 // SPM Synergy coefficient matrix (6x6)
 const SPM_COEFF = {
   oScr_oScr: -0.826, oScr_oBH: 0.412, oScr_oReb: 0.185, oScr_o3PT: 0.295, oScr_oPass: 0.180,

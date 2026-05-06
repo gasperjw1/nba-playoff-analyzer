@@ -196,7 +196,7 @@ function updateBetsNavLabel() {
 // ============================================================
 // PAGE NAVIGATION
 // ============================================================
-let currentPage = 'series';
+let currentPage = 'home';
 
 function switchPage(page) {
   currentPage = page;
@@ -213,7 +213,8 @@ function switchPage(page) {
     renderSeries();
   } else {
     tabsEl.style.display = 'none';
-    if (page === 'learnings') renderLearningsPage(mainEl);
+    if (page === 'home') renderHomePage(mainEl);
+    else if (page === 'learnings') renderLearningsPage(mainEl);
     else if (page === 'definitions') renderDefinitionsPage(mainEl);
     else if (page === 'bets') renderBetsPage(mainEl);
   }
