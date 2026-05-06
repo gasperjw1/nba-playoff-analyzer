@@ -1,12 +1,12 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 5, 2026 (Phase 51 complete — win probability recalibration, dynamic ratings, multiplicative architecture).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 6, 2026 (Phase 52 complete — Compound Historical Scenario Engine with conditional-narrowing and cascade interactions).
 
 ---
 
 ## Overview
 
-A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 51-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 51 introduces win probability recalibration (WIN_PROB_SCALE=35, PLAYOFF_UPSET_COMPRESSION=0.18), per-player dynamic rating adjustments in calcTeamRating (injury severity, playoff ascension, coaching scheme), and a proportional-multiplicative context architecture replacing fixed additive factors (fatigue ±12%, scheme ±20%, inconsistency 15% compression). Backtest: 87.5% G1 winner accuracy, 75.0% avg favorite WP (was 90-95%), 5.1 expected series length (was 4.2, actual 5.4-5.6).
+A multi-file interactive HTML/CSS/JS web app analyzing the 2026 NBA Playoffs. Features a 52-phase prediction model calibrated against 2025 results (73.5% initial accuracy), a Monte Carlo chaos simulation, interactive scenario builders, projection lineage waterfall charts, and a comprehensive betting analysis page with player props calibrated against real DraftKings sportsbook odds. Phase 52 adds Compound Historical Scenarios — a conditional-narrowing system where stacked historical conditions (role + opponent + venue + coach + defender + playoff + health) produce evidence-backed player projection adjustments with cascade interaction modeling between teammates. Phase 51 introduced multiplicative context architecture; Phase 49 recalibrated win probabilities (WIN_PROB_SCALE=35). Backtest: 87.5% G1 winner accuracy, 75.0% avg favorite WP (was 90-95%), 5.1 expected series length.
 
 **R1 model accuracy: G1-G6 ML record 25/42 (59.5%) | G1 7/8 (88%) | G4 3/4 (75%) | G5 6/7 (86%) | G6 1/3 (33.3%)**
 
@@ -35,6 +35,7 @@ nba-playoff-analyzer/
 │   │   ├── chemistry.js     # SPM Chemistry (8 dimensions)
 │   │   ├── fatigue.js       # Per-player fatigue with injury-return handling
 │   │   ├── matchups.js      # Defensive suppression, bounce-back
+│   │   ├── scenarios.js     # Compound Historical Scenarios (Phase 52)
 │   │   ├── simulation.js    # Monte Carlo (10K iterations, correlated vars)
 │   │   └── graduation.js    # Series graduation for round transitions
 │   └── ui/

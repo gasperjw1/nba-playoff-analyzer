@@ -819,6 +819,28 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 52 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 52 — Compound Historical Scenario Engine</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>New conditional-narrowing system: stacked historical conditions (role + opponent team + venue + coach + primary defender + playoff context + health) produce evidence-backed player projection adjustments. This is the "intertwined factors" vision — cascading context captured with historical proof.</strong><br><br>
+          <strong>1. SCENARIO ENGINE (scenarios.js):</strong> New 300+ line engine with 12 condition types (VS_TEAM, VS_COACH, VS_DEFENDER, VENUE, ROLE, PLAYOFF, HEALTH, REST_DAYS, SERIES_DEFICIT, POST_BLOWOUT, MINUTES_LOAD, COVERAGE_TYPE). Each player can have multiple compound scenarios with varying conditions. At projection time, all matching scenarios compound with diminishing returns (70% decay per additional match). Safety cap: adjustments capped at ±35% of base stats.<br><br>
+          <strong>2. CASCADE INTERACTION MODEL:</strong> When one player's scenario delta is large enough (|pts| > 2), cascading effects propagate to teammates. A star scoring -8pts due to defensive matchup creates +3pts distributed to secondary scorers. This captures the "everything affects everything" intertwined dynamics.<br><br>
+          <strong>3. EVIDENCE DATA — 4 R2 SERIES:</strong> 15+ compound scenarios added across OKC-LAL, SAS-MIN, DET-CLE, NYK-PHI with real historical backing:<br>
+          • Reaves vs OKC switching D + oblique: 14.7ppg in 4 games (vs 23.3 season avg), G1: 8pts on 3-16<br>
+          • Brunson vs PHI drop coverage: 35.5ppg/9.0ast in 6 playoff games, hunted Embiid on 15 ball-screens in G1<br>
+          • Wemby vs MIN: 0-8 3PT in G1 (road playoff 3PT collapse) but 12 blocks (record)<br>
+          • SGA post-rust bounce-back: 33.2ppg on 58% FG after 5+ TO games<br>
+          • Embiid post-appendectomy: worst playoff game ever (14pts/3-11 FG/4reb in G1)<br>
+          • Cade vs CLE blitz: 34% FG, 17% 3PT in 4 regular season games<br>
+          • Mitchell road playoff struggles: yet to reach 25pts or 50%+ FG in road games<br>
+          • Edwards restricted minutes: 18pts in 25min off bench, 80% capacity with knee<br><br>
+          <strong>4. INTEGRATION:</strong> Wired as modifier #14 in calcExpectedPlayerStats, after all 13 existing modifiers. Compound scenarios add opponent-specific historical context that general modifiers can't capture. Graceful degradation — if no scenarios exist for a player, modifier is skipped.
+        </div>
+        <span class="learning-tag model">Compound Scenarios</span><span class="learning-tag correct">Historical Context</span><span class="learning-tag milestone">Phase 52</span>
+      </div>
+
       <!-- Phase 51 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 51 — Win Probability Recalibration + Dynamic Ratings + Multiplicative Architecture</div>

@@ -7,7 +7,7 @@ let currentSeriesIdx = 0;
 let currentGameIdx = null;
 let currentFactorSeriesIdx = null;
 let currentConf = 'West';             // Active conference tab: 'West' | 'East'
-let currentPlayoffRound = 'R1';       // Active playoff round: 'R1' | 'R2' | 'CF' | 'Finals'
+let currentPlayoffRound = 'R2';       // Active playoff round: 'R1' | 'R2' | 'CF' | 'Finals'
 let currentGameTab = 'overview';
 let currentRosterTeam = 'home';
 

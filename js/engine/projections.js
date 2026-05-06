@@ -1086,6 +1086,22 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
     }
   }
 
+  // ---- 14. COMPOUND HISTORICAL SCENARIOS (Phase 52) ----
+  // Conditional-narrowing: stacked historical conditions (role + opponent +
+  // venue + coach + defender + playoff + health) produce evidence-backed
+  // adjustments that the general modifiers can't capture.
+  // Example: "Reaves as 2nd option vs OKC switching D in playoffs while
+  // playing through oblique strain" → historically -6pts from base.
+  if (typeof applyCompoundScenarios === 'function') {
+    const scenarioResult = applyCompoundScenarios(player, series, gameIdx, side, pts, reb, ast);
+    if (scenarioResult.modifier) {
+      pts += scenarioResult.pts;
+      reb += scenarioResult.reb;
+      ast += scenarioResult.ast;
+      modifiers.push(scenarioResult.modifier);
+    }
+  }
+
   return {
     pts: +Math.max(0, pts).toFixed(1),
     reb: +Math.max(0, reb).toFixed(1),

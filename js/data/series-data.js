@@ -3185,6 +3185,74 @@ const SERIES_DATA = [
         ]
       },
     },
+    // PHASE 52: Compound Historical Scenarios — OKC-LAL
+    compoundScenarios: {
+      "Austin Reaves": [
+        { label:"Reaves vs OKC switching D + oblique injury",
+          conditions:[
+            {type:'vs_team',value:'OKC'},{type:'playoff',value:true},
+            {type:'health',value:'injured'},{type:'role',value:'secondary,third'}
+          ],
+          sampleSize:4, confidence:0.8,
+          delta:{pts:-5.2,reb:-0.5,ast:-1.0},
+          historicalAvg:{pts:14.7,reb:3.8,ast:3.5,fgPct:36.2},
+          source:"Reaves 4 games vs OKC 2025-26: 14.7ppg (vs 23.3 season). G1 R2: 8pts on 3-16 (19% FG). Never reached 20pts or 6+ FGs in any OKC game. OKC switching D with Dort/Caruso/Wallace rotations eliminates his off-screen action. Oblique strain compounds — can't drive or finish through contact."
+        },
+        { label:"Reaves G1 shooting collapse → volume increase G2",
+          conditions:[
+            {type:'vs_team',value:'OKC'},{type:'post_blowout',value:true},
+            {type:'health',value:'injured'}
+          ],
+          sampleSize:3, confidence:0.6,
+          delta:{pts:-2.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:12.0,reb:3.5,ast:4.0},
+          source:"Post-blowout-loss pattern: Reaves typically increases shot attempts (+3 FGA) but efficiency stays suppressed vs elite wing D. G1 was 3-16; historical post-bad-game pattern shows slight improvement to ~35% FG but not full recovery when injury persists."
+        }
+      ],
+      "Shai Gilgeous-Alexander": [
+        { label:"SGA post-rust game bounce-back",
+          conditions:[
+            {type:'playoff',value:true},{type:'rest_days',value:'long'}
+          ],
+          sampleSize:8, confidence:0.85,
+          delta:{pts:4.5,reb:0.5,ast:1.0},
+          historicalAvg:{pts:32.0,reb:5.0,ast:7.5},
+          source:"SGA after games with 5+ TOs in 2025-26: averaged 33.2ppg on 58% FG next game (8 instances). G1 had 7 TOs (worst game) — admitted rust from 11-day layoff. Historical pattern: SGA bounce-back games are 6+ pts above his average. R1 trajectory: 25→37→42→31pts shows elite recovery."
+        },
+        { label:"SGA vs LAL regular season dominance",
+          conditions:[
+            {type:'vs_team',value:'LAL'},{type:'venue',value:'home'}
+          ],
+          sampleSize:4, confidence:0.75,
+          delta:{pts:3.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:34.0,reb:4.5,ast:7.0},
+          source:"SGA went 4-0 vs LAL in 2025-26 regular season with avg margin of 31.8pts. Smart is LAL's best perimeter D but SGA creates at 67% TS against any single defender. Multi-initiator OKC system (Williams returning, Mitchell) prevents doubles."
+        }
+      ],
+      "LeBron James": [
+        { label:"LeBron as sole creator vs elite D + fatigue",
+          conditions:[
+            {type:'vs_team',value:'OKC'},{type:'playoff',value:true},
+            {type:'rest_days',value:'short'}
+          ],
+          sampleSize:6, confidence:0.7,
+          delta:{pts:-1.5,reb:0.5,ast:1.5},
+          historicalAvg:{pts:26.0,reb:8.0,ast:9.0},
+          source:"LeBron with 4 days rest vs top-5 defense in playoffs (age 40+): efficiency drops ~3% TS but assists rise as he becomes pass-first. G1: 27pts on 12-17 (71% FG) is unsustainable — regression likely. Without Doncic creating, LeBron must orchestrate everything → assists up, scoring efficiency down."
+        }
+      ],
+      "Luke Kennard": [
+        { label:"Kennard vs OKC elite wing D",
+          conditions:[
+            {type:'vs_team',value:'OKC'},{type:'vs_defender',value:'Dort'}
+          ],
+          sampleSize:4, confidence:0.75,
+          delta:{pts:-8.0,reb:0.0,ast:-0.5},
+          historicalAvg:{pts:10.0,reb:2.0,ast:1.5},
+          source:"Kennard R1 avg 25ppg vs HOU but G1 vs OKC: 5pts in 14min (benched). OKC wing D (Dort/Caruso/Wallace) completely neutralized off-screen action. Dort/Caruso shadow movement shooters — Kennard's R1 breakout vs HOU was against weaker perimeter D. Historically 40% 3PT drops to ~28% vs top-5 defenses."
+        }
+      ]
+    },
     homeTeam: {
       name: "Thunder", city: "Oklahoma City", abbr: "OKC", seed: 1, record: "64-18",
       systemBonus: 2.5, playoffPedigree: 2,
@@ -3475,6 +3543,76 @@ const SERIES_DATA = [
         ]
       },
     },
+    // PHASE 52: Compound Historical Scenarios — SAS-MIN
+    compoundScenarios: {
+      "Victor Wembanyama": [
+        { label:"Wemby vs MIN: elite scoring but 3PT collapse on road",
+          conditions:[
+            {type:'vs_team',value:'MIN'},{type:'playoff',value:true},
+            {type:'venue',value:'away'}
+          ],
+          sampleSize:5, confidence:0.8,
+          delta:{pts:-4.0,reb:2.0,ast:0.5},
+          historicalAvg:{pts:20.0,reb:13.0,ast:4.0,fgPct:38.0},
+          source:"Wemby G1 vs MIN: 11pts/15reb/12blk on 5-17 FG, 0-8 3PT. Last 5 vs MIN in reg season: 27.8ppg but in playoffs away the 3PT collapsed completely. Historically shoots 28% from 3 on road in high-pressure games. Defensive impact (record 12 blocks) compensates but scoring drops hard without 3PT falling. McDaniels physical matchup."
+        },
+        { label:"Wemby post-poor-shooting bounce-back at home",
+          conditions:[
+            {type:'vs_team',value:'MIN'},{type:'post_blowout',value:false},
+            {type:'venue',value:'home'}
+          ],
+          sampleSize:9, confidence:0.75,
+          delta:{pts:5.0,reb:0.0,ast:0.0},
+          historicalAvg:{pts:29.0,reb:10.0,ast:3.5},
+          source:"Wemby after sub-15pt games in 2025-26: bounced to 28+ pts next game 7/9 times (78%). Career vs MIN overall: 24.4ppg/9.3reb/3.3ast. At home vs MIN: 30+ ppg in 3 of 4 games. G1 loss was narrow (102-104) — not a blowout, limiting psychological damage."
+        }
+      ],
+      "Anthony Edwards": [
+        { label:"Edwards restricted minutes + knee injury in playoffs",
+          conditions:[
+            {type:'playoff',value:true},{type:'health',value:'injured'},
+            {type:'minutes_load',value:'restricted'}
+          ],
+          sampleSize:3, confidence:0.7,
+          delta:{pts:-5.0,reb:-1.0,ast:-0.5},
+          historicalAvg:{pts:18.0,reb:3.5,ast:3.0},
+          source:"Edwards G1 vs SAS: 18pts in 25min off bench, 8-13 FG (62%). Cleared 90min pre-tip. Bone bruise + hyperextended knee limits burst. Aggressive rehab (hyperbaric chamber) but at 80% capacity. Historical: Edwards with <28min played: 16.5ppg avg. Pattern shows efficient in limited spurts but can't sustain full game load."
+        },
+        { label:"Edwards vs SAS home court + Castle defense",
+          conditions:[
+            {type:'vs_team',value:'SAS'},{type:'vs_defender',value:'Castle'},
+            {type:'health',value:'injured'}
+          ],
+          sampleSize:4, confidence:0.65,
+          delta:{pts:-3.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:20.0,reb:4.0,ast:4.0},
+          source:"Edwards vs SAS in 2025-26: 24.5ppg in 4 regular season games but at full health. Castle's 6-6 frame and physicality exploit the knee injury — Edwards can't explode past on drives. With Randle as safety valve, Edwards willing to facilitate more. Questionable for G2 — if he plays, expect 25-28min again."
+        }
+      ],
+      "De'Aaron Fox": [
+        { label:"Fox as primary scorer vs MIN wing D",
+          conditions:[
+            {type:'vs_team',value:'MIN'},{type:'role',value:'primary'},
+            {type:'playoff',value:true}
+          ],
+          sampleSize:5, confidence:0.7,
+          delta:{pts:2.5,reb:0.0,ast:1.0},
+          historicalAvg:{pts:26.0,reb:4.0,ast:7.5},
+          source:"Fox as SAS's primary scorer in G1: led team with strong finishing. When Wemby's shot isn't falling, Fox becomes the go-to in PnR. Fox vs MIN regular season: 24ppg/7ast. R1 Game 4: dominated 2nd half with Wemby. Fox + Wemby PnR is hardest action in NBA to guard."
+        }
+      ],
+      "Julius Randle": [
+        { label:"Randle as primary with Edwards limited",
+          conditions:[
+            {type:'playoff',value:true},{type:'role',value:'primary'}
+          ],
+          sampleSize:8, confidence:0.65,
+          delta:{pts:3.0,reb:1.5,ast:0.5},
+          historicalAvg:{pts:24.0,reb:10.0,ast:4.5},
+          source:"Randle as MIN's offensive fulcrum when Edwards limited: career playoff avg as primary option 24.2ppg/9.8reb. With Edwards on minutes restriction, Randle's usage jumps to 28%+. G1: strong performance bridging Edwards' bench minutes. Physical mismatch vs SAS wings."
+        }
+      ]
+    },
 
     homeTeam: {
       name: "Spurs", city: "San Antonio", abbr: "SAS", seed: 2, record: "62-20",
@@ -3616,6 +3754,74 @@ const SERIES_DATA = [
           {name:"Strus",pts:"10-14",reb:"4-6",ast:"1-2",fg:"4-9",threes:"2-5",note:"G1: 24pts (8/10 FG) in R1. 40% 3PT. Bench firepower"}
         ]
       },
+    },
+    // PHASE 52: Compound Historical Scenarios — DET-CLE
+    compoundScenarios: {
+      "Cade Cunningham": [
+        { label:"Cade vs CLE blitz D + regular season struggles",
+          conditions:[
+            {type:'vs_team',value:'CLE'},{type:'playoff',value:true}
+          ],
+          sampleSize:5, confidence:0.8,
+          delta:{pts:-4.0,reb:0.5,ast:1.0},
+          historicalAvg:{pts:20.0,reb:6.0,ast:8.0,fgPct:34.0},
+          source:"Cade in 4 reg season games vs CLE: 34% FG, 17% 3PT. CLE blitzed Cade on 10.4% of ball screens — his 3rd-highest blitz rate vs any opponent. G1: 23pts (6-19 FG), 7ast, 2stl. CLE's wing D (Tyson/Wade) make things hard — Cade's ball-screen efficiency drops 15% vs CLE compared to season avg. Assists rise as he passes out of pressure."
+        },
+        { label:"Cade post-inefficient-game adjustment at home",
+          conditions:[
+            {type:'vs_team',value:'CLE'},{type:'venue',value:'home'},
+            {type:'post_blowout',value:false}
+          ],
+          sampleSize:7, confidence:0.65,
+          delta:{pts:2.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:25.0,reb:6.0,ast:7.5},
+          source:"Cade after sub-25pt games at home in 2025-26: bounced to 26+ pts 5/7 times (71%). DET home record 35-6 — crowd energy lifts performance. Bickerstaff adjusts: expects more mid-range pull-ups to counter CLE blitz (Cade shot 48% on mid-range this season). Game moves to DET in G3."
+        }
+      ],
+      "Donovan Mitchell": [
+        { label:"Mitchell vs DET crowd pressure + blitz defense",
+          conditions:[
+            {type:'vs_team',value:'DET'},{type:'playoff',value:true},
+            {type:'venue',value:'away'}
+          ],
+          sampleSize:5, confidence:0.75,
+          delta:{pts:-3.5,reb:0.0,ast:-0.5},
+          historicalAvg:{pts:26.0,reb:4.0,ast:3.0},
+          source:"Mitchell in G1: 23pts on 9-19 (47%), only 2 FTA. DET crowded him, fought through screens, pressured every drive. Mitchell has yet to reach 25pts or shoot 50%+ in road playoff games this season. 33.9ppg over last 17 playoff games but primarily at home. DET's physical defense limits FT opportunities. Mitchell expressed frustration with DET's defensive approach."
+        },
+        { label:"Mitchell 17-game playoff hot streak continuation",
+          conditions:[
+            {type:'playoff',value:true},{type:'venue',value:'home'}
+          ],
+          sampleSize:17, confidence:0.85,
+          delta:{pts:4.0,reb:0.0,ast:0.0},
+          historicalAvg:{pts:33.9,reb:4.5,ast:4.0,fgPct:48.0},
+          source:"Mitchell over last 17 playoff games: 33.9ppg on 48/46/88 shooting splits. This includes R1 vs TOR: 30+ in both G1-G2 on 55.8% FG. At home in CLE, Mitchell's scoring jumps +4pts. Hot streak shows no signs of cooling — but assists (3.0) and steals (0.7) below regular season, suggesting pure scorer mode."
+        }
+      ],
+      "James Harden": [
+        { label:"Harden playoff orchestrator vs physical defense",
+          conditions:[
+            {type:'vs_team',value:'DET'},{type:'playoff',value:true},
+            {type:'role',value:'secondary'}
+          ],
+          sampleSize:6, confidence:0.7,
+          delta:{pts:-2.0,reb:0.0,ast:2.0},
+          historicalAvg:{pts:18.0,reb:6.0,ast:10.0},
+          source:"Harden as CLE's secondary creator: R1 vs TOR had 22pts/10ast Game 1. Against physical D like DET (COTY Bickerstaff's defense-first scheme), Harden's scoring dips but passing vision compensates. Career playoff pattern: against top-10 defenses, Harden averages +2.3 ast but -3.5 pts. High PnR scheme extremely effective vs DET — pulled Poeltl far from rim in G1."
+        }
+      ],
+      "Jalen Duren": [
+        { label:"Duren vs twin towers (Mobley + Allen)",
+          conditions:[
+            {type:'vs_team',value:'CLE'},{type:'playoff',value:true}
+          ],
+          sampleSize:4, confidence:0.65,
+          delta:{pts:-2.0,reb:-2.0,ast:0.0},
+          historicalAvg:{pts:10.0,reb:8.0,ast:1.0},
+          source:"Duren vs CLE reg season: dominated on glass by Mobley+Allen. CLE scored 48 paint pts in G1 — Duren couldn't protect rim against dual drivers (Mitchell/Harden). Mobley's length (7-0 with 7-3 wingspan) makes Duren uncomfortable finishing. Rebounding drops as CLE boxes out with two 7-footers."
+        }
+      ]
     },
     homeTeam: {
       name: "Pistons", city: "Detroit", abbr: "DET", seed: 1, record: "60-22",
@@ -3846,6 +4052,88 @@ const SERIES_DATA = [
           {name:"Grimes",pts:"6-10",reb:"1-3",ast:"2-4",fg:"2-6",threes:"1-4",note:"First off bench. 24min in G1 blowout — role solidified"}
         ]
       },
+    },
+    // PHASE 52: Compound Historical Scenarios — NYK-PHI
+    compoundScenarios: {
+      "Jalen Brunson": [
+        { label:"Brunson vs PHI drop coverage hunting Embiid",
+          conditions:[
+            {type:'vs_team',value:'PHI'},{type:'playoff',value:true},
+            {type:'coverage_type',value:'drop'}
+          ],
+          sampleSize:6, confidence:0.9,
+          delta:{pts:6.0,reb:0.5,ast:1.5},
+          historicalAvg:{pts:35.5,reb:4.5,ast:9.0,fgPct:58.0},
+          source:"Brunson career playoff avg vs PHI: 35.5ppg/9.0ast/4.5reb in 6 games. G1: 35pts (12-18 FG, 81.3% TS), 27 in first half. 15 ball-screens set targeting Embiid in drop coverage — 10 led to shot/TO/FT, 19pts on those 10 possessions. In 2024 playoffs: three consecutive 40pt games vs PHI. All-time leader in 35pt playoff games in Knicks history. Drop coverage gives Brunson pull-up opportunities — his best shot."
+        },
+        { label:"Brunson at MSG in playoffs",
+          conditions:[
+            {type:'playoff',value:true},{type:'venue',value:'home'}
+          ],
+          sampleSize:12, confidence:0.85,
+          delta:{pts:3.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:33.0,reb:4.0,ast:8.0},
+          source:"Brunson at MSG in playoffs: 33ppg avg over last 12 home playoff games. MSG crowd energy is quantifiable — NYK home playoff record 8-4 since Brunson arrived. G1 showed the effect: Brunson scoring from everywhere while MSG chanted. Brunson's midrange pull-up (52% this season) + floater game thrive in MSG environment."
+        }
+      ],
+      "Joel Embiid": [
+        { label:"Embiid post-appendectomy vs Knicks + fatigue",
+          conditions:[
+            {type:'vs_team',value:'NYK'},{type:'playoff',value:true},
+            {type:'health',value:'injured'},{type:'post_blowout',value:true}
+          ],
+          sampleSize:4, confidence:0.8,
+          delta:{pts:-8.0,reb:-2.0,ast:-1.0},
+          historicalAvg:{pts:18.0,reb:7.0,ast:4.0},
+          source:"Embiid G1 vs NYK: 14pts on 3-11 FG, 4reb in 25min — WORST playoff game of career (first time <15pts AND <5reb in 64 playoff games). Post-appendectomy (<1 month). Cited fatigue from 7-game BOS series. Bridges hit his abdomen. PHI lost 137-98 — biggest playoff loss. Career vs NYK in playoffs: 33.0ppg/10.8reb normally, but injury history shows 40%+ decline when playing through ailment."
+        },
+        { label:"Embiid bounce-back potential (career pattern)",
+          conditions:[
+            {type:'vs_team',value:'NYK'},{type:'playoff',value:true},
+            {type:'venue',value:'away'}
+          ],
+          sampleSize:8, confidence:0.6,
+          delta:{pts:4.0,reb:2.0,ast:0.5},
+          historicalAvg:{pts:30.0,reb:11.0,ast:5.5},
+          source:"Embiid career after sub-20pt playoff games: averages 31pts next game (8 instances). But caveat: those were all at full health. Post-appendectomy creates ceiling uncertainty. PHI coach Nurse likely adjusts: avoid drop coverage, keep Embiid in more favorable actions. If PHI switches to aggressive coverage on Brunson, Embiid gets fewer exposed possessions."
+        }
+      ],
+      "Tyrese Maxey": [
+        { label:"Maxey as sole initiator vs NYK switching D",
+          conditions:[
+            {type:'vs_team',value:'NYK'},{type:'playoff',value:true},
+            {type:'role',value:'secondary'}
+          ],
+          sampleSize:6, confidence:0.75,
+          delta:{pts:-2.0,reb:0.0,ast:0.5},
+          historicalAvg:{pts:22.0,reb:3.5,ast:5.0},
+          source:"Maxey vs NYK: PHI's secondary creator but NYK switches aggressively on his PnR. In G1: shot under 45% as NYK's wing defense (OG/Bridges) switched onto him. When Embiid struggles, Maxey's usage spikes to 30%+ but efficiency drops because he's taking contested pull-ups. R1 vs BOS: shot 40% when White guarded him (efficiency tax). NYK's switching scheme is similar but with more length."
+        }
+      ],
+      "Karl-Anthony Towns": [
+        { label:"KAT vs former team PHI frontcourt",
+          conditions:[
+            {type:'vs_team',value:'PHI'},{type:'playoff',value:true},
+            {type:'venue',value:'home'}
+          ],
+          sampleSize:4, confidence:0.7,
+          delta:{pts:3.0,reb:2.0,ast:0.5},
+          historicalAvg:{pts:24.0,reb:12.0,ast:4.0},
+          source:"KAT at home vs PHI: physical mismatch when Embiid is compromised. G1: NYK scored 137 — KAT feasts in transition and on Embiid's drop coverage rotations. Career playoff rebounds spike at MSG. With Brunson drawing all attention, KAT gets clean looks. KAT's 3PT shooting (40% this season) stretches Embiid to perimeter, compounding PHI's coverage problems."
+        }
+      ],
+      "Paul George": [
+        { label:"PG13 in high-pressure playoff series after blowout loss",
+          conditions:[
+            {type:'playoff',value:true},{type:'post_blowout',value:true},
+            {type:'vs_team',value:'NYK'}
+          ],
+          sampleSize:10, confidence:0.65,
+          delta:{pts:2.0,reb:0.5,ast:0.5},
+          historicalAvg:{pts:22.0,reb:6.0,ast:4.5},
+          source:"PG13 after playoff blowout losses (10 career instances): averages 24ppg with improved efficiency. Veteran bounce-back pattern. PHI needs PG to be the Brunson assignment (best option per NBA.com) while also contributing 20+ offensively. If PHI adjusts coverage, PG becomes critical as the screener-navigator against Brunson — defensive burden may limit offensive output."
+        }
+      ]
     },
 
     homeTeam: {
