@@ -440,6 +440,88 @@ const BETS = [
 ];
 
 // ============================================================
+// FEATURED PARLAYS — declarative parlay schema
+// ============================================================
+// Schema:
+//   id        : stable unique key
+//   slate     : 'R2-G2' | …          which slate this parlay plays in
+//   date      : 'YYYY-MM-DD'         when the parlay resolves
+//   type      : 'best-bet' | 'chaos' | 'value'
+//   name      : display name
+//   stake     : number (dollars)
+//   odds      : string ('+110', '-120')
+//   payout    : string  optional, e.g. '+$125'
+//   legs      : [{ pick, odds, confidence, status?: 'hit'|'miss'|null }]
+//   thesis    : free-form one-paragraph reasoning
+//   result    : null | { outcome: 'win'|'loss'|'push', delta: '+125'|'-100' }
+// ============================================================
+const FEATURED_PARLAYS = [
+  // ─── R2 G1 — RESOLVED ──────────────────────────────────────────
+  {
+    id: 'r2-g1-100-okc-det',
+    slate: 'R2-G1', date: '2026-05-05',
+    type: 'best-bet',
+    name: '$100 Play — OKC Fortress + DET Home Court',
+    stake: 100, odds: '+125', payout: '+$125',
+    legs: [
+      { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:'hit',
+        note:'OKC 108-90. Holmgren 24/12/3blk. LeBron 27 but LAL shot 37%.' },
+      { pick:'DET ML vs CLE', odds:'-155', confidence:'medium-high', status:'hit',
+        note:'DET 111-101. Cade 23/7ast, D.Robinson 19 (5-8 3PT). Duren clutch block.' },
+    ],
+    thesis:'Both home teams dominated G1. OKC\'s talent gap massive; DET\'s defense forced 19 CLE TOs (12 stl).',
+    result: { outcome:'win', delta:'+125' },
+  },
+  {
+    id: 'r2-g1-1-chaos-lebron',
+    slate: 'R2-G1', date: '2026-05-05',
+    type: 'chaos',
+    name: '$1 Chaos Ticket — LeBron\'s Last Stand',
+    stake: 1, odds: '+1800', payout: '-$1',
+    legs: [
+      { pick:'LAL ML @ OKC', odds:'+600', confidence:'chaos', status:'miss',
+        note:'OKC 108-90. LAL shot 37% FG, never competitive.' },
+      { pick:'CLE ML @ DET', odds:'+130', confidence:'chaos', status:'miss',
+        note:'DET 111-101. CLE rallied to 93-93 but couldn\'t close.' },
+    ],
+    thesis:'No chaos tonight — favorites won both games convincingly.',
+    result: { outcome:'loss', delta:'-1' },
+  },
+
+  // ─── R2 G2 — UPCOMING ──────────────────────────────────────────
+  {
+    id: 'r2-g2-100-home-court',
+    slate: 'R2-G2', date: '2026-05-07',
+    type: 'best-bet',
+    name: '$100 Play — Home Court Dominance',
+    stake: 100, odds: '+110',
+    legs: [
+      { pick:'OKC ML vs LAL', odds:'-800', confidence:'high', status:null,
+        note:'J.Williams ramp-up + SGA bounce-back from 7 TOs. Won G1 by 18 with SGA at floor.' },
+      { pick:'DET ML vs CLE', odds:'-190', confidence:'medium-high', status:null,
+        note:'DET forced 19 CLE TOs G1. Allen knee. Cade 23/7ast controls pace.' },
+    ],
+    thesis:'Both home teams dominated G1 (DET +10, OKC +18). DET\'s defense and OKC\'s depth project as structural; CLE may adjust but Allen\'s knee compounds. ~+110 is excellent value.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-1-chaos-cle-phi',
+    slate: 'R2-G2', date: '2026-05-07',
+    type: 'chaos',
+    name: '$1 Chaos Ticket — CLE Road Revenge + PHI Steal',
+    stake: 1, odds: '+800',
+    legs: [
+      { pick:'CLE ML @ DET', odds:'+160', confidence:'chaos', status:null,
+        note:'CLE rallied from -18 to 93-93 in G1. If Allen plays 30+ min, ceiling is higher.' },
+      { pick:'PHI ML @ NYK', odds:'+200', confidence:'chaos', status:null,
+        note:'G1 catastrophic (137-98) but rest deficit drove that. With equal rest, PHI\'s Embiid+Maxey could steal one.' },
+    ],
+    thesis:'CLE adjustment + Embiid playoff pride. Long shot but +800 pays $9 on $1.',
+    result: null,
+  },
+];
+
+// ============================================================
 // Slate metadata — header info for each slate's series
 // ============================================================
 const BET_SLATES = {

@@ -844,3 +844,25 @@
   .home-bet-group:last-child { margin-bottom:0; }
   .home-bet-group-head { font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
   .home-bet-group-cards { display:flex; flex-direction:column; gap:8px; }
+
+  /* Featured parlays — same auto-fit grid as games */
+  .home-parlay-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:14px; }
+  .home-parlay-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+  .home-parlay-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .home-parlay-name { font-size:14px; font-weight:700; flex:1; min-width:200px; }
+  .home-parlay-odds { font-size:12px; font-weight:600; color:var(--text); padding:2px 8px; background:rgba(255,255,255,0.05); border-radius:4px; }
+  .home-parlay-payout { font-size:12px; font-weight:700; }
+  .home-parlay-state { font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; }
+  .home-parlay-state.win { background:rgba(61,214,140,0.12); color:#3dd68c; }
+  .home-parlay-state.loss { background:rgba(239,68,68,0.12); color:#ef4444; }
+  .home-parlay-legs { display:flex; flex-direction:column; gap:6px; padding:6px 0; }
+  .home-parlay-leg { display:grid; grid-template-columns:auto 1fr auto auto; gap:8px; align-items:start; font-size:12px; padding:6px 0; border-top:1px dashed var(--border); }
+  .home-parlay-leg:first-child { border-top:none; }
+  .home-parlay-leg-num { width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.06); display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--text-dim); }
+  .home-parlay-leg-pick { color:var(--text); font-weight:600; }
+  .home-parlay-leg-odds { font-size:11px; color:var(--text-dim); font-weight:600; }
+  .home-parlay-leg-state { font-size:13px; font-weight:700; }
+  .home-parlay-leg-state.hit { color:#3dd68c; }
+  .home-parlay-leg-state.miss { color:#ef4444; }
+  .home-parlay-leg-note { grid-column:2 / -1; font-size:11px; color:var(--text-dim); line-height:1.4; margin-top:2px; }
+  .home-parlay-thesis { font-size:12px; color:var(--text-dim); line-height:1.5; padding-top:6px; border-top:1px solid var(--border); }

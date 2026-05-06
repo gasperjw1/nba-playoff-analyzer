@@ -125,6 +125,51 @@ function homeRenderNewsItem(n) {
     </div>`;
 }
 
+function homeRenderParlay(p) {
+  const isResolved = !!p.result;
+  const won = isResolved && p.result.outcome === 'win';
+  const lost = isResolved && p.result.outcome === 'loss';
+  const accentColor = p.type === 'best-bet' ? '#a78bfa'
+                    : p.type === 'chaos'    ? '#ff9800'
+                    :                         '#60a5fa';
+  const stateColor = won ? '#3dd68c' : lost ? '#ef4444' : accentColor;
+  const stateBadge = won  ? '<span class="home-parlay-state win">&check; WON</span>'
+                  : lost ? '<span class="home-parlay-state loss">&cross; LOST</span>'
+                  :        '';
+  const legsHtml = p.legs.map((l, i) => {
+    const legState = l.status === 'hit'  ? '<span class="home-parlay-leg-state hit">&check;</span>'
+                   : l.status === 'miss' ? '<span class="home-parlay-leg-state miss">&cross;</span>'
+                   :                       '';
+    return `
+      <div class="home-parlay-leg">
+        <span class="home-parlay-leg-num">${i + 1}</span>
+        <span class="home-parlay-leg-pick">${l.pick}</span>
+        <span class="home-parlay-leg-odds">${l.odds}</span>
+        ${legState}
+        ${l.note ? `<div class="home-parlay-leg-note">${l.note}</div>` : ''}
+      </div>`;
+  }).join('');
+  const payoutBadge = p.payout ? `<span class="home-parlay-payout" style="color:${stateColor};">${p.payout}</span>` : '';
+  return `
+    <div class="home-parlay-card" style="border-left:3px solid ${stateColor};">
+      <div class="home-parlay-head">
+        <span class="home-parlay-name" style="color:${stateColor};">${p.name}</span>
+        <span class="home-parlay-odds">${p.odds}</span>
+        ${payoutBadge}
+        ${stateBadge}
+      </div>
+      <div class="home-parlay-legs">${legsHtml}</div>
+      <div class="home-parlay-thesis">${p.thesis}</div>
+    </div>`;
+}
+
+function homeRenderFeaturedParlays() {
+  // Show all unresolved parlays (newest first if multiple).
+  const live = FEATURED_PARLAYS.filter(p => !p.result);
+  if (!live.length) return '<div class="home-empty">No live featured parlays right now.</div>';
+  return `<div class="home-parlay-grid">${live.map(homeRenderParlay).join('')}</div>`;
+}
+
 function homeRenderBetsForDate(date) {
   // Find all unresolved bets whose game is today.
   const betsToday = BETS.filter(b => {
@@ -182,6 +227,11 @@ function renderHomePage(el) {
         ${todaysGames.length
           ? `<div class="home-game-grid">${todaysGames.map(homeRenderGameCard).join('')}</div>`
           : '<div class="home-empty">No scheduled games today.</div>'}
+      </section>
+
+      <section class="home-section">
+        <h2 class="home-section-title">Featured Parlays</h2>
+        ${homeRenderFeaturedParlays()}
       </section>
 
       <div class="home-row">
