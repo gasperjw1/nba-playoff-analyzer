@@ -340,7 +340,7 @@
      so the page is dramatically less vertical on desktop without breaking
      mobile. min-width:0 on the column prevents wide projected box-score
      tables from overflowing the grid track. */
-  .bet-series-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(440px, 1fr)); gap:24px; align-items:start; margin-bottom:20px; }
+  .bet-series-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:20px; align-items:start; margin-bottom:20px; }
   .bet-series-column { min-width:0; }
   @media (max-width: 600px) {
     .bet-series-grid { grid-template-columns:1fr; gap:16px; }

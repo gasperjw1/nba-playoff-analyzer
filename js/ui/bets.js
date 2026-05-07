@@ -9,7 +9,7 @@ function renderBetsPage(el) {
     return;
   }
   el.innerHTML = `
-  <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
+  <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1 (Archived)</h2>
     <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">R1 Final Record: ML 25/42 (59.5%) | G1: 7/8 (88%) | G4: 3/4 (75%) | G5: 6/7 (86%) | G6: 1/3 (33%) | P&amp;L: -$698.47</p>
     <div style="text-align:center;margin-bottom:16px;"><button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Switch to Round 2 Bets &rarr;</button></div>
@@ -2487,7 +2487,7 @@ function renderR2Bets(el) {
   }
 
   el.innerHTML = `
-  <div style="max-width:900px;margin:0 auto;padding:20px 10px;" class="bets-container">
+  <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
 
     <!-- R2 HEADER -->
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 2</h2>
