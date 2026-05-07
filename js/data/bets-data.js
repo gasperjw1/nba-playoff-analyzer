@@ -198,10 +198,9 @@ const BETS = [
     type: 'ml', pick: 'NYK ML vs PHI', odds: '-450 (re-priced)',
     facts: [{label:'Original line',value:'-260'},{label:'After Embiid OUT',value:'-450 to -550'},{label:'Spread',value:'NYK -10.5'}],
     modelHook: { fn:'dml', args:['NYK-PHI',2] },
-    result: { outcome: 'win', actual: 'NYK 108-102 (won by 6)' },
     reasoning: "🚨 <strong>Embiid OUT — ankle sprain + hip soreness (ruled out morning of game).</strong> The single biggest line-mover possible. PHI loses their 26.9ppg #1 scorer, interior gravity, post-up offense, and foul-drawing. Drummond starts at C — provides rebounding only, no offensive creation, gets pulled out of the paint by KAT stretch-5. NYK was already favored heavily with healthy Embiid; now this is structurally over. Maxey will absorb usage but is shaken from -28 G1. The ML is now expensive but virtually risk-free — best leveraged in a parlay with another correlated leg (Brunson over, NYK -10).",
     confidence: 'best-bet', thesis: ['situational','model','market'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'NYK 108-102 (won by 6)' },
   },
   {
     id: 'r2-g2-nyk-phi-spread',
@@ -209,10 +208,9 @@ const BETS = [
     type: 'spread', pick: 'NYK -10.5 (revised from -6.5)', odds: '-110',
     facts: [{label:'Original',value:'NYK -6.5 (pre-Embiid news)'},{label:'Revised',value:'NYK -10.5 to -12.5'}],
     modelHook: { fn:'dmargin', args:['NYK-PHI',2] },
-    result: { outcome: 'loss', actual: 'NYK +6 (108-102) — did not cover -10.5. Phase 56 narrative-driven re-pricing was an overreaction; pre-Embiid-OUT model line of NYK -6.5 was correct.' },
     reasoning: "<strong>Embiid OUT changes everything for the spread.</strong> Without their primary scorer, PHI's ceiling collapses to ~95pts. Model now projects NYK by 12-15. Even at the revised -10.5, this is a clean cover unless NYK plays deep bench in a Q4 garbage-time scenario (possible — they did pull starters in G1 blowout). Best play: NYK -10.5 if available, or pivot to NYK team total over.",
     confidence: 'high', thesis: ['situational','model'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'NYK +6 (108-102) — did not cover -10.5. Phase 56 narrative-driven re-pricing was an overreaction; pre-Embiid-OUT model line of NYK -6.5 was correct.' },
   },
   {
     id: 'r2-g2-nyk-phi-brunson-pts',

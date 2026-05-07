@@ -360,6 +360,60 @@ function runTests() {
   });
 
   // ============================================================
+  // TEST 7: Duplicate-key sweep (regression guard for the
+  //   `result: null` overwriting `result: {outcome:...}` bug + the
+  //   Embiid-style two-activeInjury bug)
+  // ============================================================
+  console.log('\nTEST 7: Duplicate-key regression sweep');
+  {
+    // Player records inside series-data
+    const seriesSrc = fs.readFileSync(path.join(__dirname, 'js/data/series-data.js'), 'utf8');
+    let inPlayer = false; let braceCount = 0; let buf = '';
+    const playerDupes = [];
+    seriesSrc.split('\n').forEach((line) => {
+      if (!inPlayer && /^\s*\{\s*name:\"/.test(line)) {
+        inPlayer = true; buf = line; braceCount = 0;
+        for (const ch of line) { if (ch==='{') braceCount++; else if (ch==='}') braceCount--; }
+        if (braceCount === 0) { check(buf); inPlayer=false; buf=''; }
+      } else if (inPlayer) {
+        buf += '\n' + line;
+        for (const ch of line) { if (ch==='{') braceCount++; else if (ch==='}') braceCount--; }
+        if (braceCount === 0) { check(buf); inPlayer=false; buf=''; }
+      }
+    });
+    function check(rec) {
+      const stripped = rec.replace(/\"[^\"\\]*(?:\\.[^\"\\]*)*\"/g, '""');
+      const counts = {};
+      const re = /(?:^|[\s,{])([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g;
+      let m; while ((m = re.exec(stripped)) !== null) counts[m[1]] = (counts[m[1]]||0) + 1;
+      const dupes = Object.entries(counts).filter(([,v]) => v > 1);
+      if (dupes.length) {
+        const id = (rec.match(/name:\"([^\"]+)\"/)||[])[1] || '<unknown>';
+        playerDupes.push(id + ' — ' + dupes.map(d => d[0]+'×'+d[1]).join(', '));
+      }
+    }
+    assert(playerDupes.length === 0, `series-data.js player records have no duplicate keys (found: ${playerDupes.join('; ')})`);
+
+    // Bet records inside bets-data — count top-level `result:` per record
+    const betsSrc = fs.readFileSync(path.join(__dirname, 'js/data/bets-data.js'), 'utf8');
+    const betDupes = [];
+    let inBet = false; let recId = ''; let resultCount = 0;
+    betsSrc.split('\n').forEach((line) => {
+      if (/^  \{$/.test(line)) { inBet = true; recId = ''; resultCount = 0; return; }
+      if (inBet) {
+        const idMatch = line.match(/^\s+id:\s*['"]([^'"]+)/);
+        if (idMatch) recId = idMatch[1];
+        if (/^\s\s\s\sresult:/.test(line)) resultCount++;
+        if (/^\s\s\}/.test(line)) {
+          if (resultCount > 1) betDupes.push(recId + ' (' + resultCount + ' result: keys)');
+          inBet = false;
+        }
+      }
+    });
+    assert(betDupes.length === 0, `bets-data.js bets/parlays have no duplicate result keys (found: ${betDupes.join('; ')})`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
