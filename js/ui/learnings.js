@@ -844,19 +844,32 @@ function renderLearningsPage(el) {
       </div>
 
       <!-- Phase 56 -->
-      <div class="learning-entry milestone">
-        <div class="learning-phase">Phase 56 — May 6 Injury Report Application</div>
-        <div class="learning-date">May 6, 2026</div>
+      <div class="learning-entry milestone" style="border-left:3px solid var(--yellow)">
+        <div class="learning-phase">Phase 56 — May 6 Injury Report Application <span style="font-size:11px;color:var(--yellow);background:rgba(245,158,11,0.12);padding:2px 8px;border-radius:4px;margin-left:8px">PARTIALLY SUPERSEDED</span></div>
+        <div class="learning-date">May 6, 2026 (retrospective written May 7 after G2 result)</div>
         <div class="learning-body">
-          <strong>Tonight's slate (NYK-PHI G2) reshaped morning-of by Embiid OUT ruling. Plus correctness sweep across all 4 R2 G2 cards as injury reports firmed up.</strong><br><br>
-          <strong>1. EMBIID OUT (NYK-PHI G2):</strong> Right ankle sprain + right hip soreness, ruled out morning of May 6 after he could not participate in shootaround. PHI starting lineup pivot: Maxey / Edgecombe / Oubre / George / Drummond. Series-data cascade: <code>player.injury</code> &rarr; OUT, <code>activeInjury.severity</code> &rarr; 1.0, <code>g2PlayerOutlook</code> entry with <code>ptsRange [0,0]</code> (Phase 33 OUT exclusion path) so the projection engine drops him from active players. NYK projects 9 active vs PHI 7. Bet impacts: NYK ML re-priced -260 &rarr; -450, spread -6.5 &rarr; -10.5, Embiid Over 22.5 prop VOIDED, new Drummond Over 11.5 reb prop added (he starts at C with no rim deterrent above him).<br><br>
-          <strong>2. NEW BET-CARD RESULT STATE — VOID:</strong> <code>renderBetCard</code> now handles <code>result.outcome: 'void'</code> with a yellow &oslash; icon (distinct from win &check;, loss &times;, push &equiv;). Required because Embiid prop was already a published bet card before he was ruled out — voiding it is more honest than retroactively deleting.<br><br>
-          <strong>3. DET-CLE G2 INJURY UPDATES:</strong> Allen reportedly OFF the injury report (knee tendonitis cleared) — his return raises CLE's ceiling, so DET ML downgraded BEST BET &rarr; MEDIUM lean. Huerter (DET) and Merrill (CLE) both GTD with thigh/hamstring strains.<br><br>
-          <strong>4. OKC-LAL G2 FACTUAL CORRECTION:</strong> Prior bet reasoning incorrectly stated J.Williams played 20min in G1. Per NBA.com he was OUT (Grade 1 hamstring), week-to-week. Corrected G1 recap and G2 ML reasoning to reflect that OKC won G1 by 18 <em>without</em> Williams — a more impressive signal for OKC, not less.<br><br>
-          <strong>5. SAS-MIN G2:</strong> Edwards QUESTIONABLE per latest reports — knee bothered him at end of G1 (he played, but on restricted minutes). Bet reasoning was already factoring his limited capacity, no card change needed.<br><br>
-          <strong>VALIDATION:</strong> 3447/3447 integration tests pass. No silent regressions in declarative bet rendering (Phase 55) or CHS panels (Phase 52).
+          <strong style="color:var(--yellow)">Retrospective verdict: more distracted than accurate. The narrative-driven margin re-pricing was the single largest model overcorrection of R2.</strong> Embiid was ruled OUT day-of; the phase pushed the model from "NYK by 6" to "NYK by 12-15". G2 actual: <strong>NYK 108-102 (NYK by 6)</strong> — exact match for the PRE-Phase-56 prediction. The Phase 56 spread bet (NYK -10.5) lost by 4.5 points. Phase 58 (engine HCA flip) and the Tier 1.1 schema validators are the corrective infrastructure. This entry is preserved because the failure pattern produced three concrete fixes; the bug-causing changes were rolled forward into corrections rather than reverted.<br><br>
+
+          <strong>WHAT SHIPPED — kept (good infrastructure / data corrections):</strong><br>
+          &bull; <strong>Bet-card <code>void</code> result state:</strong> <code>renderBetCard</code> now handles <code>result.outcome: 'void'</code> with a yellow &oslash; icon. Required infrastructure for retroactively voiding bets (e.g. Embiid prop after morning OUT ruling). KEPT.<br>
+          &bull; <strong>OKC-LAL G2 factual correction:</strong> Prior bet reasoning incorrectly stated J.Williams played 20min in G1. Per NBA.com he was OUT. Corrected G1 recap. KEPT.<br>
+          &bull; <strong>DET-CLE G2 status update:</strong> Allen OFF injury report; DET ML downgraded BEST BET &rarr; MEDIUM. Status updates like this are exactly what daily refreshes should do. KEPT.<br><br>
+
+          <strong>WHAT SHIPPED — superseded (overcorrected, replaced by Phase 58):</strong><br>
+          &bull; <strong>Embiid <code>activeInjury</code> severity:1.0 OUT.</strong> Logically correct, but introduced a duplicate-key bug — added the new <code>activeInjury</code> while leaving the older <code>severity:0.4</code> in place. JS spec: last duplicate key wins, so the engine never saw Embiid as OUT. Caught + fixed May 7; TEST 7 added as regression guard.<br>
+          &bull; <strong>NYK ML re-priced -260 &rarr; -450 + spread -6.5 &rarr; -10.5.</strong> Driven by reasoning-text claim "model now projects NYK by 12-15 with Embiid OUT." That number was a human gut-feel adjustment, NOT computed by the engine. Phase 32's Star Absence Liberation (35% clawback for teams with 4+ depth players) was already calibrated for this case and predicted approximately what actually happened. SUPERSEDED.<br>
+          &bull; <strong>Drummond Over 11.5 reb prop added.</strong> Logically tempting (emergency starter at C) but didn't account for foul-trouble downside not captured by per-minute rebound averages. Drummond ended with 8 reb in 24 min (foul trouble). The prop lost. Lesson: emergency-starter props on bigs need a foul-trouble haircut.<br><br>
+
+          <strong>FAILURE PATTERN — the three fixes that came out of this:</strong><br>
+          &bull; <strong>Phase 58 (engine HCA flip for G3/G4/G6):</strong> Discovered while validating Phase 56's overcorrection vs G2 actuals. The engine had a real bug — team-rating HCA didn't flip for venue. Fixed by adding <code>gameNum</code> to <code>calcWinProb</code>.<br>
+          &bull; <strong>TEST 7 (duplicate-key sweep):</strong> Catches the Embiid-style bug before it ships. Sweeps player records and bet/parlay records.<br>
+          &bull; <strong>Tier 1.1 (schema validators):</strong> Boot-time <code>validateAll()</code> runs on every page load and renders a banner if any data is malformed. Catches contradictions, missing fields, type mismatches, bad enums.<br><br>
+
+          <strong>RULE GOING FORWARD (added to CONTEXT.md "Known Quirks"):</strong> Bet-reasoning text is not allowed to invent margin numbers the engine doesn't produce. If we believe a number, the engine should say it. If the engine doesn't, either fix the engine (Phase 58 was the right kind of fix) or document the divergence as a manual override with explicit justification &mdash; not bury it in reasoning prose. Data updates need to round-trip through the engine: every status-change phase should end with "I changed X, re-ran the engine, the new projection is Y" &mdash; not "I changed X and here's what I think the projection should be."<br><br>
+
+          <strong>VALIDATION (post-supersession, May 7):</strong> 3473/3473 integration tests pass (added TEST 7 + TEST 8 as regression guards for this phase's failure modes). The forward-pointing fixes (Phase 58, schema validators) are what should be referenced in future similar situations.
         </div>
-        <span class="learning-tag data">Injury Report</span><span class="learning-tag correct">Live Slate</span><span class="learning-tag milestone">Phase 56</span>
+        <span class="learning-tag missed">Overcorrected</span><span class="learning-tag correct">Void infra (kept)</span><span class="learning-tag bug">Duplicate-key bug</span><span class="learning-tag milestone">Phase 56</span>
       </div>
 
       <!-- Phase 55 -->
