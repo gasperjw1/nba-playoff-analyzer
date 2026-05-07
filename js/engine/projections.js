@@ -15,7 +15,7 @@ function getGamesPlayed(series) {
 }
 
 function calcGameProjection(series, seriesId, gameNum) {
-  const prob = calcWinProb(series, seriesId);
+  const prob = calcWinProb(series, seriesId, gameNum);
   const hr = prob.homeRating || calcTeamRating(series.homeTeam, series, seriesId);
   const ar = prob.awayRating || calcTeamRating(series.awayTeam, series, seriesId);
 

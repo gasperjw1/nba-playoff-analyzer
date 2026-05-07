@@ -289,7 +289,7 @@ function calcTeamRating(team, series, seriesId) {
   return Math.min(99, Math.max(20, Math.round(base)));
 }
 
-function calcWinProb(series, seriesId) {
+function calcWinProb(series, seriesId, gameNum) {
   const hr = calcTeamRating(series.homeTeam, series, seriesId);
   const ar = calcTeamRating(series.awayTeam, series, seriesId);
 
@@ -314,8 +314,18 @@ function calcWinProb(series, seriesId) {
     baseHCA += FORTRESS_VENUE_BONUS;
   }
 
-  // homeCourtOverride: 'away' means the away team in data structure actually has home court
-  const hca = series.homeCourtOverride === 'away' ? -baseHCA : baseHCA;
+  // PHASE 58: Game-level venue flip for 2-2-1-1-1 format.
+  // G1, G2, G5, G7 are at series.homeTeam (the higher seed).
+  // G3, G4, G6 are at series.awayTeam (the lower seed).
+  // The previous logic only respected the series-level homeCourtOverride and ignored
+  // the per-game venue, which caused engine over-projection by ~2x baseHCA on every
+  // G3/G4/G6 (e.g. NYK by 9 in PHI for G3 should have been NYK by ~5).
+  // Note: the player-level HCA in projections.js (gameIsHome at line ~990) already
+  // flipped correctly by gameIdx — this brings the team-rating side into alignment.
+  const gameAtAwayVenue = gameNum && (gameNum === 3 || gameNum === 4 || gameNum === 6);
+  const seriesHCASign = series.homeCourtOverride === 'away' ? -1 : 1;
+  const venueHCASign = gameAtAwayVenue ? -1 : 1;
+  const hca = baseHCA * seriesHCASign * venueHCASign;
 
   // BACKTEST LESSON 7: Star ceiling variance factor
   // Elite stars add a small "upside variance" that slightly favors the team with higher-ceiling stars

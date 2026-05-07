@@ -221,6 +221,7 @@ function renderSeries() {
         // When the hardcoded prediction is present, drive the headline from it so the
         // displayed score lines up with the reasoning. Live engine is the fallback.
         const gProj = calcGameProjection(s, s.id, gNum);
+        const gBlend = calcBlendedProjection(s, s.id, gNum); // for projection waterfall
         const pred = gameData.prediction || null;
         const headChar = (pred && pred.character) || gProj.character;
         const gCharClass = headChar === 'BLOWOUT RISK' ? 'blowout' : headChar === 'SEPARATION' ? 'separation' : headChar === 'COMPETITIVE' ? 'competitive' : headChar === 'GRIND' ? 'grind' : 'coinflip';
@@ -286,6 +287,10 @@ function renderSeries() {
 
             ${!gameData.winner ? `<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(${gIdx})">Enter result</span></div>` : ''}
             ${gameData.notes ? `<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">${gameData.notes}</div>` : ''}
+            ${renderPlayerProjections(gameData.prediction, s)}
+            ${renderSimulationPanel(s, gNum)}
+            ${renderProjectionWaterfall(gBlend)}
+            ${renderGameAttribution(s, gNum)}
           </div>
           ${renderProjectedBoxScore(s, gIdx)}
           ${renderCHSScenarios(s, gIdx)}
