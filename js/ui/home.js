@@ -9,22 +9,21 @@
 // ============================================================
 
 // Slate → series → game-date lookup.
-// Kept here (not in bets-data) so this page owns its own filtering logic
-// and bets-data stays a flat record set.
-const SLATE_GAME_DATES = {
-  'R2-G1': {
-    'NYK-PHI': '2026-05-04',
-    'SAS-MIN': '2026-05-04',
-    'DET-CLE': '2026-05-05',
-    'OKC-LAL': '2026-05-05',
-  },
-  'R2-G2': {
-    'NYK-PHI': '2026-05-06',
-    'SAS-MIN': '2026-05-06',  // 9:30 PM ET tonight @ Frost Bank Center
-    'DET-CLE': '2026-05-07',
-    'OKC-LAL': '2026-05-07',
-  },
-};
+// Tier 1.2: now DERIVED from BET_SLATES.games[i].date (the single source
+// of truth). This eliminates the May 7 SAS-MIN bug class where the date
+// was encoded in two places and they got out of sync.
+const SLATE_GAME_DATES = (function deriveSlateGameDates() {
+  const map = {};
+  if (typeof BET_SLATES === 'undefined') return map;
+  Object.entries(BET_SLATES).forEach(([slateKey, slate]) => {
+    if (!slate || !Array.isArray(slate.games)) return;
+    map[slateKey] = {};
+    slate.games.forEach(g => {
+      if (g && g.series && g.date) map[slateKey][g.series] = g.date;
+    });
+  });
+  return map;
+})();
 
 function homeAddDays(yyyymmdd, n) {
   const [y, m, d] = yyyymmdd.split('-').map(Number);

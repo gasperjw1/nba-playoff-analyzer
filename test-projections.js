@@ -438,7 +438,7 @@ function runTests() {
   console.log('\nTEST 8: Schema validation');
   {
     const vctx = loadValidatorContext();
-    const errs = vctx.validateAll(vctx.SERIES_DATA, vctx.BETS, vctx.FEATURED_PARLAYS);
+    const errs = vctx.validateAll(vctx.SERIES_DATA, vctx.BETS, vctx.FEATURED_PARLAYS, vctx.BET_SLATES);
 
     // 8a — main assertion: zero errors
     if (errs.length === 0) {

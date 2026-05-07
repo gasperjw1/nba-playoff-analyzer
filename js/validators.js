@@ -166,8 +166,41 @@ function validateParlay(p, seriesIds) {
   return errors;
 }
 
+// ---------- BET_SLATES metadata --------------------------------
+// Tier 1.2: validates that every slate game has a date in YYYY-MM-DD,
+// a non-empty time/venue, and a series that resolves in SERIES_DATA.
+function validateBetSlates(slates, seriesIds) {
+  const errors = [];
+  if (!slates || typeof slates !== 'object') {
+    errors.push('BET_SLATES is missing or not an object');
+    return errors;
+  }
+  Object.entries(slates).forEach(([slateKey, slate]) => {
+    const ctx = `BET_SLATES[${slateKey}]`;
+    if (!slate || typeof slate !== 'object') { errors.push(`${ctx}: not an object`); return; }
+    if (!slate.label) errors.push(`${ctx}: missing label`);
+    if (!Array.isArray(slate.games)) { errors.push(`${ctx}: games must be array`); return; }
+    if (slate.games.length === 0) errors.push(`${ctx}: games array is empty`);
+    slate.games.forEach((g, i) => {
+      const gctx = `${ctx}.games[${i}](${g && g.series || '?'})`;
+      if (!g.series) errors.push(`${gctx}: missing series`);
+      if (!g.date)   errors.push(`${gctx}: missing date (Tier 1.2 requires structured date)`);
+      if (g.date && !/^\d{4}-\d{2}-\d{2}$/.test(g.date)) errors.push(`${gctx}: date '${g.date}' not in YYYY-MM-DD`);
+      if (!g.time)   errors.push(`${gctx}: missing time`);
+      if (!g.venue)  errors.push(`${gctx}: missing venue`);
+      if (g.series) {
+        const lc = g.series.toLowerCase();
+        let found = false;
+        for (const id of seriesIds) { if (id.toLowerCase().endsWith(lc)) { found = true; break; } }
+        if (!found) errors.push(`${gctx}: series '${g.series}' not in SERIES_DATA`);
+      }
+    });
+  });
+  return errors;
+}
+
 // ---------- orchestrator ---------------------------------------
-function validateAll(seriesData, bets, parlays) {
+function validateAll(seriesData, bets, parlays, betSlates) {
   const errors = [];
   if (!Array.isArray(seriesData)) {
     errors.push('SERIES_DATA is not an array');
@@ -203,6 +236,8 @@ function validateAll(seriesData, bets, parlays) {
     });
     parlays.forEach(p => errors.push(...validateParlay(p, seriesIds)));
   }
+
+  if (betSlates) errors.push(...validateBetSlates(betSlates, seriesIds));
 
   return errors;
 }

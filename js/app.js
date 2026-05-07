@@ -9,7 +9,8 @@ if (typeof validateAll === 'function') {
   const __validationErrors = validateAll(
     typeof SERIES_DATA !== 'undefined' ? SERIES_DATA : [],
     typeof BETS !== 'undefined' ? BETS : [],
-    typeof FEATURED_PARLAYS !== 'undefined' ? FEATURED_PARLAYS : []
+    typeof FEATURED_PARLAYS !== 'undefined' ? FEATURED_PARLAYS : [],
+    typeof BET_SLATES !== 'undefined' ? BET_SLATES : null
   );
   if (__validationErrors.length) {
     console.error('[validators] ' + __validationErrors.length + ' schema issue(s) at boot:');

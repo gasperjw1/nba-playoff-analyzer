@@ -686,31 +686,64 @@ const FEATURED_PARLAYS = [
 // ============================================================
 // Slate metadata — header info for each slate's series
 // ============================================================
+// Tier 1.2: each game uses STRUCTURED date/time/venue fields. The
+// `when` string is auto-derived by buildWhenLabel() below; SLATE_GAME_DATES
+// in home.js is auto-derived from these dates. This is now the single
+// source of truth for game scheduling — no parallel maps to keep in sync.
+//
+// Schema per game:
+//   series  : 'NYK-PHI'           → matches SERIES_DATA.id suffix
+//   date    : 'YYYY-MM-DD'        → drives Home page Tonight/Tomorrow detection
+//   time    : '7:00 PM ET'        → display only
+//   venue   : 'MSG'               → display only
+//   context : 'NYK leads 1-0'     → series state at time of slate
+//   recap   : '<strong>...'        → HTML-rich slate-header narrative
+//
+// Backward compat: if a future entry omits date/time/venue but includes
+// `when`, the parser in `buildWhenLabel` returns it as-is.
+// ============================================================
+function buildWhenLabel(g) {
+  if (g.date && g.time && g.venue) {
+    const [y, m, d] = g.date.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    const wd = dt.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+    const md = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    return `${wd} ${md}, ${g.time} @ ${g.venue}`;
+  }
+  return g.when || '';
+}
+
 const BET_SLATES = {
   'R2-G1': {
     label: 'Round 2 — Game 1 (Archive)',
     games: [
-      { series:'NYK-PHI', when:'Sun May 4, 8:00 PM ET @ MSG', context:'Series 0-0',
+      { series:'NYK-PHI', date:'2026-05-04', time:'8:00 PM ET', venue:'MSG', context:'Series 0-0',
         recap:'<strong style="color:var(--green)">Result:</strong> NYK 137-98 — most lopsided R2 G1 in a decade. Brunson 35pts (12-18 FG). Embiid 14pts (3-11). PHI 48hr turnaround was catastrophic.' },
-      { series:'SAS-MIN', when:'Sun May 4, 9:30 PM ET @ Frost Bank Center', context:'Series 0-0',
+      { series:'SAS-MIN', date:'2026-05-04', time:'9:30 PM ET', venue:'Frost Bank Center', context:'Series 0-0',
         recap:'<strong style="color:var(--red)">Result:</strong> MIN 104-102 (UPSET). Wemby 0-8 3PT (career worst) but 15reb/12blk. Edwards off bench: 18pts in 25min. SAS shot 28% 3PT (10-36).' },
-      { series:'DET-CLE', when:'Mon May 5, 7:00 PM ET @ LCA', context:'Series 0-0',
+      { series:'DET-CLE', date:'2026-05-05', time:'7:00 PM ET', venue:'LCA', context:'Series 0-0',
         recap:'<strong style="color:var(--green)">Result:</strong> DET 111-101. Cade 23/7ast, D.Robinson 19pts (5-8 3PT). DET forced 19 CLE TOs. Allen limited to 18min (knee).' },
-      { series:'OKC-LAL', when:'Mon May 5, 8:30 PM ET @ Paycom Center', context:'Series 0-0',
+      { series:'OKC-LAL', date:'2026-05-05', time:'8:30 PM ET', venue:'Paycom Center', context:'Series 0-0',
         recap:'<strong style="color:var(--green)">Result:</strong> OKC 108-90 (+18). Holmgren 24/12/3blk. SGA only 18pts (7 TOs!) but OKC still dominated. Reaves catastrophic 3-16 FG.' },
     ],
   },
   'R2-G2': {
     label: 'Round 2 — Game 2 (Live)',
     games: [
-      { series:'NYK-PHI', when:'Wed May 6, 7:00 PM ET @ MSG', context:'NYK leads 1-0',
+      { series:'NYK-PHI', date:'2026-05-06', time:'7:00 PM ET', venue:'MSG', context:'NYK leads 1-0',
         recap:'<strong style="color:var(--red)">🚨 EMBIID OUT G2:</strong> Ruled out morning of May 6 with right ankle sprain + right hip soreness. Did not participate in shootaround. PHI projected lineup: Maxey/Edgecombe/Oubre/George/Drummond. <strong style="color:var(--green)">G1 Recap:</strong> NYK 137-98 blowout. Brunson 35pts (12-18 FG). NYK 63% FG, 51% 3PT. Embiid 3-11 (-24). <strong>Key G2 Factor:</strong> Without Embiid, PHI ceiling collapses entirely — Drummond cannot create offense, and KAT stretch-5 will pull him out of the paint. Mitchell Robinson (NYK) questionable with illness. Spread re-priced from -7.5 to -10.5+.' },
-      { series:'SAS-MIN', when:'Wed May 6, 9:30 PM ET @ Frost Bank Center', context:'MIN leads 1-0',
+      { series:'SAS-MIN', date:'2026-05-06', time:'9:30 PM ET', venue:'Frost Bank Center', context:'MIN leads 1-0',
         recap:'<strong style="color:var(--yellow)">G1 Recap:</strong> MIN 104-102 upset. Wemby 0-8 3PT (career worst) but 15reb/12blk. Edwards off bench: 18pts in 25min. Fox -13 (0-4 3PT). SAS shot 28% 3PT (10-36). MIN won Q4 35-30. <strong style="color:var(--yellow)">G2 Update (May 6):</strong> Edwards listed as <strong>QUESTIONABLE</strong> for G2 — knee bothered him at the end of G1. SAS rotation healthy, no new concerns. <strong>Key G2 Factor:</strong> Wemby\'s 3PT regresses to 37.5% mean. Fox must be aggressive. Dosunmu returns for MIN.' },
-      { series:'DET-CLE', when:'Thu May 7, 7:10 PM ET @ LCA', context:'DET leads 1-0',
+      { series:'DET-CLE', date:'2026-05-07', time:'7:10 PM ET', venue:'LCA', context:'DET leads 1-0',
         recap:'<strong style="color:var(--green)">G1 Recap:</strong> DET 111-101. Cade 23/7ast, D.Robinson 19pts (5-8 3PT), Duren 14/14reb/clutch block. DET forced 19 CLE TOs (12 steals). Allen limited to 18min/2pts (knee tendonitis). CLE rallied from -18 to 93-93 but DET closed on a 18-8 run. <strong style="color:var(--green)">G2 Update (May 6):</strong> Allen <em>off</em> injury report — back to full minutes. Mitchell/Cunningham/Mobley all healthy. Huerter (DET) GTD thigh; Merrill (CLE) GTD hamstring. Allen healthy raises CLE\'s ceiling vs G1 conditions.' },
-      { series:'OKC-LAL', when:'Thu May 7, 9:30 PM ET @ Paycom Center', context:'OKC leads 1-0',
+      { series:'OKC-LAL', date:'2026-05-07', time:'9:30 PM ET', venue:'Paycom Center', context:'OKC leads 1-0',
         recap:'<strong style="color:var(--green)">G1 Recap:</strong> OKC 108-90 (+18) <em>without J.Williams</em> (Grade 1 hamstring, ruled out pre-game). Holmgren 24/12/3blk (9-17 FG). SGA only 18pts (7 TOs!) but OKC still dominated. Reaves catastrophic 3-16 FG (0-5 3PT) — oblique severe. OKC bench: every player +11 or better. LeBron 27pts (12-17) but zero help. <strong>Key G2 Factor:</strong> J.Williams remains week-to-week per Daigneault — likely still OUT. SGA turnover correction (career avg 2.8 TOs). Reaves still severely limited (oblique).' },
     ],
   },
 };
+
+// Auto-populate `when` on every game from structured fields, so existing
+// renderers that read `g.when` keep working with no edits.
+Object.values(BET_SLATES).forEach(slate => {
+  slate.games.forEach(g => { if (!g.when) g.when = buildWhenLabel(g); });
+});
