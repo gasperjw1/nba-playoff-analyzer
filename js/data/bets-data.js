@@ -604,69 +604,110 @@ const FEATURED_PARLAYS = [
   // ═══════════════════════════════════════════════════════════════
 
   // ─── RELIABLE FLOOR ────────────────────────────────────────────
-  // Re-priced May 7 morning to current DK lines. Each leg engine-validated.
+  // Honest restructure (May 7 afternoon): user asked for true 80%+ combined
+  // hit rates, which require DK alternate prop lines (lower line, higher juice).
+  // Web search alone can't pull those — they need direct sportsbook access.
+  // For now: Floor parlays use only LEGS where recent-history + engine both
+  // support 75%+ hit rate. Combined targets are 70-75% (NOT 80%+ until alt
+  // lines are wired in via odds API).
+  //
+  // Demoted from "Floor" → "Traditional":
+  //   - Chalk Sweep (combined ~57% — DET ML at 60% drags the parlay)
+  //   - Star Scoring 2-Leg (combined ~40% — SGA + Cade points each ~60-65%)
+  // These are now in the Traditional section as Value plays, not floor picks.
   {
-    id: 'r2-g2-may7-floor-chalk',
+    id: 'r2-g2-may7-floor-okc-best',
     slate: 'R2-G2', date: '2026-05-07',
     category: 'floor', type: 'best-bet',
-    name: 'Chalk Sweep (2-Leg)',
-    stake: 100, odds: '+80', payout: 'To Win: $80',
+    name: 'Best Bet — OKC ML',
+    stake: 100, odds: '-900', payout: 'To Win: $11',
     legs: [
       { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:null,
-        note:'Won G1 by 18 with SGA at his floor (7 TOs!). J.Williams ramping. Reaves still hurt. Engine: OKC by 22.' },
-      { pick:'DET ML vs CLE', odds:'-162', confidence:'high', status:null,
-        note:'Won G1 by 10. Cade 23/7ast. DET #1 defense. Engine: DET by 2 (close, but home edge).' },
+        note:'Solo bet. Engine projects OKC by 22 (LAL still missing Doncic + Reaves at ~50% capacity). Estimated probability ~95%. Lowest-variance bet on the board. Pays only $11 on $100 — lock, not a value play.' },
     ],
-    thesis:'Both home teams favored at DK. Lines tightened from open (-800/-190 → -900/-162) as money moved on the chalk. Combined value dropped to +80 — still positive but no longer the standout it was on opening lines.',
+    thesis:'The closest thing to a true floor bet on the slate. OKC won G1 by 18 with SGA having the WORST game of his recent career (7 TOs). They\'re heavy home favorites against a team starting Smart at PG with no Doncic. Risk: insurance-grade. Take it as a solo bet, not a parlay leg, because correlating with anything else lowers your hit rate.',
     result: null,
   },
   {
-    id: 'r2-g2-may7-floor-star-scoring',
+    id: 'r2-g2-may7-floor-okc-holmgren-reb',
     slate: 'R2-G2', date: '2026-05-07',
     category: 'floor', type: 'best-bet',
-    name: 'Star Scoring (Floor, 2-Leg)',
-    stake: 100, odds: '+240', payout: 'To Win: $240',
+    name: 'Reliable 2-Leg — OKC ML + Holmgren Reb',
+    stake: 100, odds: '+90', payout: 'To Win: $90',
     legs: [
-      { pick:'SGA Over 29 pts (OKC-LAL G2)', odds:'-120', confidence:'high', status:null,
-        note:'Season avg 31.1; 25+ in 18 of last 20. G1 7 TOs was anomaly. Engine: 36pts. Line moved 24.5→29 — book caught up to mean, engine still says over.' },
-      { pick:'Cade Over 27.5 pts (DET-CLE G2)', odds:'-118', confidence:'high', status:null,
-        note:'Avg 32 over last 5 games. G1 23pts on 9-11 FT. LCA home crowd. Engine: 31pts. Line moved 21.5→27.5.' },
+      { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:null,
+        note:'~95% per engine. Same leg as Best Bet.' },
+      { pick:'Holmgren Over 8.5 rebounds (OKC-LAL G2)', odds:'-150', confidence:'high', status:null,
+        note:'Holmgren had 12 reb in G1 vs LAL and 12 reb in R1 G4 vs PHX (back-to-back DDs). Playoff avg 9.2 reb. LAL\'s frontcourt (Hayes/Hachimura/Vanderbilt) gives Chet huge length advantage. Estimated ~78% hit rate. Correlates positively with OKC ML (if OKC wins big, Holmgren plays full minutes and rebounds easily).' },
     ],
-    thesis:'2-leg parlay (was 3-leg with LeBron — dropped LeBron leg because the line moved to 23.5 with the book pricing the Under at -250, which ATC into a coin-flip at best). SGA + Cade both have engine projections well above market lines. Combined +240 reflects current DK lines, not the easier ones from open.',
+    thesis:'Two POSITIVELY-CORRELATED legs (both depend on OKC playing dominant). OKC ML ~95% + Holmgren rebounds ~78%, but the correlation makes the joint probability higher than the product (~74-76% combined). +90 payout for a 75%+ win rate is honest floor value. Note: this is the closest we can get to a true Floor parlay without DK alternate lines.',
     result: null,
   },
   {
-    id: 'r2-g2-may7-floor-under',
+    id: 'r2-g2-may7-floor-under-double',
     slate: 'R2-G2', date: '2026-05-07',
     category: 'floor', type: 'best-bet',
-    name: 'Total + Holmgren Under (2-Leg)',
+    name: 'OKC-LAL Under Double (2-Leg)',
     stake: 100, odds: '+265', payout: 'To Win: $265',
     legs: [
       { pick:'OKC-LAL G2 Under 209.5', odds:'-110', confidence:'medium', status:null,
-        note:'G1 total was 198. Engine projects 208 in G2 (under 209.5 by 1.5pts). LAL\'s Reaves still hurt + OKC\'s elite defense → low-scoring continuation likely.' },
+        note:'G1 total was 198. Engine projects 208 (1.5pts under). LAL\'s Reaves hurt + OKC\'s elite defense → low-scoring continuation. Estimated ~62% hit rate.' },
       { pick:'Holmgren Under 22.5 pts (OKC-LAL G2)', odds:'-115', confidence:'medium', status:null,
-        note:'Playoff avg 18.6. Engine: 17pts. G1 24-pt explosion was variance (3-7 from 3 — career playoff 3PT only ~32%). Blowout context likely caps Q4 minutes.' },
+        note:'Playoff avg 18.6 ppg. Engine: 17pts. G1 24-pt was variance-driven (3-7 from 3, career playoff 3PT ~32%). Blowout caps Q4 minutes. Estimated ~62% hit rate.' },
     ],
-    thesis:'Replaces the old "Volume Floors" parlay (which referenced lines that no longer exist on DK after market moves). Two engine-supported Unders — total and a star prop — both with regression-to-mean reasoning. Combined +265 is solid risk-adjusted return.',
+    thesis:'Two ENGINE-SUPPORTED Unders, both with regression-to-mean reasoning. Honest combined hit rate ~50-55% (the legs are weakly correlated — OKC blowout helps both). NOT a true 75%+ floor — closer to "value with a thesis." Promoted to Floor anyway because both legs have explicit engine support, but acknowledged in the +265 odds (you\'re paying for the variance).',
     result: null,
   },
 
-  // ─── TRADITIONAL ────────────────────────────────────────────────
+  // ─── TRADITIONAL (Value plays) ──────────────────────────────────
+  // Demoted from Floor to Traditional: hit rates honest, +EV per engine but
+  // not 75%+ combined. These are the "chase the engine edge" parlays where
+  // we beat the market line per our model, but not at floor-pick reliability.
+  {
+    id: 'r2-g2-may7-trad-chalk-sweep',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'traditional', type: 'value',
+    name: 'Chalk Sweep — Both Home MLs (2-Leg)',
+    stake: 100, odds: '+80', payout: 'To Win: $80',
+    legs: [
+      { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:null,
+        note:'~95% per engine. Strong leg.' },
+      { pick:'DET ML vs CLE', odds:'-162', confidence:'medium', status:null,
+        note:'Engine: DET by 2 — close to coin flip. ~58-62% per engine. Allen back for CLE raises ceiling. NOT a floor leg despite the -162 price.' },
+    ],
+    thesis:'DEMOTED from Floor (combined ~57% hit rate after honest analysis). DET ML at ~60% is the dragging leg — Allen returning makes G2 a near-coin-flip per the engine, but DK still has DET as a 3.5-pt favorite. Combined +80 only makes sense if you really trust DET defense to suppress CLE again. Honest take: skip if you can\'t handle a 40% loss probability.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-may7-trad-star-scoring',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'traditional', type: 'value',
+    name: 'Star Scoring 2-Leg — SGA + Cade Overs',
+    stake: 100, odds: '+240', payout: 'To Win: $240',
+    legs: [
+      { pick:'SGA Over 29 pts (OKC-LAL G2)', odds:'-120', confidence:'medium', status:null,
+        note:'~65-70% historical hit rate. Engine 36, line 29. Last 10 games: 7 of 10 over 29. NOT a floor leg.' },
+      { pick:'Cade Over 27.5 pts (DET-CLE G2)', odds:'-118', confidence:'medium', status:null,
+        note:'~60% historical. Last 5: 23 (under), 32, 32, 45, 27 (under) — 3 of 5 over 27.5. Engine 31. Variance is wide (23-45 range).' },
+    ],
+    thesis:'DEMOTED from Floor (combined ~40% after honest hit-rate analysis — even though both legs are +EV vs the market, neither is a 75%+ leg, so the parlay isn\'t a floor play). Engine projects clear overs on both, but recent variance makes this a value/upside play, not a floor parlay. +240 reflects the 40% combined miss probability.',
+    result: null,
+  },
   {
     id: 'r2-g2-may7-trad-star-props',
     slate: 'R2-G2', date: '2026-05-07',
     category: 'traditional', type: 'value',
-    name: 'Star Props (3-Leg)',
+    name: 'Star Props 3-Leg — SGA + Cade + LeBron',
     stake: 100, odds: '+800', payout: 'To Win: $800',
     legs: [
-      { pick:'SGA Over 29 pts (OKC-LAL G2)', odds:'-120', confidence:'high', status:null,
-        note:'Same leg as Floor parlay. Engine 36, line 29. Strongest prop on the slate.' },
-      { pick:'Cade Over 27.5 pts (DET-CLE G2)', odds:'-118', confidence:'high', status:null,
-        note:'Engine 31, line 27.5. Cade averaging 32 in last 5 games.' },
+      { pick:'SGA Over 29 pts (OKC-LAL G2)', odds:'-120', confidence:'medium', status:null,
+        note:'~65-70% per recent games.' },
+      { pick:'Cade Over 27.5 pts (DET-CLE G2)', odds:'-118', confidence:'medium', status:null,
+        note:'~60% per recent games (variance 23-45 range).' },
       { pick:'LeBron Over 23.5 pts (OKC-LAL G2)', odds:'+185', confidence:'lean', status:null,
-        note:'Engine 25, line 23.5. Book strongly favors Under (-250). Marginal play with juicy +185 plus odds. Risk: blowout caps Q4 minutes.' },
+        note:'~40-45% per book pricing (Under at -250 is the sharp side). Engine 25 = slim 1.5pt over edge. Risk: blowout caps Q4 minutes.' },
     ],
-    thesis:'Three star scoring overs at current DK lines. SGA + Cade have clear engine edges; LeBron is a lean — book is signaling Under via -250 juice but the +185 plus on the Over makes it worth the leg. Combined +800 (was +500 before line moves).',
+    thesis:'Honest combined hit rate ~25-30%. The +800 odds reflect that. This is a high-variance value play — engine likes all 3 individually but the combined probability is ~1-in-4. Use for ceiling chase, not floor.',
     result: null,
   },
   {
@@ -677,11 +718,11 @@ const FEATURED_PARLAYS = [
     stake: 100, odds: '+1750', payout: 'To Win: $1,750',
     legs: [
       { pick:'CLE ML vs DET', odds:'+136', confidence:'chaos', status:null,
-        note:'Allen back. Mitchell at 27.5 prop = book expects scoring. Mobley adjustments. CLE playoff pedigree. Engine: DET by 2 — coin flip leans home.' },
+        note:'~42% per engine (DET by 2 → CLE wins ~42% of similar coin-flip scenarios). Allen back, Mobley adjustments, CLE playoff pedigree.' },
       { pick:'LAL ML vs OKC', odds:'+600', confidence:'chaos', status:null,
-        note:'Requires LeBron nuclear + Reaves bounce-back + OKC complacency. Engine: OKC by 22 — long shot. +600 reflects the difficulty.' },
+        note:'~5% per engine (OKC by 22 baseline). Requires LeBron nuclear + Reaves bounce-back + OKC complacency.' },
     ],
-    thesis:'Both road dogs needed. CLE+136 is reasonable per engine; LAL+600 is a true chaos play. Combined +1750 (was +2200 before line moves — odds tightened slightly).',
+    thesis:'Combined hit rate ~2% per engine. Pure chaos play — $100 risk for $1,750 upside. As designed.',
     result: null,
   },
 ];
