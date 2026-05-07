@@ -2557,24 +2557,213 @@ function renderR2Bets(el) {
           <span style="color:#888;font-weight:700;">DATE</span><span style="color:#888;font-weight:700;">PARLAYS</span><span style="color:#888;font-weight:700;">W-L</span><span style="color:#888;font-weight:700;">NET</span>
           <span style="color:#aaa;">Sun May 4</span><span style="color:#aaa;">Chalk Sweep, Ensemble Edge, Chaos, Props</span><span style="color:#aaa;">1-3</span><span style="color:#3dd68c;font-weight:700;">+$149</span>
           <span style="color:#aaa;">Mon May 5</span><span style="color:#aaa;">Chalk Doubles, Chaos Road, Props</span><span style="color:#aaa;">1-2</span><span style="color:#3dd68c;font-weight:700;">+$60</span>
-          <span style="font-weight:700;color:#60a5fa;">Tue May 6</span><span style="font-weight:700;color:#60a5fa;">Iron Floor, Home Stars, Spread+Floor, Regression, Bounce-Back, Chaos</span><span style="color:#60a5fa;">TODAY</span><span style="color:#888;">-</span>
-          <span style="color:#888;">Wed May 7</span><span style="color:#888;">Chalk Sweep, Road Upsets, Star Props</span><span style="color:#888;">UPCOMING</span><span style="color:#888;">-</span>
+          <span style="color:#aaa;">Tue May 6</span><span style="color:#aaa;">Iron Floor &#x2717;, Home Stars &#x2713;, Spread+Floor &#x2717;, Regression &#x2713;, Bounce-Back &#x2717;, Chaos &#x2717;</span><span style="color:#aaa;">2-4</span><span style="color:#3dd68c;font-weight:700;">+$25</span>
+          <span style="font-weight:700;color:#60a5fa;">Wed May 7</span><span style="font-weight:700;color:#60a5fa;">Chalk Sweep, Star Floors, Volume Floors, Star Props, Chaos Road</span><span style="color:#60a5fa;">TODAY</span><span style="color:#888;">-</span>
         </div>
         <div style="border-top:1px solid #333;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;">
-          <span style="color:#888;">R2 Total Wagered: <strong style="color:#aaa;">$878</strong></span>
-          <span style="color:#888;">R2 Settled Net: <strong style="color:#3dd68c;">+$209</strong></span>
-          <span style="color:#888;">R2 Record: <strong style="color:#3dd68c;">2-5</strong></span>
+          <span style="color:#888;">R2 Total Wagered: <strong style="color:#aaa;">$1,478</strong></span>
+          <span style="color:#888;">R2 Settled Net: <strong style="color:#3dd68c;">+$234</strong></span>
+          <span style="color:#888;">R2 Record: <strong style="color:#3dd68c;">4-9</strong></span>
         </div>
       </div>
 
       <!-- ═══════════════════════════════════════════ -->
-      <!-- TODAY — Tue May 6: NYK-PHI G2 + SAS-MIN G2 -->
+      <!-- TODAY — Wed May 7: DET-CLE G2 + OKC-LAL G2 -->
       <!-- ═══════════════════════════════════════════ -->
       <div style="margin-bottom:20px;border-top:3px solid #3dd68c;padding-top:16px;">
         <div style="text-align:center;margin-bottom:8px;">
-          <span style="font-size:14px;font-weight:800;color:#3dd68c;background:rgba(61,214,140,0.15);padding:8px 24px;border-radius:20px;letter-spacing:1px;border:1px solid rgba(61,214,140,0.3);">&#x1f3c0; TODAY &mdash; Tue May 6</span>
+          <span style="font-size:14px;font-weight:800;color:#3dd68c;background:rgba(61,214,140,0.15);padding:8px 24px;border-radius:20px;letter-spacing:1px;border:1px solid rgba(61,214,140,0.3);">&#x1f3c0; TODAY &mdash; Wed May 7</span>
         </div>
-        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">NYK-PHI G2 @ MSG 7:30 PM ET &nbsp;|&nbsp; SAS-MIN G2 @ Frost Bank 9:30 PM ET</div>
+        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">DET-CLE G2 @ LCA 7:00 PM ET &nbsp;|&nbsp; OKC-LAL G2 @ Paycom 9:30 PM ET</div>
+
+        <!-- RELIABLE FLOOR SECTION HEADER -->
+        <div style="text-align:center;margin-bottom:14px;">
+          <span style="font-size:11px;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;border:1px solid rgba(34,211,238,0.2);">&#x1f6e1; RELIABLE FLOOR PARLAYS &mdash; 80%+ hit rate per leg</span>
+        </div>
+
+        <!-- $100 CHALK SWEEP (Floor 1) -->
+        <div class="parlay-card headline" style="border:2px solid #22d3ee;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="font-size:16px;color:#22d3ee;">Chalk Sweep (2-Leg)</span>
+            <span class="parlay-odds" style="font-size:16px;background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +120 | To Win: $120</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL (G2)</div>
+                <div class="parlay-leg-line">-800 | Won G1 by 18 with SGA's WORST game (7 TOs!) | J.Williams ramping back | Reaves still hurt | <strong style="color:#22d3ee;">95%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>DET ML</strong> vs CLE (G2)</div>
+                <div class="parlay-leg-line">-190 | Won G1 by 10 | Cade 23/7ast | DET defense forced 19 CLE TOs (12 stl) | Home crowd | <strong style="color:#22d3ee;">75%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>&#x1f6e1; Chalk Sweep thesis:</strong> Both home teams dominated G1. OKC by 18 even with SGA at his floor (7 TOs!); their depth gap vs LAL is structural. DET forced 19 CLE TOs &mdash; that's scheme, not luck. Allen returns for CLE which raises ceiling, but the structural turnover problem persists. At +120 this is excellent value for two heavy favorites that have proven dominance.
+          </div>
+        </div>
+
+        <!-- $100 STAR SCORING FLOORS (Floor 2) -->
+        <div class="parlay-card" style="border:2px solid #22d3ee;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#22d3ee;">Star Scoring Floors (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +170 | To Win: $170</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SGA Over 22.5 pts</strong> (OKC-LAL G2)</div>
+                <div class="parlay-leg-line">-180 | Season avg 31.1 | 25+ in 18 of last 20 | G1: 18pts (7 TOs) was career-anomaly | <strong style="color:#22d3ee;">90%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Cade Over 17.5 pts</strong> (DET-CLE G2)</div>
+                <div class="parlay-leg-line">-180 | Playoff avg 23ppg | G1: 23pts (8-16 FG, 9-11 FT) | Cade 18+ in 8 of 9 home playoff games | <strong style="color:#22d3ee;">85%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>LeBron Over 21.5 pts</strong> (OKC-LAL G2)</div>
+                <div class="parlay-leg-line">-150 | Playoff avg 24ppg | G1: 27pts (12-17, 71%) | Reaves at 50% = LeBron must shoot | <strong style="color:#22d3ee;">85%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>&#x1f6e1; Star Floors thesis:</strong> Three stars at FLOOR lines, not ceiling. SGA's 22.5 is 8.6pts below his playoff average &mdash; he hit 22+ in 18 of 20 last games; G1 (7 TOs) was the lone break in pattern. Cade has 18+ in nearly every home playoff game. LeBron must shoot to keep LAL competitive without Doncic and a compromised Reaves. Each clears 85%+ individually.
+          </div>
+        </div>
+
+        <!-- $100 VOLUME FLOORS (Floor 3) -->
+        <div class="parlay-card" style="border:2px solid #22d3ee;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#22d3ee;">Volume Floors (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +150 | To Win: $150</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Cade Over 5.5 assists</strong> (DET-CLE G2)</div>
+                <div class="parlay-leg-line">-180 | Playoff avg 7.1 ast | G1: 7 ast | Primary ball-handler | Hasn't gone under 5 ast in 12 games | <strong style="color:#22d3ee;">90%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Holmgren Over 7.5 rebounds</strong> (OKC-LAL G2)</div>
+                <div class="parlay-leg-line">-200 | Season avg 8.9 reb | G1: 12 reb | 35+ min/game playoffs | LAL has no real C threat | <strong style="color:#22d3ee;">85%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SGA Over 4.5 assists</strong> (OKC-LAL G2)</div>
+                <div class="parlay-leg-line">-180 | Avg 6.4 ast | OKC half-court PnR offense | G1: 5 ast despite 7 TOs | <strong style="color:#22d3ee;">85%+ floor</strong></div>
+              </div>
+              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>&#x1f6e1; Volume Floors thesis:</strong> Counting-stat floors are blowout-proof &mdash; even if either game gets out of hand, primary ball-handlers and bigs accumulate stats by Q3. Cade's playoff floor is 7+ ast, Holmgren rebounds in his sleep (12 in G1 already), SGA distributes even on his worst nights (5 ast in his 7-TO G1). Three near-locks at +150.
+          </div>
+        </div>
+
+        <!-- TRADITIONAL PARLAYS HEADER -->
+        <div style="text-align:center;margin:20px 0 14px;">
+          <span style="font-size:11px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;">TRADITIONAL PARLAYS</span>
+        </div>
+
+        <!-- $100 STAR PROPS (Traditional 1) -->
+        <div class="parlay-card" style="border:1px solid #a78bfa;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#a78bfa;">Star Props (3-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">$100 &rarr; +500 | To Win: $500</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>SGA Over 24.5 pts</strong> (G2)</div>
+                <div class="parlay-leg-line">-115 | G1: 18pts (7 TOs) | Season avg 31.1 | MASSIVE bounce-back</div>
+              </div>
+              <span class="parlay-leg-conf high">LOCK</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>Cade Over 21.5 pts</strong> (G2)</div>
+                <div class="parlay-leg-line">-120 | G1: 23pts (8-16 FG) | Home + confident | CLE perimeter D porous</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">3</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>LeBron Over 26.5 pts</strong> (G2)</div>
+                <div class="parlay-leg-line">-110 | G1: 27pts (71% FG) | Down 0-1 desperation | Only LAL scorer</div>
+              </div>
+              <span class="parlay-leg-conf high">HIGH</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Props thesis:</strong> SGA bounce-back from 7 TOs is the strongest prop in R2. Cade hit 23 in G1 and gets another home game. LeBron has no choice but high-volume scoring with Reaves compromised. Three near-locks at +500.
+          </div>
+        </div>
+
+        <!-- $100 CHAOS ROAD UPSETS (Traditional 2) -->
+        <div class="parlay-card" style="border:1px solid #f59e0b;">
+          <div class="parlay-header">
+            <span class="parlay-name" style="color:#f59e0b;">Chaos &mdash; Road Upset Double (2-Leg)</span>
+            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">$100 &rarr; +2200 | To Win: $2,200</span>
+          </div>
+          <div class="parlay-legs">
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">1</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET (G2)</div>
+                <div class="parlay-leg-line">+160 | Mitchell 30+ bounce-back | Mobley defense adjusts | CLE playoff pedigree | Allen back</div>
+              </div>
+              <span class="parlay-leg-conf low">CHAOS</span>
+            </div>
+            <div class="parlay-leg">
+              <span class="parlay-leg-num">2</span>
+              <div class="parlay-leg-detail">
+                <div class="parlay-leg-pick"><strong>LAL ML</strong> vs OKC (G2)</div>
+                <div class="parlay-leg-line">+550 | LeBron nuclear game (40+) | OKC complacency risk | Reaves shoots better</div>
+              </div>
+              <span class="parlay-leg-conf low">CHAOS</span>
+            </div>
+          </div>
+          <div class="parlay-reasoning">
+            <strong>Chaos path:</strong> CLE has playoff pedigree and Mitchell can drop 35+ any night. LAL upset requires LeBron supernova AND Reaves shooting better than 3-16. Extreme longshot at +2200 but $100 for $2,200 upside.
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!-- TUE MAY 6 RESULTS — NYK-PHI G2 + SAS-MIN G2 -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:700;color:#aaa;background:rgba(255,255,255,0.05);padding:6px 20px;border-radius:20px;letter-spacing:0.6px;border:1px solid var(--border);">TUE MAY 6 RESULTS &mdash; Net: <strong style="color:#3dd68c;">+$25</strong> | NYK 108-102, SAS 133-95 | 2-4 record</span>
+        </div>
+        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">Home Stars &check; +$280 &middot; Regression &check; +$145 &middot; Iron Floor &cross; &middot; Spread+Floor &cross; &middot; Bounce-Back &cross; &middot; Chaos Double &cross;</div>
 
         <!-- RELIABLE FLOOR SECTION HEADER -->
         <div style="text-align:center;margin-bottom:14px;">
@@ -2781,111 +2970,6 @@ function renderR2Bets(el) {
           </div>
           <div class="parlay-reasoning">
             <strong>Chaos path:</strong> MIN already won in SA &mdash; it's not impossible. Dosunmu may return, Edwards gets 30+ min. PHI's bounce-back potential is real if Embiid goes nuclear. At +1800, the $100 risk is high but the $1,800 payout is massive. This is pure chaos.
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════ -->
-      <!-- TOMORROW — Wed May 7: DET-CLE G2 + OKC-LAL G2 -->
-      <!-- ═══════════════════════════════════════════ -->
-      <div style="margin-bottom:20px;border-top:2px solid #f59e0b;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:8px;">
-          <span style="font-size:12px;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.12);padding:6px 20px;border-radius:20px;letter-spacing:0.5px;border:1px solid rgba(245,158,11,0.2);">TOMORROW &mdash; Wed May 7: DET-CLE G2 + OKC-LAL G2</span>
-        </div>
-        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">DET-CLE G2 @ LCA 7:00 PM ET &nbsp;|&nbsp; OKC-LAL G2 @ Paycom 9:30 PM ET</div>
-
-        <!-- $100 CHALK SWEEP -->
-        <div class="parlay-card headline" style="border:2px solid #4caf50;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;">Chalk Sweep (2-Leg)</span>
-            <span class="parlay-odds" style="font-size:16px;">$100 &rarr; +120 | To Win: $120</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL (G2)</div>
-                <div class="parlay-leg-line">-800 | Won G1 by 18 with SGA's WORST game | J.Williams ramping | Reaves still hurt</div>
-              </div>
-              <span class="parlay-leg-conf high">LOCK</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>DET ML</strong> vs CLE (G2)</div>
-                <div class="parlay-leg-line">-190 | Won G1 by 10 | Cade 23pts + 7ast | 19 CLE TOs forced | Home crowd</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Chalk sweep thesis:</strong> Both home teams dominated G1. OKC won by 18 with SGA at his floor (7 TOs). DET forced 19 TOs. CLE's lack of secondary creation is structural. At +120 this is excellent value for two heavy favorites.
-          </div>
-        </div>
-
-        <!-- $100 CHAOS ROAD DOGS -->
-        <div class="parlay-card" style="border:1px solid #f59e0b;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#f59e0b;">Chaos &mdash; Road Upset Double (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">$100 &rarr; +2200 | To Win: $2,200</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET (G2)</div>
-                <div class="parlay-leg-line">+160 | Mitchell 30+ bounce-back | Mobley defense adjusts | CLE playoff pedigree</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LAL ML</strong> vs OKC (G2)</div>
-                <div class="parlay-leg-line">+550 | LeBron nuclear game (40+) | OKC complacency risk | Reaves shoots better</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Chaos path:</strong> CLE has the playoff pedigree and Mitchell can drop 35+ any night. LAL upset requires LeBron going supernova AND Reaves shooting better than 3-16. Extreme longshot at +2200 but $100 for $2,200 upside.
-          </div>
-        </div>
-
-        <!-- $100 MAY 7 STAR PROPS -->
-        <div class="parlay-card" style="border:1px solid #a78bfa;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#a78bfa;">Star Props (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">$100 &rarr; +500 | To Win: $500</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 24.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-115 | G1: 18pts (7 TOs) | Season avg 31.1 | MASSIVE bounce-back</div>
-              </div>
-              <span class="parlay-leg-conf high">LOCK</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Cade Over 21.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-120 | G1: 23pts (8-16 FG) | Home + confident | CLE's perimeter D porous</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LeBron Over 26.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-110 | G1: 27pts (71% FG) | Down 0-1 desperation | Only LAL scorer</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Props thesis:</strong> SGA bounce-back from 7 TOs is the strongest prop in R2. Cade hit 23 in G1 and gets another home game. LeBron has no choice but high-volume scoring with Reaves compromised. Three near-locks at +500.
           </div>
         </div>
       </div>

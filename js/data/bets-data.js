@@ -615,6 +615,40 @@ const FEATURED_PARLAYS = [
     thesis:'Both home teams dominated G1. OKC by 18 (with SGA TURNING IT OVER 7 TIMES). DET forced 19 CLE TOs — that\'s scheme, not luck. CLE got Allen back which raises ceiling, but the structural turnover problem remains. At +120 this is excellent value for two heavy favorites.',
     result: null,
   },
+  {
+    id: 'r2-g2-may7-floor-star-scoring',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'floor', type: 'best-bet',
+    name: 'Star Scoring Floors (3-Leg)',
+    stake: 100, odds: '+170', payout: 'To Win: $170',
+    legs: [
+      { pick:'SGA Over 22.5 pts (OKC-LAL G2)', odds:'-180', confidence:'floor', status:null,
+        note:'Season avg 31.1ppg. Hit 25+ in 18 of last 20. G1 (7 TOs) was career-anomaly. 90%+ floor.' },
+      { pick:'Cade Over 17.5 pts (DET-CLE G2)', odds:'-180', confidence:'floor', status:null,
+        note:'Playoff avg 23ppg. G1: 23pts. 18+ in 8 of 9 home playoff games. LCA crowd. 85%+ floor.' },
+      { pick:'LeBron Over 21.5 pts (OKC-LAL G2)', odds:'-150', confidence:'floor', status:null,
+        note:'Playoff avg 24ppg. G1: 27pts (12-17, 71%). Reaves at 50% = LeBron must shoot. 85%+ floor.' },
+    ],
+    thesis:'Three stars at FLOOR lines, not ceiling. SGA\'s 22.5 is 8.6pts below playoff avg — only G1 (7 TOs) broke pattern. Cade has 18+ in nearly every home playoff game. LeBron must shoot to keep LAL competitive without Doncic and a compromised Reaves. Each clears 85%+ individually; combined at +170 is high-probability.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-may7-floor-volume',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'floor', type: 'best-bet',
+    name: 'Volume Floors (3-Leg)',
+    stake: 100, odds: '+150', payout: 'To Win: $150',
+    legs: [
+      { pick:'Cade Over 5.5 assists (DET-CLE G2)', odds:'-180', confidence:'floor', status:null,
+        note:'Playoff avg 7.1 ast. G1: 7 ast. Primary ball-handler. Hasn\'t gone under 5 ast in 12 games. 90%+ floor.' },
+      { pick:'Holmgren Over 7.5 rebounds (OKC-LAL G2)', odds:'-200', confidence:'floor', status:null,
+        note:'Season avg 8.9 reb. G1: 12 reb. 35+ min/game playoffs. LAL no real C threat. 85%+ floor.' },
+      { pick:'SGA Over 4.5 assists (OKC-LAL G2)', odds:'-180', confidence:'floor', status:null,
+        note:'Avg 6.4 ast. OKC half-court PnR offense. G1: 5 ast despite 7 TOs. 85%+ floor.' },
+    ],
+    thesis:'Counting-stat floors are blowout-proof — even if either game gets out of hand, primary ball-handlers and bigs accumulate stats by Q3. Cade\'s playoff floor is 7+ ast, Holmgren rebounds in his sleep (12 in G1), SGA distributes even on his worst nights. Three near-locks at +150.',
+    result: null,
+  },
 
   // ─── TRADITIONAL ────────────────────────────────────────────────
   {
