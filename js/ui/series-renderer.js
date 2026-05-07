@@ -217,20 +217,32 @@ function renderSeries() {
           ${renderFatigueMonitor(s)}
         `;
       } else {
-        // No prediction data — show dynamic-only panel
+        // No top-level s.gameN — but s.games[gIdx].prediction may still exist (R2 G3+).
+        // When the hardcoded prediction is present, drive the headline from it so the
+        // displayed score lines up with the reasoning. Live engine is the fallback.
         const gProj = calcGameProjection(s, s.id, gNum);
-        const gCharClass = gProj.character === 'BLOWOUT RISK' ? 'blowout' : gProj.character === 'SEPARATION' ? 'separation' : gProj.character === 'COMPETITIVE' ? 'competitive' : gProj.character === 'GRIND' ? 'grind' : 'coinflip';
-        const gBarPct = Math.min(100, (gProj.absMargin / 30) * 100);
-        const gBarColor = gProj.absMargin >= 18 ? 'var(--red)' : gProj.absMargin >= 12 ? 'var(--yellow)' : gProj.absMargin >= 7 ? 'var(--accent)' : 'var(--green)';
-        const gDynScore = gProj.margin >= 0
-          ? `${s.homeTeam.abbr} ${gProj.homeScore} — ${s.awayTeam.abbr} ${gProj.awayScore}`
-          : `${s.awayTeam.abbr} ${gProj.awayScore} — ${s.homeTeam.abbr} ${gProj.homeScore}`;
+        const pred = gameData.prediction || null;
+        const headChar = (pred && pred.character) || gProj.character;
+        const gCharClass = headChar === 'BLOWOUT RISK' ? 'blowout' : headChar === 'SEPARATION' ? 'separation' : headChar === 'COMPETITIVE' ? 'competitive' : headChar === 'GRIND' ? 'grind' : 'coinflip';
+        const headFavTeam = pred ? (pred.homeWin ? s.homeTeam.abbr : s.awayTeam.abbr) : gProj.favTeam;
+        const headAbsMargin = pred ? Math.abs(pred.margin) : gProj.absMargin;
+        const headHomeWins = pred ? pred.homeWin : (gProj.margin >= 0);
+        const headHomeScore = pred ? pred.homeScore : gProj.homeScore;
+        const headAwayScore = pred ? pred.awayScore : gProj.awayScore;
+        const gBarPct = Math.min(100, (headAbsMargin / 30) * 100);
+        const gBarColor = headAbsMargin >= 18 ? 'var(--red)' : headAbsMargin >= 12 ? 'var(--yellow)' : headAbsMargin >= 7 ? 'var(--accent)' : 'var(--green)';
+        const gDynScore = headHomeWins
+          ? `${s.homeTeam.abbr} ${headHomeScore} — ${s.awayTeam.abbr} ${headAwayScore}`
+          : `${s.awayTeam.abbr} ${headAwayScore} — ${s.homeTeam.abbr} ${headHomeScore}`;
+        const headSpread = (pred && pred.spread) ? pred.spread : `${gProj.favTeam} -${gProj.absMargin >= 1 ? (gProj.absMargin - 0.5).toFixed(1) : '0.5'}`;
+        const headWinProb = Math.min(95, Math.round(50 + (headAbsMargin || 0) * 3));
+        const headTotal = pred ? (pred.homeScore + pred.awayScore) : (gProj.homeScore + gProj.awayScore);
 
         tabContent = `
           <div class="game-panel" style="border-color:var(--accent)40">
             <div class="game-panel-header">
               <div class="game-panel-title" style="color:var(--accent)">Game ${gNum} Prediction</div>
-              <span class="game-character ${gCharClass}">${gProj.character}</span>
+              <span class="game-character ${gCharClass}">${headChar}</span>
             </div>
             <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px">@ ${actualVenue.city} | ${seriesStr}</div>
 
@@ -239,7 +251,7 @@ function renderSeries() {
               <span style="font-size:14px;font-weight:700">${getGameResultDisplay(s, gNum)}</span>
             </div>` : ''}
 
-            <div class="proj-score-dynamic">${gProj.favTeam} by ${gProj.absMargin} — ${gDynScore}</div>
+            <div class="proj-score-dynamic">${headFavTeam} by ${headAbsMargin} — ${gDynScore}</div>
             <div class="margin-bar-container">
               <div class="margin-bar"><div class="margin-bar-fill" style="width:${gBarPct}%;background:${gBarColor}"></div></div>
               <span class="margin-range">${gProj.marginRange}</span>
@@ -247,29 +259,29 @@ function renderSeries() {
             <div class="variance-pills">
               <div class="variance-pill">Blowout ${gProj.blowoutProb}%</div>
               <div class="variance-pill">Close game ${gProj.closeProb}%</div>
+              ${pred && (pred.homeWin !== (gProj.margin >= 0) || Math.abs(pred.margin) !== gProj.absMargin) ? `<div class="variance-pill" style="color:var(--text-dim);border-color:rgba(255,255,255,0.1)" title="Live engine baseline before tactical adjustments">Engine: ${gProj.favTeam} by ${gProj.absMargin}</div>` : ''}
               ${gProj.talentMultiplier > 1.1 ? '<div class="variance-pill" style="color:var(--red);border-color:rgba(239,68,68,0.3)">Talent gap \u00d7'+gProj.talentMultiplier+'</div>' : ''}
               ${Math.abs(gProj.depthEdge) >= 1.5 ? '<div class="variance-pill" style="color:var(--yellow);border-color:rgba(245,158,11,0.3)">Depth edge '+(gProj.depthEdge>0?s.homeTeam.abbr:s.awayTeam.abbr)+'</div>' : ''}
             </div>
 
             <div class="game-panel-grid" style="margin-top:12px">
-              <div class="gp-stat"><div class="label">Model Spread</div><div class="val">${gProj.favTeam} -${gProj.absMargin >= 1 ? (gProj.absMargin - 0.5).toFixed(1) : '0.5'}</div></div>
-              <div class="gp-stat"><div class="label">Win Prob</div><div class="val">${Math.min(95, Math.round(50 + (gProj.absMargin || 0) * 3))}%</div></div>
-              <div class="gp-stat"><div class="label">Total</div><div class="val">${gProj.homeScore + gProj.awayScore}</div></div>
+              <div class="gp-stat"><div class="label">Model Spread</div><div class="val">${headSpread}</div></div>
+              <div class="gp-stat"><div class="label">Win Prob</div><div class="val">${headWinProb}%</div></div>
+              <div class="gp-stat"><div class="label">Total</div><div class="val">${headTotal}</div></div>
             </div>
 
-            ${gameData.prediction && gameData.prediction.reasoning ? `<div style="margin-top:14px;padding:12px;background:rgba(0,0,0,0.18);border-left:3px solid var(--accent);border-radius:6px">
-              <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px">Model Reasoning</div>
-              ${gameData.prediction.confidence || gameData.prediction.character ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;font-size:11px">
-                ${gameData.prediction.confidence ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">Confidence: <strong style="color:var(--text)">${gameData.prediction.confidence}</strong></span>` : ''}
-                ${gameData.prediction.character ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">Character: <strong style="color:var(--text)">${gameData.prediction.character}</strong></span>` : ''}
-                ${gameData.prediction.xFactor ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">X-Factor: <strong style="color:var(--text)">${gameData.prediction.xFactor}</strong></span>` : ''}
-              </div>` : ''}
-              <div style="font-size:12px;color:var(--text);line-height:1.65;white-space:pre-line">${gameData.prediction.reasoning}</div>
-              ${gameData.prediction.moneyline || gameData.prediction.spread || gameData.prediction.ou ? `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.08);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim)">
-                ${gameData.prediction.moneyline ? `<span>ML: <strong style="color:var(--text)">${gameData.prediction.moneyline}</strong></span>` : ''}
-                ${gameData.prediction.spread ? `<span>Spread: <strong style="color:var(--text)">${gameData.prediction.spread}</strong></span>` : ''}
-                ${gameData.prediction.ou ? `<span>O/U: <strong style="color:var(--text)">${gameData.prediction.ou}</strong></span>` : ''}
-              </div>` : ''}
+            ${gameData.prediction && gameData.prediction.keyTakeaways && gameData.prediction.keyTakeaways.length ? `<div style="margin-top:14px;padding:12px;background:rgba(0,0,0,0.15);border-radius:10px;border-left:3px solid var(--accent)">
+              <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">\u{1F4CB} Key Takeaways from Game ${gNum - 1}</div>
+              ${gameData.prediction.keyTakeaways.map(t => '<div style="font-size:11px;color:var(--text);line-height:1.55;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">• ' + t + '</div>').join('')}
+            </div>` : ''}
+            ${gameData.prediction && gameData.prediction.reasoning ? `<div style="margin-top:10px;padding:10px 12px;background:rgba(0,0,0,0.12);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6">
+              <strong style="color:var(--text)">Summary:</strong> ${gameData.prediction.reasoning}
+            </div>` : ''}
+            ${gameData.prediction && (gameData.prediction.moneyline || gameData.prediction.spread || gameData.prediction.ou || gameData.prediction.xFactor) ? `<div style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim)">
+              ${gameData.prediction.moneyline ? `<span>ML: <strong style="color:var(--text)">${gameData.prediction.moneyline}</strong></span>` : ''}
+              ${gameData.prediction.spread ? `<span>Spread: <strong style="color:var(--text)">${gameData.prediction.spread}</strong></span>` : ''}
+              ${gameData.prediction.ou ? `<span>O/U: <strong style="color:var(--text)">${gameData.prediction.ou}</strong></span>` : ''}
+              ${gameData.prediction.xFactor ? `<span>X-Factor: <strong style="color:var(--text)">${gameData.prediction.xFactor}</strong></span>` : ''}
             </div>` : ''}
 
             ${!gameData.winner ? `<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(${gIdx})">Enter result</span></div>` : ''}
