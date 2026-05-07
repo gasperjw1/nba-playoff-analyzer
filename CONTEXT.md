@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 6, 2026 evening (through Phase 56 — declarative bet card schema migration complete + May 6 injury report applied to tonight's NYK-PHI G2 slate; Embiid OUT).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 6, 2026 evening (through Phase 57 — Home landing page with adaptive layout, Featured Parlays toggle, News feed; Phase 55 bet schema files restored after the gasperjw1 merge silently dropped them).
 
 ---
 
@@ -20,16 +20,17 @@ Phase milestones referenced throughout: Phase 49 recalibrated win probabilities 
 
 ```
 nba-playoff-analyzer/
-├── index.html                       # App shell — script tags in dependency order; loads bets-data.js + bet-card.js (Phase 55)
-├── css/styles.css                   # All styling with mobile-responsive breakpoints
+├── index.html                       # App shell — script tags in dependency order; loads bets-data.js + news.js + bet-card.js + home.js
+├── css/styles.css                   # All styling; .home-* classes for Phase 57 landing layout
 ├── js/
-│   ├── app.js                       # Boot sequence; defaults currentSeriesIdx to first series in active round (Phase 53)
+│   ├── app.js                       # Boot sequence; renders Home page on load (Phase 57)
 │   ├── state.js                     # UI state, scenario builder, localStorage V3
 │   ├── utils.js                     # Formatters, rating tiers, stat helpers
 │   ├── data/
-│   │   ├── constants.js             # HCA, G7 overrides, SPM coefficients, ROUND_META, PLAYOFF_ADJUSTMENT, SIM_CONFIG
+│   │   ├── constants.js             # HCA, G7 overrides, SPM, ROUND_META, PLAYOFF_ADJUSTMENT, SIM_CONFIG, CURRENT_DATE (Phase 57)
 │   │   ├── series-data.js           # All series — rosters, stats, predictions, box scores, priorRound graduation, CHS scenarios
-│   │   ├── bets-data.js             # Phase 55 — declarative BETS array (36 R2 cards) + BET_SLATES metadata
+│   │   ├── bets-data.js             # Phase 55 — declarative BETS array (36+ R2 cards) + BET_SLATES + FEATURED_PARLAYS (Phase 57)
+│   │   ├── news.js                  # Phase 57 — curated NEWS feed (date/severity/series/headline/body/source)
 │   │   ├── boxscores.js             # Per-player box score data
 │   │   └── historical.js            # Historical without-star data
 │   ├── engine/
@@ -45,9 +46,10 @@ nba-playoff-analyzer/
 │       ├── components.js            # Scenario builder, stat bars, waterfall, attribution, renderCHSScenarios (Phase 54)
 │       ├── series-renderer.js       # Now embeds CHS panel per game (Phase 54)
 │       ├── bet-card.js              # Phase 55 — renderBetCard() + renderBetSlateSeries(); supports win/loss/push/void (Phase 56)
+│       ├── home.js                  # Phase 57 — renderHomePage() + SLATE_GAME_DATES + Floor/Traditional toggle + adaptive layout
 │       ├── modals.js
-│       ├── navigation.js            # Tab switching — rounds, series, games, pages, bets
-│       ├── learnings.js             # Collapsible phase timeline (currently through Phase 56)
+│       ├── navigation.js            # Tab switching — Home is the default page (Phase 57)
+│       ├── learnings.js             # Collapsible phase timeline (currently through Phase 57)
 │       ├── definitions.js           # Metric definitions with category tabs
 │       └── bets.js                  # Bets orchestrator; dml/dmargin/dwinner helpers (Phase 48); slate sections call renderBetSlateSeries
 ├── playoffs_2025_validation.js      # 2025 playoffs game-by-game results — independent validation dataset
@@ -60,11 +62,12 @@ nba-playoff-analyzer/
 ### Script Load Order (dependency chain)
 Data layer → utils/state → engine → UI → boot. All globals, no ES modules.
 
-### Pages (4 tabs via `switchPage()`)
-1. **Series Analysis** — Tabbed series with rosters, synergy, coaching, game predictions, waterfall charts, and a per-game CHS panel showing matched scenarios + cascade effects (Phase 54)
-2. **Model Learnings** — Collapsible phase timeline (currently through Phase 56)
-3. **Definitions** — All metric definitions with category tabs
-4. **Bets** — Per-series slate sections rendered through one declarative pipeline (Phase 55) with dynamic ML/margin/winner from `calcBlendedProjection()`
+### Pages (5 tabs via `switchPage()` — Home is now the default)
+1. **Home** (Phase 57) — landing page; sections: Tonight (auto-fit game cards), Featured Parlays (Reliable Floor / Traditional toggle), Latest News (curated feed), Tonight's Bets (per-series columns when ≥2 games, side-by-side with News when 1 game), Tomorrow.
+2. **Series Analysis** — Tabbed series with rosters, synergy, coaching, game predictions, waterfall charts, and a per-game CHS panel showing matched scenarios + cascade effects (Phase 54)
+3. **Model Learnings** — Collapsible phase timeline (currently through Phase 57)
+4. **Definitions** — All metric definitions with category tabs
+5. **Bets** — Per-series slate sections rendered through one declarative pipeline (Phase 55) with dynamic ML/margin/winner from `calcBlendedProjection()`
 
 ---
 
@@ -264,6 +267,7 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 | 54 | Empty box score bug + CHS on series page. Last-name + substring fallback in `calcProjectedBoxScore` so prior-game last-name entries match full-name rosters (R2 G2 box scores now populate: 8+7, 6+9, 9+8). Extracted `renderCHSScenarios()` and wired into series-analysis page (was bets-only). |
 | 55 | Declarative bet card schema. New `js/data/bets-data.js` (typed `BETS` array + `BET_SLATES` metadata) + `js/ui/bet-card.js` (`renderBetCard` + `renderBetSlateSeries`). Schema fields: `type/pick/odds/facts/chs/confidence/thesis[]/narrative/result`. Multi-thesis after tally of 173 existing edge labels showed 6+ combined theses. CHS in own field, lean/coin-flip extracted to `confidence` enum. bets.js: 3578 → 3252 lines. Adding a new G3 slate is now ~10 lines of data + a 1-line render call. |
 | 56 | May 6 injury report. Embiid OUT (right ankle + hip soreness) for tonight's NYK-PHI G2; PHI starts Maxey/Edgecombe/Oubre/George/Drummond. Series cascade: `g2PlayerOutlook` `ptsRange [0,0]` for Embiid, NYK 9 vs PHI 7 active. NYK ML re-priced -260 → -450, spread -6.5 → -10.5, Embiid prop voided, new Drummond rebs prop added. New `void` `result.outcome` with yellow ⊘ icon. DET-CLE: Allen back, DET BEST BET → MEDIUM. OKC-LAL: J.Williams was OUT G1 (factual fix). 3447/3447 tests pass. |
+| 57 | **Home landing page.** New default tab. Sections: Tonight (auto-fit game cards from `SLATE_GAME_DATES` + `BET_SLATES` + live `calcBlendedProjection()`), Featured Parlays with Reliable Floor / Traditional toggle, Latest News (curated `NEWS` feed in `js/data/news.js`), Tonight's Bets (per-series columns when ≥2 games, side-by-side with News when 1 game), Tomorrow. New `CURRENT_DATE` constant in `constants.js` (hardcoded so the page stays pinned to the data slate, not wall clock). New `FEATURED_PARLAYS` array in `bets-data.js` with `category: 'floor' \| 'traditional'`. Toggle is client-side via `homeSetParlayMode()` — both panes pre-rendered, swap visibility. **Also restored Phase 55 files** (`js/data/bets-data.js`, `js/ui/bet-card.js`) that the gasperjw1 merge silently dropped. **SAS-MIN G2 date corrected** to May 6 (was stale May 7 in BET_SLATES). |
 | Misc | `playoffs_2025_validation.js` committed (was untracked — independent validation dataset from Basketball Reference). `test-projections.js` TEST 6 ports CHS dev script into formal suite (+19 assertions: 6a compound-scenarios maps, 6b Reaves G1 game context, 6c Reaves CHS fires with negative ptsDelta, 6d Reaves projection includes Compound modifier, 6e SGA CHS for OKC-LAL, 6f cascadeEffects array, 6g Brunson/Cade/Wemby G1). Suite total 3447 → 3466. |
 
 ---
@@ -284,11 +288,22 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 ## How to Continue This Project
 
 1. Read this `CONTEXT.md` and the `README.md` for orientation
-2. Key globals: `SERIES_DATA`, `BETS`, `BET_SLATES`, `currentPlayoffRound`, `currentConf`, `ROUND_META`, `PLAYOFF_ADJUSTMENT`, `SIM_CONFIG`
-3. **Adding game results**: update `series.games[]`, `modelLessons`, then mark resolved bets in `BETS` (set `result.outcome` + `result.actual`)
-4. **Adding new engine factors**: add to `getBlendedPrediction()` lineage array and update `definitions.js`
-5. **Adding a new bet slate (e.g. R2 G3)**: append entries to `BETS` with the right `betId` prefix, add a `BET_SLATES` entry, and call `renderBetSlateSeries('R2-G3','SERIES-KEY',{dml,dmargin,dwinner})` in `bets.js` — ~10 lines of data + 1 line of render
-6. **Adding a new CHS scenario**: append to `series.compoundScenarios[playerName]` with the condition list and `ptsDelta`/`reboundDelta`/etc. Verify it fires with `getTeamScenarioSummary` or by running TEST 6 in `test-projections.js`
-7. **Validation**: run `node test-projections.js` — should report 3466/3466 assertions
-8. **Independent backtest**: pattern checks against `playoffs_2025_validation.js`
-9. Run `node -c js/path/to/file.js` for syntax checks (all files should pass individually)
+2. Key globals: `SERIES_DATA`, `BETS`, `BET_SLATES`, `FEATURED_PARLAYS`, `NEWS`, `CURRENT_DATE`, `currentPlayoffRound`, `currentConf`, `ROUND_META`, `PLAYOFF_ADJUSTMENT`, `SIM_CONFIG`
+3. **Daily update workflow:**
+    a. Bump `CURRENT_DATE` in `constants.js` to today's slate date
+    b. Update `SLATE_GAME_DATES` in `js/ui/home.js` if the new slate's series→date mapping differs from the previous round
+    c. Add new entries to `NEWS` (newest first) for today's injury reports / corrections
+    d. Mark resolved bets in `BETS` (`result.outcome` + `result.actual`); resolved bets auto-drop from the Home page's "Tonight's Bets"
+    e. Mark resolved parlays in `FEATURED_PARLAYS` similarly; live ones (`result === null`) appear on Home, resolved ones on the Bets page only
+4. **Adding game results**: update `series.games[]`, `modelLessons`
+5. **Adding new engine factors**: add to `getBlendedPrediction()` lineage array and update `definitions.js`
+6. **Adding a new bet slate (e.g. R2 G3)**:
+    a. Append entries to `BETS` with the right `betId` prefix
+    b. Add a `BET_SLATES` entry with `when`/`context`/`recap`
+    c. Call `renderBetSlateSeries('R2-G3','SERIES-KEY',{dml,dmargin,dwinner})` in `bets.js`
+    d. Add the slate's series→date mapping to `SLATE_GAME_DATES` so Home picks them up
+7. **Adding a new featured parlay**: append to `FEATURED_PARLAYS` with `category: 'floor'` or `'traditional'` — Home's toggle filters automatically
+8. **Adding a new CHS scenario**: append to `series.compoundScenarios[playerName]` with the condition list and `ptsDelta`/`reboundDelta`/etc. Verify it fires with `getTeamScenarioSummary` or by running TEST 6 in `test-projections.js`
+9. **Validation**: run `node test-projections.js` — should report 3466/3466 assertions
+10. **Independent backtest**: pattern checks against `playoffs_2025_validation.js`
+11. Run `node -c js/path/to/file.js` for syntax checks (all files should pass individually)

@@ -819,6 +819,30 @@ function renderLearningsPage(el) {
         <span class="learning-tag research">Macro Analysis</span><span class="learning-tag model">Engine Upgrade</span><span class="learning-tag milestone">Phase 37</span>
       </div>
 
+      <!-- Phase 57 -->
+      <div class="learning-entry milestone">
+        <div class="learning-phase">Phase 57 — Home Landing Page + Phase 55 File Restoration</div>
+        <div class="learning-date">May 6, 2026</div>
+        <div class="learning-body">
+          <strong>The app gained a real landing page. Previously you boot-loaded straight into Series Analysis — now Home is the default tab and gives a single-screen read of tonight, the news, and the live bets. Also fixed a silent merge regression where Phase 55's bet-schema files were dropped by an evil merge.</strong><br><br>
+          <strong>1. NEW HOME PAGE (<code>js/ui/home.js</code>):</strong> Five sections, decluttered single-column-when-needed layout.<br>
+          &bull; <strong>Tonight</strong> — auto-fit grid of game cards built from <code>SLATE_GAME_DATES</code> + <code>BET_SLATES</code>. Each card surfaces the live <code>calcBlendedProjection()</code> ML pick (with implied win %), projected score, slate context, first sentence of the recap, and an "Open series &rarr;" link.<br>
+          &bull; <strong>Featured Parlays</strong> with a <strong>Reliable Floor / Traditional</strong> toggle. Floor = 80%+ floor-style hit rate per leg (Iron Floor, Home Stars, Spread + Floor). Traditional = regression / bounce-back / chaos plays. Both panes pre-rendered; toggle swaps visibility client-side via <code>homeSetParlayMode()</code>.<br>
+          &bull; <strong>Latest News</strong> — list view (no card chrome) with severity dot, date, series tag, headline, body, source. Source data: new <code>js/data/news.js</code> file, newest-first.<br>
+          &bull; <strong>Tonight's Bets</strong> — re-uses Phase 55's <code>renderBetCard()</code> with live <code>dml</code>/<code>dmargin</code>/<code>dwinner</code> closures. Resolved bets auto-drop.<br>
+          &bull; <strong>Tomorrow</strong> — auto-fit grid of upcoming game cards.<br><br>
+          <strong>2. ADAPTIVE LAYOUT:</strong> The page restructures based on game count.<br>
+          &bull; <em>2+ games tonight</em> (current R2 case): News goes full-width above; Bets render in a per-series auto-fit grid (<code>repeat(auto-fit, minmax(360px, 1fr))</code>) — two side-by-side bet columns instead of one tall right rail.<br>
+          &bull; <em>1 game tonight</em> (CF / Finals): News + Bets sit side-by-side in <code>.home-row</code> — single bet column doesn't dwarf the news.<br>
+          &bull; Narrow viewports collapse everything back to single column automatically.<br><br>
+          <strong>3. <code>CURRENT_DATE</code> CONSTANT:</strong> Hardcoded <code>'2026-05-06'</code> in <code>constants.js</code> rather than reading <code>Date.now()</code> — keeps the page pinned to the data slate. Bumping it manually with daily updates is cheaper than silently going stale next week.<br><br>
+          <strong>4. <code>FEATURED_PARLAYS</code> SCHEMA:</strong> New declarative array in <code>bets-data.js</code> with the same Phase 55 ethos: <code>{id, slate, date, category: 'floor'|'traditional', type, name, stake, odds, payout, legs[], thesis, result}</code>. 6 R2-G2 parlays seeded (3 floor + 3 traditional). Toggle filters by <code>category</code>.<br><br>
+          <strong>5. PHASE 55 FILE RESTORATION (incident fix):</strong> Two earlier merges from gasperjw1/main (<code>e985c45</code> and <code>bcf7cb4</code>) silently dropped <code>js/data/bets-data.js</code> and <code>js/ui/bet-card.js</code> — git's default merge logic preferred the local side, which had never seen these new files. No conflict markers, no warning. The bets page reverted to pre-Phase-55 hand-styled HTML cards (3578 lines) instead of the post-migration 3252-line declarative version. Restored both files from <code>6b6bd8c</code> + re-added the script tags to <code>index.html</code>. Tests stayed green throughout (TEST 6 covers CHS, not the bet rendering pipeline) so this would have shipped silently without the home page work surfacing it.<br><br>
+          <strong>6. SAS-MIN G2 DATE FIX:</strong> <code>BET_SLATES</code> had it as Thu May 7; actual schedule was Wed May 6 9:30 PM ET. Updated <code>SLATE_GAME_DATES.R2-G2.SAS-MIN</code> and the slate's <code>when</code> string. Tonight section now correctly shows both NYK-PHI and SAS-MIN; Tomorrow drops to DET-CLE + OKC-LAL.
+        </div>
+        <span class="learning-tag correct">Landing Page</span><span class="learning-tag bug">Merge Regression Fix</span><span class="learning-tag milestone">Phase 57</span>
+      </div>
+
       <!-- Phase 56 -->
       <div class="learning-entry milestone">
         <div class="learning-phase">Phase 56 — May 6 Injury Report Application</div>
@@ -1149,7 +1173,8 @@ function renderLearningsPage(el) {
     'Phase 53': 'CHS Lineage Fixes — buildGameContext() now infers injury from player.injury string + injuryRisk when activeInjury object missing (so HEALTH conditions fire). Added restDays to all 4 R2 priorRound objects. Moved dchsExplainer() inside betContent-parlays div. app.js defaults currentSeriesIdx to first series in active round.',
     'Phase 54': 'Empty Box Score Bug + CHS on Series Page — Last-name + substring fallback in calcProjectedBoxScore so prior-game last-name entries ("Wembanyama") match full-name rosters ("Victor Wembanyama"). R2 G2 box scores now populate (8+7, 6+9, 9+8). Extracted renderCHSScenarios() and wired into series-analysis page (was bets-only).',
     'Phase 55': 'Declarative Bet Card Schema — bets.js 3578 → 3252 lines. New js/data/bets-data.js (typed BETS array + BET_SLATES metadata) + js/ui/bet-card.js (renderBetCard + renderBetSlateSeries). Schema fields: type/pick/odds/facts/chs/confidence/thesis[]/narrative/result. Multi-thesis after tally of 173 existing edge labels showed 6+ combined theses. CHS in own field, lean/coin-flip extracted to confidence enum. Adding a new G3 slate is now ~10 lines of data + a 1-line render call.',
-    'Phase 56': 'May 6 Injury Report — Embiid OUT (right ankle + hip soreness) for tonight\'s NYK-PHI G2; PHI starts Maxey/Edgecombe/Oubre/George/Drummond. Series cascade: ptsRange [0,0] for Embiid, NYK 9 vs PHI 7 active. NYK ML re-priced -260 → -450, spread -6.5 → -10.5, Embiid prop voided, new Drummond rebs prop added. New void result.outcome with yellow ⊘ icon. DET-CLE: Allen back, DET BEST BET → MEDIUM. OKC-LAL: J.Williams was OUT G1 (factual fix). 3447/3447 tests pass.'
+    'Phase 56': 'May 6 Injury Report — Embiid OUT (right ankle + hip soreness) for tonight\'s NYK-PHI G2; PHI starts Maxey/Edgecombe/Oubre/George/Drummond. Series cascade: ptsRange [0,0] for Embiid, NYK 9 vs PHI 7 active. NYK ML re-priced -260 → -450, spread -6.5 → -10.5, Embiid prop voided, new Drummond rebs prop added. New void result.outcome with yellow ⊘ icon. DET-CLE: Allen back, DET BEST BET → MEDIUM. OKC-LAL: J.Williams was OUT G1 (factual fix). 3447/3447 tests pass.',
+    'Phase 57': 'Home Landing Page + Phase 55 File Restoration — New default tab with Tonight (auto-fit game cards), Featured Parlays (Reliable Floor / Traditional toggle, both panes pre-rendered, swap via homeSetParlayMode), Latest News (curated NEWS feed), Tonight\'s Bets (per-series columns when ≥2 games, side-by-side with News when 1 game), Tomorrow. New CURRENT_DATE constant + FEATURED_PARLAYS array. Restored bets-data.js + bet-card.js dropped by gasperjw1 merge. SAS-MIN G2 date corrected to May 6.'
   };
 
   // Collect all entries/cards

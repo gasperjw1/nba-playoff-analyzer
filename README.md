@@ -6,6 +6,7 @@ A comprehensive, research-backed NBA playoff prediction and analysis tool built 
 
 ## Features
 
+- **Home Landing Page** (Phase 57) — adaptive layout. Tonight's games render as auto-fit cards with the live blended ML pick, projected score, slate context, and an "Open series →" link. Featured Parlays section has a toggle between **Reliable Floor** (80%+ floor-style hit rate) and **Traditional** (regression / bounce-back / chaos). Latest News feed (curated injury/availability notes). Tonight's Bets render as per-series columns when ≥2 games are scheduled; News + Bets sit side-by-side when only one game is on (Conference Finals / Finals).
 - **Unified Ensemble Prediction System** (Phase 41) — blends manual analysis, a multi-factor engine, and a 10,000-iteration Monte Carlo chaos simulation into a single probability output with calibrated standard deviation (SD ±11.6)
 - **Compound Historical Scenario Engine** (Phase 52) — conditional-narrowing system. Each player carries stacked historical conditions (role + opponent team + venue + coach + primary defender + playoff context + health). When all conditions match, the scenario fires and adjusts projections; multiple matches compound at 70% decay. Cascade model propagates teammate adjustments when a star delta exceeds 2pts. Rendered inline on every game tab and bet card.
 - **18-step Game Projection Engine** incorporating home court, fatigue, chemistry, matchup suppression, star elevation, coaching adjustments, 3PT variance, role flexibility, youth breakouts, turnover tendencies, compound historical scenarios, and more
@@ -49,9 +50,10 @@ nba-playoff-analyzer/
 │   ├── state.js                     # UI state, scenario builder, localStorage V3 persistence
 │   ├── utils.js                     # Formatters, rating tiers, stat edge/note generators
 │   ├── data/
-│   │   ├── constants.js             # HCA values, Game 7 overrides, SPM coefficients, round metadata, PLAYOFF_ADJUSTMENT, SIM_CONFIG
+│   │   ├── constants.js             # HCA values, Game 7 overrides, SPM coefficients, round metadata, PLAYOFF_ADJUSTMENT, SIM_CONFIG, CURRENT_DATE
 │   │   ├── series-data.js           # All series — rosters, stats, predictions, box scores, factors, priorRound graduation data, CHS scenarios
-│   │   ├── bets-data.js             # Phase 55 — declarative BETS array + BET_SLATES metadata for all R2 G1/G2 cards
+│   │   ├── bets-data.js             # Phase 55/57 — declarative BETS, BET_SLATES, FEATURED_PARLAYS (Floor + Traditional)
+│   │   ├── news.js                  # Phase 57 — curated NEWS feed (date/severity/series/headline/body/source)
 │   │   ├── boxscores.js             # Detailed per-player box score data for completed games
 │   │   └── historical.js            # Historical "what if player X was missing" data
 │   ├── engine/
@@ -67,9 +69,10 @@ nba-playoff-analyzer/
 │       ├── components.js            # Reusable UI — scenario builder, stat bars, fatigue, waterfall, renderCHSScenarios
 │       ├── series-renderer.js       # Main series view — rosters, synergy, coaching, SPM, CHS panel per game
 │       ├── bet-card.js              # Phase 55 — renderBetCard() + renderBetSlateSeries() — single declarative renderer
+│       ├── home.js                  # Phase 57 — renderHomePage() + adaptive layout + Floor/Traditional parlay toggle
 │       ├── modals.js                # Game result and external factor modal handlers
-│       ├── navigation.js            # Tab switching — rounds, series, games, pages, bet tabs
-│       ├── learnings.js             # Model Learnings page — collapsible phase timeline (currently through Phase 56)
+│       ├── navigation.js            # Tab switching — Home is the default
+│       ├── learnings.js             # Model Learnings page — collapsible phase timeline (currently through Phase 57)
 │       ├── definitions.js           # Metric definitions page with category tabs
 │       └── bets.js                  # Betting orchestrator — slate sections + dynamic dml/dmargin/dwinner helpers
 ├── playoffs_2025_validation.js      # 2025 playoffs game-by-game results (independent validation dataset)
@@ -105,9 +108,9 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 6. **Definitions** — Browse all metric definitions including Projection Lineage, Post-Game Attribution, Series Graduation, Compound Historical Scenarios, Multiplicative Context Factors, Dynamic Rating Adjustments, and the Declarative Bet Card Schema.
 7. **Bets** — Per-game ML picks, spreads, player props, and featured parlays. All bets render through one declarative pipeline; ML/margin/winner values interpolate live from the blended model.
 
-## Model Evolution (56 Phases)
+## Model Evolution (57 Phases)
 
-The model has gone through 56 phases of development, each adding new factors, fixing biases, refactoring for scalability, and recalibrating against actual results. Selected milestones:
+The model has gone through 57 phases of development, each adding new factors, fixing biases, refactoring for scalability, and recalibrating against actual results. Selected milestones:
 
 - **Phase 22** — Per-player game outlooks
 - **Phase 28** — Blended prediction system
@@ -123,6 +126,7 @@ The model has gone through 56 phases of development, each adding new factors, fi
 - **Phase 53–54** — CHS injury-inference + last-name fallback matcher + CHS panel on series page
 - **Phase 55** — Declarative bet card schema
 - **Phase 56** — May 6 injury report (Embiid OUT) + void result outcome
+- **Phase 57** — Home landing page (Tonight / Featured Parlays toggle / News / Tonight's Bets / Tomorrow), `CURRENT_DATE` constant, `NEWS` + `FEATURED_PARLAYS` data files, restored Phase 55 files dropped by the gasperjw1 merge
 
 ## Data Sources and Research
 
