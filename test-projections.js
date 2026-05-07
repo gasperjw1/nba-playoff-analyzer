@@ -37,6 +37,21 @@ function loadGlobals(includeEngine = false) {
   return ctx;
 }
 
+// Standalone loader for validation tests — needs bets-data + validators
+function loadValidatorContext() {
+  const toVar = (code) => code.replace(/^(const|let) /gm, 'var ');
+  const vm = require('vm');
+  const ctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, Boolean, Number, String, RegExp, Date, Error });
+  const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
+  load('js/data/constants.js');
+  load('js/data/series-data.js');
+  load('js/data/boxscores.js');
+  load('js/data/bets-data.js');
+  load('js/data/news.js');
+  load('js/validators.js');
+  return ctx;
+}
+
 let passed = 0;
 let failed = 0;
 const failures = [];
@@ -411,6 +426,56 @@ function runTests() {
       }
     });
     assert(betDupes.length === 0, `bets-data.js bets/parlays have no duplicate result keys (found: ${betDupes.join('; ')})`);
+  }
+
+  // ============================================================
+  // TEST 8: Schema validation (Tier 1.1 boot-time validators)
+  //   Asserts validateAll() returns zero errors against the live
+  //   data files. Catches duplicate keys, prediction↔score
+  //   contradictions, missing fields, type mismatches, and bad
+  //   series references — all the bug classes we've actually hit.
+  // ============================================================
+  console.log('\nTEST 8: Schema validation');
+  {
+    const vctx = loadValidatorContext();
+    const errs = vctx.validateAll(vctx.SERIES_DATA, vctx.BETS, vctx.FEATURED_PARLAYS);
+
+    // 8a — main assertion: zero errors
+    if (errs.length === 0) {
+      assert(true, 'validateAll returns 0 errors');
+    } else {
+      console.log(`  ${errs.length} validation error(s):`);
+      errs.forEach(e => console.log(`    - ${e}`));
+      assert(false, `validateAll found ${errs.length} schema issue(s) — see above`);
+    }
+
+    // 8b — sanity: a known-bad object trips the right validator
+    const badPred = { homeWin: false, homeScore: 110, awayScore: 100, margin: 10 };
+    const badPredErrs = vctx.validatePrediction(badPred, 'TEST');
+    assert(
+      badPredErrs.some(e => e.includes('contradicts scores')),
+      'validatePrediction catches homeWin↔scores contradiction'
+    );
+
+    // 8c — sanity: bad outcome enum is caught
+    const badBet = { id:'x', slate:'R2-G2', series:'NYK-PHI', game:2, type:'ml', pick:'NYK ML', result:{outcome:'won'} };
+    const badBetErrs = vctx.validateBet(badBet, new Set(['NYK-PHI']));
+    assert(
+      badBetErrs.some(e => e.includes("not in [win|loss|push|void]")),
+      'validateBet catches invalid outcome enum'
+    );
+
+    // 8d — sanity: missing required field is caught
+    const badParlay = { id:'p', slate:'R2-G2', date:'2026-05-07', category:'floor', name:'X', odds:'+100', stake:100, legs:[{pick:'a',odds:'-100'}], thesis:'t' };
+    const goodParlayErrs = vctx.validateParlay(badParlay, new Set());
+    assert(goodParlayErrs.length === 0, 'validateParlay accepts a well-formed parlay');
+
+    delete badParlay.thesis;
+    const missingThesis = vctx.validateParlay(badParlay, new Set());
+    assert(
+      missingThesis.some(e => e.includes('missing thesis')),
+      'validateParlay catches missing required field'
+    );
   }
 
   // ============================================================
