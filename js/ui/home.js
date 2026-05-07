@@ -164,10 +164,38 @@ function homeRenderParlay(p) {
 }
 
 function homeRenderFeaturedParlays() {
-  // Show all unresolved parlays (newest first if multiple).
   const live = FEATURED_PARLAYS.filter(p => !p.result);
-  if (!live.length) return '<div class="home-empty">No live featured parlays right now.</div>';
-  return `<div class="home-parlay-grid">${live.map(homeRenderParlay).join('')}</div>`;
+  const floor       = live.filter(p => p.category === 'floor');
+  const traditional = live.filter(p => p.category === 'traditional');
+
+  if (!floor.length && !traditional.length) {
+    return '<div class="home-empty">No live featured parlays right now.</div>';
+  }
+
+  const floorGrid = floor.length
+    ? `<div class="home-parlay-grid">${floor.map(homeRenderParlay).join('')}</div>`
+    : '<div class="home-empty">No reliable floor parlays today.</div>';
+  const tradGrid = traditional.length
+    ? `<div class="home-parlay-grid">${traditional.map(homeRenderParlay).join('')}</div>`
+    : '<div class="home-empty">No traditional parlays today.</div>';
+
+  // Both grids render; toggle swaps visibility client-side via homeSetParlayMode.
+  return `
+    <div class="home-parlay-toggle">
+      <button data-mode="floor" class="active" onclick="homeSetParlayMode('floor')">&#x1f6e1; Reliable Floor</button>
+      <button data-mode="traditional" onclick="homeSetParlayMode('traditional')">Traditional</button>
+    </div>
+    <div class="home-parlay-pane" data-mode="floor">${floorGrid}</div>
+    <div class="home-parlay-pane" data-mode="traditional" style="display:none;">${tradGrid}</div>`;
+}
+
+function homeSetParlayMode(mode) {
+  document.querySelectorAll('.home-parlay-pane').forEach(pane => {
+    pane.style.display = pane.dataset.mode === mode ? '' : 'none';
+  });
+  document.querySelectorAll('.home-parlay-toggle button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
 }
 
 function homeRenderBetsForDate(date) {

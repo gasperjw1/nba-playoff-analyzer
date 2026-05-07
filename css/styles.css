@@ -845,7 +845,13 @@
   .home-bet-group-head { font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
   .home-bet-group-cards { display:flex; flex-direction:column; gap:8px; }
 
-  /* Featured parlays — same auto-fit grid as games */
+  /* Featured parlays — toggle + grid */
+  .home-parlay-toggle { display:inline-flex; gap:0; margin-bottom:6px; border:1px solid var(--border); border-radius:6px; overflow:hidden; align-self:flex-start; }
+  .home-parlay-toggle button { background:transparent; color:var(--text-dim); border:none; padding:6px 14px; font-size:11px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; cursor:pointer; transition:background 0.15s, color 0.15s; }
+  .home-parlay-toggle button + button { border-left:1px solid var(--border); }
+  .home-parlay-toggle button:hover { color:var(--text); background:rgba(255,255,255,0.03); }
+  .home-parlay-toggle button.active { background:rgba(34,211,238,0.12); color:#22d3ee; }
+  .home-parlay-toggle button[data-mode="traditional"].active { background:rgba(167,139,250,0.12); color:#a78bfa; }
   .home-parlay-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:14px; }
   .home-parlay-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
   .home-parlay-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }

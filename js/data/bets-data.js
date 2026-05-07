@@ -444,14 +444,15 @@ const BETS = [
 // ============================================================
 // Schema:
 //   id        : stable unique key
-//   slate     : 'R2-G2' | …          which slate this parlay plays in
-//   date      : 'YYYY-MM-DD'         when the parlay resolves
-//   type      : 'best-bet' | 'chaos' | 'value'
+//   slate     : 'R2-G2' | …            which slate this parlay plays in
+//   date      : 'YYYY-MM-DD'           when the parlay resolves
+//   category  : 'floor' | 'traditional'  toggle group on Home page
+//   type      : 'best-bet' | 'chaos' | 'value'  drives accent color
 //   name      : display name
 //   stake     : number (dollars)
 //   odds      : string ('+110', '-120')
 //   payout    : string  optional, e.g. '+$125'
-//   legs      : [{ pick, odds, confidence, status?: 'hit'|'miss'|null }]
+//   legs      : [{ pick, odds, confidence, status?: 'hit'|'miss'|null, note }]
 //   thesis    : free-form one-paragraph reasoning
 //   result    : null | { outcome: 'win'|'loss'|'push', delta: '+125'|'-100' }
 // ============================================================
@@ -460,7 +461,7 @@ const FEATURED_PARLAYS = [
   {
     id: 'r2-g1-100-okc-det',
     slate: 'R2-G1', date: '2026-05-05',
-    type: 'best-bet',
+    category: 'traditional', type: 'best-bet',
     name: '$100 Play — OKC Fortress + DET Home Court',
     stake: 100, odds: '+125', payout: '+$125',
     legs: [
@@ -475,7 +476,7 @@ const FEATURED_PARLAYS = [
   {
     id: 'r2-g1-1-chaos-lebron',
     slate: 'R2-G1', date: '2026-05-05',
-    type: 'chaos',
+    category: 'traditional', type: 'chaos',
     name: '$1 Chaos Ticket — LeBron\'s Last Stand',
     stake: 1, odds: '+1800', payout: '-$1',
     legs: [
@@ -488,35 +489,107 @@ const FEATURED_PARLAYS = [
     result: { outcome:'loss', delta:'-1' },
   },
 
-  // ─── R2 G2 — UPCOMING ──────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+  // R2 G2 — TONIGHT (May 6: NYK-PHI + SAS-MIN)
+  // ═══════════════════════════════════════════════════════════════
+
+  // ─── RELIABLE FLOOR (80%+ hit rate per leg) ────────────────────
   {
-    id: 'r2-g2-100-home-court',
-    slate: 'R2-G2', date: '2026-05-07',
-    type: 'best-bet',
-    name: '$100 Play — Home Court Dominance',
-    stake: 100, odds: '+110',
+    id: 'r2-g2-floor-iron',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'floor', type: 'best-bet',
+    name: 'Iron Floor (3-Leg)',
+    stake: 100, odds: '+190', payout: 'To Win: $190',
     legs: [
-      { pick:'OKC ML vs LAL', odds:'-800', confidence:'high', status:null,
-        note:'J.Williams ramp-up + SGA bounce-back from 7 TOs. Won G1 by 18 with SGA at floor.' },
-      { pick:'DET ML vs CLE', odds:'-190', confidence:'medium-high', status:null,
-        note:'DET forced 19 CLE TOs G1. Allen knee. Cade 23/7ast controls pace.' },
+      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:null,
+        note:'Career 35.5ppg vs PHI playoffs (6 gm). 35pts G1. Lowest Knick playoff game ~20pts. 90%+ floor.' },
+      { pick:'Randle Over 14.5 pts (SAS-MIN G2)', odds:'-220', confidence:'floor', status:null,
+        note:'21pts G1 vs SAS. 15-27pt range all playoffs. Only sub-15 once (blowout, reduced min). 85%+ floor.' },
+      { pick:'Vassell Over 9.5 pts (SAS-MIN G2)', odds:'-250', confidence:'floor', status:null,
+        note:'12.8ppg playoffs (11-16 range). Never below 10pts this postseason. 90%+ floor.' },
     ],
-    thesis:'Both home teams dominated G1 (DET +10, OKC +18). DET\'s defense and OKC\'s depth project as structural; CLE may adjust but Allen\'s knee compounds. ~+110 is excellent value.',
+    thesis:'Every leg uses the FLOOR, not the ceiling. Brunson 19.5 is less than half his career avg vs PHI; he hasn\'t scored below 20 as a Knick in playoffs. Randle dipped below 15 only once all playoffs (24min game). Vassell locked into 11-16pts every game. Each leg clears 80%+ individually; combined at +190 is high-probability.',
     result: null,
   },
   {
-    id: 'r2-g2-1-chaos-cle-phi',
-    slate: 'R2-G2', date: '2026-05-07',
-    type: 'chaos',
-    name: '$1 Chaos Ticket — CLE Road Revenge + PHI Steal',
-    stake: 1, odds: '+800',
+    id: 'r2-g2-floor-home-stars',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'floor', type: 'best-bet',
+    name: 'Home Stars (3-Leg)',
+    stake: 100, odds: '+280', payout: 'To Win: $280',
     legs: [
-      { pick:'CLE ML @ DET', odds:'+160', confidence:'chaos', status:null,
-        note:'CLE rallied from -18 to 93-93 in G1. If Allen plays 30+ min, ceiling is higher.' },
-      { pick:'PHI ML @ NYK', odds:'+200', confidence:'chaos', status:null,
-        note:'G1 catastrophic (137-98) but rest deficit drove that. With equal rest, PHI\'s Embiid+Maxey could steal one.' },
+      { pick:'OG Anunoby Over 12.5 pts (NYK-PHI G2)', odds:'-180', confidence:'floor', status:null,
+        note:'18pts G1 (7-8 FG, 87.5%). 21.5ppg R1 vs ATL. R1 floor 14pts. PHI can\'t guard his midrange. 85%+.' },
+      { pick:'Brunson Over 24.5 pts (NYK-PHI G2)', odds:'-150', confidence:'floor', status:null,
+        note:'35.5ppg career vs PHI playoffs. 35pts G1. 6 of last 8 playoff games Over 25. MSG home. 80%+.' },
+      { pick:'KAT Over 14.5 pts (NYK-PHI G2)', odds:'-200', confidence:'floor', status:null,
+        note:'17pts G1 vs PHI. 18.7ppg R1 (12-25 range). Only below 15 in G6 blowout (sat Q4). 85%+.' },
     ],
-    thesis:'CLE adjustment + Embiid playoff pride. Long shot but +800 pays $9 on $1.',
+    thesis:'All three legs are NYK home players with proven floor scoring. OG shot 87.5% G1 — midrange matchup-proof against PHI perimeter D. Brunson\'s 24.5 still 11pts below career avg vs PHI. KAT only below 15 in a sat-out blowout. Competitive G2 at MSG, all three clear comfortably.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-floor-spread',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'floor', type: 'best-bet',
+    name: 'Spread + Floor (2-Leg)',
+    stake: 100, odds: '+175', payout: 'To Win: $175',
+    legs: [
+      { pick:'MIN +9.5 (SAS-MIN G2)', odds:'-110', confidence:'floor', status:null,
+        note:'Already WON G1 outright in SA. 3-1 ATS as 9.5+ dogs this season. 5-1 ATS last 6. Edwards minutes expanding. 80%+ cover.' },
+      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:null,
+        note:'Career 35.5ppg vs PHI. Floor is 20+ as a Knick in playoffs. 90%+.' },
+    ],
+    thesis:'MIN already won in San Antonio (G1, 104-102). Getting 9.5 means stay competitive — defense + Randle 21pts + Edwards expanding minutes ensures it. MIN 3-1 ATS as 9.5+ dogs, 5-1 last 6. Paired with Brunson rock-solid floor: two near-locks combined.',
+    result: null,
+  },
+
+  // ─── TRADITIONAL (full range — regression / bounce-back / chaos) ─
+  {
+    id: 'r2-g2-trad-regression',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'traditional', type: 'best-bet',
+    name: 'Regression Lock (2-Leg)',
+    stake: 100, odds: '+145', payout: 'To Win: $145',
+    legs: [
+      { pick:'NYK ML vs PHI (G2)', odds:'-270', confidence:'high', status:null,
+        note:'NYK won G1 by 39. MSG fortress. Brunson 35pts locked in.' },
+      { pick:'SAS ML vs MIN (G2)', odds:'-360', confidence:'high', status:null,
+        note:'SAS shot 28% 3PT G1 (career-worst). Wemby 0-8 3PT regresses to 37.5%.' },
+    ],
+    thesis:'Both home teams heavy favorites. SAS shot 28% 3PT G1 (season avg 37.5%) — 3.5 extra makes = +10.5pts of regression. NYK at home after dominant G1 vs tired PHI. Two strong favorites at home with bounce-back narratives.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-trad-bounceback',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'traditional', type: 'value',
+    name: 'Bounce-Back Props (3-Leg)',
+    stake: 100, odds: '+450', payout: 'To Win: $450',
+    legs: [
+      { pick:'Wembanyama Over 22.5 pts (G2)', odds:'-125', confidence:'medium', status:null,
+        note:'G1: 11pts (0-8 3PT). Season avg 25.0. Last 5 vs MIN: 27.8ppg. ⚠ HIGH VARIANCE — Gobert + MIN scheme held him to 5-17. Not a floor pick.' },
+      { pick:'Brunson Over 26.5 pts (G2)', odds:'-120', confidence:'high', status:null,
+        note:'G1: 35pts. 6 of last 8 playoff games Over 27.5. MSG home.' },
+      { pick:'Edwards Over 19.5 pts (G2)', odds:'-115', confidence:'medium', status:null,
+        note:'G1: 18pts in 25min. Expect 30+ min G2. ⚠ KNEE — questionable, minutes cap unknown.' },
+    ],
+    thesis:'Wemby 0-8 3PT was career-worst for a 37.5% shooter — regression says 25+ G2. NOT a floor pick: Gobert + MIN defense scheme to contain him. Career avg vs MIN 22.6ppg, just clearing line. Edwards expanded minutes if knee holds. High upside at +450 but riskier than Floor parlays.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-trad-chaos',
+    slate: 'R2-G2', date: '2026-05-06',
+    category: 'traditional', type: 'chaos',
+    name: 'Chaos — Double Upset (2-Leg)',
+    stake: 100, odds: '+1800', payout: 'To Win: $1,800',
+    legs: [
+      { pick:'PHI ML vs NYK (G2)', odds:'+220', confidence:'chaos', status:null,
+        note:'Embiid bounce-back from 14pt G1. 2 extra days rest. Pride game.' },
+      { pick:'MIN ML vs SAS (G2)', odds:'+280', confidence:'chaos', status:null,
+        note:'Already proved they can win in SA. Edwards minutes expand. Dosunmu back.' },
+    ],
+    thesis:'MIN already won in San Antonio — not impossible. Dosunmu may return, Edwards 30+ min. PHI bounce-back potential real if Embiid goes nuclear. At +1800, $100 risk for $1,800 payout. Pure chaos.',
     result: null,
   },
 ];
