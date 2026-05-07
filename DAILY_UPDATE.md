@@ -24,6 +24,38 @@ If any preflight fails, **stop and report** rather than power through.
 Stale local edits + an automated commit pipeline is how you accidentally
 deploy half-finished work.
 
+### 0a · Skip-early on no-games days
+
+```
+- Read js/data/constants.js to get CURRENT_DATE
+- Grep BET_SLATES in js/data/bets-data.js for any game whose `date`
+  matches CURRENT_DATE OR matches today's date if CURRENT_DATE is stale
+- If no game scheduled for today AND no game scheduled for yesterday
+  (whose results would need recording), exit cleanly:
+    "No games scheduled for {today}; nothing to update. Exiting."
+```
+
+This avoids burning through the full checklist on off-days (between
+rounds, off-days within a series, post-elimination).
+
+### 0b · Dry-run mode (first-run safety)
+
+```
+- If `.daily-task-dry-run` exists at the project root:
+    Run the full checklist BUT replace the final `git push` step with:
+      git status --short
+      git diff HEAD~1 --stat
+      git log -1 --format="%s%n%n%b"
+    Then STOP and report: "DRY RUN — committed locally as <hash>. Review
+    above. Delete .daily-task-dry-run to enable auto-push for next run."
+- If `.daily-task-dry-run` does NOT exist:
+    Run normally (auto-commit + auto-push).
+```
+
+The sentinel file `.daily-task-dry-run` lives in the worktree (untracked
+on purpose — it's per-machine). Delete it after one successful manual
+review cycle to switch to auto-deploy mode.
+
 ---
 
 ## 1 · Bump `CURRENT_DATE`
@@ -75,27 +107,61 @@ with the box score, so you'll catch typos before pushing.
 
 ---
 
-## 3 · Look up today's lines on DraftKings
+## 3 · Create today's BETS entries (when a series advances)
 
-The bets in `bets-data.js` were priced when posted. If the line moved
+When a series finishes G2 and rolls forward to G3, the per-series tab
+on the deployed page will show `G3 upcoming` but the bet list will be
+empty until G3 entries land in `bets-data.js`. Create them.
+
+```
+- For each series whose active game number incremented today:
+    Add 4-6 entries to BETS in js/data/bets-data.js with:
+      slate:'R2-G{N}', series:'XXX-YYY', game:N, postedAt:CURRENT_DATE
+      type: 'ml' | 'spread' | 'total' | 'prop'
+      pick: human-readable pick string the auto-resolver can parse
+            (see js/engine/auto-resolve.js for accepted formats)
+      odds: from DK (best effort — see step 4 caveats)
+      facts: structured supporting numbers
+      reasoning: prose tying the engine projection to the pick
+      confidence: 'best-bet' | 'high' | 'medium' | 'lean' | 'coin-flip'
+      thesis: ['model', 'matchup', ...] tags
+      result: null
+- Watch for the validators (TEST 8) — they'll reject a missing or
+  mistyped field at the boot banner.
+- Adding a BET that mirrors an existing slate's pattern is the fastest
+  way to get the schema right (search for a matching `type` and copy).
+```
+
+If no series advanced today, skip this step — yesterday's BETS are
+still the active set.
+
+## 4 · Look up today's lines on DraftKings
+
+The bets in `bets-data.js` were priced when posted. If a line moved
 significantly overnight, the displayed odds will be wrong.
 
 ```
-- Open DraftKings (or use a public odds aggregator) for each game
-  on tonight's slate. Capture: ML, spread, total, and the relevant
-  player props used in BETS / FEATURED_PARLAYS.
-- For each entry, update `odds` and `facts` if the line moved by more
-  than ~5%. Mark big moves explicitly (e.g. "-260 → -450 (re-priced)")
-  so the reasoning stays honest.
-- Alt-line odds in FEATURED_PARLAYS are estimates — verify combined
-  payout calculation if one leg's juice changed materially.
+- Use WebSearch (not WebFetch — DK is JS-heavy and geo-blocked) to
+  find current lines: "draftkings <team> ml playoff" or similar.
+- For each MAIN line on today's slate (ML, spread, total) — confirm
+  current odds and update `odds` + `facts` if it moved more than ~5%.
+- Alt-line prop odds (deep alts like "Cade O4.5 ast", "SGA O22.5 pts"
+  used in Floor parlays) are NOT reliably scrapeable. Treat the alt
+  juice estimates in FEATURED_PARLAYS as approximations and keep the
+  "verify on DK before placing" notes intact — that's a feature, not
+  a bug, since the live combined payout will only be exact at place
+  time.
 - Flip Over → Under (or vice versa) when the line crosses the engine's
-  projection.
+  projection. Mark big moves explicitly: "-260 → -450 (re-priced)".
 ```
+
+**Honest limitation:** The agent can't replace your eyes on DK at
+slip-build time. It can keep main-line odds fresh and flag big alt-line
+moves the user notices, but the alt juice is best-effort.
 
 ---
 
-## 4 · Update predictions for tonight's games
+## 5 · Update predictions for tonight's games
 
 Engine output already auto-derives, but `prediction.reasoning` and
 `tacticalAdjustments` are hand-authored.
@@ -117,7 +183,7 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ---
 
-## 5 · Featured Parlays for today
+## 6 · Featured Parlays for today
 
 ```
 - In js/data/bets-data.js, find FEATURED_PARLAYS.
@@ -131,7 +197,7 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ---
 
-## 6 · Sweep stale labels
+## 7 · Sweep stale labels
 
 ```
 - Run the linter manually:
@@ -145,7 +211,7 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ---
 
-## 7 · Run the test suite
+## 8 · Run the test suite
 
 ```
 - node test-projections.js
@@ -159,7 +225,7 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ---
 
-## 8 · Update CONTEXT.md (if anything notable)
+## 9 · Update CONTEXT.md (if anything notable)
 
 ```
 - New phase entry if the engine, ratings, or scenarios changed
@@ -174,7 +240,7 @@ not phase-worthy.
 
 ---
 
-## 9 · Commit & deploy
+## 10 · Commit & deploy
 
 ```
 - git status to review the change set
@@ -182,6 +248,21 @@ not phase-worthy.
   it can pull in stray .tmp / lock files / editor swap files)
 - git commit with a descriptive message ending with the standard
   Co-Authored-By trailer
+```
+
+**If `.daily-task-dry-run` exists** (first-run safety from step 0b):
+```
+- DO NOT push. Instead:
+    git status --short
+    git diff HEAD~1 --stat
+    git log -1 --format="%s%n%n%b"
+- Report: "DRY RUN — committed locally as <hash>. Review the diff,
+  then `rm .daily-task-dry-run` and re-run to enable auto-push."
+- Stop here. Skip step 11.
+```
+
+**If the sentinel file does NOT exist** (normal mode):
+```
 - git push to the working branch
 - Fast-forward main:
     git -C <main-worktree> pull --ff-only origin <branch>
@@ -193,7 +274,7 @@ not phase-worthy.
 
 ---
 
-## 10 · Sanity-check the deployed page
+## 11 · Sanity-check the deployed page
 
 ```
 - Home page Tonight section shows correct games for today's date
