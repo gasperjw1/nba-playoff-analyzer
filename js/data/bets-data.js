@@ -659,6 +659,21 @@ const FEATURED_PARLAYS = [
     thesis:'Counting-stat floors (assists + rebounds) using alt lines below the main DK lines. Each leg has 80-90%+ historical hit rate. Combined ~65-70% (legs are weakly correlated). Counting stats are blowout-proof — even if either game gets out of hand, primary ball-handlers and bigs accumulate stats by Q3. NOTE: Cade ast main moved up to 9.5 (way above engine projection), but the alt at 5.5 is still a strong over.',
     result: null,
   },
+  {
+    id: 'r2-g2-may7-floor-okc-lebron-compound',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'floor', type: 'best-bet',
+    name: 'OKC Lock + LeBron Floor (2-Leg, Alt Line)',
+    stake: 100, odds: '+67', payout: 'To Win: ~$67 (verify on DK)',
+    legs: [
+      { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:null,
+        note:'~95% per engine. Same lock as the Best Bet — heavy home favorite vs Doncic-less LAL.' },
+      { pick:'LeBron Over 21.5 pts (alt line — OKC-LAL G2)', odds:'~-200', confidence:'high', status:null,
+        note:'Last 10 games: ~9 of 10 over 21.5. Engine: 25. G1: 27 (12-17 FG, 71%) IN A LOSS — his scoring is independent of OKC dominating. Real hit rate ~85-90%. Alt-line juice est. -180 to -250 — verify on DK.' },
+    ],
+    thesis:'Two-leg parlay specifically engineered to clear the 80% floor threshold while paying meaningfully more than the solo OKC ML\'s $11. Math: 0.95 × 0.89 ≈ 85% combined. Crucial property: LeBron\'s scoring is INDEPENDENT of OKC blowing them out — he had 27pts (12-17 FG) in G1 while LAL lost by 18, so even a one-sided OKC win still produces a LeBron over. Three-leg compounds drop below 80% (0.95 × 0.85 × 0.92 = 74%), which is why this is capped at two legs.',
+    result: null,
+  },
 
   // ─── TRADITIONAL (Value plays) ──────────────────────────────────
   // Demoted from Floor to Traditional: hit rates honest, +EV per engine but
