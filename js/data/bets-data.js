@@ -613,19 +613,6 @@ const FEATURED_PARLAYS = [
   // DK pricing before placing. The hit-rate notes are based on player's
   // last 10 games + engine projection.
   {
-    id: 'r2-g2-may7-floor-okc-best',
-    slate: 'R2-G2', date: '2026-05-07',
-    category: 'floor', type: 'best-bet',
-    name: 'Best Bet — OKC ML (Solo)',
-    stake: 100, odds: '-900', payout: 'To Win: $11',
-    legs: [
-      { pick:'OKC ML vs LAL', odds:'-900', confidence:'high', status:null,
-        note:'Solo bet. Engine: OKC by 22. ~95% hit rate (LAL still missing Doncic + Reaves at ~50% capacity). Pays only $11 on $100 — lock, not value.' },
-    ],
-    thesis:'The slate\'s lowest-variance bet. OKC won G1 by 18 with SGA having the worst scoring game of his recent career (7 TOs). Heavy home favorites against a team starting Smart at PG with no Doncic. Take as solo, not a parlay leg.',
-    result: null,
-  },
-  {
     id: 'r2-g2-may7-floor-star-compound',
     slate: 'R2-G2', date: '2026-05-07',
     category: 'floor', type: 'best-bet',
