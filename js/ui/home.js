@@ -217,8 +217,8 @@ function homeRenderBetsForDate(date) {
     bySeries[b.series].push(b);
   });
 
-  // Re-use the Phase 55 declarative renderer.
-  return Object.entries(bySeries).map(([seriesKey, list]) => {
+  // Re-use the Phase 55 declarative renderer. One column per series.
+  const groupsHtml = Object.entries(bySeries).map(([seriesKey, list]) => {
     const series = homeFindSeries(seriesKey);
     if (!series) return '';
     const dml = (h, a) => {
@@ -237,6 +237,9 @@ function homeRenderBetsForDate(date) {
         <div class="home-bet-group-cards">${cardsHtml}</div>
       </div>`;
   }).join('');
+
+  // Auto-fit grid: 1 game → full-width; 2+ games → side-by-side per series.
+  return `<div class="home-bet-grid">${groupsHtml}</div>`;
 }
 
 function renderHomePage(el) {
@@ -245,7 +248,28 @@ function renderHomePage(el) {
 
   const todaysGames = homeGamesOn(today);
   const tomorrowsGames = homeGamesOn(tomorrow);
-  const recentNews = NEWS.slice(0, 6); // newest 6, NEWS is already chronologically reverse-sorted
+  const recentNews = NEWS.slice(0, 6);
+
+  // Layout decision: with 2+ games, the per-game bet columns alone fill the
+  // row, so News goes full-width above. With 1 game (single-game days in CF /
+  // Finals), News + Bets sit side-by-side so neither column looks stranded.
+  const useStackedLayout = todaysGames.length >= 2;
+
+  const newsSection = `
+    <section class="home-section">
+      <h2 class="home-section-title">Latest News</h2>
+      ${recentNews.map(homeRenderNewsItem).join('')}
+    </section>`;
+
+  const betsSection = `
+    <section class="home-section">
+      <h2 class="home-section-title">Tonight's Bets</h2>
+      ${homeRenderBetsForDate(today)}
+    </section>`;
+
+  const newsAndBets = useStackedLayout
+    ? `${newsSection}${betsSection}`
+    : `<div class="home-row">${newsSection}${betsSection}</div>`;
 
   el.innerHTML = `
     <div class="home-page">
@@ -262,17 +286,7 @@ function renderHomePage(el) {
         ${homeRenderFeaturedParlays()}
       </section>
 
-      <div class="home-row">
-        <section class="home-section">
-          <h2 class="home-section-title">Latest News</h2>
-          ${recentNews.map(homeRenderNewsItem).join('')}
-        </section>
-
-        <section class="home-section">
-          <h2 class="home-section-title">Tonight's Bets</h2>
-          ${homeRenderBetsForDate(today)}
-        </section>
-      </div>
+      ${newsAndBets}
 
       ${tomorrowsGames.length ? `
       <section class="home-section">

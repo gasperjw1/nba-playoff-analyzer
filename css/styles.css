@@ -839,10 +839,10 @@
   .home-news-body { font-size:13px; color:var(--text); line-height:1.5; }
   .home-news-source { font-size:10px; color:var(--text-dim); margin-top:6px; font-style:italic; }
 
-  /* Bets — group per series */
-  .home-bet-group { margin-bottom:18px; }
-  .home-bet-group:last-child { margin-bottom:0; }
-  .home-bet-group-head { font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
+  /* Bets — auto-fit grid: 1 series fills full width, 2+ go side-by-side */
+  .home-bet-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px; }
+  .home-bet-group { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .home-bet-group-head { font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.6px; padding-bottom:6px; border-bottom:1px solid var(--border); }
   .home-bet-group-cards { display:flex; flex-direction:column; gap:8px; }
 
   /* Featured parlays — toggle + grid */
