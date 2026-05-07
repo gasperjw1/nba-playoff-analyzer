@@ -198,6 +198,7 @@ const BETS = [
     type: 'ml', pick: 'NYK ML vs PHI', odds: '-450 (re-priced)',
     facts: [{label:'Original line',value:'-260'},{label:'After Embiid OUT',value:'-450 to -550'},{label:'Spread',value:'NYK -10.5'}],
     modelHook: { fn:'dml', args:['NYK-PHI',2] },
+    result: { outcome: 'win', actual: 'NYK 108-102 (won by 6)' },
     reasoning: "🚨 <strong>Embiid OUT — ankle sprain + hip soreness (ruled out morning of game).</strong> The single biggest line-mover possible. PHI loses their 26.9ppg #1 scorer, interior gravity, post-up offense, and foul-drawing. Drummond starts at C — provides rebounding only, no offensive creation, gets pulled out of the paint by KAT stretch-5. NYK was already favored heavily with healthy Embiid; now this is structurally over. Maxey will absorb usage but is shaken from -28 G1. The ML is now expensive but virtually risk-free — best leveraged in a parlay with another correlated leg (Brunson over, NYK -10).",
     confidence: 'best-bet', thesis: ['situational','model','market'], narrative: null,
     result: null,
@@ -208,6 +209,7 @@ const BETS = [
     type: 'spread', pick: 'NYK -10.5 (revised from -6.5)', odds: '-110',
     facts: [{label:'Original',value:'NYK -6.5 (pre-Embiid news)'},{label:'Revised',value:'NYK -10.5 to -12.5'}],
     modelHook: { fn:'dmargin', args:['NYK-PHI',2] },
+    result: { outcome: 'loss', actual: 'NYK +6 (108-102) — did not cover -10.5. Phase 56 narrative-driven re-pricing was an overreaction; pre-Embiid-OUT model line of NYK -6.5 was correct.' },
     reasoning: "<strong>Embiid OUT changes everything for the spread.</strong> Without their primary scorer, PHI's ceiling collapses to ~95pts. Model now projects NYK by 12-15. Even at the revised -10.5, this is a clean cover unless NYK plays deep bench in a Q4 garbage-time scenario (possible — they did pull starters in G1 blowout). Best play: NYK -10.5 if available, or pivot to NYK team total over.",
     confidence: 'high', thesis: ['situational','model'], narrative: null,
     result: null,
@@ -225,7 +227,7 @@ const BETS = [
     chs: { delta: +2.5, tone: 'boost' },
     reasoning: "<strong>Brunson dropped 35 in G1 on 67% FG — and now Embiid is OUT.</strong> Drummond cannot switch in PnR and provides zero perimeter resistance. Without Embiid's interior gravity, NYK can run Brunson-KAT PnR all night with no consequence. Risk: NYK leads big and Brunson sits Q4 (he played only 31min G1 in the blowout). If the game stays close enough for him to play 35+min, this clears 30 easily. Even with garbage-time risk, the floor is 25+. <strong style=\"color:var(--purple)\">CHS boost:</strong> Historical home-vs-PHI + PnR-mismatch +2.5pts.",
     confidence: 'high', thesis: ['matchup','historical','situational'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Brunson 26pts (9-21 FG) — under 26.5 by half a point. Game stayed close (25 lead changes), Edgecombe defense early held him below his usual ceiling.' },
   },
   {
     id: 'r2-g2-nyk-phi-embiid-pts',
@@ -243,7 +245,7 @@ const BETS = [
     facts: [{label:'G1',value:'18pts (7-8 FG)'},{label:'Trend',value:'Elite efficiency continues'},{label:'Embiid OUT',value:'fewer help defenders'}],
     reasoning: "OG went 7-8 from the field in G1 — and now PHI is even more compromised with Embiid OUT. Drummond can't help-defend the perimeter. With Brunson drawing primary attention, OG gets clean looks. He's averaged 15.2pts in the last 6 playoff games. Garbage-time risk applies (NYK could blow this open by Q3) but the floor is solid.",
     confidence: 'medium', thesis: ['matchup'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'OG Anunoby 24pts (10-15 FG, 2-4 3PT) — easy cover. Left late with unspecified issue but had clinched the over by then.' },
   },
   {
     id: 'r2-g2-nyk-phi-drummond-reb',
@@ -252,7 +254,7 @@ const BETS = [
     facts: [{label:'Starts',value:'at C w/ Embiid OUT'},{label:'Minutes',value:'30+ expected'},{label:'Career',value:'Elite rebounder'}],
     reasoning: "<strong>NEW BET (post-Embiid news):</strong> Drummond gets the start at C with Embiid OUT. He played only 9-20min behind Embiid in prior games but is one of the best per-minute rebounders in NBA history. Expect 30+ min vs KAT/Mitchell Robinson. KAT is a stretch-5 who pulls Drummond outside, opening the offensive glass for putbacks. Even in a blowout loss, Drummond rebounds — his counting stats are blowout-proof. Confirm line is ≤11.5 before betting.",
     confidence: 'medium', thesis: ['situational'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Drummond 8reb in 24min — got into foul trouble (Bona/Barlow had to cover Cs in emergency). Minutes capped at 24 instead of expected 30+; rebounding chance compressed.' },
   },
 
   // ─── SAS-MIN G2 (Wed May 7, 9:00 PM ET @ Frost Bank, MIN leads 1-0) ──
@@ -264,7 +266,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['SAS-MIN',2] },
     reasoning: "<strong>SAS shot 28% 3PT in G1 (10-36) vs their 37.5% season average.</strong> That's ~3.5 extra makes expected in G2 = +10.5pts of shooting regression alone. Wemby's 0-8 3PT was a career aberration — he's a 37.5% shooter who will bounce back. Fox (0-4 3PT, -13) is also due. MIN proved competitive but needed SAS to have their worst shooting game all season to win by 2. Dosunmu returns for MIN which helps, but the math strongly favors SAS regression.",
     confidence: 'best-bet', thesis: ['regression','model'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'SAS 133-95 — largest playoff loss in MIN franchise history. Regression thesis VALIDATED MASSIVELY (SAS 41% from 3 vs G1 28%). Best bet hit.' },
   },
   {
     id: 'r2-g2-sas-min-spread',
@@ -274,7 +276,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['SAS-MIN',2] },
     reasoning: "Model says {{winner}} by {{margin}}. If Wemby makes just 2 threes (his season avg is 2.8/game), that adds 6pts to G1's margin and SAS wins by ~8. Edwards' minutes will expand but knee limits explosiveness. Lean cover but it's razor-thin.",
     confidence: 'lean', thesis: ['regression','model'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'SAS 133-95 — covered -5.5 by 32.5 points. Massive blowout.' },
   },
   {
     id: 'r2-g2-sas-min-wemby-pts',
@@ -288,7 +290,7 @@ const BETS = [
     chs: { delta: +3.8, tone: 'boost' },
     reasoning: "<strong>Wemby scored only 11pts in G1 on his worst shooting night ever (0-8 3PT, 5-17 FG).</strong> This is a 24.8ppg scorer who averaged 34ppg vs MIN in the regular season. The 0-8 3PT is a statistical anomaly for a 37.5% shooter — regression alone adds 8-10pts to his scoring output. <strong style=\"color:var(--purple)\">CHS boost:</strong> Compound scenarios (post-bad-shooting + home court + vs-Gobert-mismatch) add +3.8pts to projection, pushing expected output to 28-30pts. CHS and statistical regression align — strongest convergence signal on the board.",
     confidence: 'high', thesis: ['regression','matchup','historical'], narrative: 'bounce-back',
-    result: null,
+    result: { outcome: 'loss', actual: 'Wemby 19/15 — under 22.5 by 3.5. Bounce-back happened (7-12 FG, 1-3 3PT, attacked rim more) but blowout meant he sat early in Q4. CHS boost was right in direction but Wemby gave way to bench in 38pt rout.' },
   },
   {
     id: 'r2-g2-sas-min-edwards-pts',
@@ -302,7 +304,7 @@ const BETS = [
     chs: { delta: -5.0, tone: 'caution' },
     reasoning: "Edwards scored 18pts in just 25min in G1 (8-13 FG = 62%). If knee holds, expect 30+ minutes and likely a starting role in G2. <strong style=\"color:var(--purple)\">CHS caution:</strong> Historical scenarios for knee-restricted players in away R2 games show -5pts suppression (limited explosion, fewer drives, more jump shots against elite rim protection). The 19.5 line is actually well-calibrated when CHS is applied — this becomes a coin flip prop rather than a clear over. Proceed with caution.",
     confidence: 'coin-flip', thesis: ['historical','situational'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Edwards 12pts (4-13 FG, 1-5 3PT) in 24min off bench. CHS caution was correct: knee + rust + blowout context all suppressed him. 4-way 12pt tie (Edwards/Randle/McDaniels/Shannon) showed nobody could create when down big.' },
   },
   {
     id: 'r2-g2-sas-min-fox-pts',
@@ -314,7 +316,7 @@ const BETS = [
     ],
     reasoning: "Fox had his worst game of the playoffs in G1 — passive, 0-4 3PT, -13. Coaching staff will demand more PnR aggression with Wemby. His season avg is 18.5ppg and he averaged 20+ in R1. The 17.5 line is deflated by G1 — bounce-back to 20+ is likely.",
     confidence: 'medium', thesis: ['regression','matchup'], narrative: 'bounce-back',
-    result: null,
+    result: { outcome: 'loss', actual: 'Fox 16pts (6-12 FG, 2-4 3PT, 7ast) — under 17.5 by 1.5. Bounce-back hit (more efficient than G1) but he sat in Q4 with SAS up 25+. Same blowout-cap issue as Wemby.' },
   },
 
   // ─── DET-CLE G2 (Thu May 7, 7:00 PM ET @ LCA, DET leads 1-0) ──
@@ -501,15 +503,15 @@ const FEATURED_PARLAYS = [
     name: 'Iron Floor (3-Leg)',
     stake: 100, odds: '+190', payout: 'To Win: $190',
     legs: [
-      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:null,
-        note:'Career 35.5ppg vs PHI playoffs (6 gm). 35pts G1. Lowest Knick playoff game ~20pts. 90%+ floor.' },
-      { pick:'Randle Over 14.5 pts (SAS-MIN G2)', odds:'-220', confidence:'floor', status:null,
-        note:'21pts G1 vs SAS. 15-27pt range all playoffs. Only sub-15 once (blowout, reduced min). 85%+ floor.' },
-      { pick:'Vassell Over 9.5 pts (SAS-MIN G2)', odds:'-250', confidence:'floor', status:null,
-        note:'12.8ppg playoffs (11-16 range). Never below 10pts this postseason. 90%+ floor.' },
+      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:'hit',
+        note:'26pts ✓. Game stayed close so he played 38min — exactly the scenario the floor thesis required.' },
+      { pick:'Randle Over 14.5 pts (SAS-MIN G2)', odds:'-220', confidence:'floor', status:'miss',
+        note:'12pts in 28min — sat early Q4 in 38pt blowout. Floor thesis assumed sub-15 only in blowouts; this WAS a blowout.' },
+      { pick:'Vassell Over 9.5 pts (SAS-MIN G2)', odds:'-250', confidence:'floor', status:'hit',
+        note:'12pts in 26min ✓ — held the floor as projected.' },
     ],
     thesis:'Every leg uses the FLOOR, not the ceiling. Brunson 19.5 is less than half his career avg vs PHI; he hasn\'t scored below 20 as a Knick in playoffs. Randle dipped below 15 only once all playoffs (24min game). Vassell locked into 11-16pts every game. Each leg clears 80%+ individually; combined at +190 is high-probability.',
-    result: null,
+    result: { outcome: 'loss', delta: '-100', actual: '2-of-3 legs hit. Randle\'s blowout-cap killed it — historical exception (sub-15 in blowouts) became the rule when SAS won by 38. Lesson: even "floor" props have correlated downside risk when the host team\'s blowout takes them out of the rotation.' },
   },
   {
     id: 'r2-g2-floor-home-stars',
@@ -518,15 +520,15 @@ const FEATURED_PARLAYS = [
     name: 'Home Stars (3-Leg)',
     stake: 100, odds: '+280', payout: 'To Win: $280',
     legs: [
-      { pick:'OG Anunoby Over 12.5 pts (NYK-PHI G2)', odds:'-180', confidence:'floor', status:null,
-        note:'18pts G1 (7-8 FG, 87.5%). 21.5ppg R1 vs ATL. R1 floor 14pts. PHI can\'t guard his midrange. 85%+.' },
-      { pick:'Brunson Over 24.5 pts (NYK-PHI G2)', odds:'-150', confidence:'floor', status:null,
-        note:'35.5ppg career vs PHI playoffs. 35pts G1. 6 of last 8 playoff games Over 25. MSG home. 80%+.' },
-      { pick:'KAT Over 14.5 pts (NYK-PHI G2)', odds:'-200', confidence:'floor', status:null,
-        note:'17pts G1 vs PHI. 18.7ppg R1 (12-25 range). Only below 15 in G6 blowout (sat Q4). 85%+.' },
+      { pick:'OG Anunoby Over 12.5 pts (NYK-PHI G2)', odds:'-180', confidence:'floor', status:'hit',
+        note:'24pts ✓ — cleared with massive room to spare. OG was 10-15 FG before exiting late.' },
+      { pick:'Brunson Over 24.5 pts (NYK-PHI G2)', odds:'-150', confidence:'floor', status:'hit',
+        note:'26pts ✓ — go-ahead bucket with 5:06 left, played 38min in tight game.' },
+      { pick:'KAT Over 14.5 pts (NYK-PHI G2)', odds:'-200', confidence:'floor', status:'hit',
+        note:'20pts/10reb/7ast ✓ — full triple-double-line floor performance.' },
     ],
     thesis:'All three legs are NYK home players with proven floor scoring. OG shot 87.5% G1 — midrange matchup-proof against PHI perimeter D. Brunson\'s 24.5 still 11pts below career avg vs PHI. KAT only below 15 in a sat-out blowout. Competitive G2 at MSG, all three clear comfortably.',
-    result: null,
+    result: { outcome: 'win', delta: '+280', actual: '3-of-3 legs hit ✓. Best parlay of the night. The "competitive G2" assumption was right (108-102, 25 lead changes); all three NYK starters played 30+ minutes and cleared their floors. +$280 on $100 stake.' },
   },
   {
     id: 'r2-g2-floor-spread',
@@ -535,13 +537,13 @@ const FEATURED_PARLAYS = [
     name: 'Spread + Floor (2-Leg)',
     stake: 100, odds: '+175', payout: 'To Win: $175',
     legs: [
-      { pick:'MIN +9.5 (SAS-MIN G2)', odds:'-110', confidence:'floor', status:null,
-        note:'Already WON G1 outright in SA. 3-1 ATS as 9.5+ dogs this season. 5-1 ATS last 6. Edwards minutes expanding. 80%+ cover.' },
-      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:null,
-        note:'Career 35.5ppg vs PHI. Floor is 20+ as a Knick in playoffs. 90%+.' },
+      { pick:'MIN +9.5 (SAS-MIN G2)', odds:'-110', confidence:'floor', status:'miss',
+        note:'SAS won by 38 — MIN didn\'t cover by 28.5. Largest playoff loss in MIN history. ATS history flag was right but G2 was the historical exception.' },
+      { pick:'Brunson Over 19.5 pts (NYK-PHI G2)', odds:'-400', confidence:'floor', status:'hit',
+        note:'26pts ✓.' },
     ],
     thesis:'MIN already won in San Antonio (G1, 104-102). Getting 9.5 means stay competitive — defense + Randle 21pts + Edwards expanding minutes ensures it. MIN 3-1 ATS as 9.5+ dogs, 5-1 last 6. Paired with Brunson rock-solid floor: two near-locks combined.',
-    result: null,
+    result: { outcome: 'loss', delta: '-100', actual: '1-of-2 — MIN +9.5 was the killer. The "post-upset bounce-back beatdown" pattern (favorite gets revenge at home) overwhelmed the ATS history. Lesson: angry-favorite home games can produce historical-record outcomes that no ATS pattern would predict.' },
   },
 
   // ─── TRADITIONAL (full range — regression / bounce-back / chaos) ─
@@ -552,13 +554,13 @@ const FEATURED_PARLAYS = [
     name: 'Regression Lock (2-Leg)',
     stake: 100, odds: '+145', payout: 'To Win: $145',
     legs: [
-      { pick:'NYK ML vs PHI (G2)', odds:'-270', confidence:'high', status:null,
-        note:'NYK won G1 by 39. MSG fortress. Brunson 35pts locked in.' },
-      { pick:'SAS ML vs MIN (G2)', odds:'-360', confidence:'high', status:null,
-        note:'SAS shot 28% 3PT G1 (career-worst). Wemby 0-8 3PT regresses to 37.5%.' },
+      { pick:'NYK ML vs PHI (G2)', odds:'-270', confidence:'high', status:'hit',
+        note:'NYK 108-102 ✓ — Brunson 26 + KAT 20/10/7 led the close-out. Hart 3 + Q4 19-12 sealed it.' },
+      { pick:'SAS ML vs MIN (G2)', odds:'-360', confidence:'high', status:'hit',
+        note:'SAS 133-95 ✓ — regression validated MASSIVELY. SAS 41% 3PT vs G1 28%. Wemby 19/15.' },
     ],
     thesis:'Both home teams heavy favorites. SAS shot 28% 3PT G1 (season avg 37.5%) — 3.5 extra makes = +10.5pts of regression. NYK at home after dominant G1 vs tired PHI. Two strong favorites at home with bounce-back narratives.',
-    result: null,
+    result: { outcome: 'win', delta: '+145', actual: '2-of-2 ✓. Both home favorites won as projected. The regression thesis was the cleanest read of the night — when both teams shoot below their season averages and both are at home, the math is on your side. +$145 on $100.' },
   },
   {
     id: 'r2-g2-trad-bounceback',
@@ -567,15 +569,15 @@ const FEATURED_PARLAYS = [
     name: 'Bounce-Back Props (3-Leg)',
     stake: 100, odds: '+450', payout: 'To Win: $450',
     legs: [
-      { pick:'Wembanyama Over 22.5 pts (G2)', odds:'-125', confidence:'medium', status:null,
-        note:'G1: 11pts (0-8 3PT). Season avg 25.0. Last 5 vs MIN: 27.8ppg. ⚠ HIGH VARIANCE — Gobert + MIN scheme held him to 5-17. Not a floor pick.' },
-      { pick:'Brunson Over 26.5 pts (G2)', odds:'-120', confidence:'high', status:null,
-        note:'G1: 35pts. 6 of last 8 playoff games Over 27.5. MSG home.' },
-      { pick:'Edwards Over 19.5 pts (G2)', odds:'-115', confidence:'medium', status:null,
-        note:'G1: 18pts in 25min. Expect 30+ min G2. ⚠ KNEE — questionable, minutes cap unknown.' },
+      { pick:'Wembanyama Over 22.5 pts (G2)', odds:'-125', confidence:'medium', status:'miss',
+        note:'19/15 — bounced back efficiency-wise (7-12 FG) but blowout took him out of Q4. Right thesis, wrong context (38pt rout).' },
+      { pick:'Brunson Over 26.5 pts (G2)', odds:'-120', confidence:'high', status:'miss',
+        note:'26pts — under by 0.5. Edgecombe defense early kept him at 9-21 (43%) below his usual ceiling.' },
+      { pick:'Edwards Over 19.5 pts (G2)', odds:'-115', confidence:'medium', status:'miss',
+        note:'12pts in 24min off bench — knee + blowout context killed it.' },
     ],
     thesis:'Wemby 0-8 3PT was career-worst for a 37.5% shooter — regression says 25+ G2. NOT a floor pick: Gobert + MIN defense scheme to contain him. Career avg vs MIN 22.6ppg, just clearing line. Edwards expanded minutes if knee holds. High upside at +450 but riskier than Floor parlays.',
-    result: null,
+    result: { outcome: 'loss', delta: '-100', actual: '0-of-3 ✗. All three played to their projected character but the LINES were just slightly above the deliveries — Brunson missed 26.5 by 0.5, Wemby and Edwards undermined by blowout-cap (sat in Q4). The "bounce-back happened, just not enough" loss.' },
   },
   {
     id: 'r2-g2-trad-chaos',
@@ -584,12 +586,67 @@ const FEATURED_PARLAYS = [
     name: 'Chaos — Double Upset (2-Leg)',
     stake: 100, odds: '+1800', payout: 'To Win: $1,800',
     legs: [
-      { pick:'PHI ML vs NYK (G2)', odds:'+220', confidence:'chaos', status:null,
-        note:'Embiid bounce-back from 14pt G1. 2 extra days rest. Pride game.' },
-      { pick:'MIN ML vs SAS (G2)', odds:'+280', confidence:'chaos', status:null,
-        note:'Already proved they can win in SA. Edwards minutes expand. Dosunmu back.' },
+      { pick:'PHI ML vs NYK (G2)', odds:'+220', confidence:'chaos', status:'miss',
+        note:'PHI lost 102-108. Played without Embiid (ruled out morning of game) so the "Embiid bounce-back" thesis was already moot. PHI did keep it close (25 lead changes) but couldn\'t close.' },
+      { pick:'MIN ML vs SAS (G2)', odds:'+280', confidence:'chaos', status:'miss',
+        note:'MIN lost by 38 — largest playoff loss in franchise history. Anti-chaos result.' },
     ],
     thesis:'MIN already won in San Antonio — not impossible. Dosunmu may return, Edwards 30+ min. PHI bounce-back potential real if Embiid goes nuclear. At +1800, $100 risk for $1,800 payout. Pure chaos.',
+    result: { outcome: 'loss', delta: '-100', actual: '0-of-2 ✗. Embiid OUT (not in for the bounce-back) and MIN got run off the floor. Chaos didn\'t come — favorites swept. Common theme of the slate: this was a "favorites night."' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R2 G2 — TONIGHT (May 7: DET-CLE + OKC-LAL)
+  // ═══════════════════════════════════════════════════════════════
+
+  // ─── RELIABLE FLOOR ────────────────────────────────────────────
+  {
+    id: 'r2-g2-may7-floor-chalk',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'floor', type: 'best-bet',
+    name: 'Chalk Sweep (2-Leg)',
+    stake: 100, odds: '+120', payout: 'To Win: $120',
+    legs: [
+      { pick:'OKC ML vs LAL', odds:'-800', confidence:'high', status:null,
+        note:'Won G1 by 18 with SGA at his floor (7 TOs!). J.Williams ramping back up. Reaves still hurt.' },
+      { pick:'DET ML vs CLE', odds:'-190', confidence:'high', status:null,
+        note:'Won G1 by 10. Cade 23/7ast. DET defense forced 19 CLE TOs (12 stl). Home crowd electric.' },
+    ],
+    thesis:'Both home teams dominated G1. OKC by 18 (with SGA TURNING IT OVER 7 TIMES). DET forced 19 CLE TOs — that\'s scheme, not luck. CLE got Allen back which raises ceiling, but the structural turnover problem remains. At +120 this is excellent value for two heavy favorites.',
+    result: null,
+  },
+
+  // ─── TRADITIONAL ────────────────────────────────────────────────
+  {
+    id: 'r2-g2-may7-trad-star-props',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'traditional', type: 'value',
+    name: 'Star Props (3-Leg)',
+    stake: 100, odds: '+500', payout: 'To Win: $500',
+    legs: [
+      { pick:'SGA Over 24.5 pts (OKC-LAL G2)', odds:'-115', confidence:'high', status:null,
+        note:'G1: 18pts (7 TOs!) — career-anomaly TO night. Season avg 31.1. Massive bounce-back expected.' },
+      { pick:'Cade Over 21.5 pts (DET-CLE G2)', odds:'-120', confidence:'high', status:null,
+        note:'G1: 23pts (8-16 FG, 9-11 FT). Home + confident. CLE perimeter D porous.' },
+      { pick:'LeBron Over 26.5 pts (OKC-LAL G2)', odds:'-110', confidence:'high', status:null,
+        note:'G1: 27pts (71% FG). Down 0-1 + Reaves compromised = volume forced.' },
+    ],
+    thesis:'SGA bounce-back from 7 TOs is the strongest prop in R2 — career avg 2.8 TOs in playoffs, G1 was a clear outlier. Cade hit 23 in G1 with home support coming. LeBron at 41 is the only LAL scorer with Reaves at 50% — he MUST shoot to keep games competitive. Three near-locks at +500.',
+    result: null,
+  },
+  {
+    id: 'r2-g2-may7-trad-chaos',
+    slate: 'R2-G2', date: '2026-05-07',
+    category: 'traditional', type: 'chaos',
+    name: 'Chaos — Road Upset Double (2-Leg)',
+    stake: 100, odds: '+2200', payout: 'To Win: $2,200',
+    legs: [
+      { pick:'CLE ML vs DET', odds:'+160', confidence:'chaos', status:null,
+        note:'Mitchell 30+ bounce-back possible. Allen back. Mobley defensive adjustments. CLE playoff pedigree.' },
+      { pick:'LAL ML vs OKC', odds:'+550', confidence:'chaos', status:null,
+        note:'Requires LeBron nuclear game (40+) AND Reaves shooting better than 3-16. OKC complacency risk after blowout.' },
+    ],
+    thesis:'CLE has playoff pedigree and Mitchell can drop 35+ any night. LAL upset needs LeBron supernova + Reaves bounce-back from his oblique. Extreme longshot at +2200 but $100 → $2,200 upside if both road dogs get there.',
     result: null,
   },
 ];
