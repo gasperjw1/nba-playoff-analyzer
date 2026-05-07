@@ -49,6 +49,7 @@ function loadValidatorContext() {
   load('js/data/bets-data.js');
   load('js/data/news.js');
   load('js/validators.js');
+  load('js/engine/auto-resolve.js');
   return ctx;
 }
 
@@ -476,6 +477,53 @@ function runTests() {
       missingThesis.some(e => e.includes('missing thesis')),
       'validateParlay catches missing required field'
     );
+  }
+
+  // ============================================================
+  // TEST 9: Auto-resolve reconciliation (Tier 1.3)
+  //   For every bet with a declared result on a finished game,
+  //   the auto-resolver must agree. Catches stale results, copy-
+  //   paste errors, and bets pointing at the wrong game number.
+  // ============================================================
+  console.log('\nTEST 9: Auto-resolve reconciliation');
+  {
+    const vctx = loadValidatorContext();
+    const recon = vctx.reconcileAllBets(vctx.BETS, vctx.SERIES_DATA);
+    const disagreements = recon.filter(r => r.status === 'disagree');
+
+    if (disagreements.length === 0) {
+      assert(true, 'reconcileAllBets: 0 disagreements between declared and computed outcomes');
+    } else {
+      console.log(`  ${disagreements.length} bet(s) disagree with the auto-resolver:`);
+      disagreements.forEach(d => {
+        console.log(`    - ${d.betId}: declared=${d.declared.outcome} (${d.declared.actual}); computed=${d.computed.outcome} (${d.computed.actual})`);
+      });
+      assert(false, `reconcileAllBets found ${disagreements.length} declared/computed mismatch(es) — see above`);
+    }
+
+    // 9a — coverage check: at least one resolved game produces an
+    //       'agree' verdict, so we know the resolver actually ran.
+    const agrees = recon.filter(r => r.status === 'agree');
+    assert(agrees.length > 0, 'reconcileAllBets: at least one bet resolved successfully');
+
+    // 9b — sanity: a fabricated mismatch IS flagged.
+    const fakeBet = {
+      id:'fake', slate:'R2-G1', series:'NYK-PHI', game:1, type:'ml',
+      pick:'PHI ML vs NYK', odds:'+260',
+      result:{ outcome:'win', actual:'PHI won (lie)' },
+    };
+    const fakeRecon = vctx.reconcileBet(fakeBet, vctx.SERIES_DATA);
+    assert(fakeRecon.status === 'disagree', 'reconcileBet flags fabricated win where loser was picked');
+
+    // 9c — sanity: the resolver picks the right team for a real ML bet.
+    const realML = { id:'real', series:'NYK-PHI', game:1, type:'ml', pick:'NYK ML vs PHI' };
+    const realComp = vctx.resolveBetAgainstData(realML, vctx.SERIES_DATA);
+    assert(realComp && realComp.outcome === 'win', 'resolveBetAgainstData computes ML win for NYK in G1');
+
+    // 9d — sanity: total resolution math
+    const totalBet = { id:'t', series:'SAS-MIN', game:1, type:'total', pick:'Under 220.5' };
+    const totalComp = vctx.resolveBetAgainstData(totalBet, vctx.SERIES_DATA);
+    assert(totalComp && totalComp.outcome === 'win', 'resolveBetAgainstData computes Under hit for SAS-MIN G1 (206 total)');
   }
 
   // ============================================================
