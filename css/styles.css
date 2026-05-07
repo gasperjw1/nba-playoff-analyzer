@@ -334,6 +334,17 @@
   .bet-content { }
   /* Bet section groupings (confidence tiers within each game tab) */
   .bet-section { margin-bottom:20px; }
+
+  /* Per-slate grid: places each series's (bets + projection + scenarios)
+     stack into its own column. Auto-fits to 1 / 2 / 3 columns by viewport
+     so the page is dramatically less vertical on desktop without breaking
+     mobile. min-width:0 on the column prevents wide projected box-score
+     tables from overflowing the grid track. */
+  .bet-series-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(440px, 1fr)); gap:24px; align-items:start; margin-bottom:20px; }
+  .bet-series-column { min-width:0; }
+  @media (max-width: 600px) {
+    .bet-series-grid { grid-template-columns:1fr; gap:16px; }
+  }
   /* Grid layout for individual bet cards within a game section */
   .bet-card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; margin-bottom:16px; }
 

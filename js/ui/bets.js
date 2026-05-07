@@ -3319,40 +3319,54 @@ function renderR2Bets(el) {
     <!-- ═══════ R2 GAME 1 BETS TAB ═══════ -->
     <div id="betContent-g1" class="bet-content" style="display:none;">
 
-    <!-- R2 G1 — rendered from BETS schema (Phase 55) -->
-    ${renderBetSlateSeries('R2-G1', 'NYK-PHI', { dml, dmargin, dwinner })}
-    ${dscenarios('NYK-PHI', 1)}
-    ${renderBetSlateSeries('R2-G1', 'SAS-MIN', { dml, dmargin, dwinner })}
-    ${dscenarios('SAS-MIN', 1)}
-    ${renderBetSlateSeries('R2-G1', 'DET-CLE', { dml, dmargin, dwinner })}
-    ${dscenarios('DET-CLE', 1)}
-    ${renderBetSlateSeries('R2-G1', 'OKC-LAL', { dml, dmargin, dwinner })}
-    ${dscenarios('OKC-LAL', 1)}
+    <!-- R2 G1 — rendered from BETS schema (Phase 55), arranged in a per-series grid -->
+    <div class="bet-series-grid">
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G1', 'NYK-PHI', { dml, dmargin, dwinner })}
+        ${dscenarios('NYK-PHI', 1)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G1', 'SAS-MIN', { dml, dmargin, dwinner })}
+        ${dscenarios('SAS-MIN', 1)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G1', 'DET-CLE', { dml, dmargin, dwinner })}
+        ${dscenarios('DET-CLE', 1)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G1', 'OKC-LAL', { dml, dmargin, dwinner })}
+        ${dscenarios('OKC-LAL', 1)}
+      </div>
+    </div>
 
     </div><!-- end betContent-g1 -->
 
     <!-- ═══════ R2 GAME 2 BETS TAB ═══════ -->
     <div id="betContent-g2" class="bet-content" style="display:none;">
 
-    <!-- NYK-PHI G2 — Phase 55 PoC: rendered from BETS schema -->
-    ${renderBetSlateSeries('R2-G2', 'NYK-PHI', { dml, dmargin, dwinner })}
-    ${dbox('NYK-PHI', 2)}
-    ${dscenarios('NYK-PHI', 2)}
-
-    <!-- SAS-MIN G2 — rendered from BETS schema -->
-    ${renderBetSlateSeries('R2-G2', 'SAS-MIN', { dml, dmargin, dwinner })}
-    ${dbox('SAS-MIN', 2)}
-    ${dscenarios('SAS-MIN', 2)}
-
-    <!-- DET-CLE G2 — rendered from BETS schema -->
-    ${renderBetSlateSeries('R2-G2', 'DET-CLE', { dml, dmargin, dwinner })}
-    ${dbox('DET-CLE', 2)}
-    ${dscenarios('DET-CLE', 2)}
-
-    <!-- OKC-LAL G2 — rendered from BETS schema -->
-    ${renderBetSlateSeries('R2-G2', 'OKC-LAL', { dml, dmargin, dwinner })}
-    ${dbox('OKC-LAL', 2)}
-    ${dscenarios('OKC-LAL', 2)}
+    <!-- R2 G2 — rendered from BETS schema, arranged in a per-series grid -->
+    <div class="bet-series-grid">
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G2', 'NYK-PHI', { dml, dmargin, dwinner })}
+        ${dbox('NYK-PHI', 2)}
+        ${dscenarios('NYK-PHI', 2)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G2', 'SAS-MIN', { dml, dmargin, dwinner })}
+        ${dbox('SAS-MIN', 2)}
+        ${dscenarios('SAS-MIN', 2)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G2', 'DET-CLE', { dml, dmargin, dwinner })}
+        ${dbox('DET-CLE', 2)}
+        ${dscenarios('DET-CLE', 2)}
+      </div>
+      <div class="bet-series-column">
+        ${renderBetSlateSeries('R2-G2', 'OKC-LAL', { dml, dmargin, dwinner })}
+        ${dbox('OKC-LAL', 2)}
+        ${dscenarios('OKC-LAL', 2)}
+      </div>
+    </div>
 
     </div><!-- end betContent-g2 -->
 
