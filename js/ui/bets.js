@@ -2486,12 +2486,128 @@ function renderR2Bets(el) {
       + '</div>';
   }
 
+  // ── Per-series helpers (Tier 1.5: per-series tab restructure) ──
+
+  // Active game = first game with no recorded winner. null when series is over.
+  function activeGameNum(series) {
+    const idx = series.games.findIndex(g => !g.winner);
+    return idx >= 0 ? idx + 1 : null;
+  }
+
+  // Compact pill row summarizing W-L for each completed game in a series.
+  function renderSeriesProgressHeader(series) {
+    const completed = series.games.filter(g => g.winner);
+    if (!completed.length) {
+      return '<p style="color:var(--text-dim);font-size:12px;margin:0 0 12px;">Series tied 0-0 — no games played yet.</p>';
+    }
+    const pills = completed.map(g => {
+      const bets = (typeof BETS !== 'undefined' ? BETS : []).filter(b => b.series === series.id && b.game === g.num);
+      const w = bets.filter(b => b.result && b.result.outcome === 'win').length;
+      const l = bets.filter(b => b.result && b.result.outcome === 'loss').length;
+      const v = bets.filter(b => b.result && b.result.outcome === 'void').length;
+      const margin = Math.abs((g.homeScore || 0) - (g.awayScore || 0));
+      const recordStr = `${w}W ${l}L${v ? ` ${v}V` : ''}`;
+      const recordColor = w > l ? 'var(--green)' : w < l ? 'var(--red)' : 'var(--yellow)';
+      return `<span style="display:inline-block;padding:5px 11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;font-size:11px;margin:0 6px 6px 0;">
+        <strong style="color:#ddd;">G${g.num}:</strong> <span style="color:#aaa;">${g.winner} by ${margin}</span>
+        <span style="color:${recordColor};margin-left:6px;font-weight:700;">${recordStr}</span>
+      </span>`;
+    }).join('');
+    return `<div style="margin-bottom:14px;line-height:1.6;">${pills}</div>`;
+  }
+
+  // Collapsed accordion of past games' bet history for a series.
+  function renderPastGamesAccordion(series, dyn) {
+    const completed = series.games.filter(g => g.winner);
+    if (!completed.length) return '';
+    const sections = completed.map(g => {
+      const slate = `R2-G${g.num}`;
+      return renderBetSlateSeries(slate, series.id, dyn);
+    }).filter(Boolean).join('');
+    if (!sections) return '';
+    return `<details style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px;">
+      <summary style="cursor:pointer;color:var(--text-dim);font-size:12px;font-weight:600;letter-spacing:0.5px;padding:6px 0;">
+        ▸ Show ${completed.length} prior game${completed.length > 1 ? 's' : ''} of bets
+      </summary>
+      <div style="margin-top:16px;">${sections}</div>
+    </details>`;
+  }
+
+  // Full content for one series tab.
+  function renderSeriesTabContent(series, dyn) {
+    const game = activeGameNum(series);
+    if (!game) {
+      return `<div style="text-align:center;padding:40px 0;">
+        <h3 style="color:#fff;margin:0 0 6px;">${series.id}</h3>
+        <p style="color:var(--text-dim);">Series complete — no upcoming game.</p>
+        ${renderSeriesProgressHeader(series)}
+        ${renderPastGamesAccordion(series, dyn)}
+      </div>`;
+    }
+    const slateId = `R2-G${game}`;
+    return `
+      <h3 style="color:#fff;margin:0 0 8px;font-size:18px;">${series.id} <span style="color:var(--text-dim);font-size:13px;font-weight:500;">— G${game} upcoming</span></h3>
+      ${renderSeriesProgressHeader(series)}
+      ${renderBetSlateSeries(slateId, series.id, dyn)}
+      ${dyn.dbox ? dyn.dbox(series.id, game) : ''}
+      ${dyn.dscenarios ? dyn.dscenarios(series.id, game) : ''}
+      ${renderPastGamesAccordion(series, dyn)}
+    `;
+  }
+
+  // Today's parlays block — uses FEATURED_PARLAYS filtered to CURRENT_DATE.
+  // Replaces ~700 lines of hand-coded historical parlay HTML.
+  function renderTodaysParlaysBlock() {
+    if (typeof FEATURED_PARLAYS === 'undefined') return '';
+    const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : '';
+    const todays = FEATURED_PARLAYS.filter(p => p.date === today);
+    if (!todays.length) {
+      return '<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:13px;">No featured parlays posted for today.</div>';
+    }
+    const floor = todays.filter(p => p.category === 'floor');
+    const traditional = todays.filter(p => p.category === 'traditional');
+    const renderGrid = (parlays, label, color) => {
+      if (!parlays.length) return '';
+      return `
+        <div style="margin-top:20px;">
+          <div style="text-align:center;margin-bottom:14px;">
+            <span style="font-size:11px;font-weight:700;color:${color};background:rgba(255,255,255,0.04);padding:5px 14px;border-radius:16px;letter-spacing:0.5px;border:1px solid ${color};">${label}</span>
+          </div>
+          <div class="bet-series-grid">${parlays.map(homeRenderParlay).join('')}</div>
+        </div>`;
+    };
+    return `
+      <div style="margin-top:20px;border-top:3px solid #3dd68c;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:8px;">
+          <span style="font-size:14px;font-weight:800;color:#3dd68c;background:rgba(61,214,140,0.15);padding:8px 24px;border-radius:20px;letter-spacing:1px;border:1px solid rgba(61,214,140,0.3);">🏀 TODAY — ${today}</span>
+        </div>
+        ${renderGrid(floor, '🛡 RELIABLE FLOOR PARLAYS — 80%+ combined', '#22d3ee')}
+        ${renderGrid(traditional, 'TRADITIONAL PARLAYS — value plays', '#a78bfa')}
+      </div>`;
+  }
+
   el.innerHTML = `
   <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
 
     <!-- R2 HEADER -->
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 2</h2>
-    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:6px;">4 series | Odds by DraftKings | R2 G1: 3/4 winners correct | TODAY: NYK-PHI G2 + SAS-MIN G2</p>
+    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:6px;">${r2.length} series | Odds by DraftKings | ${(function(){
+      const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : '';
+      const todaysGames = [];
+      if (typeof BET_SLATES !== 'undefined') {
+        Object.values(BET_SLATES).forEach(slate => {
+          slate.games.forEach(g => {
+            if (g.date === today) {
+              const seriesId = g.series;
+              const slateNum = (slate.label || '').match(/Game\s+(\d+)/i);
+              const num = slateNum ? slateNum[1] : '?';
+              todaysGames.push(`${seriesId} G${num}`);
+            }
+          });
+        });
+      }
+      return todaysGames.length ? `TODAY (${today}): ${todaysGames.join(' + ')}` : `No games scheduled for today (${today})`;
+    })()}</p>
 
     <!-- ═══ RUNNING P&L LEDGER ═══ -->
     <div style="background:rgba(0,0,0,0.3);border:1px solid #444;border-radius:10px;padding:14px;margin-bottom:16px;">
@@ -2535,11 +2651,16 @@ function renderR2Bets(el) {
       <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:default;font-size:12px;font-weight:700;">Round 2</button>
     </div>
 
-    <!-- R2 BET TABS -->
+    <!-- R2 BET TABS — Featured Parlays + one per series -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
       <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Featured Parlays</div>
-      <div class="bet-tab" onclick="switchBetTab('g1')" id="betTab-g1" style="padding:10px 24px;border-radius:0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 1 Bets</div>
-      <div class="bet-tab" onclick="switchBetTab('g2')" id="betTab-g2" style="padding:10px 24px;border-radius:0 8px 8px 0;cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Game 2 Bets</div>
+      ${r2.map((s, i) => {
+        const isLast = i === r2.length - 1;
+        const radius = isLast ? '0 8px 8px 0' : '0';
+        const activeGame = activeGameNum(s);
+        const label = activeGame ? `${s.id} · G${activeGame}` : `${s.id} · Done`;
+        return `<div class="bet-tab" onclick="switchBetTab('${s.id}')" id="betTab-${s.id}" style="padding:10px 18px;border-radius:${radius};cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">${label}</div>`;
+      }).join('')}
     </div>
 
     <!-- ═══════ FEATURED PARLAYS TAB ═══════ -->
@@ -2595,780 +2716,21 @@ function renderR2Bets(el) {
         <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight: <strong style="color:#22d3ee;">$300</strong> Floor &middot; <strong style="color:#a78bfa;">$200</strong> Traditional</div>
       </div>
 
-      <!-- ═══════════════════════════════════════════ -->
-      <!-- TODAY — Wed May 7: DET-CLE G2 + OKC-LAL G2 -->
-      <!-- ═══════════════════════════════════════════ -->
-      <div style="margin-bottom:20px;border-top:3px solid #3dd68c;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:8px;">
-          <span style="font-size:14px;font-weight:800;color:#3dd68c;background:rgba(61,214,140,0.15);padding:8px 24px;border-radius:20px;letter-spacing:1px;border:1px solid rgba(61,214,140,0.3);">&#x1f3c0; TODAY &mdash; Wed May 7</span>
-        </div>
-        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">DET-CLE G2 @ LCA 7:00 PM ET &nbsp;|&nbsp; OKC-LAL G2 @ Paycom 9:30 PM ET</div>
-
-        <!-- RELIABLE FLOOR SECTION HEADER -->
-        <div style="text-align:center;margin-bottom:14px;">
-          <span style="font-size:11px;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;border:1px solid rgba(34,211,238,0.2);">&#x1f6e1; RELIABLE FLOOR PARLAYS &mdash; 80%+ hit rate per leg</span>
-        </div>
-
-        <!-- $100 CHALK SWEEP (Floor 1) -->
-        <div class="parlay-card headline" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#22d3ee;">Chalk Sweep (2-Leg)</span>
-            <span class="parlay-odds" style="font-size:16px;background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +120 | To Win: $120</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL (G2)</div>
-                <div class="parlay-leg-line">-800 | Won G1 by 18 with SGA's WORST game (7 TOs!) | J.Williams ramping back | Reaves still hurt | <strong style="color:#22d3ee;">95%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>DET ML</strong> vs CLE (G2)</div>
-                <div class="parlay-leg-line">-190 | Won G1 by 10 | Cade 23/7ast | DET defense forced 19 CLE TOs (12 stl) | Home crowd | <strong style="color:#22d3ee;">75%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Chalk Sweep thesis:</strong> Both home teams dominated G1. OKC by 18 even with SGA at his floor (7 TOs!); their depth gap vs LAL is structural. DET forced 19 CLE TOs &mdash; that's scheme, not luck. Allen returns for CLE which raises ceiling, but the structural turnover problem persists. At +120 this is excellent value for two heavy favorites that have proven dominance.
-          </div>
-        </div>
-
-        <!-- $100 STAR SCORING FLOORS (Floor 2) -->
-        <div class="parlay-card" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#22d3ee;">Star Scoring Floors (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +170 | To Win: $170</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 22.5 pts</strong> (OKC-LAL G2)</div>
-                <div class="parlay-leg-line">-180 | Season avg 31.1 | 25+ in 18 of last 20 | G1: 18pts (7 TOs) was career-anomaly | <strong style="color:#22d3ee;">90%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Cade Over 17.5 pts</strong> (DET-CLE G2)</div>
-                <div class="parlay-leg-line">-180 | Playoff avg 23ppg | G1: 23pts (8-16 FG, 9-11 FT) | Cade 18+ in 8 of 9 home playoff games | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LeBron Over 21.5 pts</strong> (OKC-LAL G2)</div>
-                <div class="parlay-leg-line">-150 | Playoff avg 24ppg | G1: 27pts (12-17, 71%) | Reaves at 50% = LeBron must shoot | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Star Floors thesis:</strong> Three stars at FLOOR lines, not ceiling. SGA's 22.5 is 8.6pts below his playoff average &mdash; he hit 22+ in 18 of 20 last games; G1 (7 TOs) was the lone break in pattern. Cade has 18+ in nearly every home playoff game. LeBron must shoot to keep LAL competitive without Doncic and a compromised Reaves. Each clears 85%+ individually.
-          </div>
-        </div>
-
-        <!-- $100 VOLUME FLOORS (Floor 3) -->
-        <div class="parlay-card" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#22d3ee;">Volume Floors (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +150 | To Win: $150</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Cade Over 5.5 assists</strong> (DET-CLE G2)</div>
-                <div class="parlay-leg-line">-180 | Playoff avg 7.1 ast | G1: 7 ast | Primary ball-handler | Hasn't gone under 5 ast in 12 games | <strong style="color:#22d3ee;">90%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Holmgren Over 7.5 rebounds</strong> (OKC-LAL G2)</div>
-                <div class="parlay-leg-line">-200 | Season avg 8.9 reb | G1: 12 reb | 35+ min/game playoffs | LAL has no real C threat | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 4.5 assists</strong> (OKC-LAL G2)</div>
-                <div class="parlay-leg-line">-180 | Avg 6.4 ast | OKC half-court PnR offense | G1: 5 ast despite 7 TOs | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Volume Floors thesis:</strong> Counting-stat floors are blowout-proof &mdash; even if either game gets out of hand, primary ball-handlers and bigs accumulate stats by Q3. Cade's playoff floor is 7+ ast, Holmgren rebounds in his sleep (12 in G1 already), SGA distributes even on his worst nights (5 ast in his 7-TO G1). Three near-locks at +150.
-          </div>
-        </div>
-
-        <!-- TRADITIONAL PARLAYS HEADER -->
-        <div style="text-align:center;margin:20px 0 14px;">
-          <span style="font-size:11px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;">TRADITIONAL PARLAYS</span>
-        </div>
-
-        <!-- $100 STAR PROPS (Traditional 1) -->
-        <div class="parlay-card" style="border:1px solid #a78bfa;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#a78bfa;">Star Props (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">$100 &rarr; +500 | To Win: $500</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 24.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-115 | G1: 18pts (7 TOs) | Season avg 31.1 | MASSIVE bounce-back</div>
-              </div>
-              <span class="parlay-leg-conf high">LOCK</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Cade Over 21.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-120 | G1: 23pts (8-16 FG) | Home + confident | CLE perimeter D porous</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LeBron Over 26.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-110 | G1: 27pts (71% FG) | Down 0-1 desperation | Only LAL scorer</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Props thesis:</strong> SGA bounce-back from 7 TOs is the strongest prop in R2. Cade hit 23 in G1 and gets another home game. LeBron has no choice but high-volume scoring with Reaves compromised. Three near-locks at +500.
-          </div>
-        </div>
-
-        <!-- $100 CHAOS ROAD UPSETS (Traditional 2) -->
-        <div class="parlay-card" style="border:1px solid #f59e0b;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#f59e0b;">Chaos &mdash; Road Upset Double (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">$100 &rarr; +2200 | To Win: $2,200</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET (G2)</div>
-                <div class="parlay-leg-line">+160 | Mitchell 30+ bounce-back | Mobley defense adjusts | CLE playoff pedigree | Allen back</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LAL ML</strong> vs OKC (G2)</div>
-                <div class="parlay-leg-line">+550 | LeBron nuclear game (40+) | OKC complacency risk | Reaves shoots better</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Chaos path:</strong> CLE has playoff pedigree and Mitchell can drop 35+ any night. LAL upset requires LeBron supernova AND Reaves shooting better than 3-16. Extreme longshot at +2200 but $100 for $2,200 upside.
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════ -->
-      <!-- TUE MAY 6 RESULTS — NYK-PHI G2 + SAS-MIN G2 -->
-      <!-- ═══════════════════════════════════════════ -->
-      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:8px;">
-          <span style="font-size:13px;font-weight:700;color:#aaa;background:rgba(255,255,255,0.05);padding:6px 20px;border-radius:20px;letter-spacing:0.6px;border:1px solid var(--border);">TUE MAY 6 RESULTS &mdash; Net: <strong style="color:#3dd68c;">+$25</strong> | NYK 108-102, SAS 133-95 | 2-4 record</span>
-        </div>
-        <div style="text-align:center;margin-bottom:16px;font-size:11px;color:#888;">Home Stars &check; +$280 &middot; Regression &check; +$145 &middot; Iron Floor &cross; &middot; Spread+Floor &cross; &middot; Bounce-Back &cross; &middot; Chaos Double &cross;</div>
-
-        <!-- RELIABLE FLOOR SECTION HEADER -->
-        <div style="text-align:center;margin-bottom:14px;">
-          <span style="font-size:11px;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;border:1px solid rgba(34,211,238,0.2);">&#x1f6e1; RELIABLE FLOOR PARLAYS &mdash; 80%+ hit rate per leg</span>
-        </div>
-
-        <!-- $100 IRON FLOOR (3-LEG) -->
-        <div class="parlay-card headline" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#22d3ee;">Iron Floor (3-Leg)</span>
-            <span class="parlay-odds" style="font-size:16px;background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +190 | To Win: $190</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Brunson Over 19.5 pts</strong> (NYK-PHI G2)</div>
-                <div class="parlay-leg-line">-400 | Career 35.5ppg vs PHI playoffs (6 gm) | 35pts G1 | Lowest Knick playoff game: ~20pts | <strong style="color:#22d3ee;">90%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Randle Over 14.5 pts</strong> (SAS-MIN G2)</div>
-                <div class="parlay-leg-line">-220 | 21pts G1 vs SAS | 15-27pt range all playoffs | Only sub-15 once (blowout loss, reduced min) | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Vassell Over 9.5 pts</strong> (SAS-MIN G2)</div>
-                <div class="parlay-leg-line">-250 | 12.8ppg playoffs (11-16 range) | Never below 10pts this postseason | Consistent secondary scorer | <strong style="color:#22d3ee;">90%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Reliable Floor thesis:</strong> Every leg uses the FLOOR, not the ceiling. Brunson's 19.5 is less than half his career avg vs PHI (35.5ppg) — he hasn't scored below 20 as a Knick in the playoffs. Randle hit 21 in G1 and only dipped below 15 once all playoffs (in a game he played 24min). Vassell has been locked into 11-16pts every playoff game — his role as SAS's second option guarantees volume. Each leg clears at 80%+ individually; combined at +190 this is a high-probability payout.
-          </div>
-        </div>
-
-        <!-- $100 HOME STARS (3-LEG) -->
-        <div class="parlay-card" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#22d3ee;">Home Stars (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +280 | To Win: $280</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>OG Anunoby Over 12.5 pts</strong> (NYK-PHI G2)</div>
-                <div class="parlay-leg-line">-180 | 18pts G1 (7-8 FG, 87.5%) | 21.5ppg R1 vs ATL | R1 floor: 14pts | PHI can't guard his midrange | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Brunson Over 24.5 pts</strong> (NYK-PHI G2)</div>
-                <div class="parlay-leg-line">-150 | 35.5ppg career vs PHI playoffs | 35pts G1 | 6 of last 8 playoff games Over 25 | MSG home | <strong style="color:#22d3ee;">80%+ vs PHI</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>KAT Over 14.5 pts</strong> (NYK-PHI G2)</div>
-                <div class="parlay-leg-line">-200 | 17pts G1 vs PHI | 18.7ppg R1 (12-25 range) | Only below 15 in blowout G6 (12pts, sat Q4) | <strong style="color:#22d3ee;">85%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Home Stars thesis:</strong> All three legs are NYK home players with proven floor scoring. OG shot 87.5% in G1 — his midrange game is matchup-proof against PHI's perimeter D. Brunson's 24.5 line is still 11pts below his career avg vs PHI. KAT only went below 15 in G6 when NYK was up 40 and he sat the 4th quarter. In a competitive G2 at MSG, all three clear comfortably.
-          </div>
-        </div>
-
-        <!-- $100 SPREAD + FLOOR (2-LEG) -->
-        <div class="parlay-card" style="border:2px solid #22d3ee;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#22d3ee;">Spread + Floor (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(34,211,238,0.12);color:#22d3ee;">$100 &rarr; +175 | To Win: $175</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>MIN +9.5</strong> (SAS-MIN G2)</div>
-                <div class="parlay-leg-line">-110 | Already WON G1 outright in SA | 3-1 ATS as 9.5+ dogs this season | 5-1 ATS last 6 games | Edwards minutes expanding | <strong style="color:#22d3ee;">80%+ cover</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Brunson Over 19.5 pts</strong> (NYK-PHI G2)</div>
-                <div class="parlay-leg-line">-400 | Career 35.5ppg vs PHI | Floor is 20+ as a Knick in playoffs | <strong style="color:#22d3ee;">90%+ floor</strong></div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(34,211,238,0.12);color:#22d3ee;">FLOOR</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x1f6e1; Spread + Floor thesis:</strong> MIN proved they can win in San Antonio — they already did it in G1 (104-102). Getting 9.5 points means they just need to stay competitive, which their defense + Randle (21pts G1) + Edwards (expanding minutes) ensures. MIN is 3-1 ATS as 9.5+ point dogs this season and 5-1 ATS in their last 6. Paired with Brunson's rock-solid floor, this is two near-locks combined.
-          </div>
-        </div>
-
-        <!-- TRADITIONAL PARLAYS HEADER -->
-        <div style="text-align:center;margin:20px 0 14px;">
-          <span style="font-size:11px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.1);padding:4px 14px;border-radius:16px;letter-spacing:0.5px;">TRADITIONAL PARLAYS</span>
-        </div>
-
-        <!-- $100 REGRESSION LOCK -->
-        <div class="parlay-card headline" style="border:2px solid #4caf50;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;">Regression Lock (2-Leg)</span>
-            <span class="parlay-odds" style="font-size:16px;">$100 &rarr; +145 | To Win: $145</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>NYK ML</strong> vs PHI (G2)</div>
-                <div class="parlay-leg-line">-270 | NYK won G1 by 39 | MSG fortress | Brunson 35pts locked in</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SAS ML</strong> vs MIN (G2)</div>
-                <div class="parlay-leg-line">-360 | SAS shot 28% 3PT in G1 (career-worst) | Wemby 0-8 3PT regresses to 37.5%</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Regression thesis:</strong> Both home teams are heavy favorites. SAS shot 28% 3PT in G1 (season avg 37.5%) &mdash; that's 3.5 extra makes = +10.5pts of regression. NYK is at home after a dominant G1 vs a tired PHI team. Two strong favorites at home with bounce-back narratives.
-          </div>
-        </div>
-
-        <!-- $100 BOUNCE-BACK PROPS -->
-        <div class="parlay-card" style="border:1px solid #a78bfa;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#a78bfa;">Bounce-Back Props (3-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.15);color:#a78bfa;">$100 &rarr; +450 | To Win: $450</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Wembanyama Over 22.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-125 | G1: 11pts (0-8 3PT) | Season avg 25.0 | Last 5 vs MIN: 27.8ppg | <span style="color:#f59e0b;">&#x26a0; HIGH VARIANCE &mdash; Gobert rim protection + MIN scheme held him to 5-17. Not a floor pick.</span></div>
-              </div>
-              <span class="parlay-leg-conf high">BOUNCE</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Brunson Over 26.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-120 | G1: 35pts | 6 of last 8 playoff games Over 27.5 | MSG home</div>
-              </div>
-              <span class="parlay-leg-conf high">HIGH</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Edwards Over 19.5 pts</strong> (G2)</div>
-                <div class="parlay-leg-line">-115 | G1: 18pts in 25min | Expect 30+ min G2 | <span style="color:#f59e0b;">&#x26a0; KNEE &mdash; questionable status, minutes cap unknown</span></div>
-              </div>
-              <span class="parlay-leg-conf med">MED</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Bounce-back thesis:</strong> Wemby's 0-8 3PT was career-worst for a 37.5% shooter &mdash; regression says 25+ G2. BUT this is NOT a floor pick: Gobert + MIN defense specifically scheme to contain him (held to 5-17 FG). His career avg vs MIN is 22.6ppg, just barely clearing the line. Edwards gets expanded minutes if knee holds but is officially questionable. High upside at +450 but riskier than Floor parlays.
-          </div>
-        </div>
-
-        <!-- $100 CHAOS DOUBLE UPSET -->
-        <div class="parlay-card" style="border:1px solid #f59e0b;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#f59e0b;">Chaos &mdash; Double Upset (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(245,158,11,0.15);color:#f59e0b;">$100 &rarr; +1800 | To Win: $1,800</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>PHI ML</strong> vs NYK (G2)</div>
-                <div class="parlay-leg-line">+220 | Embiid bounce-back from 14pt G1 | 2 extra days rest | Pride game</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>MIN ML</strong> vs SAS (G2)</div>
-                <div class="parlay-leg-line">+280 | Already proved they can win in SA | Edwards minutes expand | Dosunmu back</div>
-              </div>
-              <span class="parlay-leg-conf low">CHAOS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>Chaos path:</strong> MIN already won in SA &mdash; it's not impossible. Dosunmu may return, Edwards gets 30+ min. PHI's bounce-back potential is real if Embiid goes nuclear. At +1800, the $100 risk is high but the $1,800 payout is massive. This is pure chaos.
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════ -->
-      <!-- RESULTS — Mon May 5: DET-CLE G1 + OKC-LAL G1 -->
-      <!-- ═══════════════════════════════════════════ -->
-      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">MON MAY 5 RESULTS &mdash; OKC &#x2705; DET &#x2705; | Net: <span style="color:#3dd68c;">+$60</span></span>
-        </div>
-
-        <!-- $100 CHALK DOUBLES — WON -->
-        <div class="parlay-card headline" style="border:2px solid #3dd68c;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#3dd68c;">Chalk Doubles (2-Leg) <span style="font-size:12px;background:rgba(61,214,140,0.15);padding:2px 8px;border-radius:4px;">&#x2705; WON +$61</span></span>
-            <span class="parlay-odds" style="background:rgba(61,214,140,0.15);color:#3dd68c;font-size:16px;">$100 &rarr; -165 | +$61</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>DET ML</strong> vs CLE <span style="color:#3dd68c;">&check; W (111-101)</span></div>
-                <div class="parlay-leg-line">-170 | DET forced 19 TOs, Cade 23/7ast, D.Robinson 19pts</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL <span style="color:#3dd68c;">&check; W (108-90)</span></div>
-                <div class="parlay-leg-line">-1053 | Holmgren 24/12/3blk, SGA 18pts (7 TOs) but still won by 18</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x2705; WON +$61!</strong> Both home chalk hit cleanly. DET's defense dominated CLE (19 forced TOs) and OKC crushed LAL even with SGA's worst game of the year. Conservative 2-leg chalk strategy is 2/2 in R2.
-          </div>
-        </div>
-
-        <!-- $100 CHAOS ROAD DOG — LOST -->
-        <div class="parlay-card" style="border:1px solid #ef4444;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#ef4444;">Chaos Road Dog (2-Leg) <span style="font-size:12px;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:4px;">&#x274c; 0/2</span></span>
-            <span class="parlay-odds" style="background:rgba(239,68,68,0.15);color:#ef4444;">$100 &rarr; +435 | -$100</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>CLE ML</strong> vs DET <span style="color:#ef4444;">&cross; L (101-111)</span></div>
-                <div class="parlay-leg-line">+145 | CLE rallied to 93-93 but DET closed 18-8</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LAL +15.5</strong> <span style="color:#ef4444;">&cross; Lost by 18</span></div>
-                <div class="parlay-leg-line">-120 | LAL 90-108, didn't cover. Reaves 3-16 FG killed them</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x274c; Both legs missed.</strong> CLE had the game tied 93-93 but DET's closing burst killed it. LAL +15.5 was the surprise miss &mdash; Reaves' catastrophic 3-16 FG meant LeBron had zero help.
-          </div>
-        </div>
-
-        <!-- PLAYER PROPS — MAY 5 -->
-        <div class="parlay-card" style="border:1px solid #888;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#888;">Props &mdash; Mon May 5 Stars <span style="font-size:12px;">2/4 individual</span></span>
-            <span class="parlay-odds" style="background:rgba(136,136,136,0.15);color:#888;">$100 each</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 28.5 pts</strong> <span style="color:#ef4444;">&cross; 18pts</span></div>
-                <div class="parlay-leg-line">7 TOs killed his scoring. Worst game of the year.</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Cade Over 22.5 pts</strong> <span style="color:#3dd68c;">&check; 23pts</span></div>
-                <div class="parlay-leg-line">23pts (8-16 FG) + 7ast &mdash; barely cleared</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>LeBron Over 25.5 pts</strong> <span style="color:#3dd68c;">&check; 27pts</span></div>
-                <div class="parlay-leg-line">27pts (12-17 FG, 71%) &mdash; legacy mode</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">4</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Mitchell Over 24.5 pts</strong> <span style="color:#ef4444;">&cross; 24pts</span></div>
-                <div class="parlay-leg-line">Missed by 0.5 &mdash; 24pts (8-19, 6 TOs). DET clamped him.</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>2/4 individual props hit.</strong> SGA O28.5 biggest miss (18pts, 7 TOs). Even elite scorers can have bad nights in R2 G1 with heightened defensive intensity.
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════════════════════════════════ -->
-      <!-- RESULTS — Sun May 4: NYK-PHI G1 + SAS-MIN G1 -->
-      <!-- ═══════════════════════════════════════════ -->
-      <div style="margin-bottom:20px;border-top:2px solid #888;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">SUN MAY 4 RESULTS &mdash; NYK &#x2705; SAS &#x274c; | Net: <span style="color:#3dd68c;">+$149</span></span>
-        </div>
-
-        <!-- $100 CHALK SWEEP — BUSTED -->
-        <div class="parlay-card headline" style="border:2px solid #ef4444;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;">Chalk Sweep (3-Leg) <span style="color:#ef4444;font-size:12px;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:4px;">BUSTED (SAS lost)</span></span>
-            <span class="parlay-odds" style="font-size:16px;">$100 &rarr; +175 | -$100</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>NYK ML</strong> vs PHI <span style="color:#3dd68c;">&check; W (137-98)</span></div>
-                <div class="parlay-leg-line">-290 | Brunson 35pts, NYK 63% FG blowout</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SAS ML</strong> vs MIN <span style="color:#ef4444;">&cross; L (102-104)</span></div>
-                <div class="parlay-leg-line">-345 | Wemby 0-8 3PT, Edwards 18pts off bench upset</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>OKC ML</strong> vs LAL <span style="color:#3dd68c;">&check; W (108-90)</span></div>
-                <div class="parlay-leg-line">-1050 | OKC dominated +18, Holmgren 24/12/3blk</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x274c; BUSTED &mdash; SAS leg killed it.</strong> NYK crushed PHI as expected (137-98). OKC dominated LAL. But SAS lost 102-104 to MIN &mdash; Wemby shot 0-8 from 3PT (career worst). Model was 2/3 on winners but parlay is dead.
-          </div>
-        </div>
-
-        <!-- $100 ENSEMBLE EDGE — WON -->
-        <div class="parlay-card" style="border:2px solid #3dd68c;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#3dd68c;">Ensemble Edge &mdash; Spread + Total (4-Leg) <span style="font-size:12px;background:rgba(61,214,140,0.15);padding:2px 8px;border-radius:4px;">&#x2705; SWEPT +$550</span></span>
-            <span class="parlay-odds" style="background:rgba(61,214,140,0.15);color:#3dd68c;">$100 &rarr; +550 | +$550</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>NYK -7.5</strong> vs PHI <span style="color:#3dd68c;">&check; W by 39</span></div>
-                <div class="parlay-leg-line">-112 | Crushed &mdash; won by 39pts</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Under 220.5</strong> SAS-MIN <span style="color:#3dd68c;">&check; Total 206</span></div>
-                <div class="parlay-leg-line">-105 | Under by 14.5pts</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>DET -3.5</strong> vs CLE <span style="color:#3dd68c;">&check; W by 10</span></div>
-                <div class="parlay-leg-line">-110 | DET covered easily</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">4</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Under 213.5</strong> OKC-LAL <span style="color:#3dd68c;">&check; Total 198</span></div>
-                <div class="parlay-leg-line">-110 | Under by 15.5pts</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x2705; SWEPT +$550!</strong> All 4 legs hit. The spread + total strategy proved superior to ML parlays &mdash; even when SAS lost outright, the under still hit. Ensemble approach is 4/4 on non-ML legs.
-          </div>
-        </div>
-
-        <!-- $100 CHAOS — LOST -->
-        <div class="parlay-card" style="border:1px solid #ef4444;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#ef4444;">Chaos Upset Special (3-Leg) <span style="font-size:12px;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:4px;">&#x274c; 1/3</span></span>
-            <span class="parlay-odds" style="background:rgba(239,68,68,0.15);color:#ef4444;">$100 &rarr; +2000 | -$100</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>PHI ML</strong> @ NYK <span style="color:#ef4444;">&cross; NYK 137-98</span></div>
-                <div class="parlay-leg-line">+250 | Total blowout. PHI had no chance.</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>MIN ML</strong> @ SAS <span style="color:#3dd68c;">&check; MIN 104-102</span></div>
-                <div class="parlay-leg-line">+240 | Edwards + Finch coaching won it</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>CLE ML</strong> @ DET <span style="color:#ef4444;">&cross; DET 111-101</span></div>
-                <div class="parlay-leg-line">+130 | Dead &mdash; PHI leg killed it</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">DEAD</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x274c; BUSTED.</strong> MIN chaos leg actually HIT but PHI leg was dead on arrival (137-98 blowout).
-          </div>
-        </div>
-
-        <!-- $100 PROPS — BUSTED -->
-        <div class="parlay-card" style="border:1px solid #ef4444;">
-          <div class="parlay-header">
-            <span class="parlay-name" style="color:#ef4444;">Props (4-Leg) <span style="font-size:12px;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:4px;">&#x274c; 1/4</span></span>
-            <span class="parlay-odds" style="background:rgba(239,68,68,0.15);color:#ef4444;">$100 &rarr; +600 | -$100</span>
-          </div>
-          <div class="parlay-legs">
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">1</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Brunson Over 24.5 pts</strong> <span style="color:#3dd68c;">&check; 35pts</span></div>
-                <div class="parlay-leg-line">-130 | 35pts (12-18 FG)</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(61,214,140,0.15);color:#3dd68c;">HIT</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">2</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Wemby Over 22.5 pts</strong> <span style="color:#ef4444;">&cross; 11pts</span></div>
-                <div class="parlay-leg-line">-140 | 11pts (5-17 FG, 0-8 3PT) &mdash; career worst</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">3</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>SGA Over 28.5 pts</strong> <span style="color:#ef4444;">&cross; 18pts</span></div>
-                <div class="parlay-leg-line">-115 | 18pts (7 TOs) &mdash; worst game of year</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-            <div class="parlay-leg">
-              <span class="parlay-leg-num">4</span>
-              <div class="parlay-leg-detail">
-                <div class="parlay-leg-pick"><strong>Mitchell Over 24.5 pts</strong> <span style="color:#ef4444;">&cross; 24pts</span></div>
-                <div class="parlay-leg-line">-115 | Missed by 0.5 &mdash; DET defense clamped him</div>
-              </div>
-              <span class="parlay-leg-conf high" style="background:rgba(239,68,68,0.15);color:#ef4444;">MISS</span>
-            </div>
-          </div>
-          <div class="parlay-reasoning">
-            <strong>&#x274c; Only 1/4 hit.</strong> Stars did NOT shine in R2 G1. Wemby 0-8 3PT, SGA 7 TOs, Mitchell missed by 0.5. Brunson was the only star who showed up. Lesson: R2 G1 defensive intensity suppresses star ceiling props.
-          </div>
-        </div>
-      </div>
-
-      <!-- R1 P&L SUMMARY -->
-      <div style="margin-top:20px;border-top:2px solid #555;padding-top:16px;">
-        <div style="text-align:center;margin-bottom:12px;">
-          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R1 BETTING SUMMARY</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
-          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
-            <div style="font-size:10px;color:#888;">R1 Wagered</div>
-            <div style="font-size:18px;font-weight:700;color:#f44336;">$698</div>
-            <div style="font-size:10px;color:#f44336;">Net: -$698</div>
-          </div>
-          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
-            <div style="font-size:10px;color:#888;">R1 Record</div>
-            <div style="font-size:18px;font-weight:700;color:#f44336;">2-10</div>
-            <div style="font-size:10px;color:#888;">R1 Final</div>
-          </div>
-          <div style="text-align:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid #333;">
-            <div style="font-size:10px;color:#888;">Total Net</div>
-            <div style="font-size:18px;font-weight:700;color:#ef4444;">-$489</div>
-            <div style="font-size:10px;color:#888;">R1 + R2</div>
-          </div>
-        </div>
-        <div style="font-size:11px;color:#666;text-align:center;font-style:italic;">R1 lesson: ML parlays are high-risk. R2 strategy: $100 standard, floor props, spread + total diversification. Ensemble Edge approach is 4/4 on non-ML legs.</div>
-      </div>
+      <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->
+      ${renderTodaysParlaysBlock()}
 
     ${dchsExplainer()}
 
     </div><!-- end betContent-parlays -->
 
-    <!-- ═══════ R2 GAME 1 BETS TAB ═══════ -->
-    <div id="betContent-g1" class="bet-content" style="display:none;">
-
-    <!-- R2 G1 — rendered from BETS schema (Phase 55), arranged in a per-series grid -->
-    <div class="bet-series-grid">
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G1', 'NYK-PHI', { dml, dmargin, dwinner })}
-        ${dscenarios('NYK-PHI', 1)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G1', 'SAS-MIN', { dml, dmargin, dwinner })}
-        ${dscenarios('SAS-MIN', 1)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G1', 'DET-CLE', { dml, dmargin, dwinner })}
-        ${dscenarios('DET-CLE', 1)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G1', 'OKC-LAL', { dml, dmargin, dwinner })}
-        ${dscenarios('OKC-LAL', 1)}
-      </div>
-    </div>
-
-    </div><!-- end betContent-g1 -->
-
-    <!-- ═══════ R2 GAME 2 BETS TAB ═══════ -->
-    <div id="betContent-g2" class="bet-content" style="display:none;">
-
-    <!-- R2 G2 — rendered from BETS schema, arranged in a per-series grid -->
-    <div class="bet-series-grid">
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G2', 'NYK-PHI', { dml, dmargin, dwinner })}
-        ${dbox('NYK-PHI', 2)}
-        ${dscenarios('NYK-PHI', 2)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G2', 'SAS-MIN', { dml, dmargin, dwinner })}
-        ${dbox('SAS-MIN', 2)}
-        ${dscenarios('SAS-MIN', 2)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G2', 'DET-CLE', { dml, dmargin, dwinner })}
-        ${dbox('DET-CLE', 2)}
-        ${dscenarios('DET-CLE', 2)}
-      </div>
-      <div class="bet-series-column">
-        ${renderBetSlateSeries('R2-G2', 'OKC-LAL', { dml, dmargin, dwinner })}
-        ${dbox('OKC-LAL', 2)}
-        ${dscenarios('OKC-LAL', 2)}
-      </div>
-    </div>
-
-    </div><!-- end betContent-g2 -->
+    <!-- ═══════ PER-SERIES BET TABS ═══════ -->
+    <!-- One tab per R2 series. Each shows the active game's bets,
+         a compact progress header for completed games, and an
+         accordion for past games' bet history. -->
+    ${r2.map(s => `
+    <div id="betContent-${s.id}" class="bet-content" style="display:none;">
+      ${renderSeriesTabContent(s, { dml, dmargin, dwinner, dbox, dscenarios })}
+    </div>`).join('')}
 
     <!-- DISCLAIMER -->
     <div class="bets-disclaimer">
