@@ -527,6 +527,97 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 10: Stale-label linter (Tier 1.4)
+  //   Sweeps source files for date strings paired with TODAY/
+  //   TONIGHT markers. If the date precedes CURRENT_DATE, the
+  //   label is stale — yesterday's slate label that didn't get
+  //   bumped when the day rolled forward. Catches the class of
+  //   bug where the page shows "Tonight (May 5)" three days late.
+  //
+  //   Scope: scans bets-data.js, bets.js, home.js, learnings.js.
+  //   Skips lines containing archive/result markers (intentional
+  //   historical references).
+  // ============================================================
+  console.log('\nTEST 10: Stale-label linter');
+  {
+    const monthMap = { jan:1, feb:2, mar:3, apr:4, may:5, jun:6, jul:7, aug:8, sep:9, oct:10, nov:11, dec:12 };
+    // Lines (±10 window) that contain any of these markers are historical
+    // context — resolved parlay legs, archived recaps, phase-history entries.
+    // We skip dates near them because they're describing the past, not "today".
+    const archiveMarkers = /ARCHIVED|archived|recap|Recap|RESULT|HISTORY|prior|VOIDED|Last Game|R1 RESULTS|R2 RESULTS|❌|✅|LOST|WON|HIT|MISS|PENDING|DEAD|completed|Completed|Phase \d+|phase-history|G[1-7] Recap/;
+
+    function findStaleLabels(filePath, currentDate) {
+      const text = fs.readFileSync(filePath, 'utf8');
+      const lines = text.split('\n');
+      const cy = parseInt(currentDate.slice(0,4), 10);
+      const cm = parseInt(currentDate.slice(5,7), 10);
+      const cd = parseInt(currentDate.slice(8,10), 10);
+      const cTotal = cy * 10000 + cm * 100 + cd;
+      const dateRe = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(\d{1,2})\b/i;
+      const todayRe = /\b(TODAY|TONIGHT)\b/i;
+      const WINDOW = 10;
+      const issues = [];
+      lines.forEach((line, idx) => {
+        if (!todayRe.test(line)) return;
+        const m = line.match(dateRe);
+        if (!m) return;
+        // Skip if any nearby line has an archive marker (resolved parlay context).
+        const lo = Math.max(0, idx - WINDOW);
+        const hi = Math.min(lines.length - 1, idx + WINDOW);
+        for (let i = lo; i <= hi; i++) {
+          if (archiveMarkers.test(lines[i])) return;
+        }
+        const month = monthMap[m[1].toLowerCase().slice(0,3)];
+        const day = parseInt(m[2], 10);
+        if (!month || !day) return;
+        const total = cy * 10000 + month * 100 + day;
+        if (total < cTotal) {
+          const snippet = line.trim().slice(0, 110);
+          issues.push(`${path.relative(__dirname, filePath)}:${idx + 1} — "${m[0]}" precedes CURRENT_DATE (${currentDate}): ${snippet}`);
+        }
+      });
+      return issues;
+    }
+
+    const vctx = loadValidatorContext();
+    // learnings.js is a phase-history timeline by design — every old date
+    // inside is intentional. Skip it.
+    const targetFiles = [
+      'js/data/bets-data.js',
+      'js/ui/bets.js',
+      'js/ui/home.js',
+    ];
+    const allStale = [];
+    targetFiles.forEach(rel => {
+      const abs = path.join(__dirname, rel);
+      if (!fs.existsSync(abs)) return;
+      allStale.push(...findStaleLabels(abs, vctx.CURRENT_DATE));
+    });
+
+    if (allStale.length === 0) {
+      assert(true, 'findStaleLabels: 0 stale TODAY/TONIGHT labels referencing past dates');
+    } else {
+      console.log(`  ${allStale.length} stale label(s) found:`);
+      allStale.forEach(s => console.log(`    - ${s}`));
+      assert(false, `findStaleLabels found ${allStale.length} stale TODAY/TONIGHT label(s) — see above`);
+    }
+
+    // 10a — sanity: a fabricated stale label IS flagged.
+    const tmpFile = path.join(__dirname, '.tmp-stale-test.txt');
+    fs.writeFileSync(tmpFile, 'Featured parlays — May 1 (TONIGHT)');
+    const fakeIssues = findStaleLabels(tmpFile, vctx.CURRENT_DATE);
+    fs.unlinkSync(tmpFile);
+    assert(fakeIssues.length === 1, 'findStaleLabels flags a fabricated stale label');
+
+    // 10b — sanity: a future-dated label is NOT flagged.
+    const tmpFile2 = path.join(__dirname, '.tmp-future-test.txt');
+    fs.writeFileSync(tmpFile2, 'Featured parlays — Dec 31 (TONIGHT)');
+    const futureIssues = findStaleLabels(tmpFile2, vctx.CURRENT_DATE);
+    fs.unlinkSync(tmpFile2);
+    assert(futureIssues.length === 0, 'findStaleLabels does NOT flag a future-dated label');
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

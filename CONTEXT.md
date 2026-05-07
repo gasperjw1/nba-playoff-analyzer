@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 7, 2026 (through Phase 58 — engine HCA flip fix for G3/G4/G6, NYK-PHI G2 + SAS-MIN G2 results recorded, two duplicate-key bugs fixed with TEST 7 added as regression guard, Tier 1 tech-debt refactor specced).
+> This document captures the full project state so that future sessions can pick up where we left off. Last updated: May 7, 2026 (Tier 1 tech-debt complete: schema validators, auto-derived scheduling, auto-resolve engine, stale-label linter; test suite at 3481 passes).
 
 ---
 
@@ -293,12 +293,14 @@ Backward-compatible migration from V2 (round-based) keys on boot.
 
 Tracked under "Tech debt items to clean up" todos. Three tiers prioritized by impact:
 
-### Tier 1 — Silent failure prevention (~8 hours, single PR; the gate before scheduled daily updates can run safely)
+### Tier 1 — Silent failure prevention ✅ COMPLETE (May 7, 2026)
 
-1. **Schema validation at boot** (`js/validators.js` new). Validates every prediction object, BETS record, FEATURED_PARLAYS record on app load. Catches duplicate keys (covered by TEST 7), `homeWin`-vs-scores contradictions, missing required fields, type mismatches, invalid enums (`outcome`, `category`, `confidence`), bad series refs. Renders a red banner at top of page when failures occur.
-2. **Auto-derive `SLATE_GAME_DATES`** from `BET_SLATES`. Replace `BET_SLATES.games[i].when` (string) with structured `{date, time, venue}`. Single source of truth for game scheduling — eliminates the May 7 SAS-MIN bug class.
-3. **Auto-resolve bets** when `series.games[N].winner` is set. New `js/engine/auto-resolve.js` — for each unresolved BETS matching the game, computes outcome from bet type (ml/spread/total/prop) + actuals and writes `result.outcome + result.actual` in a single assignment. Eliminates the manual `result:` editing that caused both NYK-PHI G2 duplicate-key bugs.
-4. **Stale-label linter** (TEST 9). Sweeps `bets.js` for "TODAY" / "TOMORROW" / weekday-month-day labels that don't match `CURRENT_DATE` ± 1. Fails tests instead of shipping yesterday's labels.
+All four items shipped. Test suite expanded from 3447 → 3481 passes.
+
+1. **✅ Schema validation at boot** (`js/validators.js`, commit 1bf51e2). Validates every prediction object, BETS record, FEATURED_PARLAYS record on app load. Catches duplicate keys (covered by TEST 7), `homeWin`-vs-scores contradictions, missing required fields, type mismatches, invalid enums, bad series refs. Renders a red banner at top of page when failures occur. **TEST 8** (5 assertions) asserts `validateAll()` returns 0 errors against live data.
+2. **✅ Auto-derived `SLATE_GAME_DATES`** (commit 702aa6a). Replaced `BET_SLATES.games[i].when` (string) with structured `{date, time, venue}` and an IIFE in `home.js` that derives the lookup map. Single source of truth.
+3. **✅ Auto-resolve bets** (`js/engine/auto-resolve.js`, commit dfc78f6). Pure functions compute bet outcome from box-score data — covers ml/spread/total/prop. Wired into `app.js` boot: surfaces declared/computed disagreements via the validation banner; logs auto-fillable bets to the console. **TEST 9** (5 assertions) sweeps every bet against the live data and refuses to ship if a declared `result.outcome` disagrees with the box score.
+4. **✅ Stale-label linter** (TEST 10). Scans `bets-data.js`, `bets.js`, `home.js` for date strings paired with TODAY/TONIGHT markers; flags any date that precedes `CURRENT_DATE`. Skips lines within ±10 of archive markers (LOST/WON/HIT/PENDING/DEAD/Recap/etc.) and excludes `learnings.js` (phase-history by design). **TEST 10** (3 assertions) including a known-stale fixture and a known-future fixture.
 
 ### Tier 2 — Reduce hard-coding (defer until after Tier 1; ~half-day each)
 

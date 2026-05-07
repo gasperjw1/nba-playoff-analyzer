@@ -496,7 +496,7 @@ const FEATURED_PARLAYS = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // R2 G2 — TONIGHT (May 6: NYK-PHI + SAS-MIN)
+  // R2 G2 — ARCHIVED (May 6: NYK-PHI + SAS-MIN)
   // ═══════════════════════════════════════════════════════════════
 
   // ─── RELIABLE FLOOR (80%+ hit rate per leg) ────────────────────
