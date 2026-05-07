@@ -257,6 +257,21 @@ function renderSeries() {
               <div class="gp-stat"><div class="label">Total</div><div class="val">${gProj.homeScore + gProj.awayScore}</div></div>
             </div>
 
+            ${gameData.prediction && gameData.prediction.reasoning ? `<div style="margin-top:14px;padding:12px;background:rgba(0,0,0,0.18);border-left:3px solid var(--accent);border-radius:6px">
+              <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px">Model Reasoning</div>
+              ${gameData.prediction.confidence || gameData.prediction.character ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;font-size:11px">
+                ${gameData.prediction.confidence ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">Confidence: <strong style="color:var(--text)">${gameData.prediction.confidence}</strong></span>` : ''}
+                ${gameData.prediction.character ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">Character: <strong style="color:var(--text)">${gameData.prediction.character}</strong></span>` : ''}
+                ${gameData.prediction.xFactor ? `<span style="background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;color:var(--text-dim)">X-Factor: <strong style="color:var(--text)">${gameData.prediction.xFactor}</strong></span>` : ''}
+              </div>` : ''}
+              <div style="font-size:12px;color:var(--text);line-height:1.65;white-space:pre-line">${gameData.prediction.reasoning}</div>
+              ${gameData.prediction.moneyline || gameData.prediction.spread || gameData.prediction.ou ? `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.08);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim)">
+                ${gameData.prediction.moneyline ? `<span>ML: <strong style="color:var(--text)">${gameData.prediction.moneyline}</strong></span>` : ''}
+                ${gameData.prediction.spread ? `<span>Spread: <strong style="color:var(--text)">${gameData.prediction.spread}</strong></span>` : ''}
+                ${gameData.prediction.ou ? `<span>O/U: <strong style="color:var(--text)">${gameData.prediction.ou}</strong></span>` : ''}
+              </div>` : ''}
+            </div>` : ''}
+
             ${!gameData.winner ? `<div style="color:var(--text-dim);font-size:12px;margin-top:12px">Game not yet played. <span style="cursor:pointer;color:var(--accent);text-decoration:underline" onclick="openGameModal(${gIdx})">Enter result</span></div>` : ''}
             ${gameData.notes ? `<div style="font-size:12px;color:var(--text-dim);line-height:1.6;padding:8px;background:rgba(0,0,0,0.15);border-radius:8px;margin-top:8px">${gameData.notes}</div>` : ''}
           </div>
