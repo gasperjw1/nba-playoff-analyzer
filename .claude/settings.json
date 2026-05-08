@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node test-projections.js)",
+      "Bash(node test-projections.js *)",
+      "Bash(git -C * status *)",
+      "Bash(git -C * log *)",
+      "Bash(git -C * show *)",
+      "Bash(git ls-tree *)",
+      "Bash(git fetch *)",
+      "mcp__scheduled-tasks__list_scheduled_tasks"
+    ]
+  }
+}
