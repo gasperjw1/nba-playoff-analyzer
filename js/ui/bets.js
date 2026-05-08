@@ -2681,12 +2681,12 @@ function renderR2Bets(el) {
           <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:4px 12px;font-size:11px;line-height:1.7;">
             <span style="color:#888;font-weight:700;">DATE</span><span style="color:#888;font-weight:700;">PARLAYS</span><span style="color:#888;font-weight:700;">W-L</span><span style="color:#888;font-weight:700;">NET</span>
             <span style="color:#aaa;">Tue May 6</span><span style="color:#aaa;">Iron Floor &#x2717;, Home Stars &#x2713; (+$280), Spread+Floor &#x2717;</span><span style="color:#aaa;">1-2</span><span style="color:#3dd68c;font-weight:700;">+$80</span>
-            <span style="font-weight:700;color:#22d3ee;">Wed May 7</span><span style="font-weight:700;color:#22d3ee;">Chalk Sweep, Star Scoring Floors, Volume Floors</span><span style="color:#22d3ee;">PENDING</span><span style="color:#888;">-</span>
+            <span style="color:#aaa;">Wed May 7</span><span style="color:#aaa;">Star Compound &#x2717;, Volume Floor &#x2713; (+$66), OKC+LeBron &#x2713; (+$67)</span><span style="color:#aaa;">2-1</span><span style="color:#3dd68c;font-weight:700;">+$33</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$300</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#3dd68c;">+$80</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">1-2</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$600</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#3dd68c;">+$113</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">3-3</strong></span>
           </div>
         </div>
 
@@ -2698,22 +2698,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Sun May 4</span><span style="color:#aaa;">Chalk Sweep, Ensemble Edge, Chaos, Props</span><span style="color:#aaa;">1-3</span><span style="color:#3dd68c;font-weight:700;">+$149</span>
             <span style="color:#aaa;">Mon May 5</span><span style="color:#aaa;">Chalk Doubles, Chaos Road, Props</span><span style="color:#aaa;">1-2</span><span style="color:#3dd68c;font-weight:700;">+$60</span>
             <span style="color:#aaa;">Tue May 6</span><span style="color:#aaa;">Regression &#x2713; (+$145), Bounce-Back &#x2717;, Chaos Double &#x2717;</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$55</span>
-            <span style="font-weight:700;color:#a78bfa;">Wed May 7</span><span style="font-weight:700;color:#a78bfa;">Star Props, Chaos Road Upset</span><span style="color:#a78bfa;">PENDING</span><span style="color:#888;">-</span>
+            <span style="color:#aaa;">Wed May 7</span><span style="color:#aaa;">Chalk Sweep &#x2713; (+$80), Star Scoring &#x2717;, Star Props &#x2717;, Chaos &#x2717;</span><span style="color:#aaa;">1-3</span><span style="color:#ef4444;font-weight:700;">-$220</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$1,000</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#3dd68c;">+$154</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">3-7</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$1,400</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$66</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">4-10</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$1,300</strong></span>
-          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#3dd68c;">+$234</strong></span>
-          <span style="color:#aaa;">R2 Record: <strong style="color:#3dd68c;">4-9</strong></span>
+          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$2,000</strong></span>
+          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#3dd68c;">+$47</strong></span>
+          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">7-13</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight: <strong style="color:#22d3ee;">$300</strong> Floor &middot; <strong style="color:#a78bfa;">$200</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight (Fri May 8): <strong style="color:#22d3ee;">$400</strong> Floor &middot; <strong style="color:#a78bfa;">$200</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->
