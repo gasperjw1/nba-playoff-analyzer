@@ -618,6 +618,45 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 11: Prediction homeWin/score/margin internal consistency
+  // ------------------------------------------------------------
+  // Each series.games[N].prediction holds three fields whose values
+  // must agree internally:
+  //   homeWin (bool) — true iff homeScore > awayScore
+  //   margin (int)   — must equal |homeScore - awayScore|
+  // The Series Analysis renderer derives the displayed favorite +
+  // score from these fields (not the reasoning prose), so a swap
+  // (e.g. homeWin:true paired with homeScore < awayScore) silently
+  // produces a card that contradicts the reasoning underneath.
+  // Pre-existing bug found May 8 in NYK-PHI G3 + SAS-MIN G3.
+  // ============================================================
+  console.log('\nTEST 11: Prediction homeWin/score/margin consistency');
+
+  SERIES_DATA.forEach(series => {
+    if (!series.games) return;
+    series.games.forEach(game => {
+      const p = game.prediction;
+      if (!p) return;
+      // Skip if score fields aren't fully populated (placeholder predictions OK)
+      if (typeof p.homeScore !== 'number' || typeof p.awayScore !== 'number') return;
+      if (typeof p.homeWin !== 'boolean') return;
+
+      const id = `${series.id} G${game.num} prediction`;
+      const expectedHomeWin = p.homeScore > p.awayScore;
+      const tied = p.homeScore === p.awayScore;
+      if (!tied) {
+        assert(p.homeWin === expectedHomeWin,
+          `${id}: homeWin (${p.homeWin}) inconsistent with scores (home ${p.homeScore}, away ${p.awayScore})`);
+      }
+      if (typeof p.margin === 'number') {
+        const expectedMargin = Math.abs(p.homeScore - p.awayScore);
+        assert(p.margin === expectedMargin,
+          `${id}: margin (${p.margin}) should equal |homeScore - awayScore| = ${expectedMargin}`);
+      }
+    });
+  });
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
