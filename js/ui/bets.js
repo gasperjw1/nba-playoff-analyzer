@@ -32,7 +32,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">NEXT — Thu May 7 | R2 G2: CLE @ DET 7:00 PM | NYK-PHI 7:00 PM | LAL @ OKC 9:30 PM | SAS-MIN 9:30 PM</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Fri May 8 | R2 G3: NYK @ PHI 7:00 PM (NYK leads 2-0) | SAS @ MIN 9:30 PM (1-1)</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -130,10 +130,10 @@ function renderBetsPage(el) {
         </div>
       </div>
 
-      <!-- ===== R2 G2 PARLAYS — MAY 7 (UPCOMING) ===== -->
+      <!-- ===== R2 G2 PARLAYS — MAY 7 (ARCHIVED) ===== -->
       <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G2 — Thu May 7 | DET-CLE 7 PM | OKC-LAL 9:30 PM | NYK-PHI 7 PM</span>
+          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G2 ARCHIVED — Thu May 7 | DET ✅ (2-0) | OKC ✅ (2-0)</span>
         </div>
 
         <!-- $100 BEST BET — MAY 7 -->
