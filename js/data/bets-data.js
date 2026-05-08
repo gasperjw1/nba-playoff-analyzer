@@ -620,6 +620,166 @@ const BETS = [
     confidence: 'high', thesis: ['historical','situational'], narrative: null,
     result: null,
   },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R2 G3 — TOMORROW (Sat May 9: OKC-LAL + DET-CLE)
+  // ═══════════════════════════════════════════════════════════════
+
+  // ─── OKC-LAL G3 (Sat May 9, 8:30 PM ET @ Crypto.com, OKC leads 2-0) ──
+  {
+    id: 'r2-g3-okc-lal-ml',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'ml', pick: 'OKC ML vs LAL', odds: '-375',
+    facts: [
+      {label:'Spread',value:'OKC -8.5'},
+      {label:'Total',value:'O/U 211.5'},
+      {label:'Series',value:'OKC leads 2-0'},
+      {label:'G1',value:'OKC 108-90 (+18)'},
+      {label:'G2',value:'OKC 125-107 (+18)'},
+    ],
+    modelHook: { fn:'dml', args:['OKC-LAL',3] },
+    reasoning: "<strong>OKC won G1 AND G2 by identical 18-point margins</strong> despite very different game scripts (G1: SGA off night/7 TOs; G2: Reaves 31pt bounce-back for LAL). The structural gap is proven — depth, defense, length. HCA flips to LAL at Crypto.com (~3pts compression), but LAL has no Doncic, no answer to OKC bench depth. Even Reaves at his G2 best (31pts) + LeBron (23) = 54 from primaries and still lost by 18. OKC ML at -375 is expensive but the engine gives ~80% win probability even on the road.",
+    confidence: 'high', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-okc-lal-spread',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'spread', pick: 'OKC -8.5', odds: '-110',
+    facts: [
+      {label:'Model',value:'OKC by 10'},
+      {label:'Market',value:'OKC -8.5'},
+      {label:'G1+G2 avg margin',value:'+18'},
+    ],
+    modelHook: { fn:'dmargin', args:['OKC-LAL',3] },
+    reasoning: "Model projects OKC by 10 even at Crypto.com. Both G1 (+18) and G2 (+18) cleared 8.5 by a mile. HCA compression brings it closer but the structural gap (OKC bench outscored LAL bench both games, OKC defense held LAL to 42% and then forced 21 TOs) is real. -8.5 covers if OKC wins by 9+, which the model says is the median outcome.",
+    confidence: 'medium', thesis: ['model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-okc-lal-sga-pts',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'prop', pick: 'SGA Over 24.5 points', odds: '-115',
+    facts: [
+      {label:'G1',value:'18pts (7 TOs, worst game)'},
+      {label:'G2',value:'22pts (foul trouble, blowout bench)'},
+      {label:'Career playoff avg',value:'~29 ppg'},
+      {label:'Context',value:'Hasn\'t gone full-volume yet — G3 at LAL is when stars demand the ball'},
+    ],
+    reasoning: "<strong>SGA has been on cruise control (18, 22).</strong> OKC has won both games with SGA at his floor — Holmgren and bench carrying. G3 on the road is when superstars typically ramp up volume. His career playoff average is ~29ppg and he hasn't cracked 25 yet this series. With J.Williams fully ramped (absorbing some creation) and LAL desperation, SGA will need to score to close out road games. 24.5 is still 5pts below his career playoff mean.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-okc-lal-holmgren-reb',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'prop', pick: 'Holmgren Over 8.5 rebounds', odds: '-140',
+    facts: [
+      {label:'G1',value:'12 rebounds'},
+      {label:'G2',value:'9 rebounds'},
+      {label:'Matchup',value:'Ayton is the only LAL big — Holmgren dominates boards'},
+    ],
+    reasoning: "Holmgren has cleared 8.5 in BOTH games (12, 9). The Ayton matchup is solved — Holmgren's length and mobility dominate the glass. Even at Crypto.com, the rebounding matchup doesn't change. Counting stat that's blowout-proof (he pulled 12 in G1's 18-pt blowout). ~87% hit rate at this line based on series and recent form.",
+    confidence: 'high', thesis: ['matchup','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-okc-lal-lebron-pts',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'prop', pick: 'LeBron Over 22.5 points', odds: '-160',
+    facts: [
+      {label:'G1',value:'27pts (12-17 FG, 71%)'},
+      {label:'G2',value:'23pts (9-18 FG, facilitator mode)'},
+      {label:'Independence',value:'Scores 23+ even in 18-pt losses — blowout-proof'},
+    ],
+    reasoning: "<strong>LeBron's scoring is independent of OKC blowing them out.</strong> G1: 27pts in 18-pt loss. G2: 23pts in 18-pt loss. At home in a do-or-die game, he'll play 36+min and be even more aggressive. 22.5 gives 0.5-pt cushion below his G2 output (worst game of series). Floor-grade prop for the greatest scorer in playoff history.",
+    confidence: 'high', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-okc-lal-total',
+    slate: 'R2-G3', series: 'OKC-LAL', game: 3, postedAt: '2026-05-09',
+    type: 'total', pick: 'Over 211.5', odds: '-110',
+    facts: [
+      {label:'G1 total',value:'198 (grind, SGA off)'},
+      {label:'G2 total',value:'232 (turnover-driven track meet)'},
+      {label:'Avg',value:'215'},
+    ],
+    reasoning: "G1 was a 198 grind; G2 was a 232 track meet driven by 21 LAL TOs converting to OKC transition points. At Crypto.com, LAL plays more aggressively (home crowd + desperation) which means more possessions but also more TOs. G2's 232 suggests the pace can get high when LAL pushes. 211.5 is below the 2-game average of 215. Lean over — LAL's desperation drives pace up.",
+    confidence: 'lean', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
+
+  // ─── DET-CLE G3 (Sat May 9, 3:00 PM ET @ Rocket Mortgage, DET leads 2-0) ──
+  {
+    id: 'r2-g3-det-cle-ml',
+    slate: 'R2-G3', series: 'DET-CLE', game: 3, postedAt: '2026-05-09',
+    type: 'ml', pick: 'CLE ML vs DET', odds: '-175',
+    facts: [
+      {label:'Spread',value:'CLE -4.5'},
+      {label:'Total',value:'O/U 211.5'},
+      {label:'Series',value:'DET leads 2-0'},
+      {label:'Context',value:'CLE home — desperation + Mitchell 31pt rhythm'},
+    ],
+    modelHook: { fn:'dml', args:['DET-CLE',3] },
+    reasoning: "<strong>HCA flips to CLE — engine baseline compresses from DET by 2 to CLE by 2-3.</strong> DK is even more bullish on CLE (CLE -4.5). Mitchell's 31-pt G2 showed rhythm; Allen is healthy (22/7 G2); CLE home crowd + 0-2 desperation should produce max effort. The model still gives CLE the edge at home (~62%) but DET's road-travel defense is travel-proof (scheme-driven). This is the closest game on the slate. CLE ML at -175 is the side the model leans.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-det-cle-spread',
+    slate: 'R2-G3', series: 'DET-CLE', game: 3, postedAt: '2026-05-09',
+    type: 'spread', pick: 'DET +4.5', odds: '-110',
+    facts: [
+      {label:'Model',value:'CLE by 4'},
+      {label:'Market',value:'CLE -4.5'},
+      {label:'DET road defense',value:'Scheme-driven, travel-proof'},
+    ],
+    modelHook: { fn:'dmargin', args:['DET-CLE',3] },
+    reasoning: "Model says CLE by 4, market has CLE -4.5. DET +4.5 gives 0.5-pt cushion on the model's projection. DET's defense traveled well in R1 road games and their scheme (wing pressure, trapping Harden) is system-based, not crowd-dependent. Cade's Q4 closing ability (12 of 25 in Q4 G2) means DET can win any tight game. Getting 4.5 on a team that won both home games by 10 feels generous.",
+    confidence: 'medium', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-det-cle-mitchell-pts',
+    slate: 'R2-G3', series: 'DET-CLE', game: 3, postedAt: '2026-05-09',
+    type: 'prop', pick: 'Donovan Mitchell Over 27.5 points', odds: '-120',
+    facts: [
+      {label:'G1',value:'23pts (A.Thompson limited him)'},
+      {label:'G2',value:'31pts (game-high)'},
+      {label:'At home',value:'Mitchell averages 29.4 ppg at home in playoffs'},
+      {label:'Desperation',value:'Down 0-2, CLE needs him at his best'},
+    ],
+    reasoning: "Mitchell's 31-pt G2 showed he's found rhythm against DET's defense. At home in a must-win context, his aggression should increase. Career home playoff average is ~29ppg. 27.5 is well below his G2 output and right at his home baseline. A.Thompson will still defend him but CLE's home crowd amplifies his drives. Clear over territory.",
+    confidence: 'medium', thesis: ['matchup','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-det-cle-cade-ast',
+    slate: 'R2-G3', series: 'DET-CLE', game: 3, postedAt: '2026-05-09',
+    type: 'prop', pick: 'Cade Cunningham Over 6.5 assists', odds: '-130',
+    facts: [
+      {label:'G1',value:'7 assists (scorer-distributor mode)'},
+      {label:'G2',value:'10 assists (facilitator mode)'},
+      {label:'Dual-mode',value:'Both games above 6.5 — floor-grade prop'},
+    ],
+    reasoning: "<strong>Cade has cleared 6.5 assists in BOTH games (7, 10).</strong> His dual-mode flexibility means he's distributing at an elite level regardless of scoring mode. On the road, CLE's defense may tighten on his scoring — which INCREASES assists as he kicks out. 6.5 gives 0.5-pt cushion below his G1 floor. ~85% hit rate based on series form.",
+    confidence: 'high', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g3-det-cle-total',
+    slate: 'R2-G3', series: 'DET-CLE', game: 3, postedAt: '2026-05-09',
+    type: 'total', pick: 'Under 211.5', odds: '-110',
+    facts: [
+      {label:'G1 total',value:'212 (DET 111-101)'},
+      {label:'G2 total',value:'204 (DET 107-97)'},
+      {label:'CLE 3PT',value:'26% in series (11-42) — catastrophic'},
+    ],
+    reasoning: "G2 total was 204, trending down from G1's 212. CLE's 3PT shooting is in crisis (26% for series). DET's defense (#1 in NBA) is scheme-driven and travels. Even at home, CLE's perimeter issues won't magically fix themselves (Merrill DNP, Strus 1-6 3PT G2). Both teams grind — expect another low-scoring affair. Under 211.5 has series trend support.",
+    confidence: 'medium', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -1005,6 +1165,103 @@ const FEATURED_PARLAYS = [
     thesis:'Two road games with both road teams favored by the model (NYK by engine edge, SAS by market). Combined ~43%. Cleaner than the chaos slates of 5/6-5/7 because both legs have model conviction. Pays +330 if both road teams win — common scenario in playoff games where home crowd matters less than rest/scheme.',
     result: null,
   },
+
+  // ─── R2 G3 — TOMORROW (Sat May 9: OKC-LAL + DET-CLE) ─────────────
+  // RELIABLE FLOOR PARLAYS — each leg ≥80% per-leg hit rate.
+  {
+    id: 'r2-g3-may9-floor-okc-core',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'floor', type: 'best-bet',
+    name: 'OKC Core Floor (3-Leg, Alt Lines)',
+    stake: 100, odds: '+55', payout: 'To Win: ~$55 (verify on DK)',
+    legs: [
+      { pick:'OKC ML vs LAL (G3)', odds:'-375', confidence:'high', status:null,
+        note:'Won G1+G2 by identical +18 margins. Structural depth/defense gap proven. Even at Crypto.com, ~80% win probability per engine.' },
+      { pick:'Holmgren Over 7.5 rebounds (alt line — OKC-LAL G3)', odds:'~-250', confidence:'floor', status:null,
+        note:'12reb G1, 9reb G2. Ayton matchup dominated. Counting stat blowout-proof. Real hit rate ~87%.' },
+      { pick:'LeBron Over 21.5 pts (alt line — OKC-LAL G3)', odds:'~-200', confidence:'floor', status:null,
+        note:'27pts G1, 23pts G2 — both in 18-pt losses. Scoring independent of game outcome. Home desperation adds aggression. Real hit rate ~89%.' },
+    ],
+    thesis:'Same structure as the winning May 7 "OKC Lock + LeBron Floor" parlay (2-of-2 ✓, +$67) but expanded to 3 legs by adding Holmgren rebounds. LeBron\'s scoring independence from OKC blowouts is PROVEN (27, 23 in G1+G2 18-pt losses). Holmgren\'s rebounding is structural (Ayton matchup dominated). Math: 0.80 × 0.87 × 0.89 ≈ 61.9% — below 80% threshold due to 3-leg compound, but each leg individually is floor-grade. Lower payout (+55) reflects the compound risk.',
+    result: null,
+  },
+  {
+    id: 'r2-g3-may9-floor-counting-stats',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'floor', type: 'best-bet',
+    name: 'Counting Stat Floor (2-Leg)',
+    stake: 100, odds: '+40', payout: 'To Win: ~$40 (verify on DK)',
+    legs: [
+      { pick:'Cade Over 5.5 assists (alt line — DET-CLE G3)', odds:'~-400', confidence:'floor', status:null,
+        note:'7ast G1, 10ast G2. Dual-mode facilitator clears 5.5 easily in both scorer and distributor modes. Real hit rate ~93%.' },
+      { pick:'Holmgren Over 7.5 rebounds (alt line — OKC-LAL G3)', odds:'~-250', confidence:'floor', status:null,
+        note:'12reb G1, 9reb G2. Counting stat, blowout-proof. Real hit rate ~87%.' },
+    ],
+    thesis:'Pure counting-stat parlay — the lesson from May 6 (Randle blowout-cap killed a "floor" scoring prop) applied directly. Assists and rebounds accrue throughout the game regardless of score margin. Both legs cleared in EVERY game this series. Math: 0.93 × 0.87 ≈ 80.9% combined. Clean 80%+ floor.',
+    result: null,
+  },
+  {
+    id: 'r2-g3-may9-floor-okc-lebron',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'floor', type: 'best-bet',
+    name: 'OKC Lock + LeBron Floor (2-Leg)',
+    stake: 100, odds: '+50', payout: 'To Win: ~$50 (verify on DK)',
+    legs: [
+      { pick:'OKC ML vs LAL (G3)', odds:'-375', confidence:'high', status:null,
+        note:'Won by +18 in G1 AND G2 — structural dominance proven twice. ~80% road win probability.' },
+      { pick:'LeBron Over 21.5 pts (alt line — OKC-LAL G3)', odds:'~-200', confidence:'floor', status:null,
+        note:'27pts G1, 23pts G2. Scoring independent of OKC outcome. Real hit rate ~89%.' },
+    ],
+    thesis:'REPEAT of the winning May 7 parlay structure (2-of-2 ✓, +$67). Same thesis: LeBron\'s scoring is INDEPENDENT of OKC blowing them out. He scored 27 and 23 in consecutive 18-pt losses. At home with desperation, he\'ll be even more aggressive. Math: 0.80 × 0.89 ≈ 71.2% — slightly below 80% threshold but proven structure.',
+    result: null,
+  },
+
+  // TRADITIONAL (value plays — engine edge, lower combined hit rate)
+  {
+    id: 'r2-g3-may9-trad-cle-home',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'traditional', type: 'value',
+    name: 'CLE Home Stand (2-Leg)',
+    stake: 100, odds: '+175', payout: 'To Win: $175',
+    legs: [
+      { pick:'CLE ML vs DET (G3)', odds:'-175', confidence:'lean', status:null,
+        note:'Model: CLE by 4. HCA + desperation + Mitchell 31pt momentum. ~62% per engine.' },
+      { pick:'Mitchell Over 27.5 pts (DET-CLE G3)', odds:'-120', confidence:'medium', status:null,
+        note:'31pts G2. Home playoff avg ~29ppg. Desperation bumps volume.' },
+    ],
+    thesis:'CLE at home is a different team — Mitchell\'s home splits are significantly better. Down 0-2 with maximum desperation + Allen healthy gives CLE their best shot. Combined ~42% hit rate. Engine-edge play, not a floor.',
+    result: null,
+  },
+  {
+    id: 'r2-g3-may9-trad-chalk-sweep',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'traditional', type: 'value',
+    name: 'Favorites Sweep — OKC + CLE MLs (2-Leg)',
+    stake: 100, odds: '+100', payout: 'To Win: $100',
+    legs: [
+      { pick:'OKC ML vs LAL (G3)', odds:'-375', confidence:'high', status:null,
+        note:'Won by +18 both games. Structural gap.' },
+      { pick:'CLE ML vs DET (G3)', odds:'-175', confidence:'lean', status:null,
+        note:'Model: CLE by 4 at home. Desperation + Mitchell rhythm.' },
+    ],
+    thesis:'Both favorites per model. OKC\'s structural dominance makes them ~80% even on the road; CLE at home with desperation and Mitchell rhythm is ~62%. Combined ~50% — coin flip at +100 odds. Better value than the May 7 Chalk Sweep (+80) because CLE has stronger model conviction than DET did at -162.',
+    result: null,
+  },
+  {
+    id: 'r2-g3-may9-trad-chaos',
+    slate: 'R2-G3', date: '2026-05-09',
+    category: 'traditional', type: 'chaos',
+    name: 'Chaos — LAL Home + DET Road Sweep (2-Leg)',
+    stake: 100, odds: '+1200', payout: 'To Win: $1,200',
+    legs: [
+      { pick:'LAL ML vs OKC (G3)', odds:'+295', confidence:'chaos', status:null,
+        note:'LAL at home, LeBron in do-or-die mode. Reaves found rhythm (31 G2). Crypto.com crowd.' },
+      { pick:'DET ML vs CLE (G3)', odds:'+145', confidence:'chaos', status:null,
+        note:'DET road defense is scheme-driven. Cade Q4 closer. CLE 26% 3PT in series.' },
+    ],
+    thesis:'~5% combined hit rate. Pure chaos play. LAL at home with LeBron + Reaves healthy is the best version of this team — but they still lost by 18 at their best. DET winning on the road would require Cade Q4 magic + CLE shooting staying broken. $100 for $1,200 upside.',
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -1071,6 +1328,10 @@ const BET_SLATES = {
         recap:'<strong style="color:var(--purple)">G3 Setup:</strong> NYK looking for sweep on the road. PHI faces elimination math (only ~6% of teams have come back from 0-3). <strong>Embiid status:</strong> potentially returning per pre-game reports — would re-introduce interior gravity PHI has been without since the 5/6 ankle/hip ruling. <strong>OG Anunoby:</strong> reportedly questionable after exiting late G2; if OUT, PHI gets a real perimeter relief. G2 was a 6-pt nailbiter (108-102, 25 lead changes) — the sweep narrative undersells how PHI competed without Embiid. Brunson averaging 30.5 ppg in series but his road FT volume drops sharply (3.3 makes road vs 6.6 at MSG). DK opened PHI -1.5, total 214.5 — line reflects "Embiid back, OG out" possibility.' },
       { series:'SAS-MIN', date:'2026-05-08', time:'9:30 PM ET', venue:'Target Center', context:'Series tied 1-1',
         recap:'<strong style="color:var(--purple)">G3 Setup:</strong> Series tied 1-1 after SAS\'s 38-pt G2 response (133-95, MIN\'s largest playoff loss in franchise history). SAS comes in road favorite at -3.5 / -198 ML on DK — the 38-pt margin shifted the market. Wemby putting up back-to-back 15-rebound games; books have him at 27.5 pts (but some at 25.5) with rebounding props the sharp angle. Edwards continues to underperform (12pts in G2 off bench, 24min) — knee + role uncertainty. Fox needs to rebound from his 16-pt G2 (better than G1\'s 10 but still passive). MIN must protect home court or fall into a hole.' },
+      { series:'OKC-LAL', date:'2026-05-09', time:'8:30 PM ET', venue:'Crypto.com Arena', context:'OKC leads 2-0',
+        recap:'<strong style="color:var(--purple)">G3 Setup:</strong> OKC won G1+G2 by identical +18 margins in totally different game scripts. G1: SGA 18pts (7 TOs), Holmgren 24/12/3blk dominated. G2: Reaves bounced back with 31pts but OKC still cruised — 21 LAL TOs converted to 26 transition pts. HCA flips to LAL at Crypto.com — crowd + LeBron desperation compresses the gap. DK has OKC -8.5 / total 211.5. J.Williams fully ramped (starter minutes G2). LAL\'s problem remains structural: no Doncic, bench depth unsolvable. Even at LAL\'s G2 best (Reaves 31 + LeBron 23 = 54 from primaries), they lost by 18.' },
+      { series:'DET-CLE', date:'2026-05-09', time:'3:00 PM ET', venue:'Rocket Mortgage FieldHouse', context:'DET leads 2-0',
+        recap:'<strong style="color:var(--purple)">G3 Setup:</strong> DET swept G1+G2 at home by avg +10 margin. G2: Cade 25/10ast (12 of 25 in Q4 closing run), DET defense held CLE to 22% 3PT (7-32, catastrophic). Mitchell found 31pts in G2 but couldn\'t carry alone — Harden 3-13 FG (worst game of playoffs), Mobley quiet (9pts). Allen healthy (22/7 G2, knee improved). HCA flips to CLE — desperation + home crowd + Mitchell 31-pt momentum. DK has CLE -4.5 / total 211.5. Model says CLE by 4 at home (~62%). Merrill DNP (hamstring, GTD for G3) — CLE bench shooting crisis continues.' },
     ],
   },
 };

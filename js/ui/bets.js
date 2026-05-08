@@ -73,7 +73,32 @@ function renderBetsPage(el) {
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#f44336;">PHI 4-3</span><br/>BOS upset ❌</div>
             <div style="padding:6px;border-radius:4px;background:rgba(0,0,0,0.2);text-align:center;"><span style="color:#4caf50;">R1 Done</span><br/>All 8 series</div>
           </div>
-          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">R2 G1 Complete: 3/4 winner picks correct (NYK ✅, DET ✅, OKC ✅, SAS ❌). G2 predictions updated with G1 box score evidence. Key adjustments: Reaves downgraded (3-16 FG oblique), J.Williams active (20min +11), Allen knee QUESTIONABLE, totals adjusted down (G1 actuals below lines). G2: Thu May 7 all 4 series.</div>
+          <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px;margin-top:12px;">R2 G2 WIN PROBABILITIES</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#3dd68c;">NYK-PHI G2 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">NYK 108-102</div>
+              <div style="font-size:9px;color:#666;">Model: NYK by 6 | EXACT MARGIN MATCH</div>
+            </div>
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#3dd68c;">SAS-MIN G2 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">SAS 133-95</div>
+              <div style="font-size:9px;color:#666;">Model: SAS by 5 | Winner ✅ margin +33 off</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#3dd68c;">OKC-LAL G2 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">OKC 125-107</div>
+              <div style="font-size:9px;color:#666;">Model: OKC by 18 | EXACT MARGIN MATCH</div>
+            </div>
+            <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+              <div style="font-size:10px;color:#3dd68c;">DET-CLE G2 ✅</div>
+              <div style="font-size:18px;font-weight:700;color:#3dd68c;">DET 107-97</div>
+              <div style="font-size:9px;color:#666;">Model: DET by 2 | Winner ✅ margin +8 off</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;font-style:italic;">R2 G1+G2 Complete: 7/8 winner picks correct. Two EXACT margin matches (NYK-PHI G2, OKC-LAL G2). G2 standouts: Cade 25/10ast Q4 closer, SAS 38pt revenge blowout, Reaves 31pt bounce-back (still lost by 18). All 4 home teams won G2. G3: Fri May 8 (NYK@PHI, SAS@MIN) + Sat May 9 (DET@CLE, OKC@LAL).</div>
         </div>
       </div>
 
@@ -130,56 +155,56 @@ function renderBetsPage(el) {
         </div>
       </div>
 
-      <!-- ===== R2 G2 PARLAYS — MAY 7 (ARCHIVED) ===== -->
-      <div style="margin-bottom:20px;border-top:2px solid #a78bfa;padding-top:20px;">
+      <!-- ===== R2 G2 PARLAYS — MAY 7 (RESOLVED) ===== -->
+      <div style="margin-bottom:20px;border-top:2px solid #4caf50;padding-top:20px;">
         <div style="text-align:center;margin-bottom:16px;">
-          <span style="font-size:12px;font-weight:700;color:#888;background:rgba(136,136,136,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G2 ARCHIVED — Thu May 7 | DET ✅ (2-0) | OKC ✅ (2-0)</span>
+          <span style="font-size:12px;font-weight:700;color:#4caf50;background:rgba(76,175,80,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">R2 G2 RESULTS — Thu May 7 | DET 107-97 ✅ | OKC 125-107 ✅ | $100 Play: ✅ WON (+$110)</span>
         </div>
 
-        <!-- $100 BEST BET — MAY 7 -->
-        <div class="parlay-card headline" style="border:1px solid #a78bfa;">
+        <!-- $100 BEST BET — MAY 7 — WON -->
+        <div class="parlay-card headline" style="border:1px solid #4caf50;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#a78bfa;">$100 Play — Home Court Dominance (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(167,139,250,0.2);color:#a78bfa;font-size:16px;">~+110</span>
+            <span class="parlay-name" style="font-size:16px;color:#4caf50;">$100 Play — Home Court Dominance (2-Leg) ✅ WON</span>
+            <span class="parlay-odds" style="background:rgba(76,175,80,0.2);color:#4caf50;font-size:16px;">~+110 | +$110</span>
           </div>
           <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">OKC ML vs LAL — J.Williams ramp-up + SGA bounce-back from 7 TOs. Won G1 by 18 with SGA at floor. LAL has no answer to depth gap.</span>
+              <span class="parlay-leg-pick">OKC ML vs LAL — OKC 125-107 (+18). Same margin as G1. Holmgren 22/9, SGA 22 (foul trouble). Reaves 31 but LAL still lost by 18.</span>
               <span class="parlay-leg-odds">-800</span>
-              <span class="parlay-leg-conf" style="background:rgba(167,139,250,0.12);color:#a78bfa;">HIGH</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
             </div>
-            <div class="parlay-leg" style="border-left:3px solid #a78bfa;">
+            <div class="parlay-leg" style="border-left:3px solid #4caf50;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">DET ML vs CLE — DET forced 19 CLE TOs G1. Allen limited (knee). Cade 23/7ast controls pace. Home defense suffocates.</span>
+              <span class="parlay-leg-pick">DET ML vs CLE — DET 107-97 (+10). Cade 25/10ast with 12 of 25 in Q4 closing run. CLE 22% 3PT catastrophic.</span>
               <span class="parlay-leg-odds">-190</span>
-              <span class="parlay-leg-conf" style="background:rgba(167,139,250,0.12);color:#a78bfa;">MEDIUM-HIGH</span>
+              <span class="parlay-leg-conf" style="background:#1a3a1a;color:#4caf50;">✅ HIT</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>Thesis:</strong> Both home teams dominated G1 (DET +10, OKC +18). DET's defense forced 19 TOs and OKC's depth is unsolvable for LAL. CLE may adjust but Allen's knee + DET's turnover machine is structural. OKC gets J.Williams ramping + SGA floor was 18pts/7TOs and STILL won by 18. Combined ML at ~+110 is excellent value for two teams that proved dominance in G1.</div>
+          <div class="parlay-reasoning" style="border-left-color:#4caf50;"><strong>✅ WON +$110.</strong> Both home teams won again — DET leads 2-0 (avg margin +10), OKC leads 2-0 (both by exactly +18). Structural thesis validated: OKC depth/defense gap unsolvable, DET #1 defense held CLE to 22% 3PT. Two straight slates of home favorites sweeping.</div>
         </div>
 
         <!-- $1 CHAOS TICKET ��� MAY 7 -->
-        <div class="parlay-card" style="border:1px solid #ff9800;">
+        <div class="parlay-card" style="border:1px solid #f44336;">
           <div class="parlay-header">
-            <span class="parlay-name" style="font-size:16px;color:#ff9800;">$1 Chaos Ticket — CLE Road Revenge + PHI Steal (2-Leg)</span>
-            <span class="parlay-odds" style="background:rgba(255,152,0,0.2);color:#ff9800;font-size:16px;">~+800</span>
+            <span class="parlay-name" style="font-size:16px;color:#f44336;">$1 Chaos Ticket — CLE Road Revenge + PHI Steal (2-Leg) ❌ LOST</span>
+            <span class="parlay-odds" style="background:rgba(244,67,54,0.2);color:#f44336;font-size:16px;">~+800 | -$1</span>
           </div>
           <div class="parlay-legs">
-            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">1</span>
-              <span class="parlay-leg-pick">CLE ML @ DET — CLE rallied from -18 to 93-93 in G1. Mitchell/Garland revenge. If Allen plays 30+ min, CLE's ceiling is higher.</span>
+              <span class="parlay-leg-pick">CLE ML @ DET — CLE lost 97-107. Mitchell 31 + Allen 22/7 wasn't enough — DET defense + Cade Q4 closing sealed it.</span>
               <span class="parlay-leg-odds">+160</span>
-              <span class="parlay-leg-conf" style="background:rgba(255,152,0,0.12);color:#ff9800;">CHAOS</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS</span>
             </div>
-            <div class="parlay-leg" style="border-left:3px solid #ff9800;">
+            <div class="parlay-leg" style="border-left:3px solid #f44336;">
               <span class="parlay-leg-num">2</span>
-              <span class="parlay-leg-pick">PHI ML @ NYK — PHI lost G1 by 39 but fatigue was catastrophic (3 days rest). With 3 days between, Embiid + Maxey could steal one.</span>
+              <span class="parlay-leg-pick">PHI ML @ NYK — NYK 108-102. PHI kept it close (25 lead changes) but couldn't close without Embiid.</span>
               <span class="parlay-leg-odds">+200</span>
-              <span class="parlay-leg-conf" style="background:rgba(255,152,0,0.12);color:#ff9800;">CHAOS</span>
+              <span class="parlay-leg-conf" style="background:#5a2d2d;color:#f44336;">❌ MISS</span>
             </div>
           </div>
-          <div class="parlay-reasoning"><strong>Chaos thesis:</strong> CLE showed G1 grit — rallied from -18 to tie 93-93 before DET's closing burst. If Allen's knee is better + CLE adjusts to DET's trapping, their talent can overcome. PHI's G1 was catastrophic (137-98) but they had 3 fewer days rest — fatigue was THE story. With equal rest and Embiid's playoff pride, PHI can be competitive. Long shot but +800 pays $9 on $1.</div>
+          <div class="parlay-reasoning" style="border-left-color:#f44336;"><strong>❌ LOST — both legs missed.</strong> Same pattern as every chaos play this round: home favorites swept the slate. CLE showed fight (Mitchell 31) but DET's structural defense + Cade Q4 proved decisive. Three straight slates of chaos tickets busting.</div>
         </div>
       </div>
 
@@ -2622,15 +2647,15 @@ function renderR2Bets(el) {
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">R2 Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$211</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$320</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">Total Net</div>
-          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$487</div>
+          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$378</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">R2 Record</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">2-5</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">3-6</div>
         </div>
       </div>
       <div style="font-size:10px;color:#666;border-top:1px solid #333;padding-top:8px;">
@@ -2641,6 +2666,8 @@ function renderR2Bets(el) {
           <span style="color:#ef4444;">❌</span><span>Chaos Upset (3-leg, May 4)</span><span style="color:#ef4444;">-$100</span>
           <span style="color:#ef4444;">❌</span><span>Props (4-leg, May 4)</span><span style="color:#ef4444;">-$100</span>
           <span style="color:#ef4444;">❌</span><span>Chaos Road Dog (2-leg, May 5)</span><span style="color:#ef4444;">-$100</span>
+          <span style="color:#3dd68c;">✅</span><span>Home Court Dominance (2-leg, May 7)</span><span style="color:#3dd68c;font-weight:700;">+$110</span>
+          <span style="color:#ef4444;">❌</span><span>Chaos CLE+PHI (2-leg, May 7)</span><span style="color:#ef4444;">-$1</span>
         </div>
       </div>
     </div>
