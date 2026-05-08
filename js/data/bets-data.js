@@ -600,7 +600,7 @@ const FEATURED_PARLAYS = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // R2 G2 — TONIGHT (May 7: DET-CLE + OKC-LAL)
+  // R2 G2 — ARCHIVED (May 7: DET-CLE + OKC-LAL — bets pending manual resolution)
   // ═══════════════════════════════════════════════════════════════
 
   // ─── RELIABLE FLOOR ────────────────────────────────────────────

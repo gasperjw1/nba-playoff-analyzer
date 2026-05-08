@@ -2681,7 +2681,7 @@ function renderR2Bets(el) {
           <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:4px 12px;font-size:11px;line-height:1.7;">
             <span style="color:#888;font-weight:700;">DATE</span><span style="color:#888;font-weight:700;">PARLAYS</span><span style="color:#888;font-weight:700;">W-L</span><span style="color:#888;font-weight:700;">NET</span>
             <span style="color:#aaa;">Tue May 6</span><span style="color:#aaa;">Iron Floor &#x2717;, Home Stars &#x2713; (+$280), Spread+Floor &#x2717;</span><span style="color:#aaa;">1-2</span><span style="color:#3dd68c;font-weight:700;">+$80</span>
-            <span style="font-weight:700;color:#22d3ee;">Wed May 7</span><span style="font-weight:700;color:#22d3ee;">Chalk Sweep, Star Scoring Floors, Volume Floors</span><span style="color:#22d3ee;">TODAY</span><span style="color:#888;">-</span>
+            <span style="font-weight:700;color:#22d3ee;">Wed May 7</span><span style="font-weight:700;color:#22d3ee;">Chalk Sweep, Star Scoring Floors, Volume Floors</span><span style="color:#22d3ee;">PENDING</span><span style="color:#888;">-</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
             <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$300</strong></span>
@@ -2698,7 +2698,7 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Sun May 4</span><span style="color:#aaa;">Chalk Sweep, Ensemble Edge, Chaos, Props</span><span style="color:#aaa;">1-3</span><span style="color:#3dd68c;font-weight:700;">+$149</span>
             <span style="color:#aaa;">Mon May 5</span><span style="color:#aaa;">Chalk Doubles, Chaos Road, Props</span><span style="color:#aaa;">1-2</span><span style="color:#3dd68c;font-weight:700;">+$60</span>
             <span style="color:#aaa;">Tue May 6</span><span style="color:#aaa;">Regression &#x2713; (+$145), Bounce-Back &#x2717;, Chaos Double &#x2717;</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$55</span>
-            <span style="font-weight:700;color:#a78bfa;">Wed May 7</span><span style="font-weight:700;color:#a78bfa;">Star Props, Chaos Road Upset</span><span style="color:#a78bfa;">TODAY</span><span style="color:#888;">-</span>
+            <span style="font-weight:700;color:#a78bfa;">Wed May 7</span><span style="font-weight:700;color:#a78bfa;">Star Props, Chaos Road Upset</span><span style="color:#a78bfa;">PENDING</span><span style="color:#888;">-</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
             <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$1,000</strong></span>

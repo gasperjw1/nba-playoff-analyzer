@@ -27,7 +27,7 @@
 // news feed, and "today's bets" filter remain pinned to the slate
 // the data reflects, instead of silently going stale next week.
 // Bump this when daily data updates land.
-const CURRENT_DATE = '2026-05-07';
+const CURRENT_DATE = '2026-05-08';
 
 // SPM Synergy coefficient matrix (6x6)
 const SPM_COEFF = {
