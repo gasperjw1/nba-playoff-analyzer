@@ -405,6 +405,42 @@ points and rebounds are 2 of ~9 dimensions.
 
 ---
 
+## 8a · Append CHS shadow ledger entry (CHS Lab tracking)
+
+For each game whose result was just recorded in step 2, also append
+a CHS_LEDGER entry to `js/data/chs-ledger.js` so the CHS Lab tab can
+score the shadow engine against actuals.
+
+```
+- For each new game.winner you set in step 2:
+    Compute CHS prediction: calcBlendedProjectionWithCHS(series, seriesId, gameNum)
+    Read main prediction:   series.games[N-1].prediction
+    Append to CHS_LEDGER:
+      {
+        date: <CURRENT_DATE>,
+        series: <series.id>,
+        game: <N>,
+        retroactive: false,           // captured pre-game (i.e., this run)
+        actual:   { winner, margin, homeScore, awayScore },
+        mainPred: { winner, margin, homeScore, awayScore },
+        chsPred:  { winner, margin, homeScore, awayScore, marginDeltaVsMain },
+      }
+- Important: capture chsPred BEFORE editing historical.js this run.
+  The point of the ledger is honest pre-game CHS prediction. If you
+  refine CHS scenarios mid-run, do it AFTER appending the ledger
+  entries for tonight's resolved games.
+- TEST 12 validates the ledger schema. If it fails, check the entry
+  shape against the schema docstring in chs-ledger.js.
+```
+
+**Promote criterion** (CHS Lab scoreboard reports this automatically):
+once 10+ ledger entries exist, if CHS clears `winner Δ ≥ +10pp` AND
+`MAE Δ ≥ −1.5 pts` vs main, flip `USE_CHS_IN_PROJECTIONS` in
+`constants.js` from `false` to `true`. Until then, production stays
+on the bare 13-modifier engine.
+
+---
+
 ## 9 · Update CONTEXT.md (if anything notable)
 
 ```

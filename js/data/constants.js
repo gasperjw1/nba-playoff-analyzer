@@ -29,6 +29,21 @@
 // Bump this when daily data updates land.
 const CURRENT_DATE = '2026-05-09';
 
+// CHS shadow architecture (May 9, 2026 — design discussion).
+// USE_CHS_IN_PROJECTIONS controls whether the Compound Historical
+// Scenarios engine (Phase 52) layers its 14th modifier into the
+// production player projection pipeline.
+//   false (default): CHS is OFF for Home, Bets, Series Analysis pages.
+//                    Production output reflects the bare 13-modifier
+//                    engine. CHS predictions are computed in parallel
+//                    by the CHS Lab tab and tracked against actuals
+//                    in chs-ledger.js for accuracy comparison.
+//   true:           CHS is layered into the main pipeline (legacy
+//                    pre-shadow behavior). Only flip after CHS proves
+//                    out: ≥10-game window, winner ≥ main + 10pp,
+//                    margin MAE ≤ main − 1.5pts.
+const USE_CHS_IN_PROJECTIONS = false;
+
 // SPM Synergy coefficient matrix (6x6)
 const SPM_COEFF = {
   oScr_oScr: -0.826, oScr_oBH: 0.412, oScr_oReb: 0.185, oScr_o3PT: 0.295, oScr_oPass: 0.180,

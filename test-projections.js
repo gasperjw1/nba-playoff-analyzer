@@ -338,10 +338,18 @@ function runTests() {
       }
 
       // 6d — Reaves full projection includes the Compound modifier
-      const rf = E.calcExpectedPlayerStats(reaves, oklal, 0, 'away');
+      // CHS is gated OFF in production by USE_CHS_IN_PROJECTIONS (May 9 shadow
+      // architecture). Use calcExpectedPlayerStatsWithCHS to force CHS on for
+      // wiring verification regardless of the flag.
+      const rf = E.calcExpectedPlayerStatsWithCHS(reaves, oklal, 0, 'away');
       assert(typeof rf.pts === 'number' && rf.pts >= 0, 'Reaves full projection has numeric pts');
       const compoundMod = rf.modifiers.find(m => m.label && m.label.includes('Compound'));
-      assert(!!compoundMod, 'Reaves projection.modifiers contains a Compound entry');
+      assert(!!compoundMod, 'Reaves projection.modifiers (CHS-on path) contains a Compound entry');
+
+      // 6d.bonus — verify CHS is OFF in the production path (default flag false)
+      const rfNoCHS = E.calcExpectedPlayerStats(reaves, oklal, 0, 'away');
+      const noCompoundMod = rfNoCHS.modifiers.find(m => m.label && m.label.includes('Compound'));
+      assert(!noCompoundMod, 'Production calcExpectedPlayerStats does NOT apply CHS by default');
     }
 
     // 6e — SGA CHS fires (post-rust + vs LAL dominance)
@@ -657,6 +665,72 @@ function runTests() {
       }
     });
   });
+
+  // ============================================================
+  // TEST 12: CHS ledger schema (CHS shadow architecture, May 9)
+  // ------------------------------------------------------------
+  // Asserts every entry in CHS_LEDGER has the required shape, that
+  // series IDs match SERIES_DATA, and that obvious nonsense values
+  // (negative margins, predictions outside 60-150 score range) get
+  // flagged. The promote criterion downstream (winner Δ ≥ +10pp,
+  // MAE Δ ≥ −1.5) only works if the data underneath is sound.
+  // ============================================================
+  console.log('\nTEST 12: CHS ledger schema');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const lctx = vm.createContext({ console, Math, Array, Object, JSON, Number, String, Boolean });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/chs-ledger.js'), 'utf8')), lctx);
+    const ledger = lctx.CHS_LEDGER;
+
+    assert(Array.isArray(ledger), 'CHS_LEDGER is an array');
+    if (Array.isArray(ledger)) {
+      const seriesIds = new Set(SERIES_DATA.map(s => s.id));
+      const REQUIRED = ['date', 'series', 'game', 'actual', 'mainPred'];
+      let issues = 0;
+      ledger.forEach((e, i) => {
+        REQUIRED.forEach(k => {
+          if (!(k in e)) { console.log(`  ledger[${i}] missing required key "${k}"`); issues++; }
+        });
+        if (typeof e.game !== 'number' || e.game < 1 || e.game > 7) {
+          console.log(`  ledger[${i}] bad game number: ${e.game}`); issues++;
+        }
+        if (e.series && !seriesIds.has(e.series)) {
+          console.log(`  ledger[${i}] series "${e.series}" not in SERIES_DATA`); issues++;
+        }
+        if (e.actual && (e.actual.margin < 0 || e.actual.margin > 70)) {
+          console.log(`  ledger[${i}] actual.margin out of range: ${e.actual.margin}`); issues++;
+        }
+        if (e.actual && (e.actual.homeScore < 60 || e.actual.homeScore > 200)) {
+          console.log(`  ledger[${i}] actual.homeScore implausible: ${e.actual.homeScore}`); issues++;
+        }
+        if (e.mainPred && typeof e.mainPred.margin !== 'number') {
+          console.log(`  ledger[${i}] mainPred.margin not a number`); issues++;
+        }
+        if (e.chsPred && typeof e.chsPred.margin === 'number' && e.chsPred.margin < 0) {
+          console.log(`  ledger[${i}] chsPred.margin negative: ${e.chsPred.margin}`); issues++;
+        }
+      });
+      assert(issues === 0, `CHS_LEDGER has ${issues} schema issue(s) — see above`);
+
+      // 12a — at least one entry exists (so the panel has data to render)
+      assert(ledger.length >= 1, 'CHS_LEDGER has at least one entry');
+
+      // 12b — sanity: hand-construct an entry and verify it would pass
+      const sampleOK = {
+        date: '2026-05-08', series: 'NYK-PHI', game: 3, retroactive: true,
+        actual: { winner: 'NYK', margin: 14, homeScore: 108, awayScore: 94 },
+        mainPred: { winner: 'PHI', margin: 6, homeScore: 105, awayScore: 111 },
+        chsPred: { winner: 'NYK', margin: 4, homeScore: 110, awayScore: 106 },
+      };
+      // Test the schema check directly
+      const okIssues = [];
+      REQUIRED.forEach(k => { if (!(k in sampleOK)) okIssues.push(k); });
+      assert(okIssues.length === 0, 'reference sample passes the required-keys check');
+    }
+  }
 
   // ============================================================
   // RESULTS

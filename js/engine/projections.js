@@ -810,7 +810,7 @@ function getSeriesPressureMod(series) {
 // Returns: { pts, reb, ast, modifiers[] } where each modifier has
 //   { label, ptsDelta, rebDelta, astDelta, pct }
 
-function calcExpectedPlayerStats(player, series, gameIdx, side) {
+function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
   const gameNum = gameIdx + 1;
   const isHome = (side === 'home');
   const team = isHome ? series.homeTeam : series.awayTeam;
@@ -1092,7 +1092,16 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
   // adjustments that the general modifiers can't capture.
   // Example: "Reaves as 2nd option vs OKC switching D in playoffs while
   // playing through oblique strain" → historically -6pts from base.
-  if (typeof applyCompoundScenarios === 'function') {
+  //
+  // SHADOW MODE (May 9, 2026): gated behind USE_CHS_IN_PROJECTIONS so
+  // production pages (Home, Bets, Series Analysis) run on the bare
+  // 13-modifier engine. CHS still computes in parallel via the CHS
+  // Lab tab — see calcExpectedPlayerStatsWithCHS below.
+  // The applyCHS function arg lets internal callers (CHS Lab) force
+  // CHS on regardless of the global flag.
+  const _useCHS = (applyCHS === true) ||
+    (applyCHS !== false && typeof USE_CHS_IN_PROJECTIONS !== 'undefined' && USE_CHS_IN_PROJECTIONS === true);
+  if (_useCHS && typeof applyCompoundScenarios === 'function') {
     const scenarioResult = applyCompoundScenarios(player, series, gameIdx, side, pts, reb, ast);
     if (scenarioResult.modifier) {
       pts += scenarioResult.pts;
@@ -1108,6 +1117,12 @@ function calcExpectedPlayerStats(player, series, gameIdx, side) {
     ast: +Math.max(0, ast).toFixed(1),
     modifiers: modifiers.filter(m => Math.abs(m.ptsDelta) >= 0.1 || Math.abs(m.rebDelta) >= 0.1 || Math.abs(m.astDelta) >= 0.1)
   };
+}
+
+// Shadow-mode wrapper: always applies CHS regardless of the global flag.
+// Use only from the CHS Lab tab and the chs-ledger seeding script.
+function calcExpectedPlayerStatsWithCHS(player, series, gameIdx, side) {
+  return calcExpectedPlayerStats(player, series, gameIdx, side, /*applyCHS=*/true);
 }
 
 

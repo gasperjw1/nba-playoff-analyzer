@@ -27,6 +27,7 @@
   <button class="page-nav-btn" onclick="switchPage('learnings')">Model Learnings</button>
   <button class="page-nav-btn" onclick="switchPage('definitions')">Definitions</button>
   <button class="page-nav-btn" onclick="switchPage('bets')">Bets</button>
+  <button class="page-nav-btn" onclick="switchPage('chs-lab')">CHS Lab</button>
 </div>
 <div class="tabs" id="tabs"></div>
 <div class="main" id="main"></div>
@@ -96,6 +97,7 @@
 <script src="js/data/historical.js"></script>
 <script src="js/data/bets-data.js"></script>
 <script src="js/data/news.js"></script>
+<script src="js/data/chs-ledger.js"></script>
 
 <!-- Validators (Tier 1.1) — must run AFTER data files load but BEFORE UI -->
 <script src="js/validators.js"></script>
@@ -114,6 +116,7 @@
 <script src="js/engine/simulation.js"></script>
 <script src="js/engine/graduation.js"></script>
 <script src="js/engine/auto-resolve.js"></script>
+<script src="js/engine/projections-chs.js"></script>
 
 <!-- UI layer (depends on engine + state) -->
 <script src="js/ui/components.js"></script>
@@ -124,6 +127,7 @@
 <script src="js/ui/bet-card.js"></script>
 <script src="js/ui/bets.js"></script>
 <script src="js/ui/home.js"></script>
+<script src="js/ui/chs-lab.js"></script>
 <script src="js/ui/navigation.js"></script>
 
 <!-- Boot -->

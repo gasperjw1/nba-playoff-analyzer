@@ -217,5 +217,6 @@ function switchPage(page) {
     else if (page === 'learnings') renderLearningsPage(mainEl);
     else if (page === 'definitions') renderDefinitionsPage(mainEl);
     else if (page === 'bets') renderBetsPage(mainEl);
+    else if (page === 'chs-lab') renderCHSLabPage(mainEl);
   }
 }
