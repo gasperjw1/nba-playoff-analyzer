@@ -603,14 +603,16 @@ function runTests() {
     }
 
     // 10a — sanity: a fabricated stale label IS flagged.
-    const tmpFile = path.join(__dirname, '.tmp-stale-test.txt');
+    // Use /tmp instead of __dirname so a killed test doesn't pollute the
+    // project root with .tmp-stale-test.txt orphans (caught May 8).
+    const tmpFile = '/tmp/.tmp-stale-test.txt';
     fs.writeFileSync(tmpFile, 'Featured parlays — May 1 (TONIGHT)');
     const fakeIssues = findStaleLabels(tmpFile, vctx.CURRENT_DATE);
     fs.unlinkSync(tmpFile);
     assert(fakeIssues.length === 1, 'findStaleLabels flags a fabricated stale label');
 
     // 10b — sanity: a future-dated label is NOT flagged.
-    const tmpFile2 = path.join(__dirname, '.tmp-future-test.txt');
+    const tmpFile2 = '/tmp/.tmp-future-test.txt';
     fs.writeFileSync(tmpFile2, 'Featured parlays — Dec 31 (TONIGHT)');
     const futureIssues = findStaleLabels(tmpFile2, vctx.CURRENT_DATE);
     fs.unlinkSync(tmpFile2);
