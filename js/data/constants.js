@@ -65,7 +65,15 @@ const SPM_COEFF = {
 // PHASE 17 UPDATE (Barreira & Morgado 2023): Longitudinal analysis (1946-2022) shows HCA is
 // declining significantly in the modern NBA. Values reduced ~15% from original calibration.
 // López-García et al. (2024): team ability matters more than crowd support for HCA.
-const HCA_BY_ROUND = { 'R1': 3.0, 'R2': 2.0, 'CF': 1.5, 'Finals': 1.0 };
+// PHASE 59 UPDATE (May 11, 2026 — promotion pass): R2 trimmed 2.0 → 1.5 based on
+// three consecutive wrong-winner G3 calls (NYK-PHI G3, SAS-MIN G3, DET-CLE G3) where
+// the engine's HCA-flip baseline plus "home desperation" soft factor stacked too high
+// on the venue-flipped lower seed. Empirical: road favorites with clear talent edge
+// + post-anomaly home-game momentum won all three despite engine pricing the home
+// team. Trimming the round-level premium is the cleanest intervention; the bet logic
+// has been applying this informally for the past 3 days. Source retros: series.modelLessons[]
+// for NYK-PHI G3, SAS-MIN G3, and DET-CLE G3.
+const HCA_BY_ROUND = { 'R1': 3.0, 'R2': 1.5, 'CF': 1.5, 'Finals': 1.0 };
 
 // PHASE 49: Win Probability Recalibration (2025 + 2026 cross-year validation)
 // The logistic scale factor converts rating differentials into win probabilities.

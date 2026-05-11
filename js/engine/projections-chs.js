@@ -27,7 +27,11 @@ function _calcTeamCHSDelta(team, series, gameIdx, side) {
     if (!p || (p.rating || 0) <= 0) return;
     try {
       const result = calcCompoundScenarioDelta(p, series, gameIdx, side);
-      if (result && typeof result.pts === 'number') total += result.pts;
+      // calcCompoundScenarioDelta returns { ptsDelta, rebDelta, astDelta, ... }.
+      // Earlier draft mistakenly read result.pts which is undefined — bug found
+      // May 11 promotion-pass audit when Wemby paint suppression scenarios
+      // appeared to compute but team aggregate stayed at 0.
+      if (result && typeof result.ptsDelta === 'number') total += result.ptsDelta;
     } catch (e) { /* ignore — graceful degradation */ }
   });
   return total;

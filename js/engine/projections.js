@@ -100,19 +100,32 @@ function calcGameProjection(series, seriesId, gameNum) {
   // --- STEP 4: Star Absence Blowout Boost ---
   // 2025 evidence: LAL without Doncic+Reaves lost G1 by 22; MIL without Lillard lost G4 by 26
   // When a team is missing a star, the MARGIN widens (not just win probability)
-  const homeStarsOut = series.homeTeam.players.filter(p => {
-    const br = p.baseRating || p.rating || 0;
-    const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-    return br >= 75 && eff === 0;
-  }).length;
-  const awayStarsOut = series.awayTeam.players.filter(p => {
-    const br = p.baseRating || p.rating || 0;
-    const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
-    return br >= 75 && eff === 0;
-  }).length;
-  // PHASE 45: Increased per-star impact from +2.0→+3.5 but added liberation offset below.
-  // Evidence: LAL without Doncic+Reaves lost G1 by 22; MIN without Edwards still won G4/G6.
-  { const pre = baseMargin; baseMargin += (awayStarsOut - homeStarsOut) * 3.5; trackStep('starAbsence', 'Star Absence Boost', pre, baseMargin, `homeOut=${homeStarsOut} awayOut=${awayStarsOut}`); }
+  // PHASE 59 (May 11, 2026): Day-of-OUT Compression. Same-day OUT rulings produce
+  // LESS margin expansion than full-game-time rulings because (a) opponent had no
+  // extra prep time, (b) team gets emotional rally, (c) replacement rotation is
+  // well-rehearsed. NYK-PHI G2 retro: model bet card said "NYK +12-15 with Embiid
+  // OUT (day-of)" — actual was NYK +6 (EXACT engine match without the day-of penalty).
+  // Apply DAY_OF_OUT_PENALTY_MULT (0.5) to absent stars flagged dayOf:true.
+  function countStarsOut(team) {
+    let regular = 0, dayOf = 0;
+    team.players.forEach(p => {
+      const br = p.baseRating || p.rating || 0;
+      if (br < 75) return;
+      const eff = seriesId ? getEffectiveRating(p, seriesId) : p.rating;
+      if (eff !== 0) return;
+      const isDayOf = p.activeInjury && p.activeInjury.dayOf === true;
+      if (isDayOf) dayOf++; else regular++;
+    });
+    return { regular, dayOf };
+  }
+  const homeOut = countStarsOut(series.homeTeam);
+  const awayOut = countStarsOut(series.awayTeam);
+  const homeStarsOut = homeOut.regular;
+  const awayStarsOut = awayOut.regular;
+  // PHASE 45: per-star margin = +3.5. PHASE 59: dayOf absences contribute 0.5x.
+  const DAY_OF_MULT = 0.5;
+  const netStarPenalty = ((awayOut.regular + awayOut.dayOf * DAY_OF_MULT) - (homeOut.regular + homeOut.dayOf * DAY_OF_MULT)) * 3.5;
+  { const pre = baseMargin; baseMargin += netStarPenalty; trackStep('starAbsence', 'Star Absence Boost', pre, baseMargin, `homeOut=${homeStarsOut}+${homeOut.dayOf}dayOf awayOut=${awayStarsOut}+${awayOut.dayOf}dayOf`); }
 
   // --- STEP 5: activeInjury Drag ---
   // 2025 evidence: Edwards at 0.7 severity shot 7-19; partially hurt stars reduce efficiency

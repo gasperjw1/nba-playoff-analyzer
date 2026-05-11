@@ -3694,6 +3694,26 @@ const SERIES_DATA = [
           delta:{pts:3.0,reb:1.5,ast:0.5},
           historicalAvg:{pts:24.0,reb:10.0,ast:4.5},
           source:"Randle as MIN's offensive fulcrum when Edwards limited: career playoff avg as primary option 24.2ppg/9.8reb. With Edwards on minutes restriction, Randle's usage jumps to 28%+. G1: strong performance bridging Edwards' bench minutes. Physical mismatch vs SAS wings."
+        },
+        { label:"Randle suppressed by Wemby paint presence (Phase 59 promotion, May 11)",
+          conditions:[
+            {type:'vs_team',value:'SAS'},{type:'playoff',value:true}
+          ],
+          sampleSize:3, confidence:0.7,
+          delta:{pts:-4.0,reb:-1.5,ast:0.0},
+          historicalAvg:{pts:14.7,reb:7.0,ast:2.7,fgPct:30.5},
+          source:"R2 G2 (3-12 FG, 12pts), G3 (3-12 FG, 12pts), G4 (4-12 FG, 12pts). Three straight games at exactly 12pts with sub-35% FG. Wemby's 7-4 frame collapses on every drive — Randle's post-up game is structurally suppressed even when Wemby's shot is missing elsewhere. This isn't variance, it's scheme. Promoted from G3 retro lesson 'Wemby's defensive gravity on MIN's non-Edwards scorers'."
+        }
+      ],
+      "Jaden McDaniels": [
+        { label:"McDaniels suppressed by Wemby paint presence (Phase 59 promotion, May 11)",
+          conditions:[
+            {type:'vs_team',value:'SAS'},{type:'playoff',value:true}
+          ],
+          sampleSize:3, confidence:0.7,
+          delta:{pts:-3.0,reb:0.0,ast:0.0},
+          historicalAvg:{pts:15.7,reb:5.7,ast:1.3,fgPct:32.5},
+          source:"R2 G2 (4-14 FG, 12pts), G3 (5-22 FG, 17pts — high volume but inefficient), G4 (5-13 FG, 14pts). McDaniels needs rim attacks to score in volume; Wemby's interior presence forces him to settle for contested mids/threes. FG% capped in low 30s when Wemby is on the floor. Promoted from G3 retro lesson — interior scorers are structurally suppressed, not just variant."
         }
       ]
     },
@@ -3739,7 +3759,7 @@ const SERIES_DATA = [
       color: "#0C2340", color2: "#236192",
       advStats: { ortg:114.8, drtg:111.5, netRtg:3.3, pace:96.4, ts:57.1, efg:53.5, tov:13.1, reb:48.2, ortgRk:7, drtgRk:12, clutchNetRtg:2.1, last10:"6-4", fgPct:50.5, threePct:33.8, ftPct:76.2, orbPct:26.2 },
       players: [
-        { name:"Anthony Edwards", pos:"SG", rating:90, ppg:28.8, rpg:5.0, apg:3.7, fgp:48.9, per:21.8, ts:59.2, epm:5.8, bpm:4.5, ws48:.178, onOff:7.8, clutch:7.5, vorp:3.5, usg:32.5, injury:"QUESTIONABLE — knee (Day-to-Day per ESPN May 5, questionable for G2 May 6)", lebron:1.285, oLebron:2.623, dLebron:-1.337, war:5.014, offRole:"Shot Creator", defRole:"Chaser",
+        { name:"Anthony Edwards", pos:"SG", rating:90, ppg:28.8, rpg:5.0, apg:3.7, fgp:48.9, per:21.8, ts:59.2, epm:5.8, bpm:4.5, ws48:.178, onOff:7.8, clutch:8.5, vorp:3.5, usg:32.5, injury:"QUESTIONABLE — knee (Day-to-Day per ESPN May 5, questionable for G2 May 6)", lebron:1.285, oLebron:2.623, dLebron:-1.337, war:5.014, offRole:"Shot Creator", defRole:"Chaser",
           matchupNote:"G1 PROVED IT: 18pts in 25min (8-13 FG, 2-3 3PT) — 26pts/36min pace at 61.5% FG. Knee limits minutes not effectiveness. Back-to-back WCF appearances (2025 + 2026). Averaged 36.7ppg vs SAS this season. Coaching masterstroke: came off bench for fresh legs in Q4 — scored 8 of MIN's final 16pts. Expect expanded minutes (30+) as knee strengthens through series.", baseRating:90, starCeiling:2, injuryRisk:0.4, playoffAscension:1.5, activeInjury:{type:"hyperextended left knee + bone bruise",severity:0.3,note:"G1 performance (8-13 FG, 18pts/25min) proves knee is manageable. Efficiency was elite. Minutes will expand. Rating 84 = ~93% of base 90, reflecting slight minutes restriction but near-full effectiveness."} },
         { name:"Julius Randle", pos:"PF", rating:74, ppg:21.1, rpg:6.7, apg:5.0, fgp:48.1, per:20.2, ts:57.8, epm:2.1, bpm:2.4, ws48:.132, onOff:3.2, clutch:5.5, vorp:2.6, usg:26.2, injury:null, lebron:0.257, oLebron:1.499, dLebron:-1.242, war:4.445, offRole:"Shot Creator", defRole:"Helper",
           matchupNote:"MIN's primary creator with Edwards OUT. Averaged 21.1ppg. Physical mismatch potential but SAS's length (Wemby, Castle, Champagnie) will contest everything.", baseRating:74, starCeiling:1, injuryRisk:0.4 },
