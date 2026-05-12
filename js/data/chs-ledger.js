@@ -375,5 +375,55 @@ const CHS_LEDGER = [
       "awayScore": 104,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-05-11",
+    "series": "DET-CLE",
+    "game": 4,
+    "retroactive": false,
+    "actual": {
+      "winner": "CLE",
+      "margin": 9,
+      "homeScore": 103,
+      "awayScore": 112
+    },
+    "mainPred": {
+      "winner": "CLE",
+      "margin": 3,
+      "homeScore": 104,
+      "awayScore": 107
+    },
+    "chsPred": {
+      "winner": "CLE",
+      "margin": 3,
+      "homeScore": 104,
+      "awayScore": 107,
+      "marginDeltaVsMain": 0
+    }
+  },
+  {
+    "date": "2026-05-11",
+    "series": "OKC-LAL",
+    "game": 4,
+    "retroactive": false,
+    "actual": {
+      "winner": "OKC",
+      "margin": 5,
+      "homeScore": 115,
+      "awayScore": 110
+    },
+    "mainPred": {
+      "winner": "OKC",
+      "margin": 5,
+      "homeScore": 108,
+      "awayScore": 103
+    },
+    "chsPred": {
+      "winner": "OKC",
+      "margin": 5,
+      "homeScore": 108,
+      "awayScore": 103,
+      "marginDeltaVsMain": 0
+    }
   }
 ];

@@ -958,7 +958,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['DET-CLE',4] },
     reasoning: "<strong>Contrarian DET upset spot.</strong> Engine has CLE by 3 (matches market direction), but the engine's HCA flip premium (+2.5pt) has been over-priced in recent retros — NYK-PHI and SAS-MIN G3s both went to the road favorite when the model said home would cover. With HCA flip trimmed to +1.5 (per the G3 retro), the line moves to near pick-em. DET has won 2 of 3 in this series with structural Cade-driven offense that CLE has no perimeter answer for. DET ML at +140 = 42% implied vs ~46% adjusted-engine. Small +EV edge that rides on the calibration call — if HCA-flip retro continues, DET upsets the closeout.",
     confidence: 'medium', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'CLE 112-103. DET lost by 9 — Mitchell\'s 43pts (39 in 2H, tied Sleepy Floyd 1987 playoff record) was the swing. HCA-flip retro did NOT apply: CLE was home, Mitchell tail-event game drove the result. RIGHT framework, WRONG situation.' },
   },
   {
     id: 'r2-g4-det-cle-spread',
@@ -973,7 +973,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['DET-CLE',4] },
     reasoning: "Alt expression of the DET ML edge — at -110 implied is ~52%, and DET +3.5 covers any DET win + any CLE win by 1-3. With HCA-flip retro applied (calibrate +1.5pt, not +2.5pt), the engine line moves to near pick-em, putting the live cover band roughly at ~55-58% of plausible game outcomes. Lower variance than the +140 ML at the cost of upside on an outright DET win.",
     confidence: 'high', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'CLE won by 9 — DET +3.5 lost by 5.5. Mitchell\'s 43pt (39 in 2H) tail event blew through both the spread and the engine\'s 3pt projection.' },
   },
   {
     id: 'r2-g4-det-cle-total',
@@ -987,7 +987,7 @@ const BETS = [
     ],
     reasoning: "Series total trend is volatile — G3 jumped because CLE found shooting at home (Strus/Hunter/Wade combined). Model: CLE 107, DET 104 = 211 total. Engine sees character as GRIND not COMPETITIVE/SEPARATION — clutch executions tend to slow pace. Slight under lean at -110.",
     confidence: 'lean', thesis: ['model','historical'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Total 215 (CLE 112 + DET 103) — went OVER by 1.5pts. The Mitchell tail-event Q3 (21pts in the quarter alone) pushed the pace + makes well above the engine\'s GRIND projection.' },
   },
   {
     id: 'r2-g4-det-cle-cade-pts',
@@ -1001,7 +1001,7 @@ const BETS = [
     ],
     reasoning: "Cade has been DET's primary creation hub in every game this series — 39+ min nightly, ~28 FGA average. CLE has no perimeter answer (Wade/Hunter limited). 24.5 is right at his series floor (low was 25 G1). In a road must-not-fall-to-2-2 game, his usage spikes further. Even on inefficient nights (G3's 10-27) he clears 24.5 via volume. ~70% hit rate.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Cade 19pts (7-19 FG, 5 TOs) — UNDER 24.5 by 5.5. FIRST under-20 in 11 straight playoff games. CLE\'s scheme adjustment (Mobley primary screen-defender + doubles) capped him. The series-floor framework broke here when CLE actively schemed against the usage path.' },
   },
   {
     id: 'r2-g4-det-cle-mitchell-pts',
@@ -1015,7 +1015,7 @@ const BETS = [
     ],
     reasoning: "Mitchell is on a series scoring crescendo at home. G3 35-pt signature happened with Allen anchoring D + Strus knockdown shooting around him — same template tonight. Q4 closing pattern (top-7 playoff Q4 +5 pts) means CLE plays through him in late game. 28.5 is below his last two outputs (31 in G2, 35 in G3). ~65% hit rate.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'Mitchell 43pts (13-26 FG, 13-14 FT) — 39 PTS IN 2H, tied Sleepy Floyd 1987 NBA playoff record. Career playoff high. Started 0-7/4pts at half, then 21pts in Q3 alone (matched DET\'s entire Q3 output). Over 28.5 cleared by 14.5pts. Crescendo thesis validated to the extreme.' },
   },
 
   // ─── OKC-LAL G4 (Mon May 11, 10:30 PM ET @ Crypto.com Arena, OKC leads 3-0) ──
@@ -1032,7 +1032,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['OKC-LAL',4] },
     reasoning: "<strong>Single biggest engine edge tonight.</strong> Model: OKC by 5 (HCA-flip + LAL desperation home). Market: OKC by 11.5 — the upper end of the closeout-blowout distribution. Engine edge: 6.5pts. Sweep-cliff favorites typically ease off + reserve energy for the next round (OKC has BIG margin in series, no incentive to play 38+ min for stars); meanwhile LAL home crowd + last home game of season for LeBron at 41yo = effort + emotion + slow pace. ~62% engine implied at -110 (52.4%). Cleanest read on the slate.",
     confidence: 'high', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'OKC 115-110 (OKC by 5). LAL +11.5 covered comfortably. Engine BULLSEYE: predicted OKC by 5, actual OKC by 5. Single biggest edge of the slate hit exactly as priced.' },
   },
   {
     id: 'r2-g4-okc-lal-lal-ml',
@@ -1047,7 +1047,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['OKC-LAL',4] },
     reasoning: "<strong>Chaos play — engine 20-25% LAL win, market 16%.</strong> +390 implies ~20%; engine model has it ~25% (OKC sweep-cliff ease-off + LAL home desperation can flip a tight Q4). LAL needs: SGA off-night (under 28), LeBron Q4 takeover, Reaves or Hachimura bench spike. All three are independent variance events. Engine edge is small (~5pp) but at +390 every hit pays huge.",
     confidence: 'chaos', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'OKC 115-110. LAL fought hard (Reaves 27 + Hachimura 25 + LeBron 24 = 76 from primaries) but SGA went closeout-mode 35 and Holmgren\'s 32.8s tiebreaker dunk sealed it. Chaos thesis directionally right (close game) but LAL still lost.' },
   },
   {
     id: 'r2-g4-okc-lal-total',
@@ -1061,7 +1061,7 @@ const BETS = [
     ],
     reasoning: "Engine total: 211 (OKC 108, LAL 103). Market: 214.5. Closeout-cliff games typically run slower in late minutes — OKC eases off, LAL grinds out shots. Wider variance band tonight (LAL ceiling 110-115 with shooting; LAL floor 95-100 if Reaves/Hachimura cold). 214.5 is the upper plausible band. Slight under lean at -110.",
     confidence: 'lean', thesis: ['model','historical'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'Total 225 (OKC 115 + LAL 110) — over by 10.5. LAL\'s desperation pace + OKC closeout aggression (no easing off) pushed the pace and makes. Both teams shot well in Q4. Engine total projection too low.' },
   },
   {
     id: 'r2-g4-okc-lal-sga-pts',
@@ -1075,7 +1075,7 @@ const BETS = [
     ],
     reasoning: "SGA closeout history is the key signal: 33+ ppg in 4 of his 5 prior playoff closeouts. Even G3 cruise mode (23 on 7-20) was OKC up so big the bench ate minutes. Tonight at LAL in a closeout, SGA gets the green light to push for 35+. 30.5 is well below his closeout-game floor. ~70% hit rate.",
     confidence: 'high', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome: 'win', actual: 'SGA 35pts/8ast (12-25 FG, 8-9 FT) — first 30+ game of the series after the 18/22/23 cruise. Closeout-history signal validated cleanly: SGA leaned in, OKC won and swept.' },
   },
   {
     id: 'r2-g4-okc-lal-lebron-pts',
@@ -1089,7 +1089,7 @@ const BETS = [
     ],
     reasoning: "LeBron in a closeout home game at 41yo = leave it all on the floor. G1+G2 showed he can still hit 28-30 in this series. G3's 19 was a playmaker night out of necessity (rest of LAL trash). Closeout home dynamic typically pushes LeBron usage UP. 24.5 is below his series floor of 19 only if he goes playmaker again — but you don't make playmaker tradeoffs in an elimination game. ~70% hit rate.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome: 'loss', actual: 'LeBron 24pts/12reb/6ast — UNDER 24.5 by 0.5. Heartbreak half-point pattern: facilitator-mode (6 ast) with the ball getting spread to Reaves (27) and Hachimura (25). Even in elimination at 41yo, the playmaker tradeoffs persisted.' },
   },
 
   {
@@ -1104,6 +1104,100 @@ const BETS = [
     reasoning: "G3 total was 223 with Wemby at 39 + Edwards at 32 — both stars in transcendent form. Edwards full minutes for G4 means MIN runs more transition. SAS won't tone Wemby down. Both teams' star scoring momentum + MIN home desperation pace = game in the 218-225 range. 218.5 is below the G3 total. Lean over.",
     confidence: 'lean', thesis: ['model','historical'], narrative: null,
     result: { outcome: "win", actual: "Total 223 (MIN 114, SAS 109). Pace + makes carried the over even with Wemby ejected" },
+  },
+
+  // ─── SAS-MIN G5 (Tue May 12, 8:00 PM ET @ Frost Bank Center, series tied 2-2) ──
+  // Single game tonight. DET-CLE G5 is tomorrow (Wed 5/13).
+  {
+    id: 'r2-g5-sas-min-ml',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'ml', pick: 'SAS ML vs MIN', odds: '-410',
+    facts: [
+      {label:'Spread',value:'SAS -10.5'},
+      {label:'Total',value:'O/U 218.5'},
+      {label:'Series',value:'Tied 2-2'},
+      {label:'G4',value:'MIN 114-109 (Wemby ejected Q2 — chaotic swing game)'},
+      {label:'Wemby status',value:'CLEARED — NBA review, no suspension, plays full minutes'},
+      {label:'Engine',value:'SAS 113, MIN 105 (SAS by 8, MEDIUM)'},
+    ],
+    modelHook: { fn:'dml', args:['SAS-MIN',5] },
+    reasoning: "<strong>SAS ML at home with Wemby healthy is the structural pick.</strong> Engine: SAS by 8. Market: SAS -410 (~80% implied). SAS won G1 by 2 + G2 by 38 + G3 by 7 — only the G2 was variance-driven (MIN 28% 3PT collapse). MIN's win in G4 came partly via the Wemby ejection swing (~12-15pt shock). With Wemby back at home + Reid post-elbow soreness + Edwards facing SAS guard depth + Castle facilitating + Frost Bank Center HCA, SAS holds serve cleanly. The risk: Wemby in 'first-game-back-after-ejection' mindset could either be (a) measured = great, or (b) over-aggressive = early foul trouble. Implied 80% feels fair.",
+    confidence: 'high', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g5-sas-min-spread',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'spread', pick: 'MIN +10.5', odds: '-110',
+    facts: [
+      {label:'Engine',value:'SAS by 8 (113-105)'},
+      {label:'Market',value:'SAS -10.5'},
+      {label:'Engine edge',value:'+2.5 pts to MIN cover'},
+      {label:'Series spreads',value:'SAS won G1 by 2, G2 by 38 (outlier), G3 by 7'},
+    ],
+    modelHook: { fn:'dmargin', args:['SAS-MIN',5] },
+    reasoning: "Engine: SAS by 8. Market: SAS -10.5. 2.5pt edge to MIN cover. Three of four games in this series have been ≤7pt margins (the G2 +38 was a one-game shooting anomaly). SAS having to win by 11+ with Edwards healthy + MIN's 4-deep secondary scoring history is a stretch. Even with Wemby + home + Reid neck-spotty, the typical SAS-MIN game flows in the 5-10pt margin band. ~58% cover for MIN.",
+    confidence: 'high', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g5-sas-min-total',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'total', pick: 'Over 218.5', odds: '-110',
+    facts: [
+      {label:'G3 total',value:'223 (SAS 115-108)'},
+      {label:'G4 total',value:'223 (MIN 114-109, Wemby ejected)'},
+      {label:'Edwards last 2',value:'32 + 36 pts'},
+      {label:'Wemby G3',value:'39pts/15reb at MIN'},
+    ],
+    reasoning: "Series total in last 2 games: 223 + 223. Edwards in transcendent scoring form (32+36 last 2). Wemby back + home + re-aggression spot likely produces a 28-35pt game on volume + makes. Both teams' pace + makes have stabilized in the 220 range. 218.5 is at the lower end of the last-2-game band. Lean over.",
+    confidence: 'lean', thesis: ['historical','model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g5-sas-min-wemby-reb',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'prop', pick: 'Wemby Over 13.5 rebounds', odds: '-130',
+    facts: [
+      {label:'G1',value:'15reb'},
+      {label:'G2',value:'15reb'},
+      {label:'G3',value:'15reb (3 straight 15-rebound games in games he played >25min)'},
+      {label:'G4',value:'4reb in 13min before ejection'},
+      {label:'Reb floor signal',value:'Cleanest in dataset — 15+ in every full game'},
+    ],
+    reasoning: "Wemby's rebound floor is the most reliable signal in this dataset: 15 boards in EVERY game he played >25min in this series. At home + healthy + first game back + Reid potentially limited from neck soreness (one less elite boards-competing big) = 15+ baseline. 13.5 is 1.5 below his series median. ~90% hit rate.",
+    confidence: 'best-bet', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g5-sas-min-edwards-pts',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'prop', pick: 'Edwards Over 26.5 points', odds: '-115',
+    facts: [
+      {label:'G1',value:'18pts (off bench, knee)'},
+      {label:'G2',value:'12pts (off bench, blowout)'},
+      {label:'G3',value:'32pts (starting, knee back)'},
+      {label:'G4',value:'36pts (16 in Q4 closing)'},
+      {label:'Engine projection',value:'28 pts'},
+    ],
+    reasoning: "Edwards' knee is fully healed (32 + 36 last 2). At the swing game on the road + must-win-or-fall-3-2 + SAS perimeter D being Castle/Vassell (not elite) + Edwards' Q4 closing pattern. 26.5 is below his last-2-game floor of 32. Only a Wemby-rim-protection + Castle-on-ball lockdown gets him below 27.",
+    confidence: 'high', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g5-sas-min-wemby-pts',
+    slate: 'R2-G5', series: 'SAS-MIN', game: 5, postedAt: '2026-05-12',
+    type: 'prop', pick: 'Wemby Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'G1',value:'11pts (0-8 3PT anomaly)'},
+      {label:'G2',value:'19pts (bounce-back start)'},
+      {label:'G3',value:'39pts/15reb (Kareem-tier)'},
+      {label:'G4',value:'ejected (4pts in 13min)'},
+      {label:'Engine projection',value:'29pts'},
+    ],
+    reasoning: "Wemby ceiling games are the new baseline. G3 39pt road game at MIN + healthy at home + re-aggression spot after the ejection. The G4 ejection was 13min — he has rest. At Frost Bank Center + MIN's interior D (Gobert solo) + Reid hampered = paint attacks Wemby is comfortable with. Engine: 29pts. 27.5 is at the edge — small edge over. Slight lean over.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
   },
 ];
 
@@ -1685,7 +1779,7 @@ const FEATURED_PARLAYS = [
     result: { outcome: "loss", delta: "-$50", actual: "1-of-2 (MIN ML hit on the Wemby-ejection variance, PHI ML missed in a blowout). Chaos parlay only pays if BOTH home dogs hit." },
   },
 
-  // ─── R2 G4 — TONIGHT (Mon May 11: DET-CLE G4 + OKC-LAL G4) ────────────
+  // ─── R2 G4 — ARCHIVED (Mon May 11: DET-CLE G4 CLE wins 112-103 / OKC-LAL G4 OKC wins 115-110 sweeps) ────────────
   // RELIABLE FLOOR PARLAYS — each leg ≥80% per-leg hit rate.
   {
     id: 'r2-g4-may11-floor-sga-cade',
@@ -1694,13 +1788,13 @@ const FEATURED_PARLAYS = [
     name: 'Star Volume Floor (2-Leg)',
     stake: 100, odds: '+75', payout: 'To Win: ~$75 (verify on DK)',
     legs: [
-      { pick:'SGA Over 30.5 points (OKC-LAL G4)', odds:'-115', confidence:'floor', status:null,
-        note:'Closeout-game history: 33+ in 4 of his 5 prior playoff closeouts. ~80% hit rate.' },
-      { pick:'Cunningham Over 24.5 points (DET-CLE G4)', odds:'-115', confidence:'floor', status:null,
-        note:'Series floor 25 in G1; 39+ min nightly with usage spike in must-win road games. ~80% hit rate.' },
+      { pick:'SGA Over 30.5 points (OKC-LAL G4)', odds:'-115', confidence:'floor', status:'hit',
+        note:'SGA 35pts — closeout mode validated (first 30+ of series after 18/22/23 cruise).' },
+      { pick:'Cunningham Over 24.5 points (DET-CLE G4)', odds:'-115', confidence:'floor', status:'miss',
+        note:'Cade 19pts (FIRST under-20 in 11 straight playoff games). CLE doubled aggressively, denied closing-Q4 control.' },
     ],
     thesis:'Star volume floor parlay anchored on each game\'s primary creator. SGA in closeout mode (historical 33+ ppg pattern). Cade as DET\'s only consistent shot creator in a series where DET has won 2 of 3 by leaning on his usage. Math: 0.80 × 0.80 ≈ 64.0% combined. Slightly below the strict 80% threshold combined but each leg individually ≥80% — true to the floor category definition.',
-    result: null,
+    result: { outcome: "loss", delta: "-$100", actual: "1-of-2 (SGA 35 HIT, Cade 19 MISS — first sub-20 in 11 straight playoff games)." },
   },
   {
     id: 'r2-g4-may11-floor-lebron-mitchell',
@@ -1709,13 +1803,13 @@ const FEATURED_PARLAYS = [
     name: 'Home-Star Floor (2-Leg)',
     stake: 100, odds: '+85', payout: 'To Win: ~$85 (verify on DK)',
     legs: [
-      { pick:'LeBron Over 22.5 points (alt — OKC-LAL G4)', odds:'~-180', confidence:'floor', status:null,
-        note:'Series 30, 28, 19. Last home game in an elimination = max effort. Alt drop to 22.5 = ~88% hit.' },
-      { pick:'Mitchell Over 26.5 points (alt — DET-CLE G4)', odds:'~-180', confidence:'floor', status:null,
-        note:'Series 24, 31, 35 (crescendo at home). Q4 closing pattern. Alt drop to 26.5 = ~85% hit.' },
+      { pick:'LeBron Over 22.5 points (alt — OKC-LAL G4)', odds:'~-180', confidence:'floor', status:'hit',
+        note:'LeBron 24/12reb at age 41 — final home playoff game effort, left it all on the court.' },
+      { pick:'Mitchell Over 26.5 points (alt — DET-CLE G4)', odds:'~-180', confidence:'floor', status:'hit',
+        note:'Mitchell 43pts — 39 in 2H, tied Sleepy Floyd 1987 NBA playoff record. Career playoff high.' },
     ],
     thesis:'Home-star floor parlay. Both stars in must-perform spots at home: LeBron elimination, Mitchell must-protect-home. Alt-line drops to ~22.5 LeBron / 26.5 Mitchell give meaningful cushion below their series median. Math: 0.88 × 0.85 ≈ 74.8% combined.',
-    result: null,
+    result: { outcome: "win", delta: "+$85", actual: "2-of-2 (LeBron 24, Mitchell 43). Best bet of the slate — Home-Star Floor delivered on both legs with margin to spare." },
   },
   {
     id: 'r2-g4-may11-floor-multi-volume',
@@ -1724,15 +1818,15 @@ const FEATURED_PARLAYS = [
     name: 'Multi-Volume Floor (3-Leg, Alt Lines)',
     stake: 100, odds: '+135', payout: 'To Win: ~$135 (verify on DK)',
     legs: [
-      { pick:'SGA Over 26.5 points (alt — OKC-LAL G4)', odds:'~-280', confidence:'floor', status:null,
-        note:'Even G3 cruise (23 on 7-20) had 9 ast — closeout mode pushes usage. Alt drop = ~92% hit.' },
-      { pick:'Cunningham Over 22.5 points (alt — DET-CLE G4)', odds:'~-260', confidence:'floor', status:null,
-        note:'Lowest series output 25; alt drop to 22.5 gives 3-pt cushion. ~88% hit.' },
-      { pick:'LeBron Over 22.5 points (alt — OKC-LAL G4)', odds:'~-180', confidence:'floor', status:null,
-        note:'Elimination home, 41yo last home of season. ~88% hit.' },
+      { pick:'SGA Over 26.5 points (alt — OKC-LAL G4)', odds:'~-280', confidence:'floor', status:'hit',
+        note:'SGA 35pts (12-25 FG, 8-9 FT) — closeout-mode volume jump validated.' },
+      { pick:'Cunningham Over 22.5 points (alt — DET-CLE G4)', odds:'~-260', confidence:'floor', status:'miss',
+        note:'Cade 19pts (7-19 FG, 5 TOs). CLE doubled aggressively, denied closing-Q4 control. Even the alt-22.5 cushion broke.' },
+      { pick:'LeBron Over 22.5 points (alt — OKC-LAL G4)', odds:'~-180', confidence:'floor', status:'hit',
+        note:'LeBron 24/12reb at age 41 in his final home playoff game of the season.' },
     ],
     thesis:'Three-leg star-volume compound at deep alt lines. Each leg is structurally pushed UP by tonight\'s game context (closeout for SGA, must-win road for Cade, elimination home for LeBron). Math: 0.92 × 0.88 × 0.88 ≈ 71.3% combined. Below 80% combined due to 3-leg compound but each leg individually ≥85% floor-grade.',
-    result: null,
+    result: { outcome: "loss", delta: "-$100", actual: "2-of-3 (SGA 35 HIT, LeBron 24 HIT, Cade 19 MISS). Cade alt-22.5 floor leg blew up — CLE\'s scheme adjustment + 7-19 FG capped him below the cushion line. Honest retro: when a star\'s usage gets actively schemed against in a closeout context, even \'deep alt floor\' lines aren\'t safe." },
   },
 
   // TRADITIONAL (value plays — engine edge, lower combined hit rate)
@@ -1743,13 +1837,13 @@ const FEATURED_PARLAYS = [
     name: 'LAL Cover + Under (2-Leg)',
     stake: 100, odds: '+265', payout: 'To Win: $265',
     legs: [
-      { pick:'LAL +11.5 (OKC-LAL G4)', odds:'-110', confidence:'high', status:null,
-        note:'Engine OKC by 5, market OKC by 11.5 — 6.5pt model edge.' },
-      { pick:'Under 214.5 (OKC-LAL G4)', odds:'-110', confidence:'lean', status:null,
-        note:'Engine total 211 (OKC 108 LAL 103). Closeout ease-off → slower pace.' },
+      { pick:'LAL +11.5 (OKC-LAL G4)', odds:'-110', confidence:'high', status:'hit',
+        note:'OKC won by 5 (115-110) — LAL covered the +11.5 spread comfortably. Engine edge fully validated.' },
+      { pick:'Under 214.5 (OKC-LAL G4)', odds:'-110', confidence:'lean', status:'miss',
+        note:'Final 225 (OKC 115 + LAL 110) — OVER by 10.5. LAL\'s late desperation rally + OKC\'s Q4 closing pace pushed it over. Anti-correlation with the spread leg — when LAL covers, the total drops in theory; here both teams kept scoring.' },
     ],
     thesis:'<strong>Largest engine edge on the slate.</strong> LAL +11.5 is the single best read tonight — sweep-cliff favorites cover only ~40% ATS as bench rotations eat minutes. Under 214.5 is the correlated leg: if LAL covers, the game is tighter and the total drops to ~205-210 range. Both legs ride the same "OKC eases off / LAL keeps pace" thesis. Math: ~58% × ~55% ≈ 32% combined at +265 = clean +EV.',
-    result: null,
+    result: { outcome: "loss", delta: "-$100", actual: "1-of-2 (LAL +11.5 HIT comfortably with OKC by 5, Under 214.5 MISS at 225 total). The \'correlated thesis\' broke: LAL covered AND the total went over because both teams kept scoring in a fast-paced Q4. Retro: under-the-spread + LAL-covers correlation assumed slower pace; actual pace stayed high because LAL had to push to keep it close." },
   },
   {
     id: 'r2-g4-may11-trad-det-cle-edge',
@@ -1758,13 +1852,13 @@ const FEATURED_PARLAYS = [
     name: 'DET Upset + Cade Volume (2-Leg)',
     stake: 100, odds: '+340', payout: 'To Win: $340',
     legs: [
-      { pick:'DET ML vs CLE (G4)', odds:'+140', confidence:'medium', status:null,
-        note:'Contrarian: engine has CLE by 3 but HCA-flip retro suggests model overweights venue swing.' },
-      { pick:'Cunningham Over 24.5 points (DET-CLE G4)', odds:'-115', confidence:'high', status:null,
-        note:'Cade volume in must-win road game. Correlated with DET ML.' },
+      { pick:'DET ML vs CLE (G4)', odds:'+140', confidence:'medium', status:'miss',
+        note:'CLE 112-103. DET lost by 9 — Mitchell\'s 43pt explosion (39 in 2H, NBA playoff record-tied) was the swing.' },
+      { pick:'Cunningham Over 24.5 points (DET-CLE G4)', odds:'-115', confidence:'high', status:'miss',
+        note:'Cade 19pts (first under-20 in 11 straight playoffs). CLE\'s schematic adjustment (Mobley primary screen-defender + doubles) capped him.' },
     ],
     thesis:'DET ML at +140 is the second-best value on the slate IF the HCA-flip-retro calibration applies (model has been wrong-direction on home-favored picks in NYK-PHI/SAS-MIN G3s). Cade volume is correlated — if DET wins, Cade is the driver. Combined ~38% at +340 = +EV. Better than DET +3.5 spread because the edge is on outright winning, not covering.',
-    result: null,
+    result: { outcome: "loss", delta: "-$100", actual: "0-of-2. The HCA-flip retro lesson did NOT apply here — CLE was the home team in G4 and Mitchell\'s tail-event 43 (39 in 2H, tying Sleepy Floyd) was the swing. Both legs went down together — Cade\'s sub-20 was CLE\'s schematic adjustment doing exactly what we feared." },
   },
   {
     id: 'r2-g4-may11-trad-chaos-road-dogs',
@@ -1773,12 +1867,80 @@ const FEATURED_PARLAYS = [
     name: 'Chaos — DET Upset + LAL Upset (2-Leg)',
     stake: 50, odds: '+1150', payout: 'To Win: $575',
     legs: [
-      { pick:'DET ML vs CLE (G4)', odds:'+140', confidence:'chaos', status:null,
-        note:'Road dog. Engine has CLE by 3 but HCA-flip retro lowers that to ~pick-em. ~46% adjusted-engine.' },
-      { pick:'LAL ML vs OKC (G4)', odds:'+390', confidence:'chaos', status:null,
-        note:'Sweep-cliff home dog. Engine ~25% LAL win. Variance city.' },
+      { pick:'DET ML vs CLE (G4)', odds:'+140', confidence:'chaos', status:'miss',
+        note:'CLE 112-103 at home. DET lost by 9 — Mitchell\'s 43 + Q3 deluge sealed it.' },
+      { pick:'LAL ML vs OKC (G4)', odds:'+390', confidence:'chaos', status:'miss',
+        note:'OKC 115-110 — completed the sweep. LAL fought hard with Reaves 27 + Hachimura 25 + LeBron 24 but bench depth + closeout SGA prevailed.' },
     ],
     thesis:'~13% combined hit rate. Both road/home dogs in spots where the engine sees more upside than the market does. DET upset is plausible (~52% engine); LAL upset is variance (~25% engine). At +1150 a $50 chaos stake returns $575 if both hit. Stake reduced (chaos) to reflect the variance.',
+    result: { outcome: "loss", delta: "-$50", actual: "0-of-2. Chaos parlay went down both legs. Both home favorites held serve. Stake was reduced ($50) to reflect the ~13% combined probability — expected outcome on a losing chaos play." },
+  },
+
+  // ─── R2 G5 — TONIGHT (Tue May 12: SAS-MIN G5 ONLY) ────────────────────
+  // Single-game slate. DET-CLE G5 is tomorrow (Wed 5/13).
+  // RELIABLE FLOOR PARLAYS — each leg ≥80% per-leg hit rate.
+  {
+    id: 'r2-g5-may12-floor-wemby-edwards',
+    slate: 'R2-G5', date: '2026-05-12',
+    category: 'floor', type: 'best-bet',
+    name: 'Star Counting-Stat Floor (2-Leg)',
+    stake: 100, odds: '+80', payout: 'To Win: ~$80 (verify on DK)',
+    legs: [
+      { pick:'Wemby Over 11.5 rebounds (SAS-MIN G5)', odds:'-130', confidence:'floor', status:null,
+        note:'Series rebound floor: 15reb in G1, 15reb in G2, 15reb in G3 (the three games he was on the floor for >25min). He had 4 in 13min G4 before the ejection. At home + healthy + first game back from ejection = max effort. Alt drop to 11.5 = ~92% hit rate.' },
+      { pick:'Edwards Over 23.5 points (SAS-MIN G5)', odds:'-115', confidence:'floor', status:null,
+        note:'Knee fully healed. Series scoring trajectory: 18 (off bench G1), 12 (off bench G2 / blowout), 32 (G3 starting), 36 (G4 starting / 16 Q4). Road dog spot, must-win + last-life mode = max usage. Alt drop to 23.5 gives 3-pt cushion below his last-2-games avg of 34. ~88% hit.' },
+    ],
+    thesis:'Star counting-stat floor parlay anchored on each team\'s rebound leader (Wemby) and primary scorer (Edwards). Both are at career-floor lines well below their series median. Wemby\'s rebound floor is the cleanest signal in the dataset — he\'s grabbed 15 in every game he\'s played >25min this series. Edwards\' knee is no longer a limiter and the must-win road spot pushes his usage up. Math: 0.92 × 0.88 ≈ 81.0% combined — clears the strict 80% threshold.',
+    result: null,
+  },
+  {
+    id: 'r2-g5-may12-floor-wemby-fox-castle',
+    slate: 'R2-G5', date: '2026-05-12',
+    category: 'floor', type: 'best-bet',
+    name: 'SAS Triple-Volume Floor (3-Leg, Alt Lines)',
+    stake: 100, odds: '+110', payout: 'To Win: ~$110 (verify on DK)',
+    legs: [
+      { pick:'Wemby Over 23.5 points (alt — SAS-MIN G5)', odds:'~-200', confidence:'floor', status:null,
+        note:'Series scoring: 11 (G1 0-8 3PT anomaly), 19 (G2), 39 (G3), ejected G4. At home + first game back = re-aggression spot. Alt drop to 23.5 (vs the main 27.5) = ~88% hit.' },
+      { pick:'Fox Over 16.5 points (alt — SAS-MIN G5)', odds:'~-200', confidence:'floor', status:null,
+        note:'Series: 10, 16, 17, 24. Crescendo pattern. At home with Wemby back + MIN\'s perimeter weakness (Conley/Dosunmu only). Alt drop to 16.5 gives 2-pt cushion below his last-2-games avg of 20.5. ~88% hit.' },
+      { pick:'Castle Over 4.5 assists (alt — SAS-MIN G5)', odds:'~-170', confidence:'floor', status:null,
+        note:'Series ast: 5, 5, 12, 8. Floor 5+ in every game. Castle as facilitator alongside Wemby + Fox in 5-out spacing. Alt drop to 4.5 = ~92% hit.' },
+    ],
+    thesis:'Three-leg SAS-side volume compound. All three players are home, healthy, and have series-long floor patterns at their respective alt lines. Wemby re-aggression after his first career ejection in a home crowd setting is the highest-EV leg. Castle facilitator volume (5+ assists every game) is structural. Math: 0.88 × 0.88 × 0.92 ≈ 71.3% combined — below 80% combined due to 3-leg compound but each leg individually ≥85% floor-grade.',
+    result: null,
+  },
+
+  // TRADITIONAL (value plays — engine edge, lower combined hit rate)
+  {
+    id: 'r2-g5-may12-trad-min-cover',
+    slate: 'R2-G5', date: '2026-05-12',
+    category: 'traditional', type: 'best-bet',
+    name: 'MIN Cover + Edwards Volume (2-Leg)',
+    stake: 100, odds: '+285', payout: 'To Win: $285',
+    legs: [
+      { pick:'MIN +10.5 (SAS-MIN G5)', odds:'-110', confidence:'high', status:null,
+        note:'Engine SAS by 8, market SAS by 10.5 — 2.5pt model edge to MIN. SAS has only won G1 by 2 and G3 by 7 in this series; the only blowout (G2 +38) was a one-game shooting anomaly that the SAS staff isn\'t banking on repeating. Edwards full minutes + MIN structural ceiling 110 = MIN likely keeps it within 8.' },
+      { pick:'Edwards Over 26.5 points (SAS-MIN G5)', odds:'-115', confidence:'high', status:null,
+        note:'Last 2 games: 32 + 36. The 26.5 line is well below his recent floor — only a Wemby-driven defensive lockdown gets him below 26. Correlated with MIN +10.5: if MIN covers, Edwards is the driver.' },
+    ],
+    thesis:'Correlated parlay. The engine edge: market overprices SAS at -10.5 in a series where the only blowout was a G1-anomaly bounce-back (SAS 0-8 → 13-18 from Wemby was variance-driven). Edwards has scored 32 and 36 in his last two games; the line of 26.5 is asking him to regress 7pts from his series median. Combined ~38% at +285 = clean +EV. Math: ~0.58 × 0.65 ≈ 37.7% combined.',
+    result: null,
+  },
+  {
+    id: 'r2-g5-may12-trad-chaos-min-upset',
+    slate: 'R2-G5', date: '2026-05-12',
+    category: 'traditional', type: 'chaos',
+    name: 'Chaos — MIN Upset + Edwards 30+ (2-Leg)',
+    stake: 50, odds: '+700', payout: 'To Win: $350',
+    legs: [
+      { pick:'MIN ML vs SAS (G5)', odds:'+320', confidence:'chaos', status:null,
+        note:'Road dog at +320 (~24% implied). Engine ~22% MIN win. Variance city: Wemby first-game-post-ejection mindset + Reid neck soreness + Edwards Q4 closing pattern + MIN\'s shown ability to win away.' },
+      { pick:'Edwards Over 30.5 points (SAS-MIN G5)', odds:'+125', confidence:'chaos', status:null,
+        note:'Last 2 games: 32, 36. At +125 the alt-line is well below his recent ceiling. If MIN wins, Edwards is almost certainly 30+.' },
+    ],
+    thesis:'~14% combined hit rate. Pure correlation: MIN upset requires Edwards to dominate. Stake reduced (chaos) to reflect the variance. At +700 a $50 stake returns $350 if both hit. Note: NOT a floor parlay; this is the high-variance lottery ticket.',
     result: null,
   },
 ];
@@ -1854,16 +2016,25 @@ const BET_SLATES = {
     ],
   },
   'R2-G4': {
-    label: 'Round 2 — Game 4 (Live)',
+    label: 'Round 2 — Game 4 (Archive)',
     games: [
       { series:'NYK-PHI', date:'2026-05-10', time:'3:30 PM ET', venue:'Wells Fargo Center', context:'NYK leads 3-0',
         recap:'<strong style="color:var(--green)">Result:</strong> NYK 144-114 — series-clinching closeout, NYK SWEEPS 4-0, advances to ECF. McBride 25pts (7-9 3PT, started for OG out), Brunson 22, Hart 17, KAT 17/4/10ast, Shamet 12 (4 threes off bench). NYK tied NBA postseason record with 25 made 3s (25-44, 56.8%); set new playoff record with 11 made threes in Q1. PHI 8-35 3PT (22%), 35-51 2PT (68%) — Embiid 24, Maxey 17 not enough to keep up with the 3PT barrage. Model predicted NYK by 4; actual NYK by 30 — RIGHT WINNER, magnitude missed by 26pts via 3PT variance.' },
       { series:'SAS-MIN', date:'2026-05-10', time:'7:30 PM ET', venue:'Target Center', context:'SAS leads 2-1',
-        recap:'<strong style="color:var(--green)">Result:</strong> MIN 114-109 — series TIED 2-2. WEMBANYAMA EJECTED early Q2 (Flagrant 2 elbow to Naz Reid\'s neck on a double-team) — first career ejection. Wemby line: 4pts/4reb/0blk in 13min. Edwards 36 (16 in Q4 closing 4pt swing) — knee fully back. Reid 15/9 (took the elbow, finished the game). McDaniels 14, Randle 12, Gobert 11/13. SAS guards Harper 24, Fox 24, Castle 20 (68 combined without Wemby) — nearly stole it at 102-99 with 4min left before Edwards\' Q4. League will rule on Wemby\'s G5 status (Flagrant 2 supplemental review). Model: SAS by 3 with Wemby; the ejection swing produced MIN by 5 — wrong winner but within 8pts via the variance shock.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> MIN 114-109 — series TIED 2-2. WEMBANYAMA EJECTED early Q2 (Flagrant 2 elbow to Naz Reid\'s neck on a double-team) — first career ejection. Wemby line: 4pts/4reb/0blk in 13min. Edwards 36 (16 in Q4 closing 4pt swing) — knee fully back. Reid 15/9 (took the elbow, finished the game). McDaniels 14, Randle 12, Gobert 11/13. SAS guards Harper 24, Fox 24, Castle 20 (68 combined without Wemby) — nearly stole it at 102-99 with 4min left before Edwards\' Q4. NBA review cleared Wemby — no suspension, plays G5. Model: SAS by 3 with Wemby; the ejection swing produced MIN by 5 — wrong winner but within 8pts via the variance shock.' },
       { series:'DET-CLE', date:'2026-05-11', time:'8:00 PM ET', venue:'Rocket Mortgage FieldHouse', context:'DET leads 2-1',
-        recap:'<strong style="color:var(--purple)">G4 Setup (Mon 5/11):</strong> DET leads 2-1 after CLE pulled out G3 116-109 at home. Mitchell sustained 31-pt G2 form into 35; Harden bounce-back 19, Allen 18, Strus go-ahead steal-and-basket. CLE bench finally outscored DET bench. Cade triple-double on 10-27 FG / 8 TOs was the high-volume but inefficient mode that didn\'t close. Same venue (Rocket Mortgage), 1 day rest. Lines drop morning of 5/11 — initial expectation: CLE -2.5 to -3 / total 215.5.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> CLE 112-103 — series TIED 2-2. Donovan Mitchell 43pts (13-26 FG, 13-14 FT) — 39 PTS IN 2H tied Sleepy Floyd\'s 1987 NBA playoff record for most points in a half; career playoff scoring high. Started 0-7 with 4pts at halftime (CLE down 56-52), then erupted for 21pts in Q3 alone matching DET\'s entire Q3 total (CLE 38-21 Q3). Harden 24pts/11ast (40th career playoff DD). Mobley 17/8/5ast/5blk/3stl. Allen 14/8/2blk. DET: Caris LeVert SEASON-HIGH 24pts off the bench; Cade 19pts (FIRST under-20 in 11 straight playoff games) as CLE doubled aggressively. Harris 16, D.Robinson 12. Model predicted CLE by 3, actual CLE by 9 — RIGHT WINNER, Mitchell tail-event accounted for the margin miss. Series shifts to LCA for G5 Wednesday May 13.' },
       { series:'OKC-LAL', date:'2026-05-11', time:'10:30 PM ET', venue:'Crypto.com Arena', context:'OKC leads 3-0',
-        recap:'<strong style="color:var(--purple)">G4 Setup (Mon 5/11, sweep cliff):</strong> OKC leads 3-0 after a third straight blowout (131-108, +23). Ajay Mitchell career-high 24/10ast led OKC; SGA cruise control 23/9 again on 7-20 FG; OKC bench outscored LAL bench 59-31. LAL has zero answers — Reaves regressed from 31 to 17, LeBron pivoted to playmaker (19/6/8). Closeout at LAL — OKC has not played a G4 closeout in playoffs yet. Lines drop morning of 5/11 — initial expectation: OKC -8.5 to -10 / total 220+.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> OKC 115-110 — OKC SWEEPS 4-0, advances to Western Conference Finals (8-0 in playoffs overall — ties 5th-best start in NBA history). Toughest playoff win of OKC\'s postseason — first single-digit margin after three straight blowouts. SGA 35pts/8ast — first 30+ of the series after 18/22/23 cruise. Holmgren tiebreaking dunk off Hartenstein assist with 32.8s left; 8 of his 16 pts came in final 5:10 of Q4. Ajay Mitchell 28pts (10 in Q4). Hartenstein 5/10/5ast/5stl in 28min. LAL fought hard in elimination at home: Reaves 27 (team-high), Hachimura 25, LeBron 24/12reb at age 41 in his final home playoff game. Model predicted OKC by 5, actual OKC by 5 — BULLSEYE.' },
+    ],
+  },
+  'R2-G5': {
+    label: 'Round 2 — Game 5 (Live)',
+    games: [
+      { series:'SAS-MIN', date:'2026-05-12', time:'8:00 PM ET', venue:'Frost Bank Center', context:'Series tied 2-2',
+        recap:'<strong style="color:var(--purple)">G5 Setup (Tue 5/12, NBC/Peacock):</strong> Series tied 2-2 after MIN took G4 at home 114-109 in a chaotic Wemby-ejected swing game. Wemby cleared by NBA review — no suspension or fine. He plays full minutes. Edwards has fully recovered the knee — 32pts G3 + 36pts G4 (16 in Q4). SAS HCA + Frost Bank crowd + Wemby healthy = engine sees SAS by 8-9. Market: SAS -10.5 / total 218.5 / SAS ML -410. Best-of-3 series with SAS regaining HCA tonight.' },
+      { series:'DET-CLE', date:'2026-05-13', time:'8:00 PM ET', venue:'Little Caesars Arena', context:'Series tied 2-2',
+        recap:'<strong style="color:var(--purple)">G5 Setup (Wed 5/13, ESPN):</strong> Series tied 2-2 after Mitchell\'s 43-pt explosion (39 in 2H, NBA playoff record-tied) in CLE\'s 112-103 G4 win. Pattern: home team has won every game of this series. DET regains HCA in G5 at LCA — best-of-3 with home-team-wins pattern, DET should hold serve tonight. Mitchell regression watch from the 43pt outlier; Cade home-court rebound expected after first sub-20 in 11 playoffs. Market drops morning of 5/13 — initial expectation: DET -3.5 to -4.5 / total 213.5.' },
     ],
   },
 };

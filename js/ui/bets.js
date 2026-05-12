@@ -32,7 +32,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Mon May 11 | R2 G4: DET @ CLE 8:00 PM (DET leads 2-1) | OKC @ LAL 10:30 PM (OKC leads 3-0, sweep cliff)</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Tue May 12 | R2 G5: SAS-MIN 8:00 PM @ Frost Bank (series tied 2-2) | DET-CLE G5 tomorrow Wed 5/13 8 PM (tied 2-2) | OKC swept LAL 4-0 — advances to WCF</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2735,11 +2735,12 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Fri May 8</span><span style="color:#aaa;">Star Triple &#x2717; (KAT 8pts), Wemby 2-Way &#x2713; (+$50), Multi-Stat &#x2713; (+$40), Spread+Stat &#x2713; (+$50)</span><span style="color:#aaa;">3-1</span><span style="color:#3dd68c;font-weight:700;">+$40</span>
             <span style="color:#aaa;">Sat May 9</span><span style="color:#aaa;">OKC Core 3-Leg &#x2717; (LeBron 19pts), Counting Stat &#x2713; (+$40), OKC+LeBron &#x2717; (LeBron 19pts)</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$160</span>
             <span style="color:#aaa;">Sun May 10</span><span style="color:#aaa;">Wemby Counting &#x2717; (Wemby ejected Q2), KAT+Brunson Floor &#x2717; (KAT 4 reb), Multi-Stat &#x2717; (3-leg compound vs Wemby ejection + KAT passive)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$300</span>
+            <span style="color:#aaa;">Mon May 11</span><span style="color:#aaa;">Star Volume Floor &#x2717; (Cade 19 — first sub-20 in 11 playoffs), Home-Star Floor &#x2713; (+$85; LeBron 24, Mitchell 43), Multi-Volume Floor &#x2717; (Cade 19 again broke the alt-22.5 cushion)</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$115</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$1,600</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$307</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">7-9</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$1,900</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$422</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">8-11</strong></span>
           </div>
         </div>
 
@@ -2755,21 +2756,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Fri May 8</span><span style="color:#aaa;">NYK Edge &#x2717; (Brunson 33), Chaos Sweep &#x2713; (+$330)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$230</span>
             <span style="color:#aaa;">Sat May 9</span><span style="color:#aaa;">CLE Home &#x2713; (+$175), Chalk Sweep &#x2713; (+$100), Chaos &#x2717;</span><span style="color:#aaa;">2-1</span><span style="color:#3dd68c;font-weight:700;">+$175</span>
             <span style="color:#aaa;">Sun May 10</span><span style="color:#aaa;">SAS+Wemby Reb &#x2717; (both legs killed by Wemby ejection), NYK Closeout &#x2717; (NYK ML hit but Brunson 22), Chaos Sweep &#x2717; (PHI lost by 30)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$250</span>
+            <span style="color:#aaa;">Mon May 11</span><span style="color:#aaa;">LAL Cover+Under &#x2717; (LAL +11.5 HIT but total 225 OVER), DET Upset+Cade &#x2717; (both legs missed; Mitchell 43 swung G4), Chaos Road Dogs &#x2717; (both home favs held serve)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$250</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,150</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#3dd68c;">+$89</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-15</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,400</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$161</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-18</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$3,750</strong></span>
-          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#ef4444;">-$218</strong></span>
-          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">14-24</strong></span>
+          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$4,300</strong></span>
+          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#ef4444;">-$583</strong></span>
+          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">15-29</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight (Mon May 11): <strong style="color:#22d3ee;">$300</strong> Floor &middot; <strong style="color:#a78bfa;">$250</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight (Tue May 12): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$150</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->
