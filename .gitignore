@@ -7,3 +7,9 @@ node_modules/
 
 # Per-machine daily-task sentinel (DAILY_UPDATE.md step 0b)
 .daily-task-dry-run
+
+# Per-machine Claude state — should never be committed (got captured in
+# 082a756 by accident on May 11). Lock files are runtime state; worktree
+# directories are local-only and not the project's responsibility.
+.claude/scheduled_tasks.lock
+.claude/worktrees/
