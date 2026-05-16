@@ -2738,11 +2738,13 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Mon May 11</span><span style="color:#aaa;">Star Volume Floor &#x2717; (Cade 19 — first sub-20 in 11 playoffs), Home-Star Floor &#x2713; (+$85; LeBron 24, Mitchell 43), Multi-Volume Floor &#x2717; (Cade 19 again broke the alt-22.5 cushion)</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$115</span>
             <span style="color:#aaa;">Tue May 12</span><span style="color:#aaa;">Wemby+Edwards Floor &#x2717; (Edwards 20 blowout-capped), SAS Triple Volume &#x2713; (+$110; Wemby 27, Fox 18, Castle 7ast)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$10</span>
             <span style="color:#aaa;">Wed May 13</span><span style="color:#aaa;">No parlays placed (DET-CLE G5 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Thu May 14</span><span style="color:#aaa;">No games (off-day between G5 and G6)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Fri May 15</span><span style="color:#aaa;">Big Man Reb Floor &#x2717; (Wemby 6reb in blowout), MIN Volume Floor &#x2717; (Randle 2pts vs Wemby paint), CLE Closeout Volume &#x2717; (Mitchell 18 vs DET defense)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$300</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$2,100</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$412</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">9-12</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$2,400</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$712</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">9-15</strong></span>
           </div>
         </div>
 
@@ -2761,21 +2763,23 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Mon May 11</span><span style="color:#aaa;">LAL Cover+Under &#x2717; (LAL +11.5 HIT but total 225 OVER), DET Upset+Cade &#x2717; (both legs missed; Mitchell 43 swung G4), Chaos Road Dogs &#x2717; (both home favs held serve)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$250</span>
             <span style="color:#aaa;">Tue May 12</span><span style="color:#aaa;">MIN Cover+Edwards &#x2717; (SAS by 29, Edwards 20), Chaos MIN Upset &#x2717; (SAS 126-97)</span><span style="color:#aaa;">0-2</span><span style="color:#ef4444;font-weight:700;">-$150</span>
             <span style="color:#aaa;">Wed May 13</span><span style="color:#aaa;">No parlays placed (DET-CLE G5 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Thu May 14</span><span style="color:#aaa;">No games (off-day between G5 and G6)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Fri May 15</span><span style="color:#aaa;">SAS Spread+Wemby Reb &#x2717; (SAS covered +30, Wemby 6reb), Chaos SAS Closeout+Wemby 25+ &#x2717; (SAS hit ML, Wemby 19pts capped by blowout)</span><span style="color:#aaa;">0-2</span><span style="color:#ef4444;font-weight:700;">-$150</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,550</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$311</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-20</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,700</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$461</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-22</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$4,650</strong></span>
-          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#ef4444;">-$723</strong></span>
-          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">16-32</strong></span>
+          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$5,100</strong></span>
+          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#ef4444;">-$1,173</strong></span>
+          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">16-37</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight (Thu May 14): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$150</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play Sun May 17 (DET-CLE G7): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$150</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->
