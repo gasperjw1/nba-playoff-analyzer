@@ -3635,10 +3635,10 @@ const SERIES_DATA = [
             {type:'vs_team',value:'MIN'},{type:'playoff',value:true},
             {type:'venue',value:'away'}
           ],
-          sampleSize:5, confidence:0.8,
-          delta:{pts:-4.0,reb:2.0,ast:0.5},
+          sampleSize:5, confidence:0.5,
+          delta:{pts:-2.0,reb:2.0,ast:0.5},
           historicalAvg:{pts:20.0,reb:13.0,ast:4.0,fgPct:38.0},
-          source:"Wemby G1 vs MIN: 11pts/15reb/12blk on 5-17 FG, 0-8 3PT. Last 5 vs MIN in reg season: 27.8ppg but in playoffs away the 3PT collapsed completely. Historically shoots 28% from 3 on road in high-pressure games. Defensive impact (record 12 blocks) compensates but scoring drops hard without 3PT falling. McDaniels physical matchup."
+          source:"Wemby G1 vs MIN: 11pts/15reb/12blk on 5-17 FG, 0-8 3PT. Last 5 vs MIN in reg season: 27.8ppg but in playoffs away the 3PT collapsed completely. PHASE 59 DEMOTION (May 14): G3 road performance was 39/15/5blk (the opposite of the predicted collapse). Confidence trimmed 0.8 → 0.5; pts delta softened -4 → -2 pending more sample. The 'road 3PT collapse' read may have been overfit to the G1 anomaly."
         },
         { label:"Wemby post-poor-shooting bounce-back at home",
           conditions:[
@@ -3686,14 +3686,14 @@ const SERIES_DATA = [
         }
       ],
       "Julius Randle": [
-        { label:"Randle as primary with Edwards limited",
+        { label:"Randle as primary with Edwards limited [DEMOTED]",
           conditions:[
             {type:'playoff',value:true},{type:'role',value:'primary'}
           ],
-          sampleSize:8, confidence:0.65,
-          delta:{pts:3.0,reb:1.5,ast:0.5},
+          sampleSize:8, confidence:0.2,
+          delta:{pts:0.0,reb:0.5,ast:0.0},
           historicalAvg:{pts:24.0,reb:10.0,ast:4.5},
-          source:"Randle as MIN's offensive fulcrum when Edwards limited: career playoff avg as primary option 24.2ppg/9.8reb. With Edwards on minutes restriction, Randle's usage jumps to 28%+. G1: strong performance bridging Edwards' bench minutes. Physical mismatch vs SAS wings."
+          source:"PHASE 59 DEMOTION (May 14): empirical evidence refutes the +3 boost. Randle averaged exactly 12pts across SAS-MIN G2/G3/G4 with sub-35% FG. Edwards is no longer limited (knee fully recovered per G3 32/14/6 line), so the original 'primary when Ant limited' premise also doesn't apply. The Wemby paint-suppression scenario added in Phase 59 captures the real dynamic. Keeping the entry as a stub at confidence 0.2 / 0-pt delta for traceability rather than deleting outright."
         },
         { label:"Randle suppressed by Wemby paint presence (Phase 59 promotion, May 11)",
           conditions:[
@@ -3726,7 +3726,12 @@ const SERIES_DATA = [
       advStats: { ortg:118.5, drtg:108.2, netRtg:10.3, pace:98.1, ts:59.2, efg:56.0, tov:12.0, reb:51.5, ortgRk:2, drtgRk:2, clutchNetRtg:6.5, last10:"9-1", fgPct:53.0, threePct:37.5, ftPct:80.4, orbPct:25.2 },
       players: [
         { name:"Victor Wembanyama", pos:"C", rating:94, ppg:24.8, rpg:11.5, apg:3.1, fgp:51.2, per:29.5, ts:63.2, epm:8.8, bpm:10.7, ws48:.255, onOff:16.9, clutch:7.5, vorp:5.7, usg:32.4, injury:null, lebron:7.647, oLebron:3.655, dLebron:3.992, war:11.25, offRole:"Shot Creator", defRole:"Anchor Big",
-          matchupNote:"Cleared from concussion protocol during R1. Dominated G3-G5 after return. Averaged 34ppg in 2 reg season games vs MIN. Edwards' return gives MIN a perimeter threat but Wemby's 7-4 frame and 3PT ability still creates impossible mismatches for Gobert/McDaniels. +16.9 on/off is HISTORIC.", baseRating:94, starCeiling:2, injuryRisk:0.3 },
+          matchupNote:"Cleared from concussion protocol during R1. Dominated G3-G5 after return. Averaged 34ppg in 2 reg season games vs MIN. Edwards' return gives MIN a perimeter threat but Wemby's 7-4 frame and 3PT ability still creates impossible mismatches for Gobert/McDaniels. +16.9 on/off is HISTORIC.", baseRating:94, starCeiling:2, injuryRisk:0.3,
+          // PHASE 60 (May 14): tendency flags for the player-tendencies engine.
+          recentlyEjected: true,    // Flagrant 2 in SAS-MIN G4 (5/10) — first career ejection
+          flagrant2History: 1,
+          techProne: 0.55,          // Visibly emotional in G4 + history of mid-series outbursts
+        },
         { name:"De'Aaron Fox", pos:"PG", rating:80, ppg:18.5, rpg:3.2, apg:6.8, fgp:47.5, per:20.2, ts:58.8, epm:3.5, bpm:3.2, ws48:.155, onOff:5.5, clutch:7.2, vorp:3.1, usg:25.2, injury:null, lebron:1.7, oLebron:1.478, dLebron:0.222, war:5.812, offRole:"Shot Creator", defRole:"Point of Attack",
           matchupNote:"Fox-Wemby PnR is devastating. Elite speed creates mismatches. MIN's guards (Dosunmu, Conley) will struggle to contain his drives.", baseRating:80 },
         { name:"Stephon Castle", pos:"SG", rating:74, ppg:16.8, rpg:4.5, apg:4.2, fgp:46.5, per:17.8, ts:57.5, epm:2.0, bpm:1.8, ws48:.118, onOff:3.2, clutch:5.5, vorp:2.1, usg:24.0, injury:null, lebron:1.464, oLebron:0.556, dLebron:0.908, war:5.009, offRole:"Primary Ball Handler", defRole:"Point of Attack",
@@ -4475,7 +4480,86 @@ const SERIES_DATA = [
       "HCA flips to PHI for G3 — Wells Fargo Center. DK line: PHI -1.5 / total 214.5 — market pricing Embiid return.",
       "Series clinch pattern: no team has come back from 0-3. If PHI loses G3, series is effectively over."
     ]
-  }
+  },
+
+  // ============================================================
+  // CONFERENCE FINALS SCAFFOLDS (added May 14, 2026)
+  // ============================================================
+  // NYK + OKC swept their R2 opponents and are locked into the
+  // conference finals. The other CF participants are TBD until
+  // DET-CLE and SAS-MIN finish — currently DET-CLE has CLE up 3-2
+  // (G6 tonight) and SAS-MIN is tied 2-2 (G6 tonight).
+  //
+  // These scaffolds store the confirmed seed, awaiting full roster
+  // copy + game schedule once each opponent is known. The
+  // `tbdOpponent: true` flag lets renderers display "vs [TBD]"
+  // gracefully instead of crashing on missing player data.
+  //
+  // Daily task workflow when an R2 series ends:
+  //   1. Copy winning team's homeTeam/awayTeam roster into the CF
+  //      slot opposite NYK/OKC.
+  //   2. Set tbdOpponent: false.
+  //   3. Add games[] array with 7 game slots (only num populated).
+  //   4. Add CF G1 prediction once the matchup is locked.
+  {
+    id: "NYK-TBD",
+    conf: "East", round: "CF",
+    tbdOpponent: true,
+    // NYK confirmed (swept PHI 4-0 in R2 in 4 close-but-decisive games)
+    // Opponent: winner of DET-CLE (currently CLE leads 3-2, G6 tonight 5/14)
+    confirmedSide: "home",
+    homeTeam: {
+      name: "Knicks", city: "New York", abbr: "NYK", seed: 2, record: "55-27",
+      systemBonus: 2.5, playoffPedigree: 1.5,
+      offStyle: "Brunson elite ISO + KAT stretch-5 PnR. Deep 10-man rotation. Bridges/OG perimeter D anchor. +9.2 clutchNetRtg (top 5 league).",
+      initiators: 3,
+      color: "#006BB6", color2: "#F58426",
+      advStats: { ortg:117.5, drtg:111.8, netRtg:5.7, pace:97.5, ts:58.5, efg:55.2, tov:13.0, reb:51.2, ortgRk:5, drtgRk:11, clutchNetRtg:9.2, last10:"8-2", fgPct:50.5, threePct:38.0, ftPct:80.5, orbPct:24.5 },
+      players: [],
+      synergy: [],
+      note: "Roster copy deferred — will pull from NYK-PHI R2 entry when CF schedule lands."
+    },
+    awayTeam: {
+      name: "TBD (CLE or DET)", abbr: "TBD-E", tbd: true,
+      note: "Winner of DET-CLE R2. DET-CLE G6 is tonight 5/14, G7 if needed Friday 5/16.",
+    },
+    games: [
+      // CF series gets a 7-slot games[] array once the matchup locks.
+      // Leaving empty until then so Series Analysis renderer skips it gracefully.
+    ],
+    priorRound: {
+      home: { seriesId: "NYK-PHI", gamesPlayed: 4, round: "R2", restDays: null /* depends on CF G1 date */ },
+      away: { seriesId: "DET-CLE-pending", gamesPlayed: null, round: "R2", restDays: null },
+    },
+  },
+  {
+    id: "OKC-TBD",
+    conf: "West", round: "CF",
+    tbdOpponent: true,
+    // OKC confirmed (swept LAL 4-0 in R2; +18, +18, +23, +5 margins)
+    // Opponent: winner of SAS-MIN (currently 2-2, G6 tonight 5/14)
+    confirmedSide: "home",
+    homeTeam: {
+      name: "Thunder", city: "Oklahoma City", abbr: "OKC", seed: 1, record: "64-18",
+      systemBonus: 2.5, playoffPedigree: 2,
+      offStyle: "SGA elite P&R/ISO (31.1ppg, 55% FG) + 5-out motion. J.Williams secondary creator. Mitchell 3rd-level creation off bench. Deepest team in NBA. Won R2 vs LAL 4-0.",
+      initiators: 3,
+      color: "#007AC1", color2: "#EF6100",
+      advStats: { ortg:119.8, drtg:108.2, netRtg:11.6, pace:98.5, ts:59.4, efg:55.8, tov:12.1, reb:52.4, ortgRk:2, drtgRk:2, clutchNetRtg:8.5, last10:"9-1", fgPct:52.8, threePct:37.2, ftPct:80.8, orbPct:25.9 },
+      players: [],
+      synergy: [],
+      note: "Roster copy deferred — will pull from OKC-LAL R2 entry when CF schedule lands."
+    },
+    awayTeam: {
+      name: "TBD (SAS or MIN)", abbr: "TBD-W", tbd: true,
+      note: "Winner of SAS-MIN R2. SAS-MIN G6 is tonight 5/14 at SAS, G7 if needed Saturday 5/17 at MIN.",
+    },
+    games: [],
+    priorRound: {
+      home: { seriesId: "OKC-LAL", gamesPlayed: 4, round: "R2", restDays: null },
+      away: { seriesId: "SAS-MIN-pending", gamesPlayed: null, round: "R2", restDays: null },
+    },
+  },
 ];
 
 // ============================================================

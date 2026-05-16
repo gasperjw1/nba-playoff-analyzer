@@ -4,6 +4,29 @@
 
 function renderSeries() {
   const s = SERIES_DATA[currentSeriesIdx];
+
+  // Phase 60 (May 14): CF scaffolds have a TBD opponent and empty
+  // games[]/players[] arrays. Don't try to call the engine on them —
+  // it will crash on missing player data. Render a placeholder card
+  // until the daily task fills in the matchup.
+  if (s.tbdOpponent || (s.awayTeam && s.awayTeam.tbd)) {
+    const el = document.getElementById('main');
+    el.innerHTML = `
+      <div style="max-width:900px;margin:32px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;">
+        <div style="font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-bottom:8px;">CONFERENCE FINALS · ${s.conf || ''}</div>
+        <h2 style="margin:0 0 12px;color:#fff;">${s.homeTeam.abbr} vs ${s.awayTeam.abbr}</h2>
+        <p style="color:var(--text-dim);line-height:1.6;">
+          <strong>${s.homeTeam.name}</strong> have advanced to the conference finals.
+          Their opponent — <strong>${s.awayTeam.name}</strong> — is still TBD.
+          ${s.awayTeam.note ? `<br><br>${s.awayTeam.note}` : ''}
+        </p>
+        <p style="color:var(--text-dim);font-size:12px;margin-top:16px;">
+          Full series predictions, player projections, and bets will populate once the matchup is locked.
+        </p>
+      </div>`;
+    return;
+  }
+
   const prob = calcWinProb(s, s.id);
   const hr = calcTeamRating(s.homeTeam, s, s.id), ar = calcTeamRating(s.awayTeam, s, s.id);
   const score = getSeriesScore(s);

@@ -733,6 +733,82 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 13: Phase 60 — composite prop resolver + player tendencies +
+  //          CF scaffold integrity
+  // ------------------------------------------------------------
+  // Three checks rolled together because they share a load context:
+  //  13a: auto-resolve handles new stat types (to, pra, stocks)
+  //  13b: player-tendencies module computes risk values for known players
+  //  13c: CF scaffold series are well-formed (TBD opponents handled gracefully)
+  // ============================================================
+  console.log('\nTEST 13: Composite props + tendencies + CF scaffold');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const tctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const tload = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), tctx);
+    tload('js/data/constants.js');
+    tload('js/data/series-data.js');
+    tload('js/data/boxscores.js');
+    tload('js/data/bets-data.js');
+    tload('js/data/historical.js');
+    tload('js/engine/auto-resolve.js');
+    tload('js/engine/player-tendencies.js');
+
+    // 13a — composite stat resolution
+    // Find a resolved game with box scores and use it to test PRA / stocks / to resolution
+    const nyk = tctx.SERIES_DATA.find(s => s.id === 'NYK-PHI');
+    const g2 = nyk.games[1]; // PHI G2 — Brunson 26pts, 3reb, 5ast, 2to
+    if (g2 && g2.boxScores) {
+      const fakePRA = {
+        id:'t-pra', slate:'R2-G2', series:'NYK-PHI', game:2, type:'prop',
+        pick:'Jalen Brunson Over 30.5 pra', result:null,
+      };
+      const praResult = tctx.resolveBetAgainstData(fakePRA, tctx.SERIES_DATA);
+      assert(praResult && (praResult.outcome === 'win' || praResult.outcome === 'loss' || praResult.outcome === 'push'),
+        `PRA prop resolves to a valid outcome (got ${praResult ? praResult.outcome : 'null'})`);
+
+      const fakeTOs = {
+        id:'t-to', slate:'R2-G2', series:'NYK-PHI', game:2, type:'prop',
+        pick:'Jalen Brunson Over 1.5 turnovers', result:null,
+      };
+      const toResult = tctx.resolveBetAgainstData(fakeTOs, tctx.SERIES_DATA);
+      assert(toResult && typeof toResult.outcome === 'string', 'Turnover prop resolves');
+
+      const fakeStocks = {
+        id:'t-stk', slate:'R2-G2', series:'NYK-PHI', game:2, type:'prop',
+        pick:'Karl-Anthony Towns Over 0.5 stocks', result:null,
+      };
+      const stkResult = tctx.resolveBetAgainstData(fakeStocks, tctx.SERIES_DATA);
+      assert(stkResult && typeof stkResult.outcome === 'string', 'Stocks (stl+blk) prop resolves');
+    }
+
+    // 13b — player tendencies fire for Wemby (recentlyEjected flag set)
+    const sasmin = tctx.SERIES_DATA.find(s => s.id === 'SAS-MIN');
+    const wemby = sasmin.homeTeam.players.find(p => p.name === 'Victor Wembanyama');
+    const tend = tctx.calcPlayerTendencies(wemby, sasmin, 5 /* G6 */);
+    assert(tend.techRisk > 0, `Wemby techRisk fires (got ${tend.techRisk})`);
+    assert(tend.ejectionRisk > 0, `Wemby ejectionRisk fires due to recentlyEjected flag (got ${tend.ejectionRisk})`);
+    assert(Array.isArray(tend.drivers.tech), 'tendencies.drivers.tech is an array');
+
+    // 13c — CF scaffolds present and structurally sound
+    const cfSeries = tctx.SERIES_DATA.filter(s => s.round === 'CF');
+    assert(cfSeries.length === 2, `Exactly 2 CF series scaffolded (got ${cfSeries.length})`);
+    cfSeries.forEach(cf => {
+      assert(typeof cf.id === 'string' && cf.id.length, `CF series has an id`);
+      assert(typeof cf.homeTeam === 'object' && cf.homeTeam.abbr, `CF ${cf.id} homeTeam.abbr present`);
+      assert(typeof cf.awayTeam === 'object', `CF ${cf.id} has awayTeam object`);
+      assert(Array.isArray(cf.games), `CF ${cf.id} games is an array`);
+      // TBD opponent should be flagged
+      if (cf.tbdOpponent) {
+        assert(cf.awayTeam.tbd === true, `${cf.id} awayTeam.tbd flag set when tbdOpponent:true`);
+      }
+    });
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

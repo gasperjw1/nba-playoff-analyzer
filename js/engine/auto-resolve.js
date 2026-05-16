@@ -18,6 +18,17 @@ const RESOLVE_STAT_MAP = {
   stl:'stl', stls:'stl', steal:'stl', steals:'stl',
   blk:'blk', blks:'blk', block:'blk', blocks:'blk',
   three:'threes', threes:'threes', '3pm':'threes', '3pt':'threes',
+  // PHASE 60 (May 14, 2026): additional safe-bet prop types.
+  // Turnovers — Cade had 8 TOs in DET-CLE G3; high-usage guards
+  // average 3-5 in playoff games.
+  to:'to', tos:'to', turnover:'to', turnovers:'to',
+  // Composite props — computed from box score fields, not raw lookups.
+  // These get special handling in resolveProp below.
+  pra:'pra',           // pts + reb + ast
+  pr:'pr',             // pts + reb
+  pa:'pa',             // pts + ast
+  stocks:'stocks',     // stl + blk ("stocks")
+  'stl+blk':'stocks',
 };
 
 // "SGA" / "LeBron" / "Cade" don't appear in box scores under those
@@ -142,6 +153,12 @@ function resolveProp(bet, series, game) {
     const made = parseInt(String(value || '').split('-')[0], 10);
     if (Number.isFinite(made)) value = made; else return null;
   }
+  // PHASE 60: Composite stats — sum component fields from the box score.
+  // Box scores include pts/reb/ast/stl/blk/to as numbers, so summing is direct.
+  if (stat === 'pra')    value = (player.pts||0) + (player.reb||0) + (player.ast||0);
+  if (stat === 'pr')     value = (player.pts||0) + (player.reb||0);
+  if (stat === 'pa')     value = (player.pts||0) + (player.ast||0);
+  if (stat === 'stocks') value = (player.stl||0) + (player.blk||0);
   if (typeof value !== 'number') return null;
 
   const actual = `${player.name} ${value} ${stat}`;
