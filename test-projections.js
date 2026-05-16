@@ -1067,6 +1067,56 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 17: Game-result consistency validator (Phase 66)
+  // ------------------------------------------------------------
+  // Catches the silent-null winner bug class (saw SAS-MIN G5 winner=null
+  // despite notes saying "SAS 126-97" + G6 confirming series over 4-2).
+  // ============================================================
+  console.log('\nTEST 17: Game-result consistency validator');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const tc = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const tl = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), tc);
+    tl('js/data/constants.js');
+    tl('js/data/series-data.js');
+    tl('js/data/bets-data.js');
+    tl('js/data/news.js');
+    tl('js/validators.js');
+
+    // 17a — silent-null winner is caught
+    const silentNullGame = {
+      num: 5, result: null, homeScore: 110, awayScore: 95,
+      winner: null, notes: 'TEAM_A won big in a long writeup ' + 'x'.repeat(50),
+    };
+    const errs1 = tc.validateGameResult(silentNullGame, 'TEST.G5');
+    assert(errs1.some(e => /silent-null/.test(e)),
+      `validateGameResult flags notes/scores populated + winner null (got ${JSON.stringify(errs1)})`);
+
+    // 17b — winner set + scores missing
+    const missingScores = { num: 1, winner: 'NYK', homeScore: null, awayScore: null };
+    const errs2 = tc.validateGameResult(missingScores, 'TEST.G1');
+    assert(errs2.some(e => /not numbers/.test(e)),
+      'validateGameResult flags winner-without-numeric-scores');
+
+    // 17c — empty game (placeholder) does NOT trigger
+    const emptyGame = { num: 6, result: null, winner: null, homeScore: null, awayScore: null, notes: '' };
+    const errs3 = tc.validateGameResult(emptyGame, 'TEST.G6');
+    assert(errs3.length === 0, `empty placeholder doesn't trigger (got ${JSON.stringify(errs3)})`);
+
+    // 17d — integrated check: full validateAll on live data flags 0
+    //       (we just fixed SAS-POR G3 + BOS-PHI G3 swapped scores)
+    const allErrs = tc.validateAll(tc.SERIES_DATA, tc.BETS, tc.FEATURED_PARLAYS, tc.BET_SLATES);
+    if (allErrs.length > 0) {
+      console.log(`  (validateAll surfaced ${allErrs.length} issues:)`);
+      allErrs.forEach(e => console.log(`    - ${e}`));
+    }
+    assert(allErrs.length === 0, `live data passes new game-result consistency checks (got ${allErrs.length} issues)`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

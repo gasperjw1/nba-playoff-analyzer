@@ -199,6 +199,42 @@ function validateBetSlates(slates, seriesIds) {
   return errors;
 }
 
+// ---------- validateGameResult ---------------------------------
+// Catches the bug class where a game has notes/scores populated but
+// winner is still null (saw SAS-MIN G5 silently null until May 16
+// retro). Auto-resolve, CHS ledger updates, and win-rate calcs all
+// read `winner` — silent null breaks all of them.
+//
+// Rule: if ANY of {notes (non-empty), homeScore, awayScore, result}
+// is populated, then winner MUST be set (and consistent with scores).
+function validateGameResult(game, ctx) {
+  const errors = [];
+  if (!game) return errors;
+  const hasNotes = typeof game.notes === 'string' && game.notes.trim().length >= 30;
+  const hasScores = (typeof game.homeScore === 'number') && (typeof game.awayScore === 'number');
+  const hasResult = !!game.result;
+  const winnerSet = typeof game.winner === 'string' && game.winner.length > 0;
+
+  // If anything signals "this game has been played" but winner is null,
+  // that's the silent-null bug.
+  if ((hasNotes || hasScores || hasResult) && !winnerSet) {
+    errors.push(`${ctx}: game has notes/scores/result populated but winner is null — silent-null bug (auto-resolve and ledgers will miss this game). Set winner explicitly.`);
+  }
+
+  // If winner is set but scores aren't numbers, that's inconsistent.
+  if (winnerSet && !hasScores) {
+    errors.push(`${ctx}: winner set to '${game.winner}' but homeScore/awayScore are not numbers`);
+  }
+
+  // If winner is set, ensure it matches the scores (winner team scored more)
+  if (winnerSet && hasScores) {
+    // We don't have homeTeam/awayTeam abbr at this level — that check
+    // lives in the orchestrator below where we have series context.
+  }
+
+  return errors;
+}
+
 // ---------- orchestrator ---------------------------------------
 function validateAll(seriesData, bets, parlays, betSlates) {
   const errors = [];
@@ -210,11 +246,32 @@ function validateAll(seriesData, bets, parlays, betSlates) {
   const seriesIds = new Set(seriesData.map(s => s && s.id).filter(Boolean));
 
   // Predictions on every game with a prediction object
+  // PHASE 66: also validate the game's result-side fields are consistent
+  // (notes populated → winner must be set; winner must match home/away abbr).
   seriesData.forEach(s => {
     if (!s || !Array.isArray(s.games)) return;
+    const homeAbbr = s.homeTeam && s.homeTeam.abbr;
+    const awayAbbr = s.awayTeam && s.awayTeam.abbr;
     s.games.forEach((g, i) => {
       if (g && g.prediction) {
         errors.push(...validatePrediction(g.prediction, `${s.id}.G${i + 1}`));
+      }
+      // Game-result consistency check
+      const gameErrs = validateGameResult(g, `${s.id}.G${i + 1}`);
+      errors.push(...gameErrs);
+      // Cross-check: winner abbr should match home or away abbr
+      if (g && g.winner && homeAbbr && awayAbbr) {
+        if (g.winner !== homeAbbr && g.winner !== awayAbbr) {
+          errors.push(`${s.id}.G${i + 1}: winner='${g.winner}' doesn't match homeTeam.abbr (${homeAbbr}) or awayTeam.abbr (${awayAbbr})`);
+        }
+        // Winner-vs-scores consistency
+        if (typeof g.homeScore === 'number' && typeof g.awayScore === 'number') {
+          const homeWon = g.homeScore > g.awayScore;
+          const winnerIsHome = g.winner === homeAbbr;
+          if (homeWon !== winnerIsHome && g.homeScore !== g.awayScore) {
+            errors.push(`${s.id}.G${i + 1}: winner='${g.winner}' inconsistent with scores (home ${g.homeScore}, away ${g.awayScore})`);
+          }
+        }
       }
     });
   });
