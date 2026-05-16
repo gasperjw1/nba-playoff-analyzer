@@ -21,7 +21,13 @@ const scenarioState = {};
 function initScenarioState() {
   SERIES_DATA.forEach(s => {
     scenarioState[s.id] = {};
-    [...s.homeTeam.players, ...s.awayTeam.players].forEach(p => {
+    // Phase 60 (May 14): CF scaffolds may have empty/missing player arrays
+    // (NYK-TBD / OKC-TBD). Guard against undefined.players so boot doesn't
+    // crash on Home page render.
+    const home = (s.homeTeam && Array.isArray(s.homeTeam.players)) ? s.homeTeam.players : [];
+    const away = (s.awayTeam && Array.isArray(s.awayTeam.players)) ? s.awayTeam.players : [];
+    [...home, ...away].forEach(p => {
+      if (!p || !p.name) return;
       scenarioState[s.id][p.name] = (p.injury && p.injury.includes('OUT')) ? 'out' : 'in';
     });
   });

@@ -4527,7 +4527,7 @@ const SERIES_DATA = [
       note: "Roster copy deferred — will pull from NYK-PHI R2 entry when CF schedule lands."
     },
     awayTeam: {
-      name: "TBD (CLE or DET)", abbr: "TBD-E", tbd: true,
+      name: "TBD (CLE or DET)", abbr: "TBD-E", tbd: true, players: [],
       note: "Winner of DET-CLE R2. DET-CLE G6 is tonight 5/14, G7 if needed Friday 5/16.",
     },
     games: [
@@ -4558,7 +4558,7 @@ const SERIES_DATA = [
       note: "Roster copy deferred — will pull from OKC-LAL R2 entry when CF schedule lands."
     },
     awayTeam: {
-      name: "TBD (SAS or MIN)", abbr: "TBD-W", tbd: true,
+      name: "TBD (SAS or MIN)", abbr: "TBD-W", tbd: true, players: [],
       note: "Winner of SAS-MIN R2. SAS-MIN G6 is tonight 5/14 at SAS, G7 if needed Saturday 5/17 at MIN.",
     },
     games: [],
