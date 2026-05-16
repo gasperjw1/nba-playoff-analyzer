@@ -25,14 +25,53 @@
 // DK odds; this module quantifies whether those bets are worth taking.
 // ============================================================
 
+// ── Realistic DK alt-line bounds ─────────────────────────────────────
+// DK/FD don't offer infinitely deep alt lines. Empirically, alt lines
+// extend to roughly:
+//   PTS: 50% of player's avg (Brunson 28ppg → as low as 14.5)
+//   REB: 40% of avg (Gobert 12rpg → as low as 4.5)
+//   AST: 40% of avg (Brunson 7apg → as low as 2.5)
+//   3PM: 30% of avg (limited alt depth — usually just 0.5, 1.5, 2.5)
+//   STL/BLK/Stocks: 0.5 floor (no deeper, but always exists)
+//   TO/PRA/composites: 0.5 floor
+// Reject lines below these floors — they don't exist on the book.
+function _realisticLineFloor(statKey, mean) {
+  if (statKey === 'pts')    return Math.max(0.5, mean * 0.50);
+  if (statKey === 'reb')    return Math.max(0.5, mean * 0.40);
+  if (statKey === 'ast')    return Math.max(0.5, mean * 0.40);
+  if (statKey === 'threes') return Math.max(0.5, mean * 0.30);
+  if (statKey === 'pra')    return Math.max(0.5, mean * 0.50);
+  return 0.5; // stocks, stl, blk, to
+}
+
+// ── Estimated juice for a given hit rate ─────────────────────────────
+// At a "fair" market, odds match implied probability:
+//   p = 90% → -900 American, payout 11¢ per $1
+//   p = 85% → -567, payout 17¢
+//   p = 80% → -400, payout 25¢
+//   p = 75% → -300, payout 33¢
+//   p = 70% → -233, payout 43¢
+// Bookmakers add ~5-10% vig, but our raw MC hit-rate is the FAIR
+// estimate. Use this to flag legs that pay so little they're not worth
+// the slip.
+function _estimateAmericanFromHitRate(p) {
+  if (!isFinite(p) || p <= 0 || p >= 1) return null;
+  if (p > 0.5) return Math.round(-100 * p / (1 - p));
+  return Math.round(100 * (1 - p) / p);
+}
+function _payoutPer100(americanOdds) {
+  if (!isFinite(americanOdds)) return 0;
+  if (americanOdds > 0) return americanOdds;
+  return Math.round(10000 / -americanOdds);
+}
+
 // ── findSafeLines ────────────────────────────────────────────────────
 // Returns, for a given player + stat, the deepest OVER line where
-// P(hit) >= threshold. Threshold defaults to 0.85 (typical alt-line
-// confidence target). Stat granularity is 0.5 (matches DK/FD half-pt
-// alt-line spacing).
+// P(hit) >= threshold AND the line is realistic (DK actually lists it).
 //
-// Returns { line, hitRate, line95, line85, line75 } so callers can see
-// the full ladder.
+// Returns ladder { line95, line90, line85, line80 } — each entry has
+// { line, hitRate, estJuice, estPayoutPer100, realistic } so callers
+// can pick the right reliability tier and see the practical EV.
 function findSafeLines(simResult, playerName, statType, opts) {
   if (!simResult || !simResult._raw || !simResult._raw.players) return null;
   opts = opts || {};
@@ -54,64 +93,89 @@ function findSafeLines(simResult, playerName, statType, opts) {
 
   const arr = samples[key];
   const sorted = [...arr].sort((a, b) => a - b);
+  const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
+  const floor = _realisticLineFloor(key, mean);
 
   // For each target threshold, find the deepest line.
   // P(over X) = (count where v > X) / N.
   // To get P(over) >= threshold, X must be <= the (1-threshold) quantile.
-  // e.g., for threshold 0.85, X = 15th percentile; over that line hits 85% of the time.
   function deepestLineAtThreshold(threshold) {
     const idx = Math.max(0, Math.floor((1 - threshold) * sorted.length) - 1);
     const value = sorted[idx];
     // Round DOWN to nearest 0.5 (alt lines are .5 increments)
-    const line = Math.floor(value * 2) / 2;
-    // Recompute exact hit rate at this rounded line
+    let line = Math.floor(value * 2) / 2;
+    // Clamp UP to the realistic DK floor — refusing to recommend lines
+    // the book won't list. Hit rate may dip slightly when we clamp.
+    const realistic = line >= floor;
+    if (!realistic) line = Math.ceil(floor * 2) / 2; // round up to next 0.5
     const hits = arr.filter(v => v > line).length;
-    return { line, hitRate: +(hits / arr.length).toFixed(3) };
+    const hitRate = +(hits / arr.length).toFixed(3);
+    const estJuice = _estimateAmericanFromHitRate(hitRate);
+    const estPayout = _payoutPer100(estJuice);
+    return { line, hitRate, estJuice, estPayoutPer100: estPayout, realistic };
   }
 
   return {
     player: resolved,
     stat: key,
-    mean: +(arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2),
+    mean: +mean.toFixed(2),
+    realisticFloor: +floor.toFixed(2),
     line95: deepestLineAtThreshold(0.95),
     line90: deepestLineAtThreshold(0.90),
     line85: deepestLineAtThreshold(0.85),
-    line75: deepestLineAtThreshold(0.75),
+    line80: deepestLineAtThreshold(0.80),
   };
 }
 
 // ── safeLinesForAllPlayers ──────────────────────────────────────────
-// Convenience: walks every player in the sim and finds safe lines
-// across the standard stat panel (pts, reb, ast, stocks, threes).
-// Returns a flat list of { player, stat, level, line, hitRate } rows
-// sorted by hit rate desc.
+// Walks every player in the sim, finds safe lines across the standard
+// stat panel (pts/reb/ast/stocks/threes/pra). Filters out:
+//   - Unrealistic lines (below DK's listing floor)
+//   - Hit rates below the threshold (default 80% per user spec)
+//   - Lines where estimated juice exceeds -500 (payout < $20/$100 stake)
+//
+// Returns flat list sorted DESC by (hitRate × payout) — a rough
+// "expected return" ranking that balances reliability with payout size.
+// User wanted to avoid -2000 juice props; this scoring naturally
+// deprioritizes them.
 function safeLinesForAllPlayers(simResult, opts) {
   if (!simResult || !simResult._raw || !simResult._raw.players) return [];
   opts = opts || {};
   const stats = opts.stats || ['pts', 'reb', 'ast', 'stocks', 'threes', 'pra'];
-  const threshold = opts.threshold || 0.85;
+  const threshold = opts.threshold || 0.80;          // 80% per user spec
+  const maxJuice = opts.maxJuice != null ? opts.maxJuice : -500;  // reject deeper than -500
   const rows = [];
   Object.keys(simResult._raw.players).forEach(name => {
     stats.forEach(stat => {
       const sl = findSafeLines(simResult, name, stat, {});
       if (!sl) return;
-      const tierKey = threshold >= 0.95 ? 'line95'
-                    : threshold >= 0.90 ? 'line90'
-                    : threshold >= 0.85 ? 'line85'
-                    : 'line75';
-      const lineInfo = sl[tierKey];
-      if (lineInfo && lineInfo.line > 0) {
-        rows.push({
-          player: sl.player,
-          stat,
-          line: lineInfo.line,
-          hitRate: lineInfo.hitRate,
-          mean: sl.mean,
-        });
+      // Pick the deepest tier whose hit rate still clears threshold.
+      // Prefer line80 (deepest, most reliable BUT might be too deep).
+      // Fall back to line85, line90, line95 if line80 isn't realistic.
+      const candidates = [sl.line80, sl.line85, sl.line90, sl.line95];
+      let chosen = null;
+      for (const c of candidates) {
+        if (!c || !c.realistic) continue;
+        if (c.hitRate < threshold) continue;
+        // Reject if juice deeper than maxJuice (e.g., -800 < -500)
+        if (c.estJuice != null && c.estJuice < maxJuice) continue;
+        chosen = c;
+        break;
       }
+      if (!chosen) return;
+      rows.push({
+        player: sl.player,
+        stat,
+        line: chosen.line,
+        hitRate: chosen.hitRate,
+        estJuice: chosen.estJuice,
+        estPayoutPer100: chosen.estPayoutPer100,
+        mean: sl.mean,
+      });
     });
   });
-  return rows.sort((a, b) => b.hitRate - a.hitRate);
+  // Sort by expected $ return: hitRate × payout
+  return rows.sort((a, b) => (b.hitRate * b.estPayoutPer100) - (a.hitRate * a.estPayoutPer100));
 }
 
 // ── American-odds helpers ────────────────────────────────────────────

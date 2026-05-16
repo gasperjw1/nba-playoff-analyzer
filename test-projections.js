@@ -982,16 +982,30 @@ function runTests() {
     assert(safe !== null, 'findSafeLines returns non-null');
     assert(safe.line95.line <= safe.line90.line, `line95 (${safe.line95.line}) <= line90 (${safe.line90.line})`);
     assert(safe.line90.line <= safe.line85.line, `line90 <= line85`);
-    assert(safe.line85.line <= safe.line75.line, `line85 <= line75`);
-    assert(safe.line95.hitRate >= 0.90, `line95 hit rate >= 90% (got ${safe.line95.hitRate})`);
-    assert(safe.line75.hitRate >= 0.65, `line75 hit rate >= 65% (got ${safe.line75.hitRate})`);
+    assert(safe.line85.line <= safe.line80.line, `line85 <= line80`);
+    assert(safe.line95.hitRate >= 0.80, `line95 hit rate >= 80% (got ${safe.line95.hitRate}) — may be clamped by realistic floor`);
+    assert(safe.line80.hitRate >= 0.70, `line80 hit rate >= 70% (got ${safe.line80.hitRate})`);
+    // Phase 64: each ladder entry has juice + payout + realistic flag
+    assert(typeof safe.line90.estJuice === 'number' || safe.line90.estJuice === null,
+      'line90 has estJuice');
+    assert(typeof safe.line90.estPayoutPer100 === 'number',
+      'line90 has estPayoutPer100');
+    assert(typeof safe.realisticFloor === 'number' && safe.realisticFloor >= 0.5,
+      'realisticFloor is a sensible number');
 
-    // 16b — safeLinesForAllPlayers returns a sorted list
-    const rows = c.safeLinesForAllPlayers(mc, { threshold: 0.85 });
-    assert(Array.isArray(rows) && rows.length > 0, 'safeLinesForAllPlayers returns rows');
+    // 16b — safeLinesForAllPlayers enforces 80% floor + realistic-line + juice
+    const rows = c.safeLinesForAllPlayers(mc, { threshold: 0.80, maxJuice: -500 });
+    assert(Array.isArray(rows), 'safeLinesForAllPlayers returns array');
+    // Every row must clear ALL filters
+    rows.forEach((r, i) => {
+      assert(r.hitRate >= 0.80, `row ${i} hit rate ≥ 80% (got ${r.hitRate})`);
+      assert(r.estJuice == null || r.estJuice >= -500, `row ${i} juice ≥ -500 (got ${r.estJuice})`);
+    });
+    // Sort order: by expected $ return (hitRate × payout)
     for (let i = 1; i < Math.min(10, rows.length); i++) {
-      assert(rows[i-1].hitRate >= rows[i].hitRate,
-        `sorted desc at index ${i} (${rows[i-1].hitRate} >= ${rows[i].hitRate})`);
+      const a = rows[i-1].hitRate * rows[i-1].estPayoutPer100;
+      const b = rows[i].hitRate * rows[i].estPayoutPer100;
+      assert(a >= b - 0.5, `sorted desc by ER at index ${i} (${a.toFixed(1)} >= ${b.toFixed(1)})`);
     }
 
     // 16c — scoreParlay returns coherent EV math

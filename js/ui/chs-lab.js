@@ -210,63 +210,101 @@ function chsLabRenderParlayCandidates() {
   if (!upcoming.length) return '';
 
   const blocks = upcoming.map(({ series, gameNum, mc }) => {
-    const safe90 = safeLinesForAllPlayers(mc, { threshold: 0.90 }).slice(0, 8);
-    const safe85 = safeLinesForAllPlayers(mc, { threshold: 0.85 })
-      .filter(r => !safe90.find(s => s.player === r.player && s.stat === r.stat))
-      .slice(0, 5);
+    // Phase 64: 80% floor + realistic-line filter + max -500 juice.
+    // safeLinesForAllPlayers now does all of this in one call, returning
+    // rows already sorted by expected $ return (hitRate × payout).
+    const reliable = safeLinesForAllPlayers(mc, { threshold: 0.80, maxJuice: -500 });
+    const top10 = reliable.slice(0, 10);
 
-    // Suggested 3-leg "Reliable Floor" parlay: pick the top 3 safe90
-    // lines from different players (avoid 2 stats on same player —
-    // makes correlation too tight) and score the combined hit rate.
+    // Suggested parlay: build the SHORTEST parlay where each leg ≥85%
+    // AND combined ≥80%. Prefer 2 legs (easier to clear); fall back to
+    // 3 legs from different players if 2-leg combined < 80%.
     const seenPlayers = new Set();
-    const floorLegs = [];
-    for (const row of safe90) {
+    const tryLegs = [];
+    for (const row of reliable) {
       if (seenPlayers.has(row.player)) continue;
+      if (row.hitRate < 0.85) continue;          // strong per-leg floor
       seenPlayers.add(row.player);
-      floorLegs.push({ type: 'prop', player: row.player, stat: row.stat, line: row.line, direction: 'over' });
-      if (floorLegs.length >= 3) break;
+      tryLegs.push({ type: 'prop', player: row.player, stat: row.stat,
+                     line: row.line, direction: 'over',
+                     hitRate: row.hitRate, estJuice: row.estJuice });
+      if (tryLegs.length >= 3) break;
+    }
+    // Score 2-leg first; if it clears 80% combined, use it.
+    let floorLegs = null, floorScore = null, parlayJuice = null;
+    if (tryLegs.length >= 2) {
+      const candidate2 = tryLegs.slice(0, 2);
+      // Compute combined parlay juice by multiplying decimal odds:
+      //   mult = product(1 + 100/legJuice_abs) per American odds math
+      const dec2 = candidate2.map(l => l.estJuice > 0 ? 1 + l.estJuice/100 : 1 + 100/-l.estJuice);
+      const combinedDec2 = dec2.reduce((a,b) => a*b, 1);
+      const american2 = combinedDec2 > 2 ? Math.round((combinedDec2-1)*100) : Math.round(-100/(combinedDec2-1));
+      const s2 = scoreParlay(mc, series, candidate2, american2);
+      if (s2 && s2.combined >= 0.80) {
+        floorLegs = candidate2; floorScore = s2; parlayJuice = american2;
+      } else if (tryLegs.length >= 3) {
+        const candidate3 = tryLegs.slice(0, 3);
+        const dec3 = candidate3.map(l => l.estJuice > 0 ? 1 + l.estJuice/100 : 1 + 100/-l.estJuice);
+        const combinedDec3 = dec3.reduce((a,b) => a*b, 1);
+        const american3 = combinedDec3 > 2 ? Math.round((combinedDec3-1)*100) : Math.round(-100/(combinedDec3-1));
+        const s3 = scoreParlay(mc, series, candidate3, american3);
+        if (s3 && s3.combined >= 0.80) {
+          floorLegs = candidate3; floorScore = s3; parlayJuice = american3;
+        }
+      }
     }
 
-    let floorScore = null;
-    if (floorLegs.length >= 2) {
-      // Estimate +100 odds as a placeholder; user fills in actual DK juice.
-      floorScore = scoreParlay(mc, series, floorLegs, +100);
-    }
+    const fmtJuice = (j) => j == null ? '?' : (j > 0 ? '+' + j : String(j));
 
-    const safeRowHtml = (rows, label, color) => {
-      if (!rows.length) return '';
-      return `
-        <div style="margin-bottom:8px;">
-          <div style="font-size:9px;letter-spacing:0.5px;color:${color};text-transform:uppercase;margin-bottom:4px;">${label}</div>
-          <table style="width:100%;font-size:11px;border-collapse:collapse;">
-            ${rows.map(r => `
-              <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:3px 6px;color:var(--text);">${r.player}</td>
-                <td style="padding:3px 6px;color:var(--text-dim);">${r.stat}</td>
-                <td style="padding:3px 6px;text-align:right;color:var(--text);">o${r.line}</td>
-                <td style="padding:3px 6px;text-align:right;color:${color};font-weight:700;">${(r.hitRate*100).toFixed(0)}%</td>
-              </tr>`).join('')}
-          </table>
-        </div>`;
-    };
+    const reliableTable = !top10.length
+      ? '<div style="text-align:center;padding:14px;color:var(--text-dim);font-size:11px;">No props clear the 80% reliability floor for this game.</div>'
+      : `<table style="width:100%;font-size:11px;border-collapse:collapse;">
+          <thead><tr style="border-bottom:1px solid var(--border);">
+            <th style="padding:3px 6px;text-align:left;font-size:9px;color:var(--text-dim);">Player</th>
+            <th style="padding:3px 6px;text-align:left;font-size:9px;color:var(--text-dim);">Stat</th>
+            <th style="padding:3px 6px;text-align:right;font-size:9px;color:var(--text-dim);">Line</th>
+            <th style="padding:3px 6px;text-align:right;font-size:9px;color:var(--text-dim);">Hit%</th>
+            <th style="padding:3px 6px;text-align:right;font-size:9px;color:var(--text-dim);">Est. juice</th>
+            <th style="padding:3px 6px;text-align:right;font-size:9px;color:var(--text-dim);">$/100</th>
+          </tr></thead>
+          ${top10.map(r => `
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:3px 6px;color:var(--text);">${r.player}</td>
+              <td style="padding:3px 6px;color:var(--text-dim);">${r.stat}</td>
+              <td style="padding:3px 6px;text-align:right;color:var(--text);">o${r.line}</td>
+              <td style="padding:3px 6px;text-align:right;color:#22c55e;font-weight:700;">${(r.hitRate*100).toFixed(0)}%</td>
+              <td style="padding:3px 6px;text-align:right;color:var(--text-dim);">${fmtJuice(r.estJuice)}</td>
+              <td style="padding:3px 6px;text-align:right;color:var(--text-dim);">$${r.estPayoutPer100}</td>
+            </tr>`).join('')}
+        </table>`;
 
     let floorBlock = '';
-    if (floorScore) {
+    if (floorScore && floorLegs) {
       const verdictColor = floorScore.verdict === 'STRONG +EV' ? '#22c55e'
                         : floorScore.verdict === 'POSITIVE' ? '#22d3ee'
                         : floorScore.verdict === 'FLAT' ? '#eab308'
                         : '#ef4444';
-      const legSummary = floorLegs.map(l => `${l.player.split(' ').pop()} ${l.stat}o${l.line}`).join(' + ');
+      const legSummary = floorLegs.map(l => {
+        const last = l.player.split(' ').pop();
+        return `${last} ${l.stat}o${l.line} (${(l.hitRate*100).toFixed(0)}% ${fmtJuice(l.estJuice)})`;
+      }).join(' + ');
       floorBlock = `
-        <div style="margin-top:10px;padding:8px;background:rgba(34, 197, 94, 0.06);border:1px solid rgba(34,197,94,0.25);border-radius:6px;">
-          <div style="font-size:10px;letter-spacing:0.5px;color:#22c55e;text-transform:uppercase;margin-bottom:4px;">Suggested 3-leg floor</div>
-          <div style="font-size:11px;color:var(--text);margin-bottom:4px;">${legSummary}</div>
+        <div style="margin-top:10px;padding:10px;background:rgba(34, 197, 94, 0.06);border:1px solid rgba(34,197,94,0.25);border-radius:6px;">
+          <div style="font-size:10px;letter-spacing:0.5px;color:#22c55e;text-transform:uppercase;margin-bottom:6px;font-weight:700;">RELIABLE PARLAY · ≥80% COMBINED</div>
+          <div style="font-size:11px;color:var(--text);margin-bottom:6px;line-height:1.5;">${legSummary}</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
             <div>Combined: <strong style="color:#22c55e;">${(floorScore.combined*100).toFixed(0)}%</strong></div>
-            <div>vs naive: ${(floorScore.naiveProduct*100).toFixed(0)}% (${floorScore.correlationBoost >= 0 ? '+' : ''}${(floorScore.correlationBoost*100).toFixed(1)}pp)</div>
-            <div style="color:${verdictColor};font-weight:700;">${floorScore.verdict}</div>
+            <div>Est. parlay juice: <strong style="color:var(--text);">${fmtJuice(parlayJuice)}</strong></div>
+            <div>Payout/$100: <strong style="color:var(--text);">$${floorScore.payoutIfHit.toFixed(0)}</strong></div>
           </div>
-          <div style="margin-top:4px;font-size:9px;color:var(--text-dim);">At +100 (est): EV $${floorScore.evPer100}/$100. Replace odds with actual DK juice before placing.</div>
+          <div style="margin-top:4px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+            EV $${floorScore.evPer100}/$100 · ${floorScore.verdict} · vs naive product ${(floorScore.naiveProduct*100).toFixed(0)}% (${floorScore.correlationBoost >= 0 ? '+' : ''}${(floorScore.correlationBoost*100).toFixed(1)}pp correlation).
+          </div>
+        </div>`;
+    } else {
+      floorBlock = `
+        <div style="margin-top:10px;padding:8px;background:rgba(245, 158, 11, 0.06);border:1px solid rgba(245,158,11,0.25);border-radius:6px;font-size:10px;color:#f59e0b;">
+          No 80%+ combined parlay found from available legs. Stick to single-leg picks above.
         </div>`;
     }
 
@@ -274,22 +312,20 @@ function chsLabRenderParlayCandidates() {
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <span style="font-size:13px;font-weight:700;color:#fff;">${series.id} · G${gameNum}</span>
-          <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims</span>
+          <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims · ${reliable.length} reliable legs</span>
         </div>
-        ${safeRowHtml(safe90, 'Deep alts · ≥90% hit', '#22c55e')}
-        ${safeRowHtml(safe85, 'Mid alts · 85-90%', '#22d3ee')}
+        ${reliableTable}
         ${floorBlock}
       </div>`;
   }).join('');
 
   return `
-    <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 12px;">RELIABLE PARLAY CANDIDATES · MC-DERIVED</h3>
+    <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 12px;">RELIABLE PARLAY CANDIDATES · ≥80% MC CONFIDENCE</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(380px, 1fr));gap:16px;margin-bottom:24px;">
       ${blocks}
     </div>
     <div style="font-size:11px;color:var(--text-dim);margin-top:-8px;margin-bottom:24px;line-height:1.5;">
-      Deep alt lines are the deepest DK/FD alt line where MC says ≥90% hit (or 85% for mid alts). Hit rates are MC-derived, not historical — pair with the calibration table to gut-check.
-      Suggested floor parlay picks 3 different players' top deep-alt lines and scores joint hit rate via correlation-preserving MC math. Verdict label is vs +100 implied (50%); compute actual edge against the real DK odds at place time.
+      <strong style="color:var(--text);">Filters applied:</strong> only props with MC hit rate ≥80%, line within DK's realistic alt-line range (e.g. won't suggest Gobert reb under 4.5 — book doesn't list it), and estimated juice ≥-500 (above that the payout is too flat). Sorted by expected $ return (hit rate × payout). Suggested parlay is the SHORTEST set where each leg ≥85% AND combined ≥80% — drops the combo entirely if neither 2-leg nor 3-leg clears the bar.
     </div>`;
 }
 
