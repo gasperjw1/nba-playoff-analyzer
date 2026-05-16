@@ -216,8 +216,8 @@ const NEWS = [
     date: '2026-05-16',
     severity: 'major',
     series: 'DET-CLE',
-    headline: 'G7 tonight at CLE — winner faces NYK in East CF',
-    body: 'Detroit vs Cleveland Game 7, 8:00 PM ET at Rocket Mortgage FieldHouse. CLE -3.5 / total ~210.5 on DK. The winner takes on NYK in the East CF starting around 5/19. Mitchell vs Cade is the marquee matchup. CLE has home court and Mitchell\'s Q4 closing edge; DET has the road-win momentum after the +21 G6 blowout. Engine: CLE by 3-5 with HCA flip back in their favor.',
+    headline: 'G7 set for Sunday 5/17 at CLE — winner faces NYK',
+    body: 'Detroit vs Cleveland Game 7, Sunday 5/17 8:00 PM ET at Rocket Mortgage FieldHouse (one day of rest after G6). CLE -3.5 / total ~210.5 on DK. The winner takes on NYK in the East CF starting around 5/19. Mitchell vs Cade is the marquee matchup. CLE has home court and Mitchell\'s Q4 closing edge; DET has the +21 G6 road-win momentum.',
     source: 'NBA.com / ESPN',
   },
   {
@@ -235,5 +235,31 @@ const NEWS = [
     headline: 'NYK awaiting East CF opponent (DET or CLE)',
     body: 'Knicks have been off since May 10 sweep — 6 days of rest by the time East CF G1 starts (~5/19). Both potential opponents have advantages: CLE is the higher seed with home court; DET has the road-win momentum and Cade. NYK opens CF as the team with the most playoff rest among the remaining four. Brunson + KAT + Bridges + Hart + OG (returning from hamstring) at full health.',
     source: 'NBA.com',
+  },
+
+  // ── May 16 (off-day before G7) — rest-day storylines ─────────
+  {
+    date: '2026-05-16',
+    severity: 'minor',
+    series: 'DET-CLE',
+    headline: 'G7 tomorrow night — rest day at CLE, Mitchell vs Cade',
+    body: 'Off-day after DET\'s historic +21 road win in G6. Both teams in town for media availability and walk-throughs. Mitchell led CLE with his Q4 closing on G5 OT and is the marquee storyline tomorrow. DET\'s edge: 21-pt road win momentum + Cade-Duren pick-and-roll has shredded CLE\'s drop coverage. CLE\'s edge: home crowd + Mitchell\'s playoff closing average (+8.2 in road games at LCA is +4.5 in HOME closeouts). Tomorrow 8 PM ET. CLE -3.5 / total 210.5 on DK.',
+    source: 'NBA.com',
+  },
+  {
+    date: '2026-05-16',
+    severity: 'minor',
+    series: 'NYK-PHI',
+    headline: 'OG Anunoby tracker — back to full practice ahead of CF',
+    body: 'Left hamstring strain that kept him out of NYK-PHI G4 has progressed. Full practice today. NYK CF G1 (vs DET/CLE winner) projected ~5/19. With OG, NYK\'s wing defense returns to full strength — Bridges no longer the lone perimeter stopper. KAT/Brunson/OG/Bridges/Hart starting five is intact. Mitchell Robinson activity managed; should be ready for G1.',
+    source: 'ESPN / Heavy',
+  },
+  {
+    date: '2026-05-16',
+    severity: 'minor',
+    series: 'OKC-LAL',
+    headline: 'Wemby vs SGA — CF opens ~5/19 at OKC',
+    body: 'Both #1 seeds advanced via R2 sweeps. First MVP-tier matchup of the playoffs. SGA (31.1ppg, 67% TS) vs Wemby (24.8ppg, 11.5rpg) is the marquee individual battle, but the depth-vs-stars structural matchup is the real story. OKC depth (10-man rotation) vs SAS stars-plus-Castle-plus-Harper bench. Holmgren-Wemby paint battle is the key chess piece. SAS rested since 5/15 close; OKC since 5/11. WCF Game 1 at Paycom Center.',
+    source: 'NBA.com / ESPN',
   },
 ];

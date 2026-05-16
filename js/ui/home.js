@@ -247,12 +247,24 @@ function renderHomePage(el) {
 
   const todaysGames = homeGamesOn(today);
   const tomorrowsGames = homeGamesOn(tomorrow);
-  const recentNews = NEWS.slice(0, 6);
+  // Phase 67 (May 16): sort NEWS by date desc before slicing. Was
+  // NEWS.slice(0, 6) which returned the first 6 in array order — but
+  // we append new items to the end, so the home page was showing
+  // the OLDEST 6 entries (5/4-5/7) instead of the most recent.
+  const recentNews = [...NEWS].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 6);
+
+  // Phase 67: off-day fallback — when today has no scheduled games
+  // (rest day before a G7, between rounds), fall through to tomorrow's
+  // bets and relabel the section. Better than an empty "No live bets"
+  // panel on the home page during the most-interesting prep window.
+  const betsDate = todaysGames.length > 0 ? today : (tomorrowsGames.length > 0 ? tomorrow : today);
+  const betsLabel = betsDate === today ? "Tonight's Bets"
+                                       : `Tomorrow's Bets (${homeFormatDate(tomorrow)})`;
 
   // Layout decision: with 2+ games, the per-game bet columns alone fill the
   // row, so News goes full-width above. With 1 game (single-game days in CF /
   // Finals), News + Bets sit side-by-side so neither column looks stranded.
-  const useStackedLayout = todaysGames.length >= 2;
+  const useStackedLayout = (betsDate === today ? todaysGames.length : tomorrowsGames.length) >= 2;
 
   const newsSection = `
     <section class="home-section">
@@ -262,8 +274,8 @@ function renderHomePage(el) {
 
   const betsSection = `
     <section class="home-section">
-      <h2 class="home-section-title">Tonight's Bets</h2>
-      ${homeRenderBetsForDate(today)}
+      <h2 class="home-section-title">${betsLabel}</h2>
+      ${homeRenderBetsForDate(betsDate)}
     </section>`;
 
   const newsAndBets = useStackedLayout
