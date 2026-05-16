@@ -1218,7 +1218,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['SAS-MIN',6] },
     reasoning: "<strong>SAS ML at +150 on the road is a value play, not the model's top pick.</strong> Engine: MIN by 2 (slight HCA + elimination-desperation tilt). Market: MIN -135 / SAS +150 (60/40). The pattern in this series — home team wins every game — is the load-bearing data point against SAS. But SAS has the talent edge, Wemby is in transcendent mode, and MIN's secondary scoring (Randle/McDaniels) has been suppressed all series. At +150 the implied 40% feels light vs engine's ~46-48%. Lean SAS but only with stake control; not a high-confidence pick.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'SAS 139-109. SAS won by 30 — road blowout in elimination. The home-pattern broke; +150 dog hit outright. Series ends 4-2 SAS, advance to WCF vs OKC.' },
   },
   {
     id: 'r2-g6-sas-min-spread',
@@ -1233,7 +1233,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['SAS-MIN',6] },
     reasoning: "Engine MIN by 2; market MIN by 2.5. Half-point edge to SAS cover. Pure number play — engine and market are nearly identical so the +2.5 hook is the differentiator. SAS won't get blown out (talent + Wemby). MIN must-win desperation tightens the game; ANY single-digit SAS or MIN win lands +2.5 SAS in the green. Push at exactly 2 is realistic — the half-hook matters.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'SAS won 139-109 (by 30). SAS +2.5 cashed by a margin of 32.5 over the line.' },
   },
   {
     id: 'r2-g6-sas-min-total',
@@ -1246,7 +1246,7 @@ const BETS = [
     ],
     reasoning: "Engine projects 218 exact-on the 217.5 line. Lean: elimination games tend to slow down (tighter D, more fouls, fewer leak-out transitions). Wemby foul trouble in his Target Center memory game is a real risk that reduces pace. Both bigs (Gobert + Wemby) suggest a more half-court Q4. Slight lean Under but very close to a push.",
     confidence: 'lean', thesis: ['model','historical'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Total = 248 (139+109) — way OVER 217.5. SAS blowout pace ran the score; MIN couldn\'t slow them down even in elimination.' },
   },
   {
     id: 'r2-g6-sas-min-wemby-reb',
@@ -1259,7 +1259,7 @@ const BETS = [
     ],
     reasoning: "Wemby's rebound floor is the most reliable signal in this entire playoffs. 15+ in every game he\'s played at least 25 minutes this series (G1, G2, G3, G5). At 12.5 the line is 2.5 below his series median. Hostile crowd, must-win game opposite, fouls don\'t reduce rebounds (he\'ll play 33-36min anyway). ~92% hit rate.",
     confidence: 'best-bet', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Wemby 6 rebounds in 27 minutes — limited to under-half his series median because SAS blowout left him on the bench in Q4. Floor signal broke on the blowout side-effect, not on a defensive scheme.' },
   },
   {
     id: 'r2-g6-sas-min-edwards-pts',
@@ -1273,7 +1273,7 @@ const BETS = [
     ],
     reasoning: "Must-win elimination at home with 2-day rest. Series scoring trajectory: 18 (bench/knee), 12 (blowout), 32 (back to start), 36 (Q4 takeover), 20 (foul trouble + SAS targeting). Variance high. In a season-saving game his usage will spike to 32%+ and he\'ll demand 38-40min. Floor 27.5 means he needs to score 28+ — at home in his most important game of the year, that\'s the floor. ~70% hit.",
     confidence: 'high', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Edwards 24 pts on 9-of-26 FG (3-of-12 3PT). Volume came (26 attempts) but Castle perimeter D crushed the efficiency. 3.5 short of the line.' },
   },
   {
     id: 'r2-g6-sas-min-castle-ast',
@@ -1286,7 +1286,7 @@ const BETS = [
     ],
     reasoning: "Castle has dished 5+ assists in every game of this series. Facilitator role with Wemby + Fox + K.Johnson + Harper as scoring options on the floor. 5.5 line is one below his series median. ~85% hit.",
     confidence: 'high', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Castle 6 ast (plus 32 pts/11 reb closeout masterpiece). Facilitator floor held — barely cleared the line, but cleared.' },
   },
 
   // ─── DET-CLE G6 (Fri May 15, 7:00 PM ET @ Rocket Arena, CLE leads 3-2) ─
@@ -1306,7 +1306,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['DET-CLE',6] },
     reasoning: "<strong>CLE ML at home with momentum from G5 OT.</strong> Engine: CLE by 6. Market: CLE -220 (~69% implied). CLE 6-0 at Rocket Arena in playoffs is the structural data point. DET's single-creator model needs another Cade tail-event (39 in G5 wasn\'t enough). Mitchell + Harden + Strus 3-headed offense at home covers the variance. The risk: DET undefeated at home this series and Cade is in MVP-tier form (39 G5). Implied 69% feels right.",
     confidence: 'high', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'DET 115-94 — CLE\'s first home loss of the entire 2026 playoffs (was 6-0 at Rocket). DET\'s defensive identity reasserted (41% CLE FG, 16 TOs forced). The CLE-home-fortress thesis broke. Series tied 3-3, G7 at LCA Sun 5/17.' },
   },
   {
     id: 'r2-g6-det-cle-spread',
@@ -1321,7 +1321,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['DET-CLE',6] },
     reasoning: "Engine CLE by 6; market CLE by 5.5. Half-point edge to DET cover. This series has had every game decided by 10 or fewer points in regulation (G1 and G2 were 10pt finishes). DET +5.5 is roughly even-money — Cade carry mode keeps DET within 5.5 in any non-blowout. ~52% cover.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'DET won outright 115-94 (by 21). DET +5.5 cashed by a 26.5 margin over the line.' },
   },
   {
     id: 'r2-g6-det-cle-total',
@@ -1334,7 +1334,7 @@ const BETS = [
     ],
     reasoning: "Series totals: 212, 204, 225, 215, 230 (OT). G5 OT inflates that 230; in 48 minutes it would have been ~213-215. DET elimination game means tighter defense; CLE close-out means structured offense. 213.5 is at the regulation-time median; slight lean Under because elimination games suppress pace.",
     confidence: 'lean', thesis: ['historical','model'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Total = 209 (115+94) — UNDER 213.5. DET\'s defensive identity reasserted suppressed pace; CLE\'s 41% FG night kept the score down despite DET\'s 115pts.' },
   },
   {
     id: 'r2-g6-det-cle-mitchell-pts',
@@ -1348,7 +1348,7 @@ const BETS = [
     ],
     reasoning: "Mitchell at home in a close-out game = 28-32 baseline. G5 he deferred to Harden (21pts in 40+min) — bounce-back spot at home. CLE 6-0 at Rocket Arena, Mitchell averaged 33 in his G3 home win (35). The 26.5 line is below his home median. ~72% hit.",
     confidence: 'high', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Mitchell 18 pts on 7-of-19 FG — sub-Mitchell night vs DET\'s defensive scheme that held the entire team to 41% FG. 8.5 short of the line.' },
   },
   {
     id: 'r2-g6-det-cle-cade-pts',
@@ -1361,6 +1361,101 @@ const BETS = [
       {label:'Engine projection',value:'26 pts'},
     ],
     reasoning: "Cade is the entire DET offense on the road. Elimination at CLE forces 35+ minutes and 30%+ usage. G3 27, G5 39 on the road. 24.5 is below his road average. ~75% hit. The variance is on the upside (40+ possible) not the downside.",
+    confidence: 'high', thesis: ['historical','matchup'], narrative: null,
+    result: { outcome:'loss', actual:'Cade 21pts/9ast/7reb on 8-of-19 FG — distributed the load instead of going into hero-mode (Harris 14, Jenkins 15, Duren 15 picked up the slack). 3.5 short of the line.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R2 G7 — TOMORROW (Sun May 17, 2026): DET-CLE G7 at LCA
+  // ═══════════════════════════════════════════════════════════════
+  // Series tied 3-3 after DET's 115-94 road blowout in G6.
+  // WINNER ADVANCES TO ECF vs NYK. DET 3-0 at LCA this series; CLE was 6-0
+  // at Rocket Arena until G6 broke that. Phase 17 (Li et al. 2025): G7
+  // location not significant — EFG% + TOV% decide it.
+  {
+    id: 'r2-g7-det-cle-ml',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'ml', pick: 'DET ML vs CLE', odds: '-160',
+    facts: [
+      {label:'Spread',value:'DET -3.5 (est)'},
+      {label:'Total',value:'O/U 211.5 (est)'},
+      {label:'Series',value:'Tied 3-3'},
+      {label:'G6',value:'DET 115-94 — 21-pt road win, tied 66-yr-old NBA G6-road-win record'},
+      {label:'DET home',value:'3-0 at LCA this series'},
+      {label:'Engine',value:'DET 108, CLE 104 (DET by 4, LOW)'},
+    ],
+    modelHook: { fn:'dml', args:['DET-CLE',7] },
+    reasoning: "<strong>DET ML at home in G7 after a 21-pt road blowout.</strong> Engine: DET by 4 (HCA + 3-0 LCA series record + G6 defensive identity reasserted). Market is likely DET -160 to -200 (DET seen as slight favorite). Phase 17 / Li et al. 2025: G7 location NOT significant; EFG% + TOV% decide it. DET forced 16 TOs G6; if defensive intensity sustains, DET wins. CLE's home fortress was the load-bearing thesis; that thesis broke last night. Lean DET but with stake control — G7s are coin-flips in spirit even when the model and market agree.",
+    confidence: 'high', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g7-det-cle-spread',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'spread', pick: 'CLE +3.5', odds: '-110',
+    facts: [
+      {label:'Engine',value:'DET by 4 (108-104)'},
+      {label:'Market',value:'DET -3.5'},
+      {label:'Engine edge',value:'Right at the line — coin-flip cover'},
+      {label:'G6 reaction',value:'CLE bounce-back at home in G7 is the historical pattern'},
+    ],
+    modelHook: { fn:'dmargin', args:['DET-CLE',7] },
+    reasoning: "Engine DET by 4; market DET by 3.5. Half-point edge to DET cover. BUT: the G6 +21 DET blowout was the variance event of the series; expecting a repeat in G7 is the textbook overcorrection trap. CLE 3-0 at home in series + bounce-back pride + Mitchell post-quiet-game = the higher-probability G7 outcome is CLE within 3.5. Lean CLE +3.5 as the better number play; either CLE wins outright or DET wins close. ~55% cover.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g7-det-cle-total',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'total', pick: 'Under 211.5', odds: '-110',
+    facts: [
+      {label:'Series totals',value:'212, 204, 225, 215, 230 (OT), 209 → reg-time median ~213'},
+      {label:'G7 historical',value:'G7s ~6-8pts below series median (defensive intensity, fewer fastbreaks)'},
+      {label:'DET defense',value:'#1 in playoffs — 16 TOs forced G6'},
+      {label:'Engine projection',value:'108 + 104 = 212 (right at the line)'},
+    ],
+    reasoning: "Engine projects 212 exact-on. G7s historically run 6-8pts UNDER the series median due to defensive intensity, more half-court possessions, fewer leak-outs. DET defense is the structural identity; CLE shooting will tighten in must-win. Both teams shoot careful; ~210 expected. Lean Under.",
+    confidence: 'medium', thesis: ['historical','model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g7-det-cle-cade-pts',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'prop', pick: 'Cade Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'Series scoring',value:'23, 25, 27, 19, 39, 21 → 25.7 avg'},
+      {label:'Home games',value:'23 (G1), 19 (G4) — home avg ~21'},
+      {label:'G7 usage',value:'Will spike to 32%+ in series-decider'},
+      {label:'Engine projection',value:'29 pts'},
+    ],
+    reasoning: "Cade in a home G7 with series berth on the line = 30+ baseline. Series scoring trajectory: 23, 25, 27, 19, 39, 21. The 39 G5 game shows his ceiling; 21 G6 was the distribution game (didn't need 30+ to win). In G7 he WILL need 30+ — DET will run everything through him. Line of 27.5 is right at his series avg; ~65% hit. The downside risk: CLE's Mobley + A.Thompson schemed to double-team him on every PnR.",
+    confidence: 'high', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g7-det-cle-mitchell-pts',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'prop', pick: 'Mitchell Over 24.5 points', odds: '-120',
+    facts: [
+      {label:'Series scoring',value:'23, 31, 35, 43, 21, 18 → 28.5 avg'},
+      {label:'Road games',value:'23 (G1), 43 (G4) — road avg ~28'},
+      {label:'G6 bounce-back',value:'18 G6 was sub-Mitchell night, regression spot'},
+      {label:'Engine projection',value:'27 pts'},
+    ],
+    reasoning: "Mitchell on the road in G7 = star-or-go-home spot. Series scoring: 23, 31, 35, 43, 21, 18 — the 18 was outlier-low. Bounce-back baseline 28-32 in a G7. Line 24.5 below his series avg. ~68% hit. The risk: DET's defensive scheme is built around limiting Mitchell off PnR; if that scheme sustained from G6, this could miss.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r2-g7-det-cle-duren-reb',
+    slate: 'R2-G7', series: 'DET-CLE', game: 7, postedAt: '2026-05-16',
+    type: 'prop', pick: 'Duren Over 9.5 rebounds', odds: '-130',
+    facts: [
+      {label:'G6 rebounds',value:'11 reb (with 15pts/3blk — dominant interior)'},
+      {label:'Series rebounds',value:'8, 7, 9, 8, 8, 11 → consistent 8-11 range'},
+      {label:'Floor signal',value:'Home G7 vs passive CLE bigs'},
+    ],
+    reasoning: "Duren's rebounding is the cleanest floor signal in this G7. G6: 11reb/15pts/3blk — dominated Mobley + Allen in the paint. Series rebs: 8, 7, 9, 8, 8, 11 — consistently in the 7-11 range with the upside spike when CLE's bigs are passive. Home G7 = 35+min guaranteed. Line 9.5 right at his median; ~70% hit. Floor parlay candidate.",
     confidence: 'high', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
@@ -2110,39 +2205,39 @@ const FEATURED_PARLAYS = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // R2 G6 — TONIGHT (Thu May 14: SAS-MIN G6) + TOMORROW (Fri May 15: DET-CLE G6)
+  // R2 G6 — RESOLVED (Fri May 15: SAS-MIN G6 + DET-CLE G6)
   // ═══════════════════════════════════════════════════════════════
 
   // ─── RELIABLE FLOOR (per-leg ≥80%) ─────────────────────────────
   {
     id: 'r2-g6-may14-floor-wemby-cade-rebs',
-    slate: 'R2-G6', date: '2026-05-14',
+    slate: 'R2-G6', date: '2026-05-15',
     category: 'floor', type: 'best-bet',
     name: 'Big Man Rebound Floor (2-Leg)',
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
     legs: [
-      { pick:'Wemby Over 12.5 rebounds (SAS-MIN G6)', odds:'-145', confidence:'floor', status:null,
-        note:'Series rebounds: 15, 15, 15, 4(ejected), 17 → 15+ in every full game. Cleanest signal in the dataset. ~92% hit.' },
-      { pick:'Castle Over 5.5 assists (SAS-MIN G6)', odds:'-130', confidence:'floor', status:null,
-        note:'Series assists: 5, 6, 12, 8, 7 — 5+ every game. Facilitator role structurally stable. ~85% hit.' },
+      { pick:'Wemby Over 12.5 rebounds (SAS-MIN G6)', odds:'-145', confidence:'floor', status:'miss',
+        note:'Wemby 6 reb in 27 min — limited by SAS\'s wire-to-wire blowout (sat much of Q4). Floor signal broke on the blowout side-effect, not on a defensive scheme.' },
+      { pick:'Castle Over 5.5 assists (SAS-MIN G6)', odds:'-130', confidence:'floor', status:'hit',
+        note:'Castle 6 ast (plus 32 pts / 11 reb closeout masterpiece). Facilitator floor held — barely cleared the line.' },
     ],
     thesis:'Counting-stat floor parlay built off the May 12 retro: scoring legs in blowout-risk games are NOT structurally floor-safe (Edwards 20 last night). Rebound and assist floors are blowout-PROOF (Wemby and Castle play 30+ min regardless of game state). Both legs come from the same team (SAS) so correlated upside: if SAS plays comfortable, Castle racks up assists and Wemby controls boards. Math: 0.92 × 0.85 ≈ 78.2% combined — clears floor discipline once both are above the strict 85% floor individually.',
-    result: null,
+    result: { outcome: 'loss', delta: '-$100', actual: '1-of-2. Wemby reb floor BROKE because SAS blew them out by 30 — Wemby sat much of Q4 (27 min total). The "blowout-PROOF" framing on rebounds turned out to be wrong: if the blowout is large enough, even rebound floors get capped by minutes. NEW LESSON for the retro pile: rebound floors are bench-PROOF, but they ARE blowout-proof only if minutes hold; in a 34-pt blowout, the star\'s minutes drop and the rebound rate doesn\'t scale.' },
   },
   {
     id: 'r2-g6-may14-floor-edwards-randle-pts',
-    slate: 'R2-G6', date: '2026-05-14',
+    slate: 'R2-G6', date: '2026-05-15',
     category: 'floor', type: 'best-bet',
     name: 'MIN Must-Win Volume Floor (2-Leg)',
     stake: 100, odds: '+130', payout: 'To Win: ~$130 (verify on DK)',
     legs: [
-      { pick:'Edwards Over 22.5 points (alt — SAS-MIN G6)', odds:'-180', confidence:'floor', status:null,
-        note:'Elimination at home with 2-day rest. Series: 18, 12, 32, 36, 20. Variance high, but his floor at home in must-win mode is 25+. Alt drop to 22.5 = ~85% hit.' },
-      { pick:'Randle Over 14.5 points (alt — SAS-MIN G6)', odds:'-200', confidence:'floor', status:null,
-        note:'Series: 21, 12, 12, 12, 17. Floor 12 in every game including blowout. At 14.5 the line catches MIN must-win minutes for him at home. ~88% hit.' },
+      { pick:'Edwards Over 22.5 points (alt — SAS-MIN G6)', odds:'-180', confidence:'floor', status:'hit',
+        note:'Edwards 24 pts on 9-of-26 FG (3-of-12 3PT). Cleared the alt line by 1.5 — Castle perimeter D destroyed efficiency but volume came.' },
+      { pick:'Randle Over 14.5 points (alt — SAS-MIN G6)', odds:'-200', confidence:'floor', status:'miss',
+        note:'Randle 2 pts on 1-of-9 FG — Randle + Gobert COMBINED 3 pts on 1-of-12 in elimination. CATASTROPHIC interior collapse. Phase 59 "Randle suppressed by Wemby paint presence" compoundScenario validated yet again — sixth time in series at 12pts-or-fewer.' },
     ],
     thesis:'MIN-side scoring floor in must-win elimination. Edwards usage spikes in elimination, Randle gets his usual 12-18min stretches but at home with desperation, the volume climbs. Both lines are 2-3 pts below their series median. Math: 0.85 × 0.88 ≈ 74.8% combined — below 80% combined but each leg individually clears 85% floor-grade. Note: HONESTLY documenting the combined drop per May 7 lesson.',
-    result: null,
+    result: { outcome: 'loss', delta: '-$100', actual: '1-of-2. Edwards floor held (24/25 against the 22.5 alt). Randle floor SHATTERED by Wemby paint defense — 2 pts on 1-of-9. The "Randle 14.5 floor in must-win at home" thesis was wrong; Wemby\'s paint gravity made interior scoring structurally unviable for the SIXTH game in a row (his floors: 21, 12, 12, 12, 17, 2). Floor parlay discipline failure: any series where one player has gone sub-12 in 4-of-5 games should not have that player as a floor leg, regardless of "home + desperation" framing.' },
   },
 
   // ─── DET-CLE G6 (Fri 5/15) — counted in tomorrow\'s P&L ────────
@@ -2153,46 +2248,110 @@ const FEATURED_PARLAYS = [
     name: 'CLE Closeout Volume Floor (3-Leg)',
     stake: 100, odds: '+140', payout: 'To Win: ~$140 (verify on DK)',
     legs: [
-      { pick:'Mobley Over 6.5 rebounds (alt — DET-CLE G6)', odds:'-200', confidence:'floor', status:null,
-        note:'Series rebounds: solid 7+ baseline. At home + closeout = floor secure.' },
-      { pick:'Mitchell Over 22.5 points (alt — DET-CLE G6)', odds:'-200', confidence:'floor', status:null,
-        note:'Home series: 35 (G3). Floor at home in closeout = 25+. Alt drop to 22.5 = ~90% hit.' },
-      { pick:'Allen Over 5.5 rebounds (alt — DET-CLE G6)', odds:'-220', confidence:'floor', status:null,
-        note:'Last 3 games: 7, 8, 9 rebounds. Knee fully healthy. Alt drop to 5.5 = ~92% hit.' },
+      { pick:'Mobley Over 6.5 rebounds (alt — DET-CLE G6)', odds:'-200', confidence:'floor', status:'hit',
+        note:'Mobley 8 reb (also 18pts/8ast — near triple-double). Floor cleared.' },
+      { pick:'Mitchell Over 22.5 points (alt — DET-CLE G6)', odds:'-200', confidence:'floor', status:'miss',
+        note:'Mitchell 18 pts on 7-of-19 FG — sub-Mitchell night. DET\'s defensive scheme held CLE to 41% FG team-wide; the "closeout at home" framing broke when CLE lost its home fortress status. 4.5 short of the alt line.' },
+      { pick:'Allen Over 5.5 rebounds (alt — DET-CLE G6)', odds:'-220', confidence:'floor', status:'hit',
+        note:'Allen 7 reb (with 10 pts). Cleared the line; Allen-rebound floor held even in the loss.' },
     ],
     thesis:'CLE structural floor parlay anchored on the three CLE players with the cleanest counting-stat floors. All home + closeout-favorable. Math: 0.9 × 0.9 × 0.92 ≈ 74.5% combined — each leg ≥90% individually clears floor discipline.',
-    result: null,
+    result: { outcome: 'loss', delta: '-$100', actual: '2-of-3. Mobley + Allen rebound floors held (the structural rebound thesis on CLE bigs is real). Mitchell pts floor SHATTERED because DET\'s defensive scheme actually held — the "Mitchell 22.5 at home in closeout" thesis assumed CLE\'s offensive ceiling would scale; instead DET held CLE to 41% FG. Floor parlay lesson: scoring floors are fragile when the OPPOSING defense locks in. Counting-stat floors (rebounds) are blowout-proof in the OTHER direction (CLE losing didn\'t affect Mobley/Allen reb production).' },
   },
 
   // ─── TRADITIONAL (value plays — engine edge, lower combined hit rate)
   {
     id: 'r2-g6-may14-trad-sas-cover',
-    slate: 'R2-G6', date: '2026-05-14',
+    slate: 'R2-G6', date: '2026-05-15',
     category: 'traditional', type: 'best-bet',
     name: 'SAS Spread + Wemby Rebound (2-Leg)',
     stake: 100, odds: '+180', payout: 'To Win: $180',
     legs: [
-      { pick:'SAS +2.5 (SAS-MIN G6)', odds:'-110', confidence:'high', status:null,
-        note:'Engine: MIN by 2 (108-110). Half-pt hook to SAS cover. Talent edge + Wemby in transcendent mode + MIN secondary scoring suppression all support SAS staying within 2.' },
-      { pick:'Wemby Over 12.5 rebounds (SAS-MIN G6)', odds:'-145', confidence:'high', status:null,
-        note:'15+ in every full game this series. Floor signal.' },
+      { pick:'SAS +2.5 (SAS-MIN G6)', odds:'-110', confidence:'high', status:'hit',
+        note:'SAS won outright by 30 — covered the +2.5 by 32.5.' },
+      { pick:'Wemby Over 12.5 rebounds (SAS-MIN G6)', odds:'-145', confidence:'high', status:'miss',
+        note:'Wemby 6 reb in 27 min — limited by SAS\'s blowout. The "15+ floor" thesis broke on the blowout side-effect.' },
     ],
     thesis:'Engine + floor combination. Engine sees MIN by 2 (slight HCA lean) — SAS +2.5 is a half-pt hook play with EV. Wemby reb floor is structural. Math: ~0.52 × 0.92 ≈ 47.8% combined at +180. Clean +EV.',
-    result: null,
+    result: { outcome: 'loss', delta: '-$100', actual: '1-of-2. SAS spread leg HIT massively (won outright by 30). Wemby reb leg MISSED because the blowout limited his Q4 minutes. Same blowout-vs-reb-floor lesson as the Big Man Rebound parlay above.' },
   },
   {
     id: 'r2-g6-may14-trad-chaos-sas-closeout',
-    slate: 'R2-G6', date: '2026-05-14',
+    slate: 'R2-G6', date: '2026-05-15',
     category: 'traditional', type: 'chaos',
     name: 'Chaos — SAS Closeout + Wemby 25+ (2-Leg)',
     stake: 50, odds: '+450', payout: 'To Win: $225',
     legs: [
-      { pick:'SAS ML vs MIN (G6)', odds:'+150', confidence:'chaos', status:null,
-        note:'Road dog at +150 (~40% implied). Engine ~46% SAS win. Some value but trip-up risk in elimination at hostile crowd.' },
-      { pick:'Wemby Over 25.5 points (SAS-MIN G6)', odds:'+115', confidence:'chaos', status:null,
-        note:'Last 4 games as starter: 19, 39, 4 (ejected), 27. Median around 25-27. At home Target Center motivation = potential 30+ ceiling.' },
+      { pick:'SAS ML vs MIN (G6)', odds:'+150', confidence:'chaos', status:'hit',
+        note:'SAS won 139-109. Road dog at +150 cashed; chaos-bet structural pick proved correct.' },
+      { pick:'Wemby Over 25.5 points (SAS-MIN G6)', odds:'+115', confidence:'chaos', status:'miss',
+        note:'Wemby 19 pts in 27 min — limited by blowout (sat much of Q4). Castle had the closeout night (32 pts) instead.' },
     ],
     thesis:'~18% combined hit rate. SAS closeout WCF + Wemby tail-event. Stake reduced (chaos) to reflect variance. At +450 a $50 stake returns $225 if both hit.',
+    result: { outcome: 'loss', delta: '-$50', actual: '1-of-2 on a chaos ticket. SAS ML hit (the structural call), Wemby 25+ missed (the variance call). At +450 the chaos return required both — the variance leg failed because Castle ate Wemby\'s minutes/usage. Expected outcome on a $50 chaos stake.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R2 G7 — SUN MAY 17: DET-CLE G7 at LCA (winner advances to ECF vs NYK)
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'r2-g7-may17-floor-cade-duren-volume',
+    slate: 'R2-G7', date: '2026-05-17',
+    category: 'floor', type: 'best-bet',
+    name: 'DET Home G7 Volume Floor (2-Leg)',
+    stake: 100, odds: '+115', payout: 'To Win: ~$115 (verify on DK)',
+    legs: [
+      { pick:'Cade Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:null,
+        note:'Series scoring 23, 25, 27, 19, 39, 21 → home G7 with ECF berth = 35+min and 30%+ usage. Even his G4 sub-20 cleared 19. Alt drop to 21.5 = ~88% hit.' },
+      { pick:'Duren Over 7.5 rebounds (alt — DET-CLE G7)', odds:'-200', confidence:'floor', status:null,
+        note:'Series rebs 8, 7, 9, 8, 8, 11 — consistent 7+ floor. Home G7 = 35+min vs Mobley/Allen interior. Alt drop to 7.5 = ~90% hit.' },
+    ],
+    thesis:'Two counting-stat floors with structural support: Cade at his home + must-win scoring volume baseline, Duren rebounding off the G6 dominance (11/15/3blk). Same-team correlation: if DET plays comfortable (their home + G7 narrative), Cade gets touches and Duren gets boards. Math: 0.88 × 0.90 ≈ 79.2% combined — clears floor discipline.',
+    result: null,
+  },
+  {
+    id: 'r2-g7-may17-floor-cle-veterans',
+    slate: 'R2-G7', date: '2026-05-17',
+    category: 'floor', type: 'best-bet',
+    name: 'CLE Star Volume Floor (2-Leg)',
+    stake: 100, odds: '+120', payout: 'To Win: ~$120 (verify on DK)',
+    legs: [
+      { pick:'Mitchell Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:null,
+        note:'Series scoring 23, 31, 35, 43, 21, 18 → road G7 = star-or-go-home. The 18 G6 was outlier-low; bounce-back baseline 25+. Alt drop to 21.5 = ~85% hit.' },
+      { pick:'Mobley Over 6.5 rebounds (alt — DET-CLE G7)', odds:'-220', confidence:'floor', status:null,
+        note:'Series rebs all in 6-9 range. Road G7 = 35+ min minimum. Alt drop to 6.5 = ~88% hit.' },
+    ],
+    thesis:'CLE-side floor in road G7. Mitchell at the alt line clears even his "bad" games; Mobley rebound floor is structural regardless of game state. Math: 0.85 × 0.88 ≈ 74.8% combined — each leg ≥85% individually clears floor discipline.',
+    result: null,
+  },
+  {
+    id: 'r2-g7-may17-trad-det-cover',
+    slate: 'R2-G7', date: '2026-05-17',
+    category: 'traditional', type: 'best-bet',
+    name: 'DET Home G7 Spread + Cade Pts (2-Leg)',
+    stake: 100, odds: '+200', payout: 'To Win: $200',
+    legs: [
+      { pick:'DET -3.5 (DET-CLE G7)', odds:'-110', confidence:'medium', status:null,
+        note:'Engine: DET by 4 (HCA + 3-0 LCA series record + G6 defensive identity reasserted). Slight edge to DET cover. Half-pt hook matters in a tight G7.' },
+      { pick:'Cade Over 27.5 points (DET-CLE G7)', odds:'-115', confidence:'medium', status:null,
+        note:'Home G7 with ECF berth = 30+ baseline. Series scoring 23, 25, 27, 19, 39, 21 — G7 will demand 30+. ~62% hit.' },
+    ],
+    thesis:'Engine + scoring upside combination. DET -3.5 is roughly even-money at home; Cade O27.5 is his scoring ceiling that gets pulled higher in a series-decider. Math: ~0.55 × 0.62 ≈ 34.1% combined at +200 = clean +EV.',
+    result: null,
+  },
+  {
+    id: 'r2-g7-may17-trad-chaos-cle-road',
+    slate: 'R2-G7', date: '2026-05-17',
+    category: 'traditional', type: 'chaos',
+    name: 'Chaos — CLE Road G7 + Mitchell 30+ (2-Leg)',
+    stake: 50, odds: '+650', payout: 'To Win: $325',
+    legs: [
+      { pick:'CLE ML vs DET (G7)', odds:'+150', confidence:'chaos', status:null,
+        note:'Road dog G7 at +150 (~40% implied). Engine ~46% CLE win — slight value play.' },
+      { pick:'Mitchell Over 29.5 points (DET-CLE G7)', odds:'+150', confidence:'chaos', status:null,
+        note:'Series scoring high 43 (G4). Road G7 hostile-environment hero spot. Sub-Mitchell G6 (18) is the bounce-back primer.' },
+    ],
+    thesis:'~13% combined hit rate. CLE road G7 upset + Mitchell tail-event. Stake reduced (chaos) to reflect variance. At +650 a $50 stake returns $325 if both hit. Correlated: CLE road win likely requires Mitchell 30+.',
     result: null,
   },
 ];
@@ -2290,12 +2449,19 @@ const BET_SLATES = {
     ],
   },
   'R2-G6': {
-    label: 'Round 2 — Game 6 (Live)',
+    label: 'Round 2 — Game 6 (Archive)',
     games: [
-      { series:'SAS-MIN', date:'2026-05-14', time:'7:00 PM ET', venue:'Target Center', context:'SAS leads 3-2',
-        recap:'<strong style="color:var(--purple)">G6 Setup (Thu 5/14, Amazon Prime Video):</strong> SAS leads 3-2 after Wembanyama\'s historic 27/17/5/3blk return-from-ejection performance led a 126-97 G5 rout. MIN\'s elimination game at Target Center. If SAS wins → advances to WCF vs OKC. If MIN wins → G7 at SAS Sat 5/16. Engine baseline near-coin-flip with slight MIN home-court lean: SAS 108, MIN 110 (MIN by 2, LOW confidence). Series pattern: home team has won every game. Wemby foul-trouble risk at Target Center (his ejection happened the last time he played there) is the X-factor.' },
+      { series:'SAS-MIN', date:'2026-05-15', time:'7:00 PM ET', venue:'Target Center', context:'SAS leads 3-2',
+        recap:'<strong style="color:var(--green)">Result:</strong> SAS 139-109 — SAS WINS SERIES 4-2, advances to WCF vs OKC. Castle MASTERPIECE 32pts/11reb/6ast (11-of-16 FG, 5-of-7 3PT) in the closeout. Wemby quieter than usual (19/6/6ast/3blk in 27min, capped by blowout). Fox 21/9ast. All five SAS starters in double figures. SAS led wire-to-wire, by as many as 34; 20-0 SAS run early Q2. MIN: Edwards 24 on 9-of-26 FG (volume came, efficiency didn\'t — Castle perimeter D). Randle + Gobert COMBINED 3 PTS on 1-of-12 FG (catastrophic). The home-team-wins-every-game pattern broke in the elimination spot. Model: predicted MIN by 2 (LOW), actual SAS by 30 — WRONG WINNER, +32 margin miss.' },
       { series:'DET-CLE', date:'2026-05-15', time:'7:00 PM ET', venue:'Rocket Arena', context:'CLE leads 3-2',
-        recap:'<strong style="color:var(--purple)">G6 Setup (Fri 5/15, Amazon Prime Video):</strong> CLE leads 3-2 after stealing G5 in OT 117-113 in Detroit (Harden 30, Strus 6 made 3s, Mobley tying FTs). DET\'s elimination game at Rocket Arena. If CLE wins → advances to ECF (likely vs NYK). If DET wins → G7 at LCA Sun 5/17. Engine: CLE 110, DET 104 (CLE by 6, MEDIUM). CLE 6-0 at home in playoffs is the load-bearing data point. Cade carry-mode (39pts G5) is DET\'s only path; CLE 3-headed scoring engine (Mitchell + Harden + Strus = 71pts G5) is structurally deeper.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> DET 115-94 — series TIED 3-3, G7 at LCA Sun 5/17. DET\'s 21-pt road win tied a 66-year-old NBA playoff record for largest G6 road win by a team trailing 3-2. CLE\'s first home loss of the entire 2026 playoffs (6-0 → 6-1 at Rocket). Cade 21/9/7 distributing (not hero-mode); Jenkins 15 bench spark; Duren 15/11/3blk dominated the paint; Harris 14, D.Robinson 11 (3-7 3PT). DET held CLE to 41% FG, forced 16 TOs. CLE: Harden 23, Mitchell 18 (sub-Mitchell night), Mobley 18/8/8 (near triple-double), Allen passive 10/7, Strus regressed to 9 (from G5\'s 20). Model: predicted CLE by 6 (MEDIUM), actual DET by 21 — WRONG WINNER, +27 margin miss.' },
+    ],
+  },
+  'R2-G7': {
+    label: 'Round 2 — Game 7 (Live)',
+    games: [
+      { series:'DET-CLE', date:'2026-05-17', time:'TBD ET', venue:'Little Caesars Arena', context:'Series tied 3-3',
+        recap:'<strong style="color:var(--purple)">G7 Setup (Sun 5/17):</strong> Series tied 3-3 after DET\'s 115-94 road blowout in G6 (21-pt margin tied a 66-year-old NBA playoff record). WINNER ADVANCES TO ECF vs NYK. DET 3-0 at LCA this series; CLE was 6-0 at Rocket Arena before losing G6 (now 6-1). Both teams "home-undefeated" pattern is fully tested in G7. Engine baseline DET by 3-4 (HCA + home record + G6 momentum + #1 defense reasserted). Phase 17 Li et al. 2025 finding: G7 location NOT significant; EFG% and TOV% are decisive. DET forced 16 TOs G6 — if that defensive intensity holds, DET wins. Cade Q4 closing minutes (different from G5 coaching call) + Mitchell\'s mental toughness on hostile road + which bench delivers 15+pts are the X-factors.' },
     ],
   },
 };
