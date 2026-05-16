@@ -127,7 +127,32 @@ For each unresolved BET whose game now has results:
 The reconciliation TEST 9 will fail if any declared outcome disagrees
 with the box score, so you'll catch typos before pushing.
 
-### 2a · Settle yesterday's slate end-to-end
+### 2a · Append NEWS entries for last night's games + key storylines
+
+The Home page Latest News section reads `js/data/news.js`. If the
+news doesn't get refreshed daily it goes stale fast (May 16 retro:
+9 days of stale news because no step was capturing it).
+
+```
+- For EACH game resolved in step 2, append ONE news entry to NEWS
+  with:
+    date     : <YYYY-MM-DD>  (yesterday's date, when game was played)
+    severity : 'major' for game results, 'minor' for status changes
+    series   : <series.id>
+    headline : "<WINNER> <home>-<away>: <one-line series state>"
+    body     : 2-3 sentences. Key player lines, structural takeaways,
+               what it means for the series. Mirror the `notes` text
+               from series-data but tighter.
+    source   : "NBA.com" or "ESPN" or specific outlet
+- For NON-game items (injury updates, league rulings, scheduling
+  changes), append a 'minor' or 'major' entry as appropriate.
+- Keep older NEWS entries intact — the file is append-only. The Home
+  page displays most recent first (sort by date desc client-side).
+- Skip entries older than the playoffs (no R1 catchup needed — those
+  series are over and weren't authored).
+```
+
+### 2b · Settle yesterday's slate end-to-end
 
 After bets are individually resolved, sweep through the parlays AND
 the on-page P&L chart. This is one logical pass — don't split it.

@@ -102,4 +102,138 @@ const NEWS = [
     body: 'No return timeline. Expected out at least through May 9 per CBS Sports. LAL proved they can win without him in R1 (4-2 vs HOU), but OKC is a different tier.',
     source: 'CBS Sports',
   },
+
+  // ── May 8: G3 wave 1 ────────────────────────────────────────────
+  {
+    date: '2026-05-08',
+    severity: 'major',
+    series: 'NYK-PHI',
+    headline: 'NYK 108-94: Knicks one win from sweep (lead 3-0)',
+    body: 'NYK won at Wells Fargo Center despite Embiid returning (18pts/35min, rusty from 5/6 OUT). Brunson 33/5/9 — 24th 30-pt playoff game (most in Knicks history). Bridges 23. Hart 12/11reb. KAT 8/12reb/7ast (4 OREB). Shamet bench spark 15pts. PHI: Oubre 22, Maxey 17, George 15 (all in Q1 then 0-of-9 the rest). OG Anunoby OUT (left hamstring strain). NYK wing pressure produced PHI 18 TOs. Sweep cliff with G4 Sunday in PHI.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-08',
+    severity: 'major',
+    series: 'SAS-MIN',
+    headline: 'SAS 115-108: Spurs take series lead 2-1 (Wemby 39/15)',
+    body: 'Wemby Kareem-tier line at Target Center: 39pts/15reb/5blk on 13-18 FG. Edwards back to starting lineup (15/7/1) but rust + SAS rotations limited his usual rim aggression. Castle 8pts/7ast as facilitator. Vassell + Champagnie + K.Johnson + Bryant each made 2 threes. SAS led 18-3 to start, MIN clawed back to 23-22 Q1, halftime 51-51, SAS up 86-79 entering Q4. Wemby\'s 15-reb floor (back-to-back games) was the structural anchor. Model: SAS by 9 pred, actual SAS by 7 (within 2pts — strongest pred of series). G4 in MIN Sunday.',
+    source: 'NBA.com / KSAT',
+  },
+
+  // ── May 9: G3 wave 2 ────────────────────────────────────────────
+  {
+    date: '2026-05-09',
+    severity: 'major',
+    series: 'OKC-LAL',
+    headline: 'OKC 131-108: Thunder one win from sweep (lead 3-0)',
+    body: 'Blowout at Crypto.com Arena. SGA 35-40pt range, Holmgren dominant, J.Williams full minutes. OKC bench every player +10 or better. LAL: LeBron 27, Reaves bounceback efficiency, but team-wide cold from 3 (~29%). Doncic still OUT. Series effectively over — historically 0-3 teams come back 0 of 154 attempts. G4 Sunday at LAL for sweep cliff.',
+    source: 'NBA.com',
+  },
+  {
+    date: '2026-05-09',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'CLE 116-109: Cavaliers break through, DET lead trimmed to 2-1',
+    body: 'CLE got the series win they needed at home. Mitchell sustained shotmaking, Mobley + Allen interior, Garland creation. DET: Cade led but turnover-heavy, Mitchell shot well, Duren solid. Series back in play. G4 at CLE Sunday.',
+    source: 'NBA.com',
+  },
+
+  // ── May 10: G4 wave 1 (NYK sweep + Wemby ejection) ─────────────
+  {
+    date: '2026-05-10',
+    severity: 'major',
+    series: 'NYK-PHI',
+    headline: 'NYK 144-114: KNICKS SWEEP 4-0, ADVANCE TO ECF',
+    body: 'NYK shot 25-of-44 from 3 (56.8%) — set postseason record for 3PT makes (or near it). McBride 25 off bench (7 threes), Brunson 22, Bridges + KAT + Hart all 15+. Embiid + Maxey combined 41 but PHI supporting cast no-showed. PHI shot 68% on 2s and still lost by 30 — variance event, not model failure. NYK awaits East CF opponent (DET or CLE). First Knicks ECF since 2024.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-10',
+    severity: 'major',
+    series: 'SAS-MIN',
+    headline: 'MIN 114-109: Wemby EJECTED Q2 (Flagrant 2), MIN evens series 2-2',
+    body: 'WEMBANYAMA EJECTED early Q2 on a Flagrant 2 — elbow to Naz Reid\'s neck/jaw on a double-team. First career ejection. Wemby line: 4/4/1 in 13min (2-5 FG). Edwards 36pts (16 in Q4), closed the door with a 4-pt swing in the final 4 minutes. Naz Reid 15/9 (the player who took the elbow, finished the game). SAS guards held the line (Harper/Fox/Castle 68 combined) but couldn\'t overcome the star loss. League ruling on Wemby\'s G5 status TBD — Flagrant 2 carries supplemental discipline risk.',
+    source: 'NBA.com / The Athletic',
+  },
+
+  // ── May 11: G4 wave 2 (OKC sweep + CLE evens) ──────────────────
+  {
+    date: '2026-05-11',
+    severity: 'major',
+    series: 'OKC-LAL',
+    headline: 'OKC 115-110: THUNDER SWEEP 4-0, ADVANCE TO WCF',
+    body: 'OKC closed at Crypto.com Arena. Tighter game than expected — LAL fought back from down 18 with LeBron + Reaves carrying. SGA delivered when needed in Q4. OKC moves on to West CF (vs SAS or MIN winner). +18, +18, +23, +5 series margins — structural dominance confirmed. OKC awaits West CF opponent.',
+    source: 'NBA.com',
+  },
+  {
+    date: '2026-05-11',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'CLE 112-103: Cavs even series 2-2 at home',
+    body: 'Mitchell shotmaking + Allen interior carried CLE in G4. DET kept it close behind Cade and Duren but couldn\'t overcome CLE\'s home crowd + Mitchell\'s Q4 closing. Series back to DET tied 2-2 with G5 at LCA Tuesday.',
+    source: 'NBA.com',
+  },
+
+  // ── May 12-13: G5 wave ─────────────────────────────────────────
+  {
+    date: '2026-05-12',
+    severity: 'major',
+    series: 'SAS-MIN',
+    headline: 'Wemby CLEARED (no suspension). SAS 126-97: leads 3-2',
+    body: 'NBA review completed Tuesday morning — no suspension or fine for Wemby\'s G4 Flagrant 2. He plays in G5. Then he delivered: 27pts/17reb/5ast/3blk + 2 made 3s. First player in NBA postseason history with that stat line since the 3PT line was introduced (1979-80). 18pts in Q1 set the tone. SAS led by as many as 30; 68-36 paint advantage. K.Johnson 21pts bench spark. Edwards regression after G3-G4 32/36 (knee fatigue + Castle perimeter D). SAS one win from WCF.',
+    source: 'NBA.com / KSAT',
+  },
+  {
+    date: '2026-05-13',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'CLE 117-113 OT: Cavs take 3-2 lead, DET on elimination',
+    body: 'Overtime thriller at LCA. Mitchell delivered down the stretch. DET pushed CLE to OT but couldn\'t close. Series shifts to CLE for G6 — DET must win to force G7 at LCA. Cade and Duren did everything they could; Mitchell + Mobley + Allen + Garland too much in the extra frame.',
+    source: 'NBA.com',
+  },
+
+  // ── May 15: G6 wave (SAS clinches, DET forces G7) ──────────────
+  {
+    date: '2026-05-15',
+    severity: 'major',
+    series: 'SAS-MIN',
+    headline: 'SAS 139-109: SPURS WIN SERIES 4-2, ADVANCE TO WCF VS OKC',
+    body: 'Wemby + Fox + Castle dismantled MIN on the road for the closeout. SAS will face OKC in the West CF — the team that swept LAL 4-0. Both 1/2 seeds advance as expected; the 38-pt G2 + 30-pt G5 + 30-pt G6 blowout pattern shows the talent gap was real after the MIN G1 upset. Wemby earns first career CF appearance.',
+    source: 'NBA.com',
+  },
+  {
+    date: '2026-05-15',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'DET 115-94 on the road: Series tied 3-3, G7 tonight',
+    body: 'DET\'s 21-pt road win in a G6-trailing-3-2 situation tied a 66-year-old NBA playoff record for largest road win by a team facing elimination. Cade led the way, Duren + Robinson + Holland contributed. CLE shot poorly from 3 and couldn\'t hit Mitchell-led shotmaking in front of their home crowd. G7 tonight at Rocket Mortgage FieldHouse — winner faces NYK in the East CF.',
+    source: 'NBA.com',
+  },
+
+  // ── May 16 (TODAY) — CF brackets nearly set ────────────────────
+  {
+    date: '2026-05-16',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'G7 tonight at CLE — winner faces NYK in East CF',
+    body: 'Detroit vs Cleveland Game 7, 8:00 PM ET at Rocket Mortgage FieldHouse. CLE -3.5 / total ~210.5 on DK. The winner takes on NYK in the East CF starting around 5/19. Mitchell vs Cade is the marquee matchup. CLE has home court and Mitchell\'s Q4 closing edge; DET has the road-win momentum after the +21 G6 blowout. Engine: CLE by 3-5 with HCA flip back in their favor.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-16',
+    severity: 'major',
+    series: 'OKC-LAL',
+    headline: 'WEST CF SET: OKC vs SAS, starts ~5/19 at OKC',
+    body: 'Both 1 seeds advanced via R2 sweeps. OKC (4-0 vs LAL, +18/+18/+23/+5 margins) hosts SAS (4-2 vs MIN, Wemby-led). The first conference finals matchup of two #1 seeds in their respective conferences since [historical context]. Wemby vs SGA is a generational matchup. Holmgren-Wemby paint battle. OKC depth vs SAS dynamic guard play. G1 spread will be tight despite OKC home court.',
+    source: 'NBA.com',
+  },
+  {
+    date: '2026-05-16',
+    severity: 'major',
+    series: 'NYK-PHI',
+    headline: 'NYK awaiting East CF opponent (DET or CLE)',
+    body: 'Knicks have been off since May 10 sweep — 6 days of rest by the time East CF G1 starts (~5/19). Both potential opponents have advantages: CLE is the higher seed with home court; DET has the road-win momentum and Cade. NYK opens CF as the team with the most playoff rest among the remaining four. Brunson + KAT + Bridges + Hart + OG (returning from hamstring) at full health.',
+    source: 'NBA.com',
+  },
 ];
