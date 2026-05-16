@@ -1038,6 +1038,32 @@ function runTests() {
     assert(cal50.calibrated < cal50.raw, `50-65% bucket calibrates DOWN (raw ${cal50.raw}, cal ${cal50.calibrated})`);
     assert(cal85.calibrated < cal85.raw, `80-95% bucket calibrates DOWN (raw ${cal85.raw}, cal ${cal85.calibrated})`);
     assert(cal98.calibrated === cal98.raw, `95-100% bucket unchanged (raw ${cal98.raw}, cal ${cal98.calibrated})`);
+
+    // 16g — Phase 65: buildReliableParlay + buildTraditionalParlay
+    const sm = c.SERIES_DATA.find(s => s.id === 'SAS-MIN');
+    if (sm) {
+      const mcSm = c.runMonteCarlo(sm, sm.games.findIndex(g => !g.winner) + 1, { iterations: 1000 });
+      const reliable = c.buildReliableParlay(mcSm, sm);
+      const traditional = c.buildTraditionalParlay(mcSm, sm);
+      if (reliable) {
+        assert(reliable.tier === 'reliable', 'reliable parlay carries tier label');
+        assert(reliable.score.combined >= 0.80,
+          `reliable combined >= 80% (got ${reliable.score.combined})`);
+        assert(reliable.legCount === 2 || reliable.legCount === 3,
+          `reliable is 2 or 3 legs (got ${reliable.legCount})`);
+      }
+      if (traditional) {
+        assert(traditional.tier === 'traditional', 'traditional parlay carries tier label');
+        assert(traditional.legCount >= 3, `traditional ≥ 3 legs (got ${traditional.legCount})`);
+        assert(typeof traditional.calibratedCombined === 'number',
+          'traditional carries calibratedCombined for honesty');
+        assert(traditional.calibratedCombined <= traditional.score.combined,
+          `calibrated ≤ raw MC (${traditional.calibratedCombined} ≤ ${traditional.score.combined})`);
+        assert(Array.isArray(traditional.calibratedLegHitRates) &&
+          traditional.calibratedLegHitRates.length === traditional.legCount,
+          'per-leg calibrated rates match leg count');
+      }
+    }
   }
 
   // ============================================================

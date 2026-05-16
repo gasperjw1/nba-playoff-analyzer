@@ -301,6 +301,25 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ## 6 · Featured Parlays for today
 
+**The recommended source for parlay authoring is the CHS Lab tab on
+the live site** — the page surfaces both a "Reliable Parlay" and a
+"Traditional Parlay" automatically from the Monte Carlo sim. Process:
+
+```
+1. Open https://gasperjw1.github.io/nba-playoff-analyzer/ → CHS Lab
+2. For each upcoming game card, the "Reliable Parlay Candidates"
+   panel shows:
+     - Top 8-12 alt lines at ≥80% MC hit, ≥-500 juice, realistic DK line
+     - A 2-3 leg Reliable Parlay (combined ≥80%) at small payout
+     - A 3-5 leg Traditional Parlay (no combined floor) at big payout
+3. Take the MC's leg suggestions, verify each line + juice on DK
+4. Author the parlay entries in FEATURED_PARLAYS with both date ===
+   CURRENT_DATE and category:'floor' or 'traditional'.
+```
+
+If the CHS Lab is unavailable (live engine errors), fall back to the
+manual workflow below.
+
 ```
 - In js/data/bets-data.js, find FEATURED_PARLAYS.
 - Confirm at least 3 entries with date === CURRENT_DATE.
@@ -350,6 +369,72 @@ dimension where the player has predictable volume:
 The May 7 + 8 sessions both started with pts/reb-only floor parlays
 that the user flagged as "is that all?" Inventory check answers it:
 points and rebounds are 2 of ~9 dimensions.
+
+### 6c · Reliable vs Traditional — when to use each (May 16+, Phase 65)
+
+The Monte Carlo + parlay-builder engine produces TWO distinct tiers:
+
+```
+Reliable Parlay (category:'floor'):
+  - 2-3 legs total
+  - Each leg ≥80% MC hit rate
+  - Combined ≥80% required
+  - Juice cap: ≥-500 American (no deeper)
+  - Realistic-line filter: only lines DK actually lists
+  - Payout: typically $30-90 per $100 stake
+  - Use case: consistent +EV plays, low variance
+
+Traditional Parlay (category:'traditional'):
+  - 3-5 legs total (engine prefers 5 if pool allows)
+  - Each leg ≥80% MC hit rate (same pool as Reliable)
+  - NO combined-hit floor
+  - Same juice cap, same realistic-line filter
+  - Carries `calibratedCombined` field: per-leg history-bucket
+    correction (the 80-95% MC bucket only delivered 67% historically;
+    that gets compounded for the calibrated estimate)
+  - Payout: typically +200 to +800 American (big upside)
+  - Use case: "win big money" plays. The model says each leg is
+    confident; history says the bucket is overconfident. If MC is
+    right, you get a 33-50% payout shot. If history is right, you
+    get a ~7-20% payout shot. The honest calibrated probability is
+    surfaced — sizing decision is up to you.
+```
+
+The daily task should author BOTH a Reliable and a Traditional
+parlay when the CHS Lab can assemble each. If neither tier produces
+a valid candidate from tonight's slate, document it honestly in
+FEATURED_PARLAYS rather than forcing a parlay.
+
+### 6d · MC sim infrastructure overview (May 9-16, Phase 61-65)
+
+Five new files were added in this stretch. Daily task should know
+they exist:
+
+```
+js/engine/monte-carlo.js     — Phase 61, runMonteCarlo(series, gameNum)
+                                returns margin distribution, win prob,
+                                blowoutRisk, per-player stat samples.
+                                Anchored to engine output; samples
+                                around team-level + player-level means.
+js/engine/parlay-builder.js  — Phase 63-65, findSafeLines (per-player
+                                ladder), safeLinesForAllPlayers (sorted
+                                top legs), scoreParlay (joint hit rate
+                                + EV), buildReliableParlay,
+                                buildTraditionalParlay, calibrateHitRate
+                                (apply 93-bet historical bucket correction)
+js/engine/projections-chs.js — Phase 52/59, CHS-on parallel projection
+                                path. CHS gated OFF in production via
+                                USE_CHS_IN_PROJECTIONS flag.
+js/engine/player-tendencies.js — Phase 60, exhaustionRisk, injuryProneRisk,
+                                techRisk, ejectionRisk per player.
+                                Used by MC to inject ejection events.
+js/data/chs-ledger.js        — Phase 61, append-only record of CHS
+                                shadow predictions vs actuals.
+```
+
+The CHS Lab tab on the live site uses all of these. If the daily task
+ever needs to inspect "what does the engine think about tonight",
+visit /?bust=1 → CHS Lab is the canonical view.
 
 ---
 

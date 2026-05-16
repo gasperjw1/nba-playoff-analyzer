@@ -268,12 +268,129 @@ function calibrateHitRate(rawProb) {
   };
 }
 
+// ── Shared candidate-pool builder ────────────────────────────────────
+// Both Reliable and Traditional draw from the SAME pool of model-
+// confident legs (≥80% MC, realistic line, payable juice). Where they
+// differ is how many legs they combine and what combined-hit floor
+// they require.
+function _candidatePool(simResult, opts) {
+  opts = opts || {};
+  const rows = safeLinesForAllPlayers(simResult, {
+    threshold: 0.80,
+    maxJuice: opts.maxJuice || -500,
+  });
+  const seenPlayers = new Set();
+  const candidates = [];
+  for (const r of rows) {
+    if (seenPlayers.has(r.player)) continue;
+    seenPlayers.add(r.player);
+    candidates.push({
+      type: 'prop', player: r.player, stat: r.stat,
+      line: r.line, direction: 'over',
+      hitRate: r.hitRate, estJuice: r.estJuice,
+    });
+  }
+  return candidates;
+}
+
+// ── _scoreConfig: helper that scores a specific leg combination ──────
+function _scoreConfig(simResult, series, legs) {
+  const dec = legs.map(l => l.estJuice > 0 ? 1 + l.estJuice / 100 : 1 + 100 / -l.estJuice);
+  const combinedDec = dec.reduce((a, b) => a * b, 1);
+  const american = combinedDec > 2 ? Math.round((combinedDec - 1) * 100)
+                                   : Math.round(-100 / (combinedDec - 1));
+  const score = scoreParlay(simResult, series, legs, american);
+  if (!score) return null;
+  return { legs, score, parlayJuice: american };
+}
+
+// ── buildReliableParlay ──────────────────────────────────────────────
+// 2 or 3 legs, combined ≥80% required. Prefers fewer legs (lower
+// variance). Returns null if combined floor unreachable from available
+// pool — don't force a parlay.
+function buildReliableParlay(simResult, series, opts) {
+  opts = opts || {};
+  const combinedThreshold = opts.combinedThreshold || 0.80;
+  const candidates = _candidatePool(simResult, opts);
+  if (candidates.length < 2) return null;
+
+  // Try 2 legs first (easier to clear, less variance)
+  const two = _scoreConfig(simResult, series, candidates.slice(0, 2));
+  if (two && two.score.combined >= combinedThreshold) {
+    return { ...two, tier: 'reliable', legCount: 2 };
+  }
+  // Fall back to 3 legs
+  if (candidates.length >= 3) {
+    const three = _scoreConfig(simResult, series, candidates.slice(0, 3));
+    if (three && three.score.combined >= combinedThreshold) {
+      return { ...three, tier: 'reliable', legCount: 3 };
+    }
+  }
+  return null;
+}
+
+// ── buildTraditionalParlay ───────────────────────────────────────────
+// "Value swing" parlay: SAME pool of model-confident legs (≥80% MC)
+// but stacked DEEPER (4-5 legs) so combined payout grows large. NO
+// combined-hit floor — accept lower hit rate (~40-55% for 4 legs, 30-
+// 45% for 5 legs) in exchange for +300 to +800 American payout.
+//
+// Surfaces both raw MC combined AND historically-calibrated combined
+// so the user sees the honest probability. The calibration table from
+// the 93-bet historical run shows the 80-95% raw bucket actually
+// delivers ~67%; this gets applied per-leg and re-compounded.
+//
+// Strategy: try 3, 4, 5 legs and pick the config with the highest EV
+// per $100 stake. Tie-breaker: higher combined hit rate.
+function buildTraditionalParlay(simResult, series, opts) {
+  opts = opts || {};
+  const candidates = _candidatePool(simResult, opts);
+  if (candidates.length < 3) return null;
+
+  // Traditional is the "win big money" tier — prefer LONGEST viable
+  // config (5 legs if pool allows, else 4, else 3). User picks the
+  // shorter form by tuning opts.legCount.
+  const targetLegs = opts.legCount || Math.min(5, candidates.length);
+  const configs = [];
+  if (candidates.length >= Math.max(3, targetLegs)) {
+    configs.push(_scoreConfig(simResult, series, candidates.slice(0, targetLegs)));
+  } else if (candidates.length >= 3) {
+    configs.push(_scoreConfig(simResult, series, candidates.slice(0, candidates.length)));
+  }
+  const valid = configs.filter(c => c !== null);
+  if (!valid.length) return null;
+  const best = valid[0];
+
+  // Compound the per-leg calibrated probability for an honest combined
+  // estimate. Per-leg 80-95% raw → ~67% calibrated. Apply per-leg then
+  // multiply (assuming independence — this is a UPPER bound, real joint
+  // is slightly higher due to correlation).
+  const calibratedLegs = best.legs.map(l => {
+    const c = calibrateHitRate(l.hitRate);
+    return c ? c.calibrated : l.hitRate;
+  });
+  const calibratedCombined = calibratedLegs.reduce((a, b) => a * b, 1);
+  const cal = calibrateHitRate(best.score.combined);
+
+  return {
+    ...best,
+    tier: 'traditional',
+    legCount: best.legs.length,
+    calibrated: cal,
+    calibratedCombined: +calibratedCombined.toFixed(3),
+    calibratedLegHitRates: calibratedLegs.map(x => +x.toFixed(3)),
+    note: 'High MC confidence but historical 80-95% bucket only delivered 67%. Bigger payout, accept lower hit rate. The calibrated combined is the honest estimate; raw is what the model says.',
+  };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     findSafeLines,
     safeLinesForAllPlayers,
     scoreParlay,
     calibrateHitRate,
+    buildReliableParlay,
+    buildTraditionalParlay,
     _americanToImplied,
     _americanToMult,
   };

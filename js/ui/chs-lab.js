@@ -216,43 +216,11 @@ function chsLabRenderParlayCandidates() {
     const reliable = safeLinesForAllPlayers(mc, { threshold: 0.80, maxJuice: -500 });
     const top10 = reliable.slice(0, 10);
 
-    // Suggested parlay: build the SHORTEST parlay where each leg ≥85%
-    // AND combined ≥80%. Prefer 2 legs (easier to clear); fall back to
-    // 3 legs from different players if 2-leg combined < 80%.
-    const seenPlayers = new Set();
-    const tryLegs = [];
-    for (const row of reliable) {
-      if (seenPlayers.has(row.player)) continue;
-      if (row.hitRate < 0.85) continue;          // strong per-leg floor
-      seenPlayers.add(row.player);
-      tryLegs.push({ type: 'prop', player: row.player, stat: row.stat,
-                     line: row.line, direction: 'over',
-                     hitRate: row.hitRate, estJuice: row.estJuice });
-      if (tryLegs.length >= 3) break;
-    }
-    // Score 2-leg first; if it clears 80% combined, use it.
-    let floorLegs = null, floorScore = null, parlayJuice = null;
-    if (tryLegs.length >= 2) {
-      const candidate2 = tryLegs.slice(0, 2);
-      // Compute combined parlay juice by multiplying decimal odds:
-      //   mult = product(1 + 100/legJuice_abs) per American odds math
-      const dec2 = candidate2.map(l => l.estJuice > 0 ? 1 + l.estJuice/100 : 1 + 100/-l.estJuice);
-      const combinedDec2 = dec2.reduce((a,b) => a*b, 1);
-      const american2 = combinedDec2 > 2 ? Math.round((combinedDec2-1)*100) : Math.round(-100/(combinedDec2-1));
-      const s2 = scoreParlay(mc, series, candidate2, american2);
-      if (s2 && s2.combined >= 0.80) {
-        floorLegs = candidate2; floorScore = s2; parlayJuice = american2;
-      } else if (tryLegs.length >= 3) {
-        const candidate3 = tryLegs.slice(0, 3);
-        const dec3 = candidate3.map(l => l.estJuice > 0 ? 1 + l.estJuice/100 : 1 + 100/-l.estJuice);
-        const combinedDec3 = dec3.reduce((a,b) => a*b, 1);
-        const american3 = combinedDec3 > 2 ? Math.round((combinedDec3-1)*100) : Math.round(-100/(combinedDec3-1));
-        const s3 = scoreParlay(mc, series, candidate3, american3);
-        if (s3 && s3.combined >= 0.80) {
-          floorLegs = candidate3; floorScore = s3; parlayJuice = american3;
-        }
-      }
-    }
+    // Phase 65: build BOTH reliable + traditional parlay variants
+    const reliableParlay = typeof buildReliableParlay === 'function'
+      ? buildReliableParlay(mc, series) : null;
+    const traditionalParlay = typeof buildTraditionalParlay === 'function'
+      ? buildTraditionalParlay(mc, series) : null;
 
     const fmtJuice = (j) => j == null ? '?' : (j > 0 ? '+' + j : String(j));
 
@@ -278,33 +246,40 @@ function chsLabRenderParlayCandidates() {
             </tr>`).join('')}
         </table>`;
 
-    let floorBlock = '';
-    if (floorScore && floorLegs) {
-      const verdictColor = floorScore.verdict === 'STRONG +EV' ? '#22c55e'
-                        : floorScore.verdict === 'POSITIVE' ? '#22d3ee'
-                        : floorScore.verdict === 'FLAT' ? '#eab308'
+    function renderParlayBlock(parlay, tierLabel, tierColor) {
+      if (!parlay) {
+        return `
+          <div style="margin-top:10px;padding:8px;background:rgba(245, 158, 11, 0.06);border:1px solid rgba(245,158,11,0.25);border-radius:6px;font-size:10px;color:#f59e0b;">
+            No ${tierLabel.toLowerCase()} parlay assembled from available legs.
+          </div>`;
+      }
+      const { legs, score, parlayJuice, calibrated } = parlay;
+      const verdictColor = score.verdict === 'STRONG +EV' ? '#22c55e'
+                        : score.verdict === 'POSITIVE' ? '#22d3ee'
+                        : score.verdict === 'FLAT' ? '#eab308'
                         : '#ef4444';
-      const legSummary = floorLegs.map(l => {
+      const legSummary = legs.map(l => {
         const last = l.player.split(' ').pop();
         return `${last} ${l.stat}o${l.line} (${(l.hitRate*100).toFixed(0)}% ${fmtJuice(l.estJuice)})`;
       }).join(' + ');
-      floorBlock = `
-        <div style="margin-top:10px;padding:10px;background:rgba(34, 197, 94, 0.06);border:1px solid rgba(34,197,94,0.25);border-radius:6px;">
-          <div style="font-size:10px;letter-spacing:0.5px;color:#22c55e;text-transform:uppercase;margin-bottom:6px;font-weight:700;">RELIABLE PARLAY · ≥80% COMBINED</div>
+      const calibratedSpan = calibrated
+        ? `<div style="margin-top:4px;font-size:9px;color:var(--text-dim);">
+             MC raw ${(calibrated.raw*100).toFixed(0)}% · historical calibration (${calibrated.bucket} bucket): <strong style="color:${tierColor};">${(calibrated.calibrated*100).toFixed(0)}%</strong>
+             — the 80-95% bucket has only delivered ~67% historically, so this is the honest probability.
+           </div>` : '';
+      return `
+        <div style="margin-top:10px;padding:10px;background:rgba(${tierColor === '#22c55e' ? '34, 197, 94' : '167, 139, 250'}, 0.06);border:1px solid ${tierColor};border-radius:6px;">
+          <div style="font-size:10px;letter-spacing:0.5px;color:${tierColor};text-transform:uppercase;margin-bottom:6px;font-weight:700;">${tierLabel}</div>
           <div style="font-size:11px;color:var(--text);margin-bottom:6px;line-height:1.5;">${legSummary}</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
-            <div>Combined: <strong style="color:#22c55e;">${(floorScore.combined*100).toFixed(0)}%</strong></div>
+            <div>Combined: <strong style="color:${tierColor};">${(score.combined*100).toFixed(0)}%</strong></div>
             <div>Est. parlay juice: <strong style="color:var(--text);">${fmtJuice(parlayJuice)}</strong></div>
-            <div>Payout/$100: <strong style="color:var(--text);">$${floorScore.payoutIfHit.toFixed(0)}</strong></div>
+            <div>Payout/$100: <strong style="color:var(--text);">$${score.payoutIfHit.toFixed(0)}</strong></div>
           </div>
           <div style="margin-top:4px;font-size:10px;color:var(--text-dim);line-height:1.5;">
-            EV $${floorScore.evPer100}/$100 · ${floorScore.verdict} · vs naive product ${(floorScore.naiveProduct*100).toFixed(0)}% (${floorScore.correlationBoost >= 0 ? '+' : ''}${(floorScore.correlationBoost*100).toFixed(1)}pp correlation).
+            EV $${score.evPer100}/$100 · ${score.verdict} · ${legs.length} legs · vs naive product ${(score.naiveProduct*100).toFixed(0)}%
           </div>
-        </div>`;
-    } else {
-      floorBlock = `
-        <div style="margin-top:10px;padding:8px;background:rgba(245, 158, 11, 0.06);border:1px solid rgba(245,158,11,0.25);border-radius:6px;font-size:10px;color:#f59e0b;">
-          No 80%+ combined parlay found from available legs. Stick to single-leg picks above.
+          ${calibratedSpan}
         </div>`;
     }
 
@@ -315,7 +290,8 @@ function chsLabRenderParlayCandidates() {
           <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims · ${reliable.length} reliable legs</span>
         </div>
         ${reliableTable}
-        ${floorBlock}
+        ${renderParlayBlock(reliableParlay, 'RELIABLE PARLAY · ≥80% COMBINED', '#22c55e')}
+        ${renderParlayBlock(traditionalParlay, 'TRADITIONAL · MODEL-CONFIDENT BIG-PAYOUT', '#a78bfa')}
       </div>`;
   }).join('');
 
