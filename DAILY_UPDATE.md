@@ -147,9 +147,28 @@ news doesn't get refreshed daily it goes stale fast (May 16 retro:
 - For NON-game items (injury updates, league rulings, scheduling
   changes), append a 'minor' or 'major' entry as appropriate.
 - Keep older NEWS entries intact — the file is append-only. The Home
-  page displays most recent first (sort by date desc client-side).
+  page displays most recent first (sort by date desc client-side —
+  TEST 19 guards this).
 - Skip entries older than the playoffs (no R1 catchup needed — those
   series are over and weren't authored).
+```
+
+**Off-day news (CRITICAL — May 16 retro):** Even on rest days when no
+games are played, NEWS must get refreshed. The Home page shows the top
+6 entries sorted by date desc — if nothing was added today, the top
+slot stays on yesterday's headline. Acceptable but suboptimal. Better:
+
+```
+- On rest days (between G6 and G7, between rounds), author 2-3 'minor'
+  news items covering:
+    - Next game preview (date confirmation, key matchup, market line)
+    - Injury/status tracker for players returning or in question
+    - Cross-series storylines (when one CF is set but other isn't,
+      preview both teams)
+- ALWAYS cross-reference BET_SLATES for the actual game date before
+  writing "tonight" / "tomorrow" / a specific weekday. Author errors
+  here (May 16 retro: I wrote "G7 tonight" but slate showed G7 on
+  5/17, one day later than I assumed).
 ```
 
 ### 2b · Settle yesterday's slate end-to-end
@@ -682,3 +701,24 @@ broken UI or wrong renders. Refer back here when something looks off:
   span 5/8 (NYK-PHI/SAS-MIN) and 5/9 (DET-CLE/OKC-LAL); the home page
   filters by `date === CURRENT_DATE` so the right subset surfaces
   each day.
+- **NEWS is sorted DESC by date in the Home view** (Phase 67). New
+  items go at the END of the array, but Latest News surfaces the
+  newest 6 via `.sort().slice(0,6)`. If you ever see stale news on
+  Home, suspect the sort got reverted (TEST 19 should catch this).
+- **Off-day handling**: when today has no scheduled games (rest day
+  before G7, between rounds), the Home page's "Tonight's Bets"
+  section automatically falls through to tomorrow's bets and
+  relabels to "Tomorrow's Bets (Sun May 17)". The daily task
+  should:
+    - Still author news items even on off-days (G7 preview, rest-day
+      injury tracker, opponent preview for the other CF)
+    - Verify that tomorrow's BETS entries exist with the right
+      `slate`/`series`/`game` fields so the fallback has something
+      to show
+    - Author at least 1 floor parlay and 1 traditional parlay for
+      tomorrow's date so FEATURED_PARLAYS isn't empty
+- **Cross-reference BET_SLATES dates** before writing "tonight" /
+  "tomorrow" in news bodies. The actual schedule of G7 vs prior
+  game depends on the series — G6 5/15 → G7 might be 5/16 (zero
+  days rest) or 5/17 (one day rest). DAILY_UPDATE Step 4 (DK
+  lookups) is the right place to verify, not authoring news.

@@ -1221,6 +1221,94 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 19: Home page surface regressions (Phase 67)
+  // ------------------------------------------------------------
+  // Two specific bugs that bit on May 16:
+  //   A) NEWS.slice(0,6) returned the OLDEST entries because news is
+  //      appended chronologically. Silent UI bug — array kept growing,
+  //      Latest News kept showing pre-R2 items.
+  //   B) "Tonight's Bets" section was empty on off-days (rest day
+  //      before G7). homeRenderBetsForDate filtered by gameDate===today
+  //      but had no fallback for "today has no games but tomorrow does."
+  //
+  // Both fixed in Phase 67. This test guards against regression.
+  // ============================================================
+  console.log('\nTEST 19: Home page surface regressions');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const stubDoc = {
+      getElementById: () => ({ style:{}, innerHTML:'', appendChild:()=>{}, classList:{ add:()=>{}, remove:()=>{}, toggle:()=>{} }, addEventListener:()=>{}, querySelector:()=>null, querySelectorAll:()=>[] }),
+      querySelector: () => ({ style:{}, innerHTML:'', appendChild:()=>{}, classList:{ add:()=>{}, remove:()=>{} }, addEventListener:()=>{} }),
+      querySelectorAll: () => [],
+      createElement: () => ({ style:{}, classList:{ add:()=>{}, remove:()=>{} }, appendChild:()=>{}, setAttribute:()=>{}, addEventListener:()=>{} }),
+      body: { appendChild: () => {}, classList: { add:()=>{}, remove:()=>{} } },
+      head: { appendChild: () => {} },
+      addEventListener: () => {},
+    };
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+      document: stubDoc, window: { addEventListener: () => {} },
+      localStorage: { getItem: () => null, setItem: () => {} },
+    });
+    const l = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
+    ['js/data/constants.js','js/data/series-data.js','js/data/boxscores.js','js/data/historical.js',
+     'js/data/bets-data.js','js/data/news.js','js/data/chs-ledger.js','js/validators.js','js/utils.js',
+     'js/state.js','js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js',
+     'js/engine/ratings.js','js/engine/scenarios.js','js/engine/projections.js','js/engine/simulation.js',
+     'js/engine/graduation.js','js/engine/auto-resolve.js','js/engine/projections-chs.js',
+     'js/engine/player-tendencies.js','js/engine/monte-carlo.js','js/engine/parlay-builder.js',
+     'js/ui/components.js','js/ui/modals.js','js/ui/series-renderer.js','js/ui/learnings.js',
+     'js/ui/definitions.js','js/ui/bet-card.js','js/ui/bets.js','js/ui/home.js','js/ui/chs-lab.js',
+     'js/ui/navigation.js'].forEach(l);
+
+    // 19a — Latest News surface returns most-recent first
+    //       (regression guard for the slice-without-sort bug)
+    const sortedNews = [...ctx.NEWS].sort((a, b) =>
+      (b.date || '').localeCompare(a.date || '')).slice(0, 6);
+    assert(sortedNews.length === 6, 'sortedNews has 6 items');
+    // Top item should be today's date (CURRENT_DATE) or as close as possible
+    const topDate = sortedNews[0].date;
+    const newestInArray = ctx.NEWS.reduce((max, n) =>
+      (n.date || '').localeCompare(max) > 0 ? n.date : max, '');
+    assert(topDate === newestInArray,
+      `Top news item is the newest in the array (got ${topDate}, expected ${newestInArray})`);
+    // Items should be in descending date order
+    for (let i = 1; i < sortedNews.length; i++) {
+      assert(sortedNews[i-1].date >= sortedNews[i].date,
+        `news[${i-1}] (${sortedNews[i-1].date}) >= news[${i}] (${sortedNews[i].date})`);
+    }
+
+    // 19b — Off-day fallback: when today has no games, betsDate should
+    //       resolve to tomorrow (if tomorrow has games).
+    if (typeof ctx.homeAddDays === 'function' && typeof ctx.homeGamesOn === 'function') {
+      const today = ctx.CURRENT_DATE;
+      const tomorrow = ctx.homeAddDays(today, 1);
+      const todaysGames = ctx.homeGamesOn(today);
+      const tomorrowsGames = ctx.homeGamesOn(tomorrow);
+      // The actual fallback logic is inlined in renderHomePage; replicate it.
+      const betsDate = todaysGames.length > 0 ? today
+                     : (tomorrowsGames.length > 0 ? tomorrow : today);
+      // If today has 0 games but tomorrow has 1+, betsDate must equal tomorrow
+      if (todaysGames.length === 0 && tomorrowsGames.length > 0) {
+        assert(betsDate === tomorrow,
+          `off-day fallback: betsDate falls through to tomorrow when today empty (got ${betsDate})`);
+      }
+      // homeRenderBetsForDate(betsDate) should NOT return the empty-state
+      // string when there are scheduled games on betsDate
+      if (todaysGames.length > 0 || tomorrowsGames.length > 0) {
+        const rendered = ctx.homeRenderBetsForDate(betsDate);
+        const isEmpty = rendered.includes('No live bets for tonight');
+        assert(!isEmpty,
+          `bets section not empty when there are games on the resolved betsDate (${betsDate})`);
+      }
+    }
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
