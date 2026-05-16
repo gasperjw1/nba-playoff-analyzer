@@ -189,6 +189,110 @@ function chsLabRenderLivePreview() {
     </div>`;
 }
 
+// Phase 63: Parlay candidates panel — leverages parlay-builder.js to
+// surface deepest safe lines per player per game, plus suggested 2-3
+// leg parlay structures with MC-backed combined hit rates.
+function chsLabRenderParlayCandidates() {
+  if (typeof SERIES_DATA === 'undefined' || typeof runMonteCarlo !== 'function'
+    || typeof safeLinesForAllPlayers !== 'function' || typeof scoreParlay !== 'function') return '';
+  const r2 = SERIES_DATA.filter(s => s.round === 'R2');
+  const upcoming = [];
+  r2.forEach(s => {
+    s.games.forEach(g => {
+      if (!g || g.winner || !g.prediction) return;
+      try {
+        const mc = runMonteCarlo(s, g.num, { iterations: 1500 });
+        if (!mc) return;
+        upcoming.push({ series: s, gameNum: g.num, mc });
+      } catch (e) {}
+    });
+  });
+  if (!upcoming.length) return '';
+
+  const blocks = upcoming.map(({ series, gameNum, mc }) => {
+    const safe90 = safeLinesForAllPlayers(mc, { threshold: 0.90 }).slice(0, 8);
+    const safe85 = safeLinesForAllPlayers(mc, { threshold: 0.85 })
+      .filter(r => !safe90.find(s => s.player === r.player && s.stat === r.stat))
+      .slice(0, 5);
+
+    // Suggested 3-leg "Reliable Floor" parlay: pick the top 3 safe90
+    // lines from different players (avoid 2 stats on same player —
+    // makes correlation too tight) and score the combined hit rate.
+    const seenPlayers = new Set();
+    const floorLegs = [];
+    for (const row of safe90) {
+      if (seenPlayers.has(row.player)) continue;
+      seenPlayers.add(row.player);
+      floorLegs.push({ type: 'prop', player: row.player, stat: row.stat, line: row.line, direction: 'over' });
+      if (floorLegs.length >= 3) break;
+    }
+
+    let floorScore = null;
+    if (floorLegs.length >= 2) {
+      // Estimate +100 odds as a placeholder; user fills in actual DK juice.
+      floorScore = scoreParlay(mc, series, floorLegs, +100);
+    }
+
+    const safeRowHtml = (rows, label, color) => {
+      if (!rows.length) return '';
+      return `
+        <div style="margin-bottom:8px;">
+          <div style="font-size:9px;letter-spacing:0.5px;color:${color};text-transform:uppercase;margin-bottom:4px;">${label}</div>
+          <table style="width:100%;font-size:11px;border-collapse:collapse;">
+            ${rows.map(r => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:3px 6px;color:var(--text);">${r.player}</td>
+                <td style="padding:3px 6px;color:var(--text-dim);">${r.stat}</td>
+                <td style="padding:3px 6px;text-align:right;color:var(--text);">o${r.line}</td>
+                <td style="padding:3px 6px;text-align:right;color:${color};font-weight:700;">${(r.hitRate*100).toFixed(0)}%</td>
+              </tr>`).join('')}
+          </table>
+        </div>`;
+    };
+
+    let floorBlock = '';
+    if (floorScore) {
+      const verdictColor = floorScore.verdict === 'STRONG +EV' ? '#22c55e'
+                        : floorScore.verdict === 'POSITIVE' ? '#22d3ee'
+                        : floorScore.verdict === 'FLAT' ? '#eab308'
+                        : '#ef4444';
+      const legSummary = floorLegs.map(l => `${l.player.split(' ').pop()} ${l.stat}o${l.line}`).join(' + ');
+      floorBlock = `
+        <div style="margin-top:10px;padding:8px;background:rgba(34, 197, 94, 0.06);border:1px solid rgba(34,197,94,0.25);border-radius:6px;">
+          <div style="font-size:10px;letter-spacing:0.5px;color:#22c55e;text-transform:uppercase;margin-bottom:4px;">Suggested 3-leg floor</div>
+          <div style="font-size:11px;color:var(--text);margin-bottom:4px;">${legSummary}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px;">
+            <div>Combined: <strong style="color:#22c55e;">${(floorScore.combined*100).toFixed(0)}%</strong></div>
+            <div>vs naive: ${(floorScore.naiveProduct*100).toFixed(0)}% (${floorScore.correlationBoost >= 0 ? '+' : ''}${(floorScore.correlationBoost*100).toFixed(1)}pp)</div>
+            <div style="color:${verdictColor};font-weight:700;">${floorScore.verdict}</div>
+          </div>
+          <div style="margin-top:4px;font-size:9px;color:var(--text-dim);">At +100 (est): EV $${floorScore.evPer100}/$100. Replace odds with actual DK juice before placing.</div>
+        </div>`;
+    }
+
+    return `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:13px;font-weight:700;color:#fff;">${series.id} · G${gameNum}</span>
+          <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims</span>
+        </div>
+        ${safeRowHtml(safe90, 'Deep alts · ≥90% hit', '#22c55e')}
+        ${safeRowHtml(safe85, 'Mid alts · 85-90%', '#22d3ee')}
+        ${floorBlock}
+      </div>`;
+  }).join('');
+
+  return `
+    <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 12px;">RELIABLE PARLAY CANDIDATES · MC-DERIVED</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(380px, 1fr));gap:16px;margin-bottom:24px;">
+      ${blocks}
+    </div>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:-8px;margin-bottom:24px;line-height:1.5;">
+      Deep alt lines are the deepest DK/FD alt line where MC says ≥90% hit (or 85% for mid alts). Hit rates are MC-derived, not historical — pair with the calibration table to gut-check.
+      Suggested floor parlay picks 3 different players' top deep-alt lines and scores joint hit rate via correlation-preserving MC math. Verdict label is vs +100 implied (50%); compute actual edge against the real DK odds at place time.
+    </div>`;
+}
+
 function chsLabRenderLedger(ledger) {
   if (!ledger.length) return '';
   const rows = ledger.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(e => {
@@ -251,6 +355,7 @@ function renderCHSLabPage(el) {
 
       ${chsLabRenderScoreboard(agg)}
       ${chsLabRenderLivePreview()}
+      ${chsLabRenderParlayCandidates()}
       ${chsLabRenderLedger(ledger)}
 
       <div style="margin-top:24px;font-size:11px;color:var(--text-dim);line-height:1.6;">

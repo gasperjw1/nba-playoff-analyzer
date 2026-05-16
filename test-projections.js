@@ -955,6 +955,78 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 16: Parlay builder — findSafeLines + scoreParlay (Phase 63)
+  // ------------------------------------------------------------
+  // Verifies the recommender layer on top of the MC: deepest alt-line
+  // discovery produces monotonic ladders (line95.hitRate >= line90 >=
+  // line85 >= line75), and scoreParlay returns coherent EV math.
+  // ============================================================
+  console.log('\nTEST 16: Parlay builder');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const c = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const l = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), c);
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js','js/engine/monte-carlo.js',
+     'js/engine/parlay-builder.js'].forEach(l);
+
+    const nyk = c.SERIES_DATA.find(s => s.id === 'NYK-PHI');
+    const mc = c.runMonteCarlo(nyk, 1, { iterations: 600 });
+
+    // 16a — findSafeLines returns monotonic ladder
+    const safe = c.findSafeLines(mc, 'Jalen Brunson', 'pts');
+    assert(safe !== null, 'findSafeLines returns non-null');
+    assert(safe.line95.line <= safe.line90.line, `line95 (${safe.line95.line}) <= line90 (${safe.line90.line})`);
+    assert(safe.line90.line <= safe.line85.line, `line90 <= line85`);
+    assert(safe.line85.line <= safe.line75.line, `line85 <= line75`);
+    assert(safe.line95.hitRate >= 0.90, `line95 hit rate >= 90% (got ${safe.line95.hitRate})`);
+    assert(safe.line75.hitRate >= 0.65, `line75 hit rate >= 65% (got ${safe.line75.hitRate})`);
+
+    // 16b — safeLinesForAllPlayers returns a sorted list
+    const rows = c.safeLinesForAllPlayers(mc, { threshold: 0.85 });
+    assert(Array.isArray(rows) && rows.length > 0, 'safeLinesForAllPlayers returns rows');
+    for (let i = 1; i < Math.min(10, rows.length); i++) {
+      assert(rows[i-1].hitRate >= rows[i].hitRate,
+        `sorted desc at index ${i} (${rows[i-1].hitRate} >= ${rows[i].hitRate})`);
+    }
+
+    // 16c — scoreParlay returns coherent EV math
+    const score = c.scoreParlay(mc, nyk, [
+      { type: 'ml', team: 'NYK' },
+      { type: 'prop', player: 'Brunson', stat: 'pts', line: 20, direction: 'over' },
+    ], +120);
+    assert(score && typeof score.combined === 'number', 'scoreParlay returns combined');
+    assert(typeof score.impliedProb === 'number' && score.impliedProb > 0 && score.impliedProb < 1,
+      `impliedProb in (0,1) (got ${score.impliedProb})`);
+    assert(score.edge === +(score.combined - score.impliedProb).toFixed(3),
+      `edge = combined - impliedProb (got edge ${score.edge}, expected ${score.combined - score.impliedProb})`);
+    assert(['STRONG +EV', 'POSITIVE', 'FLAT', 'NEGATIVE'].includes(score.verdict),
+      `verdict is valid label (got ${score.verdict})`);
+
+    // 16d — EV sign matches edge sign
+    if (score.edge > 0.03) assert(score.evPer100 > 0, `positive edge → positive EV (got edge ${score.edge}, ev ${score.evPer100})`);
+    if (score.edge < -0.03) assert(score.evPer100 < 0, `negative edge → negative EV (got edge ${score.edge}, ev ${score.evPer100})`);
+
+    // 16e — American odds helpers round-trip
+    assert(Math.abs(c._americanToImplied(+100) - 0.50) < 0.001, '+100 → 0.50 implied');
+    assert(Math.abs(c._americanToImplied(-200) - 0.667) < 0.005, '-200 → 0.667 implied');
+    assert(Math.abs(c._americanToMult(+150) - 2.50) < 0.001, '+150 → 2.50 multiplier');
+    assert(Math.abs(c._americanToMult(-150) - 1.667) < 0.005, '-150 → 1.667 multiplier');
+
+    // 16f — calibrateHitRate applies expected corrections
+    const cal50 = c.calibrateHitRate(0.55);
+    const cal85 = c.calibrateHitRate(0.85);
+    const cal98 = c.calibrateHitRate(0.98);
+    assert(cal50.calibrated < cal50.raw, `50-65% bucket calibrates DOWN (raw ${cal50.raw}, cal ${cal50.calibrated})`);
+    assert(cal85.calibrated < cal85.raw, `80-95% bucket calibrates DOWN (raw ${cal85.raw}, cal ${cal85.calibrated})`);
+    assert(cal98.calibrated === cal98.raw, `95-100% bucket unchanged (raw ${cal98.raw}, cal ${cal98.calibrated})`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
