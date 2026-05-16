@@ -1117,6 +1117,110 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 18: Boot-time integration sweep (Phase 66 hotfix follow-up)
+  // ------------------------------------------------------------
+  // Phase 60 added CF scaffolds (NYK-TBD, OKC-TBD) with TBD awayTeams.
+  // The stubs were missing `players: []`, and js/state.js
+  // initScenarioState() spreads `s.awayTeam.players` at boot —
+  // resulting in TypeError: "players is not iterable" → entire Home
+  // page never renders. Tests passed individually because none of
+  // them exercised the BOOT PATH end-to-end.
+  //
+  // This test loads every script in the order index.html does and
+  // calls each boot-time entry point. Catches the class of bug where
+  // a script in isolation works but the boot sequence crashes.
+  // ============================================================
+  console.log('\nTEST 18: Boot-time integration sweep');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    // Stub the DOM enough that app.js doesn't crash on document/window calls.
+    // We don't try to actually render — just verify NO scripts throw.
+    const stubDocument = {
+      getElementById: () => ({ style: {}, innerHTML: '', appendChild: () => {}, classList: { add:()=>{}, remove:()=>{}, toggle:()=>{} }, addEventListener: () => {}, querySelector: () => null, querySelectorAll: () => [] }),
+      querySelector: () => ({ style: {}, innerHTML: '', appendChild: () => {}, classList: { add:()=>{}, remove:()=>{} }, addEventListener: () => {} }),
+      querySelectorAll: () => [],
+      createElement: () => ({ style: {}, classList: { add:()=>{}, remove:()=>{} }, appendChild:()=>{}, setAttribute:()=>{}, addEventListener:()=>{} }),
+      body: { appendChild: () => {}, classList: { add:()=>{}, remove:()=>{} } },
+      head: { appendChild: () => {} },
+      addEventListener: () => {},
+    };
+    const bctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+      document: stubDocument,
+      window: { addEventListener: () => {}, location: { reload: () => {} } },
+      localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+      navigator: { userAgent: 'node-test' },
+    });
+
+    const bootSequence = [
+      'js/data/constants.js', 'js/data/series-data.js', 'js/data/boxscores.js',
+      'js/data/historical.js', 'js/data/bets-data.js', 'js/data/news.js',
+      'js/data/chs-ledger.js', 'js/validators.js', 'js/utils.js', 'js/state.js',
+      'js/engine/fatigue.js', 'js/engine/chemistry.js', 'js/engine/matchups.js',
+      'js/engine/ratings.js', 'js/engine/scenarios.js', 'js/engine/projections.js',
+      'js/engine/simulation.js', 'js/engine/graduation.js', 'js/engine/auto-resolve.js',
+      'js/engine/projections-chs.js', 'js/engine/player-tendencies.js',
+      'js/engine/monte-carlo.js', 'js/engine/parlay-builder.js',
+      'js/ui/components.js', 'js/ui/modals.js', 'js/ui/series-renderer.js',
+      'js/ui/learnings.js', 'js/ui/definitions.js', 'js/ui/bet-card.js',
+      'js/ui/bets.js', 'js/ui/home.js', 'js/ui/chs-lab.js', 'js/ui/navigation.js',
+    ];
+
+    let bootError = null;
+    let failedFile = null;
+    for (const rel of bootSequence) {
+      try {
+        vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), bctx);
+      } catch (e) {
+        bootError = e.message;
+        failedFile = rel;
+        break;
+      }
+    }
+    assert(bootError === null,
+      `All ${bootSequence.length} boot-sequence scripts load without throwing` +
+      (bootError ? ` (failed at ${failedFile}: ${bootError})` : ''));
+
+    // 18a — initScenarioState executes without crashing on partial team data
+    let scenarioErr = null;
+    try { bctx.initScenarioState(); } catch (e) { scenarioErr = e.message; }
+    assert(scenarioErr === null,
+      `initScenarioState() doesn't crash on CF scaffolds or partial team data` +
+      (scenarioErr ? ` (got "${scenarioErr}")` : ''));
+    assert(typeof bctx.scenarioState === 'object' && Object.keys(bctx.scenarioState).length >= 12,
+      `scenarioState populated for all series (got ${Object.keys(bctx.scenarioState || {}).length} keys)`);
+
+    // 18b — every series gets a scenarioState entry (CF scaffolds included)
+    bctx.SERIES_DATA.forEach(s => {
+      assert(bctx.scenarioState[s.id] !== undefined,
+        `${s.id} has a scenarioState entry`);
+    });
+
+    // 18c — calcBlendedProjection works for at least one live R2 series
+    const r2 = bctx.SERIES_DATA.filter(s => s.round === 'R2' && (s.homeTeam.players || []).length > 0);
+    if (r2.length) {
+      let projErr = null;
+      try { bctx.calcBlendedProjection(r2[0], r2[0].id, 1); } catch (e) { projErr = e.message; }
+      assert(projErr === null, `calcBlendedProjection works for ${r2[0].id} G1 (got error: ${projErr})`);
+    }
+
+    // 18d — CF scaffolds gracefully refuse engine calls
+    const cfSeries = bctx.SERIES_DATA.find(s => s.tbdOpponent === true);
+    if (cfSeries) {
+      let cfErr = null;
+      let cfResult;
+      try { cfResult = bctx.runMonteCarlo(cfSeries, 1, { iterations: 50 }); } catch (e) { cfErr = e.message; }
+      // Either returns null (preferred) or throws gracefully — both acceptable
+      assert(cfErr === null || cfResult === null,
+        `runMonteCarlo handles CF scaffold gracefully (err: ${cfErr}, result: ${cfResult})`);
+    }
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
