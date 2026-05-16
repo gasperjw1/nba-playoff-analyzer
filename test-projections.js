@@ -809,6 +809,79 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 14: Monte Carlo simulator invariants (Phase 61)
+  // ------------------------------------------------------------
+  // Sims sample around the engine projection, so the MC median should
+  // track the engine's point estimate, and the 80% confidence band
+  // (p10-p90) should cover the engine output. We can't assert exact
+  // accuracy on past games (RNG variance) but we CAN assert structural
+  // invariants that catch regressions.
+  // ============================================================
+  console.log('\nTEST 14: Monte Carlo simulator invariants');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const mcCtx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const mcLoad = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), mcCtx);
+    mcLoad('js/data/constants.js');
+    mcLoad('js/data/series-data.js');
+    mcLoad('js/data/historical.js');
+    mcLoad('js/utils.js');
+    mcLoad('js/state.js');
+    mcLoad('js/engine/fatigue.js');
+    mcLoad('js/engine/chemistry.js');
+    mcLoad('js/engine/matchups.js');
+    mcLoad('js/engine/ratings.js');
+    mcLoad('js/engine/scenarios.js');
+    mcLoad('js/engine/projections.js');
+    mcLoad('js/engine/monte-carlo.js');
+
+    // 14a — runMonteCarlo returns valid output shape
+    const nyk = mcCtx.SERIES_DATA.find(s => s.id === 'NYK-PHI');
+    const mc = mcCtx.runMonteCarlo(nyk, 1, { iterations: 500 });
+    assert(mc !== null, 'MC returns non-null for a valid R2 series');
+    assert(typeof mc.homeWinProb === 'number' && mc.homeWinProb >= 0 && mc.homeWinProb <= 1,
+      `homeWinProb in [0,1] (got ${mc.homeWinProb})`);
+    assert(typeof mc.margin === 'object' && typeof mc.margin.p50 === 'number',
+      'margin distribution has p50');
+    assert(mc.margin.p10 < mc.margin.p50 && mc.margin.p50 < mc.margin.p90,
+      `margin percentiles monotonic (p10=${mc.margin.p10} p50=${mc.margin.p50} p90=${mc.margin.p90})`);
+    assert(mc.iterations === 500, 'iteration count honored');
+
+    // 14b — MC median tracks engine point estimate (anchored sampling)
+    const eng = mcCtx.calcGameProjection(nyk, 'NYK-PHI', 1);
+    const engMargin = eng.homeScore - eng.awayScore;
+    const mcMedianMargin = mc.margin.p50;
+    assert(Math.abs(engMargin - mcMedianMargin) <= 6,
+      `MC median (${mcMedianMargin}) tracks engine (${engMargin}) within ±6 — anchored sampling working`);
+
+    // 14c — Player-level samples produce valid distributions for top players
+    const brunson = mc.players['Jalen Brunson'];
+    assert(brunson && typeof brunson.pts === 'object' && typeof brunson.pts.p50 === 'number',
+      'Brunson per-player distribution present');
+    assert(brunson.pts.p50 > 15 && brunson.pts.p50 < 50,
+      `Brunson pts.p50 reasonable (got ${brunson.pts.p50})`);
+    assert(brunson.pra.p50 > brunson.pts.p50,
+      'PRA composite >= pts (sanity: PRA = pts + reb + ast)');
+
+    // 14d — CF scaffold gracefully refused (no players)
+    const cfSeries = mcCtx.SERIES_DATA.find(s => s.id === 'NYK-TBD');
+    const cfMc = mcCtx.runMonteCarlo(cfSeries, 1, { iterations: 100 });
+    assert(cfMc === null, 'MC returns null for CF scaffold (no players)');
+
+    // 14e — Tonight's first live game (if any) produces a valid result
+    const liveSeries = mcCtx.SERIES_DATA.find(s =>
+      s.round === 'R2' && (s.games || []).some(g => !g.winner));
+    if (liveSeries) {
+      const liveGameIdx = liveSeries.games.findIndex(g => !g.winner);
+      const liveMc = mcCtx.runMonteCarlo(liveSeries, liveGameIdx + 1, { iterations: 500 });
+      assert(liveMc !== null, `MC works for live game ${liveSeries.id} G${liveGameIdx + 1}`);
+    }
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

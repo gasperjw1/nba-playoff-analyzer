@@ -95,7 +95,12 @@ function chsLabRenderLivePreview() {
       try {
         const chs = calcBlendedProjectionWithCHS(s, s.id, g.num);
         if (!chs) return;
-        upcoming.push({ series: s, game: g, gameNum: g.num, chs });
+        // Phase 61: also run Monte Carlo for margin distribution + win prob
+        let mc = null;
+        if (typeof runMonteCarlo === 'function') {
+          try { mc = runMonteCarlo(s, g.num, { iterations: 800 }); } catch (e) {}
+        }
+        upcoming.push({ series: s, game: g, gameNum: g.num, chs, mc });
       } catch (e) { /* graceful */ }
     });
   });
@@ -104,16 +109,46 @@ function chsLabRenderLivePreview() {
     return '<div style="text-align:center;padding:30px;color:var(--text-dim);">No upcoming R2 games scheduled.</div>';
   }
 
-  const cards = upcoming.map(({ series, game, gameNum, chs }) => {
+  const cards = upcoming.map(({ series, game, gameNum, chs, mc }) => {
     const main = game.prediction;
     const homeAbbr = series.homeTeam.abbr, awayAbbr = series.awayTeam.abbr;
     const mainWinner = main.homeWin ? homeAbbr : awayAbbr;
     const mainScoreLine = `${homeAbbr} ${main.homeScore} - ${main.awayScore} ${awayAbbr}`;
     const chsScoreLine = chs.chsBlendedScore;
     const flipsBadge = chs.chsFlipsWinner
-      ? '<span style="background:rgba(245, 158, 11, 0.15);color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:0.5px;">FLIPS WINNER</span>'
+      ? '<span style="background:rgba(245, 158, 11, 0.15);color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:0.5px;">CHS FLIPS</span>'
       : '';
     const sign = (n) => (n >= 0 ? '+' : '') + n.toFixed(1);
+
+    // Phase 61 MC panel: margin distribution + win probability
+    let mcPanel = '';
+    if (mc) {
+      const homePct = (mc.homeWinProb * 100).toFixed(0);
+      const awayPct = (100 - +homePct).toFixed(0);
+      const winnerSide = mc.homeWinProb >= 0.5 ? homeAbbr : awayAbbr;
+      const winnerPct = mc.homeWinProb >= 0.5 ? homePct : awayPct;
+      // Simple ASCII-style distribution bar showing p10/p50/p90
+      const range = mc.margin.p90 - mc.margin.p10;
+      const flipsBadge = (mc.homeWinProb > 0.5) !== main.homeWin
+        ? '<span style="display:inline-block;background:rgba(99, 102, 241, 0.15);color:#818cf8;padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700;margin-left:4px;">MC FLIPS</span>'
+        : '';
+      mcPanel = `
+        <div style="margin-top:8px;padding:8px;background:rgba(99, 102, 241, 0.08);border:1px solid rgba(99,102,241,0.3);border-radius:6px;font-size:11px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="color:#818cf8;font-size:10px;text-transform:uppercase;">Monte Carlo (${mc.iterations} sims)${flipsBadge}</span>
+            <span style="color:#818cf8;font-weight:700;">${winnerSide} ${winnerPct}% to win</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;color:var(--text-dim);">
+            <div><span style="font-size:9px;color:#666;">p10</span><br><strong style="color:var(--text);">${mc.margin.p10}</strong></div>
+            <div><span style="font-size:9px;color:#666;">p50</span><br><strong style="color:var(--text);">${mc.margin.p50}</strong></div>
+            <div><span style="font-size:9px;color:#666;">p90</span><br><strong style="color:var(--text);">${mc.margin.p90}</strong></div>
+          </div>
+          <div style="margin-top:4px;font-size:10px;color:var(--text-dim);">
+            margin 80% CI: ${mc.margin.p10} to ${mc.margin.p90} (spread ${range.toFixed(1)}pts)
+          </div>
+        </div>`;
+    }
+
     return `
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
@@ -135,6 +170,7 @@ function chsLabRenderLivePreview() {
         <div style="margin-top:8px;font-size:10px;color:var(--text-dim);line-height:1.5;">
           CHS team Δ: ${homeAbbr} ${sign(chs.chsHomeDelta)} · ${awayAbbr} ${sign(chs.chsAwayDelta)} · margin ${sign(chs.chsMarginDelta)}
         </div>
+        ${mcPanel}
       </div>`;
   }).join('');
 
