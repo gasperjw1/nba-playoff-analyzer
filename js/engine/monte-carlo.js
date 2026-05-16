@@ -287,6 +287,13 @@ function runMonteCarlo(series, gameNum, opts = {}) {
   // Re-derive venue (G3, G4, G6 at lower seed) for output meta
   const gameAtAwayVenue = (gameNum === 3 || gameNum === 4 || gameNum === 6);
 
+  // Phase 62: blowout-risk flag — if median margin > 18, scoring props
+  // become unreliable (winning team's stars sit Q4, losing team's role
+  // players pad in garbage time). UI should warn before recommending
+  // scoring overs on the favorite.
+  const medianAbsMargin = Math.abs(_percentile([...margins].sort((a,b)=>a-b), 0.50));
+  const blowoutProbVal = margins.filter(m => Math.abs(m) >= 18).length / N;
+
   return {
     iterations: N,
     seriesId: series.id,
@@ -296,37 +303,207 @@ function runMonteCarlo(series, gameNum, opts = {}) {
     margin: statDist('margin', margins),
     homeScore: statDist('home', homeScores),
     awayScore: statDist('away', awayScores),
-    total: statDist('total', margins.map((_, i) => homeScores[i] + awayScores[i])),
+    total: statDist('total', homeScores.map((h, i) => h + awayScores[i])),
+    blowoutRisk: +blowoutProbVal.toFixed(3),  // P(|margin| >= 18)
     players,
+    // Raw samples (Phase 62) — needed for accurate prop/parlay hit-rate
+    // calculation. Kept in the result object so calcPropHitRate can
+    // count samples that cleared a line. ~1.4 MB per game; acceptable.
+    _raw: {
+      margins, homeScores, awayScores,
+      totals: homeScores.map((h, i) => h + awayScores[i]),
+      players: playerDist,  // already keyed name → { pts:[], reb:[], ast:[], ... }
+    },
   };
 }
 
-// ── Helper: hit rate for a specific prop line ──────────────────────
-// Given a player + stat + line + over/under, returns the empirical
-// probability from the sim that the prop hits.
-function calcPropHitRate(simResult, playerName, statType, line, direction) {
+// ── Player-name resolution shared by all calculators ──────────────────
+function _resolvePlayerName(simResult, query) {
   if (!simResult || !simResult.players) return null;
-  const playerData = simResult.players[playerName];
-  if (!playerData) {
-    // Try fuzzy match — sample names may have "L. James" vs "LeBron James"
-    const match = Object.keys(simResult.players).find(n => n.toLowerCase().includes(playerName.toLowerCase()) || playerName.toLowerCase().includes(n.toLowerCase()));
-    if (!match) return null;
-  }
-  // We need the raw samples, not just percentiles — re-walk? Or we
-  // can approximate from percentiles. For now return null and document
-  // that this helper needs the sim to retain raw samples to be useful.
-  // (Next iteration: have runMonteCarlo retain raw arrays under
-  // simResult._raw for hit-rate lookup.)
-  return null;
+  if (simResult.players[query]) return query;
+  // Aliases (mirror auto-resolve.js)
+  const aliases = { sga:'gilgeous', lebron:'james', cade:'cunningham', kd:'durant', ant:'edwards' };
+  const cleaned = String(query).toLowerCase().replace(/[.'\-]/g, '').trim();
+  const tokens = cleaned.split(/\s+/).map(t => aliases[t] || t);
+  const names = Object.keys(simResult.players);
+  let best = null, bestScore = 0;
+  names.forEach(n => {
+    const nc = n.toLowerCase().replace(/[.'\-]/g, '');
+    let hits = 0;
+    tokens.forEach(t => { if (t.length >= 3 && nc.includes(t)) hits++; });
+    if (hits > bestScore) { best = n; bestScore = hits; }
+  });
+  return bestScore > 0 ? best : null;
 }
+
+// ── calcPropHitRate ──────────────────────────────────────────────────
+// Returns 0.0-1.0 probability that the player+stat clears the line in
+// the given direction (over/under), computed from raw MC samples.
+//
+// Special: stat='3pm' or 'threes' uses the threes counter. 'pra' / 'pr'
+// / 'pa' / 'stocks' are pre-computed composites. 'to' = turnovers.
+function calcPropHitRate(simResult, playerName, statType, line, direction) {
+  if (!simResult || !simResult._raw || !simResult._raw.players) return null;
+  const resolved = _resolvePlayerName(simResult, playerName);
+  if (!resolved) return null;
+  const samples = simResult._raw.players[resolved];
+  if (!samples) return null;
+
+  // Normalize stat key
+  const statMap = { pt:'pts', pts:'pts', point:'pts', points:'pts',
+    reb:'reb', rebs:'reb', rebound:'reb', rebounds:'reb',
+    ast:'ast', asts:'ast', assist:'ast', assists:'ast',
+    stl:'stl', stls:'stl', steal:'stl', steals:'stl',
+    blk:'blk', blks:'blk', block:'blk', blocks:'blk',
+    three:'threes', threes:'threes', '3pm':'threes', '3pt':'threes',
+    to:'to', tos:'to', turnover:'to', turnovers:'to',
+    pra:'pra', pr:'pr', pa:'pa', stocks:'stocks' };
+  const key = statMap[String(statType).toLowerCase()];
+  if (!key || !Array.isArray(samples[key])) return null;
+
+  const dir = String(direction).toLowerCase();
+  const arr = samples[key];
+  let hits = 0;
+  arr.forEach(v => {
+    if (dir === 'over' && v > line) hits++;
+    else if (dir === 'under' && v < line) hits++;
+  });
+  return +(hits / arr.length).toFixed(3);
+}
+
+// ── calcSpreadHitRate ────────────────────────────────────────────────
+// Spread line: e.g. NYK -7.5 means NYK needs to win by 8+.
+// Counts iterations where (team's score - opponent's score + line) > 0.
+function calcSpreadHitRate(simResult, series, teamAbbr, line) {
+  if (!simResult || !simResult._raw) return null;
+  const homeAbbr = series.homeTeam.abbr, awayAbbr = series.awayTeam.abbr;
+  if (teamAbbr !== homeAbbr && teamAbbr !== awayAbbr) return null;
+  const isHome = teamAbbr === homeAbbr;
+  const raw = simResult._raw;
+  let hits = 0;
+  for (let i = 0; i < raw.margins.length; i++) {
+    const teamMargin = isHome ? (raw.homeScores[i] - raw.awayScores[i])
+                              : (raw.awayScores[i] - raw.homeScores[i]);
+    if ((teamMargin + line) > 0) hits++;
+  }
+  return +(hits / raw.margins.length).toFixed(3);
+}
+
+// ── calcTotalHitRate ─────────────────────────────────────────────────
+function calcTotalHitRate(simResult, line, direction) {
+  if (!simResult || !simResult._raw) return null;
+  const totals = simResult._raw.totals;
+  const dir = String(direction).toLowerCase();
+  let hits = 0;
+  totals.forEach(t => {
+    if (dir === 'over' && t > line) hits++;
+    else if (dir === 'under' && t < line) hits++;
+  });
+  return +(hits / totals.length).toFixed(3);
+}
+
+// ── calcParlayHitRate ────────────────────────────────────────────────
+// Correlation-aware: a leg "hits in iteration i" iff iteration i's
+// samples for that leg's player/stat/team clear the line. Joint = all
+// legs hit in the same iteration.
+//
+// Legs format: [{type, ...legSpec}]
+//   { type:'prop', player:'Brunson', stat:'pts', line:27.5, direction:'over' }
+//   { type:'spread', team:'NYK', line:-7.5 }
+//   { type:'total', line:213.5, direction:'over' }
+//   { type:'ml', team:'NYK' }
+//
+// IMPORTANT: all legs must reference the same simResult (same game).
+// For multi-game parlays you'd run MC for each game and combine via
+// independence (different sim contexts).
+function calcParlayHitRate(simResult, series, legs) {
+  if (!simResult || !simResult._raw || !Array.isArray(legs) || !legs.length) return null;
+  const N = simResult._raw.margins.length;
+  const raw = simResult._raw;
+  const homeAbbr = series.homeTeam.abbr, awayAbbr = series.awayTeam.abbr;
+
+  // Pre-resolve each leg's per-iteration sample series
+  const legSamples = legs.map(leg => {
+    if (leg.type === 'prop') {
+      const resolved = _resolvePlayerName(simResult, leg.player);
+      if (!resolved) return null;
+      const stat = leg.stat;
+      const arr = raw.players[resolved] && raw.players[resolved][stat];
+      if (!Array.isArray(arr) || arr.length !== N) return null;
+      return { arr, line: leg.line, dir: String(leg.direction).toLowerCase() };
+    }
+    if (leg.type === 'spread') {
+      const isHome = leg.team === homeAbbr;
+      if (!isHome && leg.team !== awayAbbr) return null;
+      const arr = new Array(N);
+      for (let i = 0; i < N; i++) {
+        arr[i] = isHome ? (raw.homeScores[i] - raw.awayScores[i] + leg.line)
+                        : (raw.awayScores[i] - raw.homeScores[i] + leg.line);
+      }
+      return { arr, line: 0, dir: 'over' };  // covers iff arr[i] > 0
+    }
+    if (leg.type === 'total') {
+      return { arr: raw.totals, line: leg.line, dir: String(leg.direction).toLowerCase() };
+    }
+    if (leg.type === 'ml') {
+      // Team wins iff their score > opp's score → use spread with line=0
+      const isHome = leg.team === homeAbbr;
+      if (!isHome && leg.team !== awayAbbr) return null;
+      const arr = new Array(N);
+      for (let i = 0; i < N; i++) {
+        arr[i] = isHome ? (raw.homeScores[i] - raw.awayScores[i])
+                        : (raw.awayScores[i] - raw.homeScores[i]);
+      }
+      return { arr, line: 0, dir: 'over' };
+    }
+    return null;
+  });
+
+  if (legSamples.some(x => x === null)) return null;
+
+  // Walk iterations, count where ALL legs hit
+  let jointHits = 0;
+  const perLegHits = new Array(legSamples.length).fill(0);
+  for (let i = 0; i < N; i++) {
+    let allHit = true;
+    legSamples.forEach((ls, j) => {
+      const v = ls.arr[i];
+      const hit = (ls.dir === 'over' && v > ls.line) || (ls.dir === 'under' && v < ls.line);
+      if (hit) perLegHits[j]++;
+      else allHit = false;
+    });
+    if (allHit) jointHits++;
+  }
+
+  // Naive (independence-assumed) product for comparison
+  const perLegMarginal = perLegHits.map(h => +(h / N).toFixed(3));
+  const naiveProduct = perLegMarginal.reduce((a, b) => a * b, 1);
+
+  return {
+    combined: +(jointHits / N).toFixed(3),
+    perLegMarginal,
+    naiveProduct: +naiveProduct.toFixed(3),
+    correlationBoost: +((jointHits / N) - naiveProduct).toFixed(3),
+    iterations: N,
+  };
+}
+
+// (Removed: legacy `calcPropHitRate` stub. The active implementation
+// lives earlier in this file at line ~345 and uses raw samples from
+// simResult._raw.players. The stub was being silently shadowed by the
+// var-hoisted second declaration — bug caught May 16 in TEST 15.)
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     runMonteCarlo,
     calcPropHitRate,
+    calcSpreadHitRate,
+    calcTotalHitRate,
+    calcParlayHitRate,
     _sampleNormal,
     _samplePlayerGame,
     _sampleTeamGame,
+    _resolvePlayerName,
     MC_CONFIG,
   };
 }

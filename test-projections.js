@@ -882,6 +882,79 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 15: Prop / spread / total / parlay hit-rate calculators (Phase 62)
+  // ------------------------------------------------------------
+  // Verifies the MC-derived probability calculators return values in
+  // [0,1], correctly resolve player aliases, and that parlay joint
+  // probability ≤ each marginal (a basic probability invariant).
+  // ============================================================
+  console.log('\nTEST 15: Prop/spread/total/parlay hit-rate calculators');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const c = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const l = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), c);
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js','js/engine/monte-carlo.js'].forEach(l);
+
+    const nyk = c.SERIES_DATA.find(s => s.id === 'NYK-PHI');
+    const mc = c.runMonteCarlo(nyk, 1, { iterations: 500 });
+    assert(mc !== null, 'MC produces output for NYK-PHI G1');
+    assert(mc._raw && mc._raw.players, 'MC retains raw samples');
+    assert(typeof mc.blowoutRisk === 'number' && mc.blowoutRisk >= 0 && mc.blowoutRisk <= 1,
+      `blowoutRisk in [0,1] (got ${mc.blowoutRisk})`);
+
+    // 15a — calcPropHitRate
+    const brunsonOver20 = c.calcPropHitRate(mc, 'Jalen Brunson', 'pts', 20, 'over');
+    const brunsonOver50 = c.calcPropHitRate(mc, 'Jalen Brunson', 'pts', 50, 'over');
+    assert(brunsonOver20 != null && brunsonOver20 >= 0 && brunsonOver20 <= 1,
+      `Brunson over 20 hit rate is a probability (got ${brunsonOver20})`);
+    assert(brunsonOver20 > brunsonOver50,
+      `Brunson over 20 (${brunsonOver20}) > over 50 (${brunsonOver50}) — monotonic`);
+
+    // 15b — under is complement (roughly) of over
+    const brunsonUnder20 = c.calcPropHitRate(mc, 'Jalen Brunson', 'pts', 20, 'under');
+    assert(Math.abs((brunsonOver20 + brunsonUnder20) - 1) < 0.05,
+      `over + under ≈ 1 (got ${brunsonOver20} + ${brunsonUnder20} = ${brunsonOver20 + brunsonUnder20})`);
+
+    // 15c — calcSpreadHitRate
+    const nykMinus5 = c.calcSpreadHitRate(mc, nyk, 'NYK', -5);
+    const nykMinus20 = c.calcSpreadHitRate(mc, nyk, 'NYK', -20);
+    assert(nykMinus5 != null && nykMinus5 >= 0 && nykMinus5 <= 1, `NYK -5 hit rate in [0,1] (got ${nykMinus5})`);
+    assert(nykMinus5 > nykMinus20, `Easier spread hits more (${nykMinus5} > ${nykMinus20})`);
+
+    // 15d — calcTotalHitRate
+    const over200 = c.calcTotalHitRate(mc, 200, 'over');
+    const over250 = c.calcTotalHitRate(mc, 250, 'over');
+    assert(over200 > over250, `Lower total cleared more often (${over200} > ${over250})`);
+
+    // 15e — calcParlayHitRate: combined ≤ each marginal
+    const parlay = c.calcParlayHitRate(mc, nyk, [
+      { type: 'ml', team: 'NYK' },
+      { type: 'prop', player: 'Brunson', stat: 'pts', line: 20, direction: 'over' },
+    ]);
+    assert(parlay !== null, 'parlay result non-null');
+    assert(parlay.combined <= Math.min(...parlay.perLegMarginal) + 0.001,
+      `Joint ≤ min(marginal) — basic probability (combined ${parlay.combined}, marginals ${parlay.perLegMarginal.join(',')})`);
+    assert(typeof parlay.correlationBoost === 'number',
+      `correlationBoost is computed (got ${parlay.correlationBoost})`);
+    // Joint should be >= naive product (positive correlation) OR ≈ equal
+    // for independent legs. Negative deltas of magnitude > 0.05 suggest
+    // anti-correlation (rare).
+    assert(parlay.combined >= parlay.naiveProduct - 0.05,
+      `Joint not much less than naive product (combined ${parlay.combined}, naive ${parlay.naiveProduct})`);
+
+    // 15f — player alias resolution
+    const sgaOkc = c.SERIES_DATA.find(s => s.id === 'OKC-LAL');
+    const sgaMc = c.runMonteCarlo(sgaOkc, 1, { iterations: 300 });
+    const sgaPts = c.calcPropHitRate(sgaMc, 'SGA', 'pts', 25, 'over');
+    assert(sgaPts != null, `'SGA' alias resolves to player`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
