@@ -267,6 +267,24 @@ function chsLabRenderParlayCandidates() {
              MC raw ${(calibrated.raw*100).toFixed(0)}% · historical calibration (${calibrated.bucket} bucket): <strong style="color:${tierColor};">${(calibrated.calibrated*100).toFixed(0)}%</strong>
              — the 80-95% bucket has only delivered ~67% historically, so this is the honest probability.
            </div>` : '';
+      // Phase 69: Kelly-sized stake recommendation. Translates the
+      // parlay's joint hit rate + odds into a recommended $ stake using
+      // detectMarketDisagreement + recommendStake. Defaults to $500
+      // bankroll — UI can plug in user-provided bankroll later.
+      let kellyHTML = '';
+      if (typeof detectMarketDisagreement === 'function' && typeof recommendStake === 'function') {
+        const edge = detectMarketDisagreement(score.combined, parlayJuice);
+        const rec  = recommendStake(500, edge, { minStake: 5, maxStake: 25 });
+        const verdictColor = rec.verdict === 'BET' ? '#22c55e'
+                          : rec.verdict === 'BET_MIN' ? '#eab308'
+                          : rec.verdict === 'CAP_HIT' ? '#22d3ee'
+                          : '#ef4444';
+        kellyHTML = `
+          <div style="margin-top:6px;padding:6px 8px;background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.25);border-radius:4px;font-size:10px;">
+            <strong style="color:${verdictColor};">Kelly stake: $${rec.recommendedStake}</strong>
+            <span style="color:var(--text-dim);"> · ${rec.verdict.replace(/_/g, ' ')} · ${(rec.fraction*100).toFixed(1)}% of $500 bankroll</span>
+          </div>`;
+      }
       return `
         <div style="margin-top:10px;padding:10px;background:rgba(${tierColor === '#22c55e' ? '34, 197, 94' : '167, 139, 250'}, 0.06);border:1px solid ${tierColor};border-radius:6px;">
           <div style="font-size:10px;letter-spacing:0.5px;color:${tierColor};text-transform:uppercase;margin-bottom:6px;font-weight:700;">${tierLabel}</div>
@@ -280,6 +298,7 @@ function chsLabRenderParlayCandidates() {
             EV $${score.evPer100}/$100 · ${score.verdict} · ${legs.length} legs · vs naive product ${(score.naiveProduct*100).toFixed(0)}%
           </div>
           ${calibratedSpan}
+          ${kellyHTML}
         </div>`;
     }
 
@@ -347,6 +366,61 @@ function chsLabRenderLedger(ledger) {
       </thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+// Phase 69: Slate concentration scanner — surfaces directional-exposure
+// concentration across today's bets so the user can see at a glance
+// whether 5 bets all ride on "NYK wins by 8+". Renders nothing if the
+// risk-controls module isn't loaded.
+function chsLabRenderConcentration() {
+  if (typeof analyzeSlateConcentration !== 'function' || typeof BETS === 'undefined') return '';
+  // Today's slate: anything with date === CURRENT_DATE and no result yet.
+  const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : null;
+  if (!today) return '';
+  const todays = BETS.filter(b => b.postedAt === today && !b.result);
+  if (!todays.length) return '';
+  const analysis = analyzeSlateConcentration(todays, { maxPerDirection: 3, maxPerTeam: 5, stake: 25 });
+  if (!analysis.topExposures.length) return '';
+
+  const warnHTML = analysis.warnings.length
+    ? analysis.warnings.map(w => `
+        <div style="padding:8px;background:rgba(239,68,68,0.08);border-left:3px solid #ef4444;border-radius:4px;margin-bottom:6px;font-size:11px;color:var(--text);">
+          <strong style="color:#ef4444;">⚠ ${w.key}:</strong> ${w.count} bets — ${w.reason}
+          <div style="font-size:10px;color:var(--text-dim);margin-top:3px;">Bets: ${(w.bets || []).slice(0, 4).join(', ')}${w.bets.length > 4 ? '...' : ''}</div>
+        </div>
+      `).join('')
+    : `<div style="padding:8px;background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;border-radius:4px;font-size:11px;color:var(--text);">✓ Slate well-diversified — no directional outcome carries more than 3 bets.</div>`;
+
+  const topRows = analysis.topExposures.slice(0, 6).map(e => {
+    const overCap = e.count > 3;
+    return `
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:4px 8px;font-size:11px;color:var(--text);">${e.key}</td>
+        <td style="padding:4px 8px;font-size:11px;text-align:right;color:${overCap ? '#ef4444' : 'var(--text)'};font-weight:${overCap ? 700 : 400};">${e.count}</td>
+        <td style="padding:4px 8px;font-size:11px;text-align:right;color:var(--text-dim);">$${e.stakeAt25}</td>
+      </tr>`;
+  }).join('');
+
+  return `
+    <div style="margin-bottom:24px;">
+      <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 6px;">SLATE CONCENTRATION · TODAY'S BETS</h3>
+      <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
+        Groups today's unsettled bets by directional outcome (e.g. <code>NYK_ML</code> = NYK wins outright).
+        Bets in the same group are perfectly correlated — they win or lose together.
+        <strong style="color:#fff;">Rule:</strong> max 3 bets per directional outcome, max 5 per team total.
+      </p>
+      ${warnHTML}
+      <table style="width:100%;border-collapse:collapse;margin-top:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <thead style="background:rgba(0,0,0,0.3);">
+          <tr>
+            <th style="padding:8px;text-align:left;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Directional outcome</th>
+            <th style="padding:8px;text-align:right;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Bets</th>
+            <th style="padding:8px;text-align:right;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">$ at $25</th>
+          </tr>
+        </thead>
+        <tbody>${topRows}</tbody>
+      </table>
+    </div>`;
 }
 
 // Phase 68: Bet-Filter Verdict — surfaces the data-driven conclusion from
@@ -421,6 +495,7 @@ function renderCHSLabPage(el) {
 
       ${chsLabRenderScoreboard(agg)}
       ${chsLabRenderEdgeFilter()}
+      ${chsLabRenderConcentration()}
       ${chsLabRenderLivePreview()}
       ${chsLabRenderParlayCandidates()}
       ${chsLabRenderLedger(ledger)}

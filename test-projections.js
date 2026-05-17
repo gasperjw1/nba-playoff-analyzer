@@ -1165,6 +1165,7 @@ function runTests() {
       'js/engine/simulation.js', 'js/engine/graduation.js', 'js/engine/auto-resolve.js',
       'js/engine/projections-chs.js', 'js/engine/player-tendencies.js',
       'js/engine/monte-carlo.js', 'js/engine/parlay-builder.js',
+      'js/engine/edge-detector.js', 'js/engine/risk-controls.js',
       'js/ui/components.js', 'js/ui/modals.js', 'js/ui/series-renderer.js',
       'js/ui/learnings.js', 'js/ui/definitions.js', 'js/ui/bet-card.js',
       'js/ui/bets.js', 'js/ui/home.js', 'js/ui/chs-lab.js', 'js/ui/navigation.js',
@@ -1261,6 +1262,7 @@ function runTests() {
      'js/engine/ratings.js','js/engine/scenarios.js','js/engine/projections.js','js/engine/simulation.js',
      'js/engine/graduation.js','js/engine/auto-resolve.js','js/engine/projections-chs.js',
      'js/engine/player-tendencies.js','js/engine/monte-carlo.js','js/engine/parlay-builder.js',
+     'js/engine/edge-detector.js','js/engine/risk-controls.js',
      'js/ui/components.js','js/ui/modals.js','js/ui/series-renderer.js','js/ui/learnings.js',
      'js/ui/definitions.js','js/ui/bet-card.js','js/ui/bets.js','js/ui/home.js','js/ui/chs-lab.js',
      'js/ui/navigation.js'].forEach(l);
@@ -1469,6 +1471,161 @@ function runTests() {
     const placePill = ctx._renderEdgePill(placeBet);
     assert(placePill.includes('PLACE'), `lean spread (best cell) renders PLACE pill`);
     assert(placePill.includes('var(--green)'), `PLACE pill uses green color`);
+  }
+
+  // ============================================================
+  // TEST 22: Risk controls — concentration + suppression + Kelly stake
+  //          (Phase 69)
+  // ============================================================
+  console.log('\nTEST 22: Risk controls — slate concentration, blowout suppression, Kelly stake');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/risk-controls.js'), 'utf8')), ctx);
+
+    // 22a — analyzeSlateConcentration: 4 NYK bets trigger team warning
+    const slate = [
+      { id: 'a', type: 'ml',     pick: 'NYK ML vs PHI' },
+      { id: 'b', type: 'spread', pick: 'NYK -7.5' },
+      { id: 'c', type: 'prop',   pick: 'Brunson Over 27.5 points' },
+      { id: 'd', type: 'prop',   pick: 'KAT Over 16.5 rebounds' },
+      { id: 'e', type: 'prop',   pick: 'OG Over 11.5 points' },
+      { id: 'f', type: 'prop',   pick: 'Embiid Under 28.5 points' },
+    ];
+    const ana = ctx.analyzeSlateConcentration(slate, { maxPerTeam: 4 });
+    assert(ana != null && ana.topExposures.length > 0, `concentration returns top exposures`);
+    // NYK appears in 5+ keys (NYK_ML, NYK_COVER, Brunson_OVER would be tagged as Brunson not NYK)
+    // The team-cap matches on prefix NYK_*. Let's count:
+    const nykKey = ana.byTeam['NYK'];
+    assert(nykKey && nykKey.length === 2, `NYK direct keys: NYK_ML + NYK_COVER (got ${nykKey ? nykKey.length : 'undef'})`);
+    // Players don't map to teams in this context, so player_* keys stay separate
+    // (correct behavior — Brunson_OVER could hit even if NYK loses)
+
+    // 22b — Concentration WARNING fires at >maxPerDirection
+    const heavySlate = [
+      { id: 'a', type: 'ml',     pick: 'NYK ML' },
+      { id: 'b', type: 'ml',     pick: 'NYK ML again' },
+      { id: 'c', type: 'ml',     pick: 'NYK ML once more' },
+      { id: 'd', type: 'ml',     pick: 'NYK ML yet again' },
+    ];
+    const heavyAna = ctx.analyzeSlateConcentration(heavySlate, { maxPerDirection: 3 });
+    assert(heavyAna.warnings.length >= 1, `4 NYK_ML bets triggers warning`);
+    assert(heavyAna.safe === false, `safe is false when warnings exist`);
+
+    // 22c — shouldSuppressScoringProp: low blowout risk → don't suppress
+    const lowMC = { blowoutRisk: 0.10, homeWinProb: 0.55 };
+    const noSuppress = ctx.shouldSuppressScoringProp(lowMC, { name: 'X', rating: 85 }, { team: 'home', stat: 'pts' });
+    assert(noSuppress.suppress === false, `low blowout risk → no suppression`);
+
+    // 22d — High blowout risk + underdog star → SUPPRESS
+    const highMC = { blowoutRisk: 0.50, homeWinProb: 0.75 };
+    const sup = ctx.shouldSuppressScoringProp(highMC, { name: 'UnderdogStar', rating: 85 }, { team: 'away', stat: 'pts' });
+    assert(sup.suppress === true, `high blowout + underdog star → suppress`);
+    assert(sup.reason === 'underdog-stars-pulled-in-blowout', `reason matches`);
+
+    // 22e — High blowout risk + favorite starter → SUPPRESS
+    const sup2 = ctx.shouldSuppressScoringProp(highMC, { name: 'FavStar', rating: 85 }, { team: 'home', stat: 'pts' });
+    assert(sup2.suppress === true, `high blowout + favorite starter → suppress`);
+
+    // 22f — High blowout risk + favorite role player → DON'T suppress (garbage time)
+    const noSup3 = ctx.shouldSuppressScoringProp(highMC, { name: 'FavBench', rating: 65 }, { team: 'home', stat: 'pts' });
+    assert(noSup3.suppress === false, `favorite bench can pad in garbage time → no suppression`);
+
+    // 22g — Non-scoring stat (rebounds) is blowout-stable → never suppress
+    const noSup4 = ctx.shouldSuppressScoringProp(highMC, { name: 'X', rating: 85 }, { team: 'away', stat: 'reb' });
+    assert(noSup4.suppress === false, `rebounds are blowout-stable → no suppression`);
+
+    // 22h — recommendStake: positive edge produces Kelly bet
+    const rec = ctx.recommendStake(500, { kellyFraction: 0.08 }, { minStake: 5, maxStake: 25 });
+    assert(rec.recommendedStake === 25, `Kelly $40 capped at $25 maxStake (got $${rec.recommendedStake})`);
+    assert(rec.verdict === 'CAP_HIT', `verdict is CAP_HIT when Kelly > max`);
+
+    const rec2 = ctx.recommendStake(500, { kellyFraction: 0.02 }, { minStake: 5, maxStake: 25 });
+    assert(rec2.recommendedStake === 10, `Kelly $10 → bet $10`);
+    assert(rec2.verdict === 'BET', `verdict BET when within range`);
+
+    const rec3 = ctx.recommendStake(500, { kellyFraction: 0.005 }, { minStake: 5, maxStake: 25 });
+    assert(rec3.recommendedStake === 0, `Kelly $2.50 (<minStake) → skip`);
+    assert(rec3.verdict === 'SKIP_LOW_EDGE', `verdict SKIP_LOW_EDGE`);
+
+    const rec4 = ctx.recommendStake(500, { kellyFraction: 0 }, { minStake: 5 });
+    assert(rec4.recommendedStake === 0 && rec4.verdict === 'SKIP_NO_EDGE',
+      `zero Kelly fraction → SKIP_NO_EDGE`);
+
+    // 22i — _directionalKey extracts correctly across bet types
+    assert(ctx._directionalKey({ type: 'ml', pick: 'NYK ML vs PHI' }) === 'NYK_ML',
+      `ML → NYK_ML`);
+    assert(ctx._directionalKey({ type: 'spread', pick: 'NYK -7.5' }) === 'NYK_COVER',
+      `negative spread → COVER`);
+    assert(ctx._directionalKey({ type: 'spread', pick: 'PHI +7.5' }) === 'PHI_KEEP',
+      `positive spread → KEEP`);
+    assert(ctx._directionalKey({ type: 'total', pick: 'Over 213.5', series: 'NYK-PHI' }) === 'NYK-PHI_OVER',
+      `total over → ${'<series>_OVER'}`);
+    assert(ctx._directionalKey({ type: 'prop', pick: 'Brunson Over 27.5 points' }) === 'Brunson_OVER',
+      `prop over → Brunson_OVER`);
+  }
+
+  // ============================================================
+  // TEST 23: Parlay-builder anti-correlation cap (Phase 69)
+  // ============================================================
+  console.log('\nTEST 23: Parlay-builder anti-correlation cap (max-per-team)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/constants.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/series-data.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/historical.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/utils.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/state.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/fatigue.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/chemistry.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/matchups.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/ratings.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/scenarios.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/projections.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/monte-carlo.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/parlay-builder.js'), 'utf8')), ctx);
+
+    // Find a series with a clear matchup; run MC; build parlay; verify
+    // no team has more than 2 legs.
+    const series = ctx.SERIES_DATA.find(s => s.id === 'NYK-PHI' || s.id === 'OKC-LAL');
+    if (series) {
+      const mc = ctx.runMonteCarlo(series, 5, { iterations: 300 });
+      if (mc) {
+        const reliable = ctx.buildReliableParlay(mc, series);
+        if (reliable && reliable.legs) {
+          const teamCount = {};
+          reliable.legs.forEach(l => {
+            const t = l.team || 'UNK';
+            teamCount[t] = (teamCount[t] || 0) + 1;
+          });
+          const maxOnTeam = Math.max(...Object.values(teamCount));
+          assert(maxOnTeam <= 2, `Reliable parlay caps at 2 legs per team (got max ${maxOnTeam} on team)`);
+        }
+        const traditional = ctx.buildTraditionalParlay(mc, series);
+        if (traditional && traditional.legs) {
+          const teamCount = {};
+          traditional.legs.forEach(l => {
+            const t = l.team || 'UNK';
+            teamCount[t] = (teamCount[t] || 0) + 1;
+          });
+          const maxOnTeam = Math.max(...Object.values(teamCount));
+          assert(maxOnTeam <= 2, `Traditional parlay caps at 2 legs per team (got max ${maxOnTeam} on team)`);
+        }
+      }
+    }
   }
 
   // ============================================================

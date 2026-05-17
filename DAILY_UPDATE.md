@@ -394,6 +394,49 @@ thresholds must be data-driven, not theory-driven.
 
 ---
 
+### ⚠️ ANTI-BIG-LOSS GUARDRAILS (Phase 69, May 16+)
+
+Beyond the cell-level SKIP filter, four slate-wide rules prevent the
+"one bad night nukes the whole slate" scenario:
+
+```
+1. PARLAY ANTI-CORRELATION (built into parlay-builder)
+   Max 2 legs per team in any parlay. Prevents 4 NYK legs from all
+   busting if NYK loses outright. Caught automatically.
+
+2. SLATE CONCENTRATION (new CHS Lab panel)
+   Open CHS Lab → "SLATE CONCENTRATION" section.
+   - Max 3 bets per directional outcome (e.g., "NYK_ML" / "NYK_COVER")
+   - Max 5 bets total tied to any single team
+   If the warning shows, drop the lowest-confidence bet on the
+   over-concentrated outcome. Even great picks lose; diversification
+   keeps a single -8pt margin miss from costing $125.
+
+3. BLOWOUT SUPPRESSION (auto-applied when MC says blowoutRisk > 35%)
+   - Skip scoring overs for the UNDERDOG's stars (they get pulled Q4)
+   - Skip scoring overs for the FAVORITE's starters (they sit Q4)
+   - KEEP rebounding/assists props (counting stats are blowout-stable)
+   - Favorite's bench role players can OVER scoring in garbage time
+   The risk-controls.shouldSuppressScoringProp() function flags
+   these — surfaces in CHS Lab parlay candidates.
+
+4. KELLY-SIZED STAKES (replaces flat $25)
+   Each parlay in CHS Lab now shows a "Kelly stake: $X" line.
+   - $500 default bankroll, $5 minimum, $25 max per bet
+   - Tiny edge → tiny stake → small loss when wrong
+   - Big edge → up to $25 → meaningful upside when right
+   - SKIP_LOW_EDGE verdict means the bet doesn't clear the noise floor
+   The flat $25 approach turned 0.4pp of edge gap into -$198 over
+   99 bets. Kelly preserves bankroll when the model is wrong.
+```
+
+These four rules together address the failure modes that the per-bet
+edge filter alone couldn't catch. A bet can be ✓ PLACE individually
+and still be a bad idea if it pushes the slate above the team-exposure
+cap, or if the same blowout risk is going to kill 3 of your other props.
+
+---
+
 ### Building the parlay (after applying the filter)
 
 **The recommended source for parlay authoring is the CHS Lab tab on
