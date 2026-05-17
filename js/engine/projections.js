@@ -1179,6 +1179,31 @@ function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
     }
   }
 
+  // ---- 16. PER-PLAYER BIAS OVERRIDE (Phase 71c — May 17 audit) ----
+  // The tier-based correction in modifier #15 handles population avg
+  // but leaves residual error on outliers. The 68-game audit identified
+  // ~8 players with persistent ≥5pp PTS bias that contradicts their
+  // tier. This table applies an additive correction targeted at those
+  // players specifically. Re-evaluate after R3.
+  const PB = (typeof PLAYER_BIAS_OVERRIDE !== 'undefined') ? PLAYER_BIAS_OVERRIDE : { enabled: false, table: {} };
+  if (PB.enabled && PB.table && PB.table[player.name]) {
+    const override = PB.table[player.name];
+    const ptsAdj = override.pts || 0;
+    const rebAdj = override.reb || 0;
+    const astAdj = override.ast || 0;
+    if (ptsAdj !== 0 || rebAdj !== 0 || astAdj !== 0) {
+      pts += ptsAdj;
+      reb += rebAdj;
+      ast += astAdj;
+      modifiers.push({
+        label: 'Per-Player Bias Override',
+        ptsDelta: ptsAdj, rebDelta: rebAdj, astDelta: astAdj,
+        pct: 0,
+        source: `Phase 71c · ${player.name} audit-specific correction`,
+      });
+    }
+  }
+
   return {
     pts: +Math.max(0, pts).toFixed(1),
     reb: +Math.max(0, reb).toFixed(1),

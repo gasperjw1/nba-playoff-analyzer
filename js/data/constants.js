@@ -164,3 +164,37 @@ const STAR_BIAS_CONFIG = {
   starterRebDelta: -0.5,
   starterAstDelta:  0,    // observed +0.18 is within noise
 };
+
+// PHASE 71c: Per-Player Bias Override (May 17, 2026)
+// Players whose individual bias contradicts their tier adjustment.
+// The tier-based fix (Phase 71b) corrects the population average but
+// LEAVES residual error on specific outliers — and in some cases
+// MAKES them worse (e.g. Cade was -8.6pp under-predicted; tier
+// correction subtracted 2.6 → now -11.2pp).
+//
+// Applied AFTER STAR_BIAS_CONFIG as the 16th modifier. Each delta is
+// an ADDITIONAL adjustment on top of tier correction; positive = boost
+// the player up from where engine currently lands them.
+//
+// CRITICAL: only includes players with n≥7 in the audit (statistically
+// stable). All values traced to CALIBRATION_AUDIT.md "BIAS BY PLAYER"
+// section. Re-evaluate after R3 ships 6+ more games per player.
+//
+// Names use the exact roster spelling in SERIES_DATA so the lookup is
+// case-sensitive equality. If a roster name changes, this table breaks
+// silently for that player (NOT for the whole engine).
+const PLAYER_BIAS_OVERRIDE = {
+  enabled: true,
+  table: {
+    // Under-predicted (audit shows engine projects LESS than reality)
+    'Cade Cunningham':   { pts: +11.0, reb:  0,   ast:  0    },  // resid -11.2pp after tier
+    'Tobias Harris':     { pts:  +9.5, reb: +3.0, ast:  0    },  // resid -9.4 PTS / -3 REB
+    'RJ Barrett':        { pts:  +7.0, reb: +1.8, ast:  0    },
+    'OG Anunoby':        { pts:  +5.5, reb: +1.7, ast:  0    },
+    // Over-predicted beyond tier (audit shows engine projects MORE than reality)
+    'Jalen Duren':       { pts:  -6.2, reb: -1.0, ast:  0    },  // resid +6.2 PTS after tier
+    'Brandon Ingram':    { pts:  -6.1, reb: -2.0, ast: -1.2  },
+    'Isaiah Stewart':    { pts:  -5.5, reb: -2.5, ast:  0    },
+    'Shai Gilgeous-Alexander': { pts: -6.9, reb: -1.8, ast: 0 }, // resid +6.9 PTS
+  },
+};

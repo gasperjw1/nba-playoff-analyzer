@@ -1896,6 +1896,67 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 25b: Per-Player Bias Override (Phase 71c)
+  // ------------------------------------------------------------
+  // The tier-based fix (TEST 25) helps the population average but
+  // leaves residual error on outliers (Cade -11.2pp after tier, Duren
+  // +6.2pp after tier). PLAYER_BIAS_OVERRIDE applies an additive
+  // correction to bring named players to neutral.
+  // ============================================================
+  console.log('\nTEST 25b: Per-Player Bias Override (Phase 71c)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+
+    const detCle = ctx.SERIES_DATA.find(s => s.id === 'DET-CLE');
+    const cade = detCle.homeTeam.players.find(p => p.name === 'Cade Cunningham');
+    assert(cade, 'Cade roster entry exists');
+
+    const cadeProj = ctx.calcExpectedPlayerStats(cade, detCle, 6, 'home');
+    const override = cadeProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+    assert(override, 'Cade gets Per-Player Bias Override modifier');
+    assert(override.ptsDelta > 0, `Cade override is POSITIVE (under-predicted player); got ${override.ptsDelta}`);
+    assert(cadeProj.pts >= 20, `Cade PTS projection rises into realistic range; got ${cadeProj.pts}`);
+
+    // Duren: over-predicted residual → negative override
+    const duren = detCle.homeTeam.players.find(p => p.name === 'Jalen Duren');
+    if (duren) {
+      const durenProj = ctx.calcExpectedPlayerStats(duren, detCle, 6, 'home');
+      const durenOverride = durenProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+      assert(durenOverride && durenOverride.ptsDelta < 0,
+        `Duren override is NEGATIVE (over-predicted); got ${durenOverride ? durenOverride.ptsDelta : 'no modifier'}`);
+    }
+
+    // Non-overridden player (e.g., Mitchell, Mobley) → no override modifier
+    const mitchell = detCle.awayTeam.players.find(p => p.name === 'Donovan Mitchell');
+    if (mitchell) {
+      const mitchellProj = ctx.calcExpectedPlayerStats(mitchell, detCle, 6, 'away');
+      const mitchellOverride = mitchellProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+      assert(!mitchellOverride, 'Mitchell (not in override table) has no override modifier');
+    }
+
+    // Override applies AFTER tier correction — verify the order via the
+    // modifier list ordering
+    if (cadeProj.modifiers.length >= 2) {
+      const tierIdx = cadeProj.modifiers.findIndex(m => m.label === 'Star Bias Correction');
+      const overrideIdx = cadeProj.modifiers.findIndex(m => m.label === 'Per-Player Bias Override');
+      if (tierIdx !== -1 && overrideIdx !== -1) {
+        assert(overrideIdx > tierIdx, `Override applied AFTER tier correction (idx ${overrideIdx} > ${tierIdx})`);
+      }
+    }
+  }
+
+  // ============================================================
   // TEST 26: Edge detector Phase 71 guardrails
   //   - Un-projected stat hard CAUTION (threes/STL/BLK)
   //   - G6/G7 elimination cap downgrades PLACE → CAUTION
