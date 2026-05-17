@@ -1165,6 +1165,8 @@ function runTests() {
       'js/engine/simulation.js', 'js/engine/graduation.js', 'js/engine/auto-resolve.js',
       'js/engine/projections-chs.js', 'js/engine/player-tendencies.js',
       'js/engine/monte-carlo.js', 'js/engine/parlay-builder.js',
+      'js/engine/edge-detector.js', 'js/engine/risk-controls.js',
+      'js/engine/risk-analytics.js',
       'js/ui/components.js', 'js/ui/modals.js', 'js/ui/series-renderer.js',
       'js/ui/learnings.js', 'js/ui/definitions.js', 'js/ui/bet-card.js',
       'js/ui/bets.js', 'js/ui/home.js', 'js/ui/chs-lab.js', 'js/ui/navigation.js',
@@ -1261,6 +1263,7 @@ function runTests() {
      'js/engine/ratings.js','js/engine/scenarios.js','js/engine/projections.js','js/engine/simulation.js',
      'js/engine/graduation.js','js/engine/auto-resolve.js','js/engine/projections-chs.js',
      'js/engine/player-tendencies.js','js/engine/monte-carlo.js','js/engine/parlay-builder.js',
+     'js/engine/edge-detector.js','js/engine/risk-controls.js','js/engine/risk-analytics.js',
      'js/ui/components.js','js/ui/modals.js','js/ui/series-renderer.js','js/ui/learnings.js',
      'js/ui/definitions.js','js/ui/bet-card.js','js/ui/bets.js','js/ui/home.js','js/ui/chs-lab.js',
      'js/ui/navigation.js'].forEach(l);
@@ -1306,6 +1309,718 @@ function runTests() {
           `bets section not empty when there are games on the resolved betsDate (${betsDate})`);
       }
     }
+  }
+
+  // ============================================================
+  // TEST 20: Edge detector — coin-flip skip + market disagreement +
+  //          historical classification (Phase 68)
+  // ------------------------------------------------------------
+  // Three pure functions, all unit-testable without UI:
+  //   shouldSkipCoinFlip(modelProb)      — MC bucket gate
+  //   detectMarketDisagreement(p, odds)  — calibrated vs implied edge
+  //   classifyBet(bet)                   — empirical cross-tab lookup
+  // ============================================================
+  console.log('\nTEST 20: Edge detector — coin-flip skip + market disagreement');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/edge-detector.js'), 'utf8')), ctx);
+
+    // 20a — Coin-flip bucket: anything in [0.50, 0.65] returns skip:true
+    const skipMid = ctx.shouldSkipCoinFlip(0.58);
+    assert(skipMid.skip === true, `0.58 is in coin-flip bucket (skip:true)`);
+    assert(skipMid.reason === 'coin-flip-zone', `reason is coin-flip-zone`);
+
+    const skipEdgeLow = ctx.shouldSkipCoinFlip(0.50);
+    assert(skipEdgeLow.skip === true, `boundary 0.50 is included`);
+    const skipEdgeHigh = ctx.shouldSkipCoinFlip(0.65);
+    assert(skipEdgeHigh.skip === true, `boundary 0.65 is included`);
+
+    const placeAbove = ctx.shouldSkipCoinFlip(0.70);
+    assert(placeAbove.skip === false, `0.70 above bucket → skip:false`);
+    const placeBelow = ctx.shouldSkipCoinFlip(0.35);
+    assert(placeBelow.skip === false, `0.35 below bucket → skip:false`);
+
+    const skipNull = ctx.shouldSkipCoinFlip(null);
+    assert(skipNull.skip === true && skipNull.reason === 'no-model-prob',
+      `null modelProb → skip:true, reason:no-model-prob`);
+
+    // 20b — Market disagreement: positive edge case
+    // calibrated(0.85) → 0.64 (in 80-95% bucket: −0.21 adjustment)
+    // -250 odds → implied 0.714
+    // edge = 0.64 - 0.714 = -0.07 → FADE (book has edge)
+    const dis1 = ctx.detectMarketDisagreement(0.85, -250);
+    assert(dis1 != null, `disagreement returns object`);
+    assert(dis1.shouldFade === true, `-250 vs calibrated 0.64 → shouldFade`);
+    assert(dis1.edge < 0, `edge is negative`);
+
+    // calibrated(0.40) → 0.58 (30-50% bucket: +0.18 boost)
+    // +150 odds → implied 0.40
+    // edge = 0.58 - 0.40 = +0.18 → hasEdge:true (above 0.04 floor)
+    const dis2 = ctx.detectMarketDisagreement(0.40, 150);
+    assert(dis2.hasEdge === true, `0.40 raw → 0.58 cal, vs +150 implied 0.40 → hasEdge`);
+    assert(dis2.edge > 0.10, `edge materially positive`);
+    assert(dis2.kellyFraction > 0, `Kelly fraction positive when edge positive`);
+    assert(dis2.kellyFraction <= 0.25, `Kelly fraction capped at 0.25`);
+
+    // 20c — classifyBet uses cross-tab when available.
+    //       Phase 71: lean×spread DOWNGRADED to CAUTION (margin MAE
+    //       13pt = no real spread edge despite 89% historical hit).
+    const lean_spread = ctx.classifyBet({ confidence: 'lean', type: 'spread' });
+    assert(lean_spread.recommendation === 'CAUTION',
+      `lean × spread classified CAUTION post-Phase-71 (audit downgrade — margin MAE 13pt)`);
+    assert(lean_spread.basis === 'cross-tab', `basis is cross-tab`);
+
+    const high_prop = ctx.classifyBet({ confidence: 'high', type: 'prop' });
+    assert(high_prop.recommendation === 'SKIP',
+      `high × prop classified SKIP (worst cell, 33% hit, -43% ROI)`);
+
+    const best_ml = ctx.classifyBet({ confidence: 'best-bet', type: 'ml' });
+    assert(best_ml.recommendation === 'PLACE',
+      `best-bet × ml classified PLACE (83% hit)`);
+
+    // 20d — Type-only fallback when cross-cell missing
+    const unknown = ctx.classifyBet({ confidence: 'best-bet', type: 'spread' });
+    // No cross-cell for best-bet × spread (n=0), should fall back to type-only
+    assert(unknown.basis === 'type-only' || unknown.recommendation === 'PLACE',
+      `best-bet × spread (no cross-cell) falls back to type-only (spread = PLACE)`);
+
+    // 20e — scoreBet: SKIP wins over MC verdict when historical is bad
+    const score1 = ctx.scoreBet(
+      { confidence: 'high', type: 'prop' },
+      0.85,   // raw MC suggests strong PLACE
+      -150    // odds
+    );
+    assert(score1.verdict === 'SKIP',
+      `historical SKIP overrides any MC signal (verdict:SKIP, reason:historical-bleed)`);
+
+    // 20f — scoreBet: empirical PLACE flows through to PLACE
+    const score2 = ctx.scoreBet(
+      { confidence: 'lean', type: 'spread' },
+      0.75,   // MC says fine
+      -110
+    );
+    assert(score2.verdict === 'PLACE' || score2.verdict === 'STRONG PLACE',
+      `empirical PLACE + good MC → PLACE/STRONG PLACE (got ${score2.verdict})`);
+
+    // 20g — confidenceToModelProb retro mapping
+    assert(ctx.confidenceToModelProb('best-bet') === 0.86, `best-bet → 0.86`);
+    assert(ctx.confidenceToModelProb('high') === 0.85, `high → 0.85`);
+    assert(ctx.confidenceToModelProb('medium') === 0.62, `medium → 0.62`);
+    assert(ctx.confidenceToModelProb('unknown') === null, `unknown label → null`);
+
+    // 20h — HISTORICAL_R2 table is internally consistent: types sum to 99
+    const totalByType = Object.values(ctx.HISTORICAL_R2.byType).reduce((s, x) => s + x.n, 0);
+    assert(totalByType === 99,
+      `historical type buckets sum to 99 R2 straight bets (got ${totalByType})`);
+    const totalByConf = Object.values(ctx.HISTORICAL_R2.byConfidence).reduce((s, x) => s + x.n, 0);
+    assert(totalByConf === 98 || totalByConf === 99,
+      `historical confidence buckets sum to ~99 (got ${totalByConf})`);
+
+    // 20i — Calibration table parity: edge-detector._calibrate should
+    //       match parlay-builder.calibrateHitRate. Load parlay-builder
+    //       and compare across a sweep of buckets.
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/monte-carlo.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/parlay-builder.js'), 'utf8')), ctx);
+    const sweep = [0.25, 0.40, 0.55, 0.75, 0.90, 0.97];
+    sweep.forEach(p => {
+      const a = ctx._calibrate(p);
+      const b = ctx.calibrateHitRate(p);
+      if (b && a != null) {
+        assert(Math.abs(a - b.calibrated) < 0.001,
+          `calibration parity at ${p}: edge-detector ${a} vs parlay-builder ${b.calibrated}`);
+      }
+    });
+  }
+
+  // ============================================================
+  // TEST 21: Edge pill renders on unsettled bets only (Phase 68)
+  // ------------------------------------------------------------
+  // _renderEdgePill should return '' for settled bets, return a span
+  // for unsettled ones (assuming classifyBet exists in scope).
+  // ============================================================
+  console.log('\nTEST 21: Edge pill rendering');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/edge-detector.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/ui/bet-card.js'), 'utf8')), ctx);
+
+    // Settled bet → empty pill
+    const settled = { type: 'prop', confidence: 'high', result: { outcome: 'loss' } };
+    const settledPill = ctx._renderEdgePill(settled);
+    assert(settledPill === '', `settled bet gets empty edge pill (no forward-looking advice needed)`);
+
+    // Unsettled SKIP bet → red SKIP pill
+    const skipBet = { type: 'prop', confidence: 'high' };
+    const skipPill = ctx._renderEdgePill(skipBet);
+    assert(skipPill.includes('SKIP'), `high prop (worst cell) renders SKIP pill`);
+    assert(skipPill.includes('var(--red)'), `SKIP pill uses red color`);
+
+    // Unsettled PLACE bet → green PLACE pill. Phase 71 downgrade
+    // means lean×spread is now CAUTION, so use best-bet×ml for the
+    // PLACE assertion instead (still in the PLACE cell after audit).
+    const placeBet = { type: 'ml', confidence: 'best-bet' };
+    const placePill = ctx._renderEdgePill(placeBet);
+    assert(placePill.includes('PLACE'), `best-bet ml renders PLACE pill (post-audit-stable cell)`);
+    assert(placePill.includes('var(--green)'), `PLACE pill uses green color`);
+
+    // Phase 71: lean × spread should now render CAUTION (yellow)
+    const cautionBet = { type: 'spread', confidence: 'lean' };
+    const cautionPill = ctx._renderEdgePill(cautionBet);
+    assert(cautionPill.includes('CAUTION'), `lean × spread renders CAUTION post-Phase-71`);
+
+    // Phase 71: prop on threes/STL/BLK triggers unprojected-stat CAUTION
+    const unprojBet = { type: 'prop', confidence: 'lean', pick: 'Wemby Over 1.5 blocks' };
+    const c = ctx.classifyBet(unprojBet);
+    assert(c.recommendation === 'CAUTION' && c.basis === 'unprojected-stat',
+      `threes/STL/BLK prop hard-CAUTION via unprojected-stat guardrail`);
+  }
+
+  // ============================================================
+  // TEST 22: Risk controls — concentration + suppression + Kelly stake
+  //          (Phase 69)
+  // ============================================================
+  console.log('\nTEST 22: Risk controls — slate concentration, blowout suppression, Kelly stake');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/risk-controls.js'), 'utf8')), ctx);
+
+    // 22a — analyzeSlateConcentration: 4 NYK bets trigger team warning
+    const slate = [
+      { id: 'a', type: 'ml',     pick: 'NYK ML vs PHI' },
+      { id: 'b', type: 'spread', pick: 'NYK -7.5' },
+      { id: 'c', type: 'prop',   pick: 'Brunson Over 27.5 points' },
+      { id: 'd', type: 'prop',   pick: 'KAT Over 16.5 rebounds' },
+      { id: 'e', type: 'prop',   pick: 'OG Over 11.5 points' },
+      { id: 'f', type: 'prop',   pick: 'Embiid Under 28.5 points' },
+    ];
+    const ana = ctx.analyzeSlateConcentration(slate, { maxPerTeam: 4 });
+    assert(ana != null && ana.topExposures.length > 0, `concentration returns top exposures`);
+    // NYK appears in 5+ keys (NYK_ML, NYK_COVER, Brunson_OVER would be tagged as Brunson not NYK)
+    // The team-cap matches on prefix NYK_*. Let's count:
+    const nykKey = ana.byTeam['NYK'];
+    assert(nykKey && nykKey.length === 2, `NYK direct keys: NYK_ML + NYK_COVER (got ${nykKey ? nykKey.length : 'undef'})`);
+    // Players don't map to teams in this context, so player_* keys stay separate
+    // (correct behavior — Brunson_OVER could hit even if NYK loses)
+
+    // 22b — Concentration WARNING fires at >maxPerDirection
+    const heavySlate = [
+      { id: 'a', type: 'ml',     pick: 'NYK ML' },
+      { id: 'b', type: 'ml',     pick: 'NYK ML again' },
+      { id: 'c', type: 'ml',     pick: 'NYK ML once more' },
+      { id: 'd', type: 'ml',     pick: 'NYK ML yet again' },
+    ];
+    const heavyAna = ctx.analyzeSlateConcentration(heavySlate, { maxPerDirection: 3 });
+    assert(heavyAna.warnings.length >= 1, `4 NYK_ML bets triggers warning`);
+    assert(heavyAna.safe === false, `safe is false when warnings exist`);
+
+    // 22c — shouldSuppressScoringProp: low blowout risk → don't suppress
+    const lowMC = { blowoutRisk: 0.10, homeWinProb: 0.55 };
+    const noSuppress = ctx.shouldSuppressScoringProp(lowMC, { name: 'X', rating: 85 }, { team: 'home', stat: 'pts' });
+    assert(noSuppress.suppress === false, `low blowout risk → no suppression`);
+
+    // 22d — High blowout risk + underdog star → SUPPRESS
+    const highMC = { blowoutRisk: 0.50, homeWinProb: 0.75 };
+    const sup = ctx.shouldSuppressScoringProp(highMC, { name: 'UnderdogStar', rating: 85 }, { team: 'away', stat: 'pts' });
+    assert(sup.suppress === true, `high blowout + underdog star → suppress`);
+    assert(sup.reason === 'underdog-stars-pulled-in-blowout', `reason matches`);
+
+    // 22e — High blowout risk + favorite starter → SUPPRESS
+    const sup2 = ctx.shouldSuppressScoringProp(highMC, { name: 'FavStar', rating: 85 }, { team: 'home', stat: 'pts' });
+    assert(sup2.suppress === true, `high blowout + favorite starter → suppress`);
+
+    // 22f — High blowout risk + favorite role player → DON'T suppress (garbage time)
+    const noSup3 = ctx.shouldSuppressScoringProp(highMC, { name: 'FavBench', rating: 65 }, { team: 'home', stat: 'pts' });
+    assert(noSup3.suppress === false, `favorite bench can pad in garbage time → no suppression`);
+
+    // 22g — Non-scoring stat (rebounds) is blowout-stable → never suppress
+    const noSup4 = ctx.shouldSuppressScoringProp(highMC, { name: 'X', rating: 85 }, { team: 'away', stat: 'reb' });
+    assert(noSup4.suppress === false, `rebounds are blowout-stable → no suppression`);
+
+    // 22h — recommendStake: positive edge produces Kelly bet
+    const rec = ctx.recommendStake(500, { kellyFraction: 0.08 }, { minStake: 5, maxStake: 25 });
+    assert(rec.recommendedStake === 25, `Kelly $40 capped at $25 maxStake (got $${rec.recommendedStake})`);
+    assert(rec.verdict === 'CAP_HIT', `verdict is CAP_HIT when Kelly > max`);
+
+    const rec2 = ctx.recommendStake(500, { kellyFraction: 0.02 }, { minStake: 5, maxStake: 25 });
+    assert(rec2.recommendedStake === 10, `Kelly $10 → bet $10`);
+    assert(rec2.verdict === 'BET', `verdict BET when within range`);
+
+    const rec3 = ctx.recommendStake(500, { kellyFraction: 0.005 }, { minStake: 5, maxStake: 25 });
+    assert(rec3.recommendedStake === 0, `Kelly $2.50 (<minStake) → skip`);
+    assert(rec3.verdict === 'SKIP_LOW_EDGE', `verdict SKIP_LOW_EDGE`);
+
+    const rec4 = ctx.recommendStake(500, { kellyFraction: 0 }, { minStake: 5 });
+    assert(rec4.recommendedStake === 0 && rec4.verdict === 'SKIP_NO_EDGE',
+      `zero Kelly fraction → SKIP_NO_EDGE`);
+
+    // 22i — _directionalKey extracts correctly across bet types
+    assert(ctx._directionalKey({ type: 'ml', pick: 'NYK ML vs PHI' }) === 'NYK_ML',
+      `ML → NYK_ML`);
+    assert(ctx._directionalKey({ type: 'spread', pick: 'NYK -7.5' }) === 'NYK_COVER',
+      `negative spread → COVER`);
+    assert(ctx._directionalKey({ type: 'spread', pick: 'PHI +7.5' }) === 'PHI_KEEP',
+      `positive spread → KEEP`);
+    assert(ctx._directionalKey({ type: 'total', pick: 'Over 213.5', series: 'NYK-PHI' }) === 'NYK-PHI_OVER',
+      `total over → ${'<series>_OVER'}`);
+    assert(ctx._directionalKey({ type: 'prop', pick: 'Brunson Over 27.5 points' }) === 'Brunson_OVER',
+      `prop over → Brunson_OVER`);
+  }
+
+  // ============================================================
+  // TEST 23: Parlay-builder anti-correlation cap (Phase 69)
+  // ============================================================
+  console.log('\nTEST 23: Parlay-builder anti-correlation cap (max-per-team)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/constants.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/series-data.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/historical.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/utils.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/state.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/fatigue.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/chemistry.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/matchups.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/ratings.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/scenarios.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/projections.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/monte-carlo.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/parlay-builder.js'), 'utf8')), ctx);
+
+    // Find a series with a clear matchup; run MC; build parlay; verify
+    // no team has more than 2 legs.
+    const series = ctx.SERIES_DATA.find(s => s.id === 'NYK-PHI' || s.id === 'OKC-LAL');
+    if (series) {
+      const mc = ctx.runMonteCarlo(series, 5, { iterations: 300 });
+      if (mc) {
+        const reliable = ctx.buildReliableParlay(mc, series);
+        if (reliable && reliable.legs) {
+          const teamCount = {};
+          reliable.legs.forEach(l => {
+            const t = l.team || 'UNK';
+            teamCount[t] = (teamCount[t] || 0) + 1;
+          });
+          const maxOnTeam = Math.max(...Object.values(teamCount));
+          assert(maxOnTeam <= 2, `Reliable parlay caps at 2 legs per team (got max ${maxOnTeam} on team)`);
+        }
+        const traditional = ctx.buildTraditionalParlay(mc, series);
+        if (traditional && traditional.legs) {
+          const teamCount = {};
+          traditional.legs.forEach(l => {
+            const t = l.team || 'UNK';
+            teamCount[t] = (teamCount[t] || 0) + 1;
+          });
+          const maxOnTeam = Math.max(...Object.values(teamCount));
+          assert(maxOnTeam <= 2, `Traditional parlay caps at 2 legs per team (got max ${maxOnTeam} on team)`);
+        }
+      }
+    }
+  }
+
+  // ============================================================
+  // TEST 24: Risk analytics — VaR, CVaR, Sharpe, drawdown, RoR (Phase 70)
+  // ============================================================
+  console.log('\nTEST 24: Risk analytics — VaR/CVaR/Sharpe/drawdown/RoR');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/risk-analytics.js'), 'utf8')), ctx);
+
+    // 24a — computeSlateRisk basic invariants
+    const slate = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.55, americanOdds: -110 },
+      { stake: 25, hitProb: 0.70, americanOdds: -150 },
+    ];
+    const risk = ctx.computeSlateRisk(slate, { iterations: 2000 });
+    assert(risk != null && !risk.error, 'computeSlateRisk returns valid object');
+    assert(risk.totalStaked === 75, `totalStaked = $75 (got $${risk.totalStaked})`);
+    assert(risk.maxLoss === -75, `maxLoss = -$75 if all lose`);
+    assert(risk.var95 <= 0, 'var95 should be loss-side (≤0)');
+    assert(risk.cvar95 <= risk.var95, 'cvar95 ≤ var95 (CVaR is the avg of the tail)');
+    assert(risk.lossProb + risk.winProb + risk.breakevenProb >= 0.99, 'probabilities sum to ~1');
+
+    // 24b — Perfectly correlated bets (same group) move together
+    const correlated = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+    ];
+    const corrRisk = ctx.computeSlateRisk(correlated, { iterations: 2000 });
+    // All three legs either all win or all lose → variance is MUCH higher
+    // than 3 independent bets. Std dev should be roughly 3× a single bet's.
+    const independent = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+    ];
+    const indepRisk = ctx.computeSlateRisk(independent, { iterations: 2000 });
+    assert(corrRisk.stdDev > indepRisk.stdDev * 1.3,
+      `correlated stdev (${corrRisk.stdDev}) > independent stdev (${indepRisk.stdDev}) * 1.3 — diversification kicks in`);
+
+    // 24c — Calibration option exists and changes the distribution when loaded
+    // (without edge-detector loaded, useCalibration is a no-op silently)
+    const calRisk = ctx.computeSlateRisk(slate, { iterations: 1000, useCalibration: true });
+    assert(calRisk != null && !calRisk.error, 'useCalibration option does not throw');
+
+    // 24d — computeHistoricalRiskMetrics: equity curve + drawdown
+    const fakeLedger = [
+      { date: '2026-05-01', pl: 50 },
+      { date: '2026-05-02', pl: -100 },   // drawdown starts
+      { date: '2026-05-03', pl: -50 },    // continues
+      { date: '2026-05-04', pl: 80 },     // partial recovery
+      { date: '2026-05-05', pl: -30 },
+    ];
+    const hist = ctx.computeHistoricalRiskMetrics(fakeLedger);
+    assert(hist.totalPL === -50, `total P&L sums correctly (got $${hist.totalPL})`);
+    assert(hist.totalSessions === 5, `5 sessions counted`);
+    // Equity: 50, -50, -100, -20, -50
+    // Peak was 50 (day 1), trough -100 (day 3) → drawdown 150
+    assert(hist.maxDrawdown === 150, `max drawdown $150 (got $${hist.maxDrawdown})`);
+    assert(hist.drawdownPeakDate === '2026-05-01', `peak date is day 1`);
+    assert(hist.drawdownTroughDate === '2026-05-03', `trough date is day 3`);
+    // Loss streak: day 2-3 = 2 days, then broken by day 4's +80
+    assert(hist.longestLossStreak === 2, `longest loss streak is 2 days`);
+
+    // 24e — computeRiskOfRuin: high-variance negative-mean strategy ruins fast
+    const ror = ctx.computeRiskOfRuin(500, -20, 70, { horizonDays: 30, iterations: 2000 });
+    assert(ror.P_ruin > 0.20, `Negative mean + high var → high P(ruin) (got ${ror.P_ruin})`);
+    assert(ror.p10 < ror.p50 && ror.p50 < ror.p90, `bankroll percentiles ordered`);
+
+    // 24f — Positive-mean strategy has low ruin
+    const rorGood = ctx.computeRiskOfRuin(500, 20, 50, { horizonDays: 30, iterations: 2000 });
+    assert(rorGood.P_ruin < 0.10, `Positive mean → low P(ruin) (got ${rorGood.P_ruin})`);
+
+    // 24g — interpretRisk verdict thresholds
+    const blocked = ctx.interpretRisk({ cvar95: -150, sharpe: 0.1, lossProb: 0.4 }, 500);
+    assert(blocked.verdict === 'BLOCKED', `CVaR 30% of bankroll → BLOCKED (got ${blocked.verdict})`);
+
+    const excessive = ctx.interpretRisk({ cvar95: -60, sharpe: 0.1, lossProb: 0.4 }, 500);
+    assert(excessive.verdict === 'EXCESSIVE', `CVaR 12% → EXCESSIVE (got ${excessive.verdict})`);
+
+    const acceptable = ctx.interpretRisk({ cvar95: -30, sharpe: 0.6, lossProb: 0.4 }, 500);
+    assert(acceptable.verdict === 'ACCEPTABLE', `Low CVaR + strong Sharpe → ACCEPTABLE (got ${acceptable.verdict})`);
+
+    // 24h — Sharpe of positive-EV slate is positive
+    const goodSlate = [
+      { stake: 25, hitProb: 0.85, americanOdds: -200 },  // strong leg
+      { stake: 25, hitProb: 0.80, americanOdds: -180 },  // strong leg
+    ];
+    const goodRisk = ctx.computeSlateRisk(goodSlate, { iterations: 3000 });
+    assert(goodRisk.sharpe > 0, `strong slate produces positive Sharpe (got ${goodRisk.sharpe})`);
+  }
+
+  // ============================================================
+  // TEST 25: Star bias correction (Phase 71)
+  // ------------------------------------------------------------
+  // The 68-game calibration audit found systematic over-prediction
+  // of high-rated players. The fix subtracts a tier-based delta from
+  // PTS/REB/AST in calcExpectedPlayerStats. This test verifies:
+  //   - Elite (rating 85+) gets the correct deltas
+  //   - Starter (rating 75-84) gets the correct deltas
+  //   - Rotation (rating 65-74) is UNCHANGED
+  //   - Bench (rating <65) is UNCHANGED
+  //   - Disabling the config reverts to old behavior
+  //   - The "Star Bias Correction" modifier appears in output
+  // ============================================================
+  console.log('\nTEST 25: Star bias correction (Phase 71)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+
+    function loadEngine(starBiasEnabled) {
+      const ctx = vm.createContext({
+        console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+        Boolean, Number, String, RegExp, Date, Error,
+      });
+      vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/constants.js'), 'utf8')), ctx);
+      // Override config for this test instance
+      ctx.STAR_BIAS_CONFIG = {
+        enabled: starBiasEnabled,
+        elitePtsDelta: -2.6, eliteRebDelta: -0.5, eliteAstDelta: -1.0,
+        starterPtsDelta: -2.0, starterRebDelta: -0.5, starterAstDelta: 0,
+      };
+      vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/series-data.js'), 'utf8')), ctx);
+      vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/historical.js'), 'utf8')), ctx);
+      vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/utils.js'), 'utf8')), ctx);
+      vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/state.js'), 'utf8')), ctx);
+      ['js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js',
+       'js/engine/ratings.js','js/engine/scenarios.js','js/engine/projections.js']
+        .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+      return ctx;
+    }
+
+    // ── Locate one player of each tier in actual SERIES_DATA ──
+    function findTierPlayer(ctx, ratingLo, ratingHi) {
+      for (const s of ctx.SERIES_DATA) {
+        for (const team of [s.homeTeam, s.awayTeam]) {
+          for (const p of team.players || []) {
+            const r = p.rating || 0;
+            if (r >= ratingLo && r <= ratingHi && (p.ppg || 0) > 5) {
+              return { series: s, player: p, side: team === s.homeTeam ? 'home' : 'away' };
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    // 25a — Build "fixed" + "broken" engine contexts, compare outputs
+    const onCtx  = loadEngine(true);
+    const offCtx = loadEngine(false);
+
+    // ELITE
+    const elite = findTierPlayer(onCtx, 85, 99);
+    if (elite) {
+      const eliteOff = offCtx.calcExpectedPlayerStats(elite.player, elite.series, 0, elite.side);
+      const eliteOn  = onCtx.calcExpectedPlayerStats(elite.player, elite.series, 0, elite.side);
+      const dPts = +(eliteOn.pts - eliteOff.pts).toFixed(2);
+      const dReb = +(eliteOn.reb - eliteOff.reb).toFixed(2);
+      const dAst = +(eliteOn.ast - eliteOff.ast).toFixed(2);
+      // We expect the fix to subtract ~2.6/0.5/1.0 from elite, but only IF
+      // the engine projection isn't clamped to 0 by Math.max. Allow
+      // tolerance for that floor.
+      assert(dPts <= -1.0 || eliteOn.pts === 0,
+        `ELITE PTS reduced by fix (${elite.player.name} r${elite.player.rating}): ${eliteOff.pts} → ${eliteOn.pts} (Δ${dPts})`);
+      const eliteModifier = eliteOn.modifiers.find(m => m.label === 'Star Bias Correction');
+      assert(eliteModifier, `Elite player has Star Bias Correction modifier in output`);
+    } else {
+      assert(false, `Expected to find an elite player (rating ≥85) in SERIES_DATA`);
+    }
+
+    // STARTER
+    const starter = findTierPlayer(onCtx, 75, 84);
+    if (starter) {
+      const off = offCtx.calcExpectedPlayerStats(starter.player, starter.series, 0, starter.side);
+      const on  = onCtx.calcExpectedPlayerStats(starter.player, starter.series, 0, starter.side);
+      const dPts = +(on.pts - off.pts).toFixed(2);
+      assert(dPts <= -1.0 || on.pts === 0,
+        `STARTER PTS reduced (${starter.player.name} r${starter.player.rating}): ${off.pts} → ${on.pts} (Δ${dPts})`);
+      const mod = on.modifiers.find(m => m.label === 'Star Bias Correction');
+      assert(mod, `Starter has Star Bias Correction modifier`);
+    }
+
+    // ROTATION — must be UNCHANGED
+    const rotation = findTierPlayer(onCtx, 65, 74);
+    if (rotation) {
+      const off = offCtx.calcExpectedPlayerStats(rotation.player, rotation.series, 0, rotation.side);
+      const on  = onCtx.calcExpectedPlayerStats(rotation.player, rotation.series, 0, rotation.side);
+      const dPts = +(on.pts - off.pts).toFixed(2);
+      assert(Math.abs(dPts) < 0.05,
+        `ROTATION player UNCHANGED (${rotation.player.name} r${rotation.player.rating}): ${off.pts} === ${on.pts}`);
+      const mod = on.modifiers.find(m => m.label === 'Star Bias Correction');
+      assert(!mod, `Rotation player should NOT have Star Bias Correction modifier`);
+    }
+
+    // BENCH — must be UNCHANGED
+    const bench = findTierPlayer(onCtx, 1, 64);
+    if (bench) {
+      const off = offCtx.calcExpectedPlayerStats(bench.player, bench.series, 0, bench.side);
+      const on  = onCtx.calcExpectedPlayerStats(bench.player, bench.series, 0, bench.side);
+      assert(Math.abs(on.pts - off.pts) < 0.05,
+        `BENCH player UNCHANGED: pts ${off.pts} === ${on.pts}`);
+    }
+
+    // 25b — Boundary cases: rating exactly 85 (elite) vs 84 (starter) vs 75 (starter) vs 74 (rotation)
+    const synthetic = { name: 'Synth', rating: 85, ppg: 25, rpg: 7, apg: 5, baseRating: 85 };
+    // Need a minimal series stub
+    const stubSeries = onCtx.SERIES_DATA[0];
+    // Inject and project
+    const beforeR = onCtx.SERIES_DATA[0].homeTeam.players[0].rating;
+    onCtx.SERIES_DATA[0].homeTeam.players[0].rating = 85;
+    const r85 = onCtx.calcExpectedPlayerStats(onCtx.SERIES_DATA[0].homeTeam.players[0], stubSeries, 0, 'home');
+    const m85 = r85.modifiers.find(m => m.label === 'Star Bias Correction');
+    assert(m85 && m85.pct === -10, `Rating exactly 85 → elite tier (pct -10), got ${m85 ? m85.pct : 'no modifier'}`);
+
+    onCtx.SERIES_DATA[0].homeTeam.players[0].rating = 84;
+    const r84 = onCtx.calcExpectedPlayerStats(onCtx.SERIES_DATA[0].homeTeam.players[0], stubSeries, 0, 'home');
+    const m84 = r84.modifiers.find(m => m.label === 'Star Bias Correction');
+    assert(m84 && m84.pct === -7, `Rating 84 → starter tier (pct -7), got ${m84 ? m84.pct : 'no modifier'}`);
+
+    onCtx.SERIES_DATA[0].homeTeam.players[0].rating = 75;
+    const r75 = onCtx.calcExpectedPlayerStats(onCtx.SERIES_DATA[0].homeTeam.players[0], stubSeries, 0, 'home');
+    const m75 = r75.modifiers.find(m => m.label === 'Star Bias Correction');
+    assert(m75 && m75.pct === -7, `Rating exactly 75 → starter tier (pct -7), got ${m75 ? m75.pct : 'no modifier'}`);
+
+    onCtx.SERIES_DATA[0].homeTeam.players[0].rating = 74;
+    const r74 = onCtx.calcExpectedPlayerStats(onCtx.SERIES_DATA[0].homeTeam.players[0], stubSeries, 0, 'home');
+    const m74 = r74.modifiers.find(m => m.label === 'Star Bias Correction');
+    assert(!m74, `Rating 74 → rotation tier (NO correction modifier)`);
+
+    // Restore
+    onCtx.SERIES_DATA[0].homeTeam.players[0].rating = beforeR;
+
+    // 25c — Output is never negative even after correction
+    const synthLow = { name: 'LowScorer', rating: 86, ppg: 1.5, rpg: 0.5, apg: 0.5 };
+    onCtx.SERIES_DATA[0].homeTeam.players.push(synthLow);
+    const lowProj = onCtx.calcExpectedPlayerStats(synthLow, stubSeries, 0, 'home');
+    assert(lowProj.pts >= 0, `pts never negative after correction (got ${lowProj.pts})`);
+    assert(lowProj.reb >= 0, `reb never negative after correction (got ${lowProj.reb})`);
+    assert(lowProj.ast >= 0, `ast never negative after correction (got ${lowProj.ast})`);
+    onCtx.SERIES_DATA[0].homeTeam.players.pop();
+  }
+
+  // ============================================================
+  // TEST 25b: Per-Player Bias Override (Phase 71c)
+  // ------------------------------------------------------------
+  // The tier-based fix (TEST 25) helps the population average but
+  // leaves residual error on outliers (Cade -11.2pp after tier, Duren
+  // +6.2pp after tier). PLAYER_BIAS_OVERRIDE applies an additive
+  // correction to bring named players to neutral.
+  // ============================================================
+  console.log('\nTEST 25b: Per-Player Bias Override (Phase 71c)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+
+    const detCle = ctx.SERIES_DATA.find(s => s.id === 'DET-CLE');
+    const cade = detCle.homeTeam.players.find(p => p.name === 'Cade Cunningham');
+    assert(cade, 'Cade roster entry exists');
+
+    const cadeProj = ctx.calcExpectedPlayerStats(cade, detCle, 6, 'home');
+    const override = cadeProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+    assert(override, 'Cade gets Per-Player Bias Override modifier');
+    assert(override.ptsDelta > 0, `Cade override is POSITIVE (under-predicted player); got ${override.ptsDelta}`);
+    assert(cadeProj.pts >= 20, `Cade PTS projection rises into realistic range; got ${cadeProj.pts}`);
+
+    // Duren: over-predicted residual → negative override
+    const duren = detCle.homeTeam.players.find(p => p.name === 'Jalen Duren');
+    if (duren) {
+      const durenProj = ctx.calcExpectedPlayerStats(duren, detCle, 6, 'home');
+      const durenOverride = durenProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+      assert(durenOverride && durenOverride.ptsDelta < 0,
+        `Duren override is NEGATIVE (over-predicted); got ${durenOverride ? durenOverride.ptsDelta : 'no modifier'}`);
+    }
+
+    // Non-overridden player (e.g., Mitchell, Mobley) → no override modifier
+    const mitchell = detCle.awayTeam.players.find(p => p.name === 'Donovan Mitchell');
+    if (mitchell) {
+      const mitchellProj = ctx.calcExpectedPlayerStats(mitchell, detCle, 6, 'away');
+      const mitchellOverride = mitchellProj.modifiers.find(m => m.label === 'Per-Player Bias Override');
+      assert(!mitchellOverride, 'Mitchell (not in override table) has no override modifier');
+    }
+
+    // Override applies AFTER tier correction — verify the order via the
+    // modifier list ordering
+    if (cadeProj.modifiers.length >= 2) {
+      const tierIdx = cadeProj.modifiers.findIndex(m => m.label === 'Star Bias Correction');
+      const overrideIdx = cadeProj.modifiers.findIndex(m => m.label === 'Per-Player Bias Override');
+      if (tierIdx !== -1 && overrideIdx !== -1) {
+        assert(overrideIdx > tierIdx, `Override applied AFTER tier correction (idx ${overrideIdx} > ${tierIdx})`);
+      }
+    }
+  }
+
+  // ============================================================
+  // TEST 26: Edge detector Phase 71 guardrails
+  //   - Un-projected stat hard CAUTION (threes/STL/BLK)
+  //   - G6/G7 elimination cap downgrades PLACE → CAUTION
+  //   - Spread downgrade (audit) applied
+  // ============================================================
+  console.log('\nTEST 26: Edge detector Phase 71 guardrails (audit response)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/edge-detector.js'), 'utf8')), ctx);
+
+    // 26a — Threes / STL / BLK props get CAUTION regardless of cell
+    const wembyBlk = ctx.classifyBet({ type:'prop', confidence:'lean', pick:'Wemby Over 1.5 blocks' });
+    assert(wembyBlk.recommendation === 'CAUTION' && wembyBlk.basis === 'unprojected-stat',
+      `Blocks prop → CAUTION via unprojected-stat (was lean×prop INSUFFICIENT)`);
+
+    const stlProp = ctx.classifyBet({ type:'prop', confidence:'best-bet', pick:'Cade Over 1.5 steals' });
+    assert(stlProp.recommendation === 'CAUTION' && stlProp.basis === 'unprojected-stat',
+      `Steals prop → CAUTION even at best-bet confidence`);
+
+    const threesProp = ctx.classifyBet({ type:'prop', confidence:'high', pick:'Brunson Over 2.5 threes' });
+    assert(threesProp.recommendation === 'CAUTION' && threesProp.basis === 'unprojected-stat',
+      `Threes prop → CAUTION (Phase 71 guardrail wins over high×prop SKIP — author should still skip but for the right reason)`);
+
+    // 26b — Regular PTS prop still routes through cross-tab
+    const ptsProp = ctx.classifyBet({ type:'prop', confidence:'lean', pick:'Brunson Over 27.5 points' });
+    assert(ptsProp.basis !== 'unprojected-stat',
+      `PTS prop does NOT trigger unprojected-stat guardrail`);
+
+    // 26c — G6 elimination cap: lean×ml is normally PLACE; G6 caps to CAUTION
+    const eliminationML = ctx.classifyBet({ type:'ml', confidence:'lean', game: 6 });
+    assert(eliminationML.recommendation === 'CAUTION' && eliminationML.basis === 'elimination-game-cap',
+      `G6 lean×ml capped to CAUTION (was PLACE pre-Phase-71)`);
+
+    const eliminationG7 = ctx.classifyBet({ type:'ml', confidence:'best-bet', game: 7 });
+    assert(eliminationG7.recommendation === 'CAUTION' && eliminationG7.basis === 'elimination-game-cap',
+      `G7 best-bet×ml capped to CAUTION (small sample + 50% G6 winner acc)`);
+
+    // 26d — G1-G5 not affected by elimination cap
+    const normalG3 = ctx.classifyBet({ type:'ml', confidence:'lean', game: 3 });
+    assert(normalG3.recommendation === 'PLACE' && normalG3.basis === 'cross-tab',
+      `G3 lean×ml stays PLACE (no elimination cap)`);
+
+    // 26e — Elimination cap doesn't UPGRADE SKIP cells
+    const eliminationSkip = ctx.classifyBet({ type:'prop', confidence:'high', game: 6, pick: 'Brunson Over 27.5 points' });
+    assert(eliminationSkip.recommendation === 'SKIP',
+      `G6 high×prop stays SKIP (elimination cap only caps PLACE; SKIP is preserved)`);
+
+    // 26f — Spread cell downgrade: lean × spread is now CAUTION not PLACE
+    const leanSpread = ctx.classifyBet({ type:'spread', confidence:'lean', game: 3 });
+    assert(leanSpread.recommendation === 'CAUTION',
+      `lean × spread → CAUTION post-Phase-71 (margin MAE 13pt downgrade)`);
+
+    // 26g — Type-level spread is CAUTION
+    assert(ctx.HISTORICAL_R2.byType.spread.recommendation === 'CAUTION',
+      `Type-level spread downgraded to CAUTION`);
+    assert(ctx.HISTORICAL_R2.byType.spread.note && ctx.HISTORICAL_R2.byType.spread.note.includes('margin MAE'),
+      `Type-level spread carries explanatory note about margin MAE`);
   }
 
   // ============================================================

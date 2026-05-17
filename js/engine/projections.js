@@ -1124,6 +1124,86 @@ function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
     }
   }
 
+  // ---- 15. STAR BIAS CORRECTION (Phase 71 — May 17 audit) ----
+  // The 68-game calibration audit (CALIBRATION_AUDIT.md) revealed a
+  // systematic over-prediction for high-rated players:
+  //   Rating 85+ (elite):    PTS bias +2.63 / REB +0.48 / AST +0.97
+  //   Rating 75-84 (starter):PTS bias +2.06 / REB +0.69 / AST +0.18
+  //   Rating 65-74 (rotation):     +0.08 / -0.22 / +0.11  (calibrated)
+  //   Rating <65 (bench):          +0.13 / +0.14 / +0.11  (calibrated)
+  //
+  // The bias was the entire source of -33% prop ROI in R2 (Phase 68).
+  // Root cause is likely the compounding of multiple "playoff boost"
+  // modifiers (Phase 17 Ascension + Phase 22 regression + minutes bump
+  // for rank≤1/2) that the audit shows reality doesn't reflect. The
+  // intensification of playoff defense vs stars isn't currently modeled.
+  //
+  // Until the structural fix lands, apply a mechanical correction
+  // matching the observed bias. This is a band-aid, but a data-grounded
+  // one: it brings each tier's residual bias to within ±0.5pt.
+  //
+  // Effects elsewhere:
+  //   - MC simulator means shift down for rating-75+ players → MC alt
+  //     lines drop ~2pts for stars → parlay builder suggests deeper lines
+  //   - CHS Lab projections + Live Preview show lower expected for stars
+  //   - calcGameProjection uses a TEAM-level projection that doesn't
+  //     sum player projections, so margin/winner is UNAFFECTED. Good.
+  //   - Historical bet records (bets-data.js) are immutable; not affected.
+  const STAR_BIAS = (typeof STAR_BIAS_CONFIG !== 'undefined') ? STAR_BIAS_CONFIG : {
+    enabled: true,
+    elitePtsDelta: -2.6, eliteRebDelta: -0.5, eliteAstDelta: -1.0,
+    starterPtsDelta: -2.0, starterRebDelta: -0.5, starterAstDelta: 0,
+  };
+  if (STAR_BIAS.enabled) {
+    const rating = player.rating || 0;
+    let ptsAdj = 0, rebAdj = 0, astAdj = 0;
+    if (rating >= 85) {
+      ptsAdj = STAR_BIAS.elitePtsDelta;
+      rebAdj = STAR_BIAS.eliteRebDelta;
+      astAdj = STAR_BIAS.eliteAstDelta;
+    } else if (rating >= 75) {
+      ptsAdj = STAR_BIAS.starterPtsDelta;
+      rebAdj = STAR_BIAS.starterRebDelta;
+      astAdj = STAR_BIAS.starterAstDelta;
+    }
+    if (ptsAdj !== 0 || rebAdj !== 0 || astAdj !== 0) {
+      pts += ptsAdj;
+      reb += rebAdj;
+      ast += astAdj;
+      modifiers.push({
+        label: 'Star Bias Correction',
+        ptsDelta: ptsAdj, rebDelta: rebAdj, astDelta: astAdj,
+        pct: rating >= 85 ? -10 : -7,
+        source: 'Phase 71 audit · empirical correction',
+      });
+    }
+  }
+
+  // ---- 16. PER-PLAYER BIAS OVERRIDE (Phase 71c — May 17 audit) ----
+  // The tier-based correction in modifier #15 handles population avg
+  // but leaves residual error on outliers. The 68-game audit identified
+  // ~8 players with persistent ≥5pp PTS bias that contradicts their
+  // tier. This table applies an additive correction targeted at those
+  // players specifically. Re-evaluate after R3.
+  const PB = (typeof PLAYER_BIAS_OVERRIDE !== 'undefined') ? PLAYER_BIAS_OVERRIDE : { enabled: false, table: {} };
+  if (PB.enabled && PB.table && PB.table[player.name]) {
+    const override = PB.table[player.name];
+    const ptsAdj = override.pts || 0;
+    const rebAdj = override.reb || 0;
+    const astAdj = override.ast || 0;
+    if (ptsAdj !== 0 || rebAdj !== 0 || astAdj !== 0) {
+      pts += ptsAdj;
+      reb += rebAdj;
+      ast += astAdj;
+      modifiers.push({
+        label: 'Per-Player Bias Override',
+        ptsDelta: ptsAdj, rebDelta: rebAdj, astDelta: astAdj,
+        pct: 0,
+        source: `Phase 71c · ${player.name} audit-specific correction`,
+      });
+    }
+  }
+
   return {
     pts: +Math.max(0, pts).toFixed(1),
     reb: +Math.max(0, reb).toFixed(1),

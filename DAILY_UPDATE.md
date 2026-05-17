@@ -345,6 +345,183 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ## 6 · Featured Parlays for today
 
+### 🎯 STAR BIAS CORRECTION + AUDIT GUARDRAILS (Phase 71, May 17+)
+
+Phase 71 was a 68-game audit, not a feature build — and four fixes
+shipped from it:
+
+```
+Audit found four broken pieces in the engine projections:
+
+  1. ELITE / STARTER players over-predicted by +2.6 / +2.0pts PTS
+     → Source of the -33% prop ROI from R2.
+
+  2. SPREAD bets had 12.94pt margin MAE (Vegas ~9pt)
+     → The Phase 68 +35% spread ROI was small-sample LUCK, not skill.
+
+  3. THREES / STL / BLK projections return 0 across the board
+     → Every prop we authored on these stats was hand-guessed.
+
+  4. G6 elimination games: 50% winner accuracy, 19.8pt margin MAE
+     → No edge in must-win contexts.
+```
+
+**Four fixes shipped:**
+
+| Fix | What it does | Where |
+|---|---|---|
+| Star bias correction | Subtracts −2.6pt PTS / −0.5 REB / −1.0 AST from rating-85+ players, and −2.0/−0.5/0 from rating-75-84. Rotation/bench unchanged. | `projections.js` (15th modifier) |
+| Un-projected stat guard | Hard CAUTION verdict on any prop pick containing "threes", "blocks", "steals", "3PM" — engine returns 0 for these. | `edge-detector.js` `classifyBet` |
+| Spread cross-tab downgrade | `lean × spread` PLACE → CAUTION, type-level spread PLACE → CAUTION. Audit shows margin MAE precludes spread edge. | `edge-detector.js` `HISTORICAL_R2` |
+| G6/G7 elimination cap | PLACE recommendations get capped at CAUTION for any G6 or G7 bet — audit found no edge in elimination contexts. | `edge-detector.js` `classifyBet` |
+
+**Daily process changes:**
+1. **Star projections in the engine are now ~2pts lower** for Brunson, Wemby, SGA, Embiid, etc. Trust the new numbers — they match the 68-game empirical distribution.
+2. **Stop authoring spread bets** (or treat them as entertainment-only). The CAUTION pill will appear; respect it.
+3. **Don't author prop bets on threes/STL/BLK** until the engine projects these stats. The CAUTION pill catches it.
+4. **For G6/G7 bets, the verdict will downgrade automatically** — even "best-bet × ml" caps to CAUTION. Place at reduced stake or skip.
+
+**To regression-test the broken engine:** flip `STAR_BIAS_CONFIG.enabled` to `false` in `constants.js`. Audit numbers should revert. **Don't ship with it off.**
+
+**Re-run the audit after R3:**
+```bash
+node test-calibration-audit.js
+```
+If R2 bias re-emerges with R3 data, the −2.6/−2.0 deltas need tuning.
+If R3 stays calibrated, the fix held — leave it alone.
+
+---
+
+### 📊 RISK-ANALYST DASHBOARD (Phase 70, May 17+)
+
+The CHS Lab now opens with a **RISK DASHBOARD** that reframes the
+betting record as a portfolio. Six metric cards + equity curve +
+counterfactual:
+
+```
+Total P&L         — absolute net
+Sharpe Ratio      — risk-adjusted return per session
+                    >0.5 = strong, 0-0.5 = weak, <0 = destroying capital
+Max Drawdown      — biggest peak-to-trough loss
+                    >30% of bankroll = institutional kill-switch
+Session Win Rate  — % of days that ended green
+P(Ruin) 30d       — probability bankroll hits $0 in 30 days at $500
+Longest Loss Streak — ≥4 = warning sign
+```
+
+**Baseline R2 numbers (as of May 16):**
+- Sharpe **−0.28** → strategy was destroying capital (losing more on bad days than winning on good)
+- Max drawdown **$286 = 57% of $500 bankroll** (textbook stop-trading signal)
+- P(ruin at $500 / 30d): **69.3%** → 7-in-10 chance of going broke
+- P(double bankroll): **3.3%**
+
+**With Phase 68 filter applied (drop all props):**
+- Sharpe **+0.39** → positive risk-adjusted return
+- Max drawdown **$111 = 22%** (under the kill-switch threshold)
+- P(ruin): **0.0%**, P(double): **100%** over 30 days
+
+**Daily process change:** before authoring ANY new bets, glance at the
+Risk Dashboard cards. If Sharpe trending downward or drawdown
+approaching 30%, **reduce stake size** or **pause entirely** until the
+model is audited. Negative-Sharpe periods are not noise to power
+through — they're the model telling you it's broken in current state.
+
+---
+
+### ⚠️ HARD-RULE EDGE FILTER (Phase 68, May 16+)
+
+Before authoring ANY bet, run it through the edge detector. The 99-bet
+R2 retro (test-pl-with-filters.js, $25 stake) found three brutal truths:
+
+```
+1. PROPS BLED $416 NET (-33% ROI on 50 bets, 36.7% hit rate).
+   The model is bad at player props. Period.
+2. ML/SPREAD/TOTAL went +$213 NET (+17% ROI, 67% hit rate on 49 bets).
+   The model is GOOD at game-level outcomes — that's where the edge lives.
+3. "High" confidence label is INVERTED: 37.9% hit, -38.7% ROI.
+   "Lean" label is BEST: 76.2% hit, +45.4% ROI.
+```
+
+**The skip rule (applied automatically by edge-detector.js):**
+
+| Cell                | Verdict   | Why                                |
+|---------------------|-----------|-------------------------------------|
+| `high × prop`       | **SKIP**  | 21 bets, 33% hit, −43% ROI         |
+| `medium × prop`     | **SKIP**  | 25 bets, 42% hit, −21% ROI         |
+| `medium × total`    | **SKIP**  | 4 bets, 25% hit, −51% ROI          |
+| `high × spread`     | **SKIP**  | 4 bets, 25% hit, −52% ROI          |
+| `lean × spread/ml`  | **PLACE** | best cell, 89-100% hit             |
+| `best-bet × ml`     | **PLACE** | 6 bets, 83% hit                    |
+
+**Daily workflow change:**
+1. Author the candidate bet list as usual.
+2. Open CHS Lab → look at the **BET-FILTER VERDICT** section (top of page).
+3. Every bet card now renders a colored pill: ✓ PLACE / ⚠ CAUTION / ✗ SKIP.
+4. **Remove every SKIP bet from today's slate.** No exceptions.
+5. **Refuse to author new props at "high" or "medium" confidence.** Either
+   downgrade to "lean" (which forces honest small-edge framing) or skip.
+6. If you find yourself wanting to label a prop "high confidence" because
+   it's a foundational thesis — your gut is wrong (the table proves it).
+   Either keep it as "lean" or move the conviction into the ML/spread bet.
+
+**Re-run the retro periodically:**
+
+```bash
+node test-pl-with-filters.js
+```
+
+If the type/confidence ROIs shift materially as the sample grows
+(R3/CF/Finals add 100+ more bets), update `HISTORICAL_R2` in
+`js/engine/edge-detector.js` to reflect the new reality. Filter
+thresholds must be data-driven, not theory-driven.
+
+---
+
+### ⚠️ ANTI-BIG-LOSS GUARDRAILS (Phase 69, May 16+)
+
+Beyond the cell-level SKIP filter, four slate-wide rules prevent the
+"one bad night nukes the whole slate" scenario:
+
+```
+1. PARLAY ANTI-CORRELATION (built into parlay-builder)
+   Max 2 legs per team in any parlay. Prevents 4 NYK legs from all
+   busting if NYK loses outright. Caught automatically.
+
+2. SLATE CONCENTRATION (new CHS Lab panel)
+   Open CHS Lab → "SLATE CONCENTRATION" section.
+   - Max 3 bets per directional outcome (e.g., "NYK_ML" / "NYK_COVER")
+   - Max 5 bets total tied to any single team
+   If the warning shows, drop the lowest-confidence bet on the
+   over-concentrated outcome. Even great picks lose; diversification
+   keeps a single -8pt margin miss from costing $125.
+
+3. BLOWOUT SUPPRESSION (auto-applied when MC says blowoutRisk > 35%)
+   - Skip scoring overs for the UNDERDOG's stars (they get pulled Q4)
+   - Skip scoring overs for the FAVORITE's starters (they sit Q4)
+   - KEEP rebounding/assists props (counting stats are blowout-stable)
+   - Favorite's bench role players can OVER scoring in garbage time
+   The risk-controls.shouldSuppressScoringProp() function flags
+   these — surfaces in CHS Lab parlay candidates.
+
+4. KELLY-SIZED STAKES (replaces flat $25)
+   Each parlay in CHS Lab now shows a "Kelly stake: $X" line.
+   - $500 default bankroll, $5 minimum, $25 max per bet
+   - Tiny edge → tiny stake → small loss when wrong
+   - Big edge → up to $25 → meaningful upside when right
+   - SKIP_LOW_EDGE verdict means the bet doesn't clear the noise floor
+   The flat $25 approach turned 0.4pp of edge gap into -$198 over
+   99 bets. Kelly preserves bankroll when the model is wrong.
+```
+
+These four rules together address the failure modes that the per-bet
+edge filter alone couldn't catch. A bet can be ✓ PLACE individually
+and still be a bad idea if it pushes the slate above the team-exposure
+cap, or if the same blowout risk is going to kill 3 of your other props.
+
+---
+
+### Building the parlay (after applying the filter)
+
 **The recommended source for parlay authoring is the CHS Lab tab on
 the live site** — the page surfaces both a "Reliable Parlay" and a
 "Traditional Parlay" automatically from the Monte Carlo sim. Process:

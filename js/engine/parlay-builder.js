@@ -268,26 +268,59 @@ function calibrateHitRate(rawProb) {
   };
 }
 
-// ── Shared candidate-pool builder ────────────────────────────────────
+// ── Player → team map (Phase 69 anti-correlation) ────────────────────
+// Given a series, build a name → team-abbr lookup so candidate legs
+// can be tagged with which team they belong to. This drives the
+// per-team cap below.
+function _buildPlayerTeamMap(series) {
+  const map = {};
+  if (!series) return map;
+  if (series.homeTeam && Array.isArray(series.homeTeam.players)) {
+    series.homeTeam.players.forEach(p => { if (p && p.name) map[p.name] = series.homeTeam.abbr; });
+  }
+  if (series.awayTeam && Array.isArray(series.awayTeam.players)) {
+    series.awayTeam.players.forEach(p => { if (p && p.name) map[p.name] = series.awayTeam.abbr; });
+  }
+  return map;
+}
+
+// ── Shared candidate-pool builder (Phase 69 anti-correlation) ───────
 // Both Reliable and Traditional draw from the SAME pool of model-
-// confident legs (≥80% MC, realistic line, payable juice). Where they
-// differ is how many legs they combine and what combined-hit floor
-// they require.
-function _candidatePool(simResult, opts) {
+// confident legs (≥80% MC, realistic line, payable juice). Phase 69
+// adds anti-correlation diversification:
+//
+//   - Max 1 leg per player (dedupe by name)
+//   - Max maxPerTeam legs per team (default 2) — prevents "4 NYK legs
+//     all bust if NYK blows the game" scenarios
+//   - Penalize same-game-script stacking implicitly via the team cap
+//
+// Returns candidates sorted by expected $ return (hitRate × payout) so
+// the highest-EV legs are preferred when the team cap forces a trim.
+function _candidatePool(simResult, series, opts) {
   opts = opts || {};
+  const maxPerTeam = opts.maxPerTeam != null ? opts.maxPerTeam : 2;
   const rows = safeLinesForAllPlayers(simResult, {
     threshold: 0.80,
     maxJuice: opts.maxJuice || -500,
   });
+  const playerTeam = _buildPlayerTeamMap(series);
   const seenPlayers = new Set();
+  const perTeamCount = {};
   const candidates = [];
   for (const r of rows) {
     if (seenPlayers.has(r.player)) continue;
+    const team = playerTeam[r.player] || 'UNK';
+    perTeamCount[team] = perTeamCount[team] || 0;
+    // Anti-correlation: refuse a 3rd+ leg on the same team. UNK falls
+    // through (unidentified players don't cap — should be rare).
+    if (team !== 'UNK' && perTeamCount[team] >= maxPerTeam) continue;
     seenPlayers.add(r.player);
+    perTeamCount[team] += 1;
     candidates.push({
       type: 'prop', player: r.player, stat: r.stat,
       line: r.line, direction: 'over',
       hitRate: r.hitRate, estJuice: r.estJuice,
+      team,
     });
   }
   return candidates;
@@ -311,7 +344,7 @@ function _scoreConfig(simResult, series, legs) {
 function buildReliableParlay(simResult, series, opts) {
   opts = opts || {};
   const combinedThreshold = opts.combinedThreshold || 0.80;
-  const candidates = _candidatePool(simResult, opts);
+  const candidates = _candidatePool(simResult, series, opts);
   if (candidates.length < 2) return null;
 
   // Try 2 legs first (easier to clear, less variance)
@@ -344,7 +377,7 @@ function buildReliableParlay(simResult, series, opts) {
 // per $100 stake. Tie-breaker: higher combined hit rate.
 function buildTraditionalParlay(simResult, series, opts) {
   opts = opts || {};
-  const candidates = _candidatePool(simResult, opts);
+  const candidates = _candidatePool(simResult, series, opts);
   if (candidates.length < 3) return null;
 
   // Traditional is the "win big money" tier — prefer LONGEST viable
