@@ -1309,6 +1309,169 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 20: Edge detector — coin-flip skip + market disagreement +
+  //          historical classification (Phase 68)
+  // ------------------------------------------------------------
+  // Three pure functions, all unit-testable without UI:
+  //   shouldSkipCoinFlip(modelProb)      — MC bucket gate
+  //   detectMarketDisagreement(p, odds)  — calibrated vs implied edge
+  //   classifyBet(bet)                   — empirical cross-tab lookup
+  // ============================================================
+  console.log('\nTEST 20: Edge detector — coin-flip skip + market disagreement');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/edge-detector.js'), 'utf8')), ctx);
+
+    // 20a — Coin-flip bucket: anything in [0.50, 0.65] returns skip:true
+    const skipMid = ctx.shouldSkipCoinFlip(0.58);
+    assert(skipMid.skip === true, `0.58 is in coin-flip bucket (skip:true)`);
+    assert(skipMid.reason === 'coin-flip-zone', `reason is coin-flip-zone`);
+
+    const skipEdgeLow = ctx.shouldSkipCoinFlip(0.50);
+    assert(skipEdgeLow.skip === true, `boundary 0.50 is included`);
+    const skipEdgeHigh = ctx.shouldSkipCoinFlip(0.65);
+    assert(skipEdgeHigh.skip === true, `boundary 0.65 is included`);
+
+    const placeAbove = ctx.shouldSkipCoinFlip(0.70);
+    assert(placeAbove.skip === false, `0.70 above bucket → skip:false`);
+    const placeBelow = ctx.shouldSkipCoinFlip(0.35);
+    assert(placeBelow.skip === false, `0.35 below bucket → skip:false`);
+
+    const skipNull = ctx.shouldSkipCoinFlip(null);
+    assert(skipNull.skip === true && skipNull.reason === 'no-model-prob',
+      `null modelProb → skip:true, reason:no-model-prob`);
+
+    // 20b — Market disagreement: positive edge case
+    // calibrated(0.85) → 0.64 (in 80-95% bucket: −0.21 adjustment)
+    // -250 odds → implied 0.714
+    // edge = 0.64 - 0.714 = -0.07 → FADE (book has edge)
+    const dis1 = ctx.detectMarketDisagreement(0.85, -250);
+    assert(dis1 != null, `disagreement returns object`);
+    assert(dis1.shouldFade === true, `-250 vs calibrated 0.64 → shouldFade`);
+    assert(dis1.edge < 0, `edge is negative`);
+
+    // calibrated(0.40) → 0.58 (30-50% bucket: +0.18 boost)
+    // +150 odds → implied 0.40
+    // edge = 0.58 - 0.40 = +0.18 → hasEdge:true (above 0.04 floor)
+    const dis2 = ctx.detectMarketDisagreement(0.40, 150);
+    assert(dis2.hasEdge === true, `0.40 raw → 0.58 cal, vs +150 implied 0.40 → hasEdge`);
+    assert(dis2.edge > 0.10, `edge materially positive`);
+    assert(dis2.kellyFraction > 0, `Kelly fraction positive when edge positive`);
+    assert(dis2.kellyFraction <= 0.25, `Kelly fraction capped at 0.25`);
+
+    // 20c — classifyBet uses cross-tab when available
+    const lean_spread = ctx.classifyBet({ confidence: 'lean', type: 'spread' });
+    assert(lean_spread.recommendation === 'PLACE',
+      `lean × spread classified PLACE (cross-tab cell, 89% hit)`);
+    assert(lean_spread.basis === 'cross-tab', `basis is cross-tab`);
+
+    const high_prop = ctx.classifyBet({ confidence: 'high', type: 'prop' });
+    assert(high_prop.recommendation === 'SKIP',
+      `high × prop classified SKIP (worst cell, 33% hit, -43% ROI)`);
+
+    const best_ml = ctx.classifyBet({ confidence: 'best-bet', type: 'ml' });
+    assert(best_ml.recommendation === 'PLACE',
+      `best-bet × ml classified PLACE (83% hit)`);
+
+    // 20d — Type-only fallback when cross-cell missing
+    const unknown = ctx.classifyBet({ confidence: 'best-bet', type: 'spread' });
+    // No cross-cell for best-bet × spread (n=0), should fall back to type-only
+    assert(unknown.basis === 'type-only' || unknown.recommendation === 'PLACE',
+      `best-bet × spread (no cross-cell) falls back to type-only (spread = PLACE)`);
+
+    // 20e — scoreBet: SKIP wins over MC verdict when historical is bad
+    const score1 = ctx.scoreBet(
+      { confidence: 'high', type: 'prop' },
+      0.85,   // raw MC suggests strong PLACE
+      -150    // odds
+    );
+    assert(score1.verdict === 'SKIP',
+      `historical SKIP overrides any MC signal (verdict:SKIP, reason:historical-bleed)`);
+
+    // 20f — scoreBet: empirical PLACE flows through to PLACE
+    const score2 = ctx.scoreBet(
+      { confidence: 'lean', type: 'spread' },
+      0.75,   // MC says fine
+      -110
+    );
+    assert(score2.verdict === 'PLACE' || score2.verdict === 'STRONG PLACE',
+      `empirical PLACE + good MC → PLACE/STRONG PLACE (got ${score2.verdict})`);
+
+    // 20g — confidenceToModelProb retro mapping
+    assert(ctx.confidenceToModelProb('best-bet') === 0.86, `best-bet → 0.86`);
+    assert(ctx.confidenceToModelProb('high') === 0.85, `high → 0.85`);
+    assert(ctx.confidenceToModelProb('medium') === 0.62, `medium → 0.62`);
+    assert(ctx.confidenceToModelProb('unknown') === null, `unknown label → null`);
+
+    // 20h — HISTORICAL_R2 table is internally consistent: types sum to 99
+    const totalByType = Object.values(ctx.HISTORICAL_R2.byType).reduce((s, x) => s + x.n, 0);
+    assert(totalByType === 99,
+      `historical type buckets sum to 99 R2 straight bets (got ${totalByType})`);
+    const totalByConf = Object.values(ctx.HISTORICAL_R2.byConfidence).reduce((s, x) => s + x.n, 0);
+    assert(totalByConf === 98 || totalByConf === 99,
+      `historical confidence buckets sum to ~99 (got ${totalByConf})`);
+
+    // 20i — Calibration table parity: edge-detector._calibrate should
+    //       match parlay-builder.calibrateHitRate. Load parlay-builder
+    //       and compare across a sweep of buckets.
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/monte-carlo.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/parlay-builder.js'), 'utf8')), ctx);
+    const sweep = [0.25, 0.40, 0.55, 0.75, 0.90, 0.97];
+    sweep.forEach(p => {
+      const a = ctx._calibrate(p);
+      const b = ctx.calibrateHitRate(p);
+      if (b && a != null) {
+        assert(Math.abs(a - b.calibrated) < 0.001,
+          `calibration parity at ${p}: edge-detector ${a} vs parlay-builder ${b.calibrated}`);
+      }
+    });
+  }
+
+  // ============================================================
+  // TEST 21: Edge pill renders on unsettled bets only (Phase 68)
+  // ------------------------------------------------------------
+  // _renderEdgePill should return '' for settled bets, return a span
+  // for unsettled ones (assuming classifyBet exists in scope).
+  // ============================================================
+  console.log('\nTEST 21: Edge pill rendering');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/edge-detector.js'), 'utf8')), ctx);
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/ui/bet-card.js'), 'utf8')), ctx);
+
+    // Settled bet → empty pill
+    const settled = { type: 'prop', confidence: 'high', result: { outcome: 'loss' } };
+    const settledPill = ctx._renderEdgePill(settled);
+    assert(settledPill === '', `settled bet gets empty edge pill (no forward-looking advice needed)`);
+
+    // Unsettled SKIP bet → red SKIP pill
+    const skipBet = { type: 'prop', confidence: 'high' };
+    const skipPill = ctx._renderEdgePill(skipBet);
+    assert(skipPill.includes('SKIP'), `high prop (worst cell) renders SKIP pill`);
+    assert(skipPill.includes('var(--red)'), `SKIP pill uses red color`);
+
+    // Unsettled PLACE bet → green PLACE pill
+    const placeBet = { type: 'spread', confidence: 'lean' };
+    const placePill = ctx._renderEdgePill(placeBet);
+    assert(placePill.includes('PLACE'), `lean spread (best cell) renders PLACE pill`);
+    assert(placePill.includes('var(--green)'), `PLACE pill uses green color`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

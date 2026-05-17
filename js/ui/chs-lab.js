@@ -349,6 +349,60 @@ function chsLabRenderLedger(ledger) {
     </table>`;
 }
 
+// Phase 68: Bet-Filter Verdict — surfaces the data-driven conclusion from
+// the 99-bet R2 retro. Renders inline below the scoreboard so it's the
+// FIRST thing the user sees when opening CHS Lab.
+function chsLabRenderEdgeFilter() {
+  if (typeof HISTORICAL_R2 === 'undefined') return '';
+  const t = HISTORICAL_R2.byType;
+  const c = HISTORICAL_R2.byConfidence;
+  const cellHTML = (key, label, x) => {
+    const rec = x.recommendation;
+    const palette = {
+      PLACE:   { color: '#22c55e', bg: 'rgba(34, 197, 94, 0.08)',  border: '#22c55e' },
+      CAUTION: { color: '#eab308', bg: 'rgba(234, 179, 8, 0.08)',  border: '#eab308' },
+      SKIP:    { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)',  border: '#ef4444' },
+    }[rec] || { color: '#888', bg: 'transparent', border: '#444' };
+    const roiSign = x.roi >= 0 ? '+' : '';
+    return `
+      <div style="padding:10px;background:${palette.bg};border:1px solid ${palette.border}66;border-radius:8px;">
+        <div style="font-size:10px;letter-spacing:0.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:4px;">${label}</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-size:18px;font-weight:800;color:${palette.color};">${rec}</span>
+          <span style="font-size:10px;color:var(--text-dim);">n=${x.n}</span>
+        </div>
+        <div style="margin-top:6px;font-size:11px;color:var(--text);">
+          Hit ${(x.hitRate*100).toFixed(0)}% · ROI ${roiSign}${(x.roi*100).toFixed(0)}%
+        </div>
+      </div>`;
+  };
+  const typeOrder  = ['spread', 'ml', 'total', 'prop'];
+  const confOrder  = ['best-bet', 'lean', 'medium', 'high', 'coin-flip'];
+  return `
+    <div style="margin-bottom:24px;">
+      <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 6px;">BET-FILTER VERDICT · R2 RETRO (99 bets, $25 stake)</h3>
+      <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
+        Data-driven recommendations from <code>test-pl-with-filters.js</code>. Every bet rendered in the app gets a
+        <span style="color:#22c55e;font-weight:700;">PLACE</span> / <span style="color:#eab308;font-weight:700;">CAUTION</span> /
+        <span style="color:#ef4444;font-weight:700;">SKIP</span> pill from <code>edge-detector.js</code> based on the
+        confidence × type cross-tab. <strong style="color:#fff;">Headline finding:</strong> dropping all props would
+        have moved the R2 slate from <span style="color:#ef4444;font-weight:700;">−$203 net</span> to
+        <span style="color:#22c55e;font-weight:700;">+$213 net (+17% ROI)</span>.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;margin-bottom:10px;">
+        ${typeOrder.map(k => cellHTML(k, 'TYPE ' + k.toUpperCase(), t[k])).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;">
+        ${confOrder.filter(k => c[k] && c[k].n >= 3).map(k => cellHTML(k, 'CONF ' + k.toUpperCase(), c[k])).join('')}
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+        <strong style="color:var(--text);">How to read this:</strong> SKIP cells lost money historically (drop them).
+        PLACE cells made money. The intersection that bled most was <code>high × prop</code>: 33% hit, −43% ROI on 21 bets.
+        Cells with n&lt;3 are hidden until sample grows. Numbers refresh by re-running the P&amp;L script.
+      </div>
+    </div>`;
+}
+
 function renderCHSLabPage(el) {
   const ledger = (typeof CHS_LEDGER !== 'undefined' && Array.isArray(CHS_LEDGER)) ? CHS_LEDGER : [];
   const agg = chsLabComputeAggregate(ledger);
@@ -366,6 +420,7 @@ function renderCHSLabPage(el) {
       </div>
 
       ${chsLabRenderScoreboard(agg)}
+      ${chsLabRenderEdgeFilter()}
       ${chsLabRenderLivePreview()}
       ${chsLabRenderParlayCandidates()}
       ${chsLabRenderLedger(ledger)}

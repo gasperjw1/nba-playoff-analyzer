@@ -345,6 +345,57 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ## 6 · Featured Parlays for today
 
+### ⚠️ HARD-RULE EDGE FILTER (Phase 68, May 16+)
+
+Before authoring ANY bet, run it through the edge detector. The 99-bet
+R2 retro (test-pl-with-filters.js, $25 stake) found three brutal truths:
+
+```
+1. PROPS BLED $416 NET (-33% ROI on 50 bets, 36.7% hit rate).
+   The model is bad at player props. Period.
+2. ML/SPREAD/TOTAL went +$213 NET (+17% ROI, 67% hit rate on 49 bets).
+   The model is GOOD at game-level outcomes — that's where the edge lives.
+3. "High" confidence label is INVERTED: 37.9% hit, -38.7% ROI.
+   "Lean" label is BEST: 76.2% hit, +45.4% ROI.
+```
+
+**The skip rule (applied automatically by edge-detector.js):**
+
+| Cell                | Verdict   | Why                                |
+|---------------------|-----------|-------------------------------------|
+| `high × prop`       | **SKIP**  | 21 bets, 33% hit, −43% ROI         |
+| `medium × prop`     | **SKIP**  | 25 bets, 42% hit, −21% ROI         |
+| `medium × total`    | **SKIP**  | 4 bets, 25% hit, −51% ROI          |
+| `high × spread`     | **SKIP**  | 4 bets, 25% hit, −52% ROI          |
+| `lean × spread/ml`  | **PLACE** | best cell, 89-100% hit             |
+| `best-bet × ml`     | **PLACE** | 6 bets, 83% hit                    |
+
+**Daily workflow change:**
+1. Author the candidate bet list as usual.
+2. Open CHS Lab → look at the **BET-FILTER VERDICT** section (top of page).
+3. Every bet card now renders a colored pill: ✓ PLACE / ⚠ CAUTION / ✗ SKIP.
+4. **Remove every SKIP bet from today's slate.** No exceptions.
+5. **Refuse to author new props at "high" or "medium" confidence.** Either
+   downgrade to "lean" (which forces honest small-edge framing) or skip.
+6. If you find yourself wanting to label a prop "high confidence" because
+   it's a foundational thesis — your gut is wrong (the table proves it).
+   Either keep it as "lean" or move the conviction into the ML/spread bet.
+
+**Re-run the retro periodically:**
+
+```bash
+node test-pl-with-filters.js
+```
+
+If the type/confidence ROIs shift materially as the sample grows
+(R3/CF/Finals add 100+ more bets), update `HISTORICAL_R2` in
+`js/engine/edge-detector.js` to reflect the new reality. Filter
+thresholds must be data-driven, not theory-driven.
+
+---
+
+### Building the parlay (after applying the filter)
+
 **The recommended source for parlay authoring is the CHS Lab tab on
 the live site** — the page surfaces both a "Reliable Parlay" and a
 "Traditional Parlay" automatically from the Monte Carlo sim. Process:

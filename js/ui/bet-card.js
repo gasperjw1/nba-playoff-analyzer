@@ -86,6 +86,24 @@ function _renderNarrative(narrative) {
   return `<span style="font-size:10px;color:${m.color};font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.04)">${m.label}</span>`;
 }
 
+// Phase 68: render the edge-detector verdict pill. Pulls historical
+// (cross-tab) classification from edge-detector.js. Renders nothing if
+// the module isn't loaded (graceful degradation in unit tests).
+function _renderEdgePill(bet) {
+  if (typeof classifyBet !== 'function') return '';
+  if (!bet || bet.result) return '';   // settled bets don't need a forward-looking pill
+  const c = classifyBet(bet);
+  if (!c || !c.recommendation || c.recommendation === 'INSUFFICIENT') return '';
+  const palette = {
+    PLACE:   { color: 'var(--green)',  bg: 'rgba(61,214,140,0.12)',  label: 'PLACE',   icon: '✓' },
+    CAUTION: { color: 'var(--yellow)', bg: 'rgba(255,209,102,0.12)', label: 'CAUTION', icon: '⚠' },
+    SKIP:    { color: 'var(--red)',    bg: 'rgba(255,107,107,0.12)', label: 'SKIP',    icon: '✗' },
+  };
+  const p = palette[c.recommendation] || palette.CAUTION;
+  const tooltip = `Empirical: ${c.explain}`.replace(/"/g, '&quot;');
+  return `<span title="${tooltip}" style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;background:${p.bg};color:${p.color};font-size:10px;font-weight:700;border:1px solid ${p.color}33">${p.icon} ${p.label}</span>`;
+}
+
 function _renderResult(result) {
   if (!result) return '';
   const palette = {
@@ -118,10 +136,11 @@ function renderBetCard(bet, dynamics) {
 
   const reasoning = _interpolate(bet.reasoning, bet.series, bet.game, dynamics);
 
+  const edgePill = _renderEdgePill(bet);
   return `<div class="${cardClass}" data-bet-id="${bet.id}">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
       ${_renderTypeBadge(bet.type, cm)}
-      <div style="display:flex;gap:4px;align-items:center">${_renderTheses(bet.thesis)} ${_renderNarrative(bet.narrative)}</div>
+      <div style="display:flex;gap:4px;align-items:center">${edgePill}${_renderTheses(bet.thesis)} ${_renderNarrative(bet.narrative)}</div>
     </div>
     <div class="bet-pick">${bet.pick}${_renderResult(bet.result)}</div>
     <div class="bet-line" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${factsRow}</div>
