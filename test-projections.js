@@ -1166,6 +1166,7 @@ function runTests() {
       'js/engine/projections-chs.js', 'js/engine/player-tendencies.js',
       'js/engine/monte-carlo.js', 'js/engine/parlay-builder.js',
       'js/engine/edge-detector.js', 'js/engine/risk-controls.js',
+      'js/engine/risk-analytics.js',
       'js/ui/components.js', 'js/ui/modals.js', 'js/ui/series-renderer.js',
       'js/ui/learnings.js', 'js/ui/definitions.js', 'js/ui/bet-card.js',
       'js/ui/bets.js', 'js/ui/home.js', 'js/ui/chs-lab.js', 'js/ui/navigation.js',
@@ -1262,7 +1263,7 @@ function runTests() {
      'js/engine/ratings.js','js/engine/scenarios.js','js/engine/projections.js','js/engine/simulation.js',
      'js/engine/graduation.js','js/engine/auto-resolve.js','js/engine/projections-chs.js',
      'js/engine/player-tendencies.js','js/engine/monte-carlo.js','js/engine/parlay-builder.js',
-     'js/engine/edge-detector.js','js/engine/risk-controls.js',
+     'js/engine/edge-detector.js','js/engine/risk-controls.js','js/engine/risk-analytics.js',
      'js/ui/components.js','js/ui/modals.js','js/ui/series-renderer.js','js/ui/learnings.js',
      'js/ui/definitions.js','js/ui/bet-card.js','js/ui/bets.js','js/ui/home.js','js/ui/chs-lab.js',
      'js/ui/navigation.js'].forEach(l);
@@ -1626,6 +1627,105 @@ function runTests() {
         }
       }
     }
+  }
+
+  // ============================================================
+  // TEST 24: Risk analytics — VaR, CVaR, Sharpe, drawdown, RoR (Phase 70)
+  // ============================================================
+  console.log('\nTEST 24: Risk analytics — VaR/CVaR/Sharpe/drawdown/RoR');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/engine/risk-analytics.js'), 'utf8')), ctx);
+
+    // 24a — computeSlateRisk basic invariants
+    const slate = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.55, americanOdds: -110 },
+      { stake: 25, hitProb: 0.70, americanOdds: -150 },
+    ];
+    const risk = ctx.computeSlateRisk(slate, { iterations: 2000 });
+    assert(risk != null && !risk.error, 'computeSlateRisk returns valid object');
+    assert(risk.totalStaked === 75, `totalStaked = $75 (got $${risk.totalStaked})`);
+    assert(risk.maxLoss === -75, `maxLoss = -$75 if all lose`);
+    assert(risk.var95 <= 0, 'var95 should be loss-side (≤0)');
+    assert(risk.cvar95 <= risk.var95, 'cvar95 ≤ var95 (CVaR is the avg of the tail)');
+    assert(risk.lossProb + risk.winProb + risk.breakevenProb >= 0.99, 'probabilities sum to ~1');
+
+    // 24b — Perfectly correlated bets (same group) move together
+    const correlated = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+      { stake: 25, hitProb: 0.60, americanOdds: -110, correlationGroup: 'TEAM_A' },
+    ];
+    const corrRisk = ctx.computeSlateRisk(correlated, { iterations: 2000 });
+    // All three legs either all win or all lose → variance is MUCH higher
+    // than 3 independent bets. Std dev should be roughly 3× a single bet's.
+    const independent = [
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+      { stake: 25, hitProb: 0.60, americanOdds: -110 },
+    ];
+    const indepRisk = ctx.computeSlateRisk(independent, { iterations: 2000 });
+    assert(corrRisk.stdDev > indepRisk.stdDev * 1.3,
+      `correlated stdev (${corrRisk.stdDev}) > independent stdev (${indepRisk.stdDev}) * 1.3 — diversification kicks in`);
+
+    // 24c — Calibration option exists and changes the distribution when loaded
+    // (without edge-detector loaded, useCalibration is a no-op silently)
+    const calRisk = ctx.computeSlateRisk(slate, { iterations: 1000, useCalibration: true });
+    assert(calRisk != null && !calRisk.error, 'useCalibration option does not throw');
+
+    // 24d — computeHistoricalRiskMetrics: equity curve + drawdown
+    const fakeLedger = [
+      { date: '2026-05-01', pl: 50 },
+      { date: '2026-05-02', pl: -100 },   // drawdown starts
+      { date: '2026-05-03', pl: -50 },    // continues
+      { date: '2026-05-04', pl: 80 },     // partial recovery
+      { date: '2026-05-05', pl: -30 },
+    ];
+    const hist = ctx.computeHistoricalRiskMetrics(fakeLedger);
+    assert(hist.totalPL === -50, `total P&L sums correctly (got $${hist.totalPL})`);
+    assert(hist.totalSessions === 5, `5 sessions counted`);
+    // Equity: 50, -50, -100, -20, -50
+    // Peak was 50 (day 1), trough -100 (day 3) → drawdown 150
+    assert(hist.maxDrawdown === 150, `max drawdown $150 (got $${hist.maxDrawdown})`);
+    assert(hist.drawdownPeakDate === '2026-05-01', `peak date is day 1`);
+    assert(hist.drawdownTroughDate === '2026-05-03', `trough date is day 3`);
+    // Loss streak: day 2-3 = 2 days, then broken by day 4's +80
+    assert(hist.longestLossStreak === 2, `longest loss streak is 2 days`);
+
+    // 24e — computeRiskOfRuin: high-variance negative-mean strategy ruins fast
+    const ror = ctx.computeRiskOfRuin(500, -20, 70, { horizonDays: 30, iterations: 2000 });
+    assert(ror.P_ruin > 0.20, `Negative mean + high var → high P(ruin) (got ${ror.P_ruin})`);
+    assert(ror.p10 < ror.p50 && ror.p50 < ror.p90, `bankroll percentiles ordered`);
+
+    // 24f — Positive-mean strategy has low ruin
+    const rorGood = ctx.computeRiskOfRuin(500, 20, 50, { horizonDays: 30, iterations: 2000 });
+    assert(rorGood.P_ruin < 0.10, `Positive mean → low P(ruin) (got ${rorGood.P_ruin})`);
+
+    // 24g — interpretRisk verdict thresholds
+    const blocked = ctx.interpretRisk({ cvar95: -150, sharpe: 0.1, lossProb: 0.4 }, 500);
+    assert(blocked.verdict === 'BLOCKED', `CVaR 30% of bankroll → BLOCKED (got ${blocked.verdict})`);
+
+    const excessive = ctx.interpretRisk({ cvar95: -60, sharpe: 0.1, lossProb: 0.4 }, 500);
+    assert(excessive.verdict === 'EXCESSIVE', `CVaR 12% → EXCESSIVE (got ${excessive.verdict})`);
+
+    const acceptable = ctx.interpretRisk({ cvar95: -30, sharpe: 0.6, lossProb: 0.4 }, 500);
+    assert(acceptable.verdict === 'ACCEPTABLE', `Low CVaR + strong Sharpe → ACCEPTABLE (got ${acceptable.verdict})`);
+
+    // 24h — Sharpe of positive-EV slate is positive
+    const goodSlate = [
+      { stake: 25, hitProb: 0.85, americanOdds: -200 },  // strong leg
+      { stake: 25, hitProb: 0.80, americanOdds: -180 },  // strong leg
+    ];
+    const goodRisk = ctx.computeSlateRisk(goodSlate, { iterations: 3000 });
+    assert(goodRisk.sharpe > 0, `strong slate produces positive Sharpe (got ${goodRisk.sharpe})`);
   }
 
   // ============================================================

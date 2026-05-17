@@ -345,6 +345,42 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ## 6 · Featured Parlays for today
 
+### 📊 RISK-ANALYST DASHBOARD (Phase 70, May 17+)
+
+The CHS Lab now opens with a **RISK DASHBOARD** that reframes the
+betting record as a portfolio. Six metric cards + equity curve +
+counterfactual:
+
+```
+Total P&L         — absolute net
+Sharpe Ratio      — risk-adjusted return per session
+                    >0.5 = strong, 0-0.5 = weak, <0 = destroying capital
+Max Drawdown      — biggest peak-to-trough loss
+                    >30% of bankroll = institutional kill-switch
+Session Win Rate  — % of days that ended green
+P(Ruin) 30d       — probability bankroll hits $0 in 30 days at $500
+Longest Loss Streak — ≥4 = warning sign
+```
+
+**Baseline R2 numbers (as of May 16):**
+- Sharpe **−0.28** → strategy was destroying capital (losing more on bad days than winning on good)
+- Max drawdown **$286 = 57% of $500 bankroll** (textbook stop-trading signal)
+- P(ruin at $500 / 30d): **69.3%** → 7-in-10 chance of going broke
+- P(double bankroll): **3.3%**
+
+**With Phase 68 filter applied (drop all props):**
+- Sharpe **+0.39** → positive risk-adjusted return
+- Max drawdown **$111 = 22%** (under the kill-switch threshold)
+- P(ruin): **0.0%**, P(double): **100%** over 30 days
+
+**Daily process change:** before authoring ANY new bets, glance at the
+Risk Dashboard cards. If Sharpe trending downward or drawdown
+approaching 30%, **reduce stake size** or **pause entirely** until the
+model is audited. Negative-Sharpe periods are not noise to power
+through — they're the model telling you it's broken in current state.
+
+---
+
 ### ⚠️ HARD-RULE EDGE FILTER (Phase 68, May 16+)
 
 Before authoring ANY bet, run it through the edge detector. The 99-bet

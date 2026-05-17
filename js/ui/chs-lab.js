@@ -423,6 +423,157 @@ function chsLabRenderConcentration() {
     </div>`;
 }
 
+// Phase 70: Risk Dashboard — reframes the betting record as a risk
+// analyst would: Sharpe ratio, max drawdown, risk of ruin, equity curve.
+// The "did we win?" framing hides the variance story; this section
+// surfaces it. Renders nothing if risk-analytics not loaded.
+function chsLabRenderRiskDashboard() {
+  if (typeof computeHistoricalRiskMetrics !== 'function' || typeof BETS === 'undefined') return '';
+
+  // Compute realized $ for each settled R2 straight bet at flat $25 stake
+  const STAKE = 25;
+  const payoutPer = (odds) => {
+    const n = Number(odds);
+    if (!isFinite(n) || n === 0) return 0;
+    return n > 0 ? n / 100 : 100 / -n;
+  };
+  const settled = BETS.filter(b =>
+    typeof b.slate === 'string' && b.slate.startsWith('R2-') &&
+    b.type !== 'parlay' && b.result &&
+    ['win', 'loss', 'push', 'void'].includes(b.result.outcome)
+  ).map(b => {
+    let pl = 0;
+    if (b.result.outcome === 'win')  pl = +(STAKE * payoutPer(b.odds)).toFixed(2);
+    if (b.result.outcome === 'loss') pl = -STAKE;
+    return { date: b.postedAt, pl, type: b.type, confidence: b.confidence };
+  });
+  if (!settled.length) return '';
+
+  const hist = computeHistoricalRiskMetrics(settled);
+  if (hist.error) return '';
+
+  // Counterfactual: drop props (Phase 68 SKIP cell)
+  const filtered = settled.filter(b => b.type !== 'prop');
+  const histF = computeHistoricalRiskMetrics(filtered);
+
+  // Risk of ruin at $500 bankroll
+  const ror = computeRiskOfRuin(500, hist.dailyMean, hist.dailyStd, { horizonDays: 30 });
+  const rorF = histF.error ? null : computeRiskOfRuin(500, histF.dailyMean, histF.dailyStd, { horizonDays: 30 });
+
+  const sharpeColor = (s) => s >= 0.5 ? '#22c55e' : s >= 0 ? '#eab308' : '#ef4444';
+  const ddPctOf500 = (hist.maxDrawdown / 500) * 100;
+  const ddColor = ddPctOf500 > 30 ? '#ef4444' : ddPctOf500 > 15 ? '#eab308' : '#22c55e';
+
+  // Equity curve sparkline — render as horizontal bars
+  const equity = hist.equityCurve;
+  const eqMax = Math.max(...equity.map(e => e.equity), 0);
+  const eqMin = Math.min(...equity.map(e => e.equity), 0);
+  const eqRange = (eqMax - eqMin) || 1;
+  const sparkRows = equity.map(e => {
+    const pct = ((e.equity - eqMin) / eqRange) * 100;
+    const color = e.dailyPL >= 0 ? '#22c55e' : '#ef4444';
+    return `
+      <tr>
+        <td style="padding:2px 6px;font-size:10px;color:var(--text-dim);">${e.date}</td>
+        <td style="padding:2px 6px;font-size:10px;color:${color};text-align:right;font-family:monospace;">${e.dailyPL >= 0 ? '+' : ''}$${e.dailyPL.toFixed(2)}</td>
+        <td style="padding:2px 6px;font-size:10px;color:var(--text);text-align:right;font-family:monospace;">$${e.equity}</td>
+        <td style="padding:2px 6px;width:200px;">
+          <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:2px;position:relative;">
+            <div style="position:absolute;left:${((0 - eqMin) / eqRange) * 100}%;top:-1px;width:1px;height:8px;background:var(--text-dim);"></div>
+            <div style="height:6px;width:${Math.abs(pct - ((0 - eqMin) / eqRange) * 100)}%;margin-left:${Math.min(pct, ((0 - eqMin) / eqRange) * 100)}%;background:${color};border-radius:2px;"></div>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  const filteredBox = histF.error ? '' : `
+    <div style="margin-top:16px;padding:12px;background:rgba(34,197,94,0.06);border:1px solid #22c55e;border-radius:8px;">
+      <div style="font-size:10px;letter-spacing:0.5px;color:#22c55e;text-transform:uppercase;margin-bottom:6px;font-weight:700;">
+        COUNTERFACTUAL · WITH PHASE 68 FILTER (no props)
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;font-size:11px;">
+        <div><span style="color:var(--text-dim);">Total P&L</span><br><strong style="color:#22c55e;font-size:14px;">+$${histF.totalPL}</strong></div>
+        <div><span style="color:var(--text-dim);">Sharpe</span><br><strong style="color:${sharpeColor(histF.dailySharpe)};font-size:14px;">${histF.dailySharpe}</strong></div>
+        <div><span style="color:var(--text-dim);">Max DD</span><br><strong style="color:${(histF.maxDrawdown/500)*100 > 30 ? '#ef4444' : (histF.maxDrawdown/500)*100 > 15 ? '#eab308' : '#22c55e'};font-size:14px;">$${histF.maxDrawdown}</strong></div>
+        <div><span style="color:var(--text-dim);">Win rate</span><br><strong style="color:#22c55e;font-size:14px;">${(histF.winRate*100).toFixed(0)}%</strong></div>
+        <div><span style="color:var(--text-dim);">P(ruin 30d)</span><br><strong style="color:${rorF.P_ruin > 0.20 ? '#ef4444' : '#22c55e'};font-size:14px;">${(rorF.P_ruin*100).toFixed(1)}%</strong></div>
+        <div><span style="color:var(--text-dim);">P(double)</span><br><strong style="color:#22c55e;font-size:14px;">${(rorF.P_double*100).toFixed(0)}%</strong></div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+        Filter flips Sharpe from <strong style="color:#ef4444;">${hist.dailySharpe}</strong> to <strong style="color:#22c55e;">${histF.dailySharpe}</strong>,
+        drawdown from <strong style="color:#ef4444;">${((hist.maxDrawdown/500)*100).toFixed(0)}%</strong> of bankroll to <strong style="color:#22c55e;">${((histF.maxDrawdown/500)*100).toFixed(0)}%</strong>,
+        and risk-of-ruin from <strong style="color:#ef4444;">${(ror.P_ruin*100).toFixed(0)}%</strong> to <strong style="color:#22c55e;">${(rorF.P_ruin*100).toFixed(1)}%</strong>.
+        Same model, smarter selection.
+      </div>
+    </div>`;
+
+  return `
+    <div style="margin-bottom:24px;">
+      <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 6px;">RISK DASHBOARD · BETTING RECORD AS A PORTFOLIO</h3>
+      <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
+        Reframes the record from "did we win?" to a risk-analyst view: Sharpe ratio, max drawdown,
+        risk of ruin. Assumes $500 reference bankroll, $25 flat stake. The single metric to watch
+        is <strong style="color:#fff;">Sharpe</strong> — &gt;0.5 is strong, 0-0.5 is weak, &lt;0 is destroying capital.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;margin-bottom:14px;">
+        <div style="padding:10px;background:rgba(${hist.totalPL >= 0 ? '34,197,94' : '239,68,68'},0.08);border:1px solid ${hist.totalPL >= 0 ? '#22c55e' : '#ef4444'}66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Total P&L</div>
+          <div style="font-size:18px;font-weight:800;color:${hist.totalPL >= 0 ? '#22c55e' : '#ef4444'};">${hist.totalPL >= 0 ? '+' : ''}$${hist.totalPL}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${hist.totalSessions} sessions</div>
+        </div>
+        <div style="padding:10px;background:rgba(${hist.dailySharpe >= 0 ? '34,197,94' : '239,68,68'},0.08);border:1px solid ${sharpeColor(hist.dailySharpe)}66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Sharpe Ratio</div>
+          <div style="font-size:18px;font-weight:800;color:${sharpeColor(hist.dailySharpe)};">${hist.dailySharpe}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${hist.dailySharpe < 0 ? 'destroying capital' : hist.dailySharpe < 0.5 ? 'weak' : 'strong'}</div>
+        </div>
+        <div style="padding:10px;background:rgba(${ddColor === '#22c55e' ? '34,197,94' : ddColor === '#eab308' ? '234,179,8' : '239,68,68'},0.08);border:1px solid ${ddColor}66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Max Drawdown</div>
+          <div style="font-size:18px;font-weight:800;color:${ddColor};">$${hist.maxDrawdown}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${ddPctOf500.toFixed(0)}% of $500 br · ${hist.drawdownDuration}d</div>
+        </div>
+        <div style="padding:10px;background:rgba(${hist.winRate >= 0.5 ? '34,197,94' : '239,68,68'},0.08);border:1px solid ${hist.winRate >= 0.5 ? '#22c55e' : '#ef4444'}66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Session Win Rate</div>
+          <div style="font-size:18px;font-weight:800;color:${hist.winRate >= 0.5 ? '#22c55e' : '#ef4444'};">${(hist.winRate*100).toFixed(0)}%</div>
+          <div style="font-size:10px;color:var(--text-dim);">${hist.winningSessions}W ${hist.losingSessions}L</div>
+        </div>
+        <div style="padding:10px;background:rgba(${ror.P_ruin <= 0.20 ? '34,197,94' : '239,68,68'},0.08);border:1px solid ${ror.P_ruin <= 0.20 ? '#22c55e' : '#ef4444'}66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">P(Ruin) · 30d / $500</div>
+          <div style="font-size:18px;font-weight:800;color:${ror.P_ruin <= 0.20 ? '#22c55e' : '#ef4444'};">${(ror.P_ruin*100).toFixed(1)}%</div>
+          <div style="font-size:10px;color:var(--text-dim);">P(double): ${(ror.P_double*100).toFixed(0)}%</div>
+        </div>
+        <div style="padding:10px;background:rgba(167,139,250,0.08);border:1px solid #a78bfa66;border-radius:8px;">
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Longest Loss Streak</div>
+          <div style="font-size:18px;font-weight:800;color:${hist.longestLossStreak >= 4 ? '#ef4444' : '#eab308'};">${hist.longestLossStreak}</div>
+          <div style="font-size:10px;color:var(--text-dim);${hist.longestLossStreak >= 4 ? 'color:#ef4444;' : ''}">${hist.longestLossStreak >= 4 ? 'warning' : 'within variance'}</div>
+        </div>
+      </div>
+
+      <details style="margin-bottom:10px;">
+        <summary style="font-size:11px;color:var(--text-dim);cursor:pointer;padding:6px 0;">▸ Equity curve (session-by-session)</summary>
+        <table style="width:100%;margin-top:6px;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+          <thead style="background:rgba(0,0,0,0.3);">
+            <tr><th style="padding:6px;text-align:left;font-size:9px;color:var(--text-dim);text-transform:uppercase;">Date</th>
+                <th style="padding:6px;text-align:right;font-size:9px;color:var(--text-dim);text-transform:uppercase;">Session P&L</th>
+                <th style="padding:6px;text-align:right;font-size:9px;color:var(--text-dim);text-transform:uppercase;">Equity</th>
+                <th style="padding:6px;text-align:left;font-size:9px;color:var(--text-dim);text-transform:uppercase;">Curve</th></tr>
+          </thead>
+          <tbody>${sparkRows}</tbody>
+        </table>
+      </details>
+
+      ${filteredBox}
+
+      <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+        <strong style="color:var(--text);">Risk analyst's read:</strong> Sharpe ratio under 0 means we lose more on bad
+        days than we win on good — the strategy has negative risk-adjusted return, not just absolute. Drawdown
+        above 30% of bankroll triggers the "stop trading, audit" rule in any institutional context. Risk of ruin
+        compounds: 4 consecutive losing sessions has happened once already; at this pace it happens again with
+        probability ${(Math.pow(hist.losingSessions/hist.totalSessions, 4)*100).toFixed(1)}% per 4-session window.
+      </div>
+    </div>`;
+}
+
 // Phase 68: Bet-Filter Verdict — surfaces the data-driven conclusion from
 // the 99-bet R2 retro. Renders inline below the scoreboard so it's the
 // FIRST thing the user sees when opening CHS Lab.
@@ -494,6 +645,7 @@ function renderCHSLabPage(el) {
       </div>
 
       ${chsLabRenderScoreboard(agg)}
+      ${chsLabRenderRiskDashboard()}
       ${chsLabRenderEdgeFilter()}
       ${chsLabRenderConcentration()}
       ${chsLabRenderLivePreview()}
