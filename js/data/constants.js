@@ -144,3 +144,23 @@ const PLAYOFF_CLUTCH_WEIGHT = 0.13; // up from 0.10 in regular season composite
 // starCeiling per player (0 = normal, 1 = occasional explosion, 2 = historic ceiling games)
 
 // Lesson 2 & 5 (combined): Bounce-back qualifier
+
+// PHASE 71: Star Bias Correction (May 17, 2026)
+// The 68-game 2026-playoffs calibration audit found systematic
+// over-prediction for high-rated players (CALIBRATION_AUDIT.md):
+//   rating 85+:    PTS +2.63 / REB +0.48 / AST +0.97 (over-predicted)
+//   rating 75-84:  PTS +2.06 / REB +0.69 / AST +0.18 (over-predicted)
+//   rating 65-74:  +0.08 / -0.22 / +0.11 (calibrated)
+//   rating <65:    +0.13 / +0.14 / +0.11 (calibrated)
+// Applied as the LAST modifier in calcExpectedPlayerStats. Set
+// `enabled: false` to disable (regression-test the unfixed engine).
+// Re-tune the deltas after R3 ships ~30 more games.
+const STAR_BIAS_CONFIG = {
+  enabled: true,
+  elitePtsDelta:   -2.6,  // matches observed +2.63 over-prediction
+  eliteRebDelta:   -0.5,
+  eliteAstDelta:   -1.0,
+  starterPtsDelta: -2.0,
+  starterRebDelta: -0.5,
+  starterAstDelta:  0,    // observed +0.18 is within noise
+};

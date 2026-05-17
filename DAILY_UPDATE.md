@@ -345,6 +345,53 @@ Engine output already auto-derives, but `prediction.reasoning` and
 
 ## 6 · Featured Parlays for today
 
+### 🎯 STAR BIAS CORRECTION + AUDIT GUARDRAILS (Phase 71, May 17+)
+
+Phase 71 was a 68-game audit, not a feature build — and four fixes
+shipped from it:
+
+```
+Audit found four broken pieces in the engine projections:
+
+  1. ELITE / STARTER players over-predicted by +2.6 / +2.0pts PTS
+     → Source of the -33% prop ROI from R2.
+
+  2. SPREAD bets had 12.94pt margin MAE (Vegas ~9pt)
+     → The Phase 68 +35% spread ROI was small-sample LUCK, not skill.
+
+  3. THREES / STL / BLK projections return 0 across the board
+     → Every prop we authored on these stats was hand-guessed.
+
+  4. G6 elimination games: 50% winner accuracy, 19.8pt margin MAE
+     → No edge in must-win contexts.
+```
+
+**Four fixes shipped:**
+
+| Fix | What it does | Where |
+|---|---|---|
+| Star bias correction | Subtracts −2.6pt PTS / −0.5 REB / −1.0 AST from rating-85+ players, and −2.0/−0.5/0 from rating-75-84. Rotation/bench unchanged. | `projections.js` (15th modifier) |
+| Un-projected stat guard | Hard CAUTION verdict on any prop pick containing "threes", "blocks", "steals", "3PM" — engine returns 0 for these. | `edge-detector.js` `classifyBet` |
+| Spread cross-tab downgrade | `lean × spread` PLACE → CAUTION, type-level spread PLACE → CAUTION. Audit shows margin MAE precludes spread edge. | `edge-detector.js` `HISTORICAL_R2` |
+| G6/G7 elimination cap | PLACE recommendations get capped at CAUTION for any G6 or G7 bet — audit found no edge in elimination contexts. | `edge-detector.js` `classifyBet` |
+
+**Daily process changes:**
+1. **Star projections in the engine are now ~2pts lower** for Brunson, Wemby, SGA, Embiid, etc. Trust the new numbers — they match the 68-game empirical distribution.
+2. **Stop authoring spread bets** (or treat them as entertainment-only). The CAUTION pill will appear; respect it.
+3. **Don't author prop bets on threes/STL/BLK** until the engine projects these stats. The CAUTION pill catches it.
+4. **For G6/G7 bets, the verdict will downgrade automatically** — even "best-bet × ml" caps to CAUTION. Place at reduced stake or skip.
+
+**To regression-test the broken engine:** flip `STAR_BIAS_CONFIG.enabled` to `false` in `constants.js`. Audit numbers should revert. **Don't ship with it off.**
+
+**Re-run the audit after R3:**
+```bash
+node test-calibration-audit.js
+```
+If R2 bias re-emerges with R3 data, the −2.6/−2.0 deltas need tuning.
+If R3 stays calibrated, the fix held — leave it alone.
+
+---
+
 ### 📊 RISK-ANALYST DASHBOARD (Phase 70, May 17+)
 
 The CHS Lab now opens with a **RISK DASHBOARD** that reframes the

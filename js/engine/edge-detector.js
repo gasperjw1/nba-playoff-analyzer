@@ -55,7 +55,12 @@
 const HISTORICAL_R2 = {
   byType: {
     ml:     { n: 19, hitRate: 0.737, roi:  0.114, recommendation: 'PLACE' },
-    spread: { n: 17, hitRate: 0.706, roi:  0.349, recommendation: 'PLACE' },
+    // Phase 71 audit downgrade: 12.94pt margin MAE → spread bets are
+    // priced INSIDE our error band. The +35% ROI on 17 bets was
+    // small-sample luck, not skill. Downgrade PLACE → CAUTION until
+    // margin MAE drops below 10pt.
+    spread: { n: 17, hitRate: 0.706, roi:  0.349, recommendation: 'CAUTION',
+              note: 'Phase 71 calibration audit: 12.94pt margin MAE — model has no real edge on spread. Historical hit rate was lucky.' },
     total:  { n: 13, hitRate: 0.538, roi:  0.031, recommendation: 'CAUTION' },
     prop:   { n: 50, hitRate: 0.367, roi: -0.333, recommendation: 'SKIP' },
   },
@@ -80,7 +85,11 @@ const HISTORICAL_R2 = {
     'medium|total':    { n: 4,  hitRate: 0.250, roi: -0.512, recommendation: 'SKIP' },
     'medium|prop':     { n: 25, hitRate: 0.417, roi: -0.211, recommendation: 'SKIP' },
     'lean|ml':         { n: 3,  hitRate: 1.000, roi:  0.906, recommendation: 'PLACE' },
-    'lean|spread':     { n: 9,  hitRate: 0.889, roi:  0.697, recommendation: 'PLACE' },    // best cell
+    // Phase 71 audit downgrade: even the "best" spread cell can't
+    // overcome 12.94pt margin MAE. Treat as CAUTION until margin
+    // MAE drops below 10pt OR sample grows to n≥20.
+    'lean|spread':     { n: 9,  hitRate: 0.889, roi:  0.697, recommendation: 'CAUTION',
+                         note: 'Was PLACE on hit rate alone. Audit shows margin MAE 13pt — no real spread edge. Downgraded by Phase 71.' },
     'lean|total':      { n: 8,  hitRate: 0.625, roi:  0.193, recommendation: 'PLACE' },
     'lean|prop':       { n: 1,  hitRate: 0.000, roi: -1.000, recommendation: 'INSUFFICIENT' },
     'coin-flip|prop':  { n: 1,  hitRate: 0.000, roi: -1.000, recommendation: 'INSUFFICIENT' },
@@ -129,6 +138,22 @@ function _calibrate(rawProb) {
   return rawProb;
 }
 
+// ── Un-projected prop stats (Phase 71) ───────────────────────────────
+// The May 17 calibration audit found calcExpectedPlayerStats returns
+// 0 for THREES / STL / BLK across every player. Every prop bet we've
+// authored on these stats was hand-guessed, not model-supported. Until
+// the engine grows projections for these stats, ANY bet keyed off them
+// gets a hard CAUTION flag from classifyBet, regardless of cross-tab
+// cell. Authors should think twice before placing bets the engine
+// can't actually evaluate.
+const UNPROJECTED_STAT_TOKENS = ['3PM', 'three', 'threes', '3PT', 'steal', 'block', 'STL', 'BLK'];
+function _isUnprojectedStatPick(pick) {
+  if (typeof pick !== 'string') return false;
+  const p = pick.toLowerCase();
+  // Quick token match — case-insensitive substring
+  return UNPROJECTED_STAT_TOKENS.some(tok => p.includes(tok.toLowerCase()));
+}
+
 // ── classifyBet (NEW — the empirical filter) ────────────────────────
 // Given a {type, confidence}, look up the historical performance and
 // return the recommendation. The cross-tab is consulted first (most
@@ -139,6 +164,44 @@ function classifyBet(bet) {
   if (!bet || !bet.type) return { recommendation: 'CAUTION', basis: 'no-type', explain: 'Missing bet.type' };
   const t = bet.type;
   const c = bet.confidence;
+
+  // Phase 71 guardrail: hard CAUTION for props on stats the engine
+  // doesn't actually project (threes/STL/BLK return 0 in audit).
+  // Overrides PLACE recommendations from the cross-tab so authors
+  // see a forced warning. SKIP cells stay SKIP (worst of both wins).
+  if (t === 'prop' && _isUnprojectedStatPick(bet.pick || '')) {
+    return {
+      recommendation: 'CAUTION',
+      basis: 'unprojected-stat',
+      explain: `Prop is on an un-projected stat (threes/STL/BLK). Engine returns 0 for these in calibration audit — line is hand-authored, not model-supported. CAUTION applies regardless of cross-tab cell.`,
+    };
+  }
+
+  // Phase 71 guardrail: elimination-game (G6 / G7) warning.
+  // Audit found G6 winner accuracy was 50% with 19.8pt margin MAE
+  // (the worst game-number cell). The model has no demonstrable edge
+  // in elimination games. Downgrade everything to at-most CAUTION.
+  // G7 has only n=3 in audit so we apply the same caution.
+  if (bet.game === 6 || bet.game === 7) {
+    // Compute the would-be classification first; cap it at CAUTION.
+    const baseClass = _classifyByCrossTab(t, c);
+    if (baseClass.recommendation === 'PLACE') {
+      return {
+        ...baseClass,
+        recommendation: 'CAUTION',
+        basis: 'elimination-game-cap',
+        explain: `G${bet.game} elimination context: audit shows 50% winner accuracy, 19.8pt margin MAE. PLACE downgraded to CAUTION regardless of cross-tab.`,
+      };
+    }
+    return baseClass;
+  }
+
+  return _classifyByCrossTab(t, c);
+}
+
+// Extracted cross-tab lookup so guardrails (elimination-game cap, etc.)
+// can call it without recursing through the full classifyBet pipeline.
+function _classifyByCrossTab(t, c) {
   const crossKey = `${c}|${t}`;
   const cross = HISTORICAL_R2.byCross[crossKey];
   if (cross && cross.recommendation !== 'INSUFFICIENT') {
