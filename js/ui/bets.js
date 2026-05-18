@@ -3,7 +3,12 @@
 // ============================================================
 
 function renderBetsPage(el) {
-  // Route to appropriate round renderer
+  // Route to appropriate round renderer.
+  // Phase 72 default: CF is the active round; R2 archived; R1 deep archive.
+  if (currentPlayoffRound === 'CF' || currentPlayoffRound === 'Finals') {
+    renderCFBets(el);
+    return;
+  }
   if (currentPlayoffRound === 'R2') {
     renderR2Bets(el);
     return;
@@ -12,7 +17,10 @@ function renderBetsPage(el) {
   <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1 (Archived)</h2>
     <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">R1 Final Record: ML 25/42 (59.5%) | G1: 7/8 (88%) | G4: 3/4 (75%) | G5: 6/7 (86%) | G6: 1/3 (33%) | P&amp;L: -$698.47</p>
-    <div style="text-align:center;margin-bottom:16px;"><button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Switch to Round 2 Bets &rarr;</button></div>
+    <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+      <button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--card);color:#fff;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:13px;">R2 Archive &rarr;</button>
+      <button onclick="currentPlayoffRound='CF';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Conference Finals (Live) &rarr;</button>
+    </div>
 
     <!-- BET TABS -->
     <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
@@ -2354,6 +2362,223 @@ function renderR2DynamicOverview() {
 // ============================================================
 // ROUND 2 BETS PAGE
 // ============================================================
+// ============================================================
+// CF / FINALS BETS PAGE (Phase 72, May 18 2026)
+// ============================================================
+// Surfaces Conference Finals bets via the same data-driven helpers
+// the R2 renderer uses (bet-card.js + edge-detector pills).
+// Critical differences from renderR2Bets:
+//   - Filters series by round === 'CF' AND skips tbdOpponent stubs
+//   - Slate IDs use 'CF-G${n}' instead of 'R2-G${n}'
+//   - Featured Parlays tab pulls from FEATURED_PARLAYS.slate startsWith
+//     'CF-G' (handles future CF-G2, CF-G3 etc. without code changes)
+//   - Surfaces the Phase 71 R3 out-of-sample caveat prominently
+// ============================================================
+function renderCFBets(el) {
+  // Compute dynamic projections for every CF series + game (1-7)
+  const cfSeries = SERIES_DATA.filter(s => s.round === 'CF' && !s.tbdOpponent);
+  const bp = {};
+  cfSeries.forEach(s => {
+    for (let g = 1; g <= 7; g++) {
+      try {
+        const res = calcBlendedProjection(s, s.id, g);
+        if (res) bp[s.id + '_' + g] = res;
+      } catch (e) {}
+    }
+  });
+  function dml(seriesId, gameNum) {
+    const b = bp[seriesId + '_' + gameNum];
+    if (!b) return 'Model: N/A';
+    return 'Model: ' + b.blendedWinner + ' by ' + Math.round(Math.abs(b.blendedMargin));
+  }
+  function dmargin(seriesId, gameNum) {
+    const b = bp[seriesId + '_' + gameNum];
+    return b ? Math.round(Math.abs(b.blendedMargin)) : '?';
+  }
+  function dwinner(seriesId, gameNum) {
+    const b = bp[seriesId + '_' + gameNum];
+    return b ? b.blendedWinner : '?';
+  }
+
+  // Active game number within a CF series (first game without a winner)
+  function activeGameNum(series) {
+    const idx = series.games.findIndex(g => !g.winner);
+    return idx >= 0 ? idx + 1 : null;
+  }
+
+  // CF series progress pills
+  function renderSeriesProgressHeader(series) {
+    const completed = series.games.filter(g => g.winner);
+    if (!completed.length) {
+      return '<p style="color:var(--text-dim);font-size:12px;margin:0 0 12px;">Series 0-0 — CF G1 pending.</p>';
+    }
+    const pills = completed.map(g => {
+      const slate = `CF-G${g.num}`;
+      const bets = (typeof BETS !== 'undefined' ? BETS : []).filter(b => b.slate === slate && b.series === series.id);
+      const w = bets.filter(b => b.result && b.result.outcome === 'win').length;
+      const l = bets.filter(b => b.result && b.result.outcome === 'loss').length;
+      const v = bets.filter(b => b.result && b.result.outcome === 'void').length;
+      const margin = Math.abs((g.homeScore || 0) - (g.awayScore || 0));
+      const recordStr = `${w}W ${l}L${v ? ` ${v}V` : ''}`;
+      const recordColor = w > l ? 'var(--green)' : w < l ? 'var(--red)' : 'var(--yellow)';
+      return `<span style="display:inline-block;padding:5px 11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;font-size:11px;margin:0 6px 6px 0;">
+        <strong style="color:#ddd;">G${g.num}:</strong> <span style="color:#aaa;">${g.winner} by ${margin}</span>
+        <span style="color:${recordColor};margin-left:6px;font-weight:700;">${recordStr}</span>
+      </span>`;
+    }).join('');
+    return `<div style="margin-bottom:14px;line-height:1.6;">${pills}</div>`;
+  }
+
+  // Accordion of past CF games
+  function renderPastGamesAccordion(series, dyn) {
+    const completed = series.games.filter(g => g.winner);
+    if (!completed.length) return '';
+    const sections = completed.map(g => {
+      const slate = `CF-G${g.num}`;
+      return renderBetSlateSeries(slate, series.id, dyn);
+    }).filter(Boolean).join('');
+    if (!sections) return '';
+    return `<details style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px;">
+      <summary style="cursor:pointer;color:var(--text-dim);font-size:12px;font-weight:600;letter-spacing:0.5px;padding:6px 0;">
+        ▸ Show ${completed.length} prior game${completed.length > 1 ? 's' : ''} of bets
+      </summary>
+      <div style="margin-top:16px;">${sections}</div>
+    </details>`;
+  }
+
+  // Series-tab content (active game's bets + progress + past games)
+  function renderSeriesTabContent(series, dyn) {
+    const game = activeGameNum(series);
+    if (!game) {
+      return `<div style="text-align:center;padding:40px 0;">
+        <h3 style="color:#fff;margin:0 0 6px;">${series.id}</h3>
+        <p style="color:var(--text-dim);">Series complete — advances to Finals.</p>
+        ${renderSeriesProgressHeader(series)}
+        ${renderPastGamesAccordion(series, dyn)}
+      </div>`;
+    }
+    const slateId = `CF-G${game}`;
+    return `
+      <h3 style="color:#fff;margin:0 0 8px;font-size:18px;">${series.id} <span style="color:var(--text-dim);font-size:13px;font-weight:500;">— G${game} upcoming</span></h3>
+      ${renderSeriesProgressHeader(series)}
+      ${renderBetSlateSeries(slateId, series.id, dyn)}
+      ${renderPastGamesAccordion(series, dyn)}
+    `;
+  }
+
+  // Today's parlays — pulls from FEATURED_PARLAYS where date === CURRENT_DATE
+  // AND slate starts with 'CF-'. The slate filter prevents R2 archived
+  // parlays from showing up on the CF page even when CURRENT_DATE matches.
+  function renderTodaysCFParlays() {
+    if (typeof FEATURED_PARLAYS === 'undefined') return '';
+    const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : '';
+    const todays = FEATURED_PARLAYS.filter(p =>
+      p.date === today && typeof p.slate === 'string' && p.slate.startsWith('CF-'));
+    if (!todays.length) {
+      return '<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:13px;">No CF parlays posted for today.</div>';
+    }
+    const floor = todays.filter(p => p.category === 'floor');
+    const traditional = todays.filter(p => p.category === 'traditional');
+    const renderGrid = (parlays, label, color) => {
+      if (!parlays.length) return '';
+      return `
+        <div style="margin-top:20px;">
+          <div style="text-align:center;margin-bottom:14px;">
+            <span style="font-size:11px;font-weight:700;color:${color};background:rgba(255,255,255,0.04);padding:5px 14px;border-radius:16px;letter-spacing:0.5px;border:1px solid ${color};">${label}</span>
+          </div>
+          <div class="bet-series-grid">${parlays.map(homeRenderParlay).join('')}</div>
+        </div>`;
+    };
+    return `
+      <div style="margin-top:20px;border-top:3px solid #3dd68c;padding-top:16px;">
+        <div style="text-align:center;margin-bottom:8px;">
+          <span style="font-size:14px;font-weight:800;color:#3dd68c;background:rgba(61,214,140,0.15);padding:8px 24px;border-radius:20px;letter-spacing:1px;border:1px solid rgba(61,214,140,0.3);">🏀 TODAY — ${today}</span>
+        </div>
+        ${renderGrid(floor, '🛡 RELIABLE FLOOR PARLAYS', '#22d3ee')}
+        ${renderGrid(traditional, 'TRADITIONAL PARLAYS — value plays', '#a78bfa')}
+      </div>`;
+  }
+
+  // Today's games line for the header
+  const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : '';
+  const todaysGames = [];
+  if (typeof BET_SLATES !== 'undefined') {
+    Object.entries(BET_SLATES).forEach(([slateKey, slate]) => {
+      if (!slateKey.startsWith('CF-')) return;
+      slate.games.forEach(g => {
+        if (g.date === today) todaysGames.push(`${g.series} (${slateKey})`);
+      });
+    });
+  }
+  const todaysLabel = todaysGames.length
+    ? `TODAY (${today}): ${todaysGames.join(' · ')}`
+    : `No games scheduled for ${today}`;
+
+  el.innerHTML = `
+  <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
+
+    <!-- CF HEADER -->
+    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Conference Finals</h2>
+    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:8px;">${cfSeries.length} CF series | Lines per DraftKings | ${todaysLabel}</p>
+
+    <!-- PHASE 71 OUT-OF-SAMPLE BANNER -->
+    <div style="background:rgba(234,179,8,0.08);border:1px solid #eab308;border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:#eab308;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">⚠ Phase 71 — Out-of-sample discipline</div>
+      <div style="font-size:11px;color:#ddd;line-height:1.5;">
+        The 68-game calibration audit was R1+R2 only. <strong>Every CF prediction is out-of-sample.</strong>
+        Daily process: <strong>REDUCED STAKES (50% normal)</strong> for the first 5 CF games while we accumulate evidence.
+        Each bet card carries a PLACE / CAUTION / SKIP pill from <code>edge-detector.js</code> reflecting the historical cross-tab.
+        Re-run <code>node test-calibration-audit.js</code> after every 3 resolved CF games to check for bias drift.
+      </div>
+    </div>
+
+    <!-- ROUND TOGGLE -->
+    <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
+      <button onclick="currentPlayoffRound='R1';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
+      <button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;cursor:pointer;font-size:12px;font-weight:600;">R2 Archive</button>
+      <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);border-left:none;cursor:default;font-size:12px;font-weight:700;">Conference Finals</button>
+    </div>
+
+    <!-- CF BET TABS -->
+    <div class="scroll-x" style="display:flex;gap:0;margin-bottom:24px;justify-content:center;">
+      <div class="bet-tab active" onclick="switchBetTab('parlays')" id="betTab-parlays" style="padding:10px 24px;border-radius:8px 0 0 8px;cursor:pointer;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:all 0.2s;white-space:nowrap;flex-shrink:0;">Featured Parlays</div>
+      ${cfSeries.map((s, i) => {
+        const isLast = i === cfSeries.length - 1;
+        const radius = isLast ? '0 8px 8px 0' : '0';
+        const activeGame = activeGameNum(s);
+        const label = activeGame ? `${s.id} · G${activeGame}` : `${s.id} · Done`;
+        return `<div class="bet-tab" onclick="switchBetTab('${s.id}')" id="betTab-${s.id}" style="padding:10px 18px;border-radius:${radius};cursor:pointer;font-size:13px;font-weight:700;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">${label}</div>`;
+      }).join('')}
+    </div>
+
+    <!-- FEATURED PARLAYS TAB -->
+    <div id="betContent-parlays" class="bet-content">
+      ${renderTodaysCFParlays()}
+
+      <!-- CF FRAMEWORK GUIDE -->
+      <div style="margin-top:24px;background:rgba(0,0,0,0.2);border:1px solid #333;border-radius:10px;padding:14px;">
+        <div style="font-size:13px;font-weight:700;color:#a78bfa;margin-bottom:8px;">CF FRAMEWORK GUIDE</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.6;">
+          <p style="margin:0 0 8px;"><strong style="color:#22d3ee;">Reliable Floor:</strong> 2-leg parlays where each leg clears 80%+ at a deep alt line (Phase 71 audit shows 70%+ alt-line hit rate at proj−5). Wemby + Holmgren rebound floors are the model's cleanest CF signal.</p>
+          <p style="margin:0 0 8px;"><strong style="color:#a78bfa;">Traditional:</strong> 2-3 leg parlays for bigger payouts. Mixes ML + props. Reduced stake ($25-$50) for out-of-sample CF games.</p>
+          <p style="margin:0;"><strong style="color:#eab308;">SKIP:</strong> Props on stars at the line (SGA O28.5, Wemby PTS) — audit shows high×prop is the worst-performing cell. Use the deeper alt instead.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PER-SERIES TABS -->
+    ${cfSeries.map(s => `
+    <div id="betContent-${s.id}" class="bet-content" style="display:none;">
+      ${renderSeriesTabContent(s, { dml, dmargin, dwinner })}
+    </div>`).join('')}
+
+    <!-- DISCLAIMER -->
+    <div class="bets-disclaimer">
+      <strong>Disclaimer:</strong> Model-driven picks using the 72-phase prediction system (calibrated against 68 R1+R2 games via Phase 71 audit). Phase 71c per-player overrides applied for known-biased players. CF predictions are explicitly out-of-sample — re-run audit after each settled CF game. Lines from DraftKings as of ${today}. Bet responsibly.
+    </div>
+  </div>`;
+}
+
 function renderR2Bets(el) {
   // ── Compute dynamic blended projections for all R2 series/games ──
   const r2 = SERIES_DATA.filter(s => s.round === 'R2');
@@ -2698,7 +2923,8 @@ function renderR2Bets(el) {
     <!-- ROUND TOGGLE -->
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
       <button onclick="currentPlayoffRound='R1';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
-      <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:default;font-size:12px;font-weight:700;">Round 2</button>
+      <button disabled style="padding:7px 18px;border-radius:0;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:default;font-size:12px;font-weight:700;">Round 2</button>
+      <button onclick="currentPlayoffRound='CF';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">CF (Live)</button>
     </div>
 
     <!-- R2 BET TABS — Featured Parlays + one per series -->
