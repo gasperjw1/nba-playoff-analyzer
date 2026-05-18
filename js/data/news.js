@@ -294,4 +294,48 @@ const NEWS = [
     body: 'Both #1 seeds advanced via R2 sweeps. First MVP-tier matchup of the playoffs. SGA (31.1ppg, 67% TS) vs Wemby (24.8ppg, 11.5rpg) is the marquee individual battle, but the depth-vs-stars structural matchup is the real story. OKC depth (10-man rotation) vs SAS stars-plus-Castle-plus-Harper bench. Holmgren-Wemby paint battle is the key chess piece. SAS rested since 5/15 close; OKC since 5/11. WCF Game 1 at Paycom Center.',
     source: 'NBA.com / ESPN',
   },
+
+  // ── May 17 — DET-CLE G7 result ─────────────────────────────
+  {
+    date: '2026-05-17',
+    severity: 'major',
+    series: 'DET-CLE',
+    headline: 'CLE 125-94 G7: Cavs blow out Pistons, advance to ECF vs NYK',
+    body: 'Cleveland\'s 6th straight Game 7 win — and the most dominant in the streak. Mitchell 26pts (15 in Q3, only 31min, 0 TOs) and Mobley 21/12 led the rout; Allen 23/7reb and Merrill 23 off bench (5-8 3PT) gave CLE four 20+ scorers. Harden was box-score quiet (9pts, 2-10 FG) but his gravity freed everyone. DET imploded: Cade career-low 13pts on 5-16 FG / 0-7 3PT (worst playoff game of his career), Harris 0-6 FG, Duren 7/9 with 3 TOs vs Allen/Mobley. CLE shot 50.6% FG, won boards 50-41, forced 14 TOs. ECF G1 is Tue 5/19 at MSG vs NYK (CLE on 1 day rest, NYK on 9 days rest).',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-17',
+    severity: 'minor',
+    series: 'DET-CLE',
+    headline: 'Mitchell 5-0 lifetime in Game 7s with G7 masterclass',
+    body: 'Donovan Mitchell improved his career Game 7 record to 5-0 with the Q3 dagger run — 15 of his 26 points in a 31-point quarter that flipped a 7-pt halftime game into a 26-pt blowout. The Cavs are 6-0 in G7s in franchise history when leading at halftime or down ≤7. Mitchell played only 31 minutes and turned the ball over zero times. The performance reinforces the model lesson the engine had been resisting: in elimination spots, the volume-shifting tier-one star matters more than home court (Phase 71 audit MAE 19.8pts on G7 margin).',
+    source: 'ESPN',
+  },
+
+  // ── May 18 — WCF G1 day, ECF G1 preview ─────────────────────
+  {
+    date: '2026-05-18',
+    severity: 'major',
+    series: 'OKC-LAL',
+    headline: 'WCF G1 tonight: SAS @ OKC, 8:30 PM ET — OKC -6.5 / 219.5',
+    body: 'Western Conference Finals tip off tonight at Paycom Center. OKC the defending champ #1 seed (64-18, +11.6 NetRtg) hosts SAS (#2 seed, 4-2 over MIN powered by Wemby/Castle/Fox). Regular season note: SAS went 4-1 vs OKC — one of the few teams to dominate the Thunder. SGA (31.1ppg) vs Wemby (24.8ppg, 11.5rpg, 3.7blk) is the marquee individual matchup; Holmgren-Wemby paint battle is the structural chess piece. OKC rested 7 days; SAS rested 3 days. DraftKings: OKC -6.5 / total 219.5. Engine baseline OKC by 3-5 (talent + HCA + rest), but the season series argues for a tighter line. NBC/Peacock broadcast.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-18',
+    severity: 'major',
+    series: 'NYK-PHI',
+    headline: 'ECF set: NYK vs CLE, G1 Tue 5/19 at MSG (9-day rest vs 1-day rest)',
+    body: 'Eastern Conference Finals matchup locked: NYK (#3 seed, swept PHI 4-0, rested since 5/10) hosts CLE (#4 seed, won DET 4-3 last night on the road by 31). The rest gap (9 days vs 1 day) is the dominant ECF G1 variable. NYK has the layoff-rust risk (longer breaks historically depress Q1 efficiency by 4-6 pts); CLE has the legs-tired risk after Mitchell\'s 31min G7, Allen on a chronic knee, and a one-day turnaround flight. KAT-vs-Mobley + Brunson-vs-Mitchell are the marquee matchups. OG Anunoby back from hamstring at full practice. Lines TBD morning of game. G1 at MSG 8 PM ET on ESPN.',
+    source: 'NBA.com / SI',
+  },
+  {
+    date: '2026-05-18',
+    severity: 'minor',
+    series: 'DET-CLE',
+    headline: 'DET offseason: Cade extension, Bickerstaff seat, Duren trade chatter',
+    body: 'After the 31-point G7 loss at home, the Pistons enter the offseason facing three big questions. (1) Cade Cunningham contract — eligible for a designated rookie supermax this summer. (2) Coach J.B. Bickerstaff — first full season; the G7 collapse will draw scrutiny but he took DET from lottery to #1 seed in one year. (3) Duren long-term — overpowered by Allen/Mobley in the G7 interior; could DET shop him for wing scoring? The biggest takeaway: the Cade-Duren PnR worked in G5-G6 but Harris\' 0-6 FG in G7 showed DET\'s secondary scoring is one bad night from collapse.',
+    source: 'Yahoo Sports',
+  },
 ];

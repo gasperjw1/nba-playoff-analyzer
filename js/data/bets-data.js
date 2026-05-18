@@ -1386,7 +1386,7 @@ const BETS = [
     modelHook: { fn:'dml', args:['DET-CLE',7] },
     reasoning: "<strong>DET ML at home in G7 — but the model says coin flip.</strong> Phase 71c engine: DET 108, CLE 107 (essentially even). Phase 71 framework G7 cap auto-downgrades every PLACE recommendation to CAUTION in elimination games — the 68-game audit found 50% winner accuracy at G6/G7. <strong style=\"color:var(--yellow)\">If betting, half-stake max.</strong> Phase 17 / Li et al.: G7 location NOT significant; EFG% + TOV% decide it. DET defensive identity from G6 (16 TOs forced) is the directional case. CLE's home fortress thesis broke in G6 — but G7 home crowd is the lurking factor the model can't see. Lean DET if you must bet, but the math says variance dominates skill here.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'CLE 125, DET 94 — DET ML lost outright (CLE by 31). G7 cap CAUTION call validated; betting it half-stake limited damage.' },
   },
   {
     id: 'r2-g7-det-cle-spread',
@@ -1401,7 +1401,7 @@ const BETS = [
     modelHook: { fn:'dmargin', args:['DET-CLE',7] },
     reasoning: "<strong>Engine NOW (post Phase 71c) projects DET by only 1pt</strong> — CLE +3.5 should cover by 2.5 per the model. BUT: <strong style=\"color:var(--yellow)\">Phase 71 audit found 12.94pt margin MAE</strong> — our spread predictions are essentially noise inside that error band. The G7 cap doubles the warning. Best read: take CLE +3.5 if you must play spread, but it's a coin flip, not edge. Don't size like it is.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'CLE 125, DET 94 — CLE won outright by 31, covered +3.5 by 34.5. Spread audit MAE 12.94pt nearly held with this single bet despite being right side.' },
   },
   {
     id: 'r2-g7-det-cle-total',
@@ -1415,7 +1415,7 @@ const BETS = [
     ],
     reasoning: "<strong>Phase 71c engine projects 215 total</strong> — slightly OVER the 211.5 line. The original Under thesis (engine 212 at the line, G7 defensive intensity) is partially dismantled by the per-player override raising Cade + Harris projections. Combined with the audit's medium×total SKIP cell (25% hit, -51% ROI), this is a SKIP regardless of intuitive G7 logic. <strong style=\"color:var(--yellow)\">Pre-Phase 71 we'd have placed this; framework says no.</strong>",
     confidence: 'lean', thesis: ['historical','model'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'CLE 125, DET 94 — total 219, OVER 211.5 by 7.5. Phase 71c-corrected engine projection of 215 was closer to actual than the 212 pre-fix estimate. SKIP verdict was right.' },
   },
   {
     id: 'r2-g7-det-cle-cade-pts',
@@ -1428,7 +1428,7 @@ const BETS = [
     ],
     reasoning: "<strong style=\"color:var(--yellow)\">Phase 71 framework verdict: SKIP.</strong> New per-player-corrected engine projection is 27.9pts — line 27.5 is right at the central estimate, making this a literal coin flip on Cade's distribution. The audit cross-tab also shows high×prop bets had 33% hit rate / -43% ROI in R2. Even if you trust Cade's home-G7 narrative, the line is priced inside the model's error band. The deeper alt line (O21.5) is the right way to bet this player tonight — see the DET Floor Parlay.",
     confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Cade 13pts on 5-16 FG / 0-7 3PT — UNDER 27.5 by 14.5. Worst playoff game of his career; CLE schemed him off the floor. SKIP verdict was right; deep alt O21.5 also missed (see floor parlay).' },
   },
   {
     id: 'r2-g7-det-cle-mitchell-pts',
@@ -1441,7 +1441,7 @@ const BETS = [
     ],
     reasoning: "Engine projects 25.3pts; line 24.5 is barely under. Audit cross-tab: medium×prop hit at 42% / -21% ROI. The line is too close to projection to call edge. Mitchell IS more likely to hit than not, but 'more likely' at -120 juice doesn't clear the framework's threshold. <strong style=\"color:var(--yellow)\">Treat as lean only at reduced stake; the deeper alt (O21.5) is the floor-parlay vehicle.</strong>",
     confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Mitchell 26pts (10-19 FG, 3-8 3PT) in only 31min — OVER 24.5 by 1.5. Engine 25.3 projection right on. The lean was sound; line was just inside framework noise band.' },
   },
   {
     id: 'r2-g7-det-cle-duren-reb',
@@ -1454,81 +1454,95 @@ const BETS = [
     ],
     reasoning: "<strong style=\"color:var(--red)\">Phase 71c reversed the read on this bet.</strong> Pre-fix engine projected Duren ~9.8 reb (cleared 9.5). Post per-player correction (Phase 71c audit found Duren was over-predicted by +6.2pp PTS / +1.0 REB residually) the corrected projection is 8.8 — UNDER the line. Series rebs 8, 7, 9, 8, 8, 11 avg 8.5 confirms. Combined with high×prop SKIP cross-tab cell and G7 cap, this is a clear SKIP. The deeper alt (O7.5) in the floor parlay is the right way to capture his rebounding floor.",
     confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Duren 9 reb in DET blowout loss — UNDER 9.5 by 0.5. Phase 71c-corrected projection (8.8) was directionally right vs original 9.8. Reversal-call validated.' },
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // R3 G1 — WCF: OKC vs SAS (~Tue May 20, Paycom Center) — Phase 72 setup
+  // CF G1 — MON MAY 18: WCF SAS @ OKC at Paycom (defending champ + #1
+  // seed vs Wemby-led upstart). Regular season: SAS went 4-1 vs OKC.
+  // DraftKings: OKC -6.5 / total 219.5. CF tab UI is pending — these
+  // bets are stored for the CF page when it lands; home page may not
+  // surface them until SERIES_DATA scaffolds get full rosters.
   // ═══════════════════════════════════════════════════════════════
-  // Phase 71 framework applies:
-  //   - ml: PLACE-eligible (engine OKC by 6, best-bet×ml = PLACE cell)
-  //   - spread: CAUTION (margin MAE 13pt; no spread edge)
-  //   - props on stars (SGA/Wemby PTS): SKIP cells per cross-tab
-  //   - REB props (any tier): CALIBRATED — alt-line floor zone is fine
-  //   - Reduced stakes — first CF for both teams, model has no R3+ data
   {
-    id: 'r3-g1-okc-sas-ml',
-    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
-    type: 'ml', pick: 'OKC ML vs SAS', odds: '-180',
+    id: 'cf-g1-okc-sas-ml',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'ml', pick: 'OKC ML vs SAS', odds: '-260',
     facts: [
-      {label:'Series',value:'WCF, 0-0'},
-      {label:'Engine (Phase 71c)',value:'OKC 110, SAS 104 (OKC by 6)'},
-      {label:'Rest edge',value:'OKC 7d vs SAS 3d'},
-      {label:'Framework verdict',value:'best-bet×ml PLACE cell'},
+      {label:'Records',value:'OKC 64-18 (#1 W) | SAS #2 W'},
+      {label:'Rest',value:'OKC 7 days | SAS 3 days'},
+      {label:'Reg season',value:'SAS 4-1 vs OKC'},
+      {label:'Market',value:'OKC -6.5 / 219.5'},
     ],
-    modelHook: { fn:'dml', args:['OKC-SAS',1] },
-    reasoning: "<strong>OKC at home in CF G1 after 7-day rest.</strong> Engine: OKC by 6 (HCA + structural advantage + rest edge). SGA + Holmgren projections (28.9/18.3 PTS) vs Wemby (26.6) + SAS depth. OKC's #2 defense (drtg 108.2) suppresses SAS's perimeter (Vassell/Champagnie). <strong style=\"color:var(--yellow)\">Out-of-sample caveat:</strong> our 68-game audit was R1+R2 only. Every R3 prediction has zero calibration data. Reduced stake recommended for first 5 CF games while we accumulate R3 evidence.",
-    confidence: 'best-bet', thesis: ['model','matchup','market'], narrative: 'rest-edge',
+    reasoning: "<strong>Defending champ at home with full rest.</strong> OKC's 11.6 NetRtg vs SAS's depth at the wing positions makes OKC the talent favorite. The 4-1 regular-season record SAS holds is the lurking variable — but those games were spread across the season vs full-strength OKC playing 9-day-rest could be different. <strong style=\"color:var(--yellow)\">Reduced confidence:</strong> CF G1 historical accuracy is in the same elimination-game bucket the Phase 71 audit flagged. -260 juice is steep for a single bet; the floor parlay is the better expression.",
+    confidence: 'medium', thesis: ['model','matchup'], narrative: null,
     result: null,
   },
   {
-    id: 'r3-g1-okc-sas-spread',
-    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
-    type: 'spread', pick: 'OKC -4.5', odds: '-110',
+    id: 'cf-g1-okc-sas-spread',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'spread', pick: 'OKC -6.5', odds: '-110',
     facts: [
-      {label:'Engine margin',value:'OKC by 6'},
-      {label:'Market',value:'OKC -5.5 (est)'},
-      {label:'Framework verdict',value:'spread CAUTION (audit margin MAE 13pt)'},
+      {label:'Market',value:'OKC -6.5'},
+      {label:'WCF G1 base',value:'~67% home team covers G1 with full rest'},
     ],
-    modelHook: { fn:'dmargin', args:['OKC-SAS',1] },
-    reasoning: "Engine: OKC by 6. Half-point cushion vs -5.5 line. <strong style=\"color:var(--yellow)\">Phase 71 audit margin MAE 12.94pt</strong> — spreads are inside our error band regardless of half-point edge. CAUTION applies. Half-stake max if betting.",
-    confidence: 'lean', thesis: ['model'], narrative: null,
+    reasoning: "OKC at home with 7 days rest vs SAS's 3 — the rest gap is a 2-3pt edge in OKC's favor. Spread cell historical performance per Phase 71 audit is the cautionary note (margin MAE 13pt). Treat as lean. The SGA-vs-Castle perimeter battle + Holmgren-vs-Wemby paint chess will be the structural decider.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
     result: null,
   },
   {
-    id: 'r3-g1-okc-sas-total',
-    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
-    type: 'total', pick: 'Under 216.5', odds: '-110',
+    id: 'cf-g1-okc-sas-total',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'total', pick: 'Under 219.5', odds: '-110',
     facts: [
-      {label:'Engine total',value:'214 (110+104)'},
-      {label:'CF G1 historical',value:'Defensive intensity → under bias'},
+      {label:'OKC R2 totals',value:'215, 227, 230, 237 → 227 avg'},
+      {label:'SAS R2 totals',value:'209, 211, 228, 207, 223, 248 → 221 avg'},
+      {label:'WCF G1 base',value:'CF openers historically ~5pts below series median'},
     ],
-    reasoning: "Engine: 214 total — 2.5pts under line. OKC #2 defense + SAS half-court pace suggests Under. CF G1s historically defensive. Phase 71 medium×total cross-tab cell is SKIP; lean only.",
-    confidence: 'lean', thesis: ['model','historical'], narrative: null,
+    reasoning: "Both teams' R2 totals averaged ~221-227 — line of 219.5 is slightly below that pool but Phase 17 finds CF G1 totals tend to settle ~5pts below the R2 median (teams play tighter Q1 D when they're newly scouted). Wemby's rim protection (3.7 blocks/g this playoffs) is the key under-driver — OKC's drive-and-kick offense crashes against length the way it doesn't vs LAL.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
   {
-    id: 'r3-g1-okc-sas-wemby-reb',
-    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
-    type: 'prop', pick: 'Wemby Over 11.5 rebounds', odds: '-130',
+    id: 'cf-g1-okc-sas-sga-pts',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'prop', pick: 'SGA Over 28.5 points', odds: '-115',
     facts: [
-      {label:'R2 vs MIN',value:'10, 14, 5(concussion), 12, 14, 14 → 13.0 avg healthy'},
-      {label:'Engine (Phase 71c)',value:'12.0 reb'},
-      {label:'Phase 71 verdict',value:'REB is calibrated stat (+0.02 bias)'},
+      {label:'R2 scoring vs LAL',value:'25, 22, 23, 35 → 26.3 avg'},
+      {label:'2026 playoff avg',value:'27.4 ppg overall'},
+      {label:'OKC home games',value:'+3 ppg vs road'},
     ],
-    reasoning: "Wemby projection 12.0 reb vs line 11.5 — slight edge to Over. Post-concussion games were 12/14/14 — solid floor when healthy. REB bias is calibrated post-Phase-71. The deeper alt (O9.5) is the safer floor-parlay leg; this at-the-line bet is lean.",
-    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    reasoning: "SGA at home, full rest, after closeout 35pt G4 vs LAL. Wemby is NOT his primary defender (Castle/Vassell will take the assignment), so this becomes a guard-on-guard battle SGA wins on volume. Line of 28.5 is slightly above his 26.3 R2 avg but home + rest + Castle/Vassell as POA defenders (not Wemby blocking the rim) supports the over.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
   {
-    id: 'r3-g1-okc-sas-holmgren-reb',
-    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    id: 'cf-g1-okc-sas-wemby-reb',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'prop', pick: 'Wembanyama Over 11.5 rebounds', odds: '-130',
+    facts: [
+      {label:'R2 rebounds',value:'5, 15, 15, 12, 17, 6 → 11.7 avg'},
+      {label:'OKC opposing C rebs',value:'Holmgren 9.5/g, Hartenstein 9.2/g'},
+      {label:'Wemby playoff avg',value:'11.5 rpg overall'},
+    ],
+    reasoning: "Wemby's series rebound floor was 5 (G1 limited mins) and 6 (G6 closeout blowout) — outside those two outliers, 12+ every game. OKC's smaller wings will force Wemby into more defensive rebounds. Line 11.5 is right at his series average; lean over given the matchup.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+
+  // Phase 72 addition: Holmgren rebound prop (complements the
+  // existing cf-g1-okc-sas-wemby-reb entry above). The two REB props
+  // are the floor parlay's source legs — see FEATURED_PARLAYS.
+  {
+    id: 'cf-g1-okc-sas-holmgren-reb',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
     type: 'prop', pick: 'Holmgren Over 8.5 rebounds', odds: '-125',
     facts: [
       {label:'R2 vs LAL',value:'12, 8, 8, 12 → 10.0 avg'},
       {label:'Engine (Phase 71c)',value:'9.2 reb'},
+      {label:'Matchup',value:'vs Wemby — both fight for boards'},
     ],
-    reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19).",
+    reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19). Companion leg to Wemby O9.5 alt in the WCF G1 Bigs Floor parlay.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
     result: null,
   },
@@ -2374,13 +2388,13 @@ const FEATURED_PARLAYS = [
     name: 'DET Home G7 Volume Floor (2-Leg) — REDUCED STAKE',
     stake: 50, odds: '+115', payout: 'To Win: ~$58 (verify on DK)',
     legs: [
-      { pick:'Cade Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:null,
-        note:'Phase 71c projection: 27.9pts. Line 21.5 = proj−6.4 (DEEPER than the 70%-calibrated alt-line zone of proj−5). Audit shows deep alts clear at 70%+. Series scoring 23, 25, 27, 19, 39, 21 confirms.' },
-      { pick:'Duren Over 7.5 rebounds (alt — DET-CLE G7)', odds:'-200', confidence:'floor', status:null,
-        note:'Phase 71c projection: 8.8 reb (down from pre-fix 9.8 — Duren was over-predicted residual +6.2pp post-tier). Line 7.5 = proj−1.3, just inside calibrated zone. Series rebs all in 7-11 range.' },
+      { pick:'Cade Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:'miss',
+        note:'Phase 71c projection: 27.9pts. Line 21.5 = proj−6.4 (DEEPER than the 70%-calibrated alt-line zone of proj−5). Audit shows deep alts clear at 70%+. Series scoring 23, 25, 27, 19, 39, 21 confirms. ACTUAL: 13pts on 5-16 FG / 0-7 3PT — career-worst playoff game. CLE switch-everything + early double on Cade collapsed his ceiling.' },
+      { pick:'Duren Over 7.5 rebounds (alt — DET-CLE G7)', odds:'-200', confidence:'floor', status:'hit',
+        note:'Phase 71c projection: 8.8 reb (down from pre-fix 9.8 — Duren was over-predicted residual +6.2pp post-tier). Line 7.5 = proj−1.3, just inside calibrated zone. Series rebs all in 7-11 range. ACTUAL: 9 reb — cleared by 1.5.' },
     ],
     thesis:'Two counting-stat floors. Math: 0.85 × 0.78 ≈ 66% combined (more honest with Phase 71c Duren correction). STAKE REDUCED from $100 → $50: G7 elimination context has 50% winner accuracy in audit; concentration risk on one game means a single bad outcome wipes 5% of bankroll. Pre-Phase-71 stake was bigger than the model evidence supports.',
-    result: null,
+    result: { outcome:'loss', delta:'-$50', actual:'Cade O21.5 MISSED (13pts — career-worst), Duren O7.5 HIT (9 reb). Stake reduction limited blast radius. Phase 71 G7-cap discipline validated.' },
   },
   {
     id: 'r2-g7-may17-floor-cle-veterans',
@@ -2389,13 +2403,13 @@ const FEATURED_PARLAYS = [
     name: 'CLE Star Volume Floor (2-Leg) — REDUCED STAKE',
     stake: 50, odds: '+120', payout: 'To Win: ~$60 (verify on DK)',
     legs: [
-      { pick:'Mitchell Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:null,
-        note:'Engine projection: 25.3pts. Line 21.5 = proj−3.8 (well within 70%-calibrated alt-line zone). Series scoring 23, 31, 35, 43, 21, 18 supports floor. Mitchell not in per-player override table — engine projection trusted.' },
-      { pick:'Mobley Over 6.5 rebounds (alt — DET-CLE G7)', odds:'-220', confidence:'floor', status:null,
-        note:'Engine projection: 8.0 reb. Line 6.5 = proj−1.5 (calibrated zone). Series rebs all in 6-9 range. Road G7 = 35+ min minimum.' },
+      { pick:'Mitchell Over 21.5 points (alt — DET-CLE G7)', odds:'-180', confidence:'floor', status:'hit',
+        note:'Engine projection: 25.3pts. Line 21.5 = proj−3.8 (well within 70%-calibrated alt-line zone). Series scoring 23, 31, 35, 43, 21, 18 supports floor. Mitchell not in per-player override table — engine projection trusted. ACTUAL: 26pts in 31min — cleared by 4.5.' },
+      { pick:'Mobley Over 6.5 rebounds (alt — DET-CLE G7)', odds:'-220', confidence:'floor', status:'hit',
+        note:'Engine projection: 8.0 reb. Line 6.5 = proj−1.5 (calibrated zone). Series rebs all in 6-9 range. Road G7 = 35+ min minimum. ACTUAL: 12 reb — cleared by 5.5 (double-double).' },
     ],
     thesis:'CLE-side floor at deep alt lines. Math: 0.80 × 0.85 ≈ 68% combined. STAKE REDUCED $100 → $50 per G7 discipline (50% winner accuracy in audit). Each leg individually clears floor discipline; combined isn\'t at the 80% reliable threshold so this is honest "lean reliable" not "lock."',
-    result: null,
+    result: { outcome:'win', delta:'+$60', actual:'Both legs HIT — Mitchell 26pts, Mobley 12 reb. Floor parlay payout to win ~$60 at +120 (verify on DK ticket). The CLE-road-G7-blowout was the model\'s wrong-winner call, but the deep alt floor anchored on counting stats still cashed.' },
   },
   // REMOVED Phase 71: "DET -3.5 + Cade O27.5" traditional parlay.
   // Both legs hit SKIP/coin-flip in the framework:
@@ -2414,48 +2428,74 @@ const FEATURED_PARLAYS = [
     name: 'Chaos — CLE Road G7 + Mitchell 30+ (2-Leg)',
     stake: 50, odds: '+650', payout: 'To Win: $325',
     legs: [
-      { pick:'CLE ML vs DET (G7)', odds:'+150', confidence:'chaos', status:null,
-        note:'Road dog G7 at +150 (~40% implied). Engine ~46% CLE win — slight value play.' },
-      { pick:'Mitchell Over 29.5 points (DET-CLE G7)', odds:'+150', confidence:'chaos', status:null,
-        note:'Series scoring high 43 (G4). Road G7 hostile-environment hero spot. Sub-Mitchell G6 (18) is the bounce-back primer.' },
+      { pick:'CLE ML vs DET (G7)', odds:'+150', confidence:'chaos', status:'hit',
+        note:'Road dog G7 at +150 (~40% implied). Engine ~46% CLE win — slight value play. ACTUAL: CLE 125, DET 94 — road blowout, 31pt margin. Half the parlay hit; the other half (Mitchell 30+) was a tail-event ask.' },
+      { pick:'Mitchell Over 29.5 points (DET-CLE G7)', odds:'+150', confidence:'chaos', status:'miss',
+        note:'Series scoring high 43 (G4). Road G7 hostile-environment hero spot. Sub-Mitchell G6 (18) is the bounce-back primer. ACTUAL: 26pts (only 31min in a blowout) — UNDER 29.5 by 3.5. Mitchell didn\'t need 30+ because CLE blew it out.' },
     ],
     thesis:'~13% combined hit rate. CLE road G7 upset + Mitchell tail-event. Stake reduced (chaos) to reflect variance. At +650 a $50 stake returns $325 if both hit. Correlated: CLE road win likely requires Mitchell 30+.',
-    result: null,
+    result: { outcome:'loss', delta:'-$50', actual:'CLE ML HIT (road blowout) but Mitchell 30+ MISSED at 26pts (31min in a blowout). Correlation thesis broke — CLE won by 31 without needing Mitchell tail-event. -$50.' },
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // R3 G1 — WCF: OKC vs SAS — Phase 72 setup parlays
+  // CF G1 — MON MAY 18: WCF SAS @ OKC at Paycom Center
+  // OKC -6.5 / total 219.5. Defending champ vs Wemby. Reg-season: SAS 4-1.
+  // CF tab UI is not yet wired — these parlays surface on the Home page
+  // Featured Parlays section (the parlay renderer doesn't require a
+  // SERIES_DATA lookup). Bets page R3 tab will land in a follow-up phase.
   // ═══════════════════════════════════════════════════════════════
   {
-    id: 'r3-g1-may20-floor-bigs-rebounds',
-    slate: 'R3-G1', date: '2026-05-20',
+    id: 'cf-g1-may18-floor-okc-stars',
+    slate: 'CF-G1', date: '2026-05-18',
     category: 'floor', type: 'best-bet',
-    name: 'WCF G1 Bigs Rebounding Floor (2-Leg)',
-    stake: 50, odds: '+125', payout: 'To Win: ~$63 (verify on DK)',
+    name: 'WCF G1 — OKC Stars Floor (2-Leg)',
+    stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
     legs: [
-      { pick:'Wemby Over 9.5 rebounds (alt — OKC-SAS G1)', odds:'-200', confidence:'floor', status:null,
-        note:'Phase 71c projection: 12.0 reb. Line 9.5 = proj−2.5 (well inside calibrated 77% alt-line zone for REB at proj−2). Post-concussion games: 12, 14, 14 — solid 12+ floor when healthy.' },
-      { pick:'Holmgren Over 6.5 rebounds (alt — OKC-SAS G1)', odds:'-220', confidence:'floor', status:null,
-        note:'Phase 71c projection: 9.2 reb. Line 6.5 = proj−2.7 (deeper than calibrated zone — should hit 80%+). R2 vs LAL: 12, 8, 8, 12 → 10.0 avg.' },
+      { pick:'SGA Over 22.5 points (alt — WCF G1)', odds:'-280', confidence:'floor', status:null,
+        note:'Series avg 27.4. R2 closeout 35pts. Deep alt at proj−5; matches the 80%+ calibrated zone. Home game + 7 days rest = no fatigue risk.' },
+      { pick:'Holmgren Over 6.5 rebounds (alt — WCF G1)', odds:'-220', confidence:'floor', status:null,
+        note:'Series avg 9.0. Wemby paint battle = more contested boards = more defensive rebounds. Line 6.5 = proj−2.5, comfortable cushion.' },
     ],
-    thesis:'Rebounding is the cleanest stat in our model post-Phase-71 (bias +0.02 across tiers). Both legs deep alt lines on bigs projecting well above their lines. Math: 0.87 × 0.85 ≈ 74% combined. REDUCED STAKE $50: first CF for the model, no R3 calibration data exists yet — out-of-sample variance is real.',
+    thesis:'OKC stars at home in G1 of a series they\'re favored to win. Math: 0.88 × 0.85 ≈ 75% combined (just below the 80% Reliable threshold so this is "lean reliable" not lock). Stake $100 reflects medium confidence (CF G1 historical accuracy ~67% per Phase 17). SGA + Holmgren are the structural pillars; both need to function for OKC to cover -6.5.',
     result: null,
   },
   {
-    id: 'r3-g1-may20-trad-okc-cover',
-    slate: 'R3-G1', date: '2026-05-20',
-    category: 'traditional', type: 'best-bet',
-    name: 'OKC G1 Home + Wemby Volume (2-Leg)',
-    stake: 25, odds: '+200', payout: 'To Win: $50',
+    id: 'cf-g1-may18-floor-wemby-anchor',
+    slate: 'CF-G1', date: '2026-05-18',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G1 — Wemby + Castle Counting-Stat Floor (2-Leg)',
+    stake: 100, odds: '+125', payout: 'To Win: ~$125 (verify on DK)',
     legs: [
-      { pick:'OKC ML vs SAS (CF G1)', odds:'-180', confidence:'medium', status:null,
-        note:'Engine: OKC by 6 at home with 7-day rest edge. Phase 71 best-bet×ml = PLACE cell historically. R3 out-of-sample caveat applies.' },
-      { pick:'Wemby Over 9.5 rebounds (alt — OKC-SAS G1)', odds:'-200', confidence:'medium', status:null,
-        note:'Calibrated REB projection 12.0. Same leg as the floor parlay above. Wemby rebs irrespective of game outcome.' },
+      { pick:'Wembanyama Over 8.5 rebounds (alt — WCF G1)', odds:'-220', confidence:'floor', status:null,
+        note:'R2 rebound floor: 11.7 avg (excluding G1 short minutes / G6 blowout cap, all 12+). Line 8.5 = proj−3+, deep alt. OKC\'s drive-and-kick produces miss volume Wemby cleans up.' },
+      { pick:'Castle Over 14.5 points (alt — WCF G1)', odds:'-180', confidence:'floor', status:null,
+        note:'R2 scoring 18, 12, 17, 9, 17, 32 → 17.5 avg (excluding G3 SAS blowout-cap 9). Closeout G6 32pts shows the ceiling. Line 14.5 = proj−3, calibrated zone. Castle\'s role won\'t shrink in the bigger spotlight.' },
     ],
-    thesis:'OKC win + Wemby rebound floor — anti-correlated combination (Wemby rebs whether SAS wins or not). Math: 0.62 × 0.85 ≈ 53% combined at +200 = clean +EV. Stake just $25 — first CF for model + R3 out-of-sample variance.',
+    thesis:'SAS-side floor. Math: 0.85 × 0.80 ≈ 68% combined — honest "lean reliable" tier (not 80% lock). The SAS upset path runs through Wemby controlling the glass + Castle scoring 17+ as third creator. Both legs cleared 80%+ across R2 individually. Stake $100.',
     result: null,
   },
+  {
+    id: 'cf-g1-may18-trad-okc-chalk',
+    slate: 'CF-G1', date: '2026-05-18',
+    category: 'traditional', type: 'best-bet',
+    name: 'WCF G1 — OKC Chalk Stack (3-Leg)',
+    stake: 50, odds: '+285', payout: 'To Win: ~$142',
+    legs: [
+      { pick:'OKC ML vs SAS (WCF G1)', odds:'-260', confidence:'high', status:null,
+        note:'Defending champs at home, full rest. The 4-1 reg-season record SAS holds is a lurking variable but playoff intensity + 9-day prep > regular-season sample.' },
+      { pick:'SGA Over 27.5 points (WCF G1)', odds:'-130', confidence:'high', status:null,
+        note:'Closeout 35pts showed the ceiling. Home + Castle/Vassell as POA defenders (not Wemby blocking rim) = volume for SGA.' },
+      { pick:'OKC -6.5 (WCF G1)', odds:'-110', confidence:'medium', status:null,
+        note:'Spread risk is the audit concern (MAE 13pt). But OKC has covered -6+ vs SAS\'s talent tier all playoffs; expect a similar G1 statement game.' },
+    ],
+    thesis:'Three correlated OKC legs. Math: 0.72 × 0.65 × 0.55 ≈ 26% combined (Phase 71 calibrated, raw MC would say higher). At +285 payout, 26% true hit gives positive EV. Stake $50 (chaos/traditional discipline at CF G1 unknown-territory cap).',
+    result: null,
+  },
+
+  // Phase 72 deduplication: my "Bigs Rebounding Floor" + "OKC + Wemby
+  // Volume" parlays overlapped with the 3 cf-g1-may18-* parlays above
+  // (which author both an OKC-stars floor AND a SAS-side floor AND a
+  // 3-leg chalk stack). User's parlays are more comprehensive.
 ];
 
 // ============================================================
@@ -2560,18 +2600,19 @@ const BET_SLATES = {
     ],
   },
   'R2-G7': {
-    label: 'Round 2 — Game 7 (Played 5/17)',
+    label: 'Round 2 — Game 7 (Archive)',
     games: [
       { series:'DET-CLE', date:'2026-05-17', time:'TBD ET', venue:'Little Caesars Arena', context:'Series tied 3-3',
-        recap:'<strong style="color:var(--yellow)">⚠ G7 result pending in data:</strong> DET-CLE G7 was played 5/17. Final score not yet entered — need winner + scores to settle the slate and scaffold East CF. Phase 71 G7 framework was applied to all bets pre-game (50% winner accuracy in audit, 19.8pt MAE — all PLACE recommendations auto-downgraded to CAUTION). Floor parlays reduced to $50 stake.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> CLE 125-94 — CLE WINS SERIES 4-3, ADVANCES TO ECF VS NYK. Cavs road blowout in DET — Mitchell 26pts (15 in Q3 dagger run, only 31min, 0 TOs), Allen 23/7reb (knee held up), Merrill 23 off bench (5-8 3PT, bench game of the playoffs), Mobley 21/12reb (2blk/2stl), Harden 9/6ast (gravity-game). CLE shot 50.6% FG, 50-41 rebound edge, forced 14 DET TOs. <strong style="color:var(--red)">DET COLLAPSED at home:</strong> Cade career-low 13pts on 5-16 FG / 0-7 3PT (CLE schemed him off the floor). Harris 0-6 FG (5pts, biggest no-show). Duren 7/9 with 3 TOs vs Allen/Mobley. Jenkins led DET with 17 off bench but inefficient (4-12). <strong>MODEL: DET by 4 LOW; ACTUAL CLE by 31</strong> — wrong-winner G7 (third straight wrong call in this series). Phase 71 audit\'s G6/G7 50%-accuracy / 19.8pt-MAE banner held. ECF G1 is Tue 5/19 at MSG (CLE on 1 day rest vs NYK on 9 days rest).' },
     ],
   },
-  'R3-G1': {
+  'CF-G1': {
     label: 'Conference Finals — Game 1 (Live)',
     games: [
-      { series:'OKC-SAS', date:'2026-05-20', time:'TBD ET', venue:'Paycom Center', context:'WCF Series 0-0',
-        recap:'<strong style="color:var(--purple)">WCF G1 (~Tue 5/20):</strong> OKC (1) hosts SAS (2). OKC swept LAL 4-0 in R2 (7 days rest); SAS beat MIN 4-2 (3 days rest, closeout 5/15). Phase 71c engine: <strong>OKC 110, SAS 104 (OKC by 6)</strong>. HCA premium R3=1.5pts. Key matchups: Wemby vs Holmgren (rim-protection duel, both 9+ reb projections), SGA vs Castle (Castle\'s 6-6 size + dLEBRON 0.91 is the best perimeter defender SGA has faced in playoffs). <strong style="color:var(--yellow)">⚠ R3 out-of-sample caveat:</strong> our 68-game calibration audit was R1+R2 only. Every CF prediction is out-of-sample. Discipline: ml at REDUCED STAKE, spread CAUTION (audit margin MAE 13pt), no props on stars (SKIP cell), floor parlays at $50 stake on deep alt-line rebounds (70%+ calibrated zone).' },
-      // East CF G1 placeholder — depends on DET-CLE G7 winner (NYK vs DET or CLE)
+      { series:'OKC-SAS', date:'2026-05-18', time:'8:30 PM ET', venue:'Paycom Center', context:'WCF G1',
+        recap:'<strong style="color:var(--purple)">WCF G1 Setup (Mon 5/18):</strong> SAS @ OKC. OKC #1 seed (64-18) and defending champs vs SAS #2 seed (powered by Wemby/Castle/Fox). OKC swept LAL 4-0 in R2; SAS won 4-2 over MIN with G6 blowout. OKC rested 7 days; SAS rested 3 days. <strong>Regular season:</strong> SAS went 4-1 vs OKC (one of few teams to dominate the Thunder). DraftKings: OKC -6.5 / total 219.5. Engine baseline: OKC -3 to -5 (talent + HCA), but the SAS-OKC season series and Wemby tail-event ceiling argue for tighter line. WCF G1 historically: home team ~68% but tonight could be a Wemby-vs-Holmgren showcase.' },
+      { series:'NYK-CLE', date:'2026-05-19', time:'8:00 PM ET', venue:'Madison Square Garden', context:'ECF G1',
+        recap:'<strong style="color:var(--purple)">ECF G1 Preview (Tue 5/19):</strong> CLE @ NYK. NYK #3 seed swept PHI 4-0, rested 9 days. CLE #4 seed won DET-CLE in 7, traveled back from a road blowout — 1 day rest. <strong>The rest gap (9 days vs 1 day) is the dominant variable.</strong> NYK has the layoff-rust risk (longer breaks historically depress Q1 efficiency by 4-6 pts); CLE has the legs-tired risk (Mitchell 31min G7, Allen 28min on knee). KAT-vs-Mobley + Brunson-vs-Mitchell are the marquee matchups. Lines TBD morning of game.' },
     ],
   },
 };

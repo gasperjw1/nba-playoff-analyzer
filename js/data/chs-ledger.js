@@ -525,5 +525,30 @@ const CHS_LEDGER = [
       "awayScore": 104,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-05-18",
+    "series": "DET-CLE",
+    "game": 7,
+    "retroactive": false,
+    "actual": {
+      "winner": "CLE",
+      "margin": 31,
+      "homeScore": 94,
+      "awayScore": 125
+    },
+    "mainPred": {
+      "winner": "DET",
+      "margin": 4,
+      "homeScore": 108,
+      "awayScore": 104
+    },
+    "chsPred": {
+      "winner": "DET",
+      "margin": 4,
+      "homeScore": 108,
+      "awayScore": 104,
+      "marginDeltaVsMain": 0
+    }
   }
 ];
