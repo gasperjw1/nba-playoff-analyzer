@@ -2077,6 +2077,108 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 25d: Series Analysis page render sweep (Phase 73c)
+  // ------------------------------------------------------------
+  // After Phase 72 CF setup, the Series Analysis page was crashing on
+  // CF series because:
+  //   1. series.externalFactors was undefined → .map() threw
+  //   2. series.modelLessons was undefined → .map() threw
+  //   3. team.synergy was undefined → .map() threw
+  //   4. series.coaching.bestLineups was undefined → .home access threw
+  //   5. s.games[gIdx] was undefined when game-tab > games-played
+  //      (e.g., OKC swept LAL 4-0 → gIdx 4,5,6 out of bounds)
+  // This sweep renders ALL series × ALL game tabs and refuses any throw.
+  // ============================================================
+  console.log('\nTEST 25d: Series Analysis render sweep (all series × all tabs)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const stubNodes = {};
+    const stubDoc = {
+      getElementById: (id) => { stubNodes[id] = stubNodes[id] || { id, innerHTML: '', style: {}, classList: { add:()=>{}, remove:()=>{} } }; return stubNodes[id]; },
+      querySelectorAll: () => [], querySelector: () => ({ classList: { add:()=>{}, remove:()=>{} }, style: {}, textContent: '' }),
+      createElement: () => ({}), body: { appendChild:()=>{} }, head: { appendChild:()=>{} }, addEventListener: () => {},
+    };
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+      document: stubDoc, window: { addEventListener:()=>{} }, localStorage: { getItem:()=>null, setItem:()=>{} },
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/boxscores.js','js/data/historical.js',
+     'js/data/bets-data.js','js/data/news.js','js/data/chs-ledger.js','js/utils.js','js/state.js','js/validators.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js','js/engine/simulation.js','js/engine/graduation.js',
+     'js/engine/auto-resolve.js','js/engine/projections-chs.js','js/engine/player-tendencies.js',
+     'js/engine/monte-carlo.js','js/engine/parlay-builder.js','js/engine/edge-detector.js',
+     'js/engine/risk-controls.js','js/engine/risk-analytics.js','js/ui/components.js','js/ui/modals.js',
+     'js/ui/series-renderer.js','js/ui/learnings.js','js/ui/definitions.js','js/ui/bet-card.js',
+     'js/ui/bets.js','js/ui/home.js','js/ui/chs-lab.js','js/ui/navigation.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+    ctx.initScenarioState();
+
+    // Sweep ALL series × ALL game tabs.
+    const tabs = ['overview', 'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'stats'];
+    let okCount = 0;
+    const failures = [];
+    for (let i = 0; i < ctx.SERIES_DATA.length; i++) {
+      ctx.currentSeriesIdx = i;
+      const s = ctx.SERIES_DATA[i];
+      ctx.currentPlayoffRound = s.round || 'R1';
+      ctx.currentConf = s.conf;
+      tabs.forEach(tab => {
+        ctx.currentGameTab = tab;
+        try { ctx.renderSeries(); okCount++; }
+        catch (e) { failures.push(`${s.id} tab=${tab}: ${e.message}`); }
+      });
+    }
+    assert(failures.length === 0,
+      `All series × game-tab combos render without throwing (${okCount} OK, ${failures.length} failed: ${failures.join('; ')})`);
+
+    // Specific regression: CF scaffolds (no externalFactors/modelLessons)
+    const cfSeries = ctx.SERIES_DATA.filter(s => s.round === 'CF' && !s.tbdOpponent);
+    cfSeries.forEach(s => {
+      const idx = ctx.SERIES_DATA.indexOf(s);
+      ctx.currentSeriesIdx = idx;
+      ctx.currentGameTab = 'overview';
+      let didThrow = false;
+      try { ctx.renderSeries(); } catch (e) { didThrow = true; }
+      assert(!didThrow, `CF series ${s.id} overview tab renders without throw`);
+    });
+
+    // Specific regression: G5+ tabs on sweep series (OKC-LAL 4-0)
+    const okcLal = ctx.SERIES_DATA.find(s => s.id === 'OKC-LAL');
+    if (okcLal) {
+      ctx.currentSeriesIdx = ctx.SERIES_DATA.indexOf(okcLal);
+      ['g5', 'g6', 'g7'].forEach(tab => {
+        ctx.currentGameTab = tab;
+        let didThrow = false;
+        try { ctx.renderSeries(); } catch (e) { didThrow = true; }
+        assert(!didThrow, `OKC-LAL ${tab} (out-of-bounds) renders gracefully without throw`);
+      });
+    }
+
+    // Round-switch test: simulate Bets → Series → switchPlayoffRound
+    ctx.switchPage('bets');
+    let switchOk = true;
+    try { ctx.switchPage('series'); } catch (e) { switchOk = false; }
+    assert(switchOk, 'Bets → Series page navigation does not throw');
+
+    // After switch to CF, series tabs should reflect CF series only
+    ctx.switchPlayoffRound('CF');
+    const tabHtml = stubNodes.tabs.innerHTML;
+    assert(tabHtml.includes('OKC') && tabHtml.includes('SAS') && !tabHtml.includes('LAL') && !tabHtml.includes('MIN'),
+      `CF round tab shows CF series (OKC vs SAS), not R2 (OKC-LAL/SAS-MIN)`);
+
+    // Switch back to R2 and confirm R2 series appear
+    ctx.switchPlayoffRound('R2');
+    const tabHtmlR2 = stubNodes.tabs.innerHTML;
+    assert(tabHtmlR2.includes('OKC') && tabHtmlR2.includes('LAL'),
+      `R2 round tab shows R2 series (OKC-LAL visible)`);
+  }
+
+  // ============================================================
   // TEST 26: Edge detector Phase 71 guardrails
   //   - Un-projected stat hard CAUTION (threes/STL/BLK)
   //   - G6/G7 elimination cap downgrades PLACE → CAUTION
