@@ -2077,6 +2077,75 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 25e: State sync — currentSeriesIdx tracks (round, conf)
+  // ------------------------------------------------------------
+  // Phase 73d bug: app.js boot set currentSeriesIdx to the first CF
+  // series (NYK-CLE, East) but currentConf defaulted to West → the
+  // Series Analysis tab showed the West tab listing OKC-SAS but the
+  // content rendered NYK-CLE (idx 12). Same desync on Bets-page
+  // round toggle buttons (inline currentPlayoffRound='R2' assignment
+  // didn't re-sync currentSeriesIdx).
+  // ============================================================
+  console.log('\nTEST 25e: State sync — series cursor tracks (round, conf)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+
+    // 25e-a: syncSeriesCursorToRound respects current conf
+    ctx.currentPlayoffRound = 'R1';
+    ctx.currentConf = 'East';
+    ctx.currentSeriesIdx = 0;  // West-conference series
+    ctx.syncSeriesCursorToRound('CF');
+    assert(ctx.currentPlayoffRound === 'CF', `round updated to CF`);
+    const s = ctx.SERIES_DATA[ctx.currentSeriesIdx];
+    assert(s.round === 'CF' && s.conf === 'East',
+      `idx ${ctx.currentSeriesIdx} (${s.id}) matches round=CF conf=East`);
+
+    // 25e-b: falls back to other conf when no series in current conf
+    ctx.currentPlayoffRound = 'R1';
+    ctx.currentConf = 'West';
+    ctx.syncSeriesCursorToRound('R1');
+    let s2 = ctx.SERIES_DATA[ctx.currentSeriesIdx];
+    assert(s2.round === 'R1' && s2.conf === 'West',
+      `R1 + West match found (${s2.id})`);
+
+    // 25e-c: when conf differs, syncSeriesCursorToRound finds a match
+    ctx.currentConf = 'East';
+    ctx.syncSeriesCursorToRound('R2');
+    let s3 = ctx.SERIES_DATA[ctx.currentSeriesIdx];
+    assert(s3.round === 'R2' && s3.conf === 'East',
+      `R2 + East: ${s3.id} (idx ${ctx.currentSeriesIdx})`);
+
+    // 25e-d: TBD scaffolds are skipped
+    // (NYK-TBD was renamed to NYK-CLE with full roster in Phase 72b;
+    //  so this check just confirms the !tbdOpponent filter exists)
+    ctx.currentPlayoffRound = 'CF';
+    ctx.currentConf = 'East';
+    ctx.syncSeriesCursorToRound('CF');
+    let s4 = ctx.SERIES_DATA[ctx.currentSeriesIdx];
+    assert(!s4.tbdOpponent,
+      `CF cursor lands on a non-TBD series (${s4.id})`);
+
+    // 25e-e: after boot-like sync, round/conf/idx are mutually consistent
+    ctx.currentPlayoffRound = 'CF';
+    ctx.currentConf = 'West';
+    ctx.syncSeriesCursorToRound(ctx.currentPlayoffRound);
+    const final = ctx.SERIES_DATA[ctx.currentSeriesIdx];
+    assert(final.round === ctx.currentPlayoffRound && final.conf === ctx.currentConf,
+      `Boot consistency: idx series (${final.id}) matches round=${ctx.currentPlayoffRound} conf=${ctx.currentConf}`);
+  }
+
+  // ============================================================
   // TEST 25d: Series Analysis page render sweep (Phase 73c)
   // ------------------------------------------------------------
   // After Phase 72 CF setup, the Series Analysis page was crashing on

@@ -47,10 +47,11 @@ if (typeof reconcileAllBets === 'function' && typeof BETS !== 'undefined' && typ
 loadState();
 initScenarioState();
 
-// Default the series cursor to the first series in the active round so that
-// when the user navigates Series Analysis later, they land somewhere sensible.
-const firstRoundIdx = SERIES_DATA.findIndex(s => s.round === currentPlayoffRound);
-if (firstRoundIdx >= 0) currentSeriesIdx = firstRoundIdx;
+// Phase 73d: sync the series cursor with currentPlayoffRound + currentConf
+// so that when the user navigates Series Analysis later, they land on a
+// series matching BOTH. The helper lives in state.js so Bets-page round
+// toggles can reuse it.
+syncSeriesCursorToRound(currentPlayoffRound);
 
 // Render the landing page first; tabs are drawn lazily on series-tab click.
 updateBetsNavLabel();
