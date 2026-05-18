@@ -104,7 +104,7 @@ function renderSeries() {
       <!-- External Factors -->
       <div class="ext-factors">
         <div class="ext-factors-title">External & Off-Court Factors</div>
-        ${s.externalFactors.map(f => `<div class="ext-factor-item"><div class="ext-impact ${f.impact>0?'positive':f.impact<0?'negative':'neutral'}">${f.impact>0?'+':''}${f.impact} ${f.team}</div><div class="ext-desc"><strong>${f.player||f.team+' Team'}:</strong> ${f.desc}${f.evidence?`<details style="margin-top:6px"><summary style="font-size:11px;color:var(--purple);cursor:pointer;font-weight:600">View Evidence</summary><div style="margin-top:6px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:11px;line-height:1.6;color:var(--text-dim)">${f.evidence}${f.verdict?` <span class="ev-verdict ${f.verdict==='verified'?'ev-verified':f.verdict==='partial'?'ev-partial':'ev-uncertain'}">${f.verdict.toUpperCase()}</span>`:''}</div></details>`:''}</div></div>`).join('')}
+        ${(s.externalFactors || []).map(f => `<div class="ext-factor-item"><div class="ext-impact ${f.impact>0?'positive':f.impact<0?'negative':'neutral'}">${f.impact>0?'+':''}${f.impact} ${f.team}</div><div class="ext-desc"><strong>${f.player||f.team+' Team'}:</strong> ${f.desc}${f.evidence?`<details style="margin-top:6px"><summary style="font-size:11px;color:var(--purple);cursor:pointer;font-weight:600">View Evidence</summary><div style="margin-top:6px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:11px;line-height:1.6;color:var(--text-dim)">${f.evidence}${f.verdict?` <span class="ev-verdict ${f.verdict==='verified'?'ev-verified':f.verdict==='partial'?'ev-partial':'ev-uncertain'}">${f.verdict.toUpperCase()}</span>`:''}</div></details>`:''}</div></div>`).join('')}
         <div class="add-factor-btn" onclick="openFactorModal()">+ Add External Factor</div>
       </div>
 
@@ -162,7 +162,21 @@ function renderSeries() {
     const gIdx = parseInt(currentGameTab.replace('g','')) - 1;
     const gameData = s.games[gIdx];
     const isHome = gIdx<2||gIdx===4||gIdx===6;
-    
+
+    // Phase 73c hotfix: game-tab clicked on a series that ended before
+    // this game. e.g. OKC swept LAL 4-0 → gIdx 4,5,6 are out-of-bounds
+    // → gameData undefined → renderer crashed on gameData.prediction.
+    // Render a graceful placeholder and let normal flow emit it.
+    if (!gameData) {
+      tabContent = `<div style="max-width:760px;margin:32px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;">
+        <div style="font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-bottom:8px;">G${gIdx + 1} not played</div>
+        <h3 style="margin:0 0 8px;color:#fff;">Series ended before Game ${gIdx + 1}</h3>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;">
+          ${s.homeTeam.abbr} vs ${s.awayTeam.abbr} ended in ${s.games.filter(g => g.winner).length} games.
+        </p>
+      </div>`;
+    } else {
+
     if (gIdx === 0) {
       // Game 1
       tabContent = `
@@ -173,7 +187,7 @@ function renderSeries() {
         </div>` : ''}
         ${s.modelLessons ? `<div class="lessons-banner">
           <div class="lessons-title">Model Lessons from Game 1</div>
-          ${s.modelLessons.map(l => `<div class="lesson-item"><span class="lesson-label ${l.type}">${l.type.toUpperCase()}</span>${l.lesson}</div>`).join('')}
+          ${(s.modelLessons || []).map(l => `<div class="lesson-item"><span class="lesson-label ${l.type}">${l.type.toUpperCase()}</span>${l.lesson}</div>`).join('')}
         </div>` : ''}
         ${renderBoxScore(s, 0)}
         ${renderCHSScenarios(s, 0)}
@@ -323,6 +337,7 @@ function renderSeries() {
         `;
       }
     }
+    }  // close Phase 73c hotfix `else { if gameData defined ...`
   }
 
   document.getElementById('main').innerHTML = `
@@ -384,7 +399,7 @@ function renderHistoricalImpact(team, seriesId) {
 
 function renderSynergy(team) {
   return `<div class="synergy-section"><div class="synergy-title">${team.name} — Lineup Synergy</div>
-  ${team.synergy.map(s=>`<div class="lineup-row"><div class="lineup-players">${s.players.map(p=>`<span class="lineup-player-chip">${p}</span>`).join('')}</div><div class="synergy-score"><span class="rating-pill ${getRatingClass(s.score)}">${s.score}</span></div><div class="synergy-note">${s.note}</div></div>`).join('')}</div>`;
+  ${(team.synergy || []).map(s=>`<div class="lineup-row"><div class="lineup-players">${s.players.map(p=>`<span class="lineup-player-chip">${p}</span>`).join('')}</div><div class="synergy-score"><span class="rating-pill ${getRatingClass(s.score)}">${s.score}</span></div><div class="synergy-note">${s.note}</div></div>`).join('')}</div>`;
 }
 
 // SPM Chemistry Rendering
@@ -531,15 +546,17 @@ function renderCoaching(series) {
       ${renderCoachCard(c.away, series.awayTeam)}
     </div>
 
+    ${c.bestLineups ? `
     <div class="lineup-data-section">
       <div class="lineup-data-title">Top 5-Man Lineups</div>
       ${renderLineupRow(c.bestLineups.home, series.homeTeam.abbr)}
       ${renderLineupRow(c.bestLineups.away, series.awayTeam.abbr)}
-    </div>
+    </div>` : ''}
 
+    ${c.roleChanges ? `
     <div class="role-change-section">
       <div class="role-change-title">Playoff Role Change Predictions</div>
       ${c.roleChanges.map(rc => renderRoleChange(rc)).join('')}
-    </div>
+    </div>` : ''}
   </div>`;
 }
