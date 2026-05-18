@@ -44,14 +44,14 @@ function renderSeries() {
   // Compact header with win prob inline
   const headerHtml = `<div class="series-header-compact">
     <div class="team-vs">
-      <div class="team-block"><div class="seed">#${s.homeTeam.seed}</div><div class="name" style="color:${s.homeTeam.color2}">${s.homeTeam.name}</div><div class="record">${s.homeTeam.record}</div></div>
+      <div class="team-block"><div class="seed">#${s.homeTeam.seed}</div><div class="name" style="color:${getDisplayColor(s.homeTeam)}">${s.homeTeam.name}</div><div class="record">${s.homeTeam.record}</div></div>
       <div class="prob-compact">
         <div class="prob-num" style="color:${prob.home>=50?'var(--green)':'var(--red)'}">${prob.home}%</div>
         <div class="prob-label">Win Prob</div>
         <div style="font-size:11px;color:var(--text-dim);margin-top:2px">${hr} vs ${ar}</div>
         <div style="font-size:11px;margin-top:2px;font-weight:700">${score.home} — ${score.away}</div>
       </div>
-      <div class="team-block"><div class="seed">#${s.awayTeam.seed}</div><div class="name" style="color:${s.awayTeam.color2}">${s.awayTeam.name}</div><div class="record">${s.awayTeam.record}</div></div>
+      <div class="team-block"><div class="seed">#${s.awayTeam.seed}</div><div class="name" style="color:${getDisplayColor(s.awayTeam)}">${s.awayTeam.name}</div><div class="record">${s.awayTeam.record}</div></div>
     </div>
   </div>`;
 
@@ -253,6 +253,28 @@ function renderSeries() {
           ${renderAdvancedComparison(s, gIdx)}
           ${renderFatigueMonitor(s)}
         `;
+      } else if (!gameData.prediction && !gameData.winner) {
+        // Phase 73e: future game with no authored prediction yet.
+        // Established daily routine: predictions are written the morning
+        // of each game. Don't render a stale engine projection as if it
+        // were a real prediction. Show a placeholder instead.
+        tabContent = `<div style="max-width:760px;margin:32px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-bottom:8px;">G${gNum} · ${actualVenue.city}</div>
+          <h3 style="margin:0 0 8px;color:#fff;">Game ${gNum} not yet on slate</h3>
+          <p style="color:var(--text-dim);font-size:13px;line-height:1.6;max-width:560px;margin:0 auto 16px;">
+            Predictions for Game ${gNum} are authored the morning of the game. ${seriesStr}.
+            Once the daily task runs, the prediction will appear here with spread, total, key matchups, and player projections.
+          </p>
+          <details style="margin-top:12px;font-size:11px;color:var(--text-dim);">
+            <summary style="cursor:pointer;color:var(--accent);">View raw engine projection (not the official pick)</summary>
+            <div style="margin-top:10px;padding:10px;background:rgba(0,0,0,0.2);border-radius:6px;text-align:left;">
+              <strong style="color:var(--text);">Engine baseline only:</strong> ${(function() {
+                try { const p = calcGameProjection(s, s.id, gNum); return p ? `${s.homeTeam.abbr} ${p.homeScore} — ${s.awayTeam.abbr} ${p.awayScore} (${p.favTeam} by ${p.absMargin}). ${p.eliminationGame ? 'Elimination-game variance applied (1.4× wider bands).' : ''}` : 'unavailable'; }
+                catch (e) { return 'engine unavailable'; }
+              })()}
+            </div>
+          </details>
+        </div>`;
       } else {
         // No top-level s.gameN — but s.games[gIdx].prediction may still exist (R2 G3+).
         // When the hardcoded prediction is present, drive the headline from it so the

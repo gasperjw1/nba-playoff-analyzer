@@ -42,7 +42,7 @@ function renderScenarioBuilder(s) {
     <div class="scenario-subtitle">Toggle players IN/OUT in the roster tables below to see how win probabilities change in real-time</div>
     <div class="scenario-comparison">
       <div class="scenario-col">
-        <div class="team-name" style="color:${s.homeTeam.color2}">${s.homeTeam.name}</div>
+        <div class="team-name" style="color:${getDisplayColor(s.homeTeam)}">${s.homeTeam.name}</div>
         <div class="label">Win Probability</div>
         <div class="prob" style="color:${homeScenPct>=50?'var(--green)':'var(--red)'}">${homeScenPct}%</div>
         <div class="spread">Rating: ${scenProb.homeRating}</div>
@@ -50,7 +50,7 @@ function renderScenarioBuilder(s) {
       </div>
       <div class="scenario-vs">VS</div>
       <div class="scenario-col">
-        <div class="team-name" style="color:${s.awayTeam.color2}">${s.awayTeam.name}</div>
+        <div class="team-name" style="color:${getDisplayColor(s.awayTeam)}">${s.awayTeam.name}</div>
         <div class="label">Win Probability</div>
         <div class="prob" style="color:${awayScenPct>=50?'var(--green)':'var(--red)'}">${awayScenPct}%</div>
         <div class="spread">Rating: ${scenProb.awayRating}</div>
