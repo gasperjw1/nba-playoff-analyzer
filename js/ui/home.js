@@ -61,6 +61,11 @@ function homeGamesOn(date) {
       if (!slateGame) return;
       const series = homeFindSeries(seriesKey);
       if (!series) return;
+      // CF scaffolds with tbdOpponent or awayTeam.tbd have empty players[]
+      // arrays — the engine (calcBlendedProjection in homeRenderGameCard)
+      // will crash if we let them through. Series Analysis renderer has
+      // the same guard. Skip cleanly so the card just doesn't render.
+      if (series.tbdOpponent || (series.awayTeam && series.awayTeam.tbd)) return;
       // gameNum = the game number for this slate. R2-G1 → 1, R2-G2 → 2, etc.
       const gameNum = parseInt((slate.match(/G(\d)/) || [, '1'])[1], 10);
       // Skip if that game has already been played
@@ -220,6 +225,10 @@ function homeRenderBetsForDate(date) {
   const groupsHtml = Object.entries(bySeries).map(([seriesKey, list]) => {
     const series = homeFindSeries(seriesKey);
     if (!series) return '';
+    // CF scaffolds with tbdOpponent have empty players[] — calcBlendedProjection
+    // would crash. Skip these bets cleanly; the CF tab UI will surface them
+    // once full rosters land.
+    if (series.tbdOpponent || (series.awayTeam && series.awayTeam.tbd)) return '';
     const dml = (h, a) => {
       const blend = calcBlendedProjection(series, series.id, list[0].game);
       return blend.blendedWinner;
