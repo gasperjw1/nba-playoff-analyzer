@@ -754,8 +754,43 @@ function calcGameProjection(series, seriesId, gameNum) {
   // PHASE 37: Scoring Range Bands — project realistic score ranges, not just point estimates.
   // Playoff games have ~12% scoring variance from the mean. Apply higher variance for
   // series with extreme actual scoring (defensive grinds or shootouts).
+  //
+  // PHASE 73 (post-G7 audit): elimination games (G6, G7) get a variance
+  // amplifier. Calibration audit found G6 margin MAE 19.8pt vs overall
+  // 12.94pt — elimination contexts produce ~1.5x wider outcome
+  // distributions. The DET-CLE G7 miss (predicted DET +4, actual CLE +31)
+  // would have been ~1σ inside the widened band; was ~3σ inside the
+  // un-widened band. Doesn't shift the central estimate, just acknowledges
+  // wider tails honestly.
   const avgScore = (homeScore + awayScore) / 2;
-  const variancePct = 0.12; // ~12% variance produces realistic bands
+  let variancePct = 0.12; // ~12% variance produces realistic bands
+  const eliminationGame = (gameNum === 6 || gameNum === 7);
+  if (eliminationGame) {
+    const elimMult = (typeof ELIMINATION_VARIANCE_MULT !== 'undefined') ? ELIMINATION_VARIANCE_MULT : 1.4;
+    variancePct *= elimMult;
+  }
+
+  // PHASE 73b: Wrong-direction streak detector. If the engine has been
+  // wrong-winner on 2+ consecutive prior games of THIS series, the next
+  // prediction widens its variance further AND compresses its win-prob
+  // toward 50%. DET-CLE was 0-3 on consecutive prediction-flips before
+  // G7; the model never recalibrated. This catches that pattern.
+  let wrongStreak = 0;
+  if (series.games && Array.isArray(series.games) && gameNum > 1) {
+    for (let i = gameNum - 2; i >= 0; i--) {
+      const g = series.games[i];
+      if (!g || !g.winner || !g.prediction) break;
+      const predictedHome = g.prediction.homeWin === true ||
+                            (g.prediction.margin > 0 && g.prediction.homeScore > g.prediction.awayScore);
+      const actualHome = g.winner === series.homeTeam.abbr;
+      if (predictedHome !== actualHome) wrongStreak++;
+      else break;
+    }
+  }
+  if (wrongStreak >= 2) {
+    // Each additional wrong-direction game adds 15% to variance
+    variancePct *= (1 + 0.15 * Math.min(wrongStreak, 4));
+  }
   const homeScoreLow = Math.round(homeScore * (1 - variancePct));
   const homeScoreHigh = Math.round(homeScore * (1 + variancePct));
   const awayScoreLow = Math.round(awayScore * (1 - variancePct));
@@ -777,6 +812,10 @@ function calcGameProjection(series, seriesId, gameNum) {
       : `${favTeam.abbr} by ${lowMargin}-${highMargin}`,
     talentMultiplier: +talentMultiplier.toFixed(2),
     depthEdge: +depthEdge.toFixed(1),
+    // Phase 73 variance flags — surface to MC sim + UI
+    eliminationGame,
+    wrongStreak,
+    variancePct: +variancePct.toFixed(3),
     // Phase 42: Lineage — full audit trail of every factor that shaped this margin
     lineage: lineage
   };

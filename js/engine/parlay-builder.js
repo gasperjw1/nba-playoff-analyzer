@@ -182,15 +182,17 @@ function safeLinesForAllPlayers(simResult, opts) {
 // Converts American odds to implied probability and decimal multiplier.
 //   +150 → impliedP=0.40, decMult=2.50 (bet $100, win $150 + stake back)
 //   -200 → impliedP=0.667, decMult=1.50
+// Phase 73 hygiene: aligned with edge-detector's defensive n===0 guard.
+// Pre-fix this returned NaN/Infinity on odds=0; now returns null.
 function _americanToImplied(odds) {
   const n = Number(odds);
-  if (!isFinite(n)) return null;
+  if (!isFinite(n) || n === 0) return null;
   if (n > 0) return 100 / (n + 100);
   return -n / (-n + 100);
 }
 function _americanToMult(odds) {
   const n = Number(odds);
-  if (!isFinite(n)) return null;
+  if (!isFinite(n) || n === 0) return null;
   if (n > 0) return 1 + n / 100;
   return 1 + 100 / -n;
 }

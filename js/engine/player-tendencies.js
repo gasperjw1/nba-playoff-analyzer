@@ -1,6 +1,14 @@
 // ============================================================
 // PLAYER TENDENCIES ENGINE — Phase 60 (May 14, 2026)
 // ============================================================
+//
+// STATUS (post-Phase 73 hygiene audit, May 18 2026): functions are
+// defined + tested but NOT YET wired into production. MC sim reads
+// `player.techRisk` as a static field instead of calling
+// calcEjectionRisk() dynamically. Future-wiring is straightforward
+// but deferred until R3 evidence justifies a model behavior change
+// mid-CF. Keep module + tests in case we wire it.
+//
 // Beyond the bare "is the player healthy" injury flag, three behavioral
 // signals matter for predictions:
 //
