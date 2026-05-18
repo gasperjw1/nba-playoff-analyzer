@@ -18,8 +18,8 @@ function renderBetsPage(el) {
     <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Round 1 (Archived)</h2>
     <p style="text-align:center;color:#aaa;font-size:13px;margin-bottom:8px;">R1 Final Record: ML 25/42 (59.5%) | G1: 7/8 (88%) | G4: 3/4 (75%) | G5: 6/7 (86%) | G6: 1/3 (33%) | P&amp;L: -$698.47</p>
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
-      <button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--card);color:#fff;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:13px;">R2 Archive &rarr;</button>
-      <button onclick="currentPlayoffRound='CF';renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Conference Finals (Live) &rarr;</button>
+      <button onclick="syncSeriesCursorToRound('R2');renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--card);color:#fff;border:1px solid var(--border);cursor:pointer;font-weight:700;font-size:13px;">R2 Archive &rarr;</button>
+      <button onclick="syncSeriesCursorToRound('CF');renderBetsPage(document.getElementById('main'))" style="padding:8px 20px;border-radius:6px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:13px;">Conference Finals (Live) &rarr;</button>
     </div>
 
     <!-- BET TABS -->
@@ -2534,8 +2534,8 @@ function renderCFBets(el) {
 
     <!-- ROUND TOGGLE -->
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
-      <button onclick="currentPlayoffRound='R1';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
-      <button onclick="currentPlayoffRound='R2';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;cursor:pointer;font-size:12px;font-weight:600;">R2 Archive</button>
+      <button onclick="syncSeriesCursorToRound('R1');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
+      <button onclick="syncSeriesCursorToRound('R2');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;cursor:pointer;font-size:12px;font-weight:600;">R2 Archive</button>
       <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);border-left:none;cursor:default;font-size:12px;font-weight:700;">Conference Finals</button>
     </div>
 
@@ -2922,9 +2922,9 @@ function renderR2Bets(el) {
 
     <!-- ROUND TOGGLE -->
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
-      <button onclick="currentPlayoffRound='R1';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
+      <button onclick="syncSeriesCursorToRound('R1');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
       <button disabled style="padding:7px 18px;border-radius:0;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:default;font-size:12px;font-weight:700;">Round 2</button>
-      <button onclick="currentPlayoffRound='CF';renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">CF (Live)</button>
+      <button onclick="syncSeriesCursorToRound('CF');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">CF (Live)</button>
     </div>
 
     <!-- R2 BET TABS — Featured Parlays + one per series -->

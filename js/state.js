@@ -11,6 +11,36 @@ let currentPlayoffRound = 'CF';       // Active playoff round: 'R1' | 'R2' | 'CF
 let currentGameTab = 'overview';
 let currentRosterTeam = 'home';
 
+// Phase 73d (May 19, 2026): syncSeriesCursorToRound — atomic helper
+// that keeps (currentPlayoffRound, currentConf, currentSeriesIdx) in
+// sync whenever a caller changes the round. Prior bug: Bets-page
+// "R2 Archive" button set currentPlayoffRound='R2' inline but left
+// currentSeriesIdx pointing at a CF series → Series Analysis tab
+// then showed OKC-SAS (idx 13) under R2 round-tab styling.
+//
+// Behavior:
+//   - Tries to match round + current conf
+//   - Falls back to any conf for that round (syncs conf to match)
+//   - Skips TBD scaffolds
+function syncSeriesCursorToRound(round) {
+  if (typeof SERIES_DATA === 'undefined') return;
+  if (round) currentPlayoffRound = round;
+  let idx = SERIES_DATA.findIndex(s =>
+    (s.round || 'R1') === currentPlayoffRound &&
+    s.conf === currentConf &&
+    !s.tbdOpponent
+  );
+  if (idx >= 0) { currentSeriesIdx = idx; return; }
+  idx = SERIES_DATA.findIndex(s =>
+    (s.round || 'R1') === currentPlayoffRound &&
+    !s.tbdOpponent
+  );
+  if (idx >= 0) {
+    currentSeriesIdx = idx;
+    currentConf = SERIES_DATA[idx].conf;
+  }
+}
+
 // --- Scenario Builder State ---
 const scenarioState = {};
 
