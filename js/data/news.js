@@ -15,6 +15,38 @@
 
 const NEWS = [
   {
+    date: '2026-05-18',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF set: OKC (1) vs SAS (2), G1 ~Tue May 20',
+    body: 'OKC swept LAL 4-0 in R2 (~7 days rest going into CF); SAS beat MIN 4-2, closeout 5/15 (3 days rest). Phase 71c engine: OKC by 6 in G1 at Paycom Center. SGA vs Wemby is the headline matchup — but Holmgren vs Wemby is the structural duel (both 8+ blk per series, both 12+ reb projection). HCA premium R3=1.5pts. Rest edge MASSIVE: OKC fresh vs SAS coming off 6-game closeout. Series schedule TBD.',
+    source: 'NBA / Phase 71c engine output',
+  },
+  {
+    date: '2026-05-18',
+    severity: 'info',
+    series: null,
+    headline: 'East CF on hold: DET-CLE G7 result pending',
+    body: 'DET-CLE G7 was played 5/17 at LCA but result is not yet entered in series-data.js. NYK awaits East opponent. Phase 71 G7 framework was applied to all G7 bets (50% winner accuracy in audit, 19.8pt margin MAE — every PLACE recommendation auto-downgraded to CAUTION). Floor parlays at half stake. Once G7 result is entered, we can scaffold the East CF (NYK vs DET or CLE) and add R3-G1 East slate.',
+    source: 'manual entry / system note',
+  },
+  {
+    date: '2026-05-18',
+    severity: 'info',
+    series: 'OKC-SAS',
+    headline: 'CF framework discipline: small-sample caveat',
+    body: 'Phase 71 audit was based entirely on R1+R2 (68 games). The model has ZERO calibrated R3+ data. Every CF prediction is out-of-sample. Daily process update: stakes reduced 50% for first 5 R3 games, no "high" confidence on stars (audit found tier-residual bias is worse against playoff-defense-intensified opponents), audit re-run scheduled after every 3 resolved CF games to check for bias drift.',
+    source: 'CALIBRATION_AUDIT.md / Phase 71 discipline',
+  },
+  {
+    date: '2026-05-15',
+    severity: 'major',
+    series: 'SAS-MIN',
+    headline: 'SAS WINS SERIES 4-2 — advances to WCF vs OKC',
+    body: 'SAS 139-109 closeout in G6 at MIN. Castle MASTERPIECE 32/11/6ast (11-16 FG, 5-7 3PT). Wemby 19/6/6ast/3blk in 27min (capped by blowout). Fox 21/9ast. All five SAS starters in double figures. SAS led wire-to-wire by as many as 34 (20-0 SAS run early Q2). MIN: Edwards 24 on 9-26 FG (volume came, efficiency didn\'t — Castle perimeter D). Randle + Gobert COMBINED 3pts on 1-12 FG (catastrophic). Home-team-wins-every-game pattern broke in elimination spot. Model: predicted MIN by 2 (LOW), actual SAS by 30 — WRONG WINNER, +32 margin miss.',
+    source: 'ESPN / Basketball Reference',
+  },
+  {
     date: '2026-05-07',
     severity: 'major',
     series: 'NYK-PHI',

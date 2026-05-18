@@ -1529,6 +1529,23 @@ const BETS = [
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
+
+  // Phase 72 addition: Holmgren rebound prop (complements the
+  // existing cf-g1-okc-sas-wemby-reb entry above). The two REB props
+  // are the floor parlay's source legs — see FEATURED_PARLAYS.
+  {
+    id: 'cf-g1-okc-sas-holmgren-reb',
+    slate: 'CF-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'prop', pick: 'Holmgren Over 8.5 rebounds', odds: '-125',
+    facts: [
+      {label:'R2 vs LAL',value:'12, 8, 8, 12 → 10.0 avg'},
+      {label:'Engine (Phase 71c)',value:'9.2 reb'},
+      {label:'Matchup',value:'vs Wemby — both fight for boards'},
+    ],
+    reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19). Companion leg to Wemby O9.5 alt in the WCF G1 Bigs Floor parlay.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -2474,6 +2491,11 @@ const FEATURED_PARLAYS = [
     thesis:'Three correlated OKC legs. Math: 0.72 × 0.65 × 0.55 ≈ 26% combined (Phase 71 calibrated, raw MC would say higher). At +285 payout, 26% true hit gives positive EV. Stake $50 (chaos/traditional discipline at CF G1 unknown-territory cap).',
     result: null,
   },
+
+  // Phase 72 deduplication: my "Bigs Rebounding Floor" + "OKC + Wemby
+  // Volume" parlays overlapped with the 3 cf-g1-may18-* parlays above
+  // (which author both an OKC-stars floor AND a SAS-side floor AND a
+  // 3-leg chalk stack). User's parlays are more comprehensive.
 ];
 
 // ============================================================
