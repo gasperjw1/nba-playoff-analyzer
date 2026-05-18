@@ -108,25 +108,19 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 6. **Definitions** — Browse all metric definitions including Projection Lineage, Post-Game Attribution, Series Graduation, Compound Historical Scenarios, Multiplicative Context Factors, Dynamic Rating Adjustments, and the Declarative Bet Card Schema.
 7. **Bets** — Per-game ML picks, spreads, player props, and featured parlays. All bets render through one declarative pipeline; ML/margin/winner values interpolate live from the blended model.
 
-## Model Evolution (57 Phases)
+## Model Evolution
 
-The model has gone through 57 phases of development, each adding new factors, fixing biases, refactoring for scalability, and recalibrating against actual results. Selected milestones:
+The model has gone through 70+ phases. Selected milestones:
 
-- **Phase 22** — Per-player game outlooks
-- **Phase 28** — Blended prediction system
-- **Phase 32** — Coaching adjustments and star elevation
-- **Phase 40** — Monte Carlo chaos simulation
-- **Phase 41** — Unified ensemble (manual + engine + sim)
-- **Phase 42** — Projection lineage, post-game attribution, round navigation, series graduation
-- **Phase 45** — Deep lineage overhaul (19 engine fixes, 10K sim iterations)
-- **Phase 46** — Round 2 scaling (4 series graduated from R1)
-- **Phase 48** — Dynamic blended bets + R1 backtest (28/48, 58%)
-- **Phase 49–51** — Win probability recalibration, dynamic per-player rating adjustments, multiplicative context architecture
-- **Phase 52** — Compound Historical Scenarios engine
-- **Phase 53–54** — CHS injury-inference + last-name fallback matcher + CHS panel on series page
-- **Phase 55** — Declarative bet card schema
-- **Phase 56** — May 6 injury report (Embiid OUT) + void result outcome
-- **Phase 57** — Home landing page (Tonight / Featured Parlays toggle / News / Tonight's Bets / Tomorrow), `CURRENT_DATE` constant, `NEWS` + `FEATURED_PARLAYS` data files, restored Phase 55 files dropped by the gasperjw1 merge
+- **Phases 22-42** — Multi-file split, per-player outlooks, ensemble (manual + engine + Monte Carlo), projection lineage, round navigation
+- **Phases 48-52** — Dynamic blended bets, win probability recalibration, Compound Historical Scenarios engine
+- **Phase 57** — Home landing page (Tonight / Bets / News / Featured Parlays)
+- **Phases 61-65** — Monte Carlo simulator + Reliable/Traditional parlay builder
+- **Phase 68** — Edge detector + empirical PLACE/CAUTION/SKIP cross-tab
+- **Phases 69-70** — Anti-big-loss guardrails (concentration, Kelly, blowout) + risk-analyst dashboard (Sharpe/VaR/RoR)
+- **Phase 71** — 68-game calibration audit; **71b/c** — star bias correction + per-player override
+
+Full timeline in the in-app Model Learnings tab. Current state in [`CONTEXT.md`](CONTEXT.md). Daily workflow in [`DAILY_UPDATE.md`](DAILY_UPDATE.md). Audit findings in [`CALIBRATION_AUDIT.md`](CALIBRATION_AUDIT.md).
 
 ## Data Sources and Research
 
