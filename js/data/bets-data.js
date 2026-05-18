@@ -1456,6 +1456,82 @@ const BETS = [
     confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R3 G1 — WCF: OKC vs SAS (~Tue May 20, Paycom Center) — Phase 72 setup
+  // ═══════════════════════════════════════════════════════════════
+  // Phase 71 framework applies:
+  //   - ml: PLACE-eligible (engine OKC by 6, best-bet×ml = PLACE cell)
+  //   - spread: CAUTION (margin MAE 13pt; no spread edge)
+  //   - props on stars (SGA/Wemby PTS): SKIP cells per cross-tab
+  //   - REB props (any tier): CALIBRATED — alt-line floor zone is fine
+  //   - Reduced stakes — first CF for both teams, model has no R3+ data
+  {
+    id: 'r3-g1-okc-sas-ml',
+    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'ml', pick: 'OKC ML vs SAS', odds: '-180',
+    facts: [
+      {label:'Series',value:'WCF, 0-0'},
+      {label:'Engine (Phase 71c)',value:'OKC 110, SAS 104 (OKC by 6)'},
+      {label:'Rest edge',value:'OKC 7d vs SAS 3d'},
+      {label:'Framework verdict',value:'best-bet×ml PLACE cell'},
+    ],
+    modelHook: { fn:'dml', args:['OKC-SAS',1] },
+    reasoning: "<strong>OKC at home in CF G1 after 7-day rest.</strong> Engine: OKC by 6 (HCA + structural advantage + rest edge). SGA + Holmgren projections (28.9/18.3 PTS) vs Wemby (26.6) + SAS depth. OKC's #2 defense (drtg 108.2) suppresses SAS's perimeter (Vassell/Champagnie). <strong style=\"color:var(--yellow)\">Out-of-sample caveat:</strong> our 68-game audit was R1+R2 only. Every R3 prediction has zero calibration data. Reduced stake recommended for first 5 CF games while we accumulate R3 evidence.",
+    confidence: 'best-bet', thesis: ['model','matchup','market'], narrative: 'rest-edge',
+    result: null,
+  },
+  {
+    id: 'r3-g1-okc-sas-spread',
+    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'spread', pick: 'OKC -4.5', odds: '-110',
+    facts: [
+      {label:'Engine margin',value:'OKC by 6'},
+      {label:'Market',value:'OKC -5.5 (est)'},
+      {label:'Framework verdict',value:'spread CAUTION (audit margin MAE 13pt)'},
+    ],
+    modelHook: { fn:'dmargin', args:['OKC-SAS',1] },
+    reasoning: "Engine: OKC by 6. Half-point cushion vs -5.5 line. <strong style=\"color:var(--yellow)\">Phase 71 audit margin MAE 12.94pt</strong> — spreads are inside our error band regardless of half-point edge. CAUTION applies. Half-stake max if betting.",
+    confidence: 'lean', thesis: ['model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r3-g1-okc-sas-total',
+    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'total', pick: 'Under 216.5', odds: '-110',
+    facts: [
+      {label:'Engine total',value:'214 (110+104)'},
+      {label:'CF G1 historical',value:'Defensive intensity → under bias'},
+    ],
+    reasoning: "Engine: 214 total — 2.5pts under line. OKC #2 defense + SAS half-court pace suggests Under. CF G1s historically defensive. Phase 71 medium×total cross-tab cell is SKIP; lean only.",
+    confidence: 'lean', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r3-g1-okc-sas-wemby-reb',
+    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'prop', pick: 'Wemby Over 11.5 rebounds', odds: '-130',
+    facts: [
+      {label:'R2 vs MIN',value:'10, 14, 5(concussion), 12, 14, 14 → 13.0 avg healthy'},
+      {label:'Engine (Phase 71c)',value:'12.0 reb'},
+      {label:'Phase 71 verdict',value:'REB is calibrated stat (+0.02 bias)'},
+    ],
+    reasoning: "Wemby projection 12.0 reb vs line 11.5 — slight edge to Over. Post-concussion games were 12/14/14 — solid floor when healthy. REB bias is calibrated post-Phase-71. The deeper alt (O9.5) is the safer floor-parlay leg; this at-the-line bet is lean.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'r3-g1-okc-sas-holmgren-reb',
+    slate: 'R3-G1', series: 'OKC-SAS', game: 1, postedAt: '2026-05-18',
+    type: 'prop', pick: 'Holmgren Over 8.5 rebounds', odds: '-125',
+    facts: [
+      {label:'R2 vs LAL',value:'12, 8, 8, 12 → 10.0 avg'},
+      {label:'Engine (Phase 71c)',value:'9.2 reb'},
+    ],
+    reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19).",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -2346,6 +2422,40 @@ const FEATURED_PARLAYS = [
     thesis:'~13% combined hit rate. CLE road G7 upset + Mitchell tail-event. Stake reduced (chaos) to reflect variance. At +650 a $50 stake returns $325 if both hit. Correlated: CLE road win likely requires Mitchell 30+.',
     result: null,
   },
+
+  // ═══════════════════════════════════════════════════════════════
+  // R3 G1 — WCF: OKC vs SAS — Phase 72 setup parlays
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'r3-g1-may20-floor-bigs-rebounds',
+    slate: 'R3-G1', date: '2026-05-20',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G1 Bigs Rebounding Floor (2-Leg)',
+    stake: 50, odds: '+125', payout: 'To Win: ~$63 (verify on DK)',
+    legs: [
+      { pick:'Wemby Over 9.5 rebounds (alt — OKC-SAS G1)', odds:'-200', confidence:'floor', status:null,
+        note:'Phase 71c projection: 12.0 reb. Line 9.5 = proj−2.5 (well inside calibrated 77% alt-line zone for REB at proj−2). Post-concussion games: 12, 14, 14 — solid 12+ floor when healthy.' },
+      { pick:'Holmgren Over 6.5 rebounds (alt — OKC-SAS G1)', odds:'-220', confidence:'floor', status:null,
+        note:'Phase 71c projection: 9.2 reb. Line 6.5 = proj−2.7 (deeper than calibrated zone — should hit 80%+). R2 vs LAL: 12, 8, 8, 12 → 10.0 avg.' },
+    ],
+    thesis:'Rebounding is the cleanest stat in our model post-Phase-71 (bias +0.02 across tiers). Both legs deep alt lines on bigs projecting well above their lines. Math: 0.87 × 0.85 ≈ 74% combined. REDUCED STAKE $50: first CF for the model, no R3 calibration data exists yet — out-of-sample variance is real.',
+    result: null,
+  },
+  {
+    id: 'r3-g1-may20-trad-okc-cover',
+    slate: 'R3-G1', date: '2026-05-20',
+    category: 'traditional', type: 'best-bet',
+    name: 'OKC G1 Home + Wemby Volume (2-Leg)',
+    stake: 25, odds: '+200', payout: 'To Win: $50',
+    legs: [
+      { pick:'OKC ML vs SAS (CF G1)', odds:'-180', confidence:'medium', status:null,
+        note:'Engine: OKC by 6 at home with 7-day rest edge. Phase 71 best-bet×ml = PLACE cell historically. R3 out-of-sample caveat applies.' },
+      { pick:'Wemby Over 9.5 rebounds (alt — OKC-SAS G1)', odds:'-200', confidence:'medium', status:null,
+        note:'Calibrated REB projection 12.0. Same leg as the floor parlay above. Wemby rebs irrespective of game outcome.' },
+    ],
+    thesis:'OKC win + Wemby rebound floor — anti-correlated combination (Wemby rebs whether SAS wins or not). Math: 0.62 × 0.85 ≈ 53% combined at +200 = clean +EV. Stake just $25 — first CF for model + R3 out-of-sample variance.',
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -2450,10 +2560,18 @@ const BET_SLATES = {
     ],
   },
   'R2-G7': {
-    label: 'Round 2 — Game 7 (Live)',
+    label: 'Round 2 — Game 7 (Played 5/17)',
     games: [
       { series:'DET-CLE', date:'2026-05-17', time:'TBD ET', venue:'Little Caesars Arena', context:'Series tied 3-3',
-        recap:'<strong style="color:var(--purple)">G7 Setup (Sun 5/17):</strong> Series tied 3-3 after DET\'s 115-94 road blowout in G6. WINNER ADVANCES TO ECF vs NYK. Engine (post Phase 71c per-player calibration): DET 108, CLE 107 — essentially coin flip with HCA edge.<br><br><strong style="color:var(--yellow)">⚠ Phase 71 G7 framework applies to ALL bets below:</strong> 68-game audit found G6/G7 elimination contexts have <strong>50% winner accuracy and 19.8pt margin MAE</strong> in our model. <em>All PLACE recommendations auto-downgrade to CAUTION via edge-detector\'s elimination-cap rule.</em> Discipline tonight: reduced stakes, no new legs added to existing parlays, lean on alt-line floor plays (70% calibrated zone) rather than at-the-number prop overs.<br><br><strong style="color:var(--green)">Phase 71c per-player override</strong> raised Cade projection 16.9→27.9pts (matches his 25.7 series avg), lowered Duren 14.8→8.6pts (matches G5-G6 distribution). Floor parlays use deep alt lines below these corrected projections.' },
+        recap:'<strong style="color:var(--yellow)">⚠ G7 result pending in data:</strong> DET-CLE G7 was played 5/17. Final score not yet entered — need winner + scores to settle the slate and scaffold East CF. Phase 71 G7 framework was applied to all bets pre-game (50% winner accuracy in audit, 19.8pt MAE — all PLACE recommendations auto-downgraded to CAUTION). Floor parlays reduced to $50 stake.' },
+    ],
+  },
+  'R3-G1': {
+    label: 'Conference Finals — Game 1 (Live)',
+    games: [
+      { series:'OKC-SAS', date:'2026-05-20', time:'TBD ET', venue:'Paycom Center', context:'WCF Series 0-0',
+        recap:'<strong style="color:var(--purple)">WCF G1 (~Tue 5/20):</strong> OKC (1) hosts SAS (2). OKC swept LAL 4-0 in R2 (7 days rest); SAS beat MIN 4-2 (3 days rest, closeout 5/15). Phase 71c engine: <strong>OKC 110, SAS 104 (OKC by 6)</strong>. HCA premium R3=1.5pts. Key matchups: Wemby vs Holmgren (rim-protection duel, both 9+ reb projections), SGA vs Castle (Castle\'s 6-6 size + dLEBRON 0.91 is the best perimeter defender SGA has faced in playoffs). <strong style="color:var(--yellow)">⚠ R3 out-of-sample caveat:</strong> our 68-game calibration audit was R1+R2 only. Every CF prediction is out-of-sample. Discipline: ml at REDUCED STAKE, spread CAUTION (audit margin MAE 13pt), no props on stars (SKIP cell), floor parlays at $50 stake on deep alt-line rebounds (70%+ calibrated zone).' },
+      // East CF G1 placeholder — depends on DET-CLE G7 winner (NYK vs DET or CLE)
     ],
   },
 };

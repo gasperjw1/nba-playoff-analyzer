@@ -253,18 +253,29 @@ function renderHomePage(el) {
   // the OLDEST 6 entries (5/4-5/7) instead of the most recent.
   const recentNews = [...NEWS].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 6);
 
-  // Phase 67: off-day fallback — when today has no scheduled games
-  // (rest day before a G7, between rounds), fall through to tomorrow's
-  // bets and relabel the section. Better than an empty "No live bets"
-  // panel on the home page during the most-interesting prep window.
-  const betsDate = todaysGames.length > 0 ? today : (tomorrowsGames.length > 0 ? tomorrow : today);
+  // Phase 67: off-day fallback — when today has no scheduled games,
+  // scan forward to find the next game date and surface those bets.
+  // Phase 72 (May 18): extended from 1-day lookahead to 5-day scan
+  // because R3 has multi-day rest gaps (e.g. R2 finishes 5/15 → R3 G1
+  // ~5/20 = 4 days of nothing). The 1-day fallback left an empty Home
+  // page during the most-interesting prep window.
+  function findNextGameDate(start, maxDaysAhead) {
+    if (homeGamesOn(start).length > 0) return start;
+    for (let i = 1; i <= maxDaysAhead; i++) {
+      const d = homeAddDays(start, i);
+      if (homeGamesOn(d).length > 0) return d;
+    }
+    return start;  // fall back to today (will show empty state honestly)
+  }
+  const betsDate = findNextGameDate(today, 5);
   const betsLabel = betsDate === today ? "Tonight's Bets"
-                                       : `Tomorrow's Bets (${homeFormatDate(tomorrow)})`;
+                                       : betsDate === tomorrow ? `Tomorrow's Bets (${homeFormatDate(tomorrow)})`
+                                       : `Upcoming Bets (${homeFormatDate(betsDate)})`;
 
   // Layout decision: with 2+ games, the per-game bet columns alone fill the
   // row, so News goes full-width above. With 1 game (single-game days in CF /
   // Finals), News + Bets sit side-by-side so neither column looks stranded.
-  const useStackedLayout = (betsDate === today ? todaysGames.length : tomorrowsGames.length) >= 2;
+  const useStackedLayout = homeGamesOn(betsDate).length >= 2;
 
   const newsSection = `
     <section class="home-section">
