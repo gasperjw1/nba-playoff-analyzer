@@ -5190,7 +5190,19 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 110,
+                  awayScore: 104,
+                  margin: 6,
+                  confidence: "MEDIUM",
+                  character: "REST vs RUST",
+                  reasoning: "Phase 71c engine: NYK 110, CLE 104 (NYK by 6). Rest gap dominates — NYK 9 days post-PHI-sweep vs CLE 1 day after a road G7 blowout. ECF G1 at MSG. Brunson vs Mitchell + KAT vs Mobley are marquee matchups; Bridges/OG perimeter D on Mitchell is the structural decider. R3 out-of-sample caveat per Phase 71 — reduced stakes.",
+                  xFactor: "CLE legs-tired (Mitchell 31min G7, Allen 28min on knee) vs NYK rest-rust (9 days could flatten Q1 efficiency)",
+                  moneyline: "NYK -180",
+                  spread: "NYK -5.5"
+              }
           },
           {
               num: 2,
@@ -5981,7 +5993,19 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 110,
+                  awayScore: 104,
+                  margin: 6,
+                  confidence: "MEDIUM",
+                  character: "STRUCTURAL EDGE",
+                  reasoning: "Phase 71c engine: OKC 110, SAS 104 (OKC by 6). Rest edge MASSIVE — OKC 7 days post-LAL-sweep vs SAS 3 days post-MIN closeout. Key matchups: SGA vs Castle (best perimeter defender SGA has faced this playoffs), Wemby vs Holmgren (both rim protectors, both 9+ reb projection). R3 out-of-sample caveat per Phase 71 — reduced stakes recommended.",
+                  xFactor: "Castle's 6-6 size + 0.91 dLEBRON on SGA + Wemby vs OKC small-ball lineups",
+                  moneyline: "OKC -180",
+                  spread: "OKC -5.5"
+              }
           },
           {
               num: 2,

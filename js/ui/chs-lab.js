@@ -86,9 +86,19 @@ function chsLabRenderScoreboard(agg) {
 
 function chsLabRenderLivePreview() {
   if (typeof SERIES_DATA === 'undefined' || typeof calcBlendedProjectionWithCHS !== 'function') return '';
-  const r2 = SERIES_DATA.filter(s => s.round === 'R2');
+  // Phase 73b: include both R2 (in case any remain unresolved) AND
+  // CF series. Filter out TBD scaffolds (no rosters). Sort by round so
+  // CF games render first while live.
+  const activeSeries = SERIES_DATA.filter(s =>
+    (s.round === 'R2' || s.round === 'CF' || s.round === 'Finals') &&
+    !s.tbdOpponent &&
+    s.homeTeam && Array.isArray(s.homeTeam.players) && s.homeTeam.players.length > 0
+  ).sort((a, b) => {
+    const order = { 'CF': 0, 'Finals': 1, 'R2': 2 };
+    return (order[a.round] || 99) - (order[b.round] || 99);
+  });
   const upcoming = [];
-  r2.forEach(s => {
+  activeSeries.forEach(s => {
     s.games.forEach((g, i) => {
       if (!g || g.winner) return; // skip resolved
       if (!g.prediction) return;
@@ -106,7 +116,7 @@ function chsLabRenderLivePreview() {
   });
 
   if (!upcoming.length) {
-    return '<div style="text-align:center;padding:30px;color:var(--text-dim);">No upcoming R2 games scheduled.</div>';
+    return '<div style="text-align:center;padding:30px;color:var(--text-dim);">No upcoming games with predictions scheduled.</div>';
   }
 
   const cards = upcoming.map(({ series, game, gameNum, chs, mc }) => {
@@ -195,9 +205,18 @@ function chsLabRenderLivePreview() {
 function chsLabRenderParlayCandidates() {
   if (typeof SERIES_DATA === 'undefined' || typeof runMonteCarlo !== 'function'
     || typeof safeLinesForAllPlayers !== 'function' || typeof scoreParlay !== 'function') return '';
-  const r2 = SERIES_DATA.filter(s => s.round === 'R2');
+  // Phase 73b: include R2 + CF + Finals (live + recent rounds). Filter
+  // out TBD scaffolds + empty rosters. CF games render first.
+  const activeSeries = SERIES_DATA.filter(s =>
+    (s.round === 'R2' || s.round === 'CF' || s.round === 'Finals') &&
+    !s.tbdOpponent &&
+    s.homeTeam && Array.isArray(s.homeTeam.players) && s.homeTeam.players.length > 0
+  ).sort((a, b) => {
+    const order = { 'CF': 0, 'Finals': 1, 'R2': 2 };
+    return (order[a.round] || 99) - (order[b.round] || 99);
+  });
   const upcoming = [];
-  r2.forEach(s => {
+  activeSeries.forEach(s => {
     s.games.forEach(g => {
       if (!g || g.winner || !g.prediction) return;
       try {
@@ -437,8 +456,12 @@ function chsLabRenderRiskDashboard() {
     if (!isFinite(n) || n === 0) return 0;
     return n > 0 ? n / 100 : 100 / -n;
   };
+  // Phase 73b: include R2 + CF + Finals settled bets. The R2-only
+  // filter would hide CF results going forward, breaking the rolling
+  // Sharpe/drawdown view once CF bets settle.
   const settled = BETS.filter(b =>
-    typeof b.slate === 'string' && b.slate.startsWith('R2-') &&
+    typeof b.slate === 'string' &&
+    (b.slate.startsWith('R2-') || b.slate.startsWith('CF-') || b.slate.startsWith('F-')) &&
     b.type !== 'parlay' && b.result &&
     ['win', 'loss', 'push', 'void'].includes(b.result.outcome)
   ).map(b => {
@@ -632,15 +655,34 @@ function renderCHSLabPage(el) {
   const ledger = (typeof CHS_LEDGER !== 'undefined' && Array.isArray(CHS_LEDGER)) ? CHS_LEDGER : [];
   const agg = chsLabComputeAggregate(ledger);
 
+  // Phase 73b: CHS promotion evaluation
+  // ledger: 21 games, 14/21 main hits (67%), 15/21 CHS hits (71%)
+  // CHS edge: +4pp winner accuracy, but margin MAE +0.81pt worse
+  // Promotion bar: ≥+10pp winner AND ≥-1.5pt MAE. CHS misses BOTH.
+  // → Stay OFF. Will re-evaluate after CF games add data.
+  const chsEvalLabel = (agg.total >= 10)
+    ? (parseFloat(agg.chsHitPct) - parseFloat(agg.mainHitPct) >= 10 && parseFloat(agg.chsMAE) - parseFloat(agg.mainMAE) <= -1.5
+        ? '<strong style="color:#22c55e;">→ Promotion criteria met — wire in CHS</strong>'
+        : '<strong style="color:#f59e0b;">→ Does NOT meet promotion bar yet</strong>')
+    : '<span style="color:var(--text-dim);">(need ≥10 games for evaluation)</span>';
+
   el.innerHTML = `
     <div style="max-width:1280px;margin:0 auto;padding:24px 16px;" class="bets-container">
       <div style="margin-bottom:18px;">
-        <h2 style="margin:0 0 4px;color:#fff;">CHS Lab — Shadow Engine Accuracy</h2>
-        <p style="margin:0;font-size:12px;color:var(--text-dim);line-height:1.6;">
-          Compound Historical Scenarios (Phase 52) is currently <strong style="color:#f59e0b;">OFF in production</strong>
-          (<code>USE_CHS_IN_PROJECTIONS = false</code>). Predictions on Home, Bets, and Series Analysis use the bare
-          13-modifier engine. This tab shows what CHS would predict in parallel and tracks its hit rate so we can promote
-          it once it proves out: <strong>winner Δ ≥ +10pp AND margin MAE Δ ≥ −1.5 pts over 10 games</strong>.
+        <h2 style="margin:0 0 4px;color:#fff;">CHS Lab — Risk + Edge + Shadow Engine</h2>
+        <p style="margin:0 0 8px;font-size:12px;color:var(--text-dim);line-height:1.6;">
+          One-stop dashboard for betting analysis. Panels below (scroll for each):
+          <strong style="color:var(--text);">Shadow Engine Scoreboard</strong> →
+          <strong style="color:#22c55e;">📊 Risk Dashboard</strong> (Sharpe, drawdown, P(ruin)) →
+          <strong style="color:var(--accent);">Bet-Filter Verdict</strong> (PLACE/CAUTION/SKIP cross-tab) →
+          <strong style="color:#a78bfa;">Slate Concentration</strong> → Live Preview → Parlay Candidates → Ledger.
+        </p>
+        <p style="margin:0;font-size:11px;color:var(--text-dim);line-height:1.5;">
+          <strong>CHS status:</strong> currently <strong style="color:#f59e0b;">OFF in production</strong>
+          (<code>USE_CHS_IN_PROJECTIONS = false</code>). Promotion bar:
+          <strong>winner Δ ≥ +10pp AND margin MAE Δ ≥ −1.5pt over 10 games</strong>.
+          Current state: ${agg.total} games, CHS +${(parseFloat(agg.chsHitPct) - parseFloat(agg.mainHitPct)).toFixed(0)}pp winner / ${(parseFloat(agg.chsMAE) - parseFloat(agg.mainMAE)).toFixed(2)}pt MAE.
+          ${chsEvalLabel}
         </p>
       </div>
 
