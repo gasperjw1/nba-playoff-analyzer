@@ -1309,6 +1309,41 @@ function runTests() {
           `bets section not empty when there are games on the resolved betsDate (${betsDate})`);
       }
     }
+
+    // 19c — homeFindSeries handles null/undefined gracefully (Phase 72
+    //       hotfix: news entries with series:null were crashing the
+    //       home page on render via TypeError on .toLowerCase).
+    assert(ctx.homeFindSeries(null) === null,
+      `homeFindSeries(null) returns null without throwing`);
+    assert(ctx.homeFindSeries(undefined) === null,
+      `homeFindSeries(undefined) returns null without throwing`);
+    assert(ctx.homeFindSeries('') === null,
+      `homeFindSeries('') returns null without throwing`);
+
+    // 19d — Every NEWS entry can be rendered without throwing. Catches
+    //       the class of bug where news.series:null + renderNewsItem
+    //       blow up the whole home page.
+    let renderedCount = 0;
+    let renderError = null;
+    try {
+      ctx.NEWS.forEach(n => {
+        const html = ctx.homeRenderNewsItem(n);
+        if (typeof html === 'string' && html.length > 0) renderedCount++;
+      });
+    } catch (e) { renderError = e.message; }
+    assert(renderError === null,
+      `homeRenderNewsItem renders every NEWS entry without throwing (${renderError || 'OK'})`);
+    assert(renderedCount === ctx.NEWS.length,
+      `all ${ctx.NEWS.length} NEWS entries render (got ${renderedCount})`);
+
+    // 19e — Full renderHomePage doesn't throw (the real end-to-end check)
+    let homeErr = null;
+    try {
+      const fakeEl = { innerHTML: '' };
+      ctx.renderHomePage(fakeEl);
+    } catch (e) { homeErr = e.message; }
+    assert(homeErr === null,
+      `renderHomePage executes end-to-end without throwing (${homeErr || 'OK'})`);
   }
 
   // ============================================================

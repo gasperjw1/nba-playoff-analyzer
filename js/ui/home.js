@@ -42,7 +42,11 @@ function homeFormatDate(yyyymmdd) {
 
 // Find the series object in SERIES_DATA for a given BET_SLATES series key
 // (e.g. 'NYK-PHI'). Falls back to SERIES_DATA.id substring match.
+// HOTFIX (May 18): null/undefined input no longer crashes — Phase 72
+// news entries can set series:null when the item isn't tied to a series
+// (e.g. "East CF on hold" general system note).
 function homeFindSeries(seriesKey) {
+  if (!seriesKey || typeof seriesKey !== 'string') return null;
   const lc = seriesKey.toLowerCase();
   return SERIES_DATA.find(s => s.id && s.id.toLowerCase().endsWith(lc))
       || SERIES_DATA.find(s => s.id && s.id.toLowerCase().includes(lc));
@@ -121,7 +125,7 @@ function homeRenderNewsItem(n) {
       <div class="home-news-meta">
         <span class="home-news-sev" style="background:${sevColor};"></span>
         <span class="home-news-date">${dateLabel}</span>
-        <span class="home-news-series">${n.series}</span>
+        <span class="home-news-series">${n.series || 'general'}</span>
       </div>
       <div class="home-news-headline">${n.headline}</div>
       <div class="home-news-body">${n.body}</div>
