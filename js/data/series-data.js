@@ -5183,6 +5183,76 @@ const SERIES_DATA = [
               }
           ]
       },
+      coaching: {
+        home: {
+          coach: "Tom Thibodeau",
+          playoffRecord: "Conf Finals 2024 (lost 4-1 to BOS); ECF G1 2026 marks 2nd CF appearance in 3 years",
+          tendency: "Defensive intensity-first system. Top-5 D every year. Heavy starter minutes (Brunson/Bridges 38+); thin bench rotation. Late-game Brunson ISO + KAT high-post.",
+          rotationPlan: "8-man rotation. Brunson/Bridges/OG/KAT/Robinson start. Hart/McBride/Shamet first off bench. KAT closes; Robinson sits for offense-side small-ball.",
+          keyAdjustment: "After 9-day layoff: Q1 ramp may be slow — first 4 minutes will determine if NYK rust or NYK fresh-legs narrative dominates. Thibodeau will pre-prep starters with extra shootaround."
+        },
+        away: {
+          coach: "Kenny Atkinson",
+          playoffRecord: "2nd-year CLE HC; first ECF as head coach. Took CLE through ATL R1 + DET R2.",
+          tendency: "Pace + space + 5-out motion. Mobley/Allen interior. 3PT volume system (CLE 38% playoff 3PT). Trusts Mitchell to close.",
+          rotationPlan: "9-man rotation. Mitchell/Harden/Strus/Mobley/Allen start. Schroder/Merrill/Tyson/Wade off bench. Merrill matchup-dependent.",
+          keyAdjustment: "1 day rest after road G7 blowout: rotation tightens. Mitchell + Allen minutes likely capped (~33min) to preserve legs across the series. Bench will need to deliver 35+pts."
+        }
+      },
+      defMatchups: {
+        homeDefOnAway: { defender:"Mikal Bridges", target:"Donovan Mitchell", dLebron:1.872, targetUsg:31.4, note:"Bridges (rating 72) primary on Mitchell, with OG (74) as the secondary. Best perimeter D Mitchell has faced this playoffs. Phase 73c projection: Mitchell 25.3pts." },
+        awayDefOnHome: { defender:"Evan Mobley", target:"Jalen Brunson", dLebron:1.346, targetUsg:32.0, note:"Mobley switches onto Brunson in PnR. Allen + Mobley combine for elite paint protection. Brunson must use KAT screens + side PnR to create separation." }
+      },
+      game1: {
+        spread: "NYK -5.5",
+        moneyline: "NYK -180 / CLE +150",
+        ou: "O/U 216.5",
+        pick: "NYK",
+        confidence: "medium",
+        projScore: "NYK 110 — CLE 104",
+        reasoning: "ECF G1 at MSG. NYK swept PHI 4-0 (9 days rest) vs CLE finishing a brutal DET-CLE 7 with a road G7 blowout on 1 day rest. Phase 71c engine: NYK 110, CLE 104 (NYK by 6). The rest gap is the dominant variable — NYK has 9 days of recovery vs CLE 1 day after a hostile-environment G7 with Mitchell at 31min, Allen 28min on knee. Brunson vs Mitchell + KAT vs Mobley are the marquee matchups; Bridges/OG perimeter D on Mitchell is the structural decider. R3 out-of-sample caveat: our 68-game calibration audit was R1+R2 only — reduced stakes recommended for first 5 CF games.",
+        prosHome: [
+          "Massive rest edge: 9 days vs 1 day after a road G7 grind",
+          "Brunson (87 rating, 9.2 clutch NetRtg) in his hometown MSG element",
+          "KAT vs Mobley is a favorable mismatch — KAT can stretch the floor + post Mobley",
+          "Bridges + OG vs Mitchell is best perimeter D Mitchell has faced this run",
+          "Hart/McBride bench depth was a structural advantage vs PHI",
+          "MSG home crowd in ECF G1 is one of the loudest venues in the playoffs"
+        ],
+        consHome: [
+          "9 days off can flatten Q1 timing — NYK historically slow-start after long layoffs",
+          "Brunson G7-of-prior-rounds Q4 closer pattern may not translate to fresh-start G1",
+          "Without OG Anunoby at 100% (hamstring lingering from R2), Mitchell coverage thins"
+        ],
+        prosAway: [
+          "Mitchell 5-0 lifetime in G7s — confidence carries into ECF",
+          "CLE just won a road G7 by 31 — peak swagger heading into G1",
+          "Mobley + Allen interior wins the paint battle vs KAT + Mitchell Robinson",
+          "Harden gravity creates Merrill/Strus open looks; deep-bench shooting depth"
+        ],
+        consAway: [
+          "1 day rest after G7 + travel from DET to NYC — fatigue is real for Mitchell (31min) + Allen (28min on knee)",
+          "Mobley's interior matchup with KAT pulls him outside the paint where his rebounding helps",
+          "Strus/Merrill regression after Merrill's 23pt G7 (5-8 3PT) — bench shooting variance bites both ways",
+          "Bickerstaff has never coached an ECF G1 — coaching-experience edge to Thibodeau"
+        ],
+        playerProjections: {
+          home: [
+            { name:"Jalen Brunson", pts:"28-34", reb:"3-5", ast:"6-8", note:"Phase 71c projection: 32.3pts. Hometown G1 in MSG, no defense limits him to <30. Line typically O27.5." },
+            { name:"Karl-Anthony Towns", pts:"18-24", reb:"10-13", ast:"3-4", note:"Phase 71c: 20.9pts/12.5reb. Mobley size matchup favorable; KAT can stretch + post." },
+            { name:"OG Anunoby", pts:"18-26", reb:"5-8", ast:"2-4", note:"Phase 71c (with override): 23.8pts. The Mitchell-stopper. Health limits him to ~70% capacity." },
+            { name:"Mikal Bridges", pts:"13-18", reb:"3-5", ast:"3-5", note:"Phase 71c: 15.7pts. Secondary scorer. Mitchell/Harden coverage." },
+            { name:"Josh Hart", pts:"8-12", reb:"5-9", ast:"3-5", note:"Connector. Glass-cleaner. Plus minutes in must-win." }
+          ],
+          away: [
+            { name:"Donovan Mitchell", pts:"24-32", reb:"4-6", ast:"5-8", note:"Phase 71c: 25.3pts. Fresh off 26/8 G7. Bridges/OG coverage is toughest yet." },
+            { name:"Evan Mobley", pts:"15-21", reb:"9-12", ast:"3-4", note:"Phase 71c: 17.6pts. KAT size match — Mobley pulled outside hurts his rebounding." },
+            { name:"James Harden", pts:"16-22", reb:"4-6", ast:"7-10", note:"Phase 71c: 20.8pts. Gravity game. Gets others open. Won't score 30 but won't have to." },
+            { name:"Jarrett Allen", pts:"14-20", reb:"7-10", ast:"1-3", note:"Phase 71c: 15pts. Knee held up G7; another 27+ minute game on 1 day rest is the test." },
+            { name:"Sam Merrill", pts:"8-15", reb:"2-3", ast:"1-3", note:"23/5-8 3PT G7 was the bench game of the playoffs — regression candidate but still threat." }
+          ]
+        }
+      },
       games: [
           {
               num: 1,
@@ -5985,6 +6055,75 @@ const SERIES_DATA = [
                   note: "Closing 5 with Olynyk stretch spacing. Wemby rim protection + floor spacing."
               }
           ]
+      },
+      coaching: {
+        home: {
+          coach: "Mark Daigneault",
+          playoffRecord: "2025 NBA Champion. ECF 2024. 2nd straight CF appearance.",
+          tendency: "Defensive intensity + 5-out spacing. Top-2 defense (108.2 drtg). SGA off-ball when J.Williams creates; on-ball when SGA needs to score. Trusts deep bench (Caruso/Joe/Wallace/Mitchell).",
+          rotationPlan: "10-man rotation. SGA/Williams/Holmgren/Dort/Hartenstein start. Caruso/Mitchell/Joe/Wallace/Wiggins off bench. Holmgren closes; Hartenstein rebounding spec.",
+          keyAdjustment: "Castle 6-6 is the toughest perimeter D SGA has faced — counter with off-ball motion + Williams driving lanes. 7-day layoff vs SAS's 3-day grind = OKC has fresher legs in Q4."
+        },
+        away: {
+          coach: "Mitch Johnson (Popovich tree)",
+          playoffRecord: "First WCF for this SAS core; ran Pop's system through POR + MIN.",
+          tendency: "Pop system: read-and-react motion. Ball movement first, ISO last. Wemby-centric on defense but not on offense. Castle's growth = secondary creator emerging.",
+          rotationPlan: "10-man rotation. Wemby/Fox/Castle/Vassell/Champagnie start. Olynyk/K.Johnson/Harper/Barnes/Kornet off bench. Olynyk closes for spacing.",
+          keyAdjustment: "SGA matchup: Castle gets the primary assignment + Fox helps. Wemby must STAY in the paint when Hartenstein crashes offensive glass — don't get pulled outside by OKC's 5-out unless OKC is sitting Holmgren."
+        }
+      },
+      defMatchups: {
+        homeDefOnAway: { defender:"Lu Dort", target:"Devin Vassell", dLebron:1.452, targetUsg:24.0, note:"Dort + Caruso rotation on Vassell. Disrupts SAS perimeter shooting. SGA defends Castle in PnR." },
+        awayDefOnHome: { defender:"Stephon Castle", target:"Shai Gilgeous-Alexander", dLebron:0.908, targetUsg:33.0, note:"Castle (6-6, 0.91 dLEBRON) draws the SGA assignment. Best on-ball defender SGA has faced this run. Fox + Vassell rotate as needed." }
+      },
+      game1: {
+        spread: "OKC -5.5",
+        moneyline: "OKC -180 / SAS +150",
+        ou: "O/U 219.5",
+        pick: "OKC",
+        confidence: "medium",
+        projScore: "OKC 110 — SAS 104",
+        reasoning: "WCF G1 at Paycom Center. OKC swept LAL 4-0 in R2 (7 days rest) vs SAS finishing MIN in G6 closeout (3 days rest). Phase 71c engine: OKC 110, SAS 104 (OKC by 6). The structural matchup: SGA vs Stephon Castle (Castle's 6-6 size + 0.91 dLEBRON is the best perimeter defender SGA has faced this playoffs), and Wemby vs Holmgren (rim-protection duel — both 9+ reb / 2+ blk per series). OKC's #2 defense (drtg 108.2) suppresses SAS's perimeter shooting (Vassell/Champagnie). R3 out-of-sample caveat — model has zero R3 calibration data, reduced stakes recommended for first 5 CF games.",
+        prosHome: [
+          "Defending champ at home with 7 days rest after a sweep",
+          "SGA (96 rating, 31.1ppg) gets favorable Fox/Castle defensive coverage relative to recent matchups",
+          "OKC's #2 defense (108.2 drtg) vs SAS perimeter shooters who rely on rhythm",
+          "Holmgren (rating 82) vs Wemby is a fair matchup, not a structural loss",
+          "Hartenstein + Mitchell + Caruso bench is the deepest in the playoffs"
+        ],
+        consHome: [
+          "SAS went 4-1 vs OKC in the regular season (the lurking variable)",
+          "7 days off can produce sluggish-start Q1 — Mavericks-style layoff rust",
+          "Wemby (94 rating) is the best player on the floor when he's making 3s"
+        ],
+        prosAway: [
+          "Wemby's 24.8ppg/11.5rpg/3.7blk anchors both ends of the floor",
+          "Castle (74 rating) has Phase 71c bias-corrected projection 18.6pts — playoff growth real",
+          "SAS bench depth (Harper, Champagnie, K.Johnson) has stepped up across rounds",
+          "Played 4-1 vs OKC in reg season — the only team to consistently beat them"
+        ],
+        consAway: [
+          "3-day rest disadvantage vs OKC's 7 — Wemby + Fox played heavy minutes G6",
+          "First WCF for the core — pressure on the road in G1",
+          "Holmgren + Hartenstein paint defense limits Wemby's easy looks",
+          "OKC's Caruso/Dort perimeter D + 5-out spacing creates rotation chaos for Wemby"
+        ],
+        playerProjections: {
+          home: [
+            { name:"Shai Gilgeous-Alexander", pts:"24-32", reb:"3-5", ast:"5-8", note:"Phase 71c (with override): 28.9pts. Castle 6-6 is best on-ball D he's faced. Line typically O27.5." },
+            { name:"Chet Holmgren", pts:"15-20", reb:"8-11", ast:"1-3", note:"Phase 71c: 18.3pts/9.2reb. Rim-protection duel with Wemby. Both block 2+." },
+            { name:"Jalen Williams", pts:"15-22", reb:"4-6", ast:"4-7", note:"Phase 71c: 18.3pts. Secondary creator. Off-ball when SGA cooks." },
+            { name:"Isaiah Hartenstein", pts:"8-13", reb:"8-11", ast:"2-4", note:"Phase 71c: 10.5pts/9.9reb. Glass + screens. Offensive rebound differential matters." },
+            { name:"Lu Dort", pts:"6-12", reb:"3-5", ast:"1-3", note:"Defensive specialist. Pick up Wemby on switches." }
+          ],
+          away: [
+            { name:"Victor Wembanyama", pts:"22-30", reb:"10-14", ast:"2-4", note:"Phase 71c: 26.6pts/12.0reb. Holmgren matchup is fair; OKC small-ball pulls him out." },
+            { name:"De'Aaron Fox", pts:"16-24", reb:"3-5", ast:"6-9", note:"Phase 71c: 19.5pts/7.5ast. PnR engine. SGA defensive challenge on the other end." },
+            { name:"Stephon Castle", pts:"14-22", reb:"3-6", ast:"3-5", note:"Phase 71c: 18.6pts. Drew the SGA assignment; energy translates to scoring." },
+            { name:"Devin Vassell", pts:"12-18", reb:"3-5", ast:"2-4", note:"Phase 71c: 16.5pts. 3PT shooter; needs to attack closeouts to break OKC's perimeter scheme." },
+            { name:"Julian Champagnie", pts:"8-14", reb:"4-7", ast:"0-2", note:"Bench shooter. Rotation minutes when SGA forces SAS to small-ball." }
+          ]
+        }
       },
       games: [
           {

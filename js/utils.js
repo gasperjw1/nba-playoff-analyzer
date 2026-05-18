@@ -7,6 +7,34 @@
 /** Format a number to 1 decimal place. */
 const fmtDec = v => v.toFixed(1);
 
+// --- Team color contrast helper (Phase 73e) ---
+// Some team color2 values are pure black (SAS, POR, ORL, TOR) which
+// renders invisibly against the app's dark background. Pick the more-
+// visible color: if color2 is too dark, fall back to color.
+//
+// Threshold: a perceived luminance (Rec 709) below 30 = "too dark for
+// our dark UI." SAS color2=#000000 → lum 0 → use color (#C4CED4 silver).
+function _hexLuminance(hex) {
+  if (!hex || typeof hex !== 'string') return 100;
+  const h = hex.replace('#', '');
+  const fullHex = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+  if (fullHex.length !== 6) return 100;
+  const r = parseInt(fullHex.slice(0, 2), 16);
+  const g = parseInt(fullHex.slice(2, 4), 16);
+  const b = parseInt(fullHex.slice(4, 6), 16);
+  if (isNaN(r) || isNaN(g) || isNaN(b)) return 100;
+  // Rec 709 perceived luminance, scaled 0-255 → 0-100
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) * (100 / 255);
+}
+function getDisplayColor(team) {
+  if (!team) return '#ffffff';
+  const c2 = team.color2 || '';
+  const c1 = team.color || '#ffffff';
+  // If color2 is too dark for our dark UI, fall back to color
+  if (_hexLuminance(c2) < 30) return c1;
+  return c2;
+}
+
 
 // --- Rating Tier Helpers ---
 
