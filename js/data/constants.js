@@ -155,6 +155,14 @@ const PLAYOFF_CLUTCH_WEIGHT = 0.13; // up from 0.10 in regular season composite
 // Applied as the LAST modifier in calcExpectedPlayerStats. Set
 // `enabled: false` to disable (regression-test the unfixed engine).
 // Re-tune the deltas after R3 ships ~30 more games.
+// PHASE 73: Elimination-game variance amplifier (May 18, 2026)
+// Post DET-CLE G7 miss (predicted DET+4, actual CLE+31 — 35pt margin
+// miss). Calibration audit's G6 cell shows MAE 19.8pt vs overall
+// 12.94pt — elimination contexts produce ~1.5x wider distributions.
+// We widen scoring-range bands for G6/G7. Doesn't shift the central
+// estimate; just produces honestly wider tails for MC sim.
+const ELIMINATION_VARIANCE_MULT = 1.4;
+
 const STAR_BIAS_CONFIG = {
   enabled: true,
   elitePtsDelta:   -2.6,  // matches observed +2.63 over-prediction

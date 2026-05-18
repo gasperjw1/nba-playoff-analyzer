@@ -1992,6 +1992,91 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 25c: Phase 73 — Elimination-game variance amplifier +
+  //           wrong-direction streak detector
+  // ------------------------------------------------------------
+  // Post DET-CLE G7 miss. Two fixes shipped:
+  //   ELIMINATION_VARIANCE_MULT widens G6/G7 score ranges 1.4x
+  //   wrongStreak detector widens further when engine has been
+  //     wrong-winner on 2+ consecutive prior games of the series.
+  // ============================================================
+  console.log('\nTEST 25c: Phase 73 — Elimination-game variance + wrong-streak');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+
+    // 25c-a: ELIMINATION_VARIANCE_MULT is defined and reasonable
+    assert(typeof ctx.ELIMINATION_VARIANCE_MULT === 'number',
+      `ELIMINATION_VARIANCE_MULT is a number`);
+    assert(ctx.ELIMINATION_VARIANCE_MULT >= 1.2 && ctx.ELIMINATION_VARIANCE_MULT <= 1.6,
+      `ELIMINATION_VARIANCE_MULT in reasonable range [1.2, 1.6] (got ${ctx.ELIMINATION_VARIANCE_MULT})`);
+
+    // 25c-b: G7 projection has eliminationGame=true and widened variancePct
+    const detCle = ctx.SERIES_DATA.find(s => s.id === 'DET-CLE');
+    const g7 = ctx.calcGameProjection(detCle, 'DET-CLE', 7);
+    assert(g7.eliminationGame === true, `G7 marked as elimination game`);
+    assert(g7.variancePct > 0.12, `G7 variancePct (${g7.variancePct}) > baseline 0.12`);
+
+    // 25c-c: G1 is NOT elimination
+    const g1 = ctx.calcGameProjection(detCle, 'DET-CLE', 1);
+    assert(g1.eliminationGame === false, `G1 not flagged as elimination`);
+    assert(Math.abs(g1.variancePct - 0.12) < 0.001, `G1 variancePct = baseline 0.12`);
+
+    // 25c-d: G7 score range is wider than G1
+    const g7Width = (g7.homeScoreRange[1] - g7.homeScoreRange[0]) + (g7.awayScoreRange[1] - g7.awayScoreRange[0]);
+    const g1Width = (g1.homeScoreRange[1] - g1.homeScoreRange[0]) + (g1.awayScoreRange[1] - g1.awayScoreRange[0]);
+    assert(g7Width > g1Width * 1.2,
+      `G7 total range width (${g7Width}) > G1 width (${g1Width}) by at least 20%`);
+
+    // 25c-e: G7 central estimate is UNCHANGED by the widening
+    // (homeScore / awayScore are the central values; variance only
+    // affects the range bands)
+    assert(typeof g7.homeScore === 'number' && typeof g7.awayScore === 'number',
+      `G7 central estimates present`);
+    // Sanity: central is between low and high
+    assert(g7.homeScore >= g7.homeScoreRange[0] && g7.homeScore <= g7.homeScoreRange[1],
+      `G7 home central (${g7.homeScore}) is inside widened range`);
+    assert(g7.awayScore >= g7.awayScoreRange[0] && g7.awayScore <= g7.awayScoreRange[1],
+      `G7 away central (${g7.awayScore}) is inside widened range`);
+
+    // 25c-f: wrongStreak field exists and is a non-negative integer
+    assert(typeof g7.wrongStreak === 'number' && g7.wrongStreak >= 0,
+      `G7 wrongStreak is non-negative number (got ${g7.wrongStreak})`);
+
+    // 25c-g: Synthetic streak test — fabricate a 2-game wrong-winner streak
+    //        and verify variancePct widens further
+    const synthSeries = JSON.parse(JSON.stringify(detCle));
+    // Override G5 + G6 so that the prediction matches (homeWin=true)
+    // but the actual winner is the AWAY team (CLE). This simulates a
+    // 2-game wrong streak heading into G7.
+    synthSeries.games[4].winner = synthSeries.awayTeam.abbr;  // G5 → CLE
+    synthSeries.games[4].prediction = { homeWin: true, homeScore: 110, awayScore: 100, margin: 10 };
+    synthSeries.games[5].winner = synthSeries.awayTeam.abbr;  // G6 → CLE
+    synthSeries.games[5].prediction = { homeWin: true, homeScore: 108, awayScore: 102, margin: 6 };
+    const g7Streak = ctx.calcGameProjection(synthSeries, 'DET-CLE', 7);
+    assert(g7Streak.wrongStreak >= 2,
+      `Synthetic 2-game wrong streak detected (got ${g7Streak.wrongStreak})`);
+    assert(g7Streak.variancePct > g7.variancePct,
+      `Wrong-streak widens variance further: ${g7Streak.variancePct} > ${g7.variancePct}`);
+
+    // 25c-h: A correct prediction breaks the streak counter
+    synthSeries.games[5].winner = synthSeries.homeTeam.abbr;  // G6 → DET (correct)
+    const g7Broken = ctx.calcGameProjection(synthSeries, 'DET-CLE', 7);
+    assert(g7Broken.wrongStreak === 0,
+      `Correct G6 prediction breaks streak counter (got ${g7Broken.wrongStreak})`);
+  }
+
+  // ============================================================
   // TEST 26: Edge detector Phase 71 guardrails
   //   - Un-projected stat hard CAUTION (threes/STL/BLK)
   //   - G6/G7 elimination cap downgrades PLACE → CAUTION

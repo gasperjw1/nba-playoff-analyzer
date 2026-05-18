@@ -16,6 +16,14 @@
 const NEWS = [
   {
     date: '2026-05-18',
+    severity: 'info',
+    series: 'DET-CLE',
+    headline: 'Model post-mortem: DET-CLE G7 was a 35pt margin miss — Phase 73 widens elimination-game variance',
+    body: 'The G7 prediction (DET +4 LOW) missed by 35pts (actual CLE +31). Third straight wrong-winner call on this series after G5 OT + G6 road blowout. Root causes: (1) Cade went 39→21→13 across the last 3 games as CLE escalated their defensive scheme — the engine treats matchups as static. (2) Bench variance is uncapped; Merrill went 23pts on 5-8 3PT (~17 above his median). (3) Phase 71c per-player override added +11 to Cade in expectation but he was at the opposite extreme of his distribution. Phase 71 G7 cap downgraded all PLACE bets → CAUTION and reduced stakes 50%, saving ~$76 vs full-stake exposure. Phase 73 ships TWO fixes: (a) ELIMINATION_VARIANCE_MULT 1.4x widens scoring bands for G6/G7 — doesn\'t shift central estimate, just produces honestly wider tails for MC sim. (b) Wrong-direction streak detector: when engine has been wrong-winner 2+ consecutive games of a series, variance widens 15% per game. Doesn\'t prevent future misses but acknowledges the model\'s own track record as a signal.',
+    source: 'Internal post-game analysis / Phase 73 commit',
+  },
+  {
+    date: '2026-05-18',
     severity: 'major',
     series: 'OKC-SAS',
     headline: 'WCF set: OKC (1) vs SAS (2), G1 ~Tue May 20',
