@@ -306,8 +306,14 @@ function renderHomePage(el) {
     ? `${newsSection}${betsSection}`
     : `<div class="home-row">${newsSection}${betsSection}</div>`;
 
+  // Phase 73g: lineup-override banner. Renders only when active scratches
+  // are in effect — empty string otherwise so no UI noise on normal days.
+  const overrideBanner = (typeof renderLineupOverrideBanner === 'function')
+    ? renderLineupOverrideBanner() : '';
+
   el.innerHTML = `
     <div class="home-page">
+      ${overrideBanner}
 
       <section class="home-section">
         <h2 class="home-section-title">Tonight &middot; ${homeFormatDate(today)}</h2>

@@ -99,15 +99,32 @@ function findSafeLines(simResult, playerName, statType, opts) {
   // For each target threshold, find the deepest line.
   // P(over X) = (count where v > X) / N.
   // To get P(over) >= threshold, X must be <= the (1-threshold) quantile.
+  //
+  // Phase 73g: lines are forced to HALF-INTEGERS (0.5, 1.5, 2.5...). DK
+  // books only list .5 increments for prop alt lines; a leg like "ast o1"
+  // that we previously generated isn't actually placeable AND created a
+  // PUSH/LOSS ambiguity (Champagnie hit exactly 1 → MISS under strict-over
+  // book settlement, but unclear in our hit-rate calc since `v > 1` is
+  // false for v=1). Forcing half-integers makes every line settle cleanly.
+  function _toHalfInteger(v) {
+    // Round to nearest 0.5
+    const half = Math.round(v * 2) / 2;
+    // If we landed on a whole number, drop to the safer half below
+    // (rounding DOWN preserves the conservative "deepest line that
+    // still clears threshold" semantic — never offer a riskier line
+    // than the math justifies).
+    return (half === Math.floor(half)) ? half - 0.5 : half;
+  }
+
   function deepestLineAtThreshold(threshold) {
     const idx = Math.max(0, Math.floor((1 - threshold) * sorted.length) - 1);
     const value = sorted[idx];
-    // Round DOWN to nearest 0.5 (alt lines are .5 increments)
-    let line = Math.floor(value * 2) / 2;
+    // Half-integer line: never a whole number (avoids push-on-exact)
+    let line = _toHalfInteger(Math.floor(value * 2) / 2);
     // Clamp UP to the realistic DK floor — refusing to recommend lines
     // the book won't list. Hit rate may dip slightly when we clamp.
     const realistic = line >= floor;
-    if (!realistic) line = Math.ceil(floor * 2) / 2; // round up to next 0.5
+    if (!realistic) line = _toHalfInteger(Math.ceil(floor * 2) / 2);
     const hits = arr.filter(v => v > line).length;
     const hitRate = +(hits / arr.length).toFixed(3);
     const estJuice = _estimateAmericanFromHitRate(hitRate);

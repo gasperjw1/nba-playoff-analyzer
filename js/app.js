@@ -45,6 +45,22 @@ if (typeof reconcileAllBets === 'function' && typeof BETS !== 'undefined' && typ
 
 // Boot the app
 loadState();
+
+// Phase 73g: apply LINEUP_OVERRIDES BEFORE initScenarioState so the
+// scenario builder sees the overridden ratings (scratched players
+// initialize as OUT instead of IN). Skipping this order means the
+// scenario state holds a stale "IN" for a player whose actual rating
+// just got zeroed by the override.
+if (typeof applyLineupOverrides === 'function') {
+  const __ovr = applyLineupOverrides();
+  if (__ovr.errors && __ovr.errors.length) {
+    console.warn('[lineup-overrides]', __ovr.errors.length, 'error(s):', __ovr.errors);
+  }
+  if (__ovr.applied > 0) {
+    console.info(`[lineup-overrides] applied ${__ovr.applied} scratch(es) for ${(typeof CURRENT_DATE !== 'undefined' ? CURRENT_DATE : 'today')}`);
+  }
+}
+
 initScenarioState();
 
 // Phase 73d: sync the series cursor with currentPlayoffRound + currentConf

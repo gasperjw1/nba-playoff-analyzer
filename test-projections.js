@@ -1164,6 +1164,7 @@ function runTests() {
       'js/engine/ratings.js', 'js/engine/scenarios.js', 'js/engine/projections.js',
       'js/engine/simulation.js', 'js/engine/graduation.js', 'js/engine/auto-resolve.js',
       'js/engine/projections-chs.js', 'js/engine/player-tendencies.js',
+      'js/engine/lineup-overrides.js',
       'js/engine/monte-carlo.js', 'js/engine/parlay-builder.js',
       'js/engine/edge-detector.js', 'js/engine/risk-controls.js',
       'js/engine/risk-analytics.js',
@@ -2312,6 +2313,150 @@ function runTests() {
       `Type-level spread downgraded to CAUTION`);
     assert(ctx.HISTORICAL_R2.byType.spread.note && ctx.HISTORICAL_R2.byType.spread.note.includes('margin MAE'),
       `Type-level spread carries explanatory note about margin MAE`);
+  }
+
+  // ============================================================
+  // TEST 27: Phase 73g — line half-integer + MC freshness + overrides
+  // ============================================================
+  console.log('\nTEST 27: Phase 73g (half-integer lines + MC freshness + lineup overrides)');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/utils.js','js/state.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js','js/engine/lineup-overrides.js',
+     'js/engine/monte-carlo.js','js/engine/parlay-builder.js']
+      .forEach(f => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx));
+
+    // ── 27a: Half-integer line rule ─────────────────────────────────
+    // findSafeLines should NEVER return a whole-number line. Run the
+    // sim on a real series and verify all generated lines are .5-ending.
+    const okcSas = ctx.SERIES_DATA.find(s => s.id === 'OKC-SAS');
+    if (okcSas) {
+      const mc = ctx.runMonteCarlo(okcSas, 1, { iterations: 400 });
+      if (mc) {
+        const lines = ctx.safeLinesForAllPlayers(mc, { threshold: 0.80, maxJuice: -500 });
+        let wholeCount = 0;
+        lines.forEach(l => {
+          // Half-integer: x * 2 is odd
+          if ((l.line * 2) % 2 === 0) wholeCount++;
+        });
+        assert(wholeCount === 0,
+          `All ${lines.length} generated lines are half-integers (0.5/1.5/2.5/...). Whole-number lines: ${wholeCount}`);
+      }
+    }
+
+    // ── 27b: MC sim outputs generatedAt timestamp ────────────────────
+    if (okcSas) {
+      const mc = ctx.runMonteCarlo(okcSas, 1, { iterations: 200 });
+      assert(mc && typeof mc.generatedAt === 'string',
+        `MC output includes generatedAt timestamp (got ${typeof mc.generatedAt})`);
+      assert(mc.generatedAt.match(/^\d{4}-\d{2}-\d{2}T/),
+        `generatedAt is ISO 8601 format (got "${mc.generatedAt}")`);
+      assert(typeof mc.activePlayerCount === 'number' && mc.activePlayerCount > 0,
+        `MC output includes activePlayerCount (got ${mc.activePlayerCount})`);
+    }
+
+    // ── 27c: formatMCFreshness returns sane strings ──────────────────
+    const justNow = new Date().toISOString();
+    assert(ctx.formatMCFreshness(justNow).match(/<1 min ago|\d+ min ago/),
+      `formatMCFreshness on current time returns expected format (got "${ctx.formatMCFreshness(justNow)}")`);
+
+    const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const fresh10 = ctx.formatMCFreshness(tenMinAgo);
+    assert(fresh10.includes('10 min ago') || fresh10.includes('9 min ago') || fresh10.includes('11 min ago'),
+      `10-min-old MC reports "~10 min ago" (got "${fresh10}")`);
+
+    const twoHoursAgo = new Date(Date.now() - 125 * 60 * 1000).toISOString();
+    const fresh2h = ctx.formatMCFreshness(twoHoursAgo);
+    assert(fresh2h.match(/^MC run \d+h \d+m ago$/),
+      `>1h old MC reports "Nh Mm ago" format (got "${fresh2h}")`);
+
+    assert(ctx.formatMCFreshness(null) === '' || ctx.formatMCFreshness(null) === undefined,
+      `null timestamp returns empty string`);
+
+    // ── 27d: LINEUP_OVERRIDES + applyLineupOverrides ─────────────────
+    assert(Array.isArray(ctx.LINEUP_OVERRIDES),
+      `LINEUP_OVERRIDES is an array`);
+
+    // Add a synthetic override + apply + verify
+    const okcSas2 = ctx.SERIES_DATA.find(s => s.id === 'OKC-SAS');
+    const targetPlayer = okcSas2.awayTeam.players.find(p => p.name === 'De\'Aaron Fox');
+    if (targetPlayer) {
+      const originalRating = targetPlayer.rating;
+      ctx.LINEUP_OVERRIDES.push({
+        date: ctx.CURRENT_DATE,
+        seriesId: 'OKC-SAS',
+        playerName: "De'Aaron Fox",
+        status: 'OUT',
+        reason: 'test scratch',
+        source: 'TEST 27d',
+      });
+      const result = ctx.applyLineupOverrides();
+      assert(result.applied === 1, `applyLineupOverrides applied 1 override (got ${result.applied})`);
+      assert(targetPlayer.rating === 0, `Player rating zeroed (was ${originalRating}, now ${targetPlayer.rating})`);
+      assert(targetPlayer._overrideOriginalRating === originalRating,
+        `Original rating preserved on _overrideOriginalRating`);
+      assert(typeof targetPlayer.injury === 'string' && targetPlayer.injury.includes('OUT'),
+        `Player.injury set to "OUT — ..." string`);
+      assert(targetPlayer._overrideApplied === true,
+        `Player flagged with _overrideApplied`);
+
+      // Idempotent — re-applying shouldn't double-zero or re-set original
+      ctx.applyLineupOverrides();
+      assert(targetPlayer.rating === 0 && targetPlayer._overrideOriginalRating === originalRating,
+        `applyLineupOverrides idempotent`);
+
+      // Reset for downstream tests
+      targetPlayer.rating = originalRating;
+      delete targetPlayer.injury;
+      delete targetPlayer._overrideOriginalRating;
+      delete targetPlayer._overrideApplied;
+      ctx.LINEUP_OVERRIDES.pop();
+    }
+
+    // ── 27e: applyLineupOverrides handles bad inputs gracefully ──────
+    ctx.LINEUP_OVERRIDES.push({
+      date: ctx.CURRENT_DATE,
+      seriesId: 'NONEXISTENT',
+      playerName: 'Foo Bar',
+      status: 'OUT',
+      reason: 'bad input test',
+    });
+    const badResult = ctx.applyLineupOverrides();
+    assert(badResult.errors.length >= 1,
+      `bad seriesId surfaces an error (got ${badResult.errors.length} errors)`);
+    ctx.LINEUP_OVERRIDES.pop();
+
+    // ── 27f: Date-filter — overrides only apply for matching date ────
+    ctx.LINEUP_OVERRIDES.push({
+      date: '2099-12-31',   // future date
+      seriesId: 'OKC-SAS',
+      playerName: "De'Aaron Fox",
+      status: 'OUT',
+      reason: 'future override',
+    });
+    const futureResult = ctx.applyLineupOverrides();
+    assert(futureResult.applied === 0,
+      `Override with future date is skipped (got ${futureResult.applied} applied)`);
+    ctx.LINEUP_OVERRIDES.pop();
+
+    // ── 27g: renderLineupOverrideBanner emits HTML when overrides active ──
+    if (typeof ctx.renderLineupOverrideBanner === 'function') {
+      // Clean state — no overrides → empty
+      if (typeof ctx.globalThis !== 'undefined') ctx.globalThis.__LINEUP_OVERRIDE_LOG = [];
+      // Note: we can't easily simulate populated log here without re-applying;
+      // verify the no-op case at minimum
+      const emptyBanner = ctx.renderLineupOverrideBanner();
+      assert(emptyBanner === '' || emptyBanner.length === 0,
+        `Empty override log renders empty string banner`);
+    }
   }
 
   // ============================================================

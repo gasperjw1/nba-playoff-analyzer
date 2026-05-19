@@ -294,8 +294,18 @@ function runMonteCarlo(series, gameNum, opts = {}) {
   const medianAbsMargin = Math.abs(_percentile([...margins].sort((a,b)=>a-b), 0.50));
   const blowoutProbVal = margins.filter(m => Math.abs(m) >= 18).length / N;
 
+  // Phase 73g: generatedAt + activeRoster snapshot. The MC sim is run
+  // at render-time on CHS Lab, so its outputs are only as fresh as the
+  // SERIES_DATA at that moment. If a player's rating changes (e.g.
+  // last-minute scratch flips Fox rating 80 → 0), a subsequent MC re-
+  // run will project differently, but any UI element STILL showing the
+  // old MC output is stale. The timestamp lets the UI render "MC run
+  // 23 min ago" so users see the freshness.
+  const activePlayerCount = [...homePlayers, ...awayPlayers].length;
   return {
     iterations: N,
+    generatedAt: new Date().toISOString(),
+    activePlayerCount,
     seriesId: series.id,
     gameNum,
     venue: gameAtAwayVenue ? series.awayTeam.abbr : series.homeTeam.abbr,
@@ -315,6 +325,18 @@ function runMonteCarlo(series, gameNum, opts = {}) {
       players: playerDist,  // already keyed name → { pts:[], reb:[], ast:[], ... }
     },
   };
+}
+
+// Phase 73g: format a generatedAt timestamp as "MC run N min/h ago" for UI
+function formatMCFreshness(generatedAt) {
+  if (!generatedAt) return '';
+  const generated = new Date(generatedAt);
+  const now = new Date();
+  const ageMin = Math.round((now - generated) / 60000);
+  if (ageMin < 1) return 'MC run <1 min ago';
+  if (ageMin < 60) return `MC run ${ageMin} min ago`;
+  const hr = Math.floor(ageMin / 60);
+  return `MC run ${hr}h ${ageMin % 60}m ago`;
 }
 
 // ── Player-name resolution shared by all calculators ──────────────────
@@ -500,6 +522,7 @@ if (typeof module !== 'undefined' && module.exports) {
     calcSpreadHitRate,
     calcTotalHitRate,
     calcParlayHitRate,
+    formatMCFreshness,
     _sampleNormal,
     _samplePlayerGame,
     _sampleTeamGame,
