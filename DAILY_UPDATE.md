@@ -392,6 +392,57 @@ Engine output already auto-derives, but `prediction.reasoning` and
   R2 series; run it as part of step 8.
 ```
 
+### 5b · Late inactive-list confirmation (Phase 73g, May 19+)
+
+```
+⚠ The morning task can't catch late-breaking scratches. NBA teams
+release the official inactive list ~30 minutes before tip, and
+beat reporters sometimes break news 1-2 hours before. The 5/18
+WCF G1 De'Aaron Fox scratch (reported ~7pm for an 8:30pm tip)
+was missed by the daily task → CHS Lab generated parlay
+candidates against a Fox-active engine → projections were stale.
+
+PROCESS — done same-day, ~30 min before tip:
+1. Check the official inactive list at https://official.nba.com/
+   OR the Vegas closing lineup tracker (Underdog Fantasy works).
+2. For each scratch NOT already in series-data.js with rating:0,
+   append an entry to js/engine/lineup-overrides.js LINEUP_OVERRIDES:
+
+     {
+       date:       '2026-05-19',
+       seriesId:   'NYK-CLE',
+       playerName: 'Donovan Mitchell',           // exact roster name
+       status:     'OUT',
+       reason:     'Late scratch — Achilles tendinitis flare',
+       source:     'Shams Charania 19:48 ET',
+     }
+
+3. Save the file. The page reloads → app.js boot calls
+   applyLineupOverrides() → engine sees rating=0 → CHS Lab MC
+   re-runs against the corrected lineup.
+4. Verify the orange banner appears at the top of Home/Bets/Lab:
+     "⚠ Late lineup overrides active: <Player> (Series, rating
+     X→0). Projections + MC sim updated to reflect these scratches."
+5. RE-RUN test-projections.js to confirm no regressions.
+
+PERSISTENT FIX — done the NEXT morning during the routine:
+- Move the scratch from LINEUP_OVERRIDES to a proper update in
+  js/data/series-data.js (set player.rating = 0 + player.injury
+  = "OUT — <reason>").
+- Remove the override entry (or leave commented out as historical
+  reference like the 5/18 Fox example).
+- Both belt-and-suspenders gives idempotent behavior — overrides
+  are no-ops once SERIES_DATA matches.
+
+GUARD AGAINST MISSING THIS STEP:
+- The CHS Lab parlay-candidates panel now shows "MC run N min ago"
+  next to each game card. If you see "MC run >60 min ago" and
+  tip is in <30 min, that's a signal to reload the page so MC
+  re-runs against latest data (overrides or otherwise).
+- The Home page renders an ORANGE BANNER whenever
+  LINEUP_OVERRIDES has active entries — visible on every nav.
+```
+
 ---
 
 ## 6 · Featured Parlays for today

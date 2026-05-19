@@ -325,7 +325,7 @@ function chsLabRenderParlayCandidates() {
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <span style="font-size:13px;font-weight:700;color:#fff;">${series.id} · G${gameNum}</span>
-          <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims · ${reliable.length} reliable legs</span>
+          <span style="font-size:10px;color:var(--text-dim);">${mc.iterations} sims · ${reliable.length} reliable legs${typeof formatMCFreshness === 'function' ? ' · ' + formatMCFreshness(mc.generatedAt) : ''}</span>
         </div>
         ${reliableTable}
         ${renderParlayBlock(reliableParlay, 'RELIABLE PARLAY · ≥80% COMBINED', '#22c55e')}
