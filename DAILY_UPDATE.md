@@ -193,6 +193,57 @@ the on-page P&L chart. This is one logical pass — don't split it.
   "live" forever (home page filter is `!result`, not date-based).
 ```
 
+### 2c · Write the game RESULT to series-data.js (Phase 73f, May 19+)
+
+```
+⚠ HARD REQUIREMENT — the 5/19 daily run shipped this gap:
+   bets settled, parlays settled, ledger updated, but
+   `series.games[N-1].winner / homeScore / awayScore / notes`
+   never got written. Downstream consequences:
+   - Home page still shows the game as upcoming
+   - Series Analysis renders the prediction without an "ACTUAL" badge
+   - wrongStreak detector (Phase 73) doesn't fire on the next game
+   - Calibration audit can't include the game
+   - "Show prior games of bets" accordion misses the slate
+
+   Find the series in js/data/series-data.js, locate
+   `games[<gameNum-1>]`, and write:
+       result:   <winning team abbr>
+       homeScore: <number>
+       awayScore: <number>
+       winner:    <winning team abbr>
+       notes:     <2-3 sentence recap with key player lines + a
+                  one-line model retro: "MODEL: predicted X by Y
+                  (CONF). ACTUAL Z by W — wrong/right winner,
+                  Δpt margin miss/match.">
+
+   Validate: `node test-projections.js` — TEST 11 (homeWin/score/
+   margin consistency) + TEST 17 (winner-vs-scores validator)
+   catch any miswrite.
+```
+
+### 2d · Add modelLessons[] entry for the resolved game (Phase 73f)
+
+```
+Established R1/R2 pattern: every resolved game contributes 3-6
+modelLessons entries on the series. Daily task must capture:
+   - Type 'correct' or 'missed' for each lesson
+   - One-sentence learning grounded in the actual result vs prediction
+   - At least one lesson tied to a specific Phase fix (e.g.,
+     "Phase 71c override pushed Cade to 28; actual was 13. Override
+     has high single-game variance even when calibrated.")
+
+If `series.modelLessons` doesn't exist yet, create it:
+   modelLessons: [
+     { type: "missed", lesson: "..." },
+     { type: "correct", lesson: "..." },
+   ]
+
+The Series Analysis G1 tab renders this banner; without it the
+panel is silent on what we learned. The Phase 71 audit cycle relies
+on these accumulating across the series for retrospective review.
+```
+
 ---
 
 ## 3 · Create today's BETS entries + game placeholder + slate flip
@@ -583,6 +634,36 @@ not phase-worthy.
 
 **If the sentinel file does NOT exist** (normal mode):
 ```
+- ⚠ PRE-PUSH GUARD (Phase 73f, May 19 2026):
+  Before pushing, REBASE on origin/main to absorb anything that
+  landed while the daily task was running:
+
+      git fetch origin main
+      git pull --rebase origin main
+
+  If the rebase reports NO CONFLICTS:
+    - Re-run the test suite (`node test-projections.js`) to confirm
+      the rebased state is still green. Engine code on origin/main
+      may have changed (e.g. Phase 73 variance amplifier) and the
+      data the daily task wrote needs to coexist with it.
+    - Proceed with the push below.
+
+  If the rebase reports CONFLICTS:
+    - DO NOT auto-resolve. STOP and surface to the user with:
+        git status (conflict file list)
+        git diff (the actual conflicts)
+      Reason: the daily task touches data files that overlap with
+      feature work (e.g. the same bet entries, news appends, or
+      ledger appends in different positions). Wrong auto-resolve
+      can silently corrupt data. Ask the user to resolve.
+
+  WHY this matters: on 5/19 the daily task committed locally at
+  09:38 but couldn't push because origin/main had moved 19 commits
+  ahead during the run (Phase 73 PR merges landing in parallel).
+  The fix was a clean rebase post-facto — the guard above moves
+  that step into the daily routine so the push always succeeds OR
+  fails loudly with a real reason.
+
 - git push to the working branch
 - Fast-forward main:
     git -C <main-worktree> pull --ff-only origin <branch>

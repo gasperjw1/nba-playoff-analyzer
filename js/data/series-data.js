@@ -5204,9 +5204,9 @@ const SERIES_DATA = [
         awayDefOnHome: { defender:"Evan Mobley", target:"Jalen Brunson", dLebron:1.346, targetUsg:32.0, note:"Mobley switches onto Brunson in PnR. Allen + Mobley combine for elite paint protection. Brunson must use KAT screens + side PnR to create separation." }
       },
       game1: {
-        spread: "NYK -5.5",
-        moneyline: "NYK -180 / CLE +150",
-        ou: "O/U 216.5",
+        spread: "NYK -7.5",
+        moneyline: "NYK -265 / CLE +210",
+        ou: "O/U 215.5",
         pick: "NYK",
         confidence: "medium",
         projScore: "NYK 110 — CLE 104",
@@ -5329,6 +5329,14 @@ const SERIES_DATA = [
       id: "OKC-SAS",
       conf: "West",
       round: "CF",
+      modelLessons: [
+        { type: "missed", lesson: "G1: Wrong winner (engine OKC by 6, actual SAS by 7 in 2OT) on the first CF out-of-sample game. Wemby went historic (41/24) — outside any reasonable variance band. Phase 71 R3 out-of-sample caveat fired exactly as warned." },
+        { type: "missed", lesson: "G1: SGA 7-23 FG (30%) — Castle/Harper POA defense was more effective than the dLEBRON-based projection (0.91) suggested. The engine treats individual matchup defense as static; CF playoff D is higher intensity. Phase 71b star-bias correction trimmed his projection from 32 to 28.9, but actual was 24 — the structural over-prediction on stars is real even after the fix." },
+        { type: "missed", lesson: "G1: Caruso 31pts (8 made 3s) was the kind of bench tail-event the Phase 73 elimination-variance amplifier is meant to address — but Phase 73 only fires for G6/G7 currently. Same pattern in DET-CLE G7 (Merrill 23 / 5-8 3PT). Lesson: bench variance is uncapped at any stage of the playoffs, not just elimination games." },
+        { type: "correct", lesson: "G1: Wemby reb projection 12.0 (Phase 71c) — actual 24. Direction right (over), magnitude wildly off ceiling. The reb O11.5 bet won, the deeper alt O9.5 in the floor parlay won easily. Phase 71's deep-alt-line floor discipline saved the slate (+$180 net despite wrong-winner)." },
+        { type: "missed", lesson: "G1: Holmgren 8pts on 2-7 FG — Wemby gravity limited him to one-third of his series projection. The starter-tier bias correction (-2pt PTS) wasn't enough; Holmgren in particular has a 'Wemby matchup' suppression that the engine doesn't model. R3 audit candidate: add a 'paint-defender vs other paint-defender' matchup suppression." },
+        { type: "correct", lesson: "Slate P&L: +$180 net on parlays (2 floors hit at +$105 / +$125; chalk traditional missed -$50) DESPITE wrong-winner G1. Phase 65 Reliable Floor discipline (deep alt-line counting stats) is the single most validated piece of the framework — keeps winning in the chaos cases where the model is wrong-winner. Risk Dashboard counterfactual (drop high×prop cells) keeps proving out." }
+      ],
       priorRound: {
           home: {
               seriesId: "OKC-LAL",
@@ -6128,11 +6136,11 @@ const SERIES_DATA = [
       games: [
           {
               num: 1,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "SAS",
+              homeScore: 115,
+              awayScore: 122,
+              winner: "SAS",
+              notes: "SAS 122-115 (2OT) at Paycom Center. SAS LEADS WCF 1-0. Wembanyama 41pts/24reb/3blk/2ast in 49+min — youngest player ever with 40+pts and 20+reb in a playoff game (22yr 134d, beating Kareem 1970). Joined Wilt Chamberlain as the only players with 40/20 in a Conference Finals debut. Hit Curry-range logo three to force 2OT; sealed with two dunks in the final minute. Dylan Harper 24/11/6ast/7stl — first rookie with 15+pts/5+reb/5+stl in a playoff game since Magic 1980 (also SAS team playoff record for steals). Castle 17, Vassell 13, Johnson 13, Champagnie 11. SGA 24/12ast on 7-23 FG (30%) — Harper/Castle hounded him at the POA. Holmgren 8/8/2blk on 2-7 FG (limited by Wemby gravity). Jalen Williams back from hamstring with 26pts. Alex Caruso 31pts off OKC bench on 8 made threes (career playoff #2). Sixth Game 1 in NBA playoff history to go 2OT — first since SAS-GSW 2013. SAS stole HCA, validates the 4-1 reg-season record over OKC. MODEL: predicted OKC by 6 (MEDIUM); ACTUAL SAS by 7 (in 2OT) — wrong winner, 13pt margin miss (reg-time was tied 105-105). The Phase 71 R3 out-of-sample caveat fired on the first CF game.",
               prediction: {
                   homeWin: true,
                   homeScore: 110,
