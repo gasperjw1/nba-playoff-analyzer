@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Mon May 18 | WCF G1: SAS @ OKC 8:30 PM @ Paycom (OKC -6.5 / 219.5) | ECF G1 tomorrow Tue 5/19 CLE @ NYK 8 PM @ MSG | R2 ARCHIVED — CLE 4-3 over DET (G7: 125-94), SAS 4-2 over MIN</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Tue May 19 | ECF G1: CLE @ NYK 8:00 PM @ MSG (NYK -7.5 / 215.5) | WCF G1 ARCHIVED — SAS 122-115 (2OT) over OKC, Wemby 41/24 (SAS leads 1-0); WCF G2 Wed 5/20 at Paycom | R2 DONE — CLE 4-3 over DET, SAS 4-2 over MIN</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2967,11 +2967,12 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Thu May 14</span><span style="color:#aaa;">No games (off-day between G5 and G6)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
             <span style="color:#aaa;">Fri May 15</span><span style="color:#aaa;">Big Man Reb Floor &#x2717; (Wemby 6reb in blowout), MIN Volume Floor &#x2717; (Randle 2pts vs Wemby paint), CLE Closeout Volume &#x2717; (Mitchell 18 vs DET defense)</span><span style="color:#aaa;">0-3</span><span style="color:#ef4444;font-weight:700;">-$300</span>
             <span style="color:#aaa;">Sun May 17</span><span style="color:#aaa;">DET Volume (Cade+Duren) &#x2717; (Cade 13 career-low), CLE Veterans (Mitchell+Mobley) &#x2713; (+$60; 26pts/12reb)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$10</span>
+            <span style="color:#aaa;">Mon May 18</span><span style="color:#aaa;">OKC Stars (SGA+Holmgren) &#x2713; (+$105; SGA 24 / Holm 8reb), Wemby+Castle Floor &#x2713; (+$125; Wemby 24reb / Castle 17)</span><span style="color:#aaa;">2-0</span><span style="color:#3dd68c;font-weight:700;">+$230</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$2,500</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$702</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">10-16</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$2,700</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$472</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">12-16</strong></span>
           </div>
         </div>
 
@@ -2993,21 +2994,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Thu May 14</span><span style="color:#aaa;">No games (off-day between G5 and G6)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
             <span style="color:#aaa;">Fri May 15</span><span style="color:#aaa;">SAS Spread+Wemby Reb &#x2717; (SAS covered +30, Wemby 6reb), Chaos SAS Closeout+Wemby 25+ &#x2717; (SAS hit ML, Wemby 19pts capped by blowout)</span><span style="color:#aaa;">0-2</span><span style="color:#ef4444;font-weight:700;">-$150</span>
             <span style="color:#aaa;">Sun May 17</span><span style="color:#aaa;">Chaos CLE Road+Mitchell30+ &#x2717; (CLE ML hit blowout, Mitchell 26 in 31min not 30+)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
+            <span style="color:#aaa;">Mon May 18</span><span style="color:#aaa;">OKC Chalk 3-Leg (OKC ML / SGA 27.5 / OKC -6.5) &#x2717; (SAS 122-115 2OT — all three legs missed)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,750</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$511</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-23</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,800</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$561</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-24</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 Settled Wagered: <strong style="color:#fff;">$5,250</strong></span>
-          <span style="color:#aaa;">R2 Settled Net: <strong style="color:#ef4444;">-$1,213</strong></span>
-          <span style="color:#aaa;">R2 Record: <strong style="color:#aaa;">17-39</strong></span>
+          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$5,500</strong></span>
+          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$1,033</strong></span>
+          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">19-40</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play Mon May 18 (WCF G1 — SAS @ OKC): <strong style="color:#22d3ee;">$100</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play Tue May 19 (ECF G1 — CLE @ NYK): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

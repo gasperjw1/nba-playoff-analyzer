@@ -346,4 +346,20 @@ const NEWS = [
     body: 'After the 31-point G7 loss at home, the Pistons enter the offseason facing three big questions. (1) Cade Cunningham contract — eligible for a designated rookie supermax this summer. (2) Coach J.B. Bickerstaff — first full season; the G7 collapse will draw scrutiny but he took DET from lottery to #1 seed in one year. (3) Duren long-term — overpowered by Allen/Mobley in the G7 interior; could DET shop him for wing scoring? The biggest takeaway: the Cade-Duren PnR worked in G5-G6 but Harris\' 0-6 FG in G7 showed DET\'s secondary scoring is one bad night from collapse.',
     source: 'Yahoo Sports',
   },
+  {
+    date: '2026-05-18',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'SAS 122-115 (2OT): Wemby 41/24 stuns OKC, SAS leads WCF 1-0',
+    body: 'Instant classic in OKC. Victor Wembanyama 41pts/24reb/3blk/2ast in 49+min — youngest player ever with 40+pts and 20+reb in a playoff game (22yr 134d, beating Kareem 1970). Joined Wilt Chamberlain as the only players with 40/20 in their Conference Finals debut. Hit a Curry-range logo three to force 2OT, then sealed it with two dunks in the final minute. Dylan Harper 24/11/6ast/7stl — first rookie with 15+pts/5+reb/5+stl in a playoff game since Magic Johnson in 1980 (also a team playoff record for steals). Castle 17, Vassell 13, Johnson 13, Champagnie 11. Alex Caruso 31pts off OKC bench on 8 made threes (career playoff #2). SGA 24/12ast on 7-23 FG (30%) — Harper/Castle hounded him at the POA. Holmgren 8/8/2blk on 2-7 FG (limited by Wemby gravity). Jalen Williams back from hamstring with 26pts. Sixth Game 1 in NBA playoff history to go 2OT — first since SAS-GSW 2013. SAS stole HCA, holds the 4-1 reg-season record over OKC. G2: Wed 5/20 at Paycom.',
+    source: 'ESPN / NBA.com',
+  },
+  {
+    date: '2026-05-19',
+    severity: 'major',
+    series: 'NYK-CLE',
+    headline: 'ECF G1 tonight: CLE @ NYK 8 PM at MSG — NYK -7.5 / 215.5',
+    body: 'Tip-off at 8 PM ET on ESPN. NYK (#3 seed, swept PHI 4-0, rested 9 days) hosts CLE (#4 seed, beat DET 4-3 via Sunday\'s G7 road blowout 125-94, traveled in on 1 day rest). Rest gap of 9 days vs 1 day is the largest in any ECF G1 on record. DraftKings opener: NYK -7.5 / ML -265 / total 215.5. Marquee matchups: Brunson-vs-Mitchell at PG (Brunson 29 ppg vs PHI; Mitchell 28.8 vs DET — both clear MVP-of-the-series). KAT-vs-Mobley/Allen at the 5 (KAT stretch-5 pulls Mobley out of paint; Allen tests KAT on the glass). Bridges/OG perimeter D is the toughest CLE will see this playoff. <strong>Variables to watch:</strong> NYK rust risk (longer breaks historically dip Q1 efficiency 4-6pts) vs CLE legs-tired risk (Mitchell 31min Sun, Allen on chronic knee). Series schedule: G1 5/19, G2 5/21 (MSG), G3 5/23, G4 5/25 (CLE), G5 5/27, G6 5/29, G7 5/31.',
+    source: 'NBA.com / ESPN',
+  },
 ];

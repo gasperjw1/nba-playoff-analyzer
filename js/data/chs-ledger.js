@@ -550,5 +550,30 @@ const CHS_LEDGER = [
       "awayScore": 104,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-05-18",
+    "series": "OKC-SAS",
+    "game": 1,
+    "retroactive": true,
+    "actual": {
+      "winner": "SAS",
+      "margin": 7,
+      "homeScore": 115,
+      "awayScore": 122
+    },
+    "mainPred": {
+      "winner": "OKC",
+      "margin": 4,
+      "homeScore": 112,
+      "awayScore": 108
+    },
+    "chsPred": {
+      "winner": "OKC",
+      "margin": 4,
+      "homeScore": 112,
+      "awayScore": 108,
+      "marginDeltaVsMain": 0
+    }
   }
 ];
