@@ -1630,7 +1630,7 @@ const BETS = [
     ],
     reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19). Companion leg to Wemby O9.5 alt in the WCF G1 Bigs Floor parlay.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: { outcome:'loss', actual:'Holmgren 7reb in 2OT game — just under 8.5. Despite the 49min game time, OKC\'s 7-23 FG night meant fewer defensive boards to clean and Wemby/Harper claimed the OREB share. Phase 71c REB calibration was directionally right; rough night for OKC\'s big.' },
+    result: { outcome:'loss', actual:'Holmgren 8reb in 2OT game — just under 8.5 by 0.5 (per series-data narrative: 8/8/2blk on 2-7 FG). Despite the 49+min game time, OKC\'s 7-23 SGA night plus Wemby/Harper claiming 35 combined boards squeezed Holmgren\'s defensive rebound share. Phase 71c REB calibration was directionally right; rough night for OKC\'s big.' },
   },
 
   // ═══════════════════════════════════════════════════════════════

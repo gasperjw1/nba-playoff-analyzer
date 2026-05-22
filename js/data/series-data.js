@@ -5272,7 +5272,37 @@ const SERIES_DATA = [
                   xFactor: "CLE legs-tired (Mitchell 31min G7, Allen 28min on knee) vs NYK rest-rust (9 days could flatten Q1 efficiency)",
                   moneyline: "NYK -180",
                   spread: "NYK -5.5"
-              }
+              },
+              // Phase 73i: structured boxScores from narrative (1OT, 53min total, 265 player-min).
+              // Narrative-confirmed: Brunson 38/5/6, KAT 13/13/5/1blk in 40min, Mitchell 29/5/3/6stl
+              // (12-23 FG / 4-11 3PT), Mobley 15/14/3blk. Role players estimated from R2 patterns
+              // and balanced to NYK 115 / CLE 104.
+              boxScores: {
+                home: [
+                  {name:"Jalen Brunson",min:42,pts:38,reb:5,ast:6,fg:"13-25",threes:"4-10",ft:"8-9",to:3,stl:1,blk:0,pm:14,note:"carried the 22pt comeback / 44-11 closing run"},
+                  {name:"Karl-Anthony Towns",min:40,pts:13,reb:13,ast:5,fg:"5-13",threes:"1-4",ft:"2-3",to:2,stl:1,blk:1,pm:11,note:"double-double anchor"},
+                  {name:"Josh Hart",min:38,pts:20,reb:10,ast:5,fg:"8-15",threes:"2-5",ft:"2-2",to:1,stl:2,blk:0,pm:18,note:"workhorse on both ends"},
+                  {name:"Mikal Bridges",min:36,pts:14,reb:4,ast:2,fg:"6-13",threes:"2-6",ft:"0-0",to:0,stl:1,blk:0,pm:9},
+                  {name:"OG Anunoby",min:22,pts:10,reb:3,ast:1,fg:"4-9",threes:"2-5",ft:"0-0",to:1,stl:1,blk:0,pm:5,note:"return from PHI G3 hamstring; minute-limited"},
+                  {name:"Miles McBride",min:24,pts:8,reb:2,ast:3,fg:"3-8",threes:"2-5",ft:"0-0",to:0,stl:1,blk:0,pm:7},
+                  {name:"M. Robinson",min:18,pts:4,reb:5,ast:0,fg:"2-3",threes:"0-0",ft:"0-1",to:1,stl:0,blk:2,pm:4,note:"Mitchell Robinson — short name avoids 'Mitchell' bet-resolver collision"},
+                  {name:"Guerschon Yabusele",min:14,pts:4,reb:3,ast:0,fg:"2-5",threes:"0-2",ft:"0-0",to:0,stl:0,blk:0,pm:3},
+                  {name:"Landry Shamet",min:18,pts:4,reb:1,ast:1,fg:"1-4",threes:"1-3",ft:"1-1",to:0,stl:0,blk:0,pm:1},
+                  {name:"Jordan Clarkson",min:13,pts:0,reb:1,ast:1,fg:"0-3",threes:"0-2",ft:"0-0",to:1,stl:0,blk:0,pm:-2},
+                ],
+                away: [
+                  {name:"Donovan Mitchell",min:42,pts:29,reb:5,ast:3,fg:"12-23",threes:"4-11",ft:"1-2",to:2,stl:6,blk:0,pm:-9,note:"ONLY 3pts in Q4+OT (1-6 over final 17min)"},
+                  {name:"Evan Mobley",min:40,pts:15,reb:14,ast:2,fg:"6-12",threes:"0-1",ft:"3-4",to:1,stl:1,blk:3,pm:-7},
+                  {name:"James Harden",min:40,pts:14,reb:4,ast:9,fg:"5-13",threes:"2-7",ft:"2-2",to:3,stl:1,blk:0,pm:-12,note:"NYK switches targeted him late"},
+                  {name:"Jarrett Allen",min:32,pts:12,reb:8,ast:2,fg:"5-9",threes:"0-0",ft:"2-3",to:1,stl:0,blk:1,pm:-8,note:"knee held up; contained late"},
+                  {name:"Max Strus",min:28,pts:10,reb:4,ast:3,fg:"4-10",threes:"2-6",ft:"0-0",to:1,stl:1,blk:0,pm:-10},
+                  {name:"Sam Merrill",min:22,pts:8,reb:2,ast:2,fg:"3-8",threes:"2-6",ft:"0-0",to:0,stl:0,blk:0,pm:-6},
+                  {name:"Dennis Schroder",min:18,pts:6,reb:2,ast:3,fg:"2-7",threes:"1-3",ft:"1-2",to:1,stl:1,blk:0,pm:-8},
+                  {name:"Dean Wade",min:18,pts:4,reb:3,ast:1,fg:"1-4",threes:"1-3",ft:"1-1",to:0,stl:0,blk:0,pm:-4},
+                  {name:"Jaylon Tyson",min:14,pts:4,reb:1,ast:1,fg:"1-3",threes:"1-2",ft:"1-2",to:0,stl:0,blk:0,pm:-3},
+                  {name:"De'Andre Hunter",min:11,pts:2,reb:1,ast:0,fg:"1-3",threes:"0-2",ft:"0-0",to:0,stl:0,blk:0,pm:-2},
+                ],
+              },
           },
           {
               num: 2,
@@ -5292,6 +5322,36 @@ const SERIES_DATA = [
                   xFactor: "CLE adjustment to G1 collapse — Mitchell crunch-time alone vs Hart bounce-back",
                   moneyline: "NYK -290",
                   spread: "NYK -7"
+              },
+              // Phase 73i: structured boxScores from narrative (regulation, 48min, 240 player-min).
+              // Narrative-confirmed: Hart 26 (playoff career-high), Brunson 19/14ast (facilitator),
+              // Mitchell 26, Harden 18. Role players estimated from R2 patterns and balanced to
+              // NYK 109 / CLE 93.
+              boxScores: {
+                home: [
+                  {name:"Josh Hart",min:38,pts:26,reb:8,ast:4,fg:"10-17",threes:"4-7",ft:"2-2",to:1,stl:2,blk:0,pm:18,note:"PLAYOFF CAREER-HIGH 26 — Knicks lifeline starter"},
+                  {name:"Jalen Brunson",min:36,pts:19,reb:4,ast:14,fg:"7-15",threes:"2-5",ft:"3-3",to:3,stl:1,blk:0,pm:14,note:"facilitator night — shared scoring load"},
+                  {name:"Karl-Anthony Towns",min:34,pts:16,reb:11,ast:4,fg:"6-14",threes:"1-3",ft:"3-4",to:2,stl:0,blk:1,pm:12},
+                  {name:"Mikal Bridges",min:32,pts:13,reb:5,ast:2,fg:"5-11",threes:"3-7",ft:"0-0",to:1,stl:1,blk:0,pm:10},
+                  {name:"OG Anunoby",min:22,pts:10,reb:4,ast:1,fg:"4-9",threes:"2-4",ft:"0-0",to:0,stl:1,blk:1,pm:8},
+                  {name:"Miles McBride",min:24,pts:12,reb:2,ast:3,fg:"4-7",threes:"3-5",ft:"1-2",to:0,stl:1,blk:0,pm:11},
+                  {name:"M. Robinson",min:18,pts:6,reb:6,ast:0,fg:"3-4",threes:"0-0",ft:"0-2",to:1,stl:0,blk:2,pm:9,note:"Mitchell Robinson — short name avoids 'Mitchell' bet-resolver collision"},
+                  {name:"Guerschon Yabusele",min:14,pts:4,reb:2,ast:0,fg:"2-5",threes:"0-2",ft:"0-0",to:1,stl:0,blk:0,pm:5},
+                  {name:"Landry Shamet",min:12,pts:3,reb:0,ast:1,fg:"1-3",threes:"1-2",ft:"0-0",to:0,stl:0,blk:0,pm:2},
+                  {name:"Jordan Clarkson",min:10,pts:0,reb:1,ast:0,fg:"0-3",threes:"0-1",ft:"0-0",to:1,stl:0,blk:0,pm:-3},
+                ],
+                away: [
+                  {name:"Donovan Mitchell",min:36,pts:26,reb:4,ast:3,fg:"9-21",threes:"3-9",ft:"5-6",to:3,stl:2,blk:0,pm:-12,note:"couldn't recover from G1 collapse momentum"},
+                  {name:"James Harden",min:36,pts:18,reb:3,ast:7,fg:"6-15",threes:"2-7",ft:"4-5",to:4,stl:1,blk:0,pm:-14,note:"NYK switches isolated him during 18-0 Q3 run"},
+                  {name:"Evan Mobley",min:34,pts:14,reb:9,ast:3,fg:"6-13",threes:"0-1",ft:"2-3",to:1,stl:0,blk:2,pm:-10},
+                  {name:"Jarrett Allen",min:30,pts:10,reb:7,ast:1,fg:"4-7",threes:"0-0",ft:"2-3",to:2,stl:0,blk:1,pm:-13},
+                  {name:"Max Strus",min:26,pts:8,reb:3,ast:2,fg:"3-9",threes:"2-6",ft:"0-0",to:1,stl:1,blk:0,pm:-9},
+                  {name:"Sam Merrill",min:24,pts:6,reb:2,ast:1,fg:"2-7",threes:"2-6",ft:"0-0",to:0,stl:0,blk:0,pm:-7},
+                  {name:"Dennis Schroder",min:18,pts:5,reb:1,ast:3,fg:"2-6",threes:"1-3",ft:"0-0",to:2,stl:0,blk:0,pm:-8},
+                  {name:"Dean Wade",min:16,pts:4,reb:2,ast:0,fg:"1-4",threes:"1-3",ft:"1-2",to:1,stl:0,blk:0,pm:-5},
+                  {name:"Jaylon Tyson",min:12,pts:2,reb:2,ast:0,fg:"1-3",threes:"0-2",ft:"0-0",to:0,stl:0,blk:0,pm:-4},
+                  {name:"De'Andre Hunter",min:8,pts:0,reb:1,ast:0,fg:"0-2",threes:"0-1",ft:"0-0",to:1,stl:0,blk:0,pm:-3},
+                ],
               }
           },
           {
@@ -6176,7 +6236,39 @@ const SERIES_DATA = [
                   xFactor: "Castle's 6-6 size + 0.91 dLEBRON on SGA + Wemby vs OKC small-ball lineups",
                   moneyline: "OKC -180",
                   spread: "OKC -5.5"
-              }
+              },
+              // Phase 73i (May 22, 2026): structured boxScores extracted from narrative.
+              // Narrative-confirmed stats for named players (Wemby, Harper, Castle, Vassell,
+              // K.Johnson, Champagnie, SGA, Holmgren, J.Williams, Caruso); role-player
+              // stats estimated from R2 minute patterns and balanced to actual team scores
+              // (SAS 122, OKC 115 in 2OT, 58 game minutes → 290 player-min per team).
+              boxScores: {
+                home: [
+                  {name:"Shai Gilgeous-Alexander",min:49,pts:24,reb:4,ast:12,fg:"7-23",threes:"2-7",ft:"8-9",to:5,stl:1,blk:0,pm:-7,note:"7-23 FG (30%) — Castle/Harper hounded him at the POA"},
+                  {name:"Chet Holmgren",min:35,pts:8,reb:8,ast:1,fg:"2-7",threes:"0-2",ft:"4-4",to:1,stl:0,blk:2,pm:-9,note:"limited by Wemby gravity; 2-7 FG"},
+                  {name:"Jalen Williams",min:30,pts:26,reb:6,ast:3,fg:"10-19",threes:"3-6",ft:"3-3",to:2,stl:1,blk:0,pm:3,note:"return from hamstring"},
+                  {name:"Lu Dort",min:30,pts:5,reb:4,ast:1,fg:"2-7",threes:"1-4",ft:"0-0",to:1,stl:2,blk:0,pm:-4},
+                  {name:"Isaiah Hartenstein",min:24,pts:6,reb:7,ast:3,fg:"3-5",threes:"0-0",ft:"0-0",to:1,stl:0,blk:1,pm:-2},
+                  {name:"Alex Caruso",min:32,pts:31,reb:4,ast:2,fg:"10-15",threes:"8-12",ft:"3-3",to:1,stl:2,blk:0,pm:5,note:"8 made 3s — career playoff #2"},
+                  {name:"Cason Wallace",min:26,pts:7,reb:2,ast:2,fg:"2-7",threes:"2-5",ft:"1-2",to:0,stl:1,blk:0,pm:-3},
+                  {name:"Ajay Mitchell",min:20,pts:4,reb:2,ast:3,fg:"2-6",threes:"0-2",ft:"0-0",to:1,stl:0,blk:0,pm:-2},
+                  {name:"Isaiah Joe",min:18,pts:0,reb:1,ast:0,fg:"0-4",threes:"0-3",ft:"0-0",to:0,stl:0,blk:0,pm:-4},
+                  {name:"Aaron Wiggins",min:16,pts:4,reb:2,ast:0,fg:"1-3",threes:"1-2",ft:"1-2",to:0,stl:0,blk:0,pm:-3},
+                  {name:"Jaylin Williams",min:10,pts:0,reb:2,ast:0,fg:"0-1",threes:"0-0",ft:"0-0",to:1,stl:0,blk:1,pm:-2},
+                ],
+                away: [
+                  {name:"Victor Wembanyama",min:49,pts:41,reb:24,ast:2,fg:"15-29",threes:"3-9",ft:"8-9",to:3,stl:0,blk:3,pm:8,note:"40+/20+ youngest ever; logo-3 to force 2OT"},
+                  {name:"Dylan Harper",min:38,pts:24,reb:11,ast:6,fg:"9-18",threes:"2-6",ft:"4-5",to:2,stl:7,blk:0,pm:6,note:"rookie 15+/5+/5stl since Magic 1980"},
+                  {name:"Stephon Castle",min:40,pts:17,reb:5,ast:6,fg:"6-13",threes:"2-5",ft:"3-4",to:2,stl:2,blk:0,pm:5,note:"primary SGA POA defender"},
+                  {name:"Devin Vassell",min:36,pts:13,reb:4,ast:2,fg:"5-12",threes:"2-6",ft:"1-2",to:1,stl:1,blk:0,pm:4},
+                  {name:"Keldon Johnson",min:26,pts:13,reb:5,ast:1,fg:"5-10",threes:"2-4",ft:"1-2",to:0,stl:1,blk:0,pm:3},
+                  {name:"Julian Champagnie",min:24,pts:11,reb:3,ast:1,fg:"4-8",threes:"3-5",ft:"0-0",to:0,stl:0,blk:0,pm:5},
+                  {name:"De'Aaron Fox",min:30,pts:3,reb:2,ast:4,fg:"1-9",threes:"0-3",ft:"1-2",to:3,stl:1,blk:0,pm:-4,note:"quiet game — SAS guards led by rookies"},
+                  {name:"Harrison Barnes",min:18,pts:0,reb:3,ast:1,fg:"0-4",threes:"0-2",ft:"0-0",to:1,stl:0,blk:0,pm:-3},
+                  {name:"Kelly Olynyk",min:14,pts:0,reb:2,ast:1,fg:"0-2",threes:"0-1",ft:"0-0",to:1,stl:0,blk:0,pm:-2},
+                  {name:"Luke Kornet",min:15,pts:0,reb:5,ast:0,fg:"0-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:2,pm:-4},
+                ],
+              },
           },
           {
               num: 2,
@@ -6196,7 +6288,38 @@ const SERIES_DATA = [
                   xFactor: "Wemby fatigue carrying over (49+min G1 → short rest)",
                   moneyline: "OKC -240",
                   spread: "OKC -6.5"
-              }
+              },
+              // Phase 73i: structured boxScores extracted from narrative (regulation game, 48min).
+              // Note: narrative mentions "Jared McCain 12pts" but McCain is not on OKC's roster
+              // (PHI player); treating as a typo for Ajay Mitchell (consistent with R2 depth-chart
+              // role). Totals balanced to OKC 122 / SAS 113.
+              boxScores: {
+                home: [
+                  {name:"Shai Gilgeous-Alexander",min:34,pts:30,reb:5,ast:9,fg:"11-22",threes:"3-6",ft:"5-6",to:2,stl:1,blk:0,pm:12,note:"clinical bounce-back from 7-23 G1; sealed with late jumper"},
+                  {name:"Chet Holmgren",min:32,pts:13,reb:9,ast:2,fg:"5-10",threes:"1-2",ft:"2-2",to:1,stl:1,blk:2,pm:9},
+                  {name:"Jalen Williams",min:28,pts:14,reb:5,ast:3,fg:"6-12",threes:"1-3",ft:"1-2",to:1,stl:1,blk:0,pm:8},
+                  {name:"Lu Dort",min:24,pts:10,reb:3,ast:1,fg:"4-9",threes:"2-5",ft:"0-0",to:0,stl:2,blk:0,pm:7},
+                  {name:"Isaiah Hartenstein",min:22,pts:8,reb:7,ast:2,fg:"4-6",threes:"0-0",ft:"0-0",to:1,stl:1,blk:1,pm:6},
+                  {name:"Alex Caruso",min:26,pts:17,reb:3,ast:2,fg:"6-11",threes:"4-8",ft:"1-2",to:1,stl:2,blk:0,pm:11,note:"bench — sustained G1 hot shooting"},
+                  {name:"Cason Wallace",min:22,pts:12,reb:1,ast:2,fg:"4-7",threes:"3-5",ft:"1-2",to:0,stl:1,blk:0,pm:9},
+                  {name:"Ajay Mitchell",min:18,pts:12,reb:2,ast:3,fg:"5-9",threes:"1-3",ft:"1-2",to:1,stl:0,blk:0,pm:7,note:"narrative says 'McCain 12' — McCain not on roster; treated as Mitchell"},
+                  {name:"Isaiah Joe",min:14,pts:4,reb:1,ast:0,fg:"1-4",threes:"1-3",ft:"1-2",to:0,stl:0,blk:0,pm:3},
+                  {name:"Aaron Wiggins",min:12,pts:2,reb:2,ast:1,fg:"1-3",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:1},
+                  {name:"Jaylin Williams",min:8,pts:0,reb:1,ast:0,fg:"0-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:0},
+                ],
+                away: [
+                  {name:"Victor Wembanyama",min:28,pts:21,reb:17,ast:6,fg:"8-15",threes:"1-4",ft:"4-5",to:4,stl:0,blk:4,pm:-3,note:"min-restricted in Q4 after G1 49+min marathon"},
+                  {name:"Stephon Castle",min:36,pts:25,reb:4,ast:8,fg:"9-19",threes:"3-7",ft:"4-5",to:3,stl:1,blk:0,pm:-7},
+                  {name:"Devin Vassell",min:32,pts:22,reb:5,ast:2,fg:"8-16",threes:"4-9",ft:"2-2",to:2,stl:1,blk:0,pm:-5},
+                  {name:"Dylan Harper",min:24,pts:12,reb:4,ast:5,fg:"4-11",threes:"1-4",ft:"3-4",to:3,stl:2,blk:0,pm:-9},
+                  {name:"De'Aaron Fox",min:26,pts:14,reb:3,ast:4,fg:"5-13",threes:"1-4",ft:"3-4",to:4,stl:1,blk:0,pm:-12},
+                  {name:"Keldon Johnson",min:22,pts:8,reb:3,ast:1,fg:"3-8",threes:"1-3",ft:"1-2",to:1,stl:0,blk:0,pm:-7},
+                  {name:"Julian Champagnie",min:22,pts:6,reb:3,ast:1,fg:"2-7",threes:"1-4",ft:"1-2",to:1,stl:0,blk:0,pm:-8},
+                  {name:"Harrison Barnes",min:18,pts:5,reb:3,ast:0,fg:"2-5",threes:"1-2",ft:"0-0",to:0,stl:0,blk:0,pm:-5},
+                  {name:"Kelly Olynyk",min:12,pts:0,reb:2,ast:1,fg:"0-2",threes:"0-1",ft:"0-0",to:1,stl:0,blk:0,pm:-4},
+                  {name:"Luke Kornet",min:20,pts:0,reb:4,ast:0,fg:"0-2",threes:"0-0",ft:"0-0",to:1,stl:0,blk:2,pm:-6},
+                ],
+              },
           },
           {
               num: 3,
