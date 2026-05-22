@@ -1547,7 +1547,7 @@ const BETS = [
     ],
     reasoning: "NYK at home with the largest rest gap in any ECF G1 on record (9 days vs 1 day). CLE flew in from a G7 road blowout — Mitchell played 31min, Allen on chronic knee, Mobley 12reb workload. The rest disparity is worth 3-4pts in the model + the 1-day turnaround caps CLE's intensity ceiling. Rust risk for NYK is real but 9-day breaks historically produce 4-6pt Q1 dips, not full-game collapses. The PHI sweep showed NYK can score from anyone (McBride 25 G4, Shamet 12 bench, KAT 17/12/7ast distributing) — depth dilutes the rust effect.",
     confidence: 'medium', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'NYK 115-104 OT via 22pt comeback (44-11 closing run from down 93-71 with 7:52 left). Brunson 38, KAT 13/13/5/1blk; CLE shot 22% over the closing stretch. ML hit at -265.' },
   },
   {
     id: 'ecf-g1-nyk-cle-spread',
@@ -1560,7 +1560,7 @@ const BETS = [
     ],
     reasoning: "Phase 71 spread CAUTION flag is the cautionary note (margin MAE 13pt). But the structural setup — CLE on 1-day rest after a road G7, NYK on 9-day rest at home — is the largest disparity all playoffs. Sweep team vs G7 team at home is the highest-cover edge in the historical sample. Treat as lean per audit guidance.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'NYK by 11 (115-104 OT) — covered -7.5 by 3.5pts. The Phase 71 spread CAUTION was overcome by an OT margin (regulation tied 99-99 — would have pushed −7.5 with NYK +5 push only); but with the OT push to 11 the spread covered cleanly.' },
   },
   {
     id: 'ecf-g1-nyk-cle-total',
@@ -1574,7 +1574,7 @@ const BETS = [
     ],
     reasoning: "Both teams are bottom-third in pace; defense is the structural backbone of both rotations (NYK DRtg 111.8 / CLE DRtg 110.5). ECF G1 historically settles 4-6pts below regular-season line as defensive scouts intensify. NYK's G4 144pts vs PHI was a 3PT outlier (25 made threes); regression to mean is the realistic G1 path. The Brunson-Mitchell pull-up scoring is offset by Bridges/OG/Strus perimeter D — long contested possessions = lower totals.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'219 total (NYK 115 + CLE 104, OT) — over 215.5 by 3.5pts. Regulation tied 99-99 = 198 total (would have hit under) but the 5min OT pushed it over. Phase 71 total CAUTION/SKIP framework would have downgraded this; OT is the kind of variance the framework warns against.' },
   },
   {
     id: 'ecf-g1-nyk-cle-brunson-pts',
@@ -1587,7 +1587,7 @@ const BETS = [
     ],
     reasoning: "Brunson averaged 29 vs PHI — line of 26.5 is 2.5 below that. Phase 71 STARTER tier correction (-2.0pp) applied: corrected projection 27 → still over 26.5 by 0.5. Tight margin but home + ECF stage + Mitchell guarding him at one end (which forces Brunson into Mitchell-mode counters) supports the over. The Phase 71 audit deemed Brunson calibrated within STARTER tier; no per-player override.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Brunson 38pts/5reb/6ast — cleared 26.5 by 11.5pts. He single-handedly drove the 22pt comeback. The STARTER tier correction was the right floor; ceiling games like this are the upside that puts the bet over.' },
   },
   {
     id: 'ecf-g1-nyk-cle-mitchell-pts',
@@ -1600,7 +1600,7 @@ const BETS = [
     ],
     reasoning: "Mitchell averaged 28.8 vs DET — line 25.5 below that. G7 26pts in 31min on 0 TOs shows the legs are there. NYK perimeter D (Bridges/OG/Hart) is the toughest he's seen this postseason — that's a -3 to -4pp ceiling drag. Net projection ≈ 26 → lean over with caution. Phase 71 STARTER bias correction applied (-2pp); audit-corrected projection 26.8 still clears 25.5.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Mitchell 29pts/5reb/3ast/6stl — cleared 25.5 by 3.5. Had 26pts through 3Q, then went 1-for-6 over the final 17min as the NYK comeback unfolded. Hit the line even with the late-game freeze.' },
   },
   {
     id: 'ecf-g1-nyk-cle-kat-reb',
@@ -1613,7 +1613,7 @@ const BETS = [
     ],
     reasoning: "KAT averaged 9.5 vs PHI even with G4 blowout cap. CLE runs twin-big with Mobley/Allen — that creates more contested rebounds at both rims than PHI's Drummond-solo setup. Line 9.5 is exactly at his R2 average; the structural matchup nudges over. Counting stat = blowout-stable (won't be capped by garbage time).",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'KAT 13reb/13pts/5ast/1blk in 40min — cleared 9.5 by 3.5. The CLE twin-big setup produced exactly the rebound volume the matchup thesis predicted; KAT controlled both ends of the glass.' },
   },
 
   // Phase 72 addition: Holmgren rebound prop (complements the
@@ -1630,6 +1630,162 @@ const BETS = [
     ],
     reasoning: "Holmgren projection 9.2 reb. R2 vs Ayton: 10.0 avg. Wemby matchup is brutal but Holmgren's mobility wins offensive boards. Phase 71 starter REB bias now calibrated (+0.19). Companion leg to Wemby O9.5 alt in the WCF G1 Bigs Floor parlay.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: { outcome:'loss', actual:'Holmgren 7reb in 2OT game — just under 8.5. Despite the 49min game time, OKC\'s 7-23 FG night meant fewer defensive boards to clean and Wemby/Harper claimed the OREB share. Phase 71c REB calibration was directionally right; rough night for OKC\'s big.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF G3 — FRI MAY 22: WCF G3 OKC @ SAS at Frost Bank Center
+  // Series tied 1-1. DK opener: SAS -1.5 / total 217.5 / OKC ML +105,
+  // SAS ML -125. SAS at home after losing G2. Wemby's G1 49+min load
+  // is the rest-management variable.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'cf-g3-okc-sas-ml',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'ml', pick: 'SAS ML vs OKC', odds: '-125',
+    facts: [
+      {label:'Series',value:'Tied 1-1, shifts to Frost Bank Center'},
+      {label:'Home record',value:'SAS 6-0 at Frost this playoffs'},
+      {label:'Reg season',value:'SAS 4-1 vs OKC'},
+      {label:'Market',value:'SAS -1.5 / 217.5'},
+    ],
+    reasoning: "Phase 71c engine: SAS 116, OKC 112 (SAS by 4). Series shifts to Frost Bank where SAS was 6-0 this playoffs (+5.4 net at home). Castle-vs-SGA round 2: Castle held SGA to 7-23 in G1; G2 SGA bounced to 30/9 on Wemby min-restriction night — Frost crowd flips the leverage back. Caruso's 8-of-13 3PT across G1+G2 is the regression variable (model says he reverts to ~38% from 62%). The 4-1 regular-season pattern + home setting align with the engine read.",
+    confidence: 'medium', thesis: ['model','matchup','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-okc-sas-spread',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'spread', pick: 'SAS -1.5', odds: '-110',
+    facts: [
+      {label:'Market',value:'SAS -1.5'},
+      {label:'WCF G3 home',value:'~62% cover with 1-1 split'},
+      {label:'Phase 71 audit',value:'Spread CAUTION (MAE 13pt)'},
+    ],
+    reasoning: "Phase 71 spread CAUTION pill auto-applies — treat as lean. Engine margin says SAS by 4 which would cover -1.5 by 2.5. Wemby's home court energy + Castle/Harper paint-handle the OKC switching scheme + Caruso 3PT regression all stack toward SAS. Risk: J. Williams returning could give OKC a wing dimension SAS hasn't seen this series.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-okc-sas-total',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'total', pick: 'Under 217.5', odds: '-110',
+    facts: [
+      {label:'G1 reg total',value:'198 (then 2OT to 237)'},
+      {label:'G2 total',value:'235 (turnover-driven)'},
+      {label:'WCF home G3',value:'~5pts below reg total in scout-tight games'},
+    ],
+    reasoning: "G1 regulation 198 (under-territory before OT), G2 235 (transition outlier from 21 TOs). Frost Bank settings historically tighten — slower pace, more set offense. Phase 71 total SKIP at medium confidence; treat as lean only. The Wemby-Holmgren rim chess + Castle-SGA POA battle should produce more contested possessions = fewer points.",
+    confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-okc-sas-wemby-pts',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'Wembanyama Over 25.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'41, 21 → 31 avg'},
+      {label:'Home games this playoff',value:'+4.1 ppg vs road'},
+      {label:'Engine (Phase 71c)',value:'27 PTS — calibrated'},
+    ],
+    reasoning: "Wemby home + post-restriction G2 = full-tank G3 in front of Frost Bank. 21 in G2 was minutes-capped (28min instead of 49+ G1). Line 25.5 is a half-point below engine projection. Phase 71 ELITE tier correction (-2.6 PTS) applied: 31 series avg → corrected 28.4 → still clears 25.5 cleanly.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-okc-sas-sga-pts',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'SGA Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'24, 30 → 27 avg'},
+      {label:'Phase 71c bias',value:'-6.9 PTS per-player override applied'},
+      {label:'Castle matchup',value:'POA defender, 0.91 dLEBRON'},
+    ],
+    reasoning: "SGA series avg 27 against Castle. Phase 71c per-player override (-6.9) is heavy — corrected projection ~24 (UNDER 27.5). The bias-correction framework says lean UNDER but the bet pick is OVER — leaving this as a calibration check: if Castle/Harper hounding continues at G1 levels, override is right; if SGA acclimates after G2 30pts, the override has run its course. <strong>SKIP this entry</strong> per framework — included for transparency but the pill auto-classifies SKIP via the override.",
+    confidence: 'lean', thesis: ['model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-okc-sas-castle-pts',
+    slate: 'CF-G3', series: 'OKC-SAS', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'Castle Over 19.5 points', odds: '-110',
+    facts: [
+      {label:'Series PTS',value:'?, 25 → emerging primary creator'},
+      {label:'Engine',value:'21 PTS — calibrated, home boost'},
+      {label:'Usage',value:'Castle USG climbing as Wemby gets doubled'},
+    ],
+    reasoning: "Castle has emerged as SAS's secondary creator while playing elite POA defense on SGA. G2: 25/8ast in San Antonio's transition-heavy game. With Fox/Harper banged up (day-to-day), Castle's usage projects to climb further in G3. Phase 71 STARTER tier calibrated (no override). Home crowd lift + matchup edge nudges over.",
+    confidence: 'medium', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // ECF G3 — SAT MAY 23: NYK @ CLE at Rocket Arena
+  // NYK leads 2-0. CLE desperation home game. NYK on back-to-back.
+  // Lines TBD morning of game; opening estimates priced here.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'cf-g3-nyk-cle-ml',
+    slate: 'CF-G3', series: 'NYK-CLE', game: 3, postedAt: '2026-05-22',
+    type: 'ml', pick: 'CLE ML vs NYK', odds: '-140',
+    facts: [
+      {label:'Series',value:'NYK leads 2-0, must-win for CLE'},
+      {label:'CLE home record',value:'6-1 at Rocket this playoffs'},
+      {label:'NYK rest',value:'B2B after G2 5/21 → travel → G3 5/23'},
+    ],
+    reasoning: "Phase 71c engine: CLE 113, NYK 107 (CLE by 6). Down-0-2-at-home historical 68% win rate + CLE was 6-0 at Rocket pre-DET G6. NYK has back-to-back disadvantage after the emotional G1 OT marathon. Mitchell volume up to 30+ shots projected; Harden role shift (off-ball cuts) is the structural adjustment. Risk: NYK's depth (Hart, KAT, McBride, Shamet) doesn't tire the way top-heavy CLE will.",
+    confidence: 'medium', thesis: ['model','matchup','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-nyk-cle-spread',
+    slate: 'CF-G3', series: 'NYK-CLE', game: 3, postedAt: '2026-05-22',
+    type: 'spread', pick: 'CLE -3', odds: '-110',
+    facts: [
+      {label:'Market opener',value:'CLE -3 (estimated)'},
+      {label:'ECF G3 home',value:'~64% cover when home team trails 0-2'},
+    ],
+    reasoning: "Phase 71 spread CAUTION pill auto-applies. Engine projects CLE by 6 so -3 has cushion. Down-0-2 home historically covers at higher rate than the implied -3 line. Treat as lean.",
+    confidence: 'lean', thesis: ['model','market','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-nyk-cle-mitchell-pts',
+    slate: 'CF-G3', series: 'NYK-CLE', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'Mitchell Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'29, 26 → 27.5 avg'},
+      {label:'Phase 71 STARTER',value:'-2.0 PTS correction → 25.5'},
+      {label:'Down-0-2 ceiling',value:'Mitchell historically +4 PTS in must-win'},
+    ],
+    reasoning: "Mitchell series avg 27.5; STARTER correction → 25.5 raw projection. Down-0-2 home he's historically +4 PTS over season avg (must-win volume up). Net projection 29.5 → lean over. Risk: NYK perimeter D (Bridges/OG/Hart) is the toughest he's seen; can drag ceiling 2-3pts.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-nyk-cle-brunson-pts',
+    slate: 'CF-G3', series: 'NYK-CLE', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'Brunson Over 24.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'38, 19 → 28.5 avg'},
+      {label:'G2 line',value:'19/14ast (facilitator night)'},
+      {label:'B2B + road',value:'-1 to -2 PTS adjustment'},
+    ],
+    reasoning: "Brunson 38 G1 / 19 G2 — facilitator night with 14 assists shows variability. Phase 71 STARTER correction (-2.0). Net projection ~25 → just over the line. B2B + road = small additional drag. Lean over.",
+    confidence: 'lean', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g3-nyk-cle-mobley-reb',
+    slate: 'CF-G3', series: 'NYK-CLE', game: 3, postedAt: '2026-05-22',
+    type: 'prop', pick: 'Mobley Over 9.5 rebounds', odds: '-130',
+    facts: [
+      {label:'Series REB',value:'14, ? → 12+ avg'},
+      {label:'KAT matchup',value:'twin-big rebound dynamic continues'},
+      {label:'Phase 71 STARTER REB',value:'calibrated'},
+    ],
+    reasoning: "Mobley 14reb G1; KAT-vs-Mobley matchup continues to drive defensive rebound volume. Phase 71 STARTER REB tier calibrated. Home crowd lift typically adds 0.5-1 reb. Line 9.5 below engine projection ~12. Medium confidence with the calibrated zone.",
+    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
     result: null,
   },
 ];
@@ -2591,13 +2747,13 @@ const FEATURED_PARLAYS = [
     name: 'ECF G1 — NYK Stars Floor (2-Leg)',
     stake: 100, odds: '+115', payout: 'To Win: ~$115 (verify on DK)',
     legs: [
-      { pick:'Brunson Over 19.5 points (alt — ECF G1)', odds:'-260', confidence:'floor', status:null,
-        note:'R2 vs PHI: 35/22/26/33 → 29 avg. Line 19.5 = proj−10, deep alt zone. Brunson at home + 9 days rest + ECF spotlight = highest-floor combo on the slate.' },
-      { pick:'KAT Over 7.5 rebounds (alt — ECF G1)', odds:'-200', confidence:'floor', status:null,
-        note:'R2 rebounds vs PHI: 12, 10, 12, 4 → 9.5 avg (G4 capped by 30-pt blowout). Line 7.5 = proj−2 in the calibrated zone. CLE\'s twin-big (Mobley/Allen) attacks the glass — KAT will see more defensive rebound volume than in PHI series.' },
+      { pick:'Brunson Over 19.5 points (alt — ECF G1)', odds:'-260', confidence:'floor', status:'hit',
+        note:'Brunson 38 — drove the 22pt comeback. Cleared deep alt by 18.5.' },
+      { pick:'KAT Over 7.5 rebounds (alt — ECF G1)', odds:'-200', confidence:'floor', status:'hit',
+        note:'KAT 13reb — CLE twin-big produced exactly the rebound volume thesis predicted.' },
     ],
     thesis:'NYK at home with 9 days rest. Math: 0.88 × 0.82 ≈ 72% combined — honest lean-reliable. The Phase 71 STARTER tier correction (-2pp PTS) was applied to Brunson but he still cleared 19.5 easily even with the haircut — deep alt threshold absorbs the bias correction. KAT is in the calibrated bucket so no override active.',
-    result: null,
+    result: { outcome:'win', delta:'+$115', actual:'Both deep-alt legs hit comfortably; floor logic vindicated even with the 22pt comeback drama.' },
   },
   {
     id: 'ecf-g1-may19-floor-mitchell-mobley',
@@ -2606,13 +2762,13 @@ const FEATURED_PARLAYS = [
     name: 'ECF G1 — CLE Stars Counting-Stat Floor (2-Leg)',
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
     legs: [
-      { pick:'Mitchell Over 19.5 points (alt — ECF G1)', odds:'-280', confidence:'floor', status:null,
-        note:'R2 vs DET: 35, 30, 21, 43, 18, 26 → 28.8 avg. Line 19.5 = proj−9, deep alt. One-day rest is the concern; Mitchell only played 31min in G7 blowout so legs should be okay.' },
-      { pick:'Mobley Over 7.5 rebounds (alt — ECF G1)', odds:'-220', confidence:'floor', status:null,
-        note:'R2 rebounds vs DET: 5, 7, 8, 8, 12, 8, 12 → 8.6 avg. Line 7.5 = proj−1, slim cushion but reliable floor with KAT-vs-Mobley matchup driving rebound volume.' },
+      { pick:'Mitchell Over 19.5 points (alt — ECF G1)', odds:'-280', confidence:'floor', status:'hit',
+        note:'Mitchell 29 — cleared even with the 1-of-6 Q4+OT freeze.' },
+      { pick:'Mobley Over 7.5 rebounds (alt — ECF G1)', odds:'-220', confidence:'floor', status:'hit',
+        note:'Mobley 14reb/15pts/3blk — KAT matchup drove rebound volume as projected.' },
     ],
     thesis:'CLE side. Math: 0.84 × 0.78 ≈ 65% combined — slim-side lean reliable. The one-day rest is the structural risk (Mitchell legs after G7); 31min in a blowout mitigates that. Mobley\'s rebound floor is the more reliable of the two legs. Stake $100.',
-    result: null,
+    result: { outcome:'win', delta:'+$105', actual:'Both legs hit despite CLE losing the game — separates leg-level floor from outcome-level risk. The floor logic worked.' },
   },
   {
     id: 'ecf-g1-may19-trad-nyk-rest',
@@ -2621,21 +2777,128 @@ const FEATURED_PARLAYS = [
     name: 'ECF G1 — NYK Rest Advantage Stack (3-Leg)',
     stake: 50, odds: '+340', payout: 'To Win: ~$170',
     legs: [
-      { pick:'NYK ML vs CLE (ECF G1)', odds:'-265', confidence:'medium', status:null,
-        note:'9-day rest vs 1-day rest + home court + sweeping a healthier PHI team. The rust risk is real but 9 days vs 1 day is the largest rest gap in any ECF G1 on record.' },
-      { pick:'Brunson Over 26.5 points (ECF G1)', odds:'-115', confidence:'medium', status:null,
-        note:'29 ppg vs PHI — line 26.5 below R2 avg. STARTER bias applied: 29 − 2 = 27 → still over 26.5 by 0.5. Tight but the home court + ECF stage typically lifts top scorers slightly above their R2 line.' },
-      { pick:'Under 215.5 total (ECF G1)', odds:'-110', confidence:'lean', status:null,
-        note:'ECF G1 historically 4-6pts below regular line (defensive scout intensity). NYK plays 97.5 pace; CLE 96.8 pace — slow-down series. Both teams rested less than CF G1 last year (OKC-MIN), which went under by 8.' },
+      { pick:'NYK ML vs CLE (ECF G1)', odds:'-265', confidence:'medium', status:'hit',
+        note:'NYK 115-104 OT — comeback ML hit.' },
+      { pick:'Brunson Over 26.5 points (ECF G1)', odds:'-115', confidence:'medium', status:'hit',
+        note:'Brunson 38 — cleared by 11.5.' },
+      { pick:'Under 215.5 total (ECF G1)', odds:'-110', confidence:'lean', status:'miss',
+        note:'219 total (OT). Regulation 99-99 = 198 (would have hit); OT pushed it over by 3.5.' },
     ],
     thesis:'Three correlated NYK-favorable legs. Math: 0.62 × 0.58 × 0.55 ≈ 20% combined (Phase 71 calibrated). At +340 payout, 20% true hit is +EV. Stake $50 (CF unknown-territory cap).',
-    result: null,
+    result: { outcome:'loss', delta:'-$50', actual:'Under leg lost on OT — regulation would have pushed/won under but the 5min OT killed the parlay. Two legs hit; the third killed it. Phase 71 SKIP-on-total guidance was the right read.' },
   },
 
   // Phase 72 deduplication: my "Bigs Rebounding Floor" + "OKC + Wemby
   // Volume" parlays overlapped with the 3 cf-g1-may18-* parlays above
   // (which author both an OKC-stars floor AND a SAS-side floor AND a
   // 3-leg chalk stack). User's parlays are more comprehensive.
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF G3 — FRI MAY 22: WCF OKC @ SAS at Frost Bank Center
+  // SAS home after 1-1 split. Wemby home court energy + Castle's POA
+  // defense vs SGA are the structural drivers. CF unknown-territory
+  // cap on stakes ($100 floor / $50 trad).
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'wcf-g3-may22-floor-wemby-castle',
+    slate: 'CF-G3', date: '2026-05-22',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G3 — SAS Stars Floor (2-Leg)',
+    stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
+    legs: [
+      { pick:'Wembanyama Over 18.5 points (alt — WCF G3)', odds:'-280', confidence:'floor', status:null,
+        note:'Series 41 + 21 → 31 avg. Line 18.5 = proj−9, deep alt zone. Wemby home + post-restriction G2 = full-tank G3 in front of Frost Bank.' },
+      { pick:'Wembanyama Over 11.5 rebounds (alt — WCF G3)', odds:'-200', confidence:'floor', status:null,
+        note:'Series 24 + 17 → 20.5 avg. Line 11.5 = proj−9, deep alt. OKC small-ball lineups concede REB to Wemby; G2 had 17 in restricted minutes.' },
+    ],
+    thesis:'Two Wemby legs at home. Math: 0.90 × 0.86 ≈ 77% combined — reliable floor. Deep alt thresholds absorb the ELITE-tier PTS correction (-2.6) and the calibrated REB. Single-player stack accepted at this confidence level (Wemby is structurally the engine of this team). CF stake cap $100.',
+    result: null,
+  },
+  {
+    id: 'wcf-g3-may22-floor-sga-castle',
+    slate: 'CF-G3', date: '2026-05-22',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G3 — Counter-Side Floor (SGA + Castle)',
+    stake: 100, odds: '+110', payout: 'To Win: ~$110 (verify on DK)',
+    legs: [
+      { pick:'SGA Over 19.5 points (alt — WCF G3)', odds:'-260', confidence:'floor', status:null,
+        note:'Series 24 + 30 → 27 avg. Phase 71c override -6.9 → corrected ~20 — clears 19.5 by 0.5 but uncomfortable. Deep alt logic + home-floor counter side.' },
+      { pick:'Castle Over 5.5 assists (alt — WCF G3)', odds:'-200', confidence:'floor', status:null,
+        note:'Series ?, 8 ast G2. Castle USG climbing; Fox/Harper banged up makes him primary ball-handler. Line 5.5 well below G2 production.' },
+    ],
+    thesis:'Counter-side floor — covers OKC ML upside + SAS depth. Math: 0.85 × 0.88 ≈ 75% combined. SGA leg is the structural risk: Phase 71c override drags the projection to 20.1 vs line 19.5 — razor edge. Castle assists is the calibrated leg. Stake $100.',
+    result: null,
+  },
+  {
+    id: 'wcf-g3-may22-trad-sas-home',
+    slate: 'CF-G3', date: '2026-05-22',
+    category: 'traditional', type: 'best-bet',
+    name: 'WCF G3 — SAS Home Stack (3-Leg)',
+    stake: 50, odds: '+360', payout: 'To Win: ~$180',
+    legs: [
+      { pick:'SAS ML vs OKC (WCF G3)', odds:'-125', confidence:'medium', status:null,
+        note:'SAS 6-0 at home this playoffs + Castle-vs-SGA round 2 + Caruso 3PT regression.' },
+      { pick:'Wembanyama Over 25.5 points (WCF G3)', odds:'-115', confidence:'medium', status:null,
+        note:'Series 31 avg; engine 27 post-correction; home full-tank.' },
+      { pick:'Castle Over 19.5 points (WCF G3)', odds:'-110', confidence:'medium', status:null,
+        note:'G2: 25; usage climbing as Wemby gets doubled. Home crowd lift.' },
+    ],
+    thesis:'Three correlated SAS-favorable legs. Math: 0.55 × 0.60 × 0.55 ≈ 18% combined. At +360 payout, 18% true hit is +EV. Stake $50 (CF cap).',
+    result: null,
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF G3 — SAT MAY 23: ECF NYK @ CLE at Rocket Arena (next-day)
+  // CLE down 0-2 facing must-win at home. Author tonight so the slate
+  // is ready when CHS Lab + market open tomorrow morning.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'ecf-g3-may23-floor-mitchell-mobley',
+    slate: 'CF-G3', date: '2026-05-23',
+    category: 'floor', type: 'best-bet',
+    name: 'ECF G3 — CLE Stars Floor (2-Leg)',
+    stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
+    legs: [
+      { pick:'Mitchell Over 19.5 points (alt — ECF G3)', odds:'-280', confidence:'floor', status:null,
+        note:'Series 29 + 26 → 27.5 avg. Line 19.5 = proj−8 deep alt. Must-win-at-home volume floor.' },
+      { pick:'Mobley Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:null,
+        note:'G1: 14reb. KAT matchup drives DEF rebound volume. Floor-stable counting stat.' },
+    ],
+    thesis:'CLE-desperation home stack. Math: 0.86 × 0.88 ≈ 76% combined — reliable floor. Series-pattern (Mitchell 26+ both games, Mobley 14 reb G1) anchors both legs in calibrated zones.',
+    result: null,
+  },
+  {
+    id: 'ecf-g3-may23-floor-brunson-kat',
+    slate: 'CF-G3', date: '2026-05-23',
+    category: 'floor', type: 'best-bet',
+    name: 'ECF G3 — NYK Counter-Side Floor (2-Leg)',
+    stake: 100, odds: '+115', payout: 'To Win: ~$115 (verify on DK)',
+    legs: [
+      { pick:'Brunson Over 17.5 points (alt — ECF G3)', odds:'-260', confidence:'floor', status:null,
+        note:'Series 38 + 19 → 28.5 avg. Line 17.5 = proj−11 deep alt; absorbs the G2 facilitator-mode floor.' },
+      { pick:'KAT Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:null,
+        note:'G1: 13reb. Mobley twin-big matchup continues. Calibrated REB zone.' },
+    ],
+    thesis:'Counter-side hedge. Math: 0.88 × 0.85 ≈ 75% combined. Deep alt absorbs the facilitator-mode variability of G2 Brunson.',
+    result: null,
+  },
+  {
+    id: 'ecf-g3-may23-trad-cle-desperation',
+    slate: 'CF-G3', date: '2026-05-23',
+    category: 'traditional', type: 'best-bet',
+    name: 'ECF G3 — CLE Desperation Home Stack (3-Leg)',
+    stake: 50, odds: '+320', payout: 'To Win: ~$160',
+    legs: [
+      { pick:'CLE ML vs NYK (ECF G3)', odds:'-140', confidence:'medium', status:null,
+        note:'Down-0-2 home historical 68% win rate + 6-0 at Rocket pre-DET G6. NYK on B2B.' },
+      { pick:'Mitchell Over 27.5 points (ECF G3)', odds:'-115', confidence:'medium', status:null,
+        note:'Series 27.5 avg; engine projects 29.5 with must-win volume bump.' },
+      { pick:'Mobley Over 9.5 rebounds (ECF G3)', odds:'-130', confidence:'medium', status:null,
+        note:'KAT matchup + home crowd lift. Calibrated tier.' },
+    ],
+    thesis:'CLE desperation stack. Math: 0.62 × 0.58 × 0.60 ≈ 22% combined. At +320 payout, 22% true hit is +EV. Stake $50 (CF cap).',
+    result: null,
+  },
 ];
 
 // ============================================================
@@ -2747,12 +3010,30 @@ const BET_SLATES = {
     ],
   },
   'CF-G1': {
-    label: 'Conference Finals — Game 1 (Live)',
+    label: 'Conference Finals — Game 1 (Archive)',
     games: [
       { series:'OKC-SAS', date:'2026-05-18', time:'8:30 PM ET', venue:'Paycom Center', context:'WCF G1',
-        recap:'<strong style="color:var(--red)">Result:</strong> SAS 122-115 (2OT) — SAS leads WCF 1-0. <strong>Instant classic</strong>: Wemby 41pts/24reb/3blk in 49+min, joined Wilt as the only players with 40+pts and 20+reb in their Conference Finals debut. Harper 24pts/11reb/6ast/7stl (first rookie with 15+/5+/5stl in a playoff game since Magic Johnson 1980). SGA 24/12ast on 7-23 FG — Castle/Harper hounded him at the POA. Caruso 31pts off bench (8 made threes) was OKC\'s offensive lifeline. Wemby hit a Curry-range logo three to send to 2OT. The 4-1 reg-season SAS pattern held — they stole HCA on the road. <strong>G2:</strong> Wed 5/20 at Paycom.' },
+        recap:'<strong style="color:var(--red)">Result:</strong> SAS 122-115 (2OT) — SAS leads WCF 1-0. <strong>Instant classic</strong>: Wemby 41pts/24reb/3blk in 49+min, joined Wilt as the only players with 40+pts and 20+reb in their Conference Finals debut. Harper 24pts/11reb/6ast/7stl (first rookie with 15+/5+/5stl in a playoff game since Magic Johnson 1980). SGA 24/12ast on 7-23 FG — Castle/Harper hounded him at the POA. Caruso 31pts off bench (8 made threes) was OKC\'s offensive lifeline. Wemby hit a Curry-range logo three to send to 2OT. The 4-1 reg-season SAS pattern held — they stole HCA on the road.' },
       { series:'NYK-CLE', date:'2026-05-19', time:'8:00 PM ET', venue:'Madison Square Garden', context:'ECF G1',
-        recap:'<strong style="color:var(--purple)">ECF G1 Preview (Tue 5/19):</strong> CLE @ NYK. NYK #3 seed swept PHI 4-0, rested 9 days. CLE #4 seed won DET-CLE in 7, traveled back from a road blowout — 1 day rest. <strong>The rest gap (9 days vs 1 day) is the dominant variable.</strong> NYK has the layoff-rust risk (longer breaks historically depress Q1 efficiency by 4-6 pts); CLE has the legs-tired risk (Mitchell 31min G7, Allen 28min on knee). KAT-vs-Mobley + Brunson-vs-Mitchell are the marquee matchups. Lines TBD morning of game.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> NYK 115-104 (OT) — NYK leads ECF 1-0. <strong>22-POINT COMEBACK</strong> — one of the greatest in NBA postseason history. CLE led 93-71 with 7:52 left in Q4; NYK closed on a 44-11 run to force OT then win it. Brunson 38pts/5reb/6ast carried the rally. KAT 13/13/5/1blk anchored the interior. Mitchell 29pts/6stl on 12-23 FG / 4-11 3PT — but only 3pts in Q4+OT (1-6 over the final 17min). Mobley 15/14/3blk. CLE shot 22% over the closing stretch as NYK switched to small-ball + aggressive POA pressure on Harden. The 9-day-rest NYK looked completely outclassed for 41 minutes, then suddenly didn\'t.' },
+    ],
+  },
+  'CF-G2': {
+    label: 'Conference Finals — Game 2 (Archive)',
+    games: [
+      { series:'OKC-SAS', date:'2026-05-20', time:'8:30 PM ET', venue:'Paycom Center', context:'SAS leads 1-0',
+        recap:'<strong style="color:var(--green)">Result:</strong> OKC 122-113 — series TIED 1-1. SGA bounce-back 30pts/9ast (clinical, sealed late with a jumper). Holmgren 13, Caruso 17 off bench (sustaining G1 form), Cason Wallace + Jared McCain 12 each. OKC led for 80% of the game; forced 21 SAS TOs → 27 transition points. SAS: Wemby 21/17/6ast/4blk (steady but couldn\'t carry), Castle 25/8ast, Vassell 22. OKC bench outscored SAS 57-25 — the decisive structural edge. Wemby on minutes restriction in Q4 after 49+min G1 marathon — OKC closed when SAS legs faded. Pressure D was the OKC win condition.' },
+      { series:'NYK-CLE', date:'2026-05-21', time:'8:00 PM ET', venue:'Madison Square Garden', context:'NYK leads 1-0',
+        recap:'<strong style="color:var(--green)">Result:</strong> NYK 109-93 — NYK leads 2-0. Hart PLAYOFF CAREER-HIGH 26pts. Brunson 19/14ast (facilitator night — leaning into KAT/Hart roles). NYK ran an 18-0 third-quarter run to 71-53, the decisive momentum shift. CLE 0-for-13 stretch mirrored the late-G1 collapse — Harden specifically targeted by NYK switches. Mitchell 26, Harden 18, but couldn\'t recover. NYK halfway to first Finals appearance since 1999.' },
+    ],
+  },
+  'CF-G3': {
+    label: 'Conference Finals — Game 3 (Live)',
+    games: [
+      { series:'OKC-SAS', date:'2026-05-22', time:'8:30 PM ET', venue:'Frost Bank Center', context:'Series tied 1-1',
+        recap:'<strong style="color:var(--purple)">WCF G3 Preview (Fri 5/22, NBC/Peacock):</strong> Series shifts to San Antonio after split in OKC. DK opener: <strong>SAS -1.5 / total 217.5 / OKC ML +105, SAS ML -125</strong>. <strong>Injuries:</strong> J. Williams (OKC) day-to-day (hamstring reaggravation G2); SAS Fox + Harper both day-to-day after Wed turns (hamstring/ankle). Wemby\'s 49+min G1 mileage + G2 minutes restriction make rest-management the structural narrative. Castle-vs-SGA Round 2 — Castle held SGA to 7-23 FG in G1; G2 SGA bounced to 30/9 on Wemby-restriction nights. Caruso\'s 8-of-13 3PT across G1+G2 is the regression-to-mean variable.' },
+      { series:'NYK-CLE', date:'2026-05-23', time:'8:00 PM ET', venue:'Rocket Arena', context:'NYK leads 2-0',
+        recap:'<strong style="color:var(--purple)">ECF G3 Preview (Sat 5/23):</strong> CLE down 0-2 + facing must-win at home. CLE was 6-0 at home before DET G6; recovered with the G7 road blowout — fight is still in this group. Adjustments: Harden off-ball more (NYK targeted him on switches G1+G2), Mitchell volume up to 30+ in close-out-of-elimination spots, Strus shot-volume up to space the floor. NYK on a back-to-back (G2 5/21 → G3 5/23 with travel). Down-0-2 home team historically wins 68%.' },
     ],
   },
 };

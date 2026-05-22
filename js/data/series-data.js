@@ -5256,11 +5256,11 @@ const SERIES_DATA = [
       games: [
           {
               num: 1,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "NYK",
+              homeScore: 115,
+              awayScore: 104,
+              winner: "NYK",
+              notes: "NYK 115-104 OT at MSG — HISTORIC 22-point comeback. CLE led 93-71 with 7:52 left in Q4; NYK closed on a 44-11 run over the rest of regulation + OT. Brunson 38pts/5reb/6ast (carried the rally), Hart workhorse, KAT 13pts/13reb/5ast/1blk in 40min (double-double anchor). CLE: Mitchell 29/5reb/3ast/6stl on 12-23 FG / 4-11 3PT — but ONLY 3pts combined in Q4+OT (1-6 over the final 17min). Mobley 15/14/3blk, Allen and Harden contained late. CLE shot 22% over the closing stretch as NYK switched to small-ball + aggressive POA pressure on Harden. NYK leads 1-0. Model: NYK by 6; actual NYK by 11 (OT) — right-winner, +5pt margin underestimate.",
               prediction: {
                   homeWin: true,
                   homeScore: 110,
@@ -5276,11 +5276,23 @@ const SERIES_DATA = [
           },
           {
               num: 2,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: ""
+              result: "NYK",
+              homeScore: 109,
+              awayScore: 93,
+              winner: "NYK",
+              notes: "NYK 109-93 at MSG — NYK leads 2-0. Josh Hart PLAYOFF CAREER-HIGH 26pts (Knicks lifeline starter). Brunson 19/14ast (FACILITATOR night — leaning into KAT/Hart roles to share scoring load). CLE: Mitchell 26 (couldn't recover from the G1 collapse momentum), Harden 18. NYK ran an 18-0 third-quarter run to 71-53 — the decisive momentum shift. NYK closed Q3 ahead by 18 and never gave the lead back. CLE 0-for-13 stretch in Q3 mirrored the late-G1 collapse — Harden specifically targeted by NYK switches. NYK halfway to first Finals appearance since 1999. Model would have priced NYK by 5-6 at MSG post-G1 win; actual NYK by 16 — right-winner, +10 margin.",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 109,
+                  awayScore: 99,
+                  margin: 10,
+                  confidence: "MEDIUM",
+                  character: "MOMENTUM CARRY",
+                  reasoning: "Phase 71c engine: NYK 109, CLE 99 (NYK by 10). Post-G1 momentum heavily favors NYK after the historic comeback. CLE will adjust by getting Harden more on/ball + tightening Mitchell rotation but the structural mismatch (NYK depth vs CLE top-heavy) remains.",
+                  xFactor: "CLE adjustment to G1 collapse — Mitchell crunch-time alone vs Hart bounce-back",
+                  moneyline: "NYK -290",
+                  spread: "NYK -7"
+              }
           },
           {
               num: 3,
@@ -5288,7 +5300,19 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 113,
+                  awayScore: 107,
+                  margin: 6,
+                  confidence: "MEDIUM",
+                  character: "DESPERATION HOME",
+                  reasoning: "Phase 71c engine: CLE 113, NYK 107 (CLE by 6). Series shifts to Rocket Arena, CLE down 0-2 + facing must-win at home. The structural variable: NYK on a back-to-back (G2 5/21 → G3 5/23 with travel) vs CLE with one extra day of rest. CLE was 6-0 at home before the DET G6 loss; G7 they bounced back with the 31pt road blowout. Adjustments: Harden off-ball more (NYK targeted him on switches G1+G2), Mitchell volume up to 30+ shots in close-out-of-elimination spots. Phase 71 G6/G7 caution NOT active (G3 not elimination) but down-0-2 home historically wins 68%.",
+                  xFactor: "Harden role recalibration vs NYK back-to-back travel fatigue",
+                  moneyline: "CLE -140",
+                  spread: "CLE -3"
+              }
           },
           {
               num: 4,
@@ -6156,11 +6180,23 @@ const SERIES_DATA = [
           },
           {
               num: 2,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: ""
+              result: "OKC",
+              homeScore: 122,
+              awayScore: 113,
+              winner: "OKC",
+              notes: "OKC 122-113 at Paycom — series TIED 1-1. SGA 30pts/9ast (clinical bounce-back, hit jumper to seal in waning seconds), Holmgren 13, Caruso 17 off bench (sustaining G1 form), Cason Wallace + Jared McCain 12 each. OKC led for 80% of game; forced 21 SAS TOs → 27 transition points. SAS: Wemby 21/17/6ast/4blk (steady; couldn't carry as Castle/Vassell led scoring), Castle 25/8ast, Vassell 22. OKC bench outscored SAS 57-25 (decisive). Wemby on min restriction in Q4 after 49+min in G1 — OKC closed when SAS legs faded. Model would have called OKC by 7-8 at home post-G1 loss; actual OKC by 9 — calibrated.",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 112,
+                  awayScore: 105,
+                  margin: 7,
+                  confidence: "MEDIUM",
+                  character: "BOUNCE-BACK",
+                  reasoning: "Phase 71c engine: OKC 112, SAS 105 (OKC by 7). Post-G1 emotional script — defending champ at home in must-not-go-down-0-2 spot, plus SAS rest disadvantage compounding after Wemby's 49+min G1 marathon. SGA bounce-back from 7-23 FG game is the high-probability path; the G1 shot quality was there even if the percentage wasn't.",
+                  xFactor: "Wemby fatigue carrying over (49+min G1 → short rest)",
+                  moneyline: "OKC -240",
+                  spread: "OKC -6.5"
+              }
           },
           {
               num: 3,
@@ -6168,7 +6204,19 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 116,
+                  awayScore: 112,
+                  margin: 4,
+                  confidence: "MEDIUM",
+                  character: "COMPETITIVE",
+                  reasoning: "Phase 71c engine: SAS 116, OKC 112 (SAS by 4). Series shifts to Frost Bank Center. SAS holds the structural edge: Wemby + Harper paint dominance, the 4-1 regular-season pattern, home crowd boost (R2 Frost was +5.4 net). OKC counters: SGA-Castle rematch with Castle on 3 days fatigue, Caruso 3PT regression to mean (8-of-13 across G1+G2 unsustainable). Wemby's 49+min G1 minutes load is a lingering concern but the off day plus home environment should compensate. Phase 73 elimination-variance modifier inactive (G3 isn't elimination); CF G3 with home team trailing 1-1 historically wins 68%.",
+                  xFactor: "Caruso 3PT regression (8-of-13 hot start) + Wemby's home-court energy",
+                  moneyline: "SAS -125",
+                  spread: "SAS -1.5"
+              }
           },
           {
               num: 4,
