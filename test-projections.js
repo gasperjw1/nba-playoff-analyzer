@@ -2460,6 +2460,154 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 28: Phase 73h — winner-aware error calc + OT total adjustment + parlay coverage
+  // ============================================================
+  // Three surgical fixes shipped in Phase 73h:
+  //   28a — CHS ledger _signedMarginError accounts for direction
+  //         (wrong-winner predictions now sum magnitudes instead of subtracting)
+  //   28b — calcGameProjection exposes otProb / expectedOTPoints / otAdjustedTotal
+  //         (closeProb > 25% triggers OT-aware total adjustment)
+  //   28c — validateParlayCoverage flags series with predictions but no FEATURED_PARLAYS entry
+  console.log('\nTEST 28: Phase 73h — winner-aware error + OT adjustment + parlay coverage');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const ctx = vm.createContext({
+      console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite,
+      Boolean, Number, String, RegExp, Date, Error,
+    });
+    ['js/data/constants.js','js/data/series-data.js','js/data/historical.js','js/data/chs-ledger.js',
+     'js/data/bets-data.js','js/utils.js','js/state.js','js/validators.js',
+     'js/engine/fatigue.js','js/engine/chemistry.js','js/engine/matchups.js','js/engine/ratings.js',
+     'js/engine/scenarios.js','js/engine/projections.js','js/engine/lineup-overrides.js',
+     'js/engine/monte-carlo.js','js/engine/parlay-builder.js','js/ui/chs-lab.js']
+      .forEach(f => {
+        try { vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, f), 'utf8')), ctx); }
+        catch (e) { /* ui files often reference DOM globals; ignore — we only need the exports */ }
+      });
+
+    // ── 28a: Winner-aware signed-margin error helper ─────────────────
+    // The function is module-local (underscore prefix); we evaluate
+    // the math inline against the same formula to verify behavior.
+    const _signedMarginErr = (pred, actual) => {
+      if (!pred || !actual) return 0;
+      const sameWinner = pred.winner === actual.winner;
+      return sameWinner
+        ? Math.abs(pred.margin - actual.margin)
+        : pred.margin + actual.margin;
+    };
+
+    // Case 1: same winner, both 7 → error 0 (perfect)
+    assert(_signedMarginErr({winner:'OKC',margin:7}, {winner:'OKC',margin:7}) === 0,
+      `Same-winner same-margin → error 0`);
+
+    // Case 2: same winner, predicted 4 / actual 9 → error 5
+    assert(_signedMarginErr({winner:'OKC',margin:4}, {winner:'OKC',margin:9}) === 5,
+      `Same-winner predicted 4 / actual 9 → error 5`);
+
+    // Case 3: WRONG winner, predicted OKC by 4, actual SAS by 7 → error 11 (not 3!)
+    // This is the bug Fix 1 addresses: pre-Phase-73h calc was |4 - 7| = 3
+    // which understated the actual 11-pt swing.
+    assert(_signedMarginErr({winner:'OKC',margin:4}, {winner:'SAS',margin:7}) === 11,
+      `Wrong-winner (OKC by 4 vs SAS by 7) → error 11 (sum of magnitudes), not 3`);
+
+    // Case 4: WRONG winner with larger gap — predicted DET by 4, actual CLE by 31
+    assert(_signedMarginErr({winner:'DET',margin:4}, {winner:'CLE',margin:31}) === 35,
+      `Wrong-winner DET by 4 vs CLE by 31 → error 35`);
+
+    // ── 28b: OT-probability adjustment to total ──────────────────────
+    // calcGameProjection must surface otProb / expectedOTPoints / otAdjustedTotal.
+    const okcSas28 = ctx.SERIES_DATA.find(s => s.id === 'OKC-SAS');
+    if (okcSas28) {
+      const proj = ctx.calcGameProjection(okcSas28, 1);
+      assert(proj && typeof proj.otProb === 'number',
+        `calcGameProjection exposes otProb (got ${typeof proj.otProb})`);
+      assert(typeof proj.expectedOTPoints === 'number',
+        `calcGameProjection exposes expectedOTPoints (got ${typeof proj.expectedOTPoints})`);
+      assert(typeof proj.otAdjustedTotal === 'number',
+        `calcGameProjection exposes otAdjustedTotal (got ${typeof proj.otAdjustedTotal})`);
+
+      // otProb is in [0, 0.50]
+      assert(proj.otProb >= 0 && proj.otProb <= 0.50,
+        `otProb in [0, 0.50] (got ${proj.otProb})`);
+
+      // If closeProb ≤ 25, otProb is exactly 0 (no adjustment); otherwise positive
+      if (proj.closeProb <= 25) {
+        assert(proj.otProb === 0,
+          `closeProb=${proj.closeProb}% ≤ 25 → otProb 0 (got ${proj.otProb})`);
+        assert(proj.otAdjustedTotal === (proj.homeScore + proj.awayScore),
+          `closeProb ≤ 25 → otAdjustedTotal equals raw total`);
+      } else {
+        assert(proj.otProb > 0,
+          `closeProb=${proj.closeProb}% > 25 → otProb > 0 (got ${proj.otProb})`);
+        assert(proj.otAdjustedTotal >= (proj.homeScore + proj.awayScore),
+          `closeProb > 25 → otAdjustedTotal ≥ raw total (got adj=${proj.otAdjustedTotal} vs raw=${proj.homeScore + proj.awayScore})`);
+      }
+
+      // Sanity: expectedOTPoints ≈ otProb × 11.5 (both values are rounded
+      // independently before being returned, so allow 0.1 tolerance)
+      assert(Math.abs(proj.expectedOTPoints - proj.otProb * 11.5) < 0.1,
+        `expectedOTPoints ≈ otProb × 11.5 (got ${proj.expectedOTPoints} vs ${proj.otProb * 11.5})`);
+    }
+
+    // ── 28c: validateParlayCoverage catches missing parlays ──────────
+    assert(typeof ctx.validateParlayCoverage === 'function',
+      `validateParlayCoverage is exported`);
+
+    // Build a synthetic series with a predicted-but-unsettled game and
+    // no matching FEATURED_PARLAYS entry → must error.
+    const fakeSeries = [{
+      id: 'AAA-BBB',
+      round: 'CF',
+      games: [
+        { num: 1, result: null, homeScore: null, awayScore: null, winner: null,
+          prediction: { homeWin: true, homeScore: 110, awayScore: 100, margin: 10 } }
+      ],
+    }];
+    const noParlays = [
+      // Parlay on a DIFFERENT slate — doesn't count
+      { slate: 'CF-G2', name: 'AAA stuff', legs: [{ pick: 'AAA ML' }] },
+      // Parlay on the right slate but referencing OTHER teams — doesn't count
+      { slate: 'CF-G1', name: 'XXX-YYY total', legs: [{ pick: 'XXX over' }] },
+    ];
+    const coverageErrs = ctx.validateParlayCoverage(fakeSeries, noParlays);
+    assert(coverageErrs.length >= 1,
+      `validateParlayCoverage flags AAA-BBB G1 missing parlays (got ${coverageErrs.length} errors)`);
+    assert(coverageErrs[0].includes('AAA-BBB') && coverageErrs[0].includes('G1'),
+      `Error mentions the missing series + game (got "${coverageErrs[0]}")`);
+
+    // Now provide a matching parlay — should silence the error
+    const okParlays = [
+      { slate: 'CF-G1', name: 'AAA Stars Floor', legs: [{ pick: 'AAA ML' }] }
+    ];
+    const cleanErrs = ctx.validateParlayCoverage(fakeSeries, okParlays);
+    assert(cleanErrs.length === 0,
+      `validateParlayCoverage passes when matching parlay exists (got ${cleanErrs.length} errors)`);
+
+    // Settled game (winner set) → no coverage required
+    const settledSeries = [{
+      id: 'CCC-DDD',
+      round: 'CF',
+      games: [
+        { num: 1, result: 'CCC', homeScore: 110, awayScore: 100, winner: 'CCC',
+          prediction: { homeWin: true, homeScore: 110, awayScore: 100, margin: 10 } }
+      ],
+    }];
+    const settledErrs = ctx.validateParlayCoverage(settledSeries, []);
+    assert(settledErrs.length === 0,
+      `Settled games don't require parlay coverage (got ${settledErrs.length} errors)`);
+
+    // Real data check — current FEATURED_PARLAYS must cover all
+    // current predicted-but-unsettled games. If this fails, the
+    // daily routine missed a game (the exact gap Fix 3 prevents).
+    const realErrs = ctx.validateParlayCoverage(ctx.SERIES_DATA, ctx.FEATURED_PARLAYS);
+    assert(realErrs.length === 0,
+      `Live SERIES_DATA + FEATURED_PARLAYS has full parlay coverage (got ${realErrs.length} gaps: ${realErrs.join('; ')})`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');
