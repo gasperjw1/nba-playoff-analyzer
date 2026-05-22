@@ -796,6 +796,23 @@ function calcGameProjection(series, seriesId, gameNum) {
   const awayScoreLow = Math.round(awayScore * (1 - variancePct));
   const awayScoreHigh = Math.round(awayScore * (1 + variancePct));
 
+  // PHASE 73h: OT-probability total adjustment.
+  // Both 5/18 WCF G1 (2OT) and 5/19 ECF G1 (OT) had UNDER bets that
+  // hit in regulation but lost to OT minutes. The Phase 71 audit didn't
+  // model overtime — totals are a pure regulation-time projection.
+  //
+  // closeProb is the % chance of a sub-8pt margin. NBA empirical: ~15%
+  // of close playoff games go to OT. Multiply closeProb by 0.15 to get
+  // P(OT). Each OT is 5min, ~2.3pts/min → ~11.5 expected pts per OT.
+  // Probability-weighted contribution to total: P(OT) × 11.5.
+  //
+  // For UI/lab transparency we expose otProb + expectedOTPoints +
+  // otAdjustedTotal so the total panel can render the OT-aware central
+  // estimate without distorting the regulation-time range bands.
+  const otProb = (closeProb > 25) ? Math.min(0.50, (closeProb / 100) * 0.15) : 0;
+  const expectedOTPoints = otProb * 11.5;
+  const otAdjustedTotal = Math.round((homeScore + awayScore) + expectedOTPoints);
+
   return {
     homeScore, awayScore, margin,
     absMargin, favTeam: favTeam.abbr, dogTeam: dogTeam.abbr,
@@ -807,6 +824,12 @@ function calcGameProjection(series, seriesId, gameNum) {
     homeScoreRange: [homeScoreLow, homeScoreHigh],
     awayScoreRange: [awayScoreLow, awayScoreHigh],
     totalRange: [homeScoreLow + awayScoreLow, homeScoreHigh + awayScoreHigh],
+    // Phase 73h OT-aware total — for UI/bet display. Regulation total
+    // is still homeScore+awayScore; OT-adjusted is the better estimate
+    // for Over/Under bets on close games.
+    otProb: +otProb.toFixed(3),
+    expectedOTPoints: +expectedOTPoints.toFixed(2),
+    otAdjustedTotal,
     marginRange: projectedOT
       ? `${favTeam.abbr} in OT (regulation dead even)`
       : `${favTeam.abbr} by ${lowMargin}-${highMargin}`,

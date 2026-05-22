@@ -557,6 +557,32 @@ Author BOTH when CHS Lab can assemble each. If neither tier produces a valid can
 
 CHS Lab tab on the live site visualizes all of these.
 
+### 6e · Parlay coverage check (Phase 73h, May 22+)
+
+Before moving on to step 7, verify that **every series with a model
+prediction for an unsettled game** has at least one FEATURED_PARLAYS
+entry on the matching slate. The schema validator
+(`validateParlayCoverage` in `js/validators.js`) does this automatically
+at boot — any gap surfaces as a `PARLAY-COVERAGE:` error in the red
+banner at the top of the page.
+
+```
+- After authoring today's parlays, refresh the local server and watch for
+  the red validation banner.
+- If "PARLAY-COVERAGE: <series> G<N>" appears, you missed a game.
+  Common cause: the slate has TWO conference series (e.g., CF-G1 covers
+  both OKC-SAS and NYK-CLE) and you only authored parlays for one.
+- Add at least one floor or traditional parlay for the missing series
+  before committing. The validator will go quiet once coverage exists.
+- TEST 28 (Phase 73h) re-runs the same check at test time — push will
+  fail if a gap shipped.
+```
+
+Why this matters: pre-Phase-73h we silently shipped CF-G1 with three
+NYK-CLE parlays but only the model card for the OKC-SAS side — and
+nobody noticed until the WCF G1 result review. The validator + test
+catch the gap before the deploy.
+
 ---
 
 ## 7 · Sweep stale labels

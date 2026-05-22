@@ -235,6 +235,56 @@ function validateGameResult(game, ctx) {
   return errors;
 }
 
+// ---------- validateParlayCoverage (Phase 73h) -----------------
+// Catches the daily-routine gap: a series has a prediction for the
+// next game but FEATURED_PARLAYS forgot to author parlays for it
+// (saw this with NYK-CLE G2 on 5/22 — model had projection but Home
+// "Featured Parlays" was empty because the slate-builder skipped
+// the second series). Without parlay coverage, the daily run silently
+// ships incomplete content even though every other panel looks fine.
+//
+// Rule: any game with `prediction` set AND `winner` null is "upcoming
+// with a model call." For each such (series, gameNum) pair, at least
+// one FEATURED_PARLAYS entry must be tagged to the same slate key
+// (`{round}-G{gameNum}`) AND must reference either team abbreviation
+// in its name or in a leg pick string. If none match, error.
+function validateParlayCoverage(seriesData, parlays) {
+  const errors = [];
+  if (!Array.isArray(seriesData) || !Array.isArray(parlays)) return errors;
+
+  seriesData.forEach(s => {
+    if (!s || !Array.isArray(s.games) || !s.id || !s.round) return;
+    const [abbrA, abbrB] = String(s.id).split('-');
+    if (!abbrA || !abbrB) return;
+
+    s.games.forEach(g => {
+      if (!g || !g.prediction) return;
+      if (g.winner) return; // already settled — coverage moot
+      const gameNum = g.num;
+      if (typeof gameNum !== 'number') return;
+
+      const expectedSlate = `${s.round}-G${gameNum}`;
+      const matching = parlays.filter(p => {
+        if (!p || p.slate !== expectedSlate) return false;
+        const haystack = [
+          String(p.name || ''),
+          ...(Array.isArray(p.legs) ? p.legs.map(l => String(l && l.pick || '')) : []),
+        ].join(' ');
+        // Word-boundary check so 'SAS' doesn't match 'sass' or 'classics'
+        const reA = new RegExp(`\\b${abbrA}\\b`);
+        const reB = new RegExp(`\\b${abbrB}\\b`);
+        return reA.test(haystack) || reB.test(haystack);
+      });
+
+      if (matching.length === 0) {
+        errors.push(`PARLAY-COVERAGE: ${s.id} G${gameNum} has a model prediction but no FEATURED_PARLAYS entry on slate '${expectedSlate}' references '${abbrA}' or '${abbrB}'. Daily routine likely missed this game.`);
+      }
+    });
+  });
+
+  return errors;
+}
+
 // ---------- orchestrator ---------------------------------------
 function validateAll(seriesData, bets, parlays, betSlates) {
   const errors = [];
@@ -295,6 +345,11 @@ function validateAll(seriesData, bets, parlays, betSlates) {
   }
 
   if (betSlates) errors.push(...validateBetSlates(betSlates, seriesIds));
+
+  // PHASE 73h: parlay coverage on upcoming predicted games
+  if (Array.isArray(parlays)) {
+    errors.push(...validateParlayCoverage(seriesData, parlays));
+  }
 
   return errors;
 }

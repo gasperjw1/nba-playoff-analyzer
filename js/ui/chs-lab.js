@@ -14,6 +14,22 @@
 //   3. Ledger — resolved games with hit/miss + per-row error
 // ============================================================
 
+// Phase 73h: winner-aware signed margin error.
+// The ledger stores `{winner: <abbr>, margin: <positive int>}` as
+// absolute winning margin. When predicted winner ≠ actual winner the
+// margins point in OPPOSITE directions, so the true error is the sum
+// of magnitudes, not the difference. Previously: predicted "OKC by 4"
+// + actual "SAS by 7" → calc reported err=3 (|4-7|), undercounting
+// the actual 11-pt swing. This made the model look more accurate
+// than it was — undermining the Phase 71 audit recalibration.
+function _signedMarginError(pred, actual) {
+  if (!pred || !actual) return 0;
+  const sameWinner = pred.winner === actual.winner;
+  return sameWinner
+    ? Math.abs(pred.margin - actual.margin)        // same side: |Δmagnitude|
+    : pred.margin + actual.margin;                 // opposite sides: sum
+}
+
 function chsLabComputeAggregate(ledger) {
   const total = ledger.length;
   if (!total) return { total: 0, mainHits: 0, chsHits: 0, mainMAE: 0, chsMAE: 0 };
@@ -21,9 +37,11 @@ function chsLabComputeAggregate(ledger) {
   ledger.forEach(e => {
     if (e.mainPred && e.mainPred.winner === e.actual.winner) mainHits++;
     if (e.chsPred && e.chsPred.winner === e.actual.winner) chsHits++;
-    if (e.mainPred && typeof e.mainPred.margin === 'number') mainErr += Math.abs(e.mainPred.margin - e.actual.margin);
+    if (e.mainPred && typeof e.mainPred.margin === 'number') {
+      mainErr += _signedMarginError(e.mainPred, e.actual);
+    }
     if (e.chsPred && typeof e.chsPred.margin === 'number') {
-      chsErr += Math.abs(e.chsPred.margin - e.actual.margin);
+      chsErr += _signedMarginError(e.chsPred, e.actual);
       chsCount++;
     }
   });
@@ -348,8 +366,9 @@ function chsLabRenderLedger(ledger) {
   const rows = ledger.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(e => {
     const mainHit = e.mainPred && e.mainPred.winner === e.actual.winner;
     const chsHit = e.chsPred && e.chsPred.winner === e.actual.winner;
-    const mainErr = e.mainPred ? Math.abs(e.mainPred.margin - e.actual.margin) : '?';
-    const chsErr = e.chsPred ? Math.abs(e.chsPred.margin - e.actual.margin) : '?';
+    // Phase 73h: winner-aware error (see chsLabComputeAggregate)
+    const mainErr = e.mainPred ? _signedMarginError(e.mainPred, e.actual) : '?';
+    const chsErr = e.chsPred ? _signedMarginError(e.chsPred, e.actual) : '?';
     const retroBadge = e.retroactive ? ' <span style="font-size:9px;color:var(--text-dim);background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:8px;">retro</span>' : '';
     return `
       <tr>
