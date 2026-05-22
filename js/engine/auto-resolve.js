@@ -39,6 +39,8 @@ const PLAYER_ALIAS_MAP = {
   'cade':'cunningham',
   'kd':'durant',
   'ant':'edwards',
+  'kat':'towns',          // Karl-Anthony Towns (Phase 73i: needed for ECF G1 KAT bet)
+  'wemby':'wembanyama',   // Phase 73i: matches Victor Wembanyama
 };
 
 function _normalizeStat(s) {
