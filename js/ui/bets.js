@@ -2532,6 +2532,81 @@ function renderCFBets(el) {
       </div>
     </div>
 
+    <!-- ═══ CF P&L LEDGER (Phase 73j) ═══ -->
+    <!-- CF-specific P&L tracking. Updates as each CF game settles. -->
+    <div style="background:rgba(0,0,0,0.3);border:1px solid #22d3ee;border-radius:10px;padding:14px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 CONFERENCE FINALS P&amp;L</span>
+        <span style="font-size:11px;color:#666;">Live tracking — CF G1 settled, G2 settled (no parlays), G3 in play</span>
+      </div>
+      <!-- Row 1: Net $ by category -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
+        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(34,211,238,0.08);">
+          <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">Floor Net</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$450</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">4-0 record</div>
+        </div>
+        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(167,139,250,0.08);">
+          <div style="font-size:9px;color:#a78bfa;text-transform:uppercase;">Traditional Net</div>
+          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$100</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">0-2 record</div>
+        </div>
+        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);border:1px solid rgba(61,214,140,0.4);">
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Combined</div>
+          <div style="font-size:18px;font-weight:700;color:#3dd68c;">+$350</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">4-2 (66.7%)</div>
+        </div>
+        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Wagered</div>
+          <div style="font-size:16px;font-weight:700;color:#aaa;">$500</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">ROI: <strong style="color:#3dd68c;">+70%</strong></div>
+        </div>
+      </div>
+      <!-- Row 2: Per-game breakdown -->
+      <div style="font-size:10px;color:#aaa;border-top:1px solid #333;padding-top:8px;">
+        <div style="font-size:10px;font-weight:700;color:#22d3ee;margin-bottom:6px;letter-spacing:0.5px;">SETTLED CF GAMES</div>
+        <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:4px 12px;line-height:1.7;">
+          <span style="color:#888;font-weight:700;">DATE</span>
+          <span style="color:#888;font-weight:700;">GAME · RESULT · MODEL</span>
+          <span style="color:#888;font-weight:700;">PARLAYS</span>
+          <span style="color:#888;font-weight:700;">NET</span>
+
+          <span style="color:#aaa;">Mon 5/18</span>
+          <span style="color:#aaa;">WCF G1: <strong style="color:#fff;">SAS 122-115 (2OT)</strong> · model OKC by 6 (<span style="color:#ef4444;">wrong winner, err 13pt</span>)</span>
+          <span style="color:#aaa;">2W floor, 1L trad</span>
+          <span style="color:#3dd68c;font-weight:700;">+$180</span>
+
+          <span style="color:#aaa;">Tue 5/19</span>
+          <span style="color:#aaa;">ECF G1: <strong style="color:#fff;">NYK 115-104 (OT)</strong> · model NYK by 6 (<span style="color:#3dd68c;">right winner, err 5pt</span>)</span>
+          <span style="color:#aaa;">2W floor, 1L trad</span>
+          <span style="color:#3dd68c;font-weight:700;">+$170</span>
+
+          <span style="color:#aaa;">Wed 5/20</span>
+          <span style="color:#aaa;">WCF G2: <strong style="color:#fff;">OKC 122-113</strong> · model OKC by 7 (<span style="color:#3dd68c;">right winner, err 2pt</span>)</span>
+          <span style="color:#888;font-style:italic;">no parlays placed</span>
+          <span style="color:#666;font-weight:700;">$0</span>
+
+          <span style="color:#aaa;">Thu 5/21</span>
+          <span style="color:#aaa;">ECF G2: <strong style="color:#fff;">NYK 109-93</strong> · model NYK by 10 (<span style="color:#3dd68c;">right winner, err 6pt</span>)</span>
+          <span style="color:#888;font-style:italic;">no parlays placed</span>
+          <span style="color:#666;font-weight:700;">$0</span>
+        </div>
+      </div>
+      <!-- Row 3: In-play wagers -->
+      <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#888;">IN PLAY (CF G3):</span>
+          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 5/22-5/23</strong></span>
+        </div>
+      </div>
+      <!-- Row 4: Aggregate notes -->
+      <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#666;line-height:1.5;">
+        <strong style="color:#3dd68c;">CF model accuracy:</strong> 3/4 winners (75%) · 6.0pt main MAE / 5.5pt CHS MAE (winner-aware, Phase 73h) — both well under the 13pt Phase 71 threshold.
+        <strong style="color:#22d3ee;">Floor discipline:</strong> 4/4 parlays hit on the days the daily run was authored. The two losses came from G2 days where no parlays were placed (5/20 + 5/21 daily run skipped).
+        <strong style="color:#a78bfa;">Traditional lesson:</strong> both CF G1 trad parlays lost on a single leg (OKC chalk all-3-miss vs SAS upset; NYK rest killed by OT pushing the Under over by 3.5).
+      </div>
+    </div>
+
     <!-- ROUND TOGGLE -->
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
       <button onclick="syncSeriesCursorToRound('R1');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
@@ -2882,40 +2957,75 @@ function renderR2Bets(el) {
       return todaysGames.length ? `TODAY (${today}): ${todaysGames.join(' + ')}` : `No games scheduled for today (${today})`;
     })()}</p>
 
-    <!-- ═══ RUNNING P&L LEDGER ═══ -->
+    <!-- ═══ RUNNING P&L LEDGER (Phase 73j: CF column added) ═══ -->
     <div style="background:rgba(0,0,0,0.3);border:1px solid #444;border-radius:10px;padding:14px;margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:13px;font-weight:700;color:#a78bfa;">CUMULATIVE P&amp;L</span>
-        <span style="font-size:11px;color:#666;">All parlays tracked</span>
+        <span style="font-size:11px;color:#666;">All parlays tracked (R1 bet-side + R2/CF parlay-side)</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+      <!-- Row 1: Net $ by round -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">R1 Net</div>
           <div style="font-size:16px;font-weight:700;color:#ef4444;">-$698</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">R2 Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$320</div>
+          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$1,213</div>
+        </div>
+        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);border-color:#22d3ee;">
+          <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">CF Net <span style="color:#3dd68c;">(LIVE)</span></div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$350</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-          <div style="font-size:9px;color:#888;text-transform:uppercase;">Total Net</div>
-          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$378</div>
-        </div>
-        <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
-          <div style="font-size:9px;color:#888;text-transform:uppercase;">R2 Record</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">3-6</div>
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">Combined Net</div>
+          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$1,561</div>
         </div>
       </div>
+      <!-- Row 2: W-L record by round -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);">
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">R1 Bets</div>
+          <div style="font-size:12px;font-weight:700;color:#aaa;">25-17 ML</div>
+        </div>
+        <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);">
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">R2 Parlays</div>
+          <div style="font-size:12px;font-weight:700;color:#aaa;">17-39</div>
+        </div>
+        <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);border:1px solid rgba(34,211,238,0.3);">
+          <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">CF Parlays</div>
+          <div style="font-size:12px;font-weight:700;color:#3dd68c;">4-2</div>
+        </div>
+        <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);">
+          <div style="font-size:9px;color:#888;text-transform:uppercase;">R2+CF Combined</div>
+          <div style="font-size:12px;font-weight:700;color:#aaa;">21-41</div>
+        </div>
+      </div>
+      <!-- CF G1 parlay timeline (Phase 73j: live tracking) -->
       <div style="font-size:10px;color:#666;border-top:1px solid #333;padding-top:8px;">
+        <div style="font-size:10px;font-weight:700;color:#22d3ee;margin-bottom:4px;letter-spacing:0.5px;">CF G1 SETTLED PARLAYS</div>
         <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;line-height:1.6;">
-          <span style="color:#3dd68c;">✅</span><span>Ensemble Edge (4-leg, May 4)</span><span style="color:#3dd68c;font-weight:700;">+$550</span>
-          <span style="color:#3dd68c;">✅</span><span>Chalk Doubles (2-leg, May 5)</span><span style="color:#3dd68c;font-weight:700;">+$61</span>
-          <span style="color:#ef4444;">❌</span><span>Chalk Sweep (3-leg, May 4)</span><span style="color:#ef4444;">-$100</span>
-          <span style="color:#ef4444;">❌</span><span>Chaos Upset (3-leg, May 4)</span><span style="color:#ef4444;">-$100</span>
-          <span style="color:#ef4444;">❌</span><span>Props (4-leg, May 4)</span><span style="color:#ef4444;">-$100</span>
-          <span style="color:#ef4444;">❌</span><span>Chaos Road Dog (2-leg, May 5)</span><span style="color:#ef4444;">-$100</span>
-          <span style="color:#3dd68c;">✅</span><span>Home Court Dominance (2-leg, May 7)</span><span style="color:#3dd68c;font-weight:700;">+$110</span>
-          <span style="color:#ef4444;">❌</span><span>Chaos CLE+PHI (2-leg, May 7)</span><span style="color:#ef4444;">-$1</span>
+          <span style="color:#3dd68c;">✅</span><span>WCF G1 — OKC Stars Floor (2-leg, May 18; SGA 24 / Holm 8reb)</span><span style="color:#3dd68c;font-weight:700;">+$105</span>
+          <span style="color:#3dd68c;">✅</span><span>WCF G1 — Wemby+Castle Floor (2-leg, May 18; Wemby 24reb / Castle 17)</span><span style="color:#3dd68c;font-weight:700;">+$125</span>
+          <span style="color:#ef4444;">❌</span><span>WCF G1 — OKC Chalk Stack (3-leg, May 18; SAS upset killed all 3 legs)</span><span style="color:#ef4444;">-$50</span>
+          <span style="color:#3dd68c;">✅</span><span>ECF G1 — NYK Stars Floor (2-leg, May 19; Brunson 38 / KAT 13reb)</span><span style="color:#3dd68c;font-weight:700;">+$115</span>
+          <span style="color:#3dd68c;">✅</span><span>ECF G1 — Mitchell+Mobley Floor (2-leg, May 19; Mitchell 29 / Mobley 14reb)</span><span style="color:#3dd68c;font-weight:700;">+$105</span>
+          <span style="color:#ef4444;">❌</span><span>ECF G1 — NYK Rest Stack (3-leg, May 19; 2/3 hit but OT killed Under)</span><span style="color:#ef4444;">-$50</span>
+        </div>
+        <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #333;font-size:10px;display:flex;justify-content:space-between;">
+          <span style="color:#888;">CF G1 Floor record:</span>
+          <span style="color:#3dd68c;font-weight:700;">4-0 (+$450)</span>
+        </div>
+        <div style="font-size:10px;display:flex;justify-content:space-between;">
+          <span style="color:#888;">CF G1 Traditional record:</span>
+          <span style="color:#ef4444;font-weight:700;">0-2 (-$100)</span>
+        </div>
+        <div style="font-size:10px;display:flex;justify-content:space-between;margin-top:4px;padding-top:4px;border-top:1px dashed #333;">
+          <span style="color:#aaa;font-weight:700;">CF G1 Combined:</span>
+          <span style="color:#3dd68c;font-weight:700;">4-2 (+$350)</span>
+        </div>
+        <div style="font-size:9px;color:#666;margin-top:6px;font-style:italic;text-align:center;">
+          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. CF G3 in play (5/22 WCF + 5/23 ECF) — $500 wagered, settling Sat morning.
         </div>
       </div>
     </div>
