@@ -575,5 +575,80 @@ const CHS_LEDGER = [
       "awayScore": 108,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-05-19",
+    "series": "NYK-CLE",
+    "game": 1,
+    "retroactive": false,
+    "actual": {
+      "winner": "NYK",
+      "margin": 11,
+      "homeScore": 115,
+      "awayScore": 104
+    },
+    "mainPred": {
+      "winner": "NYK",
+      "margin": 6,
+      "homeScore": 110,
+      "awayScore": 104
+    },
+    "chsPred": {
+      "winner": "NYK",
+      "margin": 8,
+      "homeScore": 112,
+      "awayScore": 104,
+      "marginDeltaVsMain": 2
+    }
+  },
+  {
+    "date": "2026-05-20",
+    "series": "OKC-SAS",
+    "game": 2,
+    "retroactive": true,
+    "actual": {
+      "winner": "OKC",
+      "margin": 9,
+      "homeScore": 122,
+      "awayScore": 113
+    },
+    "mainPred": {
+      "winner": "OKC",
+      "margin": 7,
+      "homeScore": 112,
+      "awayScore": 105
+    },
+    "chsPred": {
+      "winner": "OKC",
+      "margin": 7,
+      "homeScore": 112,
+      "awayScore": 105,
+      "marginDeltaVsMain": 0
+    }
+  },
+  {
+    "date": "2026-05-21",
+    "series": "NYK-CLE",
+    "game": 2,
+    "retroactive": true,
+    "actual": {
+      "winner": "NYK",
+      "margin": 16,
+      "homeScore": 109,
+      "awayScore": 93
+    },
+    "mainPred": {
+      "winner": "NYK",
+      "margin": 10,
+      "homeScore": 109,
+      "awayScore": 99
+    },
+    "chsPred": {
+      "winner": "NYK",
+      "margin": 10,
+      "homeScore": 109,
+      "awayScore": 99,
+      "marginDeltaVsMain": 0
+    }
   }
 ];
