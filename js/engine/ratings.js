@@ -294,9 +294,11 @@ function calcWinProb(series, seriesId, gameNum) {
   const hr = calcTeamRating(series.homeTeam, series, seriesId);
   const ar = calcTeamRating(series.awayTeam, series, seriesId);
 
-  // BACKTEST LESSON 1: Round-adjusted HCA (replaces flat +3)
-  // PHASE 17 UPDATE: R1=2.5, R2=1.7, CF=1.3, Finals=0.85 (reduced ~15% per Barreira & Morgado 2023)
-  // Longitudinal analysis (1946-2022) shows significant declining trend in playoff HCA.
+  // BACKTEST LESSON 1: Round-adjusted HCA (replaces flat +3).
+  // Current values live in HCA_BY_ROUND (constants.js) — last tuned
+  // Phase 59 after three wrong-winner G3 calls in R2 (NYK-PHI, SAS-MIN,
+  // DET-CLE). See that constant for the current per-round values + the
+  // research lineage (Barreira & Morgado 2023, López-García 2024).
   const round = series.round || 'R1';
   let baseHCA = HCA_BY_ROUND[round] || 2.5;
 

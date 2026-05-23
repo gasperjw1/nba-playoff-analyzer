@@ -141,39 +141,10 @@ function _isActiveForMC(player, seriesId) {
   return true;
 }
 
-function _sampleTeamGame(team, side, expectedByPlayer, opts) {
-  if (!team || !Array.isArray(team.players)) return { pts: 0, players: {} };
-  const seriesId = opts && opts.seriesId;
-  const active = team.players
-    .filter(p => _isActiveForMC(p, seriesId))
-    .slice(0, 10);
-  const playerSamples = {};
-  let totalPts = 0;
-  active.forEach(p => {
-    const exp = expectedByPlayer[p.name] || { pts: p.ppg || 0, reb: p.rpg || 0, ast: p.apg || 0 };
-    const s = _samplePlayerGame(p, exp, opts);
-    playerSamples[p.name] = s;
-    totalPts += s.pts;
-  });
-
-  // Team-level pace variance: ±4%
-  const paceMult = _sampleNormal(1, MC_CONFIG.teamPaceCV, 0.85, 1.15);
-  totalPts *= paceMult;
-
-  // Team 3PT variance — when a team gets hot from 3, margin explodes.
-  const threePctMult = _sampleNormal(1, MC_CONFIG.teamThreePctCV, 0.75, 1.30);
-  totalPts *= threePctMult;
-
-  // Note on compounding: paceMult × threePctMult is intentional — pace and 3PT
-  // hot streaks are independent physical phenomena that BOTH shift scoring
-  // when they co-occur. Hard clamps [0.85,1.15]×[0.75,1.30] = [0.6375,1.495]
-  // → a 110-pt projection ranges 70-164 in tails, matching observed playoff
-  // game extremes (CLE 138 G4 R1 vs MIA 83). This is the PLAYER-LEVEL summed
-  // total (used by prop sims). Team-level margin/winner uses the engine's
-  // separate variance bands via _sampleTeamScores — see runMonteCarlo below.
-
-  return { pts: totalPts, players: playerSamples, paceMult, threePctMult };
-}
+// Phase 73m cleanup: removed _sampleTeamGame — was an extracted helper
+// that runMonteCarlo never actually called (it samples players inline
+// instead). Kept zero callers across the codebase; deleted to remove the
+// orphan + its misleading docstring about team-vs-player decoupling.
 
 // ── Run the full sim ────────────────────────────────────────────────
 // ARCHITECTURE: decouples team-level (margin/winner) from player-level
@@ -219,7 +190,14 @@ function runMonteCarlo(series, gameNum, opts = {}) {
         try {
           const exp = calcExpectedPlayerStats(p, series, gameIdx, 'home');
           expectedHome[p.name] = { pts: exp.pts, reb: exp.reb, ast: exp.ast };
-        } catch (e) {}
+        } catch (e) {
+          // Don't silently swallow — but degrade gracefully if a single player's
+          // projection fails (others should still simulate). Surface to console so
+          // real bugs (NaN propagation, missing roster fields, etc.) get noticed.
+          if (typeof console !== 'undefined' && console.warn) {
+            console.warn('[monte-carlo] calcExpectedPlayerStats failed for ' + (p && p.name) + ' (home):', e && e.message);
+          }
+        }
       }
     });
     series.awayTeam.players.forEach(p => {
@@ -227,7 +205,11 @@ function runMonteCarlo(series, gameNum, opts = {}) {
         try {
           const exp = calcExpectedPlayerStats(p, series, gameIdx, 'away');
           expectedAway[p.name] = { pts: exp.pts, reb: exp.reb, ast: exp.ast };
-        } catch (e) {}
+        } catch (e) {
+          if (typeof console !== 'undefined' && console.warn) {
+            console.warn('[monte-carlo] calcExpectedPlayerStats failed for ' + (p && p.name) + ' (away):', e && e.message);
+          }
+        }
       }
     });
   }
@@ -553,7 +535,6 @@ if (typeof module !== 'undefined' && module.exports) {
     formatMCFreshness,
     _sampleNormal,
     _samplePlayerGame,
-    _sampleTeamGame,
     _resolvePlayerName,
     MC_CONFIG,
   };
