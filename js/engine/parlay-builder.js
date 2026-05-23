@@ -347,8 +347,13 @@ function _candidatePool(simResult, series, opts) {
 
 // ── _scoreConfig: helper that scores a specific leg combination ──────
 function _scoreConfig(simResult, series, legs) {
+  // Guard legs with bad juice — estJuice === 0 (or NaN) breaks the decimal
+  // formula. American odds always have magnitude ≥ 100 in practice; bail
+  // out cleanly rather than emitting Infinity into the parlay sim.
+  if (legs.some(l => !l || !isFinite(l.estJuice) || l.estJuice === 0)) return null;
   const dec = legs.map(l => l.estJuice > 0 ? 1 + l.estJuice / 100 : 1 + 100 / -l.estJuice);
   const combinedDec = dec.reduce((a, b) => a * b, 1);
+  if (!isFinite(combinedDec) || combinedDec <= 1) return null;
   const american = combinedDec > 2 ? Math.round((combinedDec - 1) * 100)
                                    : Math.round(-100 / (combinedDec - 1));
   const score = scoreParlay(simResult, series, legs, american);

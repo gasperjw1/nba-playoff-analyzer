@@ -1651,7 +1651,7 @@ const BETS = [
     ],
     reasoning: "Phase 71c engine: SAS 116, OKC 112 (SAS by 4). Series shifts to Frost Bank where SAS was 6-0 this playoffs (+5.4 net at home). Castle-vs-SGA round 2: Castle held SGA to 7-23 in G1; G2 SGA bounced to 30/9 on Wemby min-restriction night — Frost crowd flips the leverage back. Caruso's 8-of-13 3PT across G1+G2 is the regression variable (model says he reverts to ~38% from 62%). The 4-1 regular-season pattern + home setting align with the engine read.",
     confidence: 'medium', thesis: ['model','matchup','historical'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'OKC won 123-108 — SAS ML missed. Engine wrong-winner: had SAS by 4 at home with the regression-to-mean Caruso 3PT narrative; instead Caruso/McCain/J.Williams combined for 49 off the bench (OKC bench 76 vs SAS bench 23) and Castle/Harper played through Wed injuries.' },
   },
   {
     id: 'cf-g3-okc-sas-spread',
@@ -1664,7 +1664,7 @@ const BETS = [
     ],
     reasoning: "Phase 71 spread CAUTION pill auto-applies — treat as lean. Engine margin says SAS by 4 which would cover -1.5 by 2.5. Wemby's home court energy + Castle/Harper paint-handle the OKC switching scheme + Caruso 3PT regression all stack toward SAS. Risk: J. Williams returning could give OKC a wing dimension SAS hasn't seen this series.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'SAS lost by 15 (OKC 123-108). Phase 71 spread CAUTION proved correct — the audit MAE 13pt warning bracketed the 19pt margin miss exactly.' },
   },
   {
     id: 'cf-g3-okc-sas-total',
@@ -1677,7 +1677,7 @@ const BETS = [
     ],
     reasoning: "G1 regulation 198 (under-territory before OT), G2 235 (transition outlier from 21 TOs). Frost Bank settings historically tighten — slower pace, more set offense. Phase 71 total SKIP at medium confidence; treat as lean only. The Wemby-Holmgren rim chess + Castle-SGA POA battle should produce more contested possessions = fewer points.",
     confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Total 231 (OKC 123, SAS 108) — clear over the 217.5 line. Frost Bank tightening thesis flunked when OKC bench output (76pts) propped the OKC half above pace expectations.' },
   },
   {
     id: 'cf-g3-okc-sas-wemby-pts',
@@ -1690,7 +1690,7 @@ const BETS = [
     ],
     reasoning: "Wemby home + post-restriction G2 = full-tank G3 in front of Frost Bank. 21 in G2 was minutes-capped (28min instead of 49+ G1). Line 25.5 is a half-point below engine projection. Phase 71 ELITE tier correction (-2.6 PTS) applied: 31 series avg → corrected 28.4 → still clears 25.5 cleanly.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Wemby 26pts on 8-15 FG — cleared 25.5 by 0.5. Engine projection nailed within 2.5pts; the line-tracking PTS leg was the only standalone bet to hit this slate.' },
   },
   {
     id: 'cf-g3-okc-sas-sga-pts',
@@ -1703,7 +1703,7 @@ const BETS = [
     ],
     reasoning: "SGA series avg 27 against Castle. Phase 71c per-player override (-6.9) is heavy — corrected projection ~24 (UNDER 27.5). The bias-correction framework says lean UNDER but the bet pick is OVER — leaving this as a calibration check: if Castle/Harper hounding continues at G1 levels, override is right; if SGA acclimates after G2 30pts, the override has run its course. <strong>SKIP this entry</strong> per framework — included for transparency but the pill auto-classifies SKIP via the override.",
     confidence: 'lean', thesis: ['model'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'SGA 26pts on 11-22 FG — under 27.5 by 1.5. Phase 71c override (-6.9) directionally correct (projection 24 vs actual 26). Castle-bruised game still capped SGA short of the line; calibration framework called this right.' },
   },
   {
     id: 'cf-g3-okc-sas-castle-pts',
@@ -1716,7 +1716,7 @@ const BETS = [
     ],
     reasoning: "Castle has emerged as SAS's secondary creator while playing elite POA defense on SGA. G2: 25/8ast in San Antonio's transition-heavy game. With Fox/Harper banged up (day-to-day), Castle's usage projects to climb further in G3. Phase 71 STARTER tier calibrated (no override). Home crowd lift + matchup edge nudges over.",
     confidence: 'medium', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Castle 13pts on 4-12 FG — well under 19.5. Wednesday hard-contact bruise carried through tip; engine had no input for the late-week health flag and over-projected usage climb. Same pattern (injury underwriting OUT-day projections) the G3 modelLessons[] retro flagged.' },
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -1733,8 +1733,8 @@ const BETS = [
       {label:'CLE home record',value:'6-1 at Rocket this playoffs'},
       {label:'NYK rest',value:'B2B after G2 5/21 → travel → G3 5/23'},
     ],
-    reasoning: "Phase 71c engine: CLE 113, NYK 107 (CLE by 6). Down-0-2-at-home historical 68% win rate + CLE was 6-0 at Rocket pre-DET G6. NYK has back-to-back disadvantage after the emotional G1 OT marathon. Mitchell volume up to 30+ shots projected; Harden role shift (off-ball cuts) is the structural adjustment. Risk: NYK's depth (Hart, KAT, McBride, Shamet) doesn't tire the way top-heavy CLE will.",
-    confidence: 'medium', thesis: ['model','matchup','historical'], narrative: null,
+    reasoning: "<strong>5/23 MC re-validation:</strong> raw engine actually projects NYK by 1 (NYK 107 — CLE 106) and Monte Carlo gives CLE ~51% — essentially a coin flip on the model side. The lead bet thesis is <strong>structural, not engine-driven</strong>: (a) down-0-2 home historical win rate 68%, which the engine doesn't price in as a situational prior; (b) NYK on back-to-back + travel after a G1 OT marathon vs CLE with a full rest day; (c) CLE 6-0 at Rocket Arena pre-DET G6; (d) CLE adjustments incoming (Harden off-ball, Mitchell volume to 30+ in close-out-of-elimination). At -140 (58.3% implied) vs structural ~55-60% true probability, this is a SMALL +EV lean rather than a clean PLACE — CF unknown-territory cap on stakes already trims exposure. Risk: NYK depth (Hart, KAT, McBride, Shamet) doesn't tire the way top-heavy CLE will.",
+    confidence: 'medium', thesis: ['matchup','historical','situational'], narrative: 'desperation',
     result: null,
   },
   {
@@ -1745,8 +1745,8 @@ const BETS = [
       {label:'Market opener',value:'CLE -3 (estimated)'},
       {label:'ECF G3 home',value:'~64% cover when home team trails 0-2'},
     ],
-    reasoning: "Phase 71 spread CAUTION pill auto-applies. Engine projects CLE by 6 so -3 has cushion. Down-0-2 home historically covers at higher rate than the implied -3 line. Treat as lean.",
-    confidence: 'lean', thesis: ['model','market','historical'], narrative: null,
+    reasoning: "Phase 71 spread CAUTION pill auto-applies. <strong>5/23 MC re-validation:</strong> raw engine NYK by 1, MC margin median ~0pt — CLE -3 needs CLE to win by 4+, which the model gives ~40% probability vs -110 (52.4% implied) → -EV by ~12% per pure model. Same structural counter-argument as the ML lean (down-0-2 home covers historically ~55% per Dean Oliver retro). Treat as a half-stake lean only; the CAUTION pill is doing real work here.",
+    confidence: 'lean', thesis: ['market','historical','situational'], narrative: null,
     result: null,
   },
   {
@@ -1784,8 +1784,8 @@ const BETS = [
       {label:'KAT matchup',value:'twin-big rebound dynamic continues'},
       {label:'Phase 71 STARTER REB',value:'calibrated'},
     ],
-    reasoning: "Mobley 14reb G1; KAT-vs-Mobley matchup continues to drive defensive rebound volume. Phase 71 STARTER REB tier calibrated. Home crowd lift typically adds 0.5-1 reb. Line 9.5 below engine projection ~12. Medium confidence with the calibrated zone.",
-    confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
+    reasoning: "Mobley 14reb G1, 9reb G2 (with Allen back to full minutes the KAT-vs-Mobley REB split shifted). <strong>5/23 MC re-validation:</strong> calcExpectedPlayerStats for ECF G3 returns 9.0 reb (not 12 as authored yesterday — Allen's reb share comes back when he plays 30min). MC mean 8.2, hit rate ~31% on the 9.5 line. This is essentially a coin-flip-to-lean-under bet, NOT a confident over. <strong>SKIP per framework</strong>: Phase 71 STARTER REB is calibrated but at-the-line, and -130 needs 56.5% implied vs ~35% MC — heavily -EV at this line. Use the 7.5 alt instead (engine 9.0, ~70% over) which the floor parlay uses.",
+    confidence: 'coin-flip', thesis: ['matchup'], narrative: null,
     result: null,
   },
 ];
@@ -2860,11 +2860,11 @@ const FEATURED_PARLAYS = [
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
     legs: [
       { pick:'Mitchell Over 19.5 points (alt — ECF G3)', odds:'-280', confidence:'floor', status:null,
-        note:'Series 29 + 26 → 27.5 avg. Line 19.5 = proj−8 deep alt. Must-win-at-home volume floor.' },
+        note:'Series 29 + 26 → 27.5 avg. Line 19.5 = proj−8 deep alt. Engine 31.6pts (Phase 71b star bias applied). Floor leg ~85-90%.' },
       { pick:'Mobley Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:null,
-        note:'G1: 14reb. KAT matchup drives DEF rebound volume. Floor-stable counting stat.' },
+        note:'G1: 14reb / G2: 9reb (Allen back full minutes). 5/23 MC re-validation: calcExpectedPlayerStats 9.0 reb → ~70% over 7.5. NOT a >80% floor leg — this is the WEAK leg in the parlay.' },
     ],
-    thesis:'CLE-desperation home stack. Math: 0.86 × 0.88 ≈ 76% combined — reliable floor. Series-pattern (Mitchell 26+ both games, Mobley 14 reb G1) anchors both legs in calibrated zones.',
+    thesis:'CLE-desperation home stack. <strong>5/23 MC re-validation:</strong> 0.87 × 0.70 = 0.61 combined — under the 80% floor threshold. Mitchell-over leg is solid floor (engine 31.6 vs deep alt 19.5); Mobley leg is too close to engine projection (9.0) to qualify as floor. Treat as a TRADITIONAL-style parlay at the "floor" label rather than a true reliable floor. CLE-side correlated thesis still holds: Mitchell volume + Mobley defensive REB share both correlate with CLE controlling the game. Recommended: trim stake or swap Mobley leg to Over 5.5 reb (~88% over).',
     result: null,
   },
   {
@@ -2890,13 +2890,13 @@ const FEATURED_PARLAYS = [
     stake: 50, odds: '+320', payout: 'To Win: ~$160',
     legs: [
       { pick:'CLE ML vs NYK (ECF G3)', odds:'-140', confidence:'medium', status:null,
-        note:'Down-0-2 home historical 68% win rate + 6-0 at Rocket pre-DET G6. NYK on B2B.' },
+        note:'Raw engine NYK by 1; structural prior (down-0-2 home historical 68% + Rocket 6-0 pre-DET G6 + NYK B2B fatigue) pushes thesis prob to ~55%. -EV per pure model, lean +EV with priors.' },
       { pick:'Mitchell Over 27.5 points (ECF G3)', odds:'-115', confidence:'medium', status:null,
-        note:'Series 27.5 avg; engine projects 29.5 with must-win volume bump.' },
+        note:'Series 27.5 avg; engine 31.6 with playoff ascension + must-win volume bump. ~65-70% over per engine.' },
       { pick:'Mobley Over 9.5 rebounds (ECF G3)', odds:'-130', confidence:'medium', status:null,
-        note:'KAT matchup + home crowd lift. Calibrated tier.' },
+        note:'Engine 9.0 reb (Allen back to full minutes shrank Mobley share). ~50% over — coin flip leg, weakest in stack.' },
     ],
-    thesis:'CLE desperation stack. Math: 0.62 × 0.58 × 0.60 ≈ 22% combined. At +320 payout, 22% true hit is +EV. Stake $50 (CF cap).',
+    thesis:'CLE desperation stack. <strong>5/23 MC re-validation:</strong> ~0.55 × ~0.65 × ~0.50 ≈ 18% combined (closer to authoring claim of 22%; first reconcile pass showed lower 8% because MC mean drifts ~15% below calcExpectedPlayerStats for stars — known issue). At +320 payout, 18-22% range is breakeven-to-marginal-EV. Mobley leg is the weak link; swap to 7.5 reb alt if available. Stake $50 (CF cap).',
     result: null,
   },
 
@@ -2929,13 +2929,13 @@ const FEATURED_PARLAYS = [
     stake: 50, odds: '+320', payout: 'To Win: ~$160 (verify Sun morning)',
     legs: [
       { pick:'SAS ML vs OKC (WCF G4)', odds:'-120', confidence:'medium', status:null,
-        note:'SAS must-win to avoid 1-3 (sub-5% historical comebacks). Down-1-2 home wins 64% historically. Castle/Harper one extra day of healing.' },
+        note:'SAS must-win to avoid 1-3 (sub-5% historical comebacks). Down-1-2 home wins 64% historically. Engine MC ~56% home. Castle/Harper one extra day of healing.' },
       { pick:'Wembanyama Over 26.5 points (WCF G4)', odds:'-115', confidence:'medium', status:null,
-        note:'Revenge spot — engine projects 28.5 with elevated usage in must-win.' },
+        note:'5/23 MC re-validation: engine calcExpectedPlayerStats 26.2pts — RIGHT AT THE LINE. MC mean 20.7 (with team-shock drag). ~45-50% over rather than the 58% claimed. Coin-flip leg — use 22.5 alt for stronger angle.' },
       { pick:'Castle Over 19.5 points (WCF G4)', odds:'-110', confidence:'medium', status:null,
-        note:'G2: 25 / G3: 13 with Wed-contact bruise. Recovery + home stage = bounce-back script.' },
+        note:'G2: 25 / G3: 13 (Wed-contact bruise). 5/23 MC re-validation: engine 18.5 with healed-Castle assumption, MC mean 15.0. ~45% over the line, NOT a confident over. Recovery + home stage helps but Castle USG climbs only if Harper stays limited.' },
     ],
-    thesis:'Three correlated SAS-favorable legs. Math: 0.58 × 0.58 × 0.55 ≈ 19% combined. At +320 payout, 19% true hit is +EV. Stake $50 (CF cap). Lines provisional; refresh Sun.',
+    thesis:'Three correlated SAS-favorable legs. <strong>5/23 MC re-validation:</strong> 0.56 × ~0.48 × ~0.45 ≈ 12% combined (originally claimed 19% based on overoptimistic per-leg estimates). At +320 payout (4.2x), 12% true hit = -EV by ~50%. Recommend SWAPPING legs to deep-alt lines (Wemby O22.5 ~80%, Castle O14.5 ~65%) before placing. Or treat as the SAS ML lead bet only and drop the prop legs. Stake $50 (CF cap). Lines provisional; refresh Sun morning with confirmed lineups + DK pricing.',
     result: null,
   },
 ];

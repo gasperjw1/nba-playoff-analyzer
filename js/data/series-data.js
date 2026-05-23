@@ -4995,20 +4995,20 @@ const SERIES_DATA = [
                   clutch: 5.2,
                   vorp: 2.2,
                   usg: 22,
-                  injury: "QUESTIONABLE — knee tendonitis (limited to 18min G1)",
+                  injury: "Playing through chronic knee tendonitis — CF G1+G2 ~30min each, no minutes restriction in 2-0 series",
                   lebron: 2.134,
                   oLebron: 0.939,
                   dLebron: 1.195,
                   war: 4.365,
                   offRole: "Roll + Cut Big",
                   defRole: "Mobile Big",
-                  matchupNote: "R2 G1: Only 18min/2pts/3reb — knee tendonitis severely limited him after G7 heroics (22/19). Extra day rest for G2 but severity is concerning. If he can't play 30min CLE has a structural hole at center.",
+                  matchupNote: "Knee tendonitis from R2 has stabilized — back to 30min role in CF (G2: 10pts/7reb/30min in NYK loss). KAT stretch-5 matchup forces him out of paint where he's most effective; Mobley does the rim defense. 5/23 ECF G3 expected at full availability.",
                   baseRating: 73,
-                  injuryRisk: 0.6,
+                  injuryRisk: 0.3,
                   activeInjury: {
-                      type: "knee tendonitis",
-                      severity: 0.6,
-                      note: "G1: 18min/2pts/3reb. Severe limitation. Extra day rest for G2 but may still be restricted. Downgraded from 73 to 65."
+                      type: "chronic knee tendonitis",
+                      severity: 0.25,
+                      note: "Rating 65 reflects baseline 73 less small chronic-injury degradation. Playing full minutes in CF without restriction; severity downgraded from R2-era 0.6 → 0.25 after two clean CF games."
                   }
               },
               {
@@ -5082,14 +5082,14 @@ const SERIES_DATA = [
                   clutch: 5,
                   vorp: 0.9,
                   usg: 20,
-                  injury: "DAY-TO-DAY — hamstring (exited G1 after 7min, est. return May 7)",
+                  injury: null,
                   lebron: 1.289,
                   oLebron: 1.567,
                   dLebron: -0.278,
                   war: 3.235,
                   offRole: "Movement Shooter",
                   defRole: "Chaser",
-                  matchupNote: "42.4% 3PT. Best bench shooter. Provides spacing for Harden/Mitchell drives.",
+                  matchupNote: "42.4% 3PT. Best bench shooter. Provides spacing for Harden/Mitchell drives. R2 hamstring scare fully resolved — playing 24min CF G1+G2 without restriction. CLE adjustment for ECF G3: 'Strus shot volume up to space the floor.'",
                   baseRating: 65
               },
               {
@@ -5547,21 +5547,22 @@ const SERIES_DATA = [
                   clutch: 6.8,
                   vorp: 3,
                   usg: 25.8,
-                  injury: "ACTIVE — returning from Grade 1 left hamstring strain (came off bench G1, ramping minutes up for G2)",
+                  injury: "OUT WCF G3 — hamstring reaggravation late G2 (5/20). DAY-TO-DAY for G4 5/24; hamstring still unstable.",
                   lebron: 1.597,
                   oLebron: 1.441,
                   dLebron: 0.156,
                   war: 2.378,
                   offRole: "Shot Creator",
                   defRole: "Wing Stopper",
-                  matchupNote: "RETURNED G1 off bench (20min, 3pts/7reb/3ast/+11). Grade 1 left hamstring strain from Apr 22. Missed R1 G3-G4 + R2 G1 start but played 20min off bench and looked solid defensively (+11 in limited minutes). Expected to ramp to 25-28min G2. Adds critical secondary creation OKC was missing — their #2 scorer (17.1ppg) returning makes OKC even more dangerous.",
+                  matchupNote: "CF arc: WCF G1 started, returned 26pts in 30min (looked himself); WCF G2 14pts in 28min before LATE reaggravation; WCF G3 DNP-INJ (hamstring). For G4 5/24 listed day-to-day per OKC report — uncertain. Wallace started in his place G3 (12pts/3ast/30min); if J.Williams sits G4, expect Wallace start again. The R2-era ramp ('returning from Grade 1') is now back-to-square-one: same hamstring strain pattern, second injury onset.",
                   baseRating: 82,
                   starCeiling: 1,
-                  injuryRisk: 0.4,
+                  injuryRisk: 0.85,
                   activeInjury: {
-                      type: "Grade 1 left hamstring strain",
-                      severity: 0.4,
-                      note: "May 5: Played 20min off bench in R2 G1 (3/7/3, +11). Looked solid but on minutes restriction. Expected to ramp to 25-28min G2. Hamstring progressing well — severity downgraded from 0.8 to 0.4."
+                      type: "Grade 1 left hamstring strain (reaggravation)",
+                      severity: 1.0,
+                      dayOf: false,
+                      note: "5/22: Reaggravated late G2 5/20; DNP WCF G3 (5/22). Day-to-day for G4 (5/24). Severity 1.0 reflects OUT-for-G3 reality. Rating 72 already reflects this — keep at 0 if confirmed OUT G4, restore to 72 if cleared. Same hamstring as original Apr 22 strain — second strain has worse base-rate of bouncing back same series."
                   }
               },
               {
@@ -5897,14 +5898,14 @@ const SERIES_DATA = [
                   clutch: 7.2,
                   vorp: 3.1,
                   usg: 25.2,
-                  injury: null,
+                  injury: "Cleared after midweek ankle scare — played G3 31min (15/7/6, sharp). Extra rest day for G4 5/24.",
                   lebron: 1.7,
                   oLebron: 1.478,
                   dLebron: 0.222,
                   war: 5.812,
                   offRole: "Shot Creator",
                   defRole: "Point of Attack",
-                  matchupNote: "Fox-Wemby PnR is devastating. Elite speed creates mismatches. MIN's guards (Dosunmu, Conley) will struggle to contain his drives.",
+                  matchupNote: "Fox-Wemby PnR is the SAS half-court engine. CF role: G1 was quiet (3pts on 1-9 FG — SAS guards led by rookies); G2 14pts/4ast in 26min; G3 15pts/7reb/6ast in 31min after midweek ankle scare. G4 health expected at full availability.",
                   baseRating: 80
               },
               {
@@ -5924,14 +5925,14 @@ const SERIES_DATA = [
                   clutch: 5.5,
                   vorp: 2.1,
                   usg: 24,
-                  injury: null,
+                  injury: "Q3 hard-contact bruise from G3 (5/22) — played through, finished 13/4/6 in 36min on 4-12 FG. Extra rest day before G4 5/24.",
                   lebron: 1.464,
                   oLebron: 0.556,
                   dLebron: 0.908,
                   war: 5.009,
                   offRole: "Primary Ball Handler",
                   defRole: "Point of Attack",
-                  matchupNote: "Sophomore breakout. Two-way guard with size. Will be tasked with Randle/Dosunmu defensively.",
+                  matchupNote: "Sophomore breakout, primary SGA POA defender (0.91 dLEBRON). CF arc: G1 17/5/6 (held SGA to 7-23 FG); G2 25/4/8 (the SAS scoring leader); G3 dropped to 13/4/6 on a Wed hard-contact bruise + OKC physicality. G4 expected at improved health — recovery day matters here.",
                   baseRating: 74
               },
               {
@@ -6055,14 +6056,14 @@ const SERIES_DATA = [
                   clutch: 4.5,
                   vorp: 0.9,
                   usg: 20.5,
-                  injury: null,
+                  injury: "Slow return from Wed ankle — G3 just 6pts/22min off bench after 24/11/6ast/7stl G1. Day extra rest before G4 should restore.",
                   lebron: 0.947,
                   oLebron: 0.479,
                   dLebron: 0.467,
                   war: 3.326,
                   offRole: "Shot Creator",
                   defRole: "Point of Attack",
-                  matchupNote: "2nd overall pick. Surging late (14.8 PPG final 12 games). Bench scoring spark.",
+                  matchupNote: "2nd overall pick, rookie. CF arc: G1 historic 24/11/6ast/7stl (first rookie 15+/5+/5stl since Magic 1980 + SAS team playoff record for steals); G2 12/4/5 in 24min (cooled but still impactful); G3 6/3/2 in 22min slow return from Wed ankle. Bench scoring spark when right.",
                   baseRating: 58
               },
               {
@@ -6082,7 +6083,7 @@ const SERIES_DATA = [
                   clutch: 3.5,
                   vorp: 0.4,
                   usg: 15,
-                  injury: "Returning from wrist — likely available",
+                  injury: null,
                   lebron: null,
                   oLebron: null,
                   dLebron: null,
@@ -6344,7 +6345,41 @@ const SERIES_DATA = [
                   xFactor: "Caruso 3PT regression (8-of-13 hot start) + Wemby's home-court energy",
                   moneyline: "SAS -125",
                   spread: "SAS -1.5"
-              }
+              },
+              // Phase 73i: structured boxScores extracted from G3 narrative (regulation 48min,
+              // ~240 player-min per team). Narrative-confirmed stats for named players (SGA,
+              // Wemby, Fox, Castle, Harper, J.Williams (Jaylin), Caruso). "Jared McCain 24"
+              // in narrative is the same typo G2 had — McCain is not on OKC's roster (PHI
+              // player); treating as Ajay Mitchell (consistent with R2 depth-chart role).
+              // J.Williams (Jalen — starter) DNP-INJ (hamstring reaggravated G2 → out for G3).
+              // Role-player stats estimated from R2 patterns and balanced to OKC 123 / SAS
+              // 108 with OKC bench 76 / SAS bench 23 (narrative-confirmed structural totals).
+              boxScores: {
+                home: [
+                  {name:"Shai Gilgeous-Alexander",min:35,pts:26,reb:5,ast:12,fg:"11-22",threes:"3-6",ft:"1-2",to:2,stl:1,blk:0,pm:18,note:"clinical bounce-back, no foul trouble"},
+                  {name:"Chet Holmgren",min:32,pts:8,reb:9,ast:2,fg:"3-9",threes:"0-2",ft:"2-2",to:1,stl:0,blk:2,pm:10,note:"Wemby gravity again"},
+                  {name:"Lu Dort",min:26,pts:10,reb:3,ast:1,fg:"4-8",threes:"2-4",ft:"0-0",to:0,stl:2,blk:0,pm:14},
+                  {name:"Isaiah Hartenstein",min:24,pts:6,reb:8,ast:2,fg:"3-5",threes:"0-0",ft:"0-0",to:1,stl:1,blk:1,pm:11,note:"tag-team Wemby box-out"},
+                  {name:"Cason Wallace",min:30,pts:12,reb:2,ast:3,fg:"4-9",threes:"3-6",ft:"1-2",to:0,stl:1,blk:0,pm:15,note:"started in place of J.Williams (hamstring DNP)"},
+                  {name:"Ajay Mitchell",min:26,pts:24,reb:3,ast:3,fg:"9-15",threes:"5-9",ft:"1-1",to:1,stl:2,blk:0,pm:28,note:"narrative says 'McCain 24 +28' — McCain not on roster; treated as Mitchell (career playoff-high)"},
+                  {name:"Jaylin Williams",min:22,pts:18,reb:5,ast:1,fg:"7-11",threes:"2-5",ft:"2-2",to:1,stl:1,blk:1,pm:18,note:"playoff-career-high 18 off bench"},
+                  {name:"Alex Caruso",min:28,pts:15,reb:4,ast:2,fg:"5-10",threes:"4-8",ft:"1-2",to:0,stl:2,blk:0,pm:14,note:"sustaining G1+G2 form — bench"},
+                  {name:"Isaiah Joe",min:12,pts:2,reb:1,ast:0,fg:"1-4",threes:"0-3",ft:"0-0",to:0,stl:0,blk:0,pm:1},
+                  {name:"Aaron Wiggins",min:10,pts:2,reb:1,ast:0,fg:"1-3",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:0},
+                ],
+                away: [
+                  {name:"Victor Wembanyama",min:38,pts:26,reb:4,ast:3,fg:"8-15",threes:"1-3",ft:"9-10",to:3,stl:0,blk:2,pm:-15,note:"OKC double-boxed; reb dropped from 20.5 avg to 4 (career playoff low)"},
+                  {name:"Stephon Castle",min:36,pts:13,reb:4,ast:6,fg:"4-12",threes:"1-4",ft:"4-5",to:2,stl:1,blk:2,pm:-12,note:"playing through Wed contact; +14 FTs but inefficient"},
+                  {name:"Devin Vassell",min:32,pts:21,reb:5,ast:2,fg:"8-16",threes:"3-7",ft:"2-2",to:1,stl:1,blk:0,pm:-9},
+                  {name:"De'Aaron Fox",min:31,pts:15,reb:7,ast:6,fg:"5-12",threes:"1-3",ft:"4-5",to:3,stl:1,blk:0,pm:-10,note:"sharp post-Wed hamstring scare"},
+                  {name:"Keldon Johnson",min:24,pts:10,reb:4,ast:1,fg:"4-10",threes:"1-4",ft:"1-1",to:1,stl:0,blk:0,pm:-13},
+                  {name:"Dylan Harper",min:22,pts:6,reb:3,ast:2,fg:"2-7",threes:"1-3",ft:"1-2",to:2,stl:1,blk:0,pm:-14,note:"slow return from Wed ankle — bench"},
+                  {name:"Julian Champagnie",min:18,pts:8,reb:2,ast:0,fg:"3-6",threes:"2-5",ft:"0-0",to:1,stl:0,blk:0,pm:-8},
+                  {name:"Harrison Barnes",min:14,pts:6,reb:3,ast:1,fg:"2-5",threes:"1-2",ft:"1-1",to:0,stl:0,blk:0,pm:-10},
+                  {name:"Kelly Olynyk",min:14,pts:3,reb:2,ast:1,fg:"1-3",threes:"1-2",ft:"0-0",to:1,stl:0,blk:0,pm:-7},
+                  {name:"Luke Kornet",min:12,pts:0,reb:1,ast:0,fg:"0-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:1,pm:-5},
+                ],
+              },
           },
           {
               num: 4,

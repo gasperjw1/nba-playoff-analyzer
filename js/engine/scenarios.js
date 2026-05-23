@@ -179,7 +179,7 @@ function buildGameContext(player, series, gameIdx, side) {
     hasActiveInjury: !!(player.activeInjury && player.activeInjury.severity > 0) ||
                      (!player.activeInjury && player.injury && !player.injury.startsWith('null') &&
                       (player.injury.includes('LIMITED') || player.injury.includes('QUESTIONABLE') ||
-                       player.injury.includes('GTD') || player.injury.includes('ACTIVE') ||
+                       player.injury.includes('GTD') || /\bACTIVE\b/.test(player.injury) ||
                        player.injury.includes('Returning') || player.injury.includes('Monitoring') ||
                        (player.injuryRisk !== undefined && player.injuryRisk > 0))),
     restDays,

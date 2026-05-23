@@ -149,6 +149,14 @@ function _sampleTeamGame(team, side, expectedByPlayer, opts) {
   const threePctMult = _sampleNormal(1, MC_CONFIG.teamThreePctCV, 0.75, 1.30);
   totalPts *= threePctMult;
 
+  // Note on compounding: paceMult × threePctMult is intentional — pace and 3PT
+  // hot streaks are independent physical phenomena that BOTH shift scoring
+  // when they co-occur. Hard clamps [0.85,1.15]×[0.75,1.30] = [0.6375,1.495]
+  // → a 110-pt projection ranges 70-164 in tails, matching observed playoff
+  // game extremes (CLE 138 G4 R1 vs MIA 83). This is the PLAYER-LEVEL summed
+  // total (used by prop sims). Team-level margin/winner uses the engine's
+  // separate variance bands via _sampleTeamScores — see runMonteCarlo below.
+
   return { pts: totalPts, players: playerSamples, paceMult, threePctMult };
 }
 

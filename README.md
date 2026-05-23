@@ -2,7 +2,7 @@
 
 A comprehensive, research-backed NBA playoff prediction and analysis tool built with vanilla HTML, CSS, and JavaScript. Tracks 2026 NBA Playoff series game-by-game with projections, real-time result tracking, Monte Carlo simulation, an interactive scenario builder, and a Compound Historical Scenarios engine that fires evidence-backed adjustments when stacked conditions match.
 
-**Current model accuracy:** R1 final 28/48 ML (58.3%, 9.6pt avg margin error). Series-stage curve: G1–G3 50% → G4–G7 67% — accuracy improves as in-series data accumulates. Round 2 in progress (4 series, G2 slate).
+**Current model accuracy:** R1 final 28/48 ML (58.3%, 9.6pt avg margin error). Series-stage curve: G1–G3 50% → G4–G7 67% — accuracy improves as in-series data accumulates. R2 completed (4 series: NYK 4-0 PHI, SAS 4-2 MIN, OKC 4-0 LAL, CLE 4-3 DET). Conference Finals in progress (WCF G3 OKC leads 2-1 after wrong-winner CF G1/G3 R3-out-of-sample misses; ECF G3 NYK leads 2-0 going into 5/23).
 
 ## Features
 
@@ -72,7 +72,7 @@ nba-playoff-analyzer/
 │       ├── home.js                  # Phase 57 — renderHomePage() + adaptive layout + Floor/Traditional parlay toggle
 │       ├── modals.js                # Game result and external factor modal handlers
 │       ├── navigation.js            # Tab switching — Home is the default
-│       ├── learnings.js             # Model Learnings page — collapsible phase timeline (currently through Phase 57)
+│       ├── learnings.js             # Model Learnings page — collapsible phase timeline (currently through Phase 73j)
 │       ├── definitions.js           # Metric definitions page with category tabs
 │       └── bets.js                  # Betting orchestrator — slate sections + dynamic dml/dmargin/dwinner helpers
 ├── playoffs_2025_validation.js      # 2025 playoffs game-by-game results (independent validation dataset)
@@ -119,6 +119,8 @@ The model has gone through 70+ phases. Selected milestones:
 - **Phase 68** — Edge detector + empirical PLACE/CAUTION/SKIP cross-tab
 - **Phases 69-70** — Anti-big-loss guardrails (concentration, Kelly, blowout) + risk-analyst dashboard (Sharpe/VaR/RoR)
 - **Phase 71** — 68-game calibration audit; **71b/c** — star bias correction + per-player override
+- **Phase 72-72b** — Conference Finals setup (OKC-SAS / NYK-CLE scaffolds, CF Bets page route, off-day 5-day scan)
+- **Phase 73** — Post-G7 model fixes (ELIMINATION_VARIANCE_MULT 1.4× for G6/G7, wrong-direction streak detector); **73b-73j** — CHS Lab extended to R3, state sync, Series Analysis audit, daily-task hardening, half-integer lines + MC freshness + lineup overrides, winner-aware error + OT total adjustment + parlay coverage validator, structured boxScores + auto-resolver KAT/Wemby aliases, CF P&L tracking
 
 Full timeline in the in-app Model Learnings tab. Current state in [`CONTEXT.md`](CONTEXT.md). Daily workflow in [`DAILY_UPDATE.md`](DAILY_UPDATE.md). Audit findings in [`CALIBRATION_AUDIT.md`](CALIBRATION_AUDIT.md).
 

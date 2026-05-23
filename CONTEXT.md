@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> Snapshot of project state for future sessions. Last updated **May 18, 2026** (Phase 72b: CF Bets page route + NYK-CLE scaffold).
+> Snapshot of project state for future sessions. Last updated **May 23, 2026** (Daily 5/23 + cleanup pass — Phase 73j CF P&L tracking is the latest engine phase).
 
 For day-to-day workflow see [DAILY_UPDATE.md](DAILY_UPDATE.md).
 For the calibration audit findings see [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).
@@ -21,22 +21,31 @@ Three-layer architecture:
 
 ---
 
-## Current state (May 18, 2026)
+## Current state (May 23, 2026)
 
-**Live round:** Conference Finals
-- **WCF:** OKC vs SAS — G1 tonight 5/18 at Paycom, 8:30 PM ET
-- **ECF:** NYK vs CLE — G1 tomorrow 5/19 at MSG, 8 PM ET
+**Live round:** Conference Finals (R3)
+- **WCF:** OKC leads SAS 2-1 — G4 Sun 5/24 at Frost Bank Center, 8 PM ET (SAS must-win to avoid 1-3)
+- **ECF:** NYK leads CLE 2-0 — G3 tonight Sat 5/23 at Rocket Arena, 8 PM ET (CLE must-win at home; NYK on B2B + travel)
 
 **Series complete:**
 - R1: 8/8 done
 - R2: NYK 4-0 PHI, SAS 4-2 MIN, OKC 4-0 LAL, CLE 4-3 DET (G7 125-94 road win)
 
-**Active framework** (post Phase 71 calibration audit):
+**R3 results so far (3 games):**
+- WCF G1: SAS 122-115 (2OT) — Wemby 41/24 historic; engine wrong-winner (had OKC by 6)
+- WCF G2: OKC 122-113 — SGA 30/9 bounce-back; engine calibrated (had OKC by 7, actual 9)
+- ECF G1: NYK 115-104 (OT) — 22pt 4Q comeback, Brunson 38; engine wrong-winner (had CLE by 4)
+- ECF G2: NYK 109-93 — Hart playoff career-high 26; engine right-winner, +6pt margin miss
+- WCF G3: OKC 123-108 — McCain (= Mitchell in roster) 24 + Jaylin Williams 18; engine wrong-winner (had SAS by 4)
+
+**Active framework** (post Phase 71 calibration audit + Phase 73 elimination/streak guards):
 - Engine projects with per-tier + per-player bias corrections applied
 - Every bet card auto-renders a `PLACE / CAUTION / SKIP` pill via `edge-detector.js`
 - Phase 71 G7 elimination cap auto-downgrades elimination-game PLACE → CAUTION
 - Spread cells downgraded to CAUTION (audit margin MAE 13pt)
-- All R3 predictions are explicit out-of-sample; reduced stakes recommended
+- Phase 73 ELIMINATION_VARIANCE_MULT (1.4×) widens scoring bands for G6/G7
+- Phase 73g LINEUP_OVERRIDES catches late-breaking scratches
+- All R3 predictions are explicit out-of-sample; reduced stakes ($100 floor / $50 traditional, 50% of normal)
 
 ---
 
@@ -176,7 +185,17 @@ See `CALIBRATION_AUDIT.md` for the full audit + ranked recommendations.
 
 | Phase | What |
 |---|---|
-| **72b** | CF Bets page (renderCFBets); NYK-CLE full scaffold |
+| **73j** | CF P&L tracking on both R2 and CF bets pages |
+| 73i | Structured boxScores for all 4 CF games + auto-resolver KAT/Wemby aliases |
+| 73h | Winner-aware error calc + OT total adjustment + parlay coverage validator |
+| 73g | Half-integer lines + MC freshness + LINEUP_OVERRIDES late-scratch path |
+| 73f | Daily-task gap fixes + DAILY_UPDATE hardening (pre-push rebase guard) |
+| 73e | Series Analysis audit — 4 pattern violations fixed |
+| 73d | State sync — currentSeriesIdx tracks (round, conf) |
+| 73c | Series Analysis page hotfix — CF scaffold field guards |
+| 73b | CHS Lab extended to R3 + promotion evaluation surfaced |
+| 73 | Post-G7 model fixes (ELIMINATION_VARIANCE_MULT 1.4×, wrong-direction streak detector) |
+| 72b | CF Bets page (renderCFBets); NYK-CLE full scaffold |
 | 72 | Conference Finals setup — OKC-SAS scaffold, CF-G1 slate, off-day 5-day scan |
 | 71c | Per-player bias override (8 outliers) |
 | 71b | Tier-based star bias correction + 3 audit guardrails |

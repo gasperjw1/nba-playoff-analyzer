@@ -182,7 +182,8 @@ function calcTeamRating(team, series, seriesId) {
     return false;
   };
   const validSynergies = team.synergy.filter(s => s.players.every(n => isPlayerActive(n)));
-  const bestSynergy = validSynergies.length > 0 ? Math.max(...validSynergies.map(s => s.score)) : 50;
+  const synergyScores = validSynergies.map(s => s && s.score).filter(v => typeof v === 'number' && isFinite(v));
+  const bestSynergy = synergyScores.length > 0 ? Math.max(...synergyScores) : 50;
   base += (bestSynergy - 70) / 5;
 
   // External factors
