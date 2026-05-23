@@ -167,6 +167,11 @@ function safeLinesForAllPlayers(simResult, opts) {
   const maxJuice = opts.maxJuice != null ? opts.maxJuice : -500;  // reject deeper than -500
   const minProjectedMinutes = opts.minProjectedMinutes != null ? opts.minProjectedMinutes : 18;
   const series = opts.series || null;
+  // Phase 73m: script-signal filtering also applies here (default on
+  // when series is passed) so UI candidate panels show the same
+  // filtered list the parlay builder would actually use. Pass
+  // applyScriptSignals: false to see the raw pool.
+  const applyScriptSignals = opts.applyScriptSignals !== false && series != null;
   // Build a name → { player, team } lookup once so we don't re-scan
   // both rosters per stat per player.
   const playerLookup = {};
@@ -177,6 +182,17 @@ function safeLinesForAllPlayers(simResult, opts) {
     series.awayTeam.players.forEach(p => { if (p && p.name) playerLookup[p.name] = { player: p, team: series.awayTeam }; });
   }
   const minutesEstimator = (typeof estimateProjectedMinutes === 'function') ? estimateProjectedMinutes : null;
+
+  // Phase 73m: precompute blowout side + facilitator cache for this call.
+  const blowoutSide = applyScriptSignals ? _blowoutRiskSide(simResult, series) : null;
+  const facilitatorCache = {};
+  function _facRiskCached(name) {
+    if (facilitatorCache[name] !== undefined) return facilitatorCache[name];
+    const lookup = playerLookup[name];
+    facilitatorCache[name] = (lookup && lookup.player) ? _detectFacilitatorRisk(lookup.player, series) : 0;
+    return facilitatorCache[name];
+  }
+
   const rows = [];
   Object.keys(simResult._raw.players).forEach(name => {
     // Phase 73k rotation-tier filter: drop deep-bench players who don't
@@ -190,6 +206,17 @@ function safeLinesForAllPlayers(simResult, opts) {
       }
     }
     stats.forEach(stat => {
+      // Phase 73m: script-signal filters before tier search.
+      if (applyScriptSignals) {
+        const lookup = playerLookup[name];
+        const pos = lookup && lookup.player && lookup.player.pos;
+        // Signal 1: stat-position fit
+        if (_statPositionFit(stat, pos) < 0.5) return;
+        // Signal 2: facilitator risk on PTS
+        if (stat === 'pts' && _facRiskCached(name) >= 0.4) return;
+        // Signal 3: blowout suppression on PTS for favored team
+        if (stat === 'pts' && blowoutSide && lookup && lookup.team && lookup.team.abbr === blowoutSide) return;
+      }
       const sl = findSafeLines(simResult, name, stat, {});
       if (!sl) return;
       // Pick the deepest tier whose hit rate still clears threshold.
@@ -313,6 +340,93 @@ function calibrateHitRate(rawProb) {
   };
 }
 
+// ────────────────────────────────────────────────────────────────────
+// PHASE 73m: GAME-SCRIPT AWARENESS SIGNALS (May 23, 2026)
+// ────────────────────────────────────────────────────────────────────
+// The CF backtest exposed a "single-leg-killer" pattern: 4-leg
+// starter parlays where 3 legs hit cleanly but 1 leg dies in a
+// game-script that the engine doesn't model. Three concrete failures:
+//
+//   1. Brunson PTS 19 under 21.5 — facilitator night (14 ast)
+//   2. Holmgren PTS 8 under 11.5 — blowout, OKC bench took over Q4
+//   3. Wemby threes 1 under 1.5 — physical-paint game, no perimeter
+//
+// These aren't random misses — they're detectable scripts. Three
+// signals to flag candidate legs that should be downweighted or
+// excluded.
+
+// ── Signal 1: Stat-position fit ─────────────────────────────────────
+// Some stats don't fit some positions. Centers attempting 3PT is rare;
+// guards generating blocks is rare. The MC engine projects threes for
+// EVERY player (calibrated to their season rate), but books don't list
+// "Hartenstein O0.5 threes" or "Olynyk O0.5 threes" as actual props.
+// Fit table: 1.0 = listed/sensible, 0.0 = never listed, 0.5 = depends
+// on player (stretch-5s sometimes get 3PT props).
+//
+// The position field on player objects is 'PG' | 'SG' | 'SF' | 'PF' | 'C'.
+const STAT_POSITION_FIT = {
+  threes: { PG: 1.0, SG: 1.0, SF: 1.0, PF: 0.5, C: 0.1 },
+  blk:    { PG: 0.1, SG: 0.2, SF: 0.5, PF: 0.8, C: 1.0 },
+  stl:    { PG: 1.0, SG: 0.9, SF: 0.7, PF: 0.4, C: 0.2 },
+  // pts/reb/ast/pra/stocks/to: every position is fair game (no fit penalty)
+};
+function _statPositionFit(stat, position) {
+  const table = STAT_POSITION_FIT[stat];
+  if (!table) return 1.0;                    // stats without a fit table → always fit
+  if (!position) return 0.5;                 // unknown position → middle of road
+  return table[position] != null ? table[position] : 0.5;
+}
+
+// ── Signal 2: Facilitator risk ──────────────────────────────────────
+// A player has "facilitator risk" on their PTS prop when recent box
+// scores show AST/PTS ratio > 0.4 (i.e., they pivoted to playmaking
+// over scoring) AND their PTS was below their season avg.
+//
+// Brunson G2 ECF: 19pts / 14ast → ratio 0.74 → flagged. The PTS leg
+// would have been downweighted; AST leg (which would have hit easily)
+// not affected.
+//
+// Returns: facilitator probability ∈ [0,1] — fraction of recent games
+// where the facilitator script appeared.
+function _detectFacilitatorRisk(player, series) {
+  if (!player || !series || !Array.isArray(series.games)) return 0;
+  const teamSide = (series.homeTeam && series.homeTeam.players.some(p => p && p.name === player.name)) ? 'home'
+                : (series.awayTeam && series.awayTeam.players.some(p => p && p.name === player.name)) ? 'away'
+                : null;
+  if (!teamSide) return 0;
+  let total = 0, facilitator = 0;
+  series.games.forEach(g => {
+    if (!g || !g.winner || !g.boxScores) return;
+    const bs = g.boxScores[teamSide];
+    if (!Array.isArray(bs)) return;
+    const me = bs.find(p => p && p.name === player.name);
+    if (!me || typeof me.pts !== 'number' || typeof me.ast !== 'number') return;
+    if (me.min == null || me.min < 18) return;        // DNP-CD doesn't count
+    total++;
+    const ratio = me.ast / Math.max(1, me.pts);
+    const seasonPts = player.ppg || 0;
+    const ptsLow = seasonPts > 0 && me.pts < seasonPts * 0.85;
+    if (ratio > 0.4 && ptsLow) facilitator++;
+  });
+  return total > 0 ? facilitator / total : 0;
+}
+
+// ── Signal 3: Blowout suppression ───────────────────────────────────
+// In blowout games (MC blowoutRisk > 0.25), the EXPECTED-winner's
+// starters get pulled Q3 and their stat lines compress. This isn't a
+// problem for REB/AST props (counting-stat distributions are robust)
+// but it kills PTS props for the favored side. Return the team abbr
+// whose PTS props should be downweighted (null if no blowout risk).
+function _blowoutRiskSide(simResult, series) {
+  if (!simResult || typeof simResult.blowoutRisk !== 'number') return null;
+  if (simResult.blowoutRisk < 0.25) return null;
+  // Determine favored side from MC homeWinProb (>0.55 = home favored).
+  if (typeof simResult.homeWinProb !== 'number') return null;
+  if (simResult.homeWinProb > 0.55 && series.homeTeam) return series.homeTeam.abbr;
+  if (simResult.homeWinProb < 0.45 && series.awayTeam) return series.awayTeam.abbr;
+  return null;
+}
+
 // ── Player → team map (Phase 69 anti-correlation) ────────────────────
 // Given a series, build a name → team-abbr lookup so candidate legs
 // can be tagged with which team they belong to. This drives the
@@ -344,13 +458,15 @@ function _buildPlayerTeamMap(series) {
 function _candidatePool(simResult, series, opts) {
   opts = opts || {};
   const maxPerTeam = opts.maxPerTeam != null ? opts.maxPerTeam : 2;
+  // Phase 73m: script signals applied inside safeLinesForAllPlayers
+  // (default-on when series is passed). Pass applyScriptSignals: false
+  // here to disable for both layers — caller still gets rotation filter.
   const rows = safeLinesForAllPlayers(simResult, {
     threshold: 0.80,
     maxJuice: opts.maxJuice || -500,
-    // Phase 73k: pass series so rotation-tier filter can drop deep-bench
-    // players (DK doesn't list props for sub-18-min role players).
     series: series,
     minProjectedMinutes: opts.minProjectedMinutes != null ? opts.minProjectedMinutes : 18,
+    applyScriptSignals: opts.applyScriptSignals,
   });
   const playerTeam = _buildPlayerTeamMap(series);
   const seenPlayers = new Set();
@@ -480,5 +596,10 @@ if (typeof module !== 'undefined' && module.exports) {
     buildTraditionalParlay,
     _americanToImplied,
     _americanToMult,
+    // Phase 73m: game-script signals exported for tests + snapshot CLI
+    STAT_POSITION_FIT,
+    _statPositionFit,
+    _detectFacilitatorRisk,
+    _blowoutRiskSide,
   };
 }

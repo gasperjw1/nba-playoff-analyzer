@@ -673,6 +673,43 @@ on the bare 13-modifier engine.
 
 ---
 
+## 8b · Snapshot + settle CHS Lab parlay-builder ledger (Phase 73m)
+
+This is the parlay-builder counterpart to the CHS projection ledger
+above. It captures what `buildReliableParlay` + `buildTraditionalParlay`
+would suggest for each upcoming game, then settles them after the game.
+The CHS Lab tab's "Parlay Builder — Rolling P&L" panel reads this.
+
+```
+- Run BEFORE step 10 (commit), AFTER step 2 (results recorded so settle
+  can pick up yesterday's games):
+
+    node test-chs-lab-ledger-update.js --settle --snapshot
+
+  This runs settle first (scores yesterday's pending entries against
+  the box scores you just recorded), then snapshot (captures tonight's
+  + tomorrow's upcoming entries).
+
+- The CLI writes to js/data/chs-lab-ledger.js. Validation:
+    - TEST 29 covers schema + outcome consistency
+    - boot-time validateChsLabLedger surfaces any schema issues
+- If a game's box score lacks per-player detail (no boxScores object),
+  settlement will mark legs as 'no-boxscore' and the outcome stays null
+  until the box score is filled in. Once boxScores is added (Phase 73i
+  pattern), re-run --settle to backfill.
+
+- Output: open the live CHS Lab tab → "Parlay Builder — Rolling P&L"
+  panel surfaces the rolling W-L + net P&L + per-entry detail.
+- Standalone summary anytime: `node test-chs-lab-ledger-update.js --report`
+```
+
+The reliable tier often shows "no parlay" — that's correct behavior.
+`buildReliableParlay` only assembles when the joint MC hit rate clears
+80% (typically requires positively-correlated legs from the same team).
+Most CF games don't pass that bar; the algorithm honestly declines.
+
+---
+
 ## 9 · Update CONTEXT.md (if anything notable)
 
 ```

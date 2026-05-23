@@ -366,6 +366,116 @@ function chsLabRenderParlayCandidates() {
     </div>`;
 }
 
+// ============================================================
+// Phase 73m: Parlay Builder P&L Ledger
+// ============================================================
+// Reads CHS_LAB_LEDGER (the going-forward record of CHS Lab's
+// reliable + traditional parlay suggestions + settlements) and
+// renders a rolling P&L panel. Distinct from chsLabRenderLedger
+// above, which tracks the SHADOW PROJECTION ENGINE (CHS) — this
+// panel tracks the PARLAY BUILDER, which has its own win/loss
+// pattern.
+function chsLabRenderParlayBuilderLedger() {
+  if (typeof CHS_LAB_LEDGER === 'undefined' || !Array.isArray(CHS_LAB_LEDGER) || CHS_LAB_LEDGER.length === 0) {
+    return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+      <h3 style="margin:0 0 10px;color:var(--text);font-size:13px;letter-spacing:0.5px;">📈 PARLAY BUILDER — Rolling P&L (Phase 73m)</h3>
+      <p style="margin:0;font-size:11px;color:var(--text-dim);line-height:1.5;">
+        Ledger is empty. Daily routine appends a snapshot per upcoming game; settlement happens after the game. Rolling P&L will surface here once entries accumulate.
+      </p>
+    </div>`;
+  }
+  const settled = CHS_LAB_LEDGER.filter(e => e && e.settlement);
+  const pending = CHS_LAB_LEDGER.filter(e => e && !e.settlement);
+
+  function summarize(tier) {
+    let wins = 0, total = 0, pnl = 0, stake = 0;
+    settled.forEach(e => {
+      const s = e.settlement && e.settlement[tier];
+      if (!s || s.outcome == null) return;
+      total++;
+      if (s.outcome === 'win') wins++;
+      pnl += s.pnl;
+      const m = e[tier];
+      if (m) stake += m.stake;
+    });
+    return { wins, total, winRate: total ? wins / total : 0, pnl, stake, roi: stake ? pnl / stake : 0 };
+  }
+  const rel = summarize('reliable');
+  const trad = summarize('traditional');
+
+  const tierRow = (label, t) => {
+    const color = t.pnl > 0 ? '#22c55e' : t.pnl < 0 ? '#ef4444' : 'var(--text-dim)';
+    return `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);">${label}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">${t.total ? `${t.wins}/${t.total}` : '—'}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">${t.total ? `${(t.winRate*100).toFixed(0)}%` : '—'}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">$${t.stake}</td>
+      <td style="padding:6px 8px;font-size:11px;color:${color};text-align:right;font-weight:700;">${t.pnl >= 0 ? '+' : ''}$${t.pnl.toFixed(0)}</td>
+      <td style="padding:6px 8px;font-size:11px;color:${color};text-align:right;font-weight:700;">${t.total ? `${(t.roi*100).toFixed(1)}%` : '—'}</td>
+    </tr>`;
+  };
+
+  const entryRows = settled.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 15).map(e => {
+    const fmt = (tier) => {
+      const m = e[tier];
+      const s = e.settlement && e.settlement[tier];
+      if (!m) return '<span style="color:var(--text-dim);">—</span>';
+      if (!s || s.outcome == null) return '<span style="color:#f59e0b;">pending</span>';
+      const color = s.outcome === 'win' ? '#22c55e' : '#ef4444';
+      const icon = s.outcome === 'win' ? '✓' : '✗';
+      return `<span style="color:${color};">${icon} ${s.outcome.toUpperCase()} ${s.pnl >= 0 ? '+' : ''}$${s.pnl} <span style="color:var(--text-dim);">(${m.legCount}L @ ${(m.combinedMC*100).toFixed(0)}%)</span></span>`;
+    };
+    return `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.date}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text);">${e.series} G${e.game}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.actual ? e.actual.winner + ' ' + e.actual.homeScore + '-' + e.actual.awayScore : '—'}</td>
+      <td style="padding:5px 8px;font-size:10px;">${fmt('reliable')}</td>
+      <td style="padding:5px 8px;font-size:10px;">${fmt('traditional')}</td>
+    </tr>`;
+  }).join('');
+
+  const pendingNote = pending.length > 0
+    ? `<div style="margin-top:8px;font-size:10px;color:var(--text-dim);">⏳ ${pending.length} pending entr${pending.length === 1 ? 'y' : 'ies'} (game not yet settled).</div>`
+    : '';
+
+  return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+    <h3 style="margin:0 0 10px;color:var(--text);font-size:13px;letter-spacing:0.5px;">📈 PARLAY BUILDER — Rolling P&L (Phase 73m)</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;">
+      <thead><tr style="border-bottom:1px solid var(--border);">
+        <th style="padding:6px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Tier</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">W-L</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">W%</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">Staked</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">Net P&L</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">ROI</th>
+      </tr></thead>
+      <tbody>
+        ${tierRow('Reliable (2-3 leg, ≥80% combined)', rel)}
+        ${tierRow('Traditional (3-5 leg, no floor)', trad)}
+      </tbody>
+    </table>
+    ${pendingNote}
+    ${entryRows ? `<div style="margin-top:12px;font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:0.4px;">PER-ENTRY DETAIL (latest 15)</div>
+      <table style="width:100%;border-collapse:collapse;font-size:10px;margin-top:6px;">
+        <thead><tr style="border-bottom:1px solid var(--border);">
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;">Date</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;">Game</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;">Actual</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;">Reliable</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;">Traditional</th>
+        </tr></thead><tbody>${entryRows}</tbody>
+      </table>` : ''}
+    <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+      <strong>How this works:</strong> daily routine snapshots the algorithm's reliable + traditional parlay
+      output before each game (<code>test-chs-lab-ledger-update.js --snapshot</code>); same script settles entries
+      against actuals after the game finishes (<code>--settle</code>). P&L assumes $100 stake per parlay; American
+      odds are MC-estimated from leg juice. Outcomes are honest: if all legs hit → win at parlay multiplier;
+      any miss → −$100 loss. The Reliable tier will often show "no parlay" (algorithm correctly declines when
+      no 2-leg combo clears the 80% combined floor — see Phase 73l backtest).
+    </div>
+  </div>`;
+}
+
 function chsLabRenderLedger(ledger) {
   if (!ledger.length) return '';
   const rows = ledger.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(e => {
@@ -711,6 +821,7 @@ function renderCHSLabPage(el) {
       </div>
 
       ${chsLabRenderScoreboard(agg)}
+      ${chsLabRenderParlayBuilderLedger()}
       ${chsLabRenderRiskDashboard()}
       ${chsLabRenderEdgeFilter()}
       ${chsLabRenderConcentration()}

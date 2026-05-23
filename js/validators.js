@@ -285,8 +285,83 @@ function validateParlayCoverage(seriesData, parlays) {
   return errors;
 }
 
+// ---------- validateChsLabLedger (Phase 73m) -------------------
+// CHS_LAB_LEDGER is the going-forward record of CHS Lab's reliable
+// + traditional parlay outputs per upcoming game. Each entry is
+// either "captured but not settled" (actual === null) or "settled
+// with outcome." This validator checks schema integrity:
+//   - Each entry has date / series / game / capturedAt / iterations
+//   - candidates is an array (may be empty)
+//   - reliable / traditional are null OR have legs[] + combinedMC
+//   - actual is null OR { winner, homeScore, awayScore, margin }
+//   - settlement is null OR has reliable + traditional + settledAt
+//   - settled-entry outcome matches leg results (all hit → win; any
+//     miss → loss; any null → outcome null)
+//   - settled entries' actual.winner matches the SERIES_DATA game
+function validateChsLabLedger(ledger, seriesData) {
+  const errors = [];
+  if (!Array.isArray(ledger)) return errors;
+  const seriesById = {};
+  if (Array.isArray(seriesData)) seriesData.forEach(s => { if (s && s.id) seriesById[s.id] = s; });
+
+  ledger.forEach((e, i) => {
+    const ctx = `CHS_LAB_LEDGER[${i}]`;
+    if (!e || typeof e !== 'object') { errors.push(`${ctx}: not an object`); return; }
+    if (!e.date || !/^\d{4}-\d{2}-\d{2}$/.test(e.date)) errors.push(`${ctx}: missing/malformed date`);
+    if (!e.series) errors.push(`${ctx}: missing series`);
+    if (typeof e.game !== 'number') errors.push(`${ctx}: game must be number`);
+    if (!e.capturedAt) errors.push(`${ctx}: missing capturedAt`);
+    if (typeof e.iterations !== 'number' || e.iterations <= 0) errors.push(`${ctx}: iterations must be positive number`);
+    if (!Array.isArray(e.candidates)) errors.push(`${ctx}: candidates must be array`);
+
+    ['reliable', 'traditional'].forEach(tier => {
+      const t = e[tier];
+      if (t === null) return;                                         // null is OK
+      if (typeof t !== 'object') { errors.push(`${ctx}.${tier}: must be null or object`); return; }
+      if (!Array.isArray(t.legs)) errors.push(`${ctx}.${tier}: legs must be array`);
+      if (typeof t.combinedMC !== 'number') errors.push(`${ctx}.${tier}: combinedMC must be number`);
+      if (typeof t.americanOdds !== 'number') errors.push(`${ctx}.${tier}: americanOdds must be number`);
+      if (typeof t.stake !== 'number') errors.push(`${ctx}.${tier}: stake must be number`);
+    });
+
+    // Actual + settlement come together — both null OR both set
+    if (e.actual === null && e.settlement !== null) errors.push(`${ctx}: settlement set but actual is null`);
+    if (e.actual !== null && e.settlement === null) errors.push(`${ctx}: actual set but settlement is null`);
+
+    if (e.settlement) {
+      ['reliable', 'traditional'].forEach(tier => {
+        const meta = e[tier];
+        const s = e.settlement[tier];
+        if (meta === null && s !== null) errors.push(`${ctx}: ${tier} settlement set but tier itself was null`);
+        if (s === null) return;
+        if (!s || typeof s !== 'object') { errors.push(`${ctx}.settlement.${tier}: must be null or object`); return; }
+        if (!['win', 'loss', null].includes(s.outcome)) errors.push(`${ctx}.settlement.${tier}: invalid outcome '${s.outcome}'`);
+        if (typeof s.pnl !== 'number') errors.push(`${ctx}.settlement.${tier}: pnl must be number`);
+        if (!Array.isArray(s.legResults)) errors.push(`${ctx}.settlement.${tier}: legResults must be array`);
+        // Outcome consistency: all hits → win; any miss → loss; any null → null outcome
+        if (Array.isArray(s.legResults) && s.legResults.length > 0) {
+          const allHit = s.legResults.every(lr => lr.hit === true);
+          const anyMiss = s.legResults.some(lr => lr.hit === false);
+          const anyNull = s.legResults.some(lr => lr.hit == null);
+          if (anyNull && s.outcome !== null) errors.push(`${ctx}.settlement.${tier}: leg(s) unresolved but outcome=${s.outcome}`);
+          if (!anyNull && allHit && s.outcome !== 'win') errors.push(`${ctx}.settlement.${tier}: all legs hit but outcome=${s.outcome}`);
+          if (!anyNull && anyMiss && s.outcome !== 'loss') errors.push(`${ctx}.settlement.${tier}: leg miss but outcome=${s.outcome}`);
+        }
+      });
+
+      // actual.winner must match the actual SERIES_DATA game
+      const series = seriesById[e.series];
+      const game = series && series.games && series.games[e.game - 1];
+      if (game && game.winner && e.actual && e.actual.winner !== game.winner) {
+        errors.push(`${ctx}: actual.winner='${e.actual.winner}' doesn't match SERIES_DATA[${e.series}].games[${e.game - 1}].winner='${game.winner}'`);
+      }
+    }
+  });
+  return errors;
+}
+
 // ---------- orchestrator ---------------------------------------
-function validateAll(seriesData, bets, parlays, betSlates) {
+function validateAll(seriesData, bets, parlays, betSlates, chsLabLedger) {
   const errors = [];
   if (!Array.isArray(seriesData)) {
     errors.push('SERIES_DATA is not an array');
@@ -349,6 +424,11 @@ function validateAll(seriesData, bets, parlays, betSlates) {
   // PHASE 73h: parlay coverage on upcoming predicted games
   if (Array.isArray(parlays)) {
     errors.push(...validateParlayCoverage(seriesData, parlays));
+  }
+
+  // PHASE 73m: CHS Lab ledger schema (optional — only when passed)
+  if (chsLabLedger != null) {
+    errors.push(...validateChsLabLedger(chsLabLedger, seriesData));
   }
 
   return errors;
