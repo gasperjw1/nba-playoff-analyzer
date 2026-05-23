@@ -1,0 +1,491 @@
+{
+  "round": "CF",
+  "trials": 5,
+  "iter": 2000,
+  "stake": 100,
+  "totals": {
+    "reliable": {
+      "trials": 0,
+      "wins": 0,
+      "winRate": 0,
+      "profitSum": 0,
+      "stakeSum": 0,
+      "roi": 0
+    },
+    "traditional": {
+      "trials": 25,
+      "wins": 8,
+      "winRate": 0.32,
+      "profitSum": -624,
+      "stakeSum": 2500,
+      "roi": -0.2496
+    }
+  },
+  "games": [
+    {
+      "name": "NYK-CLE G1 (NYK 115-104)",
+      "seriesId": "NYK-CLE",
+      "gameNum": 1,
+      "actual": {
+        "winner": "NYK",
+        "score": "115-104"
+      },
+      "reliable": null,
+      "traditional": {
+        "trials": 5,
+        "wins": 5,
+        "losses": 0,
+        "winRate": 1,
+        "avgProfit": 137.6,
+        "avgCombinedMC": 0.4196,
+        "avgAmerican": 138,
+        "avgLegCount": 4,
+        "sample": {
+          "legCount": 4,
+          "americanOdds": 137,
+          "combinedMC": 0.424,
+          "legScores": [
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Jalen Brunson",
+                "stat": "pra",
+                "line": 33.5,
+                "direction": "over",
+                "hitRate": 0.803,
+                "estJuice": -408,
+                "team": "NYK"
+              },
+              "hit": true,
+              "value": 49,
+              "line": 33.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Jarrett Allen",
+                "stat": "pra",
+                "line": 20.5,
+                "direction": "over",
+                "hitRate": 0.802,
+                "estJuice": -405,
+                "team": "CLE"
+              },
+              "hit": true,
+              "value": 22,
+              "line": 20.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Evan Mobley",
+                "stat": "pra",
+                "line": 24.5,
+                "direction": "over",
+                "hitRate": 0.808,
+                "estJuice": -421,
+                "team": "CLE"
+              },
+              "hit": true,
+              "value": 31,
+              "line": 24.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Mikal Bridges",
+                "stat": "pra",
+                "line": 18.5,
+                "direction": "over",
+                "hitRate": 0.811,
+                "estJuice": -429,
+                "team": "NYK"
+              },
+              "hit": true,
+              "value": 20,
+              "line": 18.5,
+              "dir": "over"
+            }
+          ],
+          "outcome": "win",
+          "profit": 137
+        }
+      }
+    },
+    {
+      "name": "NYK-CLE G2 (NYK 109-93)",
+      "seriesId": "NYK-CLE",
+      "gameNum": 2,
+      "actual": {
+        "winner": "NYK",
+        "score": "109-93"
+      },
+      "reliable": null,
+      "traditional": {
+        "trials": 5,
+        "wins": 0,
+        "losses": 5,
+        "winRate": 0,
+        "avgProfit": -100,
+        "avgCombinedMC": 0.4192,
+        "avgAmerican": 137,
+        "avgLegCount": 4,
+        "sample": {
+          "legCount": 4,
+          "americanOdds": 133,
+          "combinedMC": 0.426,
+          "legScores": [
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Max Strus",
+                "stat": "pts",
+                "line": 7.5,
+                "direction": "over",
+                "hitRate": 0.803,
+                "estJuice": -408,
+                "team": "CLE"
+              },
+              "hit": true,
+              "value": 8,
+              "line": 7.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Jalen Brunson",
+                "stat": "pts",
+                "line": 21.5,
+                "direction": "over",
+                "hitRate": 0.807,
+                "estJuice": -418,
+                "team": "NYK"
+              },
+              "hit": false,
+              "value": 19,
+              "line": 21.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Mikal Bridges",
+                "stat": "pts",
+                "line": 10.5,
+                "direction": "over",
+                "hitRate": 0.805,
+                "estJuice": -413,
+                "team": "NYK"
+              },
+              "hit": true,
+              "value": 13,
+              "line": 10.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "James Harden",
+                "stat": "pts",
+                "line": 13.5,
+                "direction": "over",
+                "hitRate": 0.821,
+                "estJuice": -459,
+                "team": "CLE"
+              },
+              "hit": true,
+              "value": 18,
+              "line": 13.5,
+              "dir": "over"
+            }
+          ],
+          "outcome": "loss",
+          "profit": -100
+        }
+      }
+    },
+    {
+      "name": "OKC-SAS G1 (SAS 115-122)",
+      "seriesId": "OKC-SAS",
+      "gameNum": 1,
+      "actual": {
+        "winner": "SAS",
+        "score": "115-122"
+      },
+      "reliable": null,
+      "traditional": {
+        "trials": 5,
+        "wins": 2,
+        "losses": 3,
+        "winRate": 0.4,
+        "avgProfit": -7.2,
+        "avgCombinedMC": 0.42960000000000004,
+        "avgAmerican": 133,
+        "avgLegCount": 4,
+        "sample": {
+          "legCount": 4,
+          "americanOdds": 137,
+          "combinedMC": 0.418,
+          "legScores": [
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Devin Vassell",
+                "stat": "pts",
+                "line": 11.5,
+                "direction": "over",
+                "hitRate": 0.808,
+                "estJuice": -421,
+                "team": "SAS"
+              },
+              "hit": true,
+              "value": 13,
+              "line": 11.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Victor Wembanyama",
+                "stat": "reb",
+                "line": 8.5,
+                "direction": "over",
+                "hitRate": 0.807,
+                "estJuice": -418,
+                "team": "SAS"
+              },
+              "hit": true,
+              "value": 24,
+              "line": 8.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Shai Gilgeous-Alexander",
+                "stat": "pra",
+                "line": 29.5,
+                "direction": "over",
+                "hitRate": 0.804,
+                "estJuice": -410,
+                "team": "OKC"
+              },
+              "hit": true,
+              "value": 40,
+              "line": 29.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Chet Holmgren",
+                "stat": "reb",
+                "line": 6.5,
+                "direction": "over",
+                "hitRate": 0.804,
+                "estJuice": -410,
+                "team": "OKC"
+              },
+              "hit": true,
+              "value": 8,
+              "line": 6.5,
+              "dir": "over"
+            }
+          ],
+          "outcome": "win",
+          "profit": 137
+        }
+      }
+    },
+    {
+      "name": "OKC-SAS G2 (OKC 122-113)",
+      "seriesId": "OKC-SAS",
+      "gameNum": 2,
+      "actual": {
+        "winner": "OKC",
+        "score": "122-113"
+      },
+      "reliable": null,
+      "traditional": {
+        "trials": 5,
+        "wins": 1,
+        "losses": 4,
+        "winRate": 0.2,
+        "avgProfit": -55.2,
+        "avgCombinedMC": 0.43199999999999994,
+        "avgAmerican": 131,
+        "avgLegCount": 4,
+        "sample": {
+          "legCount": 4,
+          "americanOdds": 131,
+          "combinedMC": 0.434,
+          "legScores": [
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Shai Gilgeous-Alexander",
+                "stat": "pts",
+                "line": 19.5,
+                "direction": "over",
+                "hitRate": 0.803,
+                "estJuice": -408,
+                "team": "OKC"
+              },
+              "hit": true,
+              "value": 30,
+              "line": 19.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Alex Caruso",
+                "stat": "pra",
+                "line": 8.5,
+                "direction": "over",
+                "hitRate": 0.802,
+                "estJuice": -405,
+                "team": "OKC"
+              },
+              "hit": true,
+              "value": 22,
+              "line": 8.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Stephon Castle",
+                "stat": "pra",
+                "line": 20.5,
+                "direction": "over",
+                "hitRate": 0.809,
+                "estJuice": -424,
+                "team": "SAS"
+              },
+              "hit": true,
+              "value": 37,
+              "line": 20.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Victor Wembanyama",
+                "stat": "threes",
+                "line": 1.5,
+                "direction": "over",
+                "hitRate": 0.829,
+                "estJuice": -485,
+                "team": "SAS"
+              },
+              "hit": false,
+              "value": 1,
+              "line": 1.5,
+              "dir": "over"
+            }
+          ],
+          "outcome": "loss",
+          "profit": -100
+        }
+      }
+    },
+    {
+      "name": "OKC-SAS G3 (OKC 123-108)",
+      "seriesId": "OKC-SAS",
+      "gameNum": 3,
+      "actual": {
+        "winner": "OKC",
+        "score": "123-108"
+      },
+      "reliable": null,
+      "traditional": {
+        "trials": 5,
+        "wins": 0,
+        "losses": 5,
+        "winRate": 0,
+        "avgProfit": -100,
+        "avgCombinedMC": 0.4326,
+        "avgAmerican": 131,
+        "avgLegCount": 4,
+        "sample": {
+          "legCount": 4,
+          "americanOdds": 134,
+          "combinedMC": 0.431,
+          "legScores": [
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Chet Holmgren",
+                "stat": "pts",
+                "line": 11.5,
+                "direction": "over",
+                "hitRate": 0.803,
+                "estJuice": -408,
+                "team": "OKC"
+              },
+              "hit": false,
+              "value": 8,
+              "line": 11.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Stephon Castle",
+                "stat": "ast",
+                "line": 2.5,
+                "direction": "over",
+                "hitRate": 0.809,
+                "estJuice": -424,
+                "team": "SAS"
+              },
+              "hit": true,
+              "value": 6,
+              "line": 2.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Shai Gilgeous-Alexander",
+                "stat": "pts",
+                "line": 17.5,
+                "direction": "over",
+                "hitRate": 0.805,
+                "estJuice": -413,
+                "team": "OKC"
+              },
+              "hit": true,
+              "value": 26,
+              "line": 17.5,
+              "dir": "over"
+            },
+            {
+              "leg": {
+                "type": "prop",
+                "player": "Victor Wembanyama",
+                "stat": "pra",
+                "line": 28.5,
+                "direction": "over",
+                "hitRate": 0.815,
+                "estJuice": -441,
+                "team": "SAS"
+              },
+              "hit": true,
+              "value": 33,
+              "line": 28.5,
+              "dir": "over"
+            }
+          ],
+          "outcome": "loss",
+          "profit": -100
+        }
+      }
+    }
+  ]
+}
