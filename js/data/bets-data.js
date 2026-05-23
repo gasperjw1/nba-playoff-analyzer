@@ -2899,6 +2899,45 @@ const FEATURED_PARLAYS = [
     thesis:'CLE desperation stack. Math: 0.62 × 0.58 × 0.60 ≈ 22% combined. At +320 payout, 22% true hit is +EV. Stake $50 (CF cap).',
     result: null,
   },
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF G4 — SUN MAY 24: WCF OKC @ SAS at Frost Bank Center
+  // SAS down 1-2 facing must-win-or-1-3. Wemby + Castle/Harper
+  // health restoration is the structural narrative. Lines pre-authored
+  // off DK opener (SAS -1.5 / 218.5); fuller slate refined Sun morning.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'wcf-g4-may24-floor-wemby-fox',
+    slate: 'CF-G4', date: '2026-05-24',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G4 — SAS Stars Floor (2-Leg)',
+    stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify Sun morning)',
+    legs: [
+      { pick:'Wembanyama Over 19.5 points (alt — WCF G4)', odds:'-280', confidence:'floor', status:null,
+        note:'Series 41 / 21 / 26 → 29.3 avg. Line 19.5 = proj−10, deep alt zone. Wemby revenge-game-script after G3 4-reb gameplan box.' },
+      { pick:'Fox Over 4.5 assists (alt — WCF G4)', odds:'-220', confidence:'floor', status:null,
+        note:'G3: 6 ast. With Castle bruised + Harper limited, Fox primary PG-load. Floor-stable counting stat.' },
+    ],
+    thesis:'Two SAS-must-win legs. Math: 0.88 × 0.86 ≈ 76% combined — reliable floor. Wemby alt deep-points + Fox ast both calibrated. CF stake cap $100. Authored pre-game; refine Sun morning with confirmed lineups.',
+    result: null,
+  },
+  {
+    id: 'wcf-g4-may24-trad-sas-stack',
+    slate: 'CF-G4', date: '2026-05-24',
+    category: 'traditional', type: 'best-bet',
+    name: 'WCF G4 — SAS Home Stack (3-Leg)',
+    stake: 50, odds: '+320', payout: 'To Win: ~$160 (verify Sun morning)',
+    legs: [
+      { pick:'SAS ML vs OKC (WCF G4)', odds:'-120', confidence:'medium', status:null,
+        note:'SAS must-win to avoid 1-3 (sub-5% historical comebacks). Down-1-2 home wins 64% historically. Castle/Harper one extra day of healing.' },
+      { pick:'Wembanyama Over 26.5 points (WCF G4)', odds:'-115', confidence:'medium', status:null,
+        note:'Revenge spot — engine projects 28.5 with elevated usage in must-win.' },
+      { pick:'Castle Over 19.5 points (WCF G4)', odds:'-110', confidence:'medium', status:null,
+        note:'G2: 25 / G3: 13 with Wed-contact bruise. Recovery + home stage = bounce-back script.' },
+    ],
+    thesis:'Three correlated SAS-favorable legs. Math: 0.58 × 0.58 × 0.55 ≈ 19% combined. At +320 payout, 19% true hit is +EV. Stake $50 (CF cap). Lines provisional; refresh Sun.',
+    result: null,
+  },
 ];
 
 // ============================================================
