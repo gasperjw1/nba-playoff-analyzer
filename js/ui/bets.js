@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Fri May 22 | WCF G3: OKC @ SAS 8:30 PM @ Frost Bank (SAS -1.5 / 217.5) | ECF G3 TOMORROW Sat 5/23 NYK @ CLE 8 PM | WCF 1-1: OKC 122-113 G2 (SGA 30) after SAS 122-115 2OT G1 (Wemby 41/24) | ECF NYK leads 2-0: 115-104 OT G1 (22pt comeback, Brunson 38), 109-93 G2 (Hart 26)</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Sat May 23 | ECF G3: NYK @ CLE 8:00 PM @ Rocket Arena (CLE -2.5 / 214.5) | WCF G4 TOMORROW Sun 5/24 OKC @ SAS 8:00 PM | WCF G3 ARCHIVED — Fri 5/22: OKC 123-108 (OKC leads 2-1, McCain 24 off bench, Wemby 26/4) | ECF NYK leads 2-0: 115-104 OT G1 (22pt comeback, Brunson 38), 109-93 G2 (Hart 26)</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -3081,11 +3081,12 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Tue May 19</span><span style="color:#aaa;">NYK Stars Floor &#x2713; (+$115; Brunson 38 / KAT 13reb), Mitchell+Mobley Floor &#x2713; (+$105; Mitchell 29 / Mobley 14reb)</span><span style="color:#aaa;">2-0</span><span style="color:#3dd68c;font-weight:700;">+$220</span>
             <span style="color:#aaa;">Wed May 20</span><span style="color:#aaa;">No floor parlays placed (WCF G2 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
             <span style="color:#aaa;">Thu May 21</span><span style="color:#aaa;">No floor parlays placed (ECF G2 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Fri May 22</span><span style="color:#aaa;">Wemby PTS+REB &#x2717; (Wemby 26pts hit / 4 reb missed — OKC double-boxed; first deep-alt-REB miss all playoffs), SGA+Castle Floor &#x2713; (+$110; SGA 26 / Castle 6 ast cleared 5.5 by one)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$10</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$2,900</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$252</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">14-16</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$3,100</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$242</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">15-17</strong></span>
           </div>
         </div>
 
@@ -3111,21 +3112,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Tue May 19</span><span style="color:#aaa;">NYK Rest 3-Leg (ML / Brunson 26.5 / Under 215.5) &#x2717; (2 of 3 legs hit but Under killed by OT — 219 total)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
             <span style="color:#aaa;">Wed May 20</span><span style="color:#aaa;">No parlays placed (WCF G2 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
             <span style="color:#aaa;">Thu May 21</span><span style="color:#aaa;">No parlays placed (ECF G2 not authored — daily run skipped)</span><span style="color:#aaa;">0-0</span><span style="color:#aaa;font-weight:700;">$0</span>
+            <span style="color:#aaa;">Fri May 22</span><span style="color:#aaa;">SAS Home Stack 3-Leg (SAS ML / Wemby 25.5 / Castle 19.5) &#x2717; (OKC won 123-108 — ML missed; Castle 13 missed; only Wemby 26 cleared by 0.5)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,850</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$611</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-25</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$2,900</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$661</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-26</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$5,750</strong></span>
-          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$863</strong></span>
-          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">21-41</strong></span>
+          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$6,000</strong></span>
+          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$903</strong></span>
+          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">22-43</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play Fri May 22 (WCF G3 — OKC @ SAS): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional &nbsp;|&nbsp; Sat 5/23 (ECF G3 — NYK @ CLE): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight Sat May 23 (ECF G3 — NYK @ CLE): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

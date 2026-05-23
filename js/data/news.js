@@ -402,4 +402,28 @@ const NEWS = [
     body: 'Knicks travel to Cleveland for G3 Saturday with a 2-0 series lead. Rocket Arena was 6-0 for CLE pre-DET G6; they\'ve since recovered with the G7 road blowout. CLE adjustments forecasted: Harden off-ball more (NYK targeted him on switches both games), Mitchell volume up to 30+ shots in close-out-of-elimination mode, Strus shot volume up to space the floor. NYK on a back-to-back (G2 5/21 → travel → G3 5/23). Down-0-2 home historical 68% win rate is the leading argument for the engine\'s CLE-by-6 read; the NYK B2B + travel is the secondary lift. Lines to be set tomorrow morning; opening estimates: CLE -3 / total 213.5 / ML CLE -140, NYK +120.',
     source: 'SI / Heavy',
   },
+  {
+    date: '2026-05-22',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'OKC 123-108: McCain career-high 24 off bench, Thunder lead WCF 2-1',
+    body: 'Thunder erased a 15-0 Spurs opening run (longest CF-opening run since play-by-play era 1997) then outscored San Antonio by 30 the rest of the way for a 15-pt road blowout at Frost Bank Center. <strong>OKC bench 76 vs SAS bench 23</strong> was the structural margin of victory. SGA 26pts/12ast (clinical bounce-back, +28 plus-minus for Jared McCain career-playoff-high 24 off the bench). Jaylin Williams added a playoff-career-high 18 off the bench; Caruso 15 sustaining his G1+G2 form. SAS: Wembanyama 26pts on 8-15 FG but rebounds collapsed from a 20.5 series average to just 4 — OKC gameplanned with Hartenstein/Holmgren tag-team boxes that erased his second-chance impact. Fox 15/7/6 (sharp post-Wed hamstring scare), Castle 13/4/6 (playing through Wed contact, +14 FTs but inefficient), Harper 6 off bench. Engine: SAS by 4 → actual OKC by 15. WRONG WINNER call on the CF — Phase 71 R3 out-of-sample caveat fires again. WCF G4 Sunday 5/24 at 8 PM ET in San Antonio (NBC/Peacock).',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-23',
+    severity: 'major',
+    series: 'NYK-CLE',
+    headline: 'ECF G3 tonight: NYK @ CLE 8 PM (ESPN) — CLE -2.5 / 214.5',
+    body: 'Tip-off 8 PM ET on ESPN from Rocket Arena. CLE down 0-2 + facing must-win at home; this is the first ECF G3 in which the away team has been on a back-to-back since 1985 (NYK traveled in after MSG G2 Thursday). DK current: CLE -2.5 (tightened from opener CLE -3) / total 214.5 / ML CLE -140, NYK +120. <strong>Structural drivers:</strong> Down-0-2 home G3 historically wins 68%; CLE was 6-0 at home before the DET G6 loss; rebounded with the G7 road blowout. NYK B2B + travel is the secondary fatigue lift. <strong>CLE adjustments:</strong> Harden off-ball more (NYK switches targeted him both games), Mitchell volume up to 30+ shots, Strus shot volume up to space the floor. <strong>NYK adjustments:</strong> Bridges/OG continue switching on Mitchell, KAT keeps stretch-5 pulling Mobley out. <strong>The pick: CLE ML -140</strong> + two floor parlays (Mitchell/Mobley, Brunson/KAT) + one traditional 3-leg CLE stack. CF unknown-territory stake cap stays ($100 floor / $50 trad). Coming off a CF wrong-winner call last night (WCF G3), reduced stakes remain prudent.',
+    source: 'DraftKings / ESPN',
+  },
+  {
+    date: '2026-05-23',
+    severity: 'minor',
+    series: 'OKC-SAS',
+    headline: 'WCF G4 tomorrow Sun 5/24: OKC @ SAS 8 PM — Spurs must-win home',
+    body: 'Spurs face elimination from 1-2 down with another home game Sunday 5/24 at 8 PM ET on NBC/Peacock. Frost Bank Center, third straight WCF game in San Antonio. Health watch: Fox and Harper had a full extra day for the ankle/hamstring issues that compromised their G3 performances; Castle nursing the Q3 hard-contact bruise. OKC remains without J.Williams (hamstring still day-to-day). Wemby gameplan adjustment is the key narrative — SAS staff has to script ways to keep him on the boards after OKC\'s G3 box-out plan held him to a career-low 4 rebounds. Lines/picks for G4 will be authored Sunday morning after overnight injury reports drop.',
+    source: 'NBA.com',
+  },
 ];

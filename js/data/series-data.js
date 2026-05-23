@@ -5368,10 +5368,10 @@ const SERIES_DATA = [
                   margin: 6,
                   confidence: "MEDIUM",
                   character: "DESPERATION HOME",
-                  reasoning: "Phase 71c engine: CLE 113, NYK 107 (CLE by 6). Series shifts to Rocket Arena, CLE down 0-2 + facing must-win at home. The structural variable: NYK on a back-to-back (G2 5/21 → G3 5/23 with travel) vs CLE with one extra day of rest. CLE was 6-0 at home before the DET G6 loss; G7 they bounced back with the 31pt road blowout. Adjustments: Harden off-ball more (NYK targeted him on switches G1+G2), Mitchell volume up to 30+ shots in close-out-of-elimination spots. Phase 71 G6/G7 caution NOT active (G3 not elimination) but down-0-2 home historically wins 68%.",
+                  reasoning: "Phase 71c engine: CLE 113, NYK 107 (CLE by 6). Series shifts to Rocket Arena, CLE down 0-2 + facing must-win at home. The structural variable: NYK on a back-to-back (G2 5/21 → G3 5/23 with travel) vs CLE with one extra day of rest. CLE was 6-0 at home before the DET G6 loss; G7 they bounced back with the 31pt road blowout. Adjustments: Harden off-ball more (NYK targeted him on switches G1+G2), Mitchell volume up to 30+ shots in close-out-of-elimination spots. Phase 71 G6/G7 caution NOT active (G3 not elimination) but down-0-2 home historically wins 68%. <strong>5/23 update:</strong> DK / FanDuel current open is CLE -2.5 (tightened from CLE -3), total 214.5. The tick-tighter spread reflects late-week respect for NYK's defensive composure (Brunson 38 G1 + KAT-Mobley physical wash + the 22pt comeback narrative). Engine remains CLE by 6 — minor spread/engine disagreement on margin, but model and market agree on the winner. Caution: WCF G3 just shipped a wrong-winner CF call — Phase 71 R3 out-of-sample stake reduction stays at 50%.",
                   xFactor: "Harden role recalibration vs NYK back-to-back travel fatigue",
                   moneyline: "CLE -140",
-                  spread: "CLE -3"
+                  spread: "CLE -2.5"
               }
           },
           {
@@ -5419,7 +5419,12 @@ const SERIES_DATA = [
         { type: "missed", lesson: "G1: Caruso 31pts (8 made 3s) was the kind of bench tail-event the Phase 73 elimination-variance amplifier is meant to address — but Phase 73 only fires for G6/G7 currently. Same pattern in DET-CLE G7 (Merrill 23 / 5-8 3PT). Lesson: bench variance is uncapped at any stage of the playoffs, not just elimination games." },
         { type: "correct", lesson: "G1: Wemby reb projection 12.0 (Phase 71c) — actual 24. Direction right (over), magnitude wildly off ceiling. The reb O11.5 bet won, the deeper alt O9.5 in the floor parlay won easily. Phase 71's deep-alt-line floor discipline saved the slate (+$180 net despite wrong-winner)." },
         { type: "missed", lesson: "G1: Holmgren 8pts on 2-7 FG — Wemby gravity limited him to one-third of his series projection. The starter-tier bias correction (-2pt PTS) wasn't enough; Holmgren in particular has a 'Wemby matchup' suppression that the engine doesn't model. R3 audit candidate: add a 'paint-defender vs other paint-defender' matchup suppression." },
-        { type: "correct", lesson: "Slate P&L: +$180 net on parlays (2 floors hit at +$105 / +$125; chalk traditional missed -$50) DESPITE wrong-winner G1. Phase 65 Reliable Floor discipline (deep alt-line counting stats) is the single most validated piece of the framework — keeps winning in the chaos cases where the model is wrong-winner. Risk Dashboard counterfactual (drop high×prop cells) keeps proving out." }
+        { type: "correct", lesson: "Slate P&L: +$180 net on parlays (2 floors hit at +$105 / +$125; chalk traditional missed -$50) DESPITE wrong-winner G1. Phase 65 Reliable Floor discipline (deep alt-line counting stats) is the single most validated piece of the framework — keeps winning in the chaos cases where the model is wrong-winner. Risk Dashboard counterfactual (drop high×prop cells) keeps proving out." },
+        { type: "missed", lesson: "G3: Wrong winner (engine SAS by 4 at home, actual OKC by 15 on the road). The engine priced SAS at home + Castle/Harper POA defense, but BOTH Castle and Harper were playing through Wed injuries (ankle/hamstring) and combined 3-15 FG. The injury report came out the morning of G3 and was NOT reflected in the engine — exactly the LINEUP_OVERRIDES gap Phase 73g was designed to catch. Lesson: when day-to-day flags exist for star defenders, project to a degraded version of their performance, not the healthy projection." },
+        { type: "missed", lesson: "G3: McCain career-playoff-high 24pts (+28) was a bench tail-event the engine had no way to project (McCain's series projection was ~8pts). Combined with Jaylin Williams playoff-career-high 18, OKC bench scored 76 to SAS's 23 — a 53pt bench gap. This is the same kind of secondary-tier ceiling the engine systematically under-prices that DET-CLE G7 surfaced (Merrill 23). R3 audit: bench-player variance is asymmetric (ceiling >> floor), and tail-prone in CF rotations." },
+        { type: "missed", lesson: "G3: SAS opened on a 15-0 run (CF-era record) and STILL lost by 15. The engine's character tag 'COMPETITIVE' didn't model that early run + collapse pattern; OKC's structural depth advantage (76 bench vs 23) overwhelmed the home-team initial energy spike. Lesson: home-team Q1 energy boost has a known regression component in playoff data — the engine over-weights early-game momentum if the team is shorthanded behind it." },
+        { type: "correct", lesson: "G3: SGA bounce-back to 26/12 ast was directionally correct after his 7-23 FG G1 — the engine's post-anomaly reversion priced him at 28pts. Phase 71b star-bias correction (-2.6pts) had him at 28.4 ; actual 26 — calibrated to within 2.5pts. SGA-vs-Castle matchup data is now showing reversion (Castle weakened by injury). The structural matchup module is honestly tracking when there's a clear health-state input." },
+        { type: "missed", lesson: "G3: Wemby REB was the engine's most-trusted signal (Phase 71 calibrated ±0.2pt) — projected 12, actual 4. OKC gameplanned to box him out (Hartenstein + Holmgren tag-team boxes) and SAS's lack of secondary rebounding meant nobody else cleaned up. The 11.5 REB alt-line floor leg LOST — first time the deep-alt-REB floor missed across the entire 2026 playoffs. R3 audit: even calibrated REB signals are vulnerable to specific defensive game-planning that arrives between games (G1: 24 reb / G2: 17 reb → G3: 4 reb is too big a swing to be variance alone)." }
       ],
       priorRound: {
           home: {
@@ -6323,11 +6328,11 @@ const SERIES_DATA = [
           },
           {
               num: 3,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "OKC",
+              homeScore: 123,
+              awayScore: 108,
+              winner: "OKC",
+              notes: "OKC 123-108 at Frost Bank Center — OKC LEADS WCF 2-1. Massive 15pt road blowout. SAS jumped to a 15-0 lead to start (longest CF-opening run in the play-by-play era since 1997) but OKC outscored SAS by 30 the rest of the way. SGA 26pts/12ast (clinical bounce-back, no foul trouble), Jared McCain CAREER PLAYOFF-HIGH 24pts off bench (+28 plus-minus, game high), Jaylin Williams PLAYOFF-CAREER-HIGH 18pts off bench, Alex Caruso 15pts off bench (sustaining G1+G2 form). <strong>OKC bench 76, SAS bench 23 — structural margin of victory</strong>. SAS: Wembanyama 26pts/4reb/3ast/2blk on 8-15 FG — efficient scoring but OKC's pre-game game-plan focus on boxing him out collapsed his rebound total from a 20.5 series avg to just 4 (career playoff low at this stage). Fox 15pts/7reb/6ast/1stl in 31min (returned from Wed hamstring scare — sharp but not dominant), Castle 13pts/4reb/6ast/1stl/2blk (playing through Wed contact, +14 free throws but only 13 from the field), Harper 6pts off bench (slow return from Wed ankle). MODEL: predicted SAS by 4 (MEDIUM); ACTUAL OKC by 15 — WRONG WINNER, 19pt margin miss. The engine had no way to price (a) the Castle/Harper post-injury fatigue that gutted SAS's POA D, (b) McCain's tail-event 24-pt bench game, or (c) Wemby being individually targeted on the glass (gameplan-level adjustment OKC made between G2 and G3).",
               prediction: {
                   homeWin: true,
                   homeScore: 116,
@@ -6347,7 +6352,19 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 113,
+                  awayScore: 109,
+                  margin: 4,
+                  confidence: "MEDIUM",
+                  character: "MUST-WIN HOME",
+                  reasoning: "Phase 71c engine: SAS 113, OKC 109 (SAS by 4). G4 at Frost Bank Center with SAS down 1-2 and Wemby healthy — must-win to avoid 1-3 (where comebacks happen <5% historically). Fox + Harper Wednesday hamstring/ankle were the structural G3 vulnerability; an extra rest day should restore Castle/Harper POA defense to dial down McCain/Caruso bench output. OKC counters: J.Williams still day-to-day (hamstring), so OKC remains shorthanded; SGA back-to-back 26+pt games suggest he's resolved the Castle matchup. Phase 71 R3 out-of-sample caveat still applies — reduced stakes recommended. Down-1-2 with HCA next game historically wins 64%.",
+                  xFactor: "Castle/Harper health restoration vs OKC bench depth (J.Williams status)",
+                  moneyline: "SAS -135",
+                  spread: "SAS -2.5"
+              }
           },
           {
               num: 5,
