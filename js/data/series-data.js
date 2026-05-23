@@ -5562,7 +5562,7 @@ const SERIES_DATA = [
                       type: "Grade 1 left hamstring strain (reaggravation)",
                       severity: 1.0,
                       dayOf: false,
-                      note: "5/22: Reaggravated late G2 5/20; DNP WCF G3 (5/22). Day-to-day for G4 (5/24). Severity 1.0 reflects OUT-for-G3 reality. Rating 72 already reflects this — keep at 0 if confirmed OUT G4, restore to 72 if cleared. Same hamstring as original Apr 22 strain — second strain has worse base-rate of bouncing back same series."
+                      note: "5/22: Reaggravated late G2 5/20; DNP WCF G3 (5/22). Day-to-day for G4 (5/24). Severity 1.0 reflects OUT-for-G3 reality; Phase 73k engine respects severity≥0.95 in getEffectiveRating, so the engine treats him as inactive without a rating change. For G4 confirmation: if cleared, drop severity to 0.5-0.7 (playing through) and the engine re-activates him. Same hamstring as original Apr 22 strain — second strain has worse base-rate of bouncing back same series."
                   }
               },
               {

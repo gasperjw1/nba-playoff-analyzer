@@ -1064,6 +1064,68 @@ function runTests() {
           'per-leg calibrated rates match leg count');
       }
     }
+
+    // 16h — Phase 73k: estimateProjectedMinutes uses boxScore data when available
+    // and falls back to rating-tier defaults otherwise.
+    const nykCleSeries = c.SERIES_DATA.find(s => s.id === 'NYK-CLE');
+    if (nykCleSeries && typeof c.estimateProjectedMinutes === 'function') {
+      // NYK CF roster: Yabusele/Shamet/Clarkson play < 18 min per CF
+      // G1+G2 boxScores. estimateProjectedMinutes should reflect that.
+      const yabu = nykCleSeries.homeTeam.players.find(p => p.name === 'Guerschon Yabusele');
+      const brunson = nykCleSeries.homeTeam.players.find(p => p.name === 'Jalen Brunson');
+      if (yabu) {
+        const min = c.estimateProjectedMinutes(yabu, nykCleSeries.homeTeam, nykCleSeries);
+        assert(min < 18, `Yabusele projects under 18 min (got ${min}) — deep bench filter`);
+      }
+      if (brunson) {
+        const min = c.estimateProjectedMinutes(brunson, nykCleSeries.homeTeam, nykCleSeries);
+        assert(min >= 30, `Brunson projects 30+ min (got ${min}) — rotation star`);
+      }
+      // Unknown player → rating fallback. Player with rating 0 → 0 min.
+      const inactive = c.estimateProjectedMinutes(
+        { name: 'Test Inactive', rating: 0 }, nykCleSeries.homeTeam, nykCleSeries);
+      assert(inactive === 0, `rating 0 → 0 min (got ${inactive})`);
+      // Pure rating fallback (no series boxScores): 88-rated star → 35 min default.
+      const star = c.estimateProjectedMinutes(
+        { name: 'Test Star', rating: 88 }, { players: [{name:'Test Star', rating:88}] }, null);
+      assert(star === 35, `rating-88 fallback → 35 min (got ${star})`);
+    }
+
+    // 16i — Phase 73k: safeLinesForAllPlayers rotation filter drops
+    // deep-bench players when opts.series is passed.
+    if (nykCleSeries) {
+      const mcEcf = c.runMonteCarlo(nykCleSeries, 3, { iterations: 600 });
+      const filtered = c.safeLinesForAllPlayers(mcEcf, {
+        threshold: 0.80, maxJuice: -500,
+        series: nykCleSeries, minProjectedMinutes: 18,
+      });
+      const unfiltered = c.safeLinesForAllPlayers(mcEcf, {
+        threshold: 0.80, maxJuice: -500,
+      });
+      assert(filtered.length < unfiltered.length,
+        `rotation filter trims candidates (filtered ${filtered.length} < unfiltered ${unfiltered.length})`);
+      const benchPlayers = ['Guerschon Yabusele', 'Landry Shamet', 'Jordan Clarkson', 'Mitchell Robinson'];
+      benchPlayers.forEach(name => {
+        const stillPresent = filtered.find(r => r.player === name);
+        assert(!stillPresent, `rotation filter drops ${name} (deep bench)`);
+      });
+      // Stars are kept
+      const brunsonPresent = filtered.find(r => r.player === 'Jalen Brunson');
+      assert(brunsonPresent, 'rotation filter keeps Brunson (star)');
+    }
+
+    // 16j — Phase 73k: getEffectiveRating returns 0 for activeInjury.severity >= 0.95
+    if (typeof c.getEffectiveRating === 'function') {
+      const outPlayer = { name: 'Test OUT', rating: 80, activeInjury: { severity: 1.0 } };
+      const dtdPlayer = { name: 'Test GTD', rating: 80, activeInjury: { severity: 0.6 } };
+      const noInjPlayer = { name: 'Test Healthy', rating: 80 };
+      assert(c.getEffectiveRating(outPlayer, 'TEST') === 0,
+        `severity 1.0 → rating 0 (got ${c.getEffectiveRating(outPlayer, 'TEST')})`);
+      assert(c.getEffectiveRating(dtdPlayer, 'TEST') === 80,
+        `severity 0.6 → rating preserved (got ${c.getEffectiveRating(dtdPlayer, 'TEST')})`);
+      assert(c.getEffectiveRating(noInjPlayer, 'TEST') === 80,
+        `no injury → rating preserved (got ${c.getEffectiveRating(noInjPlayer, 'TEST')})`);
+    }
   }
 
   // ============================================================

@@ -127,10 +127,25 @@ function _samplePlayerGame(player, expected, opts) {
 // expectedByPlayer: map of playerName -> engine-projected {pts, reb, ast}
 // Pre-computed by runMonteCarlo() so each player's matchup/fatigue/etc.
 // adjustments flow into the sim's MEAN.
+// Phase 73k helper: respect getEffectiveRating's scenario-toggle +
+// severity-gate logic. Falls back to raw rating when state.js isn't
+// loaded (e.g. Node test harness without UI globals).
+function _isActiveForMC(player, seriesId) {
+  if (!player) return false;
+  if (typeof getEffectiveRating === 'function' && seriesId) {
+    return getEffectiveRating(player, seriesId) > 0;
+  }
+  if ((player.rating || 0) <= 0) return false;
+  if (player.activeInjury && typeof player.activeInjury.severity === 'number'
+      && player.activeInjury.severity >= 0.95) return false;
+  return true;
+}
+
 function _sampleTeamGame(team, side, expectedByPlayer, opts) {
   if (!team || !Array.isArray(team.players)) return { pts: 0, players: {} };
+  const seriesId = opts && opts.seriesId;
   const active = team.players
-    .filter(p => (p.rating || 0) > 0)
+    .filter(p => _isActiveForMC(p, seriesId))
     .slice(0, 10);
   const playerSamples = {};
   let totalPts = 0;
@@ -192,11 +207,15 @@ function runMonteCarlo(series, gameNum, opts = {}) {
   const awayStd = (awayRange[1] - awayRange[0]) / 2.56;
 
   // ─── PLAYER-LEVEL anchors: engine projections for prop sampling ───
+  // Phase 73k: use _isActiveForMC so severity-1.0 (OUT) players don't
+  // get projected as if available. The previous raw `rating > 0` gate
+  // missed players like Jalen Williams (rating 80 but activeInjury
+  // severity 1.0 for WCF G3 → still showed up in the candidate pool).
   const expectedHome = {};
   const expectedAway = {};
   if (typeof calcExpectedPlayerStats === 'function') {
     series.homeTeam.players.forEach(p => {
-      if ((p.rating || 0) > 0) {
+      if (_isActiveForMC(p, series.id)) {
         try {
           const exp = calcExpectedPlayerStats(p, series, gameIdx, 'home');
           expectedHome[p.name] = { pts: exp.pts, reb: exp.reb, ast: exp.ast };
@@ -204,7 +223,7 @@ function runMonteCarlo(series, gameNum, opts = {}) {
       }
     });
     series.awayTeam.players.forEach(p => {
-      if ((p.rating || 0) > 0) {
+      if (_isActiveForMC(p, series.id)) {
         try {
           const exp = calcExpectedPlayerStats(p, series, gameIdx, 'away');
           expectedAway[p.name] = { pts: exp.pts, reb: exp.reb, ast: exp.ast };
@@ -230,9 +249,10 @@ function runMonteCarlo(series, gameNum, opts = {}) {
     d.stocks.push(s.stl + s.blk);
   }
 
-  // Pre-fetch player rosters so we don't refilter every iteration
-  const homePlayers = series.homeTeam.players.filter(p => (p.rating || 0) > 0).slice(0, 10);
-  const awayPlayers = series.awayTeam.players.filter(p => (p.rating || 0) > 0).slice(0, 10);
+  // Pre-fetch player rosters so we don't refilter every iteration.
+  // Phase 73k: severity-aware active filter so OUT players don't get sampled.
+  const homePlayers = series.homeTeam.players.filter(p => _isActiveForMC(p, series.id)).slice(0, 10);
+  const awayPlayers = series.awayTeam.players.filter(p => _isActiveForMC(p, series.id)).slice(0, 10);
 
   for (let i = 0; i < N; i++) {
     // TEAM-LEVEL: sample around engine projection

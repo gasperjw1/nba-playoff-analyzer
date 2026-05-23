@@ -150,6 +150,10 @@ function findSafeLines(simResult, playerName, statType, opts) {
 //   - Unrealistic lines (below DK's listing floor)
 //   - Hit rates below the threshold (default 80% per user spec)
 //   - Lines where estimated juice exceeds -500 (payout < $20/$100 stake)
+//   - Deep-bench players (Phase 73k) — DK rarely lists props for
+//     players projected under 18 minutes. Pass opts.series so the
+//     filter can look up each player's actual rotation role via
+//     estimateProjectedMinutes (boxscore-derived when available).
 //
 // Returns flat list sorted DESC by (hitRate × payout) — a rough
 // "expected return" ranking that balances reliability with payout size.
@@ -161,8 +165,30 @@ function safeLinesForAllPlayers(simResult, opts) {
   const stats = opts.stats || ['pts', 'reb', 'ast', 'stocks', 'threes', 'pra'];
   const threshold = opts.threshold || 0.80;          // 80% per user spec
   const maxJuice = opts.maxJuice != null ? opts.maxJuice : -500;  // reject deeper than -500
+  const minProjectedMinutes = opts.minProjectedMinutes != null ? opts.minProjectedMinutes : 18;
+  const series = opts.series || null;
+  // Build a name → { player, team } lookup once so we don't re-scan
+  // both rosters per stat per player.
+  const playerLookup = {};
+  if (series && series.homeTeam && Array.isArray(series.homeTeam.players)) {
+    series.homeTeam.players.forEach(p => { if (p && p.name) playerLookup[p.name] = { player: p, team: series.homeTeam }; });
+  }
+  if (series && series.awayTeam && Array.isArray(series.awayTeam.players)) {
+    series.awayTeam.players.forEach(p => { if (p && p.name) playerLookup[p.name] = { player: p, team: series.awayTeam }; });
+  }
+  const minutesEstimator = (typeof estimateProjectedMinutes === 'function') ? estimateProjectedMinutes : null;
   const rows = [];
   Object.keys(simResult._raw.players).forEach(name => {
+    // Phase 73k rotation-tier filter: drop deep-bench players who don't
+    // have real DK prop markets. When series isn't passed, skip the
+    // filter (backward-compatible).
+    if (series && minutesEstimator) {
+      const lookup = playerLookup[name];
+      if (lookup) {
+        const projMin = minutesEstimator(lookup.player, lookup.team, series);
+        if (projMin < minProjectedMinutes) return;
+      }
+    }
     stats.forEach(stat => {
       const sl = findSafeLines(simResult, name, stat, {});
       if (!sl) return;
@@ -321,6 +347,10 @@ function _candidatePool(simResult, series, opts) {
   const rows = safeLinesForAllPlayers(simResult, {
     threshold: 0.80,
     maxJuice: opts.maxJuice || -500,
+    // Phase 73k: pass series so rotation-tier filter can drop deep-bench
+    // players (DK doesn't list props for sub-18-min role players).
+    series: series,
+    minProjectedMinutes: opts.minProjectedMinutes != null ? opts.minProjectedMinutes : 18,
   });
   const playerTeam = _buildPlayerTeamMap(series);
   const seenPlayers = new Set();

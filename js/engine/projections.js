@@ -2268,3 +2268,76 @@ function buildGameAttribution(series, gameNum) {
   };
 }
 
+// ============================================================
+// PROJECTED-MINUTES ESTIMATE (Phase 73k, May 23 2026)
+// ============================================================
+// Returns a numeric minutes projection for a player in the current
+// series. Used as the rotation-tier filter for the parlay candidate
+// pool — deep-bench players (e.g. Yabusele 14min, Olynyk 13min) get
+// projected at a level low enough to drop out of the safe-lines
+// candidate list, which previously included any player whose MC
+// distribution cleared 80% hit rate at some realistic alt line
+// regardless of whether DK/FD actually lists props for them.
+//
+// PRIMARY SIGNAL: per-game minutes actually played in this series
+//   (extracted from series.games[i].boxScores). Average across games
+//   the player actually played (>0 min) so DNP-INJ games don't drag
+//   the average to zero — they reflect availability, not role.
+//
+// FALLBACK: rating-tier defaults, calibrated against CF G1-G3 boxScore
+//   averages:
+//     rating ≥ 85:  35 min  (stars: Brunson 39, Wemby 38, Mitchell 36)
+//     rating ≥ 78:  32 min  (#2: KAT 37, Fox 29, SGA 35, Holmgren 32)
+//     rating ≥ 72:  28 min  (starters: Castle 37, Vassell 33, Bridges 34, Anunoby 22)
+//     rating ≥ 68:  22 min  (rotation: Hart 38 outlier, Dort 26, Allen 30)
+//     rating ≥ 64:  17 min  (6th-7th man: McBride 24, Johnson 24, Champagnie 21)
+//     rating ≥ 60:  13 min  (rotation bench: Clarkson 11, Olynyk 13, Kornet 16)
+//     rating ≥ 55:  10 min  (deep bench: Yabusele 14, Shamet 15, Barnes 17)
+//     <55:           6 min  (sporadic / DNP-prone)
+//
+// When boxScore data exists, ALWAYS prefer it — it captures the actual
+// rotation choices the coach made (e.g. Hart 38min despite rating 68;
+// Harper 24min despite rating 58). Rating fallback is only for games
+// where the player hasn't appeared yet (G1, or a brand-new rotation
+// player).
+function estimateProjectedMinutes(player, team, series) {
+  if (!player) return 0;
+  const eff = (typeof getEffectiveRating === 'function' && series && series.id)
+    ? getEffectiveRating(player, series.id)
+    : (player.rating || 0);
+  if (eff <= 0) return 0;
+
+  // PRIMARY: actual minutes from this series' completed boxScores.
+  if (series && Array.isArray(series.games) && team) {
+    const side = (team === series.homeTeam) ? 'home' : (team === series.awayTeam) ? 'away' : null;
+    if (side) {
+      const observed = [];
+      for (const g of series.games) {
+        if (!g || !g.winner || !g.boxScores) continue;
+        const bs = g.boxScores[side];
+        if (!Array.isArray(bs)) continue;
+        const me = bs.find(p => p && p.name === player.name);
+        if (me && typeof me.min === 'number' && me.min > 0) observed.push(me.min);
+      }
+      if (observed.length > 0) {
+        return observed.reduce((a, b) => a + b, 0) / observed.length;
+      }
+    }
+  }
+
+  // FALLBACK: rating-tier defaults.
+  if (eff >= 85) return 35;
+  if (eff >= 78) return 32;
+  if (eff >= 72) return 28;
+  if (eff >= 68) return 22;
+  if (eff >= 64) return 17;
+  if (eff >= 60) return 13;
+  if (eff >= 55) return 10;
+  return 6;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = module.exports || {};
+  module.exports.estimateProjectedMinutes = estimateProjectedMinutes;
+}
+

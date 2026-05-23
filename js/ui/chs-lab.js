@@ -250,7 +250,12 @@ function chsLabRenderParlayCandidates() {
     // Phase 64: 80% floor + realistic-line filter + max -500 juice.
     // safeLinesForAllPlayers now does all of this in one call, returning
     // rows already sorted by expected $ return (hitRate × payout).
-    const reliable = safeLinesForAllPlayers(mc, { threshold: 0.80, maxJuice: -500 });
+    // Phase 73k: rotation-tier filter (series → minProjectedMinutes 18)
+    // drops deep-bench players who don't have real DK prop markets.
+    const reliable = safeLinesForAllPlayers(mc, {
+      threshold: 0.80, maxJuice: -500,
+      series: series, minProjectedMinutes: 18,
+    });
     const top10 = reliable.slice(0, 10);
 
     // Phase 65: build BOTH reliable + traditional parlay variants

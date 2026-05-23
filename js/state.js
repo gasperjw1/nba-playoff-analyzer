@@ -76,13 +76,31 @@ function togglePlayer(seriesId, playerName) {
 }
 
 /**
- * Get a player's effective rating (0 if toggled out in scenario).
+ * Get a player's effective rating (0 if toggled out in scenario, OR
+ * if marked OUT via activeInjury.severity ≥ 0.95).
+ *
+ * Phase 73k (May 23 2026): the original gate only handled scenario
+ * toggles. Players with activeInjury.severity = 1.0 (e.g. Jalen Williams
+ * DNP-INJ for WCF G3) still slipped through every "active player" filter
+ * downstream because those filters check `rating > 0` — so a player
+ * the engine semantically considers OUT was still being included in
+ * Monte Carlo rosters, team-rating calculations, and the parlay
+ * candidate pool. Treating severity ≥ 0.95 as "rating goes to 0"
+ * propagates the OUT status everywhere without requiring manual
+ * `rating: 0` edits in series-data.js.
+ *
  * @param {Object} player - Player object
  * @param {string} seriesId - Series identifier
  * @returns {number} Effective rating
  */
 function getEffectiveRating(player, seriesId) {
+  if (!player) return 0;
   if (scenarioState[seriesId] && scenarioState[seriesId][player.name] === 'out') return 0;
+  // Severe injury = effective OUT. The 0.95 threshold catches the
+  // canonical severity:1.0 ("OUT") used in data files while still
+  // letting "playing through" entries (0.4-0.7) project normally.
+  if (player.activeInjury && typeof player.activeInjury.severity === 'number'
+      && player.activeInjury.severity >= 0.95) return 0;
   return player.rating;
 }
 
