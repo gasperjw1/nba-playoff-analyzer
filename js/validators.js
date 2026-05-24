@@ -360,8 +360,86 @@ function validateChsLabLedger(ledger, seriesData) {
   return errors;
 }
 
+// ---------- validateUserBetLedger (Phase 73n) ------------------
+// USER_BET_LEDGER tracks user-placed parlays + outcomes, separate
+// from FEATURED_PARLAYS (daily-routine-authored). Each entry has:
+//   - Required: id, date, series, game, type, source, stake,
+//     americanOdds, legs
+//   - Settled outcome consistency: all legs hit → win, any miss → loss
+//   - Source must be one of the three enum values
+//   - inspiredBy back-references CHS_LAB_LEDGER but is free-form
+//     (we don't enforce existence — user may reference an old entry
+//     that's since been GC'd; just check it's a string when present)
+function validateUserBetLedger(ledger, seriesData) {
+  const errors = [];
+  if (!Array.isArray(ledger)) return errors;
+  const VALID_SOURCES = ['chs-lab', 'chs-lab-modified', 'manual-thesis'];
+  const VALID_TYPES = ['parlay', 'single'];
+  const VALID_OUTCOMES = ['win', 'loss', 'push'];
+  const seriesById = {};
+  if (Array.isArray(seriesData)) seriesData.forEach(s => { if (s && s.id) seriesById[s.id] = s; });
+
+  // Duplicate id sweep
+  const idCounts = {};
+  ledger.forEach(e => { if (e && e.id) idCounts[e.id] = (idCounts[e.id] || 0) + 1; });
+  Object.entries(idCounts).forEach(([id, c]) => {
+    if (c > 1) errors.push(`USER_BET_LEDGER: duplicate id '${id}' appears ${c} times`);
+  });
+
+  ledger.forEach((e, i) => {
+    const ctx = `USER_BET_LEDGER[${i}]${e && e.id ? '(' + e.id + ')' : ''}`;
+    if (!e || typeof e !== 'object') { errors.push(`${ctx}: not an object`); return; }
+    if (!e.id) errors.push(`${ctx}: missing id`);
+    if (!e.date || !/^\d{4}-\d{2}-\d{2}$/.test(e.date)) errors.push(`${ctx}: missing/malformed date`);
+    if (!e.series) errors.push(`${ctx}: missing series`);
+    if (typeof e.game !== 'number') errors.push(`${ctx}: game must be number`);
+    if (!VALID_TYPES.includes(e.type)) errors.push(`${ctx}: type must be one of ${VALID_TYPES.join('|')} (got '${e.type}')`);
+    if (!VALID_SOURCES.includes(e.source)) errors.push(`${ctx}: source must be one of ${VALID_SOURCES.join('|')} (got '${e.source}')`);
+    if (typeof e.stake !== 'number' || e.stake <= 0) errors.push(`${ctx}: stake must be positive number`);
+    if (typeof e.americanOdds !== 'number') errors.push(`${ctx}: americanOdds must be number`);
+    if (e.inspiredBy != null && typeof e.inspiredBy !== 'string') errors.push(`${ctx}: inspiredBy must be string or null`);
+    if (!Array.isArray(e.legs) || e.legs.length === 0) errors.push(`${ctx}: legs must be non-empty array`);
+
+    // Per-leg validation
+    if (Array.isArray(e.legs)) {
+      e.legs.forEach((l, j) => {
+        const lctx = `${ctx}.legs[${j}]`;
+        if (!l || typeof l !== 'object') { errors.push(`${lctx}: not an object`); return; }
+        if (!l.player) errors.push(`${lctx}: missing player`);
+        if (!l.stat) errors.push(`${lctx}: missing stat`);
+        if (typeof l.line !== 'number') errors.push(`${lctx}: line must be number`);
+        if (l.direction && !['over', 'under'].includes(l.direction)) errors.push(`${lctx}: direction must be 'over' or 'under'`);
+        if (l.hit != null && typeof l.hit !== 'boolean') errors.push(`${lctx}: hit must be boolean or null`);
+      });
+    }
+
+    // Settled outcome consistency
+    if (e.result) {
+      if (!VALID_OUTCOMES.includes(e.result.outcome)) errors.push(`${ctx}.result: invalid outcome '${e.result.outcome}'`);
+      if (typeof e.result.pnl !== 'number') errors.push(`${ctx}.result: pnl must be number`);
+      if (!e.result.settledAt) errors.push(`${ctx}.result: missing settledAt`);
+      if (Array.isArray(e.legs) && e.legs.every(l => l.hit != null)) {
+        const allHit = e.legs.every(l => l.hit === true);
+        const anyMiss = e.legs.some(l => l.hit === false);
+        if (allHit && e.result.outcome !== 'win') errors.push(`${ctx}: all legs hit but outcome=${e.result.outcome}`);
+        if (anyMiss && e.result.outcome !== 'loss' && e.result.outcome !== 'push') {
+          errors.push(`${ctx}: a leg missed but outcome=${e.result.outcome}`);
+        }
+      }
+      // Series + game must exist
+      const series = seriesById[e.series];
+      if (!series) errors.push(`${ctx}: series '${e.series}' not in SERIES_DATA`);
+      else {
+        const g = series.games && series.games[e.game - 1];
+        if (!g) errors.push(`${ctx}: game ${e.game} not in series '${e.series}'`);
+      }
+    }
+  });
+  return errors;
+}
+
 // ---------- orchestrator ---------------------------------------
-function validateAll(seriesData, bets, parlays, betSlates, chsLabLedger) {
+function validateAll(seriesData, bets, parlays, betSlates, chsLabLedger, userBetLedger) {
   const errors = [];
   if (!Array.isArray(seriesData)) {
     errors.push('SERIES_DATA is not an array');
@@ -429,6 +507,11 @@ function validateAll(seriesData, bets, parlays, betSlates, chsLabLedger) {
   // PHASE 73m: CHS Lab ledger schema (optional — only when passed)
   if (chsLabLedger != null) {
     errors.push(...validateChsLabLedger(chsLabLedger, seriesData));
+  }
+
+  // PHASE 73n: User bet ledger schema (optional — only when passed)
+  if (userBetLedger != null) {
+    errors.push(...validateUserBetLedger(userBetLedger, seriesData));
   }
 
   return errors;

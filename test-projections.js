@@ -2801,6 +2801,99 @@ function runTests() {
   }
 
   // ============================================================
+  // TEST 30: Phase 73n — USER_BET_LEDGER schema + comparison
+  // ------------------------------------------------------------
+  // Covers:
+  //   30a — empty ledger validates cleanly
+  //   30b — well-formed entries (pending + settled) validate cleanly
+  //   30c — invalid source / type / outcome flagged
+  //   30d — duplicate id flagged
+  //   30e — settled outcome consistency (all hit → win, any miss → loss)
+  //   30f — series back-reference validity
+  // ============================================================
+  console.log('\nTEST 30: Phase 73n — USER_BET_LEDGER schema');
+  {
+    const fs = require('fs');
+    const path = require('path');
+    const vm = require('vm');
+    const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+    const tc = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
+    const tl = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), tc);
+    [
+      'js/data/constants.js', 'js/data/historical.js', 'js/data/news.js',
+      'js/data/series-data.js', 'js/data/boxscores.js', 'js/data/bets-data.js',
+      'js/data/chs-ledger.js', 'js/data/chs-lab-ledger.js', 'js/data/user-bet-ledger.js',
+      'js/utils.js', 'js/validators.js',
+    ].forEach(tl);
+
+    // 30a — empty ledger validates cleanly
+    const errsEmpty = tc.validateUserBetLedger([], tc.SERIES_DATA);
+    assert(errsEmpty.length === 0, `Empty user-bet ledger validates cleanly (got ${errsEmpty.length} errors)`);
+
+    // 30b — well-formed entry
+    const pendingEntry = {
+      id: 'user-2026-05-24-001',
+      date: '2026-05-24', loggedAt: '2026-05-24T18:00:00Z',
+      series: 'OKC-SAS', game: 4, type: 'parlay',
+      source: 'chs-lab-modified', inspiredBy: 'OKC-SAS-G4-2026-05-24',
+      stake: 50, americanOdds: 350,
+      legs: [
+        { player: 'Wemby', stat: 'pra', line: 26.5, direction: 'over', odds: -110, fromCandidate: true, candidateHitRate: 0.81, note: 'must-win', hit: null, actualValue: null },
+      ],
+      notes: 'test', result: null,
+    };
+    const errsPending = tc.validateUserBetLedger([pendingEntry], tc.SERIES_DATA);
+    assert(errsPending.length === 0, `Pending entry validates cleanly (got: ${errsPending.join('; ')})`);
+
+    // 30b — well-formed settled entry
+    const settledEntry = {
+      ...pendingEntry, id: 'user-2026-05-24-002',
+      legs: [{ player: 'Wemby', stat: 'pra', line: 26.5, direction: 'over', odds: -110, fromCandidate: true, candidateHitRate: 0.81, note: '', hit: true, actualValue: 30 }],
+      result: { outcome: 'win', pnl: 175, settledAt: '2026-05-25T03:00:00Z' },
+    };
+    const errsSettled = tc.validateUserBetLedger([settledEntry], tc.SERIES_DATA);
+    assert(errsSettled.length === 0, `Settled entry validates cleanly (got: ${errsSettled.join('; ')})`);
+
+    // 30c — invalid source
+    const badSource = { ...pendingEntry, id: 'x', source: 'guessing' };
+    const errsBadSrc = tc.validateUserBetLedger([badSource], tc.SERIES_DATA);
+    assert(errsBadSrc.some(e => /source must be/.test(e)), `Invalid source flagged`);
+
+    // 30c — invalid type
+    const badType = { ...pendingEntry, id: 'x', type: 'futures' };
+    const errsBadType = tc.validateUserBetLedger([badType], tc.SERIES_DATA);
+    assert(errsBadType.some(e => /type must be/.test(e)), `Invalid type flagged`);
+
+    // 30d — duplicate id
+    const dupes = [{ ...pendingEntry }, { ...pendingEntry }];
+    const errsDup = tc.validateUserBetLedger(dupes, tc.SERIES_DATA);
+    assert(errsDup.some(e => /duplicate id/.test(e)), `Duplicate id flagged`);
+
+    // 30e — settled inconsistency: all legs hit but outcome=loss
+    const inconsistent = {
+      ...pendingEntry, id: 'inc',
+      legs: [{ ...pendingEntry.legs[0], hit: true, actualValue: 30 }],
+      result: { outcome: 'loss', pnl: -50, settledAt: '2026-05-25T03:00:00Z' },
+    };
+    const errsInc = tc.validateUserBetLedger([inconsistent], tc.SERIES_DATA);
+    assert(errsInc.some(e => /all legs hit but outcome/.test(e)), `Inconsistent settled outcome flagged`);
+
+    // 30f — series doesn't exist
+    const badSeries = { ...settledEntry, id: 'badsrs', series: 'XXX-YYY' };
+    const errsBadSrs = tc.validateUserBetLedger([badSeries], tc.SERIES_DATA);
+    assert(errsBadSrs.some(e => /not in SERIES_DATA/.test(e)), `Unknown series flagged for settled entry`);
+
+    // 30f — game doesn't exist
+    const badGame = { ...settledEntry, id: 'badgame', game: 99 };
+    const errsBadGame = tc.validateUserBetLedger([badGame], tc.SERIES_DATA);
+    assert(errsBadGame.some(e => /game 99 not in series/.test(e)), `Unknown game flagged for settled entry`);
+
+    // 30 — live USER_BET_LEDGER validates cleanly
+    const liveErrs = tc.validateUserBetLedger(tc.USER_BET_LEDGER, tc.SERIES_DATA);
+    assert(liveErrs.length === 0, `Live USER_BET_LEDGER validates cleanly (got ${liveErrs.length} errors: ${liveErrs.join('; ')})`);
+  }
+
+  // ============================================================
   // RESULTS
   // ============================================================
   console.log('\n============================================================');

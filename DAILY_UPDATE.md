@@ -710,6 +710,48 @@ Most CF games don't pass that bar; the algorithm honestly declines.
 
 ---
 
+## 8c · Log + settle your own placed bets (Phase 73n)
+
+Track the bets you actually place — distinct from FEATURED_PARLAYS
+(daily-routine-authored) and CHS_LAB_LEDGER (algorithm's own picks).
+The CHS Lab tab's "Your Bets vs Algorithm — Rolling P&L" panel reads
+this.
+
+**To log a bet** (when placed, typically pre-tip):
+
+```
+- Copy USER_BET_TEMPLATE.json to a temp file (e.g., /tmp/bet.json)
+- Fill in: date, series, game, type ('parlay'|'single'), source
+  ('chs-lab' = took algorithm's pick directly, 'chs-lab-modified' =
+  swapped/added legs, 'manual-thesis' = pure user pick), stake,
+  americanOdds, legs[]. Optional inspiredBy field references a
+  CHS_LAB_LEDGER entry by date+series+game.
+- Run: node test-user-bet-log.js --add /tmp/bet.json
+  → appends to USER_BET_LEDGER with id auto-generated
+```
+
+**To settle** (after games finish — run after step 2):
+
+```
+- node test-user-bet-log.js --settle
+  → for each pending entry whose game now has a winner in
+    SERIES_DATA, scores legs against actual box score and fills in
+    legs[].hit + legs[].actualValue + result = {outcome, pnl}
+```
+
+**Anytime**: `node test-user-bet-log.js --report`
+→ Rolling P&L summary, per-source breakdown (chs-lab vs modified
+vs manual-thesis), per-stat hit rate, divergence signal.
+
+**Divergence signal**: tracks how often you bet outside the
+algorithm's direct picks (source !== 'chs-lab') AND won. Once 10+
+off-algorithm bets are settled, this distinguishes "you have edge
+the model misses" from "algorithm picks beat your modifications."
+Long-term goal: at 30+ user-bet history, the algorithm uses these
+patterns as a calibration signal.
+
+---
+
 ## 9 · Update CONTEXT.md (if anything notable)
 
 ```

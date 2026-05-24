@@ -476,6 +476,186 @@ function chsLabRenderParlayBuilderLedger() {
   </div>`;
 }
 
+// ============================================================
+// Phase 73n: Your Bets ledger + Algorithm comparison
+// ============================================================
+// Reads USER_BET_LEDGER and renders rolling P&L for the user's
+// actual placed bets, alongside the algorithm's reliable +
+// traditional CHS_LAB_LEDGER P&L over the same window. Surfaces
+// the divergence signal: where you bet outside the algorithm's
+// pure picks and won.
+function chsLabRenderUserBets() {
+  if (typeof USER_BET_LEDGER === 'undefined' || !Array.isArray(USER_BET_LEDGER) || USER_BET_LEDGER.length === 0) {
+    return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+      <h3 style="margin:0 0 10px;color:var(--text);font-size:13px;letter-spacing:0.5px;">💵 YOUR BETS — Rolling P&L (Phase 73n)</h3>
+      <p style="margin:0;font-size:11px;color:var(--text-dim);line-height:1.5;">
+        No user bets logged yet. Log a bet by filling out <code>USER_BET_TEMPLATE.json</code> and running:<br>
+        <code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;">node test-user-bet-log.js --add path/to/bet.json</code><br>
+        Settle after the game with <code>--settle</code>, view rolling stats with <code>--report</code>. Once 10+ bets are logged here, this panel will show your W-L, ROI, per-source breakdown, and a divergence comparison against the algorithm's own picks.
+      </p>
+    </div>`;
+  }
+
+  function summarize(entries) {
+    let stake = 0, wins = 0, losses = 0, pnl = 0;
+    entries.forEach(e => {
+      if (!e || !e.result) return;
+      stake += e.stake;
+      pnl += e.result.pnl;
+      if (e.result.outcome === 'win') wins++; else if (e.result.outcome === 'loss') losses++;
+    });
+    const settled = wins + losses;
+    return { wins, losses, settled, stake, pnl, winRate: settled ? wins / settled : 0, roi: stake ? pnl / stake : 0 };
+  }
+
+  function summarizeChs(tier) {
+    if (typeof CHS_LAB_LEDGER === 'undefined' || !Array.isArray(CHS_LAB_LEDGER)) return { wins:0, losses:0, settled:0, stake:0, pnl:0, winRate:0, roi:0 };
+    let stake = 0, wins = 0, losses = 0, pnl = 0;
+    CHS_LAB_LEDGER.forEach(e => {
+      if (!e || !e.settlement) return;
+      const t = e.settlement[tier];
+      if (!t || t.outcome == null) return;
+      const meta = e[tier];
+      if (meta) stake += meta.stake;
+      pnl += t.pnl;
+      if (t.outcome === 'win') wins++; else losses++;
+    });
+    const settled = wins + losses;
+    return { wins, losses, settled, stake, pnl, winRate: settled ? wins/settled : 0, roi: stake ? pnl/stake : 0 };
+  }
+
+  const total = summarize(USER_BET_LEDGER);
+  const sources = {
+    'chs-lab': summarize(USER_BET_LEDGER.filter(e => e.source === 'chs-lab')),
+    'chs-lab-modified': summarize(USER_BET_LEDGER.filter(e => e.source === 'chs-lab-modified')),
+    'manual-thesis': summarize(USER_BET_LEDGER.filter(e => e.source === 'manual-thesis')),
+  };
+  const algRel = summarizeChs('reliable');
+  const algTrad = summarizeChs('traditional');
+
+  // Divergence signal: user bet outside CHS Lab's direct pick AND won
+  const divEntries = USER_BET_LEDGER.filter(e => e && e.result && e.source !== 'chs-lab');
+  const divWins = divEntries.filter(e => e.result.outcome === 'win').length;
+  const divTotal = divEntries.length;
+
+  // Per-stat hit rate across all settled legs
+  const byStat = {};
+  USER_BET_LEDGER.forEach(e => {
+    if (!e || !e.result) return;
+    e.legs.forEach(l => {
+      if (l.hit == null) return;
+      const k = l.stat;
+      if (!byStat[k]) byStat[k] = { hit: 0, total: 0 };
+      byStat[k].total++;
+      if (l.hit) byStat[k].hit++;
+    });
+  });
+
+  const tierRow = (label, t, highlight) => {
+    const color = t.pnl > 0 ? '#22c55e' : t.pnl < 0 ? '#ef4444' : 'var(--text-dim)';
+    const bg = highlight ? 'background:rgba(34,211,238,0.05);' : '';
+    return `<tr style="border-bottom:1px solid var(--border);${bg}">
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);">${label}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">${t.settled ? `${t.wins}-${t.losses}` : '—'}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">${t.settled ? `${(t.winRate*100).toFixed(0)}%` : '—'}</td>
+      <td style="padding:6px 8px;font-size:11px;color:var(--text);text-align:right;">$${t.stake}</td>
+      <td style="padding:6px 8px;font-size:11px;color:${color};text-align:right;font-weight:700;">${t.pnl >= 0 ? '+' : ''}$${t.pnl.toFixed(0)}</td>
+      <td style="padding:6px 8px;font-size:11px;color:${color};text-align:right;font-weight:700;">${t.settled ? `${(t.roi*100).toFixed(1)}%` : '—'}</td>
+    </tr>`;
+  };
+
+  const sourceLabel = {
+    'chs-lab': 'CHS Lab direct',
+    'chs-lab-modified': 'CHS Lab modified',
+    'manual-thesis': 'Manual thesis',
+  };
+
+  const divPanel = divTotal >= 10
+    ? `<div style="margin-top:10px;padding:10px;background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.25);border-radius:6px;font-size:11px;color:var(--text);">
+        <strong style="color:#22d3ee;">🎯 Divergence signal:</strong>
+        You bet outside the algorithm's direct picks ${divTotal} times, winning ${divWins} (${(divWins/divTotal*100).toFixed(0)}%).
+        ${divWins/divTotal >= 0.6 ? '<strong style="color:#22c55e;"> Strong signal of edge the algorithm misses</strong> — worth analyzing which leg patterns you keep picking that the model underrates.' : divWins/divTotal <= 0.4 ? ' Algorithm picks are outperforming your modifications — consider sticking closer to its direct candidates.' : ' Roughly matching the algorithm; no clear edge either way yet.'}
+      </div>`
+    : `<div style="margin-top:10px;padding:8px;background:rgba(245, 158, 11, 0.06);border:1px solid rgba(245,158,11,0.25);border-radius:6px;font-size:10px;color:#f59e0b;">
+        ⚠ Divergence signal needs 10+ off-algorithm bets to surface. Currently ${divTotal}.
+      </div>`;
+
+  const statRows = Object.entries(byStat).sort((a,b) => b[1].total - a[1].total).map(([stat, s]) =>
+    `<tr><td style="padding:4px 8px;font-size:10px;color:var(--text-dim);">${stat}</td>
+     <td style="padding:4px 8px;font-size:10px;color:var(--text);text-align:right;">${s.hit}/${s.total}</td>
+     <td style="padding:4px 8px;font-size:10px;color:${s.hit/s.total >= 0.65 ? '#22c55e' : s.hit/s.total >= 0.5 ? '#eab308' : '#ef4444'};text-align:right;font-weight:700;">${(s.hit/s.total*100).toFixed(0)}%</td></tr>`
+  ).join('');
+
+  // Latest 10 entries
+  const latest = USER_BET_LEDGER.slice().sort((a,b) => (b.date || '').localeCompare(a.date || '')).slice(0, 10);
+  const entryRows = latest.map(e => {
+    if (!e.result) return `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.date}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text);">${e.series} G${e.game}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${sourceLabel[e.source]}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.legs.length}L @ ${e.americanOdds > 0 ? '+' : ''}${e.americanOdds}</td>
+      <td style="padding:5px 8px;font-size:10px;color:#f59e0b;">pending</td>
+    </tr>`;
+    const color = e.result.outcome === 'win' ? '#22c55e' : '#ef4444';
+    const icon = e.result.outcome === 'win' ? '✓' : '✗';
+    return `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.date}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text);">${e.series} G${e.game}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${sourceLabel[e.source]}</td>
+      <td style="padding:5px 8px;font-size:10px;color:var(--text-dim);">${e.legs.length}L @ ${e.americanOdds > 0 ? '+' : ''}${e.americanOdds}</td>
+      <td style="padding:5px 8px;font-size:10px;color:${color};">${icon} ${e.result.outcome.toUpperCase()} ${e.result.pnl >= 0 ? '+' : ''}$${e.result.pnl}</td>
+    </tr>`;
+  }).join('');
+
+  return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+    <h3 style="margin:0 0 10px;color:var(--text);font-size:13px;letter-spacing:0.5px;">💵 YOUR BETS vs ALGORITHM — Rolling P&L (Phase 73n)</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:10px;">
+      <thead><tr style="border-bottom:1px solid var(--border);">
+        <th style="padding:6px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Source</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">W-L</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">W%</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">Staked</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">Net P&L</th>
+        <th style="padding:6px 8px;text-align:right;color:var(--text-dim);font-weight:600;font-size:10px;">ROI</th>
+      </tr></thead>
+      <tbody>
+        ${tierRow('You — Total', total, true)}
+        ${Object.entries(sources).filter(([_, s]) => s.settled > 0).map(([src, s]) => tierRow(`  └ ${sourceLabel[src]}`, s, false)).join('')}
+        <tr><td colspan="6" style="padding:4px;border-top:1px dashed var(--border);"></td></tr>
+        ${tierRow('Algorithm — Reliable', algRel, false)}
+        ${tierRow('Algorithm — Traditional', algTrad, false)}
+      </tbody>
+    </table>
+
+    ${divPanel}
+
+    ${statRows ? `<div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:0.4px;margin-bottom:6px;">YOUR HIT RATE BY STAT</div>
+        <table style="width:100%;border-collapse:collapse;">${statRows}</table>
+      </div>
+    </div>` : ''}
+
+    ${entryRows ? `<div style="margin-top:14px;">
+      <div style="font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:0.4px;margin-bottom:6px;">LATEST 10 ENTRIES</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr style="border-bottom:1px solid var(--border);">
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Date</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Game</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Source</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Bet</th>
+          <th style="padding:5px 8px;text-align:left;color:var(--text-dim);font-weight:600;font-size:10px;">Outcome</th>
+        </tr></thead><tbody>${entryRows}</tbody>
+      </table>
+    </div>` : ''}
+
+    <div style="margin-top:12px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+      <strong>How this works:</strong> log bets via <code>node test-user-bet-log.js --add bet.json</code> (template in repo root).
+      Settle after games with <code>--settle</code>. Sources: <em>chs-lab</em> = took the algorithm's parlay directly, <em>chs-lab-modified</em> = swapped or added legs, <em>manual-thesis</em> = pure user pick. The divergence signal compares your modified+manual win rate against the algorithm's pure picks once 10+ off-algorithm bets are settled.
+    </div>
+  </div>`;
+}
+
 function chsLabRenderLedger(ledger) {
   if (!ledger.length) return '';
   const rows = ledger.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(e => {
@@ -821,6 +1001,7 @@ function renderCHSLabPage(el) {
       </div>
 
       ${chsLabRenderScoreboard(agg)}
+      ${chsLabRenderUserBets()}
       ${chsLabRenderParlayBuilderLedger()}
       ${chsLabRenderRiskDashboard()}
       ${chsLabRenderEdgeFilter()}

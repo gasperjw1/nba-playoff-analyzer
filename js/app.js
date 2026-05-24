@@ -11,7 +11,8 @@ if (typeof validateAll === 'function') {
     typeof BETS !== 'undefined' ? BETS : [],
     typeof FEATURED_PARLAYS !== 'undefined' ? FEATURED_PARLAYS : [],
     typeof BET_SLATES !== 'undefined' ? BET_SLATES : null,
-    typeof CHS_LAB_LEDGER !== 'undefined' ? CHS_LAB_LEDGER : null
+    typeof CHS_LAB_LEDGER !== 'undefined' ? CHS_LAB_LEDGER : null,
+    typeof USER_BET_LEDGER !== 'undefined' ? USER_BET_LEDGER : null
   );
   if (__validationErrors.length) {
     console.error('[validators] ' + __validationErrors.length + ' schema issue(s) at boot:');

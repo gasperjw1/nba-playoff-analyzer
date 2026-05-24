@@ -1,0 +1,48 @@
+{
+  "_comment": "Template for logging a user-placed bet. Copy to a temp file, fill in, then: node test-user-bet-log.js --add <path/to/bet.json>. Omit `id` to auto-generate. Omit `loggedAt` to use now(). `legs[].hit` and `result` are filled by --settle after the game.",
+
+  "date": "2026-05-24",
+  "series": "OKC-SAS",
+  "game": 4,
+  "type": "parlay",
+  "source": "chs-lab-modified",
+  "inspiredBy": "OKC-SAS-G4-2026-05-24",
+
+  "stake": 50,
+  "americanOdds": 350,
+
+  "legs": [
+    {
+      "player": "Victor Wembanyama",
+      "stat": "pra",
+      "line": 26.5,
+      "direction": "over",
+      "odds": -110,
+      "fromCandidate": true,
+      "candidateHitRate": 0.81,
+      "note": "must-win revenge spot"
+    },
+    {
+      "player": "Shai Gilgeous-Alexander",
+      "stat": "pra",
+      "line": 22.5,
+      "direction": "over",
+      "odds": -115,
+      "fromCandidate": true,
+      "candidateHitRate": 0.83,
+      "note": "OKC's offense without J.Williams"
+    },
+    {
+      "player": "Stephon Castle",
+      "stat": "pts",
+      "line": 12.5,
+      "direction": "over",
+      "odds": -120,
+      "fromCandidate": false,
+      "candidateHitRate": null,
+      "note": "thesis: bounce-back from G3 13pt bruise game"
+    }
+  ],
+
+  "notes": "starter-only, both teams strategy. SAS pulled forward more than the algorithm"
+}
