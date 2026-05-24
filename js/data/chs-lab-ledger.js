@@ -248,259 +248,68 @@ const CHS_LAB_LEDGER = [
     }
   },
   {
-    "date": "2026-05-23",
-    "series": "OKC-SAS",
-    "game": 4,
-    "capturedAt": "2026-05-23T22:36:15.606Z",
-    "iterations": 3000,
-    "mc": {
-      "homeWinProb": 0.525,
-      "blowoutRisk": 0.243,
-      "marginP50": 1
-    },
-    "candidates": [
-      {
-        "player": "Chet Holmgren",
-        "stat": "pts",
-        "line": 10.5,
-        "direction": "over",
-        "hitRate": 0.803,
-        "estJuice": -408,
-        "team": "OKC",
-        "position": "C",
-        "projMinutes": 33
-      },
-      {
-        "player": "Devin Vassell",
-        "stat": "pts",
-        "line": 9.5,
-        "direction": "over",
-        "hitRate": 0.807,
-        "estJuice": -418,
-        "team": "SAS",
-        "position": "SG",
-        "projMinutes": 33.3
-      },
-      {
-        "player": "Ajay Mitchell",
-        "stat": "pts",
-        "line": 7.5,
-        "direction": "over",
-        "hitRate": 0.816,
-        "estJuice": -443,
-        "team": "OKC",
-        "position": "PG",
-        "projMinutes": 21.3
-      },
-      {
-        "player": "Ajay Mitchell",
-        "stat": "pra",
-        "line": 12.5,
-        "direction": "over",
-        "hitRate": 0.814,
-        "estJuice": -438,
-        "team": "OKC",
-        "position": "PG",
-        "projMinutes": 21.3
-      },
-      {
-        "player": "Victor Wembanyama",
-        "stat": "pra",
-        "line": 26.5,
-        "direction": "over",
-        "hitRate": 0.814,
-        "estJuice": -438,
-        "team": "SAS",
-        "position": "C",
-        "projMinutes": 38.3
-      },
-      {
-        "player": "Victor Wembanyama",
-        "stat": "reb",
-        "line": 7.5,
-        "direction": "over",
-        "hitRate": 0.813,
-        "estJuice": -435,
-        "team": "SAS",
-        "position": "C",
-        "projMinutes": 38.3
-      },
-      {
-        "player": "Alex Caruso",
-        "stat": "pra",
-        "line": 7.5,
-        "direction": "over",
-        "hitRate": 0.811,
-        "estJuice": -429,
-        "team": "OKC",
-        "position": "SG",
-        "projMinutes": 28.7
-      },
-      {
-        "player": "Shai Gilgeous-Alexander",
-        "stat": "pra",
-        "line": 21.5,
-        "direction": "over",
-        "hitRate": 0.828,
-        "estJuice": -481,
-        "team": "OKC",
-        "position": "PG",
-        "projMinutes": 39.3
-      },
-      {
-        "player": "Julian Champagnie",
-        "stat": "pra",
-        "line": 11.5,
-        "direction": "over",
-        "hitRate": 0.827,
-        "estJuice": -478,
-        "team": "SAS",
-        "position": "SF",
-        "projMinutes": 21.3
-      },
-      {
-        "player": "Keldon Johnson",
-        "stat": "pra",
-        "line": 9.5,
-        "direction": "over",
-        "hitRate": 0.825,
-        "estJuice": -471,
-        "team": "SAS",
-        "position": "SF",
-        "projMinutes": 24
-      },
-      {
-        "player": "Stephon Castle",
-        "stat": "pts",
-        "line": 10.5,
-        "direction": "over",
-        "hitRate": 0.833,
-        "estJuice": -499,
-        "team": "SAS",
-        "position": "SG",
-        "projMinutes": 37.3
-      },
-      {
-        "player": "Julian Champagnie",
-        "stat": "pts",
-        "line": 6.5,
-        "direction": "over",
-        "hitRate": 0.831,
-        "estJuice": -492,
-        "team": "SAS",
-        "position": "SF",
-        "projMinutes": 21.3
-      }
-    ],
-    "reliable": null,
-    "traditional": {
-      "legCount": 4,
-      "combinedMC": 0.428,
-      "calibratedCombined": 0.13,
-      "americanOdds": 132,
-      "stake": 100,
-      "legs": [
-        {
-          "player": "Chet Holmgren",
-          "stat": "pts",
-          "line": 10.5,
-          "direction": "over",
-          "hitRate": 0.803,
-          "estJuice": -408,
-          "team": "OKC",
-          "position": "C",
-          "projMinutes": 33
-        },
-        {
-          "player": "Devin Vassell",
-          "stat": "pts",
-          "line": 9.5,
-          "direction": "over",
-          "hitRate": 0.807,
-          "estJuice": -418,
-          "team": "SAS",
-          "position": "SG",
-          "projMinutes": 33.3
-        },
-        {
-          "player": "Ajay Mitchell",
-          "stat": "pts",
-          "line": 7.5,
-          "direction": "over",
-          "hitRate": 0.816,
-          "estJuice": -443,
-          "team": "OKC",
-          "position": "PG",
-          "projMinutes": 21.3
-        },
-        {
-          "player": "Victor Wembanyama",
-          "stat": "pra",
-          "line": 26.5,
-          "direction": "over",
-          "hitRate": 0.814,
-          "estJuice": -438,
-          "team": "SAS",
-          "position": "C",
-          "projMinutes": 38.3
-        }
-      ]
-    },
-    "actual": null,
-    "settlement": null
-  },
-  {
     "date": "2026-05-25",
     "series": "NYK-CLE",
     "game": 4,
-    "capturedAt": "2026-05-24T22:35:25.564Z",
+    "capturedAt": "2026-05-24T22:50:47.973Z",
     "iterations": 3000,
     "mc": {
-      "homeWinProb": 0.471,
-      "blowoutRisk": 0.216,
-      "marginP50": -1.1
+      "homeWinProb": 0.465,
+      "blowoutRisk": 0.206,
+      "marginP50": -1.2
     },
     "candidates": [
       {
-        "player": "Mikal Bridges",
-        "stat": "reb",
-        "line": 2.5,
+        "player": "OG Anunoby",
+        "stat": "pts",
+        "line": 14.5,
         "direction": "over",
-        "hitRate": 0.806,
-        "estJuice": -415,
+        "hitRate": 0.802,
+        "estJuice": -405,
         "team": "NYK",
         "position": "SF",
-        "projMinutes": 35.7
+        "projMinutes": 25
+      },
+      {
+        "player": "Donovan Mitchell",
+        "stat": "pts",
+        "line": 18.5,
+        "direction": "over",
+        "hitRate": 0.801,
+        "estJuice": -403,
+        "team": "CLE",
+        "position": "SG",
+        "projMinutes": 38.7
+      },
+      {
+        "player": "Max Strus",
+        "stat": "pts",
+        "line": 6.5,
+        "direction": "over",
+        "hitRate": 0.801,
+        "estJuice": -403,
+        "team": "CLE",
+        "position": "SG",
+        "projMinutes": 28.3
+      },
+      {
+        "player": "Miles McBride",
+        "stat": "reb",
+        "line": 1.5,
+        "direction": "over",
+        "hitRate": 0.804,
+        "estJuice": -410,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 20.7
       },
       {
         "player": "Josh Hart",
         "stat": "ast",
         "line": 2.5,
         "direction": "over",
-        "hitRate": 0.804,
-        "estJuice": -410,
-        "team": "NYK",
-        "position": "SG",
-        "projMinutes": 37
-      },
-      {
-        "player": "Jarrett Allen",
-        "stat": "reb",
-        "line": 5.5,
-        "direction": "over",
-        "hitRate": 0.804,
-        "estJuice": -410,
-        "team": "CLE",
-        "position": "C",
-        "projMinutes": 32.7
-      },
-      {
-        "player": "Josh Hart",
-        "stat": "reb",
-        "line": 4.5,
-        "direction": "over",
-        "hitRate": 0.814,
-        "estJuice": -438,
+        "hitRate": 0.815,
+        "estJuice": -441,
         "team": "NYK",
         "position": "SG",
         "projMinutes": 37
@@ -510,22 +319,22 @@ const CHS_LAB_LEDGER = [
         "stat": "pra",
         "line": 10.5,
         "direction": "over",
-        "hitRate": 0.814,
-        "estJuice": -438,
+        "hitRate": 0.811,
+        "estJuice": -429,
         "team": "NYK",
         "position": "SG",
         "projMinutes": 20.7
       },
       {
-        "player": "Karl-Anthony Towns",
-        "stat": "pts",
-        "line": 11.5,
+        "player": "OG Anunoby",
+        "stat": "pra",
+        "line": 21.5,
         "direction": "over",
-        "hitRate": 0.812,
-        "estJuice": -432,
+        "hitRate": 0.823,
+        "estJuice": -465,
         "team": "NYK",
-        "position": "C",
-        "projMinutes": 36.7
+        "position": "SF",
+        "projMinutes": 25
       },
       {
         "player": "Jalen Brunson",
@@ -539,37 +348,37 @@ const CHS_LAB_LEDGER = [
         "projMinutes": 39.7
       },
       {
-        "player": "Donovan Mitchell",
-        "stat": "pra",
-        "line": 25.5,
-        "direction": "over",
-        "hitRate": 0.822,
-        "estJuice": -462,
-        "team": "CLE",
-        "position": "SG",
-        "projMinutes": 38.7
-      },
-      {
-        "player": "Miles McBride",
-        "stat": "reb",
-        "line": 1.5,
-        "direction": "over",
-        "hitRate": 0.821,
-        "estJuice": -459,
-        "team": "NYK",
-        "position": "SG",
-        "projMinutes": 20.7
-      },
-      {
-        "player": "Donovan Mitchell",
+        "player": "Jalen Brunson",
         "stat": "threes",
         "line": 1.5,
         "direction": "over",
+        "hitRate": 0.822,
+        "estJuice": -462,
+        "team": "NYK",
+        "position": "PG",
+        "projMinutes": 39.7
+      },
+      {
+        "player": "Evan Mobley",
+        "stat": "pra",
+        "line": 19.5,
+        "direction": "over",
         "hitRate": 0.821,
         "estJuice": -459,
         "team": "CLE",
-        "position": "SG",
-        "projMinutes": 38.7
+        "position": "PF",
+        "projMinutes": 36.7
+      },
+      {
+        "player": "Mikal Bridges",
+        "stat": "reb",
+        "line": 2.5,
+        "direction": "over",
+        "hitRate": 0.82,
+        "estJuice": -456,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 35.7
       },
       {
         "player": "Jalen Brunson",
@@ -581,70 +390,59 @@ const CHS_LAB_LEDGER = [
         "team": "NYK",
         "position": "PG",
         "projMinutes": 39.7
-      },
-      {
-        "player": "OG Anunoby",
-        "stat": "pra",
-        "line": 21.5,
-        "direction": "over",
-        "hitRate": 0.829,
-        "estJuice": -485,
-        "team": "NYK",
-        "position": "SF",
-        "projMinutes": 25
       }
     ],
     "reliable": null,
     "traditional": {
       "legCount": 4,
-      "combinedMC": 0.427,
-      "calibratedCombined": 0.129,
-      "americanOdds": 134,
+      "combinedMC": 0.405,
+      "calibratedCombined": 0.123,
+      "americanOdds": 142,
       "stake": 100,
       "legs": [
         {
-          "player": "Mikal Bridges",
-          "stat": "reb",
-          "line": 2.5,
+          "player": "OG Anunoby",
+          "stat": "pts",
+          "line": 14.5,
           "direction": "over",
-          "hitRate": 0.806,
-          "estJuice": -415,
+          "hitRate": 0.802,
+          "estJuice": -405,
           "team": "NYK",
           "position": "SF",
-          "projMinutes": 35.7
-        },
-        {
-          "player": "Josh Hart",
-          "stat": "ast",
-          "line": 2.5,
-          "direction": "over",
-          "hitRate": 0.804,
-          "estJuice": -410,
-          "team": "NYK",
-          "position": "SG",
-          "projMinutes": 37
-        },
-        {
-          "player": "Jarrett Allen",
-          "stat": "reb",
-          "line": 5.5,
-          "direction": "over",
-          "hitRate": 0.804,
-          "estJuice": -410,
-          "team": "CLE",
-          "position": "C",
-          "projMinutes": 32.7
+          "projMinutes": 25
         },
         {
           "player": "Donovan Mitchell",
-          "stat": "pra",
-          "line": 25.5,
+          "stat": "pts",
+          "line": 18.5,
           "direction": "over",
-          "hitRate": 0.822,
-          "estJuice": -462,
+          "hitRate": 0.801,
+          "estJuice": -403,
           "team": "CLE",
           "position": "SG",
           "projMinutes": 38.7
+        },
+        {
+          "player": "Max Strus",
+          "stat": "pts",
+          "line": 6.5,
+          "direction": "over",
+          "hitRate": 0.801,
+          "estJuice": -403,
+          "team": "CLE",
+          "position": "SG",
+          "projMinutes": 28.3
+        },
+        {
+          "player": "Miles McBride",
+          "stat": "reb",
+          "line": 1.5,
+          "direction": "over",
+          "hitRate": 0.804,
+          "estJuice": -410,
+          "team": "NYK",
+          "position": "SG",
+          "projMinutes": 20.7
         }
       ]
     },
@@ -655,12 +453,12 @@ const CHS_LAB_LEDGER = [
     "date": "2026-05-24",
     "series": "OKC-SAS",
     "game": 4,
-    "capturedAt": "2026-05-24T22:35:26.345Z",
+    "capturedAt": "2026-05-24T22:50:48.772Z",
     "iterations": 3000,
     "mc": {
-      "homeWinProb": 0.523,
-      "blowoutRisk": 0.239,
-      "marginP50": 1
+      "homeWinProb": 0.534,
+      "blowoutRisk": 0.254,
+      "marginP50": 1.4
     },
     "candidates": [
       {
@@ -668,52 +466,19 @@ const CHS_LAB_LEDGER = [
         "stat": "pts",
         "line": 5.5,
         "direction": "over",
-        "hitRate": 0.809,
-        "estJuice": -424,
+        "hitRate": 0.801,
+        "estJuice": -403,
         "team": "SAS",
         "position": "SF",
         "projMinutes": 24
-      },
-      {
-        "player": "Alex Caruso",
-        "stat": "pra",
-        "line": 7.5,
-        "direction": "over",
-        "hitRate": 0.808,
-        "estJuice": -421,
-        "team": "OKC",
-        "position": "SG",
-        "projMinutes": 28.7
-      },
-      {
-        "player": "Shai Gilgeous-Alexander",
-        "stat": "pra",
-        "line": 21.5,
-        "direction": "over",
-        "hitRate": 0.815,
-        "estJuice": -441,
-        "team": "OKC",
-        "position": "PG",
-        "projMinutes": 39.3
-      },
-      {
-        "player": "Julian Champagnie",
-        "stat": "pra",
-        "line": 11.5,
-        "direction": "over",
-        "hitRate": 0.815,
-        "estJuice": -441,
-        "team": "SAS",
-        "position": "SF",
-        "projMinutes": 21.3
       },
       {
         "player": "Ajay Mitchell",
         "stat": "pts",
         "line": 7.5,
         "direction": "over",
-        "hitRate": 0.813,
-        "estJuice": -435,
+        "hitRate": 0.807,
+        "estJuice": -418,
         "team": "OKC",
         "position": "PG",
         "projMinutes": 21.3
@@ -723,85 +488,118 @@ const CHS_LAB_LEDGER = [
         "stat": "pra",
         "line": 12.5,
         "direction": "over",
-        "hitRate": 0.812,
-        "estJuice": -432,
+        "hitRate": 0.807,
+        "estJuice": -418,
         "team": "OKC",
         "position": "PG",
         "projMinutes": 21.3
-      },
-      {
-        "player": "Victor Wembanyama",
-        "stat": "pra",
-        "line": 26.5,
-        "direction": "over",
-        "hitRate": 0.81,
-        "estJuice": -426,
-        "team": "SAS",
-        "position": "C",
-        "projMinutes": 38.3
       },
       {
         "player": "Devin Vassell",
         "stat": "pts",
         "line": 9.5,
         "direction": "over",
-        "hitRate": 0.821,
-        "estJuice": -459,
+        "hitRate": 0.815,
+        "estJuice": -441,
         "team": "SAS",
         "position": "SG",
         "projMinutes": 33.3
       },
       {
-        "player": "Stephon Castle",
-        "stat": "pts",
-        "line": 10.5,
+        "player": "Victor Wembanyama",
+        "stat": "pra",
+        "line": 26.5,
         "direction": "over",
-        "hitRate": 0.82,
-        "estJuice": -456,
+        "hitRate": 0.813,
+        "estJuice": -435,
         "team": "SAS",
+        "position": "C",
+        "projMinutes": 38.3
+      },
+      {
+        "player": "Alex Caruso",
+        "stat": "pra",
+        "line": 7.5,
+        "direction": "over",
+        "hitRate": 0.81,
+        "estJuice": -426,
+        "team": "OKC",
         "position": "SG",
-        "projMinutes": 37.3
+        "projMinutes": 28.7
       },
       {
         "player": "Victor Wembanyama",
         "stat": "reb",
         "line": 7.5,
         "direction": "over",
-        "hitRate": 0.818,
-        "estJuice": -449,
+        "hitRate": 0.82,
+        "estJuice": -456,
         "team": "SAS",
         "position": "C",
         "projMinutes": 38.3
       },
       {
         "player": "Julian Champagnie",
-        "stat": "pts",
-        "line": 6.5,
+        "stat": "pra",
+        "line": 11.5,
         "direction": "over",
-        "hitRate": 0.825,
-        "estJuice": -471,
+        "hitRate": 0.82,
+        "estJuice": -456,
         "team": "SAS",
         "position": "SF",
         "projMinutes": 21.3
       },
       {
-        "player": "Dylan Harper",
+        "player": "Julian Champagnie",
+        "stat": "pts",
+        "line": 6.5,
+        "direction": "over",
+        "hitRate": 0.819,
+        "estJuice": -452,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 21.3
+      },
+      {
+        "player": "Shai Gilgeous-Alexander",
         "stat": "pra",
+        "line": 21.5,
+        "direction": "over",
+        "hitRate": 0.829,
+        "estJuice": -485,
+        "team": "OKC",
+        "position": "PG",
+        "projMinutes": 39.3
+      },
+      {
+        "player": "Keldon Johnson",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "hitRate": 0.828,
+        "estJuice": -481,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 24
+      },
+      {
+        "player": "Stephon Castle",
+        "stat": "pts",
         "line": 10.5,
         "direction": "over",
-        "hitRate": 0.83,
-        "estJuice": -488,
+        "hitRate": 0.826,
+        "estJuice": -475,
         "team": "SAS",
-        "position": "PG",
-        "projMinutes": 28
+        "position": "SG",
+        "projMinutes": 37.3
       }
     ],
     "reliable": null,
     "traditional": {
       "legCount": 4,
-      "combinedMC": 0.434,
-      "calibratedCombined": 0.131,
-      "americanOdds": 130,
+      "combinedMC": 0.425,
+      "calibratedCombined": 0.128,
+      "americanOdds": 134,
       "stake": 100,
       "legs": [
         {
@@ -809,44 +607,44 @@ const CHS_LAB_LEDGER = [
           "stat": "pts",
           "line": 5.5,
           "direction": "over",
-          "hitRate": 0.809,
-          "estJuice": -424,
+          "hitRate": 0.801,
+          "estJuice": -403,
           "team": "SAS",
           "position": "SF",
           "projMinutes": 24
+        },
+        {
+          "player": "Ajay Mitchell",
+          "stat": "pts",
+          "line": 7.5,
+          "direction": "over",
+          "hitRate": 0.807,
+          "estJuice": -418,
+          "team": "OKC",
+          "position": "PG",
+          "projMinutes": 21.3
+        },
+        {
+          "player": "Devin Vassell",
+          "stat": "pts",
+          "line": 9.5,
+          "direction": "over",
+          "hitRate": 0.815,
+          "estJuice": -441,
+          "team": "SAS",
+          "position": "SG",
+          "projMinutes": 33.3
         },
         {
           "player": "Alex Caruso",
           "stat": "pra",
           "line": 7.5,
           "direction": "over",
-          "hitRate": 0.808,
-          "estJuice": -421,
+          "hitRate": 0.81,
+          "estJuice": -426,
           "team": "OKC",
           "position": "SG",
           "projMinutes": 28.7
-        },
-        {
-          "player": "Shai Gilgeous-Alexander",
-          "stat": "pra",
-          "line": 21.5,
-          "direction": "over",
-          "hitRate": 0.815,
-          "estJuice": -441,
-          "team": "OKC",
-          "position": "PG",
-          "projMinutes": 39.3
-        },
-        {
-          "player": "Julian Champagnie",
-          "stat": "pra",
-          "line": 11.5,
-          "direction": "over",
-          "hitRate": 0.815,
-          "estJuice": -441,
-          "team": "SAS",
-          "position": "SF",
-          "projMinutes": 21.3
         }
       ]
     },

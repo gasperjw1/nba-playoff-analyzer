@@ -150,11 +150,29 @@ function runSnapshot() {
 
   upcoming.forEach(({ series, gameNum }) => {
     const gameDate = findGameDate(series, gameNum);
-    const existing = CHS_LAB_LEDGER.find(e =>
-      e && e.series === series.id && e.game === gameNum && e.date === gameDate);
-    if (existing) {
-      console.log(`SKIP: ${series.id} G${gameNum} (${gameDate}) — already in ledger`);
+    // Dedupe by series+game (not series+game+date) — a single game has one
+    // outcome, regardless of when we captured the prediction. If an existing
+    // SETTLED entry exists, skip (don't overwrite history). If existing
+    // PENDING entries exist (could be multiple from past stale snapshots),
+    // remove ALL and re-capture with current engine state.
+    const settledIdx = CHS_LAB_LEDGER.findIndex(e =>
+      e && e.series === series.id && e.game === gameNum && e.settlement);
+    if (settledIdx >= 0) {
+      console.log(`SKIP: ${series.id} G${gameNum} (${gameDate}) — already settled in ledger`);
       return;
+    }
+    // Sweep ALL pending entries for this series+game (iterating in reverse so
+    // splice doesn't shift indexes we haven't visited yet).
+    let removed = 0;
+    for (let i = CHS_LAB_LEDGER.length - 1; i >= 0; i--) {
+      const e = CHS_LAB_LEDGER[i];
+      if (e && e.series === series.id && e.game === gameNum && !e.settlement) {
+        CHS_LAB_LEDGER.splice(i, 1);
+        removed++;
+      }
+    }
+    if (removed > 0) {
+      console.log(`SUPERSEDE: ${series.id} G${gameNum} — removed ${removed} stale pending entr${removed === 1 ? 'y' : 'ies'}, re-capturing as ${gameDate}`);
     }
 
     process.stdout.write(`Snapshotting ${series.id} G${gameNum} (${gameDate})... `);
