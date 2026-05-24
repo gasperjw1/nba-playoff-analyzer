@@ -675,5 +675,30 @@ const CHS_LEDGER = [
       "awayScore": 116,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-05-23",
+    "series": "NYK-CLE",
+    "game": 3,
+    "retroactive": false,
+    "actual": {
+      "winner": "NYK",
+      "margin": 13,
+      "homeScore": 121,
+      "awayScore": 108
+    },
+    "mainPred": {
+      "winner": "NYK",
+      "margin": 6,
+      "homeScore": 113,
+      "awayScore": 107
+    },
+    "chsPred": {
+      "winner": "NYK",
+      "margin": 6,
+      "homeScore": 113,
+      "awayScore": 107,
+      "marginDeltaVsMain": 0
+    }
   }
 ];

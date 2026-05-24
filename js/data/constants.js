@@ -27,7 +27,7 @@
 // news feed, and "today's bets" filter remain pinned to the slate
 // the data reflects, instead of silently going stale next week.
 // Bump this when daily data updates land.
-const CURRENT_DATE = '2026-05-23';
+const CURRENT_DATE = '2026-05-24';
 
 // CHS shadow architecture (May 9, 2026 — design discussion).
 // USE_CHS_IN_PROJECTIONS controls whether the Compound Historical

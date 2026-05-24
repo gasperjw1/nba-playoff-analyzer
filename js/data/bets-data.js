@@ -1735,7 +1735,7 @@ const BETS = [
     ],
     reasoning: "<strong>5/23 MC re-validation:</strong> raw engine actually projects NYK by 1 (NYK 107 — CLE 106) and Monte Carlo gives CLE ~51% — essentially a coin flip on the model side. The lead bet thesis is <strong>structural, not engine-driven</strong>: (a) down-0-2 home historical win rate 68%, which the engine doesn't price in as a situational prior; (b) NYK on back-to-back + travel after a G1 OT marathon vs CLE with a full rest day; (c) CLE 6-0 at Rocket Arena pre-DET G6; (d) CLE adjustments incoming (Harden off-ball, Mitchell volume to 30+ in close-out-of-elimination). At -140 (58.3% implied) vs structural ~55-60% true probability, this is a SMALL +EV lean rather than a clean PLACE — CF unknown-territory cap on stakes already trims exposure. Risk: NYK depth (Hart, KAT, McBride, Shamet) doesn't tire the way top-heavy CLE will.",
     confidence: 'medium', thesis: ['matchup','historical','situational'], narrative: 'desperation',
-    result: null,
+    result: { outcome:'loss', actual:'NYK won 121-108. CLE ML missed. The down-0-2 home prior + B2B fatigue thesis didn\'t hold against NYK\'s composure (NYK shot 55.8% / 11 made 3s / 24-27 FT). NYK now leads 3-0 with closeout on Mon 5/25.' },
   },
   {
     id: 'cf-g3-nyk-cle-spread',
@@ -1747,7 +1747,7 @@ const BETS = [
     ],
     reasoning: "Phase 71 spread CAUTION pill auto-applies. <strong>5/23 MC re-validation:</strong> raw engine NYK by 1, MC margin median ~0pt — CLE -3 needs CLE to win by 4+, which the model gives ~40% probability vs -110 (52.4% implied) → -EV by ~12% per pure model. Same structural counter-argument as the ML lean (down-0-2 home covers historically ~55% per Dean Oliver retro). Treat as a half-stake lean only; the CAUTION pill is doing real work here.",
     confidence: 'lean', thesis: ['market','historical','situational'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'CLE -3 missed by 16 (NYK won by 13). CAUTION pill was doing real work; the MC re-validation note (-EV by ~12% per pure model) was directionally right.' },
   },
   {
     id: 'cf-g3-nyk-cle-mitchell-pts',
@@ -1760,7 +1760,7 @@ const BETS = [
     ],
     reasoning: "Mitchell series avg 27.5; STARTER correction → 25.5 raw projection. Down-0-2 home he's historically +4 PTS over season avg (must-win volume up). Net projection 29.5 → lean over. Risk: NYK perimeter D (Bridges/OG/Hart) is the toughest he's seen; can drag ceiling 2-3pts.",
     confidence: 'medium', thesis: ['historical','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Mitchell 23pts on 9-21 FG (3-10 3PT) — well under 27.5. The down-0-2-must-win volume bump produced the SHOTS (21 attempts) but not the efficiency. NYK switching scheme (Bridges/OG/Hart rotating) capped him as projected.' },
   },
   {
     id: 'cf-g3-nyk-cle-brunson-pts',
@@ -1773,7 +1773,7 @@ const BETS = [
     ],
     reasoning: "Brunson 38 G1 / 19 G2 — facilitator night with 14 assists shows variability. Phase 71 STARTER correction (-2.0). Net projection ~25 → just over the line. B2B + road = small additional drag. Lean over.",
     confidence: 'lean', thesis: ['model','historical'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Brunson 30pts on 10-19 FG / 10-12 FT — cleared the line by 5.5. Controlled the game from the foul line (24 NYK FTAs).' },
   },
   {
     id: 'cf-g3-nyk-cle-mobley-reb',
@@ -1786,6 +1786,179 @@ const BETS = [
     ],
     reasoning: "Mobley 14reb G1, 9reb G2 (with Allen back to full minutes the KAT-vs-Mobley REB split shifted). <strong>5/23 MC re-validation:</strong> calcExpectedPlayerStats for ECF G3 returns 9.0 reb (not 12 as authored yesterday — Allen's reb share comes back when he plays 30min). MC mean 8.2, hit rate ~31% on the 9.5 line. This is essentially a coin-flip-to-lean-under bet, NOT a confident over. <strong>SKIP per framework</strong>: Phase 71 STARTER REB is calibrated but at-the-line, and -130 needs 56.5% implied vs ~35% MC — heavily -EV at this line. Use the 7.5 alt instead (engine 9.0, ~70% over) which the floor parlay uses.",
     confidence: 'coin-flip', thesis: ['matchup'], narrative: null,
+    result: { outcome:'loss', actual:'Mobley 6 reb — well under 9.5. Allen 7reb in 36min crushed the share, exactly as the MC re-validation flagged. Even the 7.5 alt floor leg missed by 1.5 — Allen back at full minutes broke the rebound-split assumption.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // WCF G4 — SUN MAY 24: OKC @ SAS at Frost Bank Center
+  // SAS down 1-2 must-win. DK current: SAS -1.5 / total 218.5
+  // (opener was SAS -2.5; market tightened after G3 OKC blowout +15).
+  // Castle/Harper one more rest day; Wemby revenge after 4reb G3.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'cf-g4-okc-sas-ml',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'ml', pick: 'SAS ML vs OKC', odds: '-138',
+    facts: [
+      {label:'Series',value:'OKC leads 2-1, SAS must-win to avoid 1-3'},
+      {label:'Home record',value:'SAS 7-1 at Frost this playoffs'},
+      {label:'Down-1-2 home',value:'historically wins 64%'},
+      {label:'Market',value:'SAS -1.5 / 218.5 (opener was SAS -2.5)'},
+    ],
+    reasoning: "Phase 71c engine: SAS 113, OKC 109 (SAS by 4). G4 at Frost with Wemby healthy and Castle/Harper one extra day of healing. Down-1-2 with HCA next game historically wins 64%; the must-win urgency converts the close engine margin into a real edge. OKC counter: J.Williams day-to-day status uncertain — without him, OKC bench depth drops from 76 (G3) to ~50 projected. Risk: same G3 setup said SAS by 4 and OKC won by 15 — the wrong-winner streak in CF is real (G1 right, G3 wrong on OKC-SAS specifically). Phase 71 R3 out-of-sample stake cap at 50% remains.",
+    confidence: 'medium', thesis: ['model','historical','situational'], narrative: 'must-win',
+    result: null,
+  },
+  {
+    id: 'cf-g4-okc-sas-spread',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'spread', pick: 'SAS -1.5', odds: '-115',
+    facts: [
+      {label:'Market',value:'SAS -1.5 (tightened from -2.5 opener)'},
+      {label:'Engine margin',value:'SAS by 4'},
+      {label:'Phase 71 audit',value:'Spread CAUTION (MAE 13pt)'},
+    ],
+    reasoning: "Phase 71 spread CAUTION pill auto-applies. Engine margin SAS by 4 covers -1.5 by 2.5. The line move from -2.5 to -1.5 reflects sharp $ on OKC (G3 momentum + bench depth thesis); the structural must-win edge for SAS is still the lever. Treat as half-stake lean only — CAUTION pill doing real work.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-okc-sas-total',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'total', pick: 'Under 218.5', odds: '-110',
+    facts: [
+      {label:'G1 reg',value:'198 (then 2OT to 237)'},
+      {label:'G2 total',value:'235 (turnover-driven)'},
+      {label:'G3 total',value:'231 (bench-outburst)'},
+      {label:'Frost Bank',value:'paint-heavy → tighter than 218.5'},
+    ],
+    reasoning: "G3 went over despite Frost tightening — but that was driven by an outlier 76-pt OKC bench. The 5/24 setup is different: SAS must-win → more half-court possessions, longer clock burn, fewer transition opportunities. Engine projects 222 total (SAS 113 + OKC 109) — slightly over the line. Phase 71 total SKIP at medium confidence — treat as a lean.",
+    confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-okc-sas-wemby-pts',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'Wembanyama Over 26.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'41, 21, 26 → 29.3 avg'},
+      {label:'Home + revenge',value:'+3.5 PTS vs road in playoffs'},
+      {label:'Engine (Phase 71c)',value:'26.2 PTS — right at the line'},
+    ],
+    reasoning: "Wemby home + revenge after G3 4reb gameplan box. Engine 26.2 right at the line. Phase 71 ELITE tier correction (-2.6) applied; the model says coin-flip-over. MC mean 20.7 with team-shock drag — closer to ~45% over per pure model. CBS computer model projects 26.9 (DK opener), FanDuel 27.1. Lean over but use 22.5 alt for stronger angle (~80% over).",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-okc-sas-castle-pts',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'Castle Over 17.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'8, 25, 13 → 15.3 avg'},
+      {label:'G3 Wed contact',value:'one extra day of healing'},
+      {label:'Engine',value:'18.5 PTS — calibrated, home + recovery'},
+    ],
+    reasoning: "Castle 25 G2 / 13 G3 (Wed-contact bruise). Extra rest day should restore POA aggression. Engine projects 18.5 with healed-Castle assumption, MC mean 15.0 — coin-flip on 17.5 line but +EV on the 14.5 alt for a floor leg. The 17.5 line at -115 is ~46% true vs 53.5% implied → marginal -EV per pure model.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-okc-sas-sga-pts',
+    slate: 'CF-G4', series: 'OKC-SAS', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'SGA Over 26.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'24, 30, 26 → 26.7 avg'},
+      {label:'Phase 71c bias',value:'-6.9 PTS per-player override applied'},
+      {label:'Castle health',value:'restored POA defense pulls SGA down'},
+    ],
+    reasoning: "SGA series avg 26.7; Phase 71c per-player override (-6.9) corrects raw projection from 30 to 23. The override has been directionally right G1 (24 actual) and G3 (26 actual) — both within 2pts of the corrected projection. Line 26.5 sits right at series avg; with Castle/Harper restored, override should drive SGA back under. SKIP per framework — override + matchup health both point under.",
+    confidence: 'coin-flip', thesis: ['model'], narrative: null,
+    result: null,
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // ECF G4 — MON MAY 25: NYK @ CLE at Rocket Arena
+  // NYK leads 3-0 with closeout chance. CLE elimination (0-156
+  // historical for down-0-3). DK: NYK -1.5 / total 217.5.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'cf-g4-nyk-cle-ml',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'ml', pick: 'NYK ML vs CLE', odds: '-130',
+    facts: [
+      {label:'Series',value:'NYK leads 3-0, closeout chance'},
+      {label:'Down-0-3',value:'0-156 historical comebacks'},
+      {label:'NYK road in series',value:'1-0, +13 margin'},
+      {label:'Market',value:'NYK -1.5 / 217.5'},
+    ],
+    reasoning: "Phase 71c engine: NYK 112, CLE 105 (NYK by 7) — model now prices NYK as outright favorite even on the road. NYK has won G3 in CLE by 13 (Brunson+Bridges combined 22-of-34) and is on a 10-game playoff win streak. CLE has the elimination volume narrative but the 0-156 historical comeback base rate is the dominant prior. Risk: Phase 73 elimination variance amplifier (1.4×) widens CLE's tail; the central estimate still favors NYK but a Mitchell 40+ tail-event is exactly what the historical 0-156 streak has lacked.",
+    confidence: 'medium', thesis: ['model','historical','situational'], narrative: 'closeout',
+    result: null,
+  },
+  {
+    id: 'cf-g4-nyk-cle-spread',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'spread', pick: 'NYK -1.5', odds: '-115',
+    facts: [
+      {label:'Market',value:'NYK -1.5 (-110 to -120)'},
+      {label:'Engine margin',value:'NYK by 7'},
+      {label:'Phase 71 audit',value:'Spread CAUTION (MAE 13pt)'},
+    ],
+    reasoning: "Engine margin NYK by 7 covers -1.5 by 5.5pts. CAUTION pill auto-applies — treat as lean. The closeout dynamic + NYK's road efficiency in G3 (55.8% FG) point toward a comfortable margin if NYK clinches; the risk is a CLE-Mitchell-volume scenario that turns into a one-possession game.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-nyk-cle-total',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'total', pick: 'Under 217.5', odds: '-110',
+    facts: [
+      {label:'G1 reg',value:'~200 (OT to 219)'},
+      {label:'G2 total',value:'202'},
+      {label:'G3 total',value:'229 (NYK 121, CLE 108)'},
+      {label:'ECF tempo',value:'tight — Rocket Arena slows in elimination'},
+    ],
+    reasoning: "G1 reg total 200 / G2 202 / G3 229 — G3 was the outlier driven by NYK's 24-27 FT line and 11 made 3s. Engine projects 217 total (NYK 112 + CLE 105). Elimination contexts historically run UNDER the line ~58% of the time (Phase 73 audit: G6/G7 totals -3.2pts vs reg avg). Phase 71 total SKIP at medium confidence — lean only.",
+    confidence: 'lean', thesis: ['historical','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-nyk-cle-brunson-pts',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'Brunson Over 24.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'38, 19, 30 → 29.0 avg'},
+      {label:'Phase 71 STARTER',value:'-2.0 PTS correction → 27 raw'},
+      {label:'Closeout',value:'historically +1-2pts in series-clinch attempts'},
+    ],
+    reasoning: "Brunson series avg 29.0 with the wide variance (38/19/30). G3 he was 10-of-19 FG / 10-of-12 FT for 30. Engine projection ~27pts after STARTER correction; line 24.5 sits below that comfortably. Closeout-game volume add (+1-2pts) plus CLE elimination defensive scheme breakdown nudges over.",
+    confidence: 'medium', thesis: ['model','historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g4-nyk-cle-mitchell-pts',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'Mitchell Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'29, 26, 23 → 26.0 avg'},
+      {label:'Elimination history',value:'Mitchell G6 vs DET R2 was 41/8'},
+      {label:'NYK switch coverage',value:'capped efficiency G3 (9-21 FG)'},
+    ],
+    reasoning: "Mitchell elimination-game history is the bullish input: G6 vs DET R2 he posted 41/8 with the same down-but-not-out dynamic. STARTER correction (-2.0) plus elimination volume bump (+4 historical avg) puts engine ~29-30pts. Line 27.5 sits within range. Risk: NYK's switching scheme (Bridges/OG/Hart rotating) capped his efficiency to 23pts on 21 shots G3 — volume up doesn't guarantee scoring up.",
+    confidence: 'lean', thesis: ['historical','matchup'], narrative: 'elimination',
+    result: null,
+  },
+  {
+    id: 'cf-g4-nyk-cle-bridges-pts',
+    slate: 'CF-G4', series: 'NYK-CLE', game: 4, postedAt: '2026-05-24',
+    type: 'prop', pick: 'Bridges Over 14.5 points', odds: '-130',
+    facts: [
+      {label:'Series PTS',value:'14, 13, 22 → 16.3 avg'},
+      {label:'G3 efficiency',value:'11-15 FG masterclass'},
+      {label:'Closeout role',value:'wing scoring + perimeter D both stay on'},
+    ],
+    reasoning: "Bridges G3 was an efficiency outlier (11-15 FG / 22 pts) but the series trend is steady wing scoring at ~15pts. Engine projection 16.5 after STARTER calibration. Line 14.5 is just below — the deep-alt floor zone for a closeout-game wing. Counting stat = blowout-stable.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
     result: null,
   },
 ];
@@ -2859,13 +3032,13 @@ const FEATURED_PARLAYS = [
     name: 'ECF G3 — CLE Stars Floor (2-Leg)',
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify on DK)',
     legs: [
-      { pick:'Mitchell Over 19.5 points (alt — ECF G3)', odds:'-280', confidence:'floor', status:null,
-        note:'Series 29 + 26 → 27.5 avg. Line 19.5 = proj−8 deep alt. Engine 31.6pts (Phase 71b star bias applied). Floor leg ~85-90%.' },
-      { pick:'Mobley Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:null,
-        note:'G1: 14reb / G2: 9reb (Allen back full minutes). 5/23 MC re-validation: calcExpectedPlayerStats 9.0 reb → ~70% over 7.5. NOT a >80% floor leg — this is the WEAK leg in the parlay.' },
+      { pick:'Mitchell Over 19.5 points (alt — ECF G3)', odds:'-280', confidence:'floor', status:'hit',
+        note:'Mitchell 23pts — cleared by 3.5 on 9-21 FG. Volume held even with the efficiency drop.' },
+      { pick:'Mobley Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:'miss',
+        note:'Mobley 6reb — missed by 1.5. Allen back at full 36min shrank the rebound share exactly as the 5/23 MC re-validation flagged.' },
     ],
     thesis:'CLE-desperation home stack. <strong>5/23 MC re-validation:</strong> 0.87 × 0.70 = 0.61 combined — under the 80% floor threshold. Mitchell-over leg is solid floor (engine 31.6 vs deep alt 19.5); Mobley leg is too close to engine projection (9.0) to qualify as floor. Treat as a TRADITIONAL-style parlay at the "floor" label rather than a true reliable floor. CLE-side correlated thesis still holds: Mitchell volume + Mobley defensive REB share both correlate with CLE controlling the game. Recommended: trim stake or swap Mobley leg to Over 5.5 reb (~88% over).',
-    result: null,
+    result: { outcome:'loss', delta:'-$100', actual:'Mitchell 23pts ✓ / Mobley 6reb ✗ — Mobley leg missed by 1.5. The 5/23 MC re-validation correctly flagged this leg as <80% and recommended swap to 5.5 alt. Listened to the framework? Should have swapped. Confirmation cost.' },
   },
   {
     id: 'ecf-g3-may23-floor-brunson-kat',
@@ -2874,13 +3047,13 @@ const FEATURED_PARLAYS = [
     name: 'ECF G3 — NYK Counter-Side Floor (2-Leg)',
     stake: 100, odds: '+115', payout: 'To Win: ~$115 (verify on DK)',
     legs: [
-      { pick:'Brunson Over 17.5 points (alt — ECF G3)', odds:'-260', confidence:'floor', status:null,
-        note:'Series 38 + 19 → 28.5 avg. Line 17.5 = proj−11 deep alt; absorbs the G2 facilitator-mode floor.' },
-      { pick:'KAT Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:null,
-        note:'G1: 13reb. Mobley twin-big matchup continues. Calibrated REB zone.' },
+      { pick:'Brunson Over 17.5 points (alt — ECF G3)', odds:'-260', confidence:'floor', status:'hit',
+        note:'Brunson 30pts on 10-19 FG / 10-12 FT — cleared by 12.5. Deep alt floor exactly as designed.' },
+      { pick:'KAT Over 7.5 rebounds (alt — ECF G3)', odds:'-220', confidence:'floor', status:'hit',
+        note:'KAT 8reb — just cleared by 0.5. Mobley twin-big matchup held tight; KAT 7-asst facilitator night meant fewer board chances, but enough to clear.' },
     ],
     thesis:'Counter-side hedge. Math: 0.88 × 0.85 ≈ 75% combined. Deep alt absorbs the facilitator-mode variability of G2 Brunson.',
-    result: null,
+    result: { outcome:'win', delta:'+$115', actual:'Brunson 30pts ✓ / KAT 8reb ✓ (cleared by 0.5) — both hits, +$115 net. Deep-alt-points floor discipline continues to cash even in narrow REB margins.' },
   },
   {
     id: 'ecf-g3-may23-trad-cle-desperation',
@@ -2889,15 +3062,15 @@ const FEATURED_PARLAYS = [
     name: 'ECF G3 — CLE Desperation Home Stack (3-Leg)',
     stake: 50, odds: '+320', payout: 'To Win: ~$160',
     legs: [
-      { pick:'CLE ML vs NYK (ECF G3)', odds:'-140', confidence:'medium', status:null,
-        note:'Raw engine NYK by 1; structural prior (down-0-2 home historical 68% + Rocket 6-0 pre-DET G6 + NYK B2B fatigue) pushes thesis prob to ~55%. -EV per pure model, lean +EV with priors.' },
-      { pick:'Mitchell Over 27.5 points (ECF G3)', odds:'-115', confidence:'medium', status:null,
-        note:'Series 27.5 avg; engine 31.6 with playoff ascension + must-win volume bump. ~65-70% over per engine.' },
-      { pick:'Mobley Over 9.5 rebounds (ECF G3)', odds:'-130', confidence:'medium', status:null,
-        note:'Engine 9.0 reb (Allen back to full minutes shrank Mobley share). ~50% over — coin flip leg, weakest in stack.' },
+      { pick:'CLE ML vs NYK (ECF G3)', odds:'-140', confidence:'medium', status:'miss',
+        note:'NYK won 121-108. Down-0-2-home prior + B2B fatigue thesis didn\'t hold.' },
+      { pick:'Mitchell Over 27.5 points (ECF G3)', odds:'-115', confidence:'medium', status:'miss',
+        note:'Mitchell 23pts on 9-21 FG — under 27.5 by 4.5. NYK switching scheme capped efficiency.' },
+      { pick:'Mobley Over 9.5 rebounds (ECF G3)', odds:'-130', confidence:'medium', status:'miss',
+        note:'Mobley 6reb — under 9.5 by 3.5. Allen back at full 36min crushed share, exactly as the coin-flip flag predicted.' },
     ],
     thesis:'CLE desperation stack. <strong>5/23 MC re-validation:</strong> ~0.55 × ~0.65 × ~0.50 ≈ 18% combined (closer to authoring claim of 22%; first reconcile pass showed lower 8% because MC mean drifts ~15% below calcExpectedPlayerStats for stars — known issue). At +320 payout, 18-22% range is breakeven-to-marginal-EV. Mobley leg is the weak link; swap to 7.5 reb alt if available. Stake $50 (CF cap).',
-    result: null,
+    result: { outcome:'loss', delta:'-$50', actual:'All 3 legs missed (CLE ML / Mitchell O27.5 / Mobley O9.5). Stack failed comprehensively — same retro as the floor parlay\'s Mobley leg, and the 5/23 re-validation called this stack -EV.' },
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -2919,6 +3092,27 @@ const FEATURED_PARLAYS = [
         note:'G3: 6 ast. With Castle bruised + Harper limited, Fox primary PG-load. Floor-stable counting stat.' },
     ],
     thesis:'Two SAS-must-win legs. Math: 0.88 × 0.86 ≈ 76% combined — reliable floor. Wemby alt deep-points + Fox ast both calibrated. CF stake cap $100. Authored pre-game; refine Sun morning with confirmed lineups.',
+    result: null,
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // ECF G4 — MON MAY 25: NYK @ CLE at Rocket Arena (closeout)
+  // NYK leads 3-0 — sweep chance. CLE elimination (0-156 historical
+  // for down-0-3). DK: NYK -1.5 / 217.5. Authored 5/24 with closeout
+  // discipline; refresh Mon morning when official inactives drop.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'ecf-g4-may25-floor-brunson-bridges',
+    slate: 'CF-G4', date: '2026-05-25',
+    category: 'floor', type: 'best-bet',
+    name: 'ECF G4 — NYK Closeout Floor (2-Leg)',
+    stake: 100, odds: '+110', payout: 'To Win: ~$110 (verify Mon morning)',
+    legs: [
+      { pick:'Brunson Over 19.5 points (alt — ECF G4)', odds:'-260', confidence:'floor', status:null,
+        note:'Series 29.0 avg (38/19/30). Engine ~27 after STARTER correction. Line 19.5 = proj−7 deep alt zone.' },
+      { pick:'Bridges Over 11.5 points (alt — ECF G4)', odds:'-240', confidence:'floor', status:null,
+        note:'Series 16.3 avg (14/13/22). Engine ~16. Line 11.5 = proj−4 deep alt. Closeout-game wing scoring floor.' },
+    ],
+    thesis:'NYK closeout floor stack — two stars with structural sweep-game volume. Math: 0.88 × 0.86 ≈ 76% combined — reliable floor. Both legs absorb the ELITE/STARTER tier corrections. CF stake cap $100. Verify Mon morning with confirmed lineups + DK pricing.',
     result: null,
   },
   {
@@ -3067,12 +3261,21 @@ const BET_SLATES = {
     ],
   },
   'CF-G3': {
-    label: 'Conference Finals — Game 3 (Live)',
+    label: 'Conference Finals — Game 3 (Archive)',
     games: [
       { series:'OKC-SAS', date:'2026-05-22', time:'8:30 PM ET', venue:'Frost Bank Center', context:'Series tied 1-1',
         recap:'<strong style="color:var(--red)">Result:</strong> OKC 123-108 — OKC LEADS 2-1. SAS started 15-0 (longest CF-opening run since PBP era 1997) then OKC outscored SAS by 30 the rest of the way. SGA 26/12ast, Jared McCain CAREER PLAYOFF-HIGH 24 off bench (+28), Jaylin Williams 18 off bench, Caruso 15. <strong>OKC bench 76, SAS bench 23 — structural decider.</strong> SAS: Wemby 26/4reb/3ast/2blk (OKC double-boxed; reb dropped from 20.5 avg to 4), Fox 15/7/6 (sharp post-Wed scare), Castle 13/4/6 (playing through Wed contact, +14 FT), Harper 6 off bench. Model: SAS by 4 → actual OKC by 15. WRONG WINNER.' },
       { series:'NYK-CLE', date:'2026-05-23', time:'8:00 PM ET', venue:'Rocket Arena', context:'NYK leads 2-0',
-        recap:'<strong style="color:var(--purple)">ECF G3 Preview (Sat 5/23):</strong> CLE down 0-2 + facing must-win at home. CLE was 6-0 at home before DET G6; recovered with the G7 road blowout — fight is still in this group. Adjustments: Harden off-ball more (NYK targeted him on switches G1+G2), Mitchell volume up to 30+ in close-out-of-elimination spots, Strus shot-volume up to space the floor. NYK on a back-to-back (G2 5/21 → G3 5/23 with travel). Down-0-2 home team historically wins 68%.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> NYK 121-108 — NYK LEADS 3-0 (sweep cliff, 10th straight playoff win). Brunson 30/3/6 (10-19 FG / 10-12 FT), Bridges 22/6/2 on 11-15 FG (efficiency masterclass), Anunoby 21/7/4 (6-10 FG / 3-4 3PT / 6-6 FT — perfect-line wing), Hart 12/9/5, Shamet bench spark 14 (4-5 3PT). NYK 55.8% FG, 11-28 3PT, 24-27 FT (88.9%). CLE: Mobley 24/6 (10-18 FG), Mitchell 23/1/4 (9-21 FG / 3-10 3PT), Harden 19/5/5 (6 TOs), Allen 17/7 efficient (7-9), Strus 13/7/6. CLE 50% FG but 12-41 from 3 (29.3%) + only 12-19 FT. <strong>Model: CLE by 6 → actual NYK by 13. WRONG WINNER, 19pt margin miss.</strong>' },
+    ],
+  },
+  'CF-G4': {
+    label: 'Conference Finals — Game 4 (Live)',
+    games: [
+      { series:'OKC-SAS', date:'2026-05-24', time:'8:00 PM ET', venue:'Frost Bank Center', context:'OKC leads 2-1',
+        recap:'<strong style="color:var(--purple)">WCF G4 Tonight (Sun 5/24):</strong> SAS down 1-2 facing must-win-or-1-3 (sub-5% historical comebacks from 1-3). Wemby revenge-game-script after the G3 4reb gameplan box. Castle/Harper one extra day of healing. <strong>Lines:</strong> SAS -2.5 / total 218.5 (DK opener). Engine MC ~56% SAS home. Phase 71 R3 out-of-sample stake cap 50% remains.' },
+      { series:'NYK-CLE', date:'2026-05-25', time:'8:00 PM ET', venue:'Rocket Arena', context:'NYK leads 3-0',
+        recap:'<strong style="color:var(--purple)">ECF G4 Preview (Mon 5/25):</strong> NYK has chance to sweep at Cleveland and clinch first Finals trip since 1999. CLE elimination — 0-156 historical for down-0-3. Mitchell elimination-game volume (G6 vs DET was 41/8) is CLE\'s only path. Allen+Mobley duo had only 9 shots called for Allen in G3 — CLE counter is more interior offense. Phase 73 elimination amplifier ACTIVE: variance bands widen 1.4× for CLE.' },
     ],
   },
 };

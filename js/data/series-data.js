@@ -4513,6 +4513,16 @@ const SERIES_DATA = [
       id: "NYK-CLE",
       conf: "East",
       round: "CF",
+      modelLessons: [
+        { type: "correct", lesson: "G1: Right winner (NYK by 11 OT, engine NYK by 6). The structural call — NYK rest gap + clutchNetRtg + Bridges/OG perimeter D on Mitchell — held against CLE's 22pt lead through 41 minutes. +5pt margin underestimate is within MEDIUM-confidence variance; rest+composure beat raw G7-fatigued CLE late." },
+        { type: "missed", lesson: "G1: Engine projected the game as REGULATION competitive — no path in the central estimate to a 22pt CLE lead THROUGH 41 MIN flipping to NYK OT win. The 'NYK rests + rusts in Q1, then closes' arc was outside the predicted character (REST vs RUST). Lesson: rest-gap series can produce wider intra-game variance than the win-prob estimate suggests — the central margin can be right while game-script tails are uncaptured." },
+        { type: "correct", lesson: "G2: Right winner (NYK by 16, engine NYK by 10). Post-G1 momentum + NYK depth + Mitchell crunch-time fade priced correctly. The 18-0 Q3 run that decided the game was modeled as a likely 'momentum carry' character — the engine's character tag matched the game arc, not just the score." },
+        { type: "missed", lesson: "G2: Hart playoff career-high 26 was outside the engine's central estimate (12pts proj). Same pattern as DET-CLE G7 Merrill 23 / OKC-SAS G1 Caruso 31 — secondary-tier ceiling tail-events that the engine systematically under-prices. Bench/role-player variance is asymmetric (ceiling >> floor) — Phase 73 audit candidate: extend the elimination-variance amplifier to role players in any high-leverage game, not just G6/G7." },
+        { type: "missed", lesson: "G3: Wrong winner (engine CLE by 6 home desperation, actual NYK by 13). The down-0-2-home prior (68% historical) over-weighted relative to NYK's composure across this specific series. NYK has been efficient in CLE before — Brunson+Bridges combined 22-of-34 — but the engine's home-court prior treated Rocket Arena as a strong edge despite the matchup-specific evidence. R3 audit: down-0-2-home base rate needs to be conditioned on the visiting team's road efficiency in the series itself, not just the venue's prior season record." },
+        { type: "missed", lesson: "G3: Mitchell efficiency dropped (9-21 FG / 3-10 3PT) when the engine projected him at 30+ volume on improved efficiency in must-win mode. The NYK switching scheme (Bridges/OG/Hart rotating onto him) effectively neutralized his rim-pressure. Lesson: 'volume up in must-win' is a real prior but says nothing about efficiency — the engine conflates the two." },
+        { type: "correct", lesson: "G3: Mobley REB calibrated (engine 8.5, actual 6 — within band) — the Phase 71 rebound signal continued to hold even when the team narrative went wrong. The deep-alt-REB floor leg on Mobley O7.5 lost (6 reb), but only because Allen returning to full minutes shrank Mobley's share — a knowable structural input the engine had partial visibility into. The 'Mobley O5.5' alt (which the post-authoring note suggested as the safer floor) would have hit easily." },
+        { type: "correct", lesson: "G3: Brunson over 17.5 floor leg hit easily (30 actual). The deep-alt-points discipline (Phase 65: project−10 zone for floor parlays) keeps cashing even when the team-side prediction is wrong. NYK Counter-Side floor parlay (Brunson + KAT REB) HIT despite CLE-desperation thesis losing — same +EV-from-discipline pattern that has carried the playoff bankroll." }
+      ],
       priorRound: {
           home: {
               seriesId: "NYK-PHI",
@@ -5356,11 +5366,11 @@ const SERIES_DATA = [
           },
           {
               num: 3,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "NYK",
+              homeScore: 121,
+              awayScore: 108,
+              winner: "NYK",
+              notes: "NYK 121-108 at Rocket Arena — NYK LEADS 3-0 (sweep cliff, 10th straight playoff win). Brunson 30/3/6 (10-19 FG / 10-12 FT), Bridges 22/6/2 on 11-15 FG (efficiency masterclass), Anunoby 21/7/4 (6-10 FG / 3-4 3PT / 6-6 FT — perfect-line wing finisher), Hart 12/9/5 (workhorse double-double watch), Shamet bench spark 14 (4-5 3PT). NYK 43-77 FG (55.8%), 11-28 3PT, 24-27 FT (88.9%) — clinical road execution. CLE: Mobley 24/6/2 (10-18 FG), Mitchell 23/1/4 (9-21 FG / 3-10 3PT — efficiency dropped vs G1+G2), Harden 19/5/5 (6 TOs again), Allen 17/7 (efficient 7-9), Strus 13/7/6 (4-12 / 4-11 3PT). CLE 42-84 FG (50%), 12-41 3PT (29.3%), only 12-19 FT. CLE shot well from 2 but the volume 3PT misses (29 missed threes) and the 24-27 NYK free-throw line decided it. Down-0-2-home base rate is 68% — NYK shut that door. MODEL: predicted CLE by 6, actual NYK by 13 — WRONG WINNER, 19pt margin miss. Phase 71 R3 out-of-sample miss; the desperation-home prior over-weighted the structural CLE rest/momentum edge given how composed NYK has been all series. (NOTE: series-data convention has homeScore/awayScore mapped to SERIES home team NYK regardless of game venue — Rocket Arena was the venue but the field 'homeScore' here = NYK's score.)",
               prediction: {
                   homeWin: true,
                   homeScore: 113,
@@ -5372,6 +5382,33 @@ const SERIES_DATA = [
                   xFactor: "Harden role recalibration vs NYK back-to-back travel fatigue",
                   moneyline: "CLE -140",
                   spread: "CLE -2.5"
+              },
+              // Phase 73i boxScores from ESPN game 401873343 (regulation, 240 player-min/side).
+              // Game venue was Rocket Arena (CLE host) but schema uses SERIES home (NYK) for home[].
+              boxScores: {
+                home: [
+                  {name:"Jalen Brunson",min:41,pts:30,reb:3,ast:6,fg:"10-19",threes:"0-4",ft:"10-12",to:4,stl:1,blk:0,pm:14,note:"30pts on 10 FT — controlled the game from the line"},
+                  {name:"Mikal Bridges",min:39,pts:22,reb:6,ast:2,fg:"11-15",threes:"0-1",ft:"0-0",to:2,stl:3,blk:2,pm:13,note:"11-15 FG efficiency masterclass"},
+                  {name:"OG Anunoby",min:31,pts:21,reb:7,ast:4,fg:"6-10",threes:"3-4",ft:"6-6",to:1,stl:0,blk:0,pm:12,note:"perfect-line wing — 6/10 FG, 3/4 3PT, 6/6 FT"},
+                  {name:"Landry Shamet",min:28,pts:14,reb:1,ast:3,fg:"4-5",threes:"4-5",ft:"2-3",to:2,stl:0,blk:0,pm:10,note:"bench spark — 4-5 from deep"},
+                  {name:"Karl-Anthony Towns",min:36,pts:13,reb:8,ast:7,fg:"4-9",threes:"1-3",ft:"4-4",to:0,stl:3,blk:1,pm:9,note:"facilitator night — 7 assists / 3 stl / 0 TO"},
+                  {name:"Josh Hart",min:35,pts:12,reb:9,ast:5,fg:"5-12",threes:"2-7",ft:"0-0",to:4,stl:4,blk:0,pm:11,note:"workhorse — DD threat with 4 STL"},
+                  {name:"Miles McBride",min:14,pts:5,reb:0,ast:0,fg:"1-3",threes:"1-2",ft:"2-2",to:0,stl:0,blk:0,pm:3},
+                  {name:"M. Robinson",min:9,pts:2,reb:3,ast:0,fg:"1-1",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:4,note:"Mitchell Robinson — short name avoids 'Mitchell' bet-resolver collision"},
+                  {name:"Jose Alvarado",min:4,pts:2,reb:0,ast:0,fg:"1-3",threes:"0-2",ft:"0-0",to:1,stl:0,blk:1,pm:-1},
+                  {name:"Jordan Clarkson",min:3,pts:0,reb:0,ast:0,fg:"0-0",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:0},
+                ],
+                away: [
+                  {name:"Evan Mobley",min:36,pts:24,reb:6,ast:2,fg:"10-18",threes:"1-6",ft:"3-4",to:5,stl:0,blk:1,pm:-10,note:"CLE high — but 1-6 3PT and 5 TOs"},
+                  {name:"Donovan Mitchell",min:38,pts:23,reb:1,ast:4,fg:"9-21",threes:"3-10",ft:"2-6",to:5,stl:3,blk:0,pm:-12,note:"43% FG / 30% 3PT — couldn't break the NYK switching"},
+                  {name:"James Harden",min:41,pts:19,reb:5,ast:5,fg:"8-15",threes:"1-7",ft:"2-3",to:6,stl:1,blk:0,pm:-9,note:"6 TOs again — NYK switches targeted him"},
+                  {name:"Jarrett Allen",min:36,pts:17,reb:7,ast:0,fg:"7-9",threes:"0-0",ft:"3-4",to:0,stl:0,blk:0,pm:-6,note:"efficient 7-9 — needed more touches"},
+                  {name:"Max Strus",min:31,pts:13,reb:7,ast:6,fg:"4-12",threes:"4-11",ft:"1-1",to:0,stl:1,blk:0,pm:-8},
+                  {name:"Sam Merrill",min:24,pts:6,reb:3,ast:1,fg:"2-5",threes:"2-4",ft:"0-0",to:0,stl:1,blk:0,pm:-7},
+                  {name:"Jaylon Tyson",min:9,pts:3,reb:3,ast:1,fg:"1-2",threes:"0-1",ft:"1-1",to:1,stl:0,blk:0,pm:-4},
+                  {name:"Dennis Schroder",min:9,pts:3,reb:0,ast:2,fg:"1-1",threes:"1-1",ft:"0-0",to:0,stl:0,blk:0,pm:-3},
+                  {name:"Dean Wade",min:17,pts:0,reb:2,ast:1,fg:"0-1",threes:"0-1",ft:"0-0",to:0,stl:1,blk:0,pm:-2},
+                ],
               }
           },
           {
@@ -5380,7 +5417,28 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: false,
+                  homeScore: 105,
+                  awayScore: 112,
+                  margin: 7,
+                  confidence: "MEDIUM",
+                  character: "CLOSEOUT",
+                  reasoning: "Phase 71c engine: NYK 112, CLE 105 (NYK by 7). NYK up 3-0 with a chance to sweep at Cleveland on Mon 5/25. Two structural levers point NYK: (1) Their 10-game playoff win streak — every game over that stretch has been won by composed execution rather than variance bursts. (2) Brunson + Bridges have BOTH been more efficient in CLE (G3: 22-of-34 combined from the floor) than in MSG, suggesting the Rocket Arena floor is not the home-court advantage CLE expected. CLE counter-narrative: down-0-3 teams have NEVER come back in NBA history (0-156 historical), but Mitchell has historically responded to elimination spots with volume games (G6 vs DET was 41/8). The model now prices NYK as outright favorite even on the road — the G1+G2+G3 sweep of NYK road games has been comprehensive enough that the desperation prior gets discounted heavily. <strong>R3 out-of-sample caveat:</strong> Phase 71 stake reduction stays at 50% (3 CF games settled — under the 5-game promote threshold). <strong>Phase 73 elimination amplifier ACTIVE:</strong> G4 is CLE's elimination game — variance bands widen 1.4×.",
+                  xFactor: "Mitchell elimination-game volume vs NYK closeout execution. Allen + Mobley duo had a quiet G3 — Allen 7-9 with only 9 shots called for. CLE needs more interior touches.",
+                  moneyline: "NYK -125",
+                  spread: "NYK -2.5",
+                  ou: "215.5",
+                  keyTakeaways: [
+                    "NYK 3-0 + 10-game playoff win streak — structural composure dominates the desperation-home prior",
+                    "Brunson + Bridges combined 22-of-34 in CLE (G3) — Rocket Arena hasn't been CLE's home edge",
+                    "0-156 historical for down-0-3 — Mitchell needs a 40+ volume game to keep series alive",
+                    "Allen 7-9 with only 9 shots in G3 — CLE counter is more interior offense, but Mobley spaces out vs KAT",
+                    "Phase 73 elimination variance ACTIVE: CLE's tail is wider — but the central estimate still favors NYK",
+                    "R3 out-of-sample stake cap at 50% remains in effect (3 CF games settled, below 5-game promote bar)"
+                  ]
+              }
           },
           {
               num: 5,
@@ -6395,10 +6453,11 @@ const SERIES_DATA = [
                   margin: 4,
                   confidence: "MEDIUM",
                   character: "MUST-WIN HOME",
-                  reasoning: "Phase 71c engine: SAS 113, OKC 109 (SAS by 4). G4 at Frost Bank Center with SAS down 1-2 and Wemby healthy — must-win to avoid 1-3 (where comebacks happen <5% historically). Fox + Harper Wednesday hamstring/ankle were the structural G3 vulnerability; an extra rest day should restore Castle/Harper POA defense to dial down McCain/Caruso bench output. OKC counters: J.Williams still day-to-day (hamstring), so OKC remains shorthanded; SGA back-to-back 26+pt games suggest he's resolved the Castle matchup. Phase 71 R3 out-of-sample caveat still applies — reduced stakes recommended. Down-1-2 with HCA next game historically wins 64%.",
+                  reasoning: "Phase 71c engine: SAS 113, OKC 109 (SAS by 4). G4 at Frost Bank Center with SAS down 1-2 and Wemby healthy — must-win to avoid 1-3 (where comebacks happen <5% historically). Fox + Harper Wednesday hamstring/ankle were the structural G3 vulnerability; an extra rest day should restore Castle/Harper POA defense to dial down McCain/Caruso bench output. OKC counters: J.Williams still day-to-day (hamstring), so OKC remains shorthanded; SGA back-to-back 26+pt games suggest he's resolved the Castle matchup. Phase 71 R3 out-of-sample caveat still applies — reduced stakes recommended. Down-1-2 with HCA next game historically wins 64%. <strong>5/24 update:</strong> DK current line SAS -1.5 / total 218.5 (tightened from SAS -2.5 opener — sharp $ on OKC after the G3 +15 bench blowout). ML SAS -138 / OKC +118. Engine still SAS by 4 → market and model agree on winner, model slightly more bullish on SAS margin (4 vs market 1.5).",
                   xFactor: "Castle/Harper health restoration vs OKC bench depth (J.Williams status)",
-                  moneyline: "SAS -135",
-                  spread: "SAS -2.5"
+                  moneyline: "SAS -138",
+                  spread: "SAS -1.5",
+                  ou: "218.5"
               }
           },
           {

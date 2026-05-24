@@ -426,4 +426,28 @@ const NEWS = [
     body: 'Spurs face elimination from 1-2 down with another home game Sunday 5/24 at 8 PM ET on NBC/Peacock. Frost Bank Center, third straight WCF game in San Antonio. Health watch: Fox and Harper had a full extra day for the ankle/hamstring issues that compromised their G3 performances; Castle nursing the Q3 hard-contact bruise. OKC remains without J.Williams (hamstring still day-to-day). Wemby gameplan adjustment is the key narrative — SAS staff has to script ways to keep him on the boards after OKC\'s G3 box-out plan held him to a career-low 4 rebounds. Lines/picks for G4 will be authored Sunday morning after overnight injury reports drop.',
     source: 'NBA.com',
   },
+  {
+    date: '2026-05-23',
+    severity: 'major',
+    series: 'NYK-CLE',
+    headline: 'NYK 121-108: Knicks take 3-0 ECF lead, one win from Finals',
+    body: 'New York moved within one win of its first NBA Finals appearance since 1999 with a clinical 121-108 road victory at Rocket Arena. Brunson 30pts (10-19 FG / 10-12 FT), Bridges 22 on 11-15 FG (efficiency masterclass), Anunoby 21pts on perfect-line numbers (6-10 FG / 3-4 3PT / 6-6 FT), Hart 12/9/5 (workhorse double-double watch), Shamet bench spark 14 (4-5 3PT). NYK shot 55.8% from the floor, made 11 threes, and went 24-of-27 from the FT line — the foul-line dominance was decisive. CLE: Mobley 24/6 (10-18), Mitchell 23/1/4 on 9-21 FG / 3-10 3PT (efficiency dropped as the NYK switching scheme bracketed him), Harden 19/5/5 with 6 turnovers again, Allen 17/7 on efficient 7-9 (CLE needed more interior touches). Cleveland made 12 threes on 41 attempts (29.3%) and only 12-19 from the line. <strong>Model: predicted CLE by 6 at home on the desperation prior; actual NYK by 13 — WRONG WINNER, 19pt margin miss.</strong> NYK is now 10-0 in their last 10 playoff games. ECF G4 in Cleveland Monday 5/25 at 8 PM ET (ESPN) with sweep on the line; down-0-3 historical is 0-156.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-24',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G4 tonight: OKC @ SAS 8 PM (NBC/Peacock) — SAS -1.5 / 218.5',
+    body: 'Tip-off 8 PM ET on NBC/Peacock from Frost Bank Center. SAS down 1-2 and facing must-win-or-1-3 (where comebacks happen <5% historically). DK current: SAS -1.5 / total 218.5 / ML SAS -138, OKC +118 (opening line was SAS -2.5 — sharp $ came in on OKC after the G3 +15 bench blowout). <strong>Structural drivers:</strong> SAS 7-1 at home this playoffs. Down-1-2 with HCA next game historically wins 64%. Wemby revenge-game-script after OKC\'s box-out plan held him to 4 reb in G3. Castle/Harper one extra day of healing from their Wed contact bruises. <strong>OKC counters:</strong> J.Williams (hamstring) still day-to-day — without him bench depth drops; if he plays, McCain/Caruso continue the high-leverage bench burst. <strong>The pick: SAS ML -138</strong> as the lead bet, with one Wemby/Fox floor parlay and one SAS home stack. Same CF unknown-territory cap ($100 floor / $50 trad). Coming off CHS wrong-winner WCF G3 — Phase 71 R3 stake reduction (50%) holds.',
+    source: 'DraftKings / NBA.com',
+  },
+  {
+    date: '2026-05-24',
+    severity: 'minor',
+    series: 'NYK-CLE',
+    headline: 'ECF G4 tomorrow Mon 5/25: NYK @ CLE 8 PM — closeout chance, NYK -1.5',
+    body: 'NYK travels back to Cleveland with a chance to clinch its first NBA Finals trip since 1999. DK current: NYK -1.5 / total 217.5 / ML NYK -130, CLE +110. The market now prices NYK as outright road favorite — a structural read on the 10-game playoff win streak + the G3 efficiency (NYK won by 13 in Cleveland with Brunson+Bridges combining 22-of-34). CLE elimination history: 0-156 for down-0-3 comebacks. Mitchell elimination-volume game (G6 vs DET R2 was 41/8) is CLE\'s only path. Allen had only 9 shots called for in G3 — CLE needs more interior offense via Allen+Mobley duo. Phase 73 elimination variance amplifier ACTIVE: CLE\'s tail widens 1.4×, but the central estimate still favors NYK. Lines/picks confirmed Sunday morning; provisional picks already authored.',
+    source: 'DraftKings / NBA.com',
+  },
 ];
