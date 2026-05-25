@@ -248,208 +248,6 @@ const CHS_LAB_LEDGER = [
     }
   },
   {
-    "date": "2026-05-25",
-    "series": "NYK-CLE",
-    "game": 4,
-    "capturedAt": "2026-05-24T22:50:47.973Z",
-    "iterations": 3000,
-    "mc": {
-      "homeWinProb": 0.465,
-      "blowoutRisk": 0.206,
-      "marginP50": -1.2
-    },
-    "candidates": [
-      {
-        "player": "OG Anunoby",
-        "stat": "pts",
-        "line": 14.5,
-        "direction": "over",
-        "hitRate": 0.802,
-        "estJuice": -405,
-        "team": "NYK",
-        "position": "SF",
-        "projMinutes": 25
-      },
-      {
-        "player": "Donovan Mitchell",
-        "stat": "pts",
-        "line": 18.5,
-        "direction": "over",
-        "hitRate": 0.801,
-        "estJuice": -403,
-        "team": "CLE",
-        "position": "SG",
-        "projMinutes": 38.7
-      },
-      {
-        "player": "Max Strus",
-        "stat": "pts",
-        "line": 6.5,
-        "direction": "over",
-        "hitRate": 0.801,
-        "estJuice": -403,
-        "team": "CLE",
-        "position": "SG",
-        "projMinutes": 28.3
-      },
-      {
-        "player": "Miles McBride",
-        "stat": "reb",
-        "line": 1.5,
-        "direction": "over",
-        "hitRate": 0.804,
-        "estJuice": -410,
-        "team": "NYK",
-        "position": "SG",
-        "projMinutes": 20.7
-      },
-      {
-        "player": "Josh Hart",
-        "stat": "ast",
-        "line": 2.5,
-        "direction": "over",
-        "hitRate": 0.815,
-        "estJuice": -441,
-        "team": "NYK",
-        "position": "SG",
-        "projMinutes": 37
-      },
-      {
-        "player": "Miles McBride",
-        "stat": "pra",
-        "line": 10.5,
-        "direction": "over",
-        "hitRate": 0.811,
-        "estJuice": -429,
-        "team": "NYK",
-        "position": "SG",
-        "projMinutes": 20.7
-      },
-      {
-        "player": "OG Anunoby",
-        "stat": "pra",
-        "line": 21.5,
-        "direction": "over",
-        "hitRate": 0.823,
-        "estJuice": -465,
-        "team": "NYK",
-        "position": "SF",
-        "projMinutes": 25
-      },
-      {
-        "player": "Jalen Brunson",
-        "stat": "pts",
-        "line": 17.5,
-        "direction": "over",
-        "hitRate": 0.822,
-        "estJuice": -462,
-        "team": "NYK",
-        "position": "PG",
-        "projMinutes": 39.7
-      },
-      {
-        "player": "Jalen Brunson",
-        "stat": "threes",
-        "line": 1.5,
-        "direction": "over",
-        "hitRate": 0.822,
-        "estJuice": -462,
-        "team": "NYK",
-        "position": "PG",
-        "projMinutes": 39.7
-      },
-      {
-        "player": "Evan Mobley",
-        "stat": "pra",
-        "line": 19.5,
-        "direction": "over",
-        "hitRate": 0.821,
-        "estJuice": -459,
-        "team": "CLE",
-        "position": "PF",
-        "projMinutes": 36.7
-      },
-      {
-        "player": "Mikal Bridges",
-        "stat": "reb",
-        "line": 2.5,
-        "direction": "over",
-        "hitRate": 0.82,
-        "estJuice": -456,
-        "team": "NYK",
-        "position": "SF",
-        "projMinutes": 35.7
-      },
-      {
-        "player": "Jalen Brunson",
-        "stat": "pra",
-        "line": 25.5,
-        "direction": "over",
-        "hitRate": 0.818,
-        "estJuice": -449,
-        "team": "NYK",
-        "position": "PG",
-        "projMinutes": 39.7
-      }
-    ],
-    "reliable": null,
-    "traditional": {
-      "legCount": 4,
-      "combinedMC": 0.405,
-      "calibratedCombined": 0.123,
-      "americanOdds": 142,
-      "stake": 100,
-      "legs": [
-        {
-          "player": "OG Anunoby",
-          "stat": "pts",
-          "line": 14.5,
-          "direction": "over",
-          "hitRate": 0.802,
-          "estJuice": -405,
-          "team": "NYK",
-          "position": "SF",
-          "projMinutes": 25
-        },
-        {
-          "player": "Donovan Mitchell",
-          "stat": "pts",
-          "line": 18.5,
-          "direction": "over",
-          "hitRate": 0.801,
-          "estJuice": -403,
-          "team": "CLE",
-          "position": "SG",
-          "projMinutes": 38.7
-        },
-        {
-          "player": "Max Strus",
-          "stat": "pts",
-          "line": 6.5,
-          "direction": "over",
-          "hitRate": 0.801,
-          "estJuice": -403,
-          "team": "CLE",
-          "position": "SG",
-          "projMinutes": 28.3
-        },
-        {
-          "player": "Miles McBride",
-          "stat": "reb",
-          "line": 1.5,
-          "direction": "over",
-          "hitRate": 0.804,
-          "estJuice": -410,
-          "team": "NYK",
-          "position": "SG",
-          "projMinutes": 20.7
-        }
-      ]
-    },
-    "actual": null,
-    "settlement": null
-  },
-  {
     "date": "2026-05-24",
     "series": "OKC-SAS",
     "game": 4,
@@ -645,6 +443,250 @@ const CHS_LAB_LEDGER = [
           "team": "OKC",
           "position": "SG",
           "projMinutes": 28.7
+        }
+      ]
+    },
+    "actual": {
+      "winner": "SAS",
+      "homeScore": 82,
+      "awayScore": 103,
+      "margin": 21
+    },
+    "settlement": {
+      "reliable": null,
+      "traditional": {
+        "outcome": "win",
+        "legResults": [
+          {
+            "player": "Keldon Johnson",
+            "stat": "pts",
+            "line": 5.5,
+            "hit": true,
+            "actualValue": 9
+          },
+          {
+            "player": "Ajay Mitchell",
+            "stat": "pts",
+            "line": 7.5,
+            "hit": true,
+            "actualValue": 8
+          },
+          {
+            "player": "Devin Vassell",
+            "stat": "pts",
+            "line": 9.5,
+            "hit": true,
+            "actualValue": 13
+          },
+          {
+            "player": "Alex Caruso",
+            "stat": "pra",
+            "line": 7.5,
+            "hit": true,
+            "actualValue": 12
+          }
+        ],
+        "pnl": 134
+      },
+      "settledAt": "2026-05-25T17:57:41.538Z"
+    }
+  },
+  {
+    "date": "2026-05-25",
+    "series": "NYK-CLE",
+    "game": 4,
+    "capturedAt": "2026-05-25T17:57:42.327Z",
+    "iterations": 3000,
+    "mc": {
+      "homeWinProb": 0.467,
+      "blowoutRisk": 0.211,
+      "marginP50": -1.1
+    },
+    "candidates": [
+      {
+        "player": "OG Anunoby",
+        "stat": "reb",
+        "line": 4.5,
+        "direction": "over",
+        "hitRate": 0.802,
+        "estJuice": -405,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 25
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pts",
+        "line": 11.5,
+        "direction": "over",
+        "hitRate": 0.809,
+        "estJuice": -424,
+        "team": "NYK",
+        "position": "C",
+        "projMinutes": 36.7
+      },
+      {
+        "player": "Josh Hart",
+        "stat": "ast",
+        "line": 2.5,
+        "direction": "over",
+        "hitRate": 0.809,
+        "estJuice": -424,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 37
+      },
+      {
+        "player": "Jarrett Allen",
+        "stat": "reb",
+        "line": 5.5,
+        "direction": "over",
+        "hitRate": 0.807,
+        "estJuice": -418,
+        "team": "CLE",
+        "position": "C",
+        "projMinutes": 32.7
+      },
+      {
+        "player": "OG Anunoby",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.804,
+        "estJuice": -410,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 25
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pra",
+        "line": 25.5,
+        "direction": "over",
+        "hitRate": 0.815,
+        "estJuice": -441,
+        "team": "NYK",
+        "position": "PG",
+        "projMinutes": 39.7
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "ast",
+        "line": 3.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "NYK",
+        "position": "PG",
+        "projMinutes": 39.7
+      },
+      {
+        "player": "Mikal Bridges",
+        "stat": "reb",
+        "line": 2.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 35.7
+      },
+      {
+        "player": "Miles McBride",
+        "stat": "reb",
+        "line": 1.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 20.7
+      },
+      {
+        "player": "Max Strus",
+        "stat": "pts",
+        "line": 6.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "CLE",
+        "position": "SG",
+        "projMinutes": 28.3
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 17.5,
+        "direction": "over",
+        "hitRate": 0.823,
+        "estJuice": -465,
+        "team": "NYK",
+        "position": "PG",
+        "projMinutes": 39.7
+      },
+      {
+        "player": "Josh Hart",
+        "stat": "reb",
+        "line": 4.5,
+        "direction": "over",
+        "hitRate": 0.823,
+        "estJuice": -465,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 37
+      }
+    ],
+    "reliable": null,
+    "traditional": {
+      "legCount": 4,
+      "combinedMC": 0.428,
+      "calibratedCombined": 0.127,
+      "americanOdds": 135,
+      "stake": 100,
+      "legs": [
+        {
+          "player": "OG Anunoby",
+          "stat": "reb",
+          "line": 4.5,
+          "direction": "over",
+          "hitRate": 0.802,
+          "estJuice": -405,
+          "team": "NYK",
+          "position": "SF",
+          "projMinutes": 25
+        },
+        {
+          "player": "Karl-Anthony Towns",
+          "stat": "pts",
+          "line": 11.5,
+          "direction": "over",
+          "hitRate": 0.809,
+          "estJuice": -424,
+          "team": "NYK",
+          "position": "C",
+          "projMinutes": 36.7
+        },
+        {
+          "player": "Jarrett Allen",
+          "stat": "reb",
+          "line": 5.5,
+          "direction": "over",
+          "hitRate": 0.807,
+          "estJuice": -418,
+          "team": "CLE",
+          "position": "C",
+          "projMinutes": 32.7
+        },
+        {
+          "player": "Max Strus",
+          "stat": "pts",
+          "line": 6.5,
+          "direction": "over",
+          "hitRate": 0.812,
+          "estJuice": -432,
+          "team": "CLE",
+          "position": "SG",
+          "projMinutes": 28.3
         }
       ]
     },

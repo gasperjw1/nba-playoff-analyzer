@@ -450,4 +450,20 @@ const NEWS = [
     body: 'NYK travels back to Cleveland with a chance to clinch its first NBA Finals trip since 1999. DK current: NYK -1.5 / total 217.5 / ML NYK -130, CLE +110. The market now prices NYK as outright road favorite — a structural read on the 10-game playoff win streak + the G3 efficiency (NYK won by 13 in Cleveland with Brunson+Bridges combining 22-of-34). CLE elimination history: 0-156 for down-0-3 comebacks. Mitchell elimination-volume game (G6 vs DET R2 was 41/8) is CLE\'s only path. Allen had only 9 shots called for in G3 — CLE needs more interior offense via Allen+Mobley duo. Phase 73 elimination variance amplifier ACTIVE: CLE\'s tail widens 1.4×, but the central estimate still favors NYK. Lines/picks confirmed Sunday morning; provisional picks already authored.',
     source: 'DraftKings / NBA.com',
   },
+  {
+    date: '2026-05-24',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'SAS 103-82: Wemby 33/8/5/3blk, Spurs tie WCF 2-2',
+    body: 'San Antonio leveled the Western Conference Finals with a 21-point home blowout that flipped the series script entirely. <strong>Victor Wembanyama 33pts/8reb/5ast/3blk (+29)</strong> with two of the most memorable shots of the playoffs: a 40-foot first-half buzzer-beater (longest Spurs playoff FG since 2014) and a 27-footer 24 seconds into the game; he also blocked a Holmgren dunk attempt early. Devin Vassell 13, Stephon Castle 13 (healed + 5 ast running the offense), De\'Aaron Fox 12/10/5 double-double. SAS held OKC to its <strong>2nd-lowest postseason total in franchise history</strong> — 33% FG, 6-of-33 from 3PT (18%), 1-of-11 from deep in the first half. Spurs opened on a 16-0 run for a 23-8 lead and never trailed; OKC went scoreless for 5:08 in Q1. Quarter scores: SAS 28-19 / 22-19 / 28-22 / 25-22. Popovich addressed the team in the locker room after G3 — a first this season. OKC: SGA 19 on 6-of-15 (Castle POA defense + team forcing 17 TOs); Holmgren 10 with the early Wemby block, Caruso 8 (1-5 3PT cooldown from G3\'s 7-11 heater), J.Williams (Jaylin) 6 (cooldown from G3\'s 22pt eruption). MODEL: predicted SAS by 4 (MEDIUM) → actual SAS by 21. RIGHT WINNER, +17 margin underestimate (SAS-blowout tail outside the COMPETITIVE central estimate). Game 5 Tuesday 5/26 at Paycom Center, 8:30 PM ET.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-25',
+    severity: 'major',
+    series: 'NYK-CLE',
+    headline: 'ECF G4 tonight: NYK @ CLE 8 PM (ESPN) — closeout chance, NYK -2.5 / 218.5',
+    body: 'Tip-off 8 PM ET on ESPN from Rocket Arena. New York leads 3-0 with a chance to sweep into its first NBA Finals since 1999. DK current: NYK -2.5 / total 218.5 / ML NYK -135, CLE +114 (market firmed up overnight after the G3 +13 road blowout). <strong>Structural drivers:</strong> NYK on a 10-game playoff win streak, Brunson+Bridges combined 22-of-34 in CLE in G3, NYK shot 55.8% FG and went 24-27 from the line. CLE has never had a down-0-3 team come back in NBA history (0-156). Mitchell elimination history is the only-known counter (G6 vs DET R2 was 41/8). <strong>Phase 73 elimination amplifier ACTIVE:</strong> CLE\'s tail widens 1.4× — the central case still favors NYK but a Mitchell volume-and-efficiency game keeps the series breathing. <strong>The picks:</strong> NYK closeout floor parlay (Brunson + Bridges deep alts) plus a NYK 3-leg traditional stack. R3 out-of-sample stake cap 50% remains in effect; CF unknown-territory caps stay ($100 floor / $50 trad).',
+    source: 'DraftKings / ESPN',
+  },
 ];
