@@ -183,16 +183,16 @@ const USER_BET_LEDGER = [
         "odds": null,
         "fromCandidate": false,
         "candidateHitRate": null,
-        "note": "UNDER — bench guard 12pts (boxScore corrected 5/24 after user-reported result)",
+        "note": "UNDER — A.Mitchell quiet 2pts off bench (boxScore corrected 5/24 pass 2)",
         "hit": true,
-        "actualValue": 12
+        "actualValue": 2
       }
     ],
     "notes": "hedge: Wemby OVER + two OKC scoring suppressions. UNDERs are pure manual-thesis",
     "result": {
       "outcome": "win",
       "pnl": 39.06,
-      "settledAt": "2026-05-25T06:55:51.686Z"
+      "settledAt": "2026-05-25T07:07:09.224Z"
     }
   },
   {
