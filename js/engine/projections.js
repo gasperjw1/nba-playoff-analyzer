@@ -14,6 +14,31 @@ function getGamesPlayed(series) {
   return (series.games || []).filter(g => g && g.winner).length;
 }
 
+// Phase 73o: closeout-opportunity detection.
+// Returns true if EITHER team enters game N with 3 wins (i.e., this
+// game is a potential series-clinching game). Used by the closeout-
+// blowout starter cap modifier in calcExpectedPlayerStats.
+//
+// Backtest (test-closeout-edge-backtest.js): in 2026 closeout games
+// where the winner blew the loser out by 15+, the winning team's
+// top-5 starters played 83% of their prior-games average minutes
+// and put up 93% of prior PTS/PRA. In CLOSE closeouts (margin <15),
+// the opposite — starters played MORE and stats spiked. So the cap
+// is margin-CONDITIONAL: fires only when projected margin >= 15.
+function isCloseoutOpportunity(series, gameNum) {
+  if (!series || !Array.isArray(series.games) || gameNum < 1) return false;
+  let homeWins = 0, awayWins = 0;
+  const homeAbbr = series.homeTeam && series.homeTeam.abbr;
+  const awayAbbr = series.awayTeam && series.awayTeam.abbr;
+  for (let i = 0; i < gameNum - 1; i++) {
+    const g = series.games[i];
+    if (!g || !g.winner) continue;
+    if (g.winner === homeAbbr) homeWins++;
+    else if (g.winner === awayAbbr) awayWins++;
+  }
+  return homeWins === 3 || awayWins === 3;
+}
+
 function calcGameProjection(series, seriesId, gameNum) {
   const prob = calcWinProb(series, seriesId, gameNum);
   const hr = prob.homeRating || calcTeamRating(series.homeTeam, series, seriesId);
@@ -1266,6 +1291,56 @@ function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
     }
   }
 
+  // ---- 17. CLOSEOUT-BLOWOUT STARTER CAP (Phase 73o — May 25 backtest) ----
+  // When game N is a closeout opportunity (either side enters with 3 wins)
+  // AND the team-level projection has the favored side winning by 15+,
+  // the favored side's top-5 starters get pulled Q3 in garbage time.
+  // 2026 backtest (test-closeout-edge-backtest.js, n=10 blowout-closeout
+  // starter records): median minutes 83% of prior avg, median PTS 93%,
+  // median PRA 93%. Apply a -7% cap on PTS/REB/AST to favored starters.
+  // CLOSE closeouts (margin <15) show the OPPOSITE — starters extended
+  // and stats spike, so the cap is conditional on projected blowout.
+  //
+  // Sample is small (10 records, n=4 closeout games). Treat as
+  // directional pending more data. Re-validate after R3 + Finals add
+  // ~5-10 more closeout games.
+  if (isCloseoutOpportunity(series, gameNum)) {
+    // Avoid recursion: only invoke calcGameProjection if not already
+    // in a calcGameProjection call (it doesn't currently call
+    // calcExpectedPlayerStats, but guard for future safety).
+    if (typeof calcGameProjection === 'function' && !calcExpectedPlayerStats._inGameProj) {
+      calcExpectedPlayerStats._inGameProj = true;
+      let proj;
+      try { proj = calcGameProjection(series, series.id, gameNum); }
+      catch (e) { proj = null; }
+      finally { calcExpectedPlayerStats._inGameProj = false; }
+      if (proj && typeof proj.margin === 'number') {
+        const projectedMargin = proj.margin;  // home-relative; positive = home favored
+        const isHomeFavored = projectedMargin >= 0;
+        const playerOnFavoredSide = (isHome === isHomeFavored);
+        if (Math.abs(projectedMargin) >= 15 && playerOnFavoredSide) {
+          // Starter detection: top-5 by baseRating (stable across scenarios)
+          const sortedByRating = [...team.players].sort((a, b) =>
+            (b.baseRating || b.rating || 0) - (a.baseRating || a.rating || 0));
+          const playerRank = sortedByRating.findIndex(p => p.name === player.name);
+          const isStarter = playerRank >= 0 && playerRank < 5;
+          if (isStarter) {
+            const ptsCap = -pts * 0.07;
+            const rebCap = -reb * 0.07;
+            const astCap = -ast * 0.07;
+            pts += ptsCap; reb += rebCap; ast += astCap;
+            modifiers.push({
+              label: `Closeout Blowout Cap (proj margin ${Math.abs(projectedMargin).toFixed(0)})`,
+              ptsDelta: ptsCap, rebDelta: rebCap, astDelta: astCap,
+              pct: -7,
+              source: 'Phase 73o · 2026 closeout backtest',
+            });
+          }
+        }
+      }
+    }
+  }
+
   return {
     pts: +Math.max(0, pts).toFixed(1),
     reb: +Math.max(0, reb).toFixed(1),
@@ -2339,5 +2414,6 @@ function estimateProjectedMinutes(player, team, series) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = module.exports || {};
   module.exports.estimateProjectedMinutes = estimateProjectedMinutes;
+  module.exports.isCloseoutOpportunity = isCloseoutOpportunity;
 }
 
