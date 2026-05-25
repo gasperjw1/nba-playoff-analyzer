@@ -37,13 +37,16 @@ const opt = (flag, def) => {
   const i = argv.indexOf(flag);
   return i >= 0 ? argv[i + 1] : def;
 };
-const MODE_ADD     = has('--add');
-const MODE_SETTLE  = has('--settle');
-const MODE_REPORT  = has('--report');
-const DRY_RUN      = has('--dry-run');
+const MODE_ADD       = has('--add');
+const MODE_ADD_BATCH = has('--add-batch');
+const MODE_SETTLE    = has('--settle');
+const MODE_REPORT    = has('--report');
+const DRY_RUN        = has('--dry-run');
 
-if (!MODE_ADD && !MODE_SETTLE && !MODE_REPORT) {
-  console.error('Usage: node test-user-bet-log.js [--add <path.json>|--settle|--report] [--dry-run]');
+if (!MODE_ADD && !MODE_ADD_BATCH && !MODE_SETTLE && !MODE_REPORT) {
+  console.error('Usage: node test-user-bet-log.js [--add <path.json>|--add-batch <path.json>|--settle|--report] [--dry-run]');
+  console.error('  --add        JSON file contains a SINGLE bet object');
+  console.error('  --add-batch  JSON file contains an ARRAY of bet objects (form-generated)');
   process.exit(2);
 }
 
@@ -117,56 +120,43 @@ function scoreLeg(leg, actualGame) {
   return { hit, value, line: leg.line, dir };
 }
 
-// ── Add mode ─────────────────────────────────────────────────────────
-function runAdd(jsonPath) {
-  if (!jsonPath) {
-    console.error('--add requires a path to a JSON file. See USER_BET_TEMPLATE.json.');
-    process.exit(2);
-  }
-  if (!fs.existsSync(jsonPath)) {
-    console.error('JSON file not found: ' + jsonPath);
-    process.exit(2);
-  }
-  let raw;
-  try {
-    raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  } catch (e) {
-    console.error('Failed to parse JSON: ' + e.message);
-    process.exit(2);
-  }
+// ── Add mode (single or batch) ───────────────────────────────────────
+function addOne(raw, batchIdx) {
   // Strip _comment / _* keys (template helper docs)
   Object.keys(raw).forEach(k => { if (k.startsWith('_')) delete raw[k]; });
 
+  const tag = batchIdx != null ? `entry[${batchIdx}]` : 'entry';
+
   // Required fields
-  ['date', 'series', 'game', 'type', 'source', 'stake', 'americanOdds', 'legs'].forEach(f => {
+  for (const f of ['date', 'series', 'game', 'type', 'source', 'stake', 'americanOdds', 'legs']) {
     if (raw[f] == null) {
-      console.error(`Missing required field: ${f}`);
-      process.exit(2);
+      console.error(`${tag}: missing required field: ${f}`);
+      return false;
     }
-  });
+  }
   if (!Array.isArray(raw.legs) || raw.legs.length === 0) {
-    console.error('legs must be a non-empty array');
-    process.exit(2);
+    console.error(`${tag}: legs must be a non-empty array`);
+    return false;
   }
   if (!['parlay', 'single'].includes(raw.type)) {
-    console.error(`type must be 'parlay' or 'single' (got '${raw.type}')`);
-    process.exit(2);
+    console.error(`${tag}: type must be 'parlay' or 'single' (got '${raw.type}')`);
+    return false;
   }
   if (!['chs-lab', 'chs-lab-modified', 'manual-thesis'].includes(raw.source)) {
-    console.error(`source must be 'chs-lab' | 'chs-lab-modified' | 'manual-thesis' (got '${raw.source}')`);
-    process.exit(2);
+    console.error(`${tag}: source must be 'chs-lab' | 'chs-lab-modified' | 'manual-thesis' (got '${raw.source}')`);
+    return false;
   }
 
   // Verify series + game exist in SERIES_DATA
   const series = SERIES_DATA.find(s => s.id === raw.series);
   if (!series) {
-    console.error(`series '${raw.series}' not found in SERIES_DATA`);
-    process.exit(2);
+    console.error(`${tag}: series '${raw.series}' not found in SERIES_DATA`);
+    return false;
   }
   const game = series.games[raw.game - 1];
   if (!game) {
-    console.error(`game ${raw.game} not found in series '${raw.series}'`);
-    process.exit(2);
+    console.error(`${tag}: game ${raw.game} not found in series '${raw.series}'`);
+    return false;
   }
 
   const entry = {
@@ -198,12 +188,50 @@ function runAdd(jsonPath) {
 
   // Reject duplicate id
   if (USER_BET_LEDGER.some(e => e && e.id === entry.id)) {
-    console.error(`Duplicate id '${entry.id}' — pick a different one or omit id to auto-generate.`);
-    process.exit(2);
+    console.error(`${tag}: duplicate id '${entry.id}' — pick a different one or omit to auto-generate.`);
+    return false;
   }
 
   USER_BET_LEDGER.push(entry);
   console.log(`Added: ${entry.id} (${entry.series} G${entry.game}, ${entry.type}, ${entry.legs.length} legs, ${entry.americanOdds > 0 ? '+' : ''}${entry.americanOdds})`);
+  return true;
+}
+
+function runAdd(jsonPath) {
+  if (!jsonPath || !fs.existsSync(jsonPath)) {
+    console.error('--add requires a path to an existing JSON file (single bet object). See USER_BET_TEMPLATE.json.');
+    process.exit(2);
+  }
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8')); }
+  catch (e) { console.error('Failed to parse JSON: ' + e.message); process.exit(2); }
+  if (Array.isArray(raw)) {
+    console.error('Got an array — use --add-batch instead of --add for multi-bet imports.');
+    process.exit(2);
+  }
+  const ok = addOne(raw);
+  if (!ok) process.exit(2);
+}
+
+function runAddBatch(jsonPath) {
+  if (!jsonPath || !fs.existsSync(jsonPath)) {
+    console.error('--add-batch requires a path to an existing JSON file (array of bet objects, e.g. UI-form output).');
+    process.exit(2);
+  }
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8')); }
+  catch (e) { console.error('Failed to parse JSON: ' + e.message); process.exit(2); }
+  if (!Array.isArray(raw)) {
+    console.error('--add-batch expects a JSON array. Got: ' + typeof raw + '. Use --add for a single bet.');
+    process.exit(2);
+  }
+  let succeeded = 0, failed = 0;
+  raw.forEach((entry, i) => {
+    if (addOne(entry, i) === true) succeeded++;
+    else failed++;
+  });
+  console.log(`\nBatch result: ${succeeded} added, ${failed} skipped.`);
+  if (failed > 0 && succeeded === 0) process.exit(2);
 }
 
 // ── Settle mode ──────────────────────────────────────────────────────
@@ -353,6 +381,12 @@ if (MODE_ADD) {
   // --add can be followed by a path OR be the last positional arg
   const jsonPath = opt('--add', argv[argv.indexOf('--add') + 1]);
   runAdd(jsonPath);
+  writeLedger();
+}
+
+if (MODE_ADD_BATCH) {
+  const jsonPath = opt('--add-batch', argv[argv.indexOf('--add-batch') + 1]);
+  runAddBatch(jsonPath);
   writeLedger();
 }
 

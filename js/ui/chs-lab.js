@@ -477,6 +477,339 @@ function chsLabRenderParlayBuilderLedger() {
 }
 
 // ============================================================
+// Phase 73n: "Log a Bet" form (browser-side, exports JSON)
+// ============================================================
+// The CHS Lab tab can't write to js/data/user-bet-ledger.js directly
+// (static GitHub Pages — no server). So this form collects the bet
+// details client-side, builds the entry, and gives you a JSON
+// snippet to copy/save + run through test-user-bet-log.js --add-batch.
+//
+// Per-form state lives in window.__userBetDraft so "Add Leg" /
+// "Remove" don't lose entered values. localStorage persists the
+// draft across reloads.
+
+const USER_BET_DRAFT_KEY = 'nba2026.userBetDraft';
+
+function chsLabUserBetFormLoadDraft() {
+  try {
+    const raw = localStorage.getItem(USER_BET_DRAFT_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+function chsLabUserBetFormSaveDraft(draft) {
+  try { localStorage.setItem(USER_BET_DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+}
+function chsLabUserBetFormClearDraft() {
+  try { localStorage.removeItem(USER_BET_DRAFT_KEY); } catch (e) {}
+}
+
+// Default empty draft
+function chsLabUserBetFormDefault() {
+  return {
+    date: typeof CURRENT_DATE !== 'undefined' ? CURRENT_DATE : '',
+    series: '', game: 1,
+    type: 'parlay', source: 'chs-lab-modified',
+    inspiredBy: '', stake: 50, americanOdds: 0,
+    notes: '',
+    legs: [{ player: '', stat: 'pra', line: 0, direction: 'over', odds: -110, fromCandidate: false, candidateHitRate: null, note: '' }],
+  };
+}
+
+function chsLabRenderLogBetForm() {
+  // Pull series options + their game counts from SERIES_DATA
+  if (typeof SERIES_DATA === 'undefined' || !Array.isArray(SERIES_DATA)) return '';
+  const series = SERIES_DATA.filter(s => s && s.id && s.homeTeam && Array.isArray(s.homeTeam.players) && s.homeTeam.players.length > 0);
+
+  // Draft from localStorage (or default)
+  const draft = (typeof window !== 'undefined' && window.__userBetDraft) || chsLabUserBetFormLoadDraft() || chsLabUserBetFormDefault();
+  if (typeof window !== 'undefined') window.__userBetDraft = draft;
+
+  // Build series → players + games lookup for the JS handlers
+  if (typeof window !== 'undefined') {
+    window.__seriesRosterMap = {};
+    series.forEach(s => {
+      const players = [
+        ...(s.homeTeam.players || []).map(p => ({ name: p.name, team: s.homeTeam.abbr, pos: p.pos || '' })),
+        ...((s.awayTeam && s.awayTeam.players) || []).map(p => ({ name: p.name, team: s.awayTeam.abbr, pos: p.pos || '' })),
+      ];
+      window.__seriesRosterMap[s.id] = { players, gameCount: (s.games || []).length };
+    });
+  }
+
+  const seriesOptions = series.map(s => {
+    const sel = draft.series === s.id ? ' selected' : '';
+    return `<option value="${s.id}"${sel}>${s.id} (${s.round || ''})</option>`;
+  }).join('');
+
+  // Get players for currently-selected series (for the leg dropdowns)
+  const selectedSeries = series.find(s => s.id === draft.series) || series[0];
+  const playerList = selectedSeries
+    ? [
+        ...(selectedSeries.homeTeam.players || []).map(p => ({ name: p.name, team: selectedSeries.homeTeam.abbr })),
+        ...((selectedSeries.awayTeam && selectedSeries.awayTeam.players) || []).map(p => ({ name: p.name, team: selectedSeries.awayTeam.abbr })),
+      ]
+    : [];
+
+  const statOptions = ['pts', 'reb', 'ast', 'pra', 'stocks', 'threes', 'blk', 'stl', 'to'].map(s => {
+    return `<option value="${s}">${s.toUpperCase()}</option>`;
+  }).join('');
+
+  // CHS Lab ledger entries that match the selected series+game (for inspiredBy)
+  const inspiredOptions = (() => {
+    if (typeof CHS_LAB_LEDGER === 'undefined' || !Array.isArray(CHS_LAB_LEDGER)) return '';
+    return CHS_LAB_LEDGER
+      .filter(e => e && (!draft.series || e.series === draft.series))
+      .map(e => {
+        const id = `${e.series}-G${e.game}-${e.date}`;
+        const sel = draft.inspiredBy === id ? ' selected' : '';
+        return `<option value="${id}"${sel}>${id}</option>`;
+      }).join('');
+  })();
+
+  const fieldStyle = 'background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:5px 8px;font-size:11px;font-family:inherit;width:100%;box-sizing:border-box;';
+  const labelStyle = 'display:block;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;';
+  const sectionStyle = 'margin-bottom:10px;';
+
+  const legRows = draft.legs.map((leg, i) => `
+    <div data-leg-idx="${i}" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 0.4fr;gap:6px;align-items:end;margin-bottom:6px;padding:8px;background:rgba(255,255,255,0.02);border-radius:4px;">
+      <div><label style="${labelStyle}">Player</label>
+        <input type="text" list="user-bet-players" value="${(leg.player || '').replace(/"/g, '&quot;')}" placeholder="e.g. Wemby"
+          oninput="userBetFormUpdate(${i}, 'player', this.value)" style="${fieldStyle}"/></div>
+      <div><label style="${labelStyle}">Stat</label>
+        <select onchange="userBetFormUpdate(${i}, 'stat', this.value)" style="${fieldStyle}">
+          ${['pts','reb','ast','pra','stocks','threes','blk','stl','to'].map(s => `<option value="${s}"${leg.stat === s ? ' selected' : ''}>${s.toUpperCase()}</option>`).join('')}
+        </select></div>
+      <div><label style="${labelStyle}">Line</label>
+        <input type="number" step="0.5" value="${leg.line || 0}" oninput="userBetFormUpdate(${i}, 'line', parseFloat(this.value))" style="${fieldStyle}"/></div>
+      <div><label style="${labelStyle}">Dir</label>
+        <select onchange="userBetFormUpdate(${i}, 'direction', this.value)" style="${fieldStyle}">
+          <option value="over"${leg.direction === 'over' ? ' selected' : ''}>Over</option>
+          <option value="under"${leg.direction === 'under' ? ' selected' : ''}>Under</option>
+        </select></div>
+      <div><label style="${labelStyle}">Odds</label>
+        <input type="number" value="${leg.odds || -110}" oninput="userBetFormUpdate(${i}, 'odds', parseInt(this.value, 10))" style="${fieldStyle}"/></div>
+      <div><button onclick="userBetFormRemoveLeg(${i})" style="background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444;border-radius:4px;padding:6px;font-size:11px;cursor:pointer;width:100%;">✕</button></div>
+      <div style="grid-column:1/-1;display:flex;gap:6px;align-items:center;font-size:10px;color:var(--text-dim);">
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="checkbox" ${leg.fromCandidate ? 'checked' : ''} onchange="userBetFormUpdate(${i}, 'fromCandidate', this.checked)"/> From CHS Lab candidate list
+        </label>
+        <input type="text" placeholder="Optional thesis note" value="${(leg.note || '').replace(/"/g, '&quot;')}"
+          oninput="userBetFormUpdate(${i}, 'note', this.value)" style="${fieldStyle};flex:1;"/>
+      </div>
+    </div>
+  `).join('');
+
+  return `<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+    <h3 style="margin:0 0 10px;color:var(--text);font-size:13px;letter-spacing:0.5px;">📝 LOG A BET (Phase 73n)</h3>
+    <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
+      Fill in the form to build a bet entry. Click <strong>Generate JSON</strong> to copy the bet to clipboard, then run
+      <code style="background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:3px;">node test-user-bet-log.js --add-batch &lt;file&gt;</code>
+      locally to commit it to the ledger. Draft persists across reloads via localStorage.
+    </p>
+
+    <datalist id="user-bet-players">
+      ${playerList.map(p => `<option value="${p.name}">${p.team}</option>`).join('')}
+    </datalist>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;${sectionStyle}">
+      <div><label style="${labelStyle}">Series</label>
+        <select id="user-bet-series" onchange="userBetFormChangeSeries(this.value)" style="${fieldStyle}">
+          ${seriesOptions}
+        </select></div>
+      <div><label style="${labelStyle}">Game</label>
+        <input type="number" min="1" max="7" value="${draft.game}" oninput="userBetFormSetField('game', parseInt(this.value, 10))" style="${fieldStyle}"/></div>
+      <div><label style="${labelStyle}">Date (YYYY-MM-DD)</label>
+        <input type="text" value="${draft.date}" oninput="userBetFormSetField('date', this.value)" style="${fieldStyle}"/></div>
+      <div><label style="${labelStyle}">Type</label>
+        <select onchange="userBetFormSetField('type', this.value)" style="${fieldStyle}">
+          <option value="parlay"${draft.type === 'parlay' ? ' selected' : ''}>Parlay</option>
+          <option value="single"${draft.type === 'single' ? ' selected' : ''}>Single</option>
+        </select></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;${sectionStyle}">
+      <div><label style="${labelStyle}">Source</label>
+        <select onchange="userBetFormSetField('source', this.value)" style="${fieldStyle}">
+          <option value="chs-lab"${draft.source === 'chs-lab' ? ' selected' : ''}>CHS Lab direct</option>
+          <option value="chs-lab-modified"${draft.source === 'chs-lab-modified' ? ' selected' : ''}>CHS Lab modified</option>
+          <option value="manual-thesis"${draft.source === 'manual-thesis' ? ' selected' : ''}>Manual thesis</option>
+        </select></div>
+      <div><label style="${labelStyle}">Inspired by (optional)</label>
+        <select onchange="userBetFormSetField('inspiredBy', this.value)" style="${fieldStyle}">
+          <option value="">— none —</option>
+          ${inspiredOptions}
+        </select></div>
+      <div><label style="${labelStyle}">Stake ($)</label>
+        <input type="number" step="1" min="0" value="${draft.stake}" oninput="userBetFormSetField('stake', parseFloat(this.value))" style="${fieldStyle}"/></div>
+      <div><label style="${labelStyle}">American odds</label>
+        <input type="number" value="${draft.americanOdds}" oninput="userBetFormSetField('americanOdds', parseInt(this.value, 10))" style="${fieldStyle}"/></div>
+    </div>
+
+    <div style="${sectionStyle}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <label style="${labelStyle};margin-bottom:0;">Legs (${draft.legs.length})</label>
+        <button onclick="userBetFormAddLeg()" style="background:rgba(34,211,238,0.15);border:1px solid #22d3ee;color:#22d3ee;border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;">+ Add Leg</button>
+      </div>
+      ${legRows}
+    </div>
+
+    <div style="${sectionStyle}">
+      <label style="${labelStyle}">Overall notes (optional)</label>
+      <textarea oninput="userBetFormSetField('notes', this.value)" style="${fieldStyle};min-height:50px;resize:vertical;">${(draft.notes || '').replace(/</g, '&lt;')}</textarea>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <button onclick="userBetFormGenerateJSON()" style="background:#22c55e;border:none;color:#000;border-radius:4px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;">⤓ Generate JSON</button>
+      <button onclick="userBetFormCopyClipboard()" style="background:rgba(34,211,238,0.15);border:1px solid #22d3ee;color:#22d3ee;border-radius:4px;padding:8px 16px;font-size:12px;cursor:pointer;">📋 Copy to clipboard</button>
+      <button onclick="userBetFormReset()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:8px 16px;font-size:12px;cursor:pointer;">↻ Clear draft</button>
+    </div>
+
+    <div id="user-bet-json-output" style="display:none;margin-top:14px;">
+      <label style="${labelStyle}">Generated JSON (save to file → <code>node test-user-bet-log.js --add-batch path.json</code>)</label>
+      <textarea id="user-bet-json-textarea" readonly style="${fieldStyle};min-height:180px;font-family:'SF Mono','Monaco','Menlo',monospace;font-size:10px;"></textarea>
+    </div>
+
+    <div id="user-bet-form-toast" style="display:none;margin-top:10px;padding:8px;background:rgba(34,197,94,0.1);border:1px solid #22c55e;color:#22c55e;border-radius:4px;font-size:11px;"></div>
+  </div>`;
+}
+
+// ─── Form event handlers (global so inline onclick can reach them) ───
+
+function userBetFormSetField(field, value) {
+  if (typeof window === 'undefined') return;
+  window.__userBetDraft = window.__userBetDraft || chsLabUserBetFormDefault();
+  window.__userBetDraft[field] = value;
+  chsLabUserBetFormSaveDraft(window.__userBetDraft);
+}
+
+function userBetFormUpdate(legIdx, field, value) {
+  if (typeof window === 'undefined') return;
+  window.__userBetDraft = window.__userBetDraft || chsLabUserBetFormDefault();
+  if (!Array.isArray(window.__userBetDraft.legs)) window.__userBetDraft.legs = [];
+  if (!window.__userBetDraft.legs[legIdx]) return;
+  window.__userBetDraft.legs[legIdx][field] = value;
+  chsLabUserBetFormSaveDraft(window.__userBetDraft);
+}
+
+function userBetFormAddLeg() {
+  if (typeof window === 'undefined') return;
+  window.__userBetDraft = window.__userBetDraft || chsLabUserBetFormDefault();
+  window.__userBetDraft.legs.push({ player: '', stat: 'pra', line: 0, direction: 'over', odds: -110, fromCandidate: false, candidateHitRate: null, note: '' });
+  chsLabUserBetFormSaveDraft(window.__userBetDraft);
+  // Re-render the form so the new leg row appears
+  if (typeof switchPage === 'function') switchPage('chs-lab');
+}
+
+function userBetFormRemoveLeg(idx) {
+  if (typeof window === 'undefined') return;
+  if (!window.__userBetDraft || !Array.isArray(window.__userBetDraft.legs)) return;
+  if (window.__userBetDraft.legs.length <= 1) return; // keep at least one leg
+  window.__userBetDraft.legs.splice(idx, 1);
+  chsLabUserBetFormSaveDraft(window.__userBetDraft);
+  if (typeof switchPage === 'function') switchPage('chs-lab');
+}
+
+function userBetFormChangeSeries(seriesId) {
+  if (typeof window === 'undefined') return;
+  window.__userBetDraft = window.__userBetDraft || chsLabUserBetFormDefault();
+  window.__userBetDraft.series = seriesId;
+  chsLabUserBetFormSaveDraft(window.__userBetDraft);
+  // Re-render so player datalist + inspiredBy options refresh
+  if (typeof switchPage === 'function') switchPage('chs-lab');
+}
+
+function userBetFormGenerateJSON() {
+  if (typeof window === 'undefined' || !window.__userBetDraft) return;
+  const d = window.__userBetDraft;
+  // Validate before serializing
+  const errors = [];
+  if (!d.date) errors.push('date required');
+  if (!d.series) errors.push('series required');
+  if (!d.game || d.game < 1) errors.push('game required');
+  if (!['parlay', 'single'].includes(d.type)) errors.push('type required');
+  if (!['chs-lab', 'chs-lab-modified', 'manual-thesis'].includes(d.source)) errors.push('source required');
+  if (!(d.stake > 0)) errors.push('stake must be positive');
+  if (!d.americanOdds) errors.push('americanOdds required');
+  if (!Array.isArray(d.legs) || d.legs.length === 0) errors.push('at least one leg required');
+  if (Array.isArray(d.legs)) {
+    d.legs.forEach((l, i) => {
+      if (!l.player) errors.push(`leg ${i + 1}: player required`);
+      if (!l.stat) errors.push(`leg ${i + 1}: stat required`);
+      if (l.line == null || isNaN(l.line)) errors.push(`leg ${i + 1}: line required`);
+    });
+  }
+  if (errors.length) {
+    userBetFormToast('⚠ ' + errors.join('; '), '#ef4444');
+    return;
+  }
+  // Build the entry — wrap as a batch (array) so the CLI's --add-batch picks
+  // it up cleanly. The user can paste multiple back-to-back if they want.
+  const entry = {
+    date: d.date, series: d.series, game: d.game,
+    type: d.type, source: d.source,
+    inspiredBy: d.inspiredBy || null,
+    stake: d.stake, americanOdds: d.americanOdds,
+    legs: d.legs.map(l => ({
+      player: l.player, stat: l.stat, line: l.line, direction: l.direction || 'over',
+      odds: l.odds, fromCandidate: !!l.fromCandidate,
+      candidateHitRate: l.candidateHitRate != null ? l.candidateHitRate : null,
+      note: l.note || null,
+    })),
+    notes: d.notes || '',
+  };
+  const out = JSON.stringify([entry], null, 2);
+  const ta = document.getElementById('user-bet-json-textarea');
+  const wrap = document.getElementById('user-bet-json-output');
+  if (ta && wrap) {
+    ta.value = out;
+    wrap.style.display = 'block';
+    ta.select();
+  }
+  userBetFormToast('✓ JSON generated. Copy below, save to a file, then run: node test-user-bet-log.js --add-batch <file>', '#22c55e');
+}
+
+function userBetFormCopyClipboard() {
+  const ta = document.getElementById('user-bet-json-textarea');
+  if (!ta || !ta.value) {
+    userBetFormGenerateJSON();
+    // Re-fetch after generating
+    const ta2 = document.getElementById('user-bet-json-textarea');
+    if (!ta2 || !ta2.value) return;
+  }
+  const text = document.getElementById('user-bet-json-textarea').value;
+  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(
+      () => userBetFormToast('✓ Copied to clipboard. Save as bet.json and run: node test-user-bet-log.js --add-batch bet.json', '#22c55e'),
+      () => userBetFormToast('⚠ Clipboard copy failed — select the text manually', '#ef4444')
+    );
+  } else {
+    // Fallback: select the textarea contents
+    const ta = document.getElementById('user-bet-json-textarea');
+    if (ta) ta.select();
+    userBetFormToast('⚠ Browser clipboard unavailable; select the text below manually', '#ef4444');
+  }
+}
+
+function userBetFormReset() {
+  if (typeof window === 'undefined') return;
+  if (!confirm('Clear the current bet draft? localStorage will be wiped.')) return;
+  chsLabUserBetFormClearDraft();
+  window.__userBetDraft = chsLabUserBetFormDefault();
+  if (typeof switchPage === 'function') switchPage('chs-lab');
+}
+
+function userBetFormToast(msg, color) {
+  const el = document.getElementById('user-bet-form-toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.borderColor = color;
+  el.style.color = color;
+  el.style.background = color === '#ef4444' ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)';
+  el.style.display = 'block';
+}
+
+// ============================================================
 // Phase 73n: Your Bets ledger + Algorithm comparison
 // ============================================================
 // Reads USER_BET_LEDGER and renders rolling P&L for the user's
@@ -1002,6 +1335,7 @@ function renderCHSLabPage(el) {
 
       ${chsLabRenderScoreboard(agg)}
       ${chsLabRenderUserBets()}
+      ${chsLabRenderLogBetForm()}
       ${chsLabRenderParlayBuilderLedger()}
       ${chsLabRenderRiskDashboard()}
       ${chsLabRenderEdgeFilter()}

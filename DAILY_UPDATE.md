@@ -717,7 +717,21 @@ Track the bets you actually place — distinct from FEATURED_PARLAYS
 The CHS Lab tab's "Your Bets vs Algorithm — Rolling P&L" panel reads
 this.
 
-**To log a bet** (when placed, typically pre-tip):
+**To log a bet** (when placed, typically pre-tip) — two paths:
+
+**Option A: UI form (recommended for quick entry)**
+
+```
+- Open the live CHS Lab tab → "📝 LOG A BET" panel
+- Fill in series, game, source, stake, legs (Add Leg button for each)
+- Click "Generate JSON" → copies a batch-format array to clipboard
+- Save the clipboard contents to a file (e.g., /tmp/bet.json)
+- Run: node test-user-bet-log.js --add-batch /tmp/bet.json
+- Draft persists across reloads via localStorage; "Clear draft"
+  button resets after a successful log
+```
+
+**Option B: CLI directly (no browser)**
 
 ```
 - Copy USER_BET_TEMPLATE.json to a temp file (e.g., /tmp/bet.json)
