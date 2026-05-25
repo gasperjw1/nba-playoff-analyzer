@@ -685,20 +685,32 @@ function chsLabRenderLedger(ledger) {
       </tr>`;
   }).join('');
 
+  // Phase 73p: collapsible <details> — full table only on demand.
   return `
-    <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 12px;">ACCURACY LEDGER · RESOLVED GAMES</h3>
-    <table style="width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <thead style="background:rgba(0,0,0,0.3);">
-        <tr>
-          <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Date</th>
-          <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Series</th>
-          <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Actual</th>
-          <th style="padding:10px;text-align:center;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Main</th>
-          <th style="padding:10px;text-align:center;font-size:10px;color:#f59e0b;text-transform:uppercase;letter-spacing:0.5px;">CHS</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+    <details style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;">
+      <summary style="cursor:pointer;padding:12px 16px;font-size:13px;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;list-style:none;">
+        ▸ ACCURACY LEDGER · ${ledger.length} resolved game${ledger.length === 1 ? '' : 's'} <span style="color:var(--text-dim);font-weight:400;font-size:11px;">(click to expand)</span>
+      </summary>
+      <div style="padding:0 16px 16px;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead style="background:rgba(0,0,0,0.3);">
+            <tr>
+              <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Date</th>
+              <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Series</th>
+              <th style="padding:10px;text-align:left;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Actual</th>
+              <th style="padding:10px;text-align:center;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">Main</th>
+              <th style="padding:10px;text-align:center;font-size:10px;color:#f59e0b;text-transform:uppercase;letter-spacing:0.5px;">CHS</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="margin-top:12px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+          <strong>Retroactive entries</strong> (marked <em>retro</em>) were computed by running CHS against the current
+          <code>historical.js</code> scenarios after the game already finished — they're a baseline, not a pre-game commitment.
+          Going forward the daily morning task captures CHS predictions <em>before</em> each game and appends non-retro entries.
+        </div>
+      </div>
+    </details>`;
 }
 
 // Phase 69: Slate concentration scanner — surfaces directional-exposure
@@ -844,9 +856,19 @@ function chsLabRenderRiskDashboard() {
       </div>
     </div>`;
 
+  // Phase 73p: collapsible — top-line stats (Sharpe + Total P&L + Drawdown)
+  // exposed in the summary; full KPI grid + equity curve + counterfactual
+  // inside. Keeps the analyst-grade depth on demand without the always-on
+  // 200px panel.
+  const summarySharpe = `<span style="color:${sharpeColor(hist.dailySharpe)};">Sharpe ${hist.dailySharpe}</span>`;
+  const summaryPL = `<span style="color:${hist.totalPL >= 0 ? '#22c55e' : '#ef4444'};">${hist.totalPL >= 0 ? '+' : ''}$${hist.totalPL}</span>`;
+  const summaryDD = `<span style="color:${ddColor};">DD $${hist.maxDrawdown} (${ddPctOf500.toFixed(0)}%)</span>`;
   return `
-    <div style="margin-bottom:24px;">
-      <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 6px;">RISK DASHBOARD · BETTING RECORD AS A PORTFOLIO</h3>
+    <details style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;">
+      <summary style="cursor:pointer;padding:12px 16px;font-size:13px;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;list-style:none;">
+        ▸ RISK DASHBOARD · ${summaryPL} · ${summarySharpe} · ${summaryDD} <span style="color:var(--text-dim);font-weight:400;font-size:11px;">(click to expand for Sharpe / P(ruin) / equity curve / counterfactual)</span>
+      </summary>
+      <div style="padding:0 16px 16px;">
       <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
         Reframes the record from "did we win?" to a risk-analyst view: Sharpe ratio, max drawdown,
         risk of ruin. Assumes $500 reference bankroll, $25 flat stake. The single metric to watch
@@ -908,7 +930,8 @@ function chsLabRenderRiskDashboard() {
         compounds: 4 consecutive losing sessions has happened once already; at this pace it happens again with
         probability ${(Math.pow(hist.losingSessions/hist.totalSessions, 4)*100).toFixed(1)}% per 4-session window.
       </div>
-    </div>`;
+      </div>
+    </details>`;
 }
 
 // Phase 68: Bet-Filter Verdict — surfaces the data-driven conclusion from
@@ -940,29 +963,34 @@ function chsLabRenderEdgeFilter() {
   };
   const typeOrder  = ['spread', 'ml', 'total', 'prop'];
   const confOrder  = ['best-bet', 'lean', 'medium', 'high', 'coin-flip'];
+  // Phase 73p: collapsible — R2 retro is reference data; users don't need
+  // to see the full cross-tab every visit. The headline finding stays in
+  // the summary line so the takeaway is visible without expanding.
   return `
-    <div style="margin-bottom:24px;">
-      <h3 style="font-size:14px;letter-spacing:1px;color:var(--text-dim);margin:0 0 6px;">BET-FILTER VERDICT · R2 RETRO (99 bets, $25 stake)</h3>
-      <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
-        Data-driven recommendations from <code>test-pl-with-filters.js</code>. Every bet rendered in the app gets a
-        <span style="color:#22c55e;font-weight:700;">PLACE</span> / <span style="color:#eab308;font-weight:700;">CAUTION</span> /
-        <span style="color:#ef4444;font-weight:700;">SKIP</span> pill from <code>edge-detector.js</code> based on the
-        confidence × type cross-tab. <strong style="color:#fff;">Headline finding:</strong> dropping all props would
-        have moved the R2 slate from <span style="color:#ef4444;font-weight:700;">−$203 net</span> to
-        <span style="color:#22c55e;font-weight:700;">+$213 net (+17% ROI)</span>.
-      </p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;margin-bottom:10px;">
-        ${typeOrder.map(k => cellHTML(k, 'TYPE ' + k.toUpperCase(), t[k])).join('')}
+    <details style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;">
+      <summary style="cursor:pointer;padding:12px 16px;font-size:13px;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;list-style:none;">
+        ▸ BET-FILTER VERDICT · R2 RETRO (99 bets) <span style="color:var(--text-dim);font-weight:400;font-size:11px;">— dropping props alone moved R2 from <span style="color:#ef4444;">−$203</span> to <span style="color:#22c55e;">+$213 (+17% ROI)</span>. (click to expand)</span>
+      </summary>
+      <div style="padding:0 16px 16px;">
+        <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
+          Data-driven recommendations from <code>test-pl-with-filters.js</code>. Every bet rendered in the app gets a
+          <span style="color:#22c55e;font-weight:700;">PLACE</span> / <span style="color:#eab308;font-weight:700;">CAUTION</span> /
+          <span style="color:#ef4444;font-weight:700;">SKIP</span> pill from <code>edge-detector.js</code> based on the
+          confidence × type cross-tab.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;margin-bottom:10px;">
+          ${typeOrder.map(k => cellHTML(k, 'TYPE ' + k.toUpperCase(), t[k])).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;">
+          ${confOrder.filter(k => c[k] && c[k].n >= 3).map(k => cellHTML(k, 'CONF ' + k.toUpperCase(), c[k])).join('')}
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5;">
+          <strong style="color:var(--text);">How to read this:</strong> SKIP cells lost money historically (drop them).
+          PLACE cells made money. The intersection that bled most was <code>high × prop</code>: 33% hit, −43% ROI on 21 bets.
+          Cells with n&lt;3 are hidden until sample grows. Numbers refresh by re-running the P&amp;L script.
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;">
-        ${confOrder.filter(k => c[k] && c[k].n >= 3).map(k => cellHTML(k, 'CONF ' + k.toUpperCase(), c[k])).join('')}
-      </div>
-      <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5;">
-        <strong style="color:var(--text);">How to read this:</strong> SKIP cells lost money historically (drop them).
-        PLACE cells made money. The intersection that bled most was <code>high × prop</code>: 33% hit, −43% ROI on 21 bets.
-        Cells with n&lt;3 are hidden until sample grows. Numbers refresh by re-running the P&amp;L script.
-      </div>
-    </div>`;
+    </details>`;
 }
 
 function renderCHSLabPage(el) {
@@ -982,22 +1010,13 @@ function renderCHSLabPage(el) {
 
   el.innerHTML = `
     <div style="max-width:1280px;margin:0 auto;padding:24px 16px;" class="bets-container">
-      <div style="margin-bottom:18px;">
-        <h2 style="margin:0 0 4px;color:#fff;">CHS Lab — Risk + Edge + Shadow Engine</h2>
-        <p style="margin:0 0 8px;font-size:12px;color:var(--text-dim);line-height:1.6;">
-          One-stop dashboard for betting analysis. Panels below (scroll for each):
-          <strong style="color:var(--text);">Shadow Engine Scoreboard</strong> →
-          <strong style="color:#22c55e;">📊 Risk Dashboard</strong> (Sharpe, drawdown, P(ruin)) →
-          <strong style="color:var(--accent);">Bet-Filter Verdict</strong> (PLACE/CAUTION/SKIP cross-tab) →
-          <strong style="color:#a78bfa;">Slate Concentration</strong> → Live Preview → Parlay Candidates → Ledger.
-        </p>
-        <p style="margin:0;font-size:11px;color:var(--text-dim);line-height:1.5;">
-          <strong>CHS status:</strong> currently <strong style="color:#f59e0b;">OFF in production</strong>
-          (<code>USE_CHS_IN_PROJECTIONS = false</code>). Promotion bar:
-          <strong>winner Δ ≥ +10pp AND margin MAE Δ ≥ −1.5pt over 10 games</strong>.
-          Current state: ${agg.total} games, CHS +${(parseFloat(agg.chsHitPct) - parseFloat(agg.mainHitPct)).toFixed(0)}pp winner / ${(parseFloat(agg.chsMAE) - parseFloat(agg.mainMAE)).toFixed(2)}pt MAE.
-          ${chsEvalLabel}
-        </p>
+      <div style="margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <h2 style="margin:0;color:#fff;">CHS Lab</h2>
+        <span style="font-size:11px;color:var(--text-dim);">Risk + Edge + Shadow Engine</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--text-dim);">
+          <strong>CHS:</strong> <span style="color:#f59e0b;">OFF</span> · ${agg.total} games · +${(parseFloat(agg.chsHitPct) - parseFloat(agg.mainHitPct)).toFixed(0)}pp winner / ${(parseFloat(agg.chsMAE) - parseFloat(agg.mainMAE)).toFixed(2)}pt MAE ${chsEvalLabel}
+          <span title="Promotion bar: winner Δ ≥ +10pp AND margin MAE Δ ≥ −1.5pt over 10 games. Currently OFF via USE_CHS_IN_PROJECTIONS=false. Hover for full criteria." style="cursor:help;color:var(--text-dim);margin-left:4px;">ⓘ</span>
+        </span>
       </div>
 
       ${chsLabRenderScoreboard(agg)}
@@ -1009,12 +1028,5 @@ function renderCHSLabPage(el) {
       ${chsLabRenderLivePreview()}
       ${chsLabRenderParlayCandidates()}
       ${chsLabRenderLedger(ledger)}
-
-      <div style="margin-top:24px;font-size:11px;color:var(--text-dim);line-height:1.6;">
-        <strong>Retroactive entries</strong> (marked <em>retro</em>) were computed by running CHS against the current
-        <code>historical.js</code> scenarios after the game already finished — they're a baseline, not a pre-game commitment,
-        and may shift if scenarios are refined. Going forward the daily morning task captures CHS predictions <em>before</em>
-        each game and appends non-retro entries.
-      </div>
     </div>`;
 }
