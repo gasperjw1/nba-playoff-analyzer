@@ -1,70 +1,280 @@
-// ============================================================
-// USER BET LEDGER — Phase 73n (May 24, 2026)
-// ============================================================
-// User-placed parlays + outcomes, distinct from FEATURED_PARLAYS
-// (which is daily-routine-authored marketing material) and from
-// CHS_LAB_LEDGER (which is the algorithm's own picks).
-//
-// Purpose:
-//   1. Track real money placed: rolling W-L + P&L + ROI.
-//   2. A/B comparison against the algorithm (chs-lab-ledger).
-//   3. Long-term feedback signal: when user diverges from the
-//      algorithm and still wins, that's a calibration signal —
-//      after 30+ user bets, the algorithm can use the user's edge
-//      patterns to shift its confidence on similar legs.
-//
-// Schema per entry:
-//   {
-//     id:          'user-2026-05-24-001'   (caller-provided or generated)
-//     date:        'YYYY-MM-DD'            (game date)
-//     loggedAt:    ISO8601                  (when entered)
-//     series:      'OKC-SAS'                (primary series)
-//     game:        4                        (primary game number)
-//     type:        'parlay' | 'single'
-//     source:      'chs-lab' | 'chs-lab-modified' | 'manual-thesis'
-//     inspiredBy:  'OKC-SAS-G4-2026-05-24' | null
-//                  (back-ref to a CHS_LAB_LEDGER entry by date+series+game)
-//     stake:       50                       (dollars)
-//     americanOdds: +350                    (what the book actually offered)
-//     legs: [
-//       {
-//         player:           'Victor Wembanyama',
-//         stat:             'pra',
-//         line:             26.5,
-//         direction:        'over' | 'under',
-//         odds:             -110              (per-leg juice)
-//         fromCandidate:    true | false      (was this leg in CHS Lab's
-//                                              candidate list at log time?)
-//         candidateHitRate: 0.81 | null       (MC's marginal estimate if known)
-//         note:             'must-win volume bump' (optional thesis note),
-//         hit:              null | true | false  (filled on settle)
-//         actualValue:      null | <number>      (filled on settle)
-//       },
-//       ...
-//     ],
-//     notes:        'starter-only, both teams strategy',
-//     result: null | {
-//       outcome:   'win' | 'loss' | 'push',
-//       pnl:       <number>                  (signed; +profit on win, -stake on loss)
-//       settledAt: ISO8601,
-//     }
-//   }
-//
-// Lifecycle:
-//   1. Log (when bet is placed): test-user-bet-log.js --add bet.json
-//      → appends a new entry with result=null
-//   2. Settle (after game): test-user-bet-log.js --settle
-//      → fills in legs[].hit + legs[].actualValue + result for entries
-//        whose game now has a winner in SERIES_DATA
-//   3. Report: test-user-bet-log.js --report
-//      → rolling P&L + per-source breakdown + comparison vs algorithm
-//
-// Validators (TEST 30): schema integrity + settled-outcome consistency.
-// Boot-time validator surfaces issues in the red banner.
-// ============================================================
+// User Bet Ledger — auto-maintained by test-user-bet-log.js
+// Schema docs at top of js/data/user-bet-ledger.js. Add entries via
+// the CLI (--add <bet.json>) so id-collision + schema checks run.
 
 const USER_BET_LEDGER = [
-  // Entries appended via test-user-bet-log.js --add.
+  {
+    "id": "user-2026-05-21-001",
+    "date": "2026-05-21",
+    "loggedAt": "2026-05-25T06:32:58.108Z",
+    "series": "NYK-CLE",
+    "game": 2,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": 414,
+    "legs": [
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 16.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": "placed at halftime — re-priced live",
+        "hit": true,
+        "actualValue": 19
+      },
+      {
+        "player": "Donovan Mitchell",
+        "stat": "pts",
+        "line": 19.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": "placed at halftime",
+        "hit": true,
+        "actualValue": 26
+      },
+      {
+        "player": "Mitchell Robinson",
+        "stat": "pts",
+        "line": 3.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "manual add — Robinson isn't in CHS Lab rotation filter (sub-18min)",
+        "hit": true,
+        "actualValue": 6
+      }
+    ],
+    "notes": "placed at halftime, both NYK + CLE primary scorers + Robinson as deep-bench scoring leg",
+    "result": {
+      "outcome": "win",
+      "pnl": 207,
+      "settledAt": "2026-05-25T06:33:19.059Z"
+    }
+  },
+  {
+    "id": "user-2026-05-22-001",
+    "date": "2026-05-22",
+    "loggedAt": "2026-05-25T06:32:58.113Z",
+    "series": "OKC-SAS",
+    "game": 3,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": -102,
+    "legs": [
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pra",
+        "line": 29.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": "deep alt above CHS Lab's safer line",
+        "hit": true,
+        "actualValue": 33
+      },
+      {
+        "player": "Devin Vassell",
+        "stat": "pra",
+        "line": 14.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 28
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 10
+      },
+      {
+        "player": "Dylan Harper",
+        "stat": "pts",
+        "line": 4.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "bench starter — sub-18min so not in CHS Lab pool",
+        "hit": true,
+        "actualValue": 6
+      },
+      {
+        "player": "De'Aaron Fox",
+        "stat": "pts",
+        "line": 9.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 15
+      }
+    ],
+    "notes": "5-leg SAS-heavy stack — starter-only thesis, both teams",
+    "result": {
+      "outcome": "win",
+      "pnl": 49.02,
+      "settledAt": "2026-05-25T06:33:19.059Z"
+    }
+  },
+  {
+    "id": "user-2026-05-22-002",
+    "date": "2026-05-22",
+    "loggedAt": "2026-05-25T06:32:58.113Z",
+    "series": "OKC-SAS",
+    "game": 3,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": -128,
+    "legs": [
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pra",
+        "line": 29.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 33
+      },
+      {
+        "player": "Chet Holmgren",
+        "stat": "pts",
+        "line": 18.5,
+        "direction": "under",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "UNDER — Wemby suppresses Holmgren scoring",
+        "hit": true,
+        "actualValue": 8
+      },
+      {
+        "player": "Ajay Mitchell",
+        "stat": "pts",
+        "line": 17.5,
+        "direction": "under",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "UNDER — bench guard usually doesn't crack 17 (was actually 24 — McCain tail event)",
+        "hit": false,
+        "actualValue": 24
+      }
+    ],
+    "notes": "hedge: Wemby OVER + two OKC scoring suppressions. UNDERs are pure manual-thesis",
+    "result": {
+      "outcome": "loss",
+      "pnl": -50,
+      "settledAt": "2026-05-25T06:33:19.059Z"
+    }
+  },
+  {
+    "id": "user-2026-05-23-001",
+    "date": "2026-05-23",
+    "loggedAt": "2026-05-25T06:32:58.113Z",
+    "series": "NYK-CLE",
+    "game": 3,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": "NYK-CLE-G3-2026-05-23",
+    "stake": 50,
+    "americanOdds": 100,
+    "legs": [
+      {
+        "player": "OG Anunoby",
+        "stat": "pra",
+        "line": 19.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 32
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pra",
+        "line": 24.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": "deeper alt than CHS Lab's 28.5 candidate",
+        "hit": true,
+        "actualValue": 39
+      },
+      {
+        "player": "Jarrett Allen",
+        "stat": "pra",
+        "line": 14.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": null,
+        "hit": true,
+        "actualValue": 24
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pts",
+        "line": 9.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": null,
+        "note": "deep alt below CHS Lab's 25.5 PRA line",
+        "hit": true,
+        "actualValue": 13
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "second Brunson leg — SGP same-player double prop",
+        "hit": true,
+        "actualValue": 30
+      }
+    ],
+    "notes": "NYK-stack closeout-game thesis. Brunson twice (PRA + PTS) — SGP-style",
+    "result": {
+      "outcome": "win",
+      "pnl": 50,
+      "settledAt": "2026-05-25T06:33:19.059Z"
+    }
+  }
 ];
 
 if (typeof module !== 'undefined' && module.exports) {
