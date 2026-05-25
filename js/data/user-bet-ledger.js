@@ -183,16 +183,16 @@ const USER_BET_LEDGER = [
         "odds": null,
         "fromCandidate": false,
         "candidateHitRate": null,
-        "note": "UNDER — bench guard usually doesn't crack 17 (was actually 24 — McCain tail event)",
-        "hit": false,
-        "actualValue": 24
+        "note": "UNDER — bench guard 12pts (boxScore corrected 5/24 after user-reported result)",
+        "hit": true,
+        "actualValue": 12
       }
     ],
     "notes": "hedge: Wemby OVER + two OKC scoring suppressions. UNDERs are pure manual-thesis",
     "result": {
-      "outcome": "loss",
-      "pnl": -50,
-      "settledAt": "2026-05-25T06:33:19.059Z"
+      "outcome": "win",
+      "pnl": 39.06,
+      "settledAt": "2026-05-25T06:55:51.686Z"
     }
   },
   {

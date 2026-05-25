@@ -1703,7 +1703,7 @@ const BETS = [
     ],
     reasoning: "SGA series avg 27 against Castle. Phase 71c per-player override (-6.9) is heavy — corrected projection ~24 (UNDER 27.5). The bias-correction framework says lean UNDER but the bet pick is OVER — leaving this as a calibration check: if Castle/Harper hounding continues at G1 levels, override is right; if SGA acclimates after G2 30pts, the override has run its course. <strong>SKIP this entry</strong> per framework — included for transparency but the pill auto-classifies SKIP via the override.",
     confidence: 'lean', thesis: ['model'], narrative: null,
-    result: { outcome:'loss', actual:'SGA 26pts on 11-22 FG — under 27.5 by 1.5. Phase 71c override (-6.9) directionally correct (projection 24 vs actual 26). Castle-bruised game still capped SGA short of the line; calibration framework called this right.' },
+    result: { outcome:'win', actual:'SGA 30pts on 12-22 FG — clears 27.5 by 2.5. Phase 71c override (-6.9) was directionally WRONG for this game: actual line was SGA acclimating to Castle (hot Castle 13 FG was injury-driven, not Castle defense). Recalibration note: when defender is playing through injury, per-player override should NOT fire at full strength.' },
   },
   {
     id: 'cf-g3-okc-sas-castle-pts',
