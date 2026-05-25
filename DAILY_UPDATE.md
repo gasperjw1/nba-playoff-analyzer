@@ -717,31 +717,22 @@ Track the bets you actually place — distinct from FEATURED_PARLAYS
 The CHS Lab tab's "Your Bets vs Algorithm — Rolling P&L" panel reads
 this.
 
-**To log a bet** (when placed, typically pre-tip) — two paths:
-
-**Option A: UI form (recommended for quick entry)**
-
-```
-- Open the live CHS Lab tab → "📝 LOG A BET" panel
-- Fill in series, game, source, stake, legs (Add Leg button for each)
-- Click "Generate JSON" → copies a batch-format array to clipboard
-- Save the clipboard contents to a file (e.g., /tmp/bet.json)
-- Run: node test-user-bet-log.js --add-batch /tmp/bet.json
-- Draft persists across reloads via localStorage; "Clear draft"
-  button resets after a successful log
-```
-
-**Option B: CLI directly (no browser)**
+**To log a bet** (when placed, typically pre-tip):
 
 ```
 - Copy USER_BET_TEMPLATE.json to a temp file (e.g., /tmp/bet.json)
+  for a single bet, OR build a JSON array of multiple bet objects
+  for batch import (recommended when logging several at once).
 - Fill in: date, series, game, type ('parlay'|'single'), source
   ('chs-lab' = took algorithm's pick directly, 'chs-lab-modified' =
   swapped/added legs, 'manual-thesis' = pure user pick), stake,
   americanOdds, legs[]. Optional inspiredBy field references a
   CHS_LAB_LEDGER entry by date+series+game.
 - Run: node test-user-bet-log.js --add /tmp/bet.json
-  → appends to USER_BET_LEDGER with id auto-generated
+       (single object)
+  OR:   node test-user-bet-log.js --add-batch /tmp/bets.json
+       (array of objects)
+  Both append to USER_BET_LEDGER with auto-generated ids.
 ```
 
 **To settle** (after games finish — run after step 2):
