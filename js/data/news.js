@@ -466,4 +466,28 @@ const NEWS = [
     body: 'Tip-off 8 PM ET on ESPN from Rocket Arena. New York leads 3-0 with a chance to sweep into its first NBA Finals since 1999. DK current: NYK -2.5 / total 218.5 / ML NYK -135, CLE +114 (market firmed up overnight after the G3 +13 road blowout). <strong>Structural drivers:</strong> NYK on a 10-game playoff win streak, Brunson+Bridges combined 22-of-34 in CLE in G3, NYK shot 55.8% FG and went 24-27 from the line. CLE has never had a down-0-3 team come back in NBA history (0-156). Mitchell elimination history is the only-known counter (G6 vs DET R2 was 41/8). <strong>Phase 73 elimination amplifier ACTIVE:</strong> CLE\'s tail widens 1.4× — the central case still favors NYK but a Mitchell volume-and-efficiency game keeps the series breathing. <strong>The picks:</strong> NYK closeout floor parlay (Brunson + Bridges deep alts) plus a NYK 3-leg traditional stack. R3 out-of-sample stake cap 50% remains in effect; CF unknown-territory caps stay ($100 floor / $50 trad).',
     source: 'DraftKings / ESPN',
   },
+  {
+    date: '2026-05-25',
+    severity: 'major',
+    series: 'NYK-CLE',
+    headline: 'NYK 130-93: Knicks SWEEP Cavs 4-0, advance to first Finals since 1999',
+    body: 'New York completed the Eastern Conference Finals sweep with the most lopsided closeout in franchise playoff history, advancing to its first NBA Finals appearance in 27 years. <strong>Karl-Anthony Towns 19/14 (double-double anchor)</strong>, OG Anunoby 17, Mikal Bridges 15, Jalen Brunson 15/5ast in 28 minutes (didn\'t play a second in Q4 with the game 37pts in hand), Landry Shamet 16 off the bench (4 made threes), Josh Hart workhorse double-double watch (13/9/5). Brunson was named ECF MVP (25.5/7.8 across the sweep). NYK led by as many as 40; the bench finished the game. <strong>Cleveland:</strong> Donovan Mitchell 31pts (elimination-volume, but capped efficiency closed his career-worst sweep); Evan Mobley 15/7; James Harden 12 on <strong>0-of-6 from three</strong> as the NYK switching scheme finally fully neutralized the gravity-game offense he\'d been running. CLE swept for the first time since the 2018 Finals vs Golden State. Model: predicted NYK by 7 → actual NYK by 37 — RIGHT WINNER, +30pt margin underestimate. Phase 73 elimination amplifier widened bands but the central estimate still understated a 0-3 closeout sweep. NYK now waits for the WCF winner (OKC vs SAS, series tied 2-2, G5 tonight). Finals tip TBD.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-26',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G5 tonight: SAS @ OKC 8:30 PM (NBC) — series tied 2-2, OKC -5.5 / 215.5',
+    body: 'Tip-off 8:30 PM ET on NBC/Peacock from Paycom Center. Pivotal G5 after Spurs evened the WCF 2-2 with a 21-point home blowout (Wemby 33/8/5/3blk). DK current: OKC -5.5 / total 215.5 / ML OKC -218, SAS +180. <strong>Structural drivers:</strong> OKC home (Paycom +6.1 net rating these playoffs) + bench depth (Caruso/J.Williams/A.Mitchell rotation outscored SAS bench 76-23 and 57-25 in G3+G2) vs SAS finally fully healthy (Castle/Harper restored) and the 4-1 regular-season pattern. <strong>Regression alert:</strong> G4 was OKC\'s worst-3PT-night of the playoffs (6-33, 18%) and 2nd-lowest scoring total ever — mean reversion is structurally expected at home. <strong>Phase 73 elimination amplifier INACTIVE</strong> (G5 not elimination; 2-2 series). Engine view: OKC by 4 (MEDIUM) → market more bullish on OKC margin (5.5 vs 4); SAS +180 carries marginal +EV per model (51% true vs 46% implied). <strong>The picks:</strong> SAS ML lean as the value bet plus a Wemby floor parlay and an OKC home stack. Phase 71 R3 stake cap stays at 50% (5 CF games settled = at promote threshold).',
+    source: 'DraftKings / NBA.com',
+  },
+  {
+    date: '2026-05-26',
+    severity: 'minor',
+    series: 'NYK-CLE',
+    headline: 'NBA Finals preview: NYK awaits WCF winner — Finals tip TBD',
+    body: 'New York advances to the NBA Finals after sweeping CLE 4-0 in the ECF. Brunson named ECF MVP (25.5/7.8 across four games). Awaiting the WCF winner — OKC and SAS are tied 2-2 with Game 5 tonight in Oklahoma City. NYK gets a long rest (Finals G1 won\'t tip until at least 5/29 even if WCF ends in 5; later if it goes 6 or 7). The structural NYK advantages going into the Finals: 11-game playoff win streak (deepest postseason run since the 1973 championship team), Brunson clutch composure, KAT/Mobley-style stretch-5 matchups that translate against either WCF opponent, and depth (10-man rotation with closeout-blowout Q4 bench minutes). Risks: rust from extended rest (similar to the 9-day-rest-before-ECF-G1 stretch where NYK trailed by 22 in Q4 before the historic comeback). Will write injury watch + Finals series predictions once the WCF resolves.',
+    source: 'NBA.com',
+  },
 ];

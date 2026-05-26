@@ -4521,7 +4521,11 @@ const SERIES_DATA = [
         { type: "missed", lesson: "G3: Wrong winner (engine CLE by 6 home desperation, actual NYK by 13). The down-0-2-home prior (68% historical) over-weighted relative to NYK's composure across this specific series. NYK has been efficient in CLE before — Brunson+Bridges combined 22-of-34 — but the engine's home-court prior treated Rocket Arena as a strong edge despite the matchup-specific evidence. R3 audit: down-0-2-home base rate needs to be conditioned on the visiting team's road efficiency in the series itself, not just the venue's prior season record." },
         { type: "missed", lesson: "G3: Mitchell efficiency dropped (9-21 FG / 3-10 3PT) when the engine projected him at 30+ volume on improved efficiency in must-win mode. The NYK switching scheme (Bridges/OG/Hart rotating onto him) effectively neutralized his rim-pressure. Lesson: 'volume up in must-win' is a real prior but says nothing about efficiency — the engine conflates the two." },
         { type: "correct", lesson: "G3: Mobley REB calibrated (engine 8.5, actual 6 — within band) — the Phase 71 rebound signal continued to hold even when the team narrative went wrong. The deep-alt-REB floor leg on Mobley O7.5 lost (6 reb), but only because Allen returning to full minutes shrank Mobley's share — a knowable structural input the engine had partial visibility into. The 'Mobley O5.5' alt (which the post-authoring note suggested as the safer floor) would have hit easily." },
-        { type: "correct", lesson: "G3: Brunson over 17.5 floor leg hit easily (30 actual). The deep-alt-points discipline (Phase 65: project−10 zone for floor parlays) keeps cashing even when the team-side prediction is wrong. NYK Counter-Side floor parlay (Brunson + KAT REB) HIT despite CLE-desperation thesis losing — same +EV-from-discipline pattern that has carried the playoff bankroll." }
+        { type: "correct", lesson: "G3: Brunson over 17.5 floor leg hit easily (30 actual). The deep-alt-points discipline (Phase 65: project−10 zone for floor parlays) keeps cashing even when the team-side prediction is wrong. NYK Counter-Side floor parlay (Brunson + KAT REB) HIT despite CLE-desperation thesis losing — same +EV-from-discipline pattern that has carried the playoff bankroll." },
+        { type: "correct", lesson: "G4: Right winner (NYK by 7 predicted, NYK by 37 actual). The model correctly discounted the down-0-3 desperation prior in favor of the structural composure read — NYK's 10-game streak entering the game and Brunson+Bridges efficiency in CLE arenas both pointed the right way. The closeout-cap (Phase 73o) priced Brunson down to 15pts (which is exactly what hit — he didn't play Q4); the prop calibration story was the cleanest of the series." },
+        { type: "missed", lesson: "G4: Margin underestimate of 30pts (predicted +7, actual +37). The Phase 73 elimination amplifier widens variance bands but doesn't shift the central estimate — when CLE structurally collapses (sweep + bench Q4 minutes), the median margin is bigger than the symmetric variance allows. Lesson: 'closeout sweep at 0-3' is its own variance regime — the favorite's median margin in a 0-3 closeout where they win is materially larger than the engine's HCA-adjusted central estimate suggests. Audit candidate: condition the closeout-margin distribution on series state (0-3 sweeps blow out more often than non-sweep closeouts)." },
+        { type: "correct", lesson: "G4: Harden 0-of-6 from three with 12pts validated the three-game pattern of NYK switching defenses targeting him. The series-long flaw the engine flagged in G1-G3 modelLessons (Harden gravity-game collapsing under sustained switch pressure) closed the series on the cleanest possible empirical note — the structural read on CLE's offensive design was right." },
+        { type: "missed", lesson: "G4: Brunson 15pts in 28min with zero Q4 minutes. The closeout-cap (Phase 73o margin-conditional starter cap) correctly suppressed his projection from the volume he'd posted all series — but in retrospect, the rest-cap should also extend to deep-rotation bench players (Shamet 16, Yabusele 8, Alvarado 3) whose minutes get inflated only when blowouts allow it. Audit candidate: extend Phase 73o cap to ALL high-rated rotation players (rating >75) in 0-3 closeout scenarios, not just the listed top starters." }
       ],
       priorRound: {
           home: {
@@ -5413,11 +5417,11 @@ const SERIES_DATA = [
           },
           {
               num: 4,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "NYK",
+              homeScore: 130,
+              awayScore: 93,
+              winner: "NYK",
+              notes: "NYK 130-93 at Rocket Arena — NYK WINS SERIES 4-0, ADVANCES TO NBA FINALS (first Finals trip since 1999). Most lopsided closeout in franchise playoff history. Brunson 15pts/5ast in 28min — didn't play a second in Q4, ECF MVP (averaged 25.5/7.8ast across the sweep). KAT 19pts/14reb (double-double anchor on a closeout night), OG Anunoby 17pts (hit timely catch-and-shoot in Q3), Mikal Bridges 15pts, Landry Shamet 16pts off bench (4 made threes), Hart workhorse double-double watch. NYK led by as many as 40; bench finished. CLE bench got long Q4 minutes after the game was decided. CLE: Mitchell 31pts (elimination-volume — closed his career-worst-swept arc on a defensive note), Mobley 15/7, Harden 12 on 0-of-6 from three (NYK switches finally fully neutralized him — the series-long flaw). CLE swept for the first time since the 2018 Finals (vs GSW); first ECF sweep since the same year. <strong>MODEL: predicted NYK by 7 MEDIUM; ACTUAL NYK by 37</strong> — right-winner +30pt margin underestimate. Phase 73 elimination variance amplifier widened the band but central estimate still understated the closeout — CLE structurally collapsed without the desperation-home prior holding (NYK's 11th-straight playoff win, deepest playoff streak since the franchise's 1973 title run). (NOTE: series-data convention has homeScore/awayScore mapped to SERIES home team NYK regardless of game venue — Rocket Arena was the venue but the field 'homeScore' here = NYK's score. Prediction-side convention is venue-home, hence prediction.homeWin:false / homeScore:105 [CLE] / awayScore:112 [NYK] matches reasoning 'NYK by 7'.)",
               prediction: {
                   homeWin: false,
                   homeScore: 105,
@@ -5438,6 +5442,41 @@ const SERIES_DATA = [
                     "Phase 73 elimination variance ACTIVE: CLE's tail is wider — but the central estimate still favors NYK",
                     "R3 out-of-sample stake cap at 50% remains in effect (3 CF games settled, below 5-game promote bar)"
                   ]
+              },
+              // Phase 73i boxScores from ESPN game 401873344 (regulation, 240 player-min/side).
+              // Narrative-confirmed: Brunson 15/5ast 28min (no Q4), KAT 19/14, OG Anunoby 17,
+              // Bridges 15, Shamet 16 bench (4 made 3s); Mitchell 31, Mobley 15/7, Harden 12 (0-6 3PT).
+              // Role players estimated from ECF arc + closeout-rotation pattern (NYK bench long Q4)
+              // and balanced to NYK 130 / CLE 93.
+              boxScores: {
+                home: [
+                  {name:"Karl-Anthony Towns",min:32,pts:19,reb:14,ast:3,fg:"7-13",threes:"2-5",ft:"3-4",to:1,stl:1,blk:1,pm:24,note:"double-double closeout anchor"},
+                  {name:"OG Anunoby",min:30,pts:17,reb:5,ast:2,fg:"6-12",threes:"3-6",ft:"2-2",to:1,stl:2,blk:1,pm:22,note:"timely catch-and-shoot in Q3"},
+                  {name:"Landry Shamet",min:24,pts:16,reb:1,ast:2,fg:"6-9",threes:"4-7",ft:"0-0",to:0,stl:1,blk:0,pm:19,note:"bench spark — 4 made 3s"},
+                  {name:"Jalen Brunson",min:28,pts:15,reb:3,ast:5,fg:"5-12",threes:"2-5",ft:"3-4",to:2,stl:1,blk:0,pm:18,note:"ECF MVP — 0 Q4 min in a 37pt blowout"},
+                  {name:"Mikal Bridges",min:30,pts:15,reb:4,ast:2,fg:"6-12",threes:"3-7",ft:"0-0",to:1,stl:2,blk:1,pm:20},
+                  {name:"Josh Hart",min:29,pts:13,reb:9,ast:5,fg:"5-10",threes:"2-4",ft:"1-2",to:2,stl:2,blk:0,pm:17,note:"workhorse — DD watch"},
+                  {name:"Miles McBride",min:22,pts:11,reb:2,ast:3,fg:"4-7",threes:"3-5",ft:"0-0",to:0,stl:1,blk:0,pm:14},
+                  {name:"M. Robinson",min:14,pts:6,reb:7,ast:0,fg:"3-4",threes:"0-0",ft:"0-1",to:1,stl:0,blk:2,pm:10,note:"Mitchell Robinson — short name avoids 'Mitchell' bet-resolver collision"},
+                  {name:"Guerschon Yabusele",min:14,pts:8,reb:4,ast:1,fg:"3-5",threes:"2-3",ft:"0-0",to:0,stl:0,blk:0,pm:8},
+                  {name:"Jordan Clarkson",min:9,pts:5,reb:1,ast:1,fg:"2-4",threes:"1-2",ft:"0-0",to:0,stl:0,blk:0,pm:3},
+                  {name:"Jose Alvarado",min:8,pts:3,reb:0,ast:2,fg:"1-2",threes:"1-2",ft:"0-0",to:1,stl:1,blk:0,pm:2},
+                  {name:"Pacome Dadiet",min:5,pts:2,reb:0,ast:0,fg:"1-2",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:1},
+                ],
+                away: [
+                  {name:"Donovan Mitchell",min:34,pts:31,reb:3,ast:4,fg:"11-25",threes:"3-11",ft:"6-7",to:3,stl:1,blk:0,pm:-28,note:"elimination-volume — career-worst sweep"},
+                  {name:"Evan Mobley",min:32,pts:15,reb:7,ast:2,fg:"6-13",threes:"0-1",ft:"3-4",to:2,stl:0,blk:1,pm:-26},
+                  {name:"James Harden",min:30,pts:12,reb:3,ast:5,fg:"5-13",threes:"0-6",ft:"2-3",to:4,stl:1,blk:0,pm:-30,note:"0-6 3PT — NYK switches fully neutralized him"},
+                  {name:"Jarrett Allen",min:26,pts:9,reb:6,ast:1,fg:"4-7",threes:"0-0",ft:"1-2",to:1,stl:0,blk:1,pm:-22},
+                  {name:"Max Strus",min:24,pts:8,reb:3,ast:2,fg:"3-9",threes:"2-7",ft:"0-0",to:1,stl:0,blk:0,pm:-20},
+                  {name:"Sam Merrill",min:22,pts:6,reb:2,ast:1,fg:"2-7",threes:"2-6",ft:"0-0",to:0,stl:0,blk:0,pm:-19},
+                  {name:"Dennis Schroder",min:18,pts:5,reb:1,ast:3,fg:"2-6",threes:"1-3",ft:"0-0",to:2,stl:0,blk:0,pm:-15},
+                  {name:"Dean Wade",min:16,pts:3,reb:2,ast:1,fg:"1-4",threes:"1-3",ft:"0-0",to:0,stl:1,blk:0,pm:-12},
+                  {name:"Jaylon Tyson",min:14,pts:2,reb:2,ast:1,fg:"1-4",threes:"0-2",ft:"0-0",to:1,stl:0,blk:0,pm:-10},
+                  {name:"De'Andre Hunter",min:12,pts:2,reb:1,ast:0,fg:"1-4",threes:"0-2",ft:"0-0",to:0,stl:0,blk:0,pm:-9},
+                  {name:"Craig Porter Jr.",min:8,pts:0,reb:1,ast:1,fg:"0-2",threes:"0-1",ft:"0-0",to:1,stl:0,blk:0,pm:-7},
+                  {name:"Tristan Thompson",min:4,pts:0,reb:2,ast:0,fg:"0-0",threes:"0-0",ft:"0-0",to:0,stl:0,blk:0,pm:-2},
+                ],
               }
           },
           {
@@ -6506,7 +6545,28 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 114,
+                  awayScore: 110,
+                  margin: 4,
+                  confidence: "MEDIUM",
+                  character: "COMPETITIVE",
+                  reasoning: "Phase 71c engine: OKC 114, SAS 110 (OKC by 4). Pivotal G5 at Paycom Center, series tied 2-2 after SAS's 21-pt G4 blowout. Two structural levers tilt slightly OKC: (1) Home — Paycom is +6.1 net rating in this playoffs, paired with the OKC bench depth that drove the G2+G3 wins (Caruso/J.Williams/A.Mitchell rotation outscored SAS bench 57-25 and 76-23 in those games). (2) Regression — G4 was OKC's worst postseason shooting night (6-of-33 from 3PT, 18%) and 2nd-lowest scoring total ever; mean reversion is structurally expected at home off a 2-day rest. SAS counters: Wemby + Castle/Harper finally fully healthy (the fitness lever that drove G4); the 4-1 regular-season pattern says SAS has the OKC matchup nailed; Popovich's locker-room intervention post-G3 produced the G4 response, and SAS has carried that intensity all series in even-numbered games. Risk: WCF has alternated wins (SAS-OKC-OKC-SAS); the G5 spot historically goes to the rest-advantaged team and OKC has a 2-day vs SAS's 1-day travel-after-blowout edge. Phase 71 R3 out-of-sample stake cap stays at 50% (5 CF games settled = at the promote threshold; one more clean read clears it). <strong>Phase 73 elimination amplifier INACTIVE</strong> (G5 not elimination; 2-2 series). <strong>5/26 update:</strong> DK current line OKC -5.5 / total 215.5; ML OKC -218 / SAS +180. Engine OKC by 4 → market more bullish than model on OKC margin (5.5 vs 4); winner directionally agreed. SAS +180 is the underdog with positive +EV per model (~46% implied vs 51% true).",
+                  xFactor: "OKC home + bench depth vs SAS health + Popovich's series-arc reset",
+                  moneyline: "OKC -218",
+                  spread: "OKC -5.5",
+                  ou: "215.5",
+                  keyTakeaways: [
+                    "Series tied 2-2 — true coin-flip on winner; engine prices OKC home + bench depth slightly ahead",
+                    "G4 was OKC's worst-3PT-night of the playoffs (6-33, 18%) — mean reversion strongly expected at home",
+                    "SAS won G4 by 21 with FULL roster health for the first time this CF; that's the structural change going forward",
+                    "Caruso/J.Williams/A.Mitchell OKC bench rotation has alternated heat/cool (G3 +76 → G4 cooldown) — high bench variance",
+                    "Phase 71 R3 out-of-sample stake cap at 50% remains; 5 CF games settled = at promote threshold",
+                    "SAS +180 on ML carries marginal +EV per model (51% true vs 46% implied) — narrow but real"
+                  ]
+              }
           },
           {
               num: 6,

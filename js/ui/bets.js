@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Mon May 25 | ECF G4: NYK @ CLE 8:00 PM @ Rocket Arena (NYK -2.5 / 218.5) closeout chance | WCF G4 ARCHIVED — Sun 5/24: SAS 103-82 (series TIED 2-2, Wemby 33/8/5/3blk +29) | WCF G5 Tue 5/26 at Paycom 8:30 PM | ECF NYK LEADS 3-0 (G3 NYK 121-108 in CLE, Brunson 30 / Bridges 22 / Anunoby 21)</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Tue May 26 | WCF G5: SAS @ OKC 8:30 PM @ Paycom Center (OKC -5.5 / 215.5) series tied 2-2 | ECF G4 ARCHIVED — Mon 5/25: NYK 130-93 (NYK SWEEPS 4-0, advances to NBA FINALS first since 1999, Brunson MVP 15/5 | KAT 19/14) | WCF G4 ARCHIVED — Sun 5/24: SAS 103-82 (Wemby 33/8/5/3blk +29) | WCF series TIED 2-2 — pivotal G5</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2610,8 +2610,8 @@ function renderCFBets(el) {
       <!-- Row 3: In-play wagers -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#888;">IN PLAY (ECF G4 — Mon 5/25):</span>
-          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 5/26 morning</strong></span>
+          <span style="color:#888;">IN PLAY (WCF G5 — Tue 5/26):</span>
+          <span><strong style="color:#22d3ee;">$300</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$350 wagered, settles 5/27 morning</strong></span>
         </div>
       </div>
       <!-- Row 4: Aggregate notes -->
@@ -3040,7 +3040,7 @@ function renderR2Bets(el) {
           <span style="color:#3dd68c;font-weight:700;">4-2 (+$350)</span>
         </div>
         <div style="font-size:9px;color:#666;margin-top:6px;font-style:italic;text-align:center;">
-          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. ECF G4 in play (5/25 NYK @ CLE) — $250 wagered, settles 5/26 morning.
+          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF G5 in play (5/26 SAS @ OKC, series 2-2) — $350 wagered, settles 5/27 morning.
         </div>
       </div>
     </div>
@@ -3099,11 +3099,12 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Fri May 22</span><span style="color:#aaa;">Wemby PTS+REB &#x2717; (Wemby 26pts hit / 4 reb missed — OKC double-boxed; first deep-alt-REB miss all playoffs), SGA+Castle Floor &#x2713; (+$110; SGA 26 / Castle 6 ast cleared 5.5 by one)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$10</span>
             <span style="color:#aaa;">Sat May 23</span><span style="color:#aaa;">Mitchell+Mobley Floor &#x2717; (Mitchell 23 hit / Mobley 6reb missed — Allen back to full 36min crushed reb share; the 5/23 MC re-validation correctly flagged this leg under 80% but kept it), Brunson+KAT Floor &#x2713; (+$115; Brunson 30 / KAT 8reb cleared by 0.5)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$15</span>
             <span style="color:#aaa;">Sun May 24</span><span style="color:#aaa;">Wemby+Fox Floor &#x2713; (+$105; Wemby 33pts cleared O19.5 by 13.5 / Fox 5ast cleared O4.5 by 0.5 — closest floor leg of the playoffs)</span><span style="color:#aaa;">1-0</span><span style="color:#3dd68c;font-weight:700;">+$105</span>
+            <span style="color:#aaa;">Mon May 25</span><span style="color:#aaa;">Brunson+Bridges Floor &#x2717; (Brunson 15pts in 28min / 0 Q4 min broke Over 19.5 — closeout-blowout cap fired in real life; Bridges hit), Hart+KAT REB Floor &#x2713; (+$120; Hart 9reb / KAT 14reb — counting-stat-blowout-stable signal cleanest of the playoffs)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$20</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$3,400</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$122</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">17-18</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$3,600</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$102</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">18-19</strong></span>
           </div>
         </div>
 
@@ -3132,21 +3133,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Fri May 22</span><span style="color:#aaa;">SAS Home Stack 3-Leg (SAS ML / Wemby 25.5 / Castle 19.5) &#x2717; (OKC won 123-108 — ML missed; Castle 13 missed; only Wemby 26 cleared by 0.5)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
             <span style="color:#aaa;">Sat May 23</span><span style="color:#aaa;">CLE Desperation 3-Leg (CLE ML / Mitchell 27.5 / Mobley 9.5reb) &#x2717; (NYK won 121-108 — all three legs missed; 5/23 MC re-validation correctly flagged this stack -EV)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
             <span style="color:#aaa;">Sun May 24</span><span style="color:#aaa;">SAS Home Stack 3-Leg (SAS ML / Wemby 26.5 / Castle 19.5) &#x2717; (SAS won 103-82 — 2 of 3 legs hit; Castle U19.5 broke the stack at 13pts/5ast distribution mode; the 5/23 MC re-validation flagged Castle as a coin-flip leg)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
+            <span style="color:#aaa;">Mon May 25</span><span style="color:#aaa;">NYK Closeout 3-Leg (NYK ML / Brunson 24.5 / Under 218.5) &#x2717; (NYK 130-93 — only ML hit; Brunson 15 in 28min broke from Phase 73o closeout-blowout cap, Over 218.5 broke from NYK 16-of-36 3PT eruption)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$3,000</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$761</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-28</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$3,050</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$811</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">7-29</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$6,400</strong></span>
-          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$883</strong></span>
-          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">24-46</strong></span>
+          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$6,650</strong></span>
+          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$913</strong></span>
+          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">25-48</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight Mon May 25 (ECF G4 — NYK @ CLE, closeout): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight Tue May 26 (WCF G5 — SAS @ OKC, series tied 2-2): <strong style="color:#22d3ee;">$300</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->
