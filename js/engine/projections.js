@@ -23,8 +23,7 @@ function getGamesPlayed(series) {
 // where the winner blew the loser out by 15+, the winning team's
 // top-5 starters played 83% of their prior-games average minutes
 // and put up 93% of prior PTS/PRA. In CLOSE closeouts (margin <15),
-// the opposite — starters played MORE and stats spiked. So the cap
-// is margin-CONDITIONAL: fires only when projected margin >= 15.
+// the opposite — starters played MORE and stats spiked.
 function isCloseoutOpportunity(series, gameNum) {
   if (!series || !Array.isArray(series.games) || gameNum < 1) return false;
   let homeWins = 0, awayWins = 0;
@@ -37,6 +36,34 @@ function isCloseoutOpportunity(series, gameNum) {
     else if (g.winner === awayAbbr) awayWins++;
   }
   return homeWins === 3 || awayWins === 3;
+}
+
+// Phase 73o.b: 3-0 SWEEP closeout detection — adds the trigger refinement.
+// Returns abbr of the sweeping team (3-0 leader) if game N is their
+// closeout opportunity, else null.
+//
+// Lesson from ECF G4 (NYK 130-93 over CLE): engine projected NYK by 7;
+// actual was NYK by 37. Phase 73o cap didn't fire pre-game (projected
+// margin <15) but Brunson got capped in reality (28min, no Q4). The
+// 3-0 leader pattern in 2026 is n=4: NYK-PHI G4 (won by 30, BLOWOUT),
+// NYK-CLE G4 (won by 37, BLOWOUT), OKC-PHX G4 (won by 9, close),
+// OKC-LAL G4 (won by 5, close). 2/4 blew out. User accepted shipping
+// the full -7% cap on 3-0 closeouts — overcorrecting on close cases
+// (~5-9pt margins) is acceptable risk vs missing 30+pt blowouts entirely.
+function is30CloseoutOpportunity(series, gameNum) {
+  if (!series || !Array.isArray(series.games) || gameNum < 1) return null;
+  let homeWins = 0, awayWins = 0;
+  const homeAbbr = series.homeTeam && series.homeTeam.abbr;
+  const awayAbbr = series.awayTeam && series.awayTeam.abbr;
+  for (let i = 0; i < gameNum - 1; i++) {
+    const g = series.games[i];
+    if (!g || !g.winner) continue;
+    if (g.winner === homeAbbr) homeWins++;
+    else if (g.winner === awayAbbr) awayWins++;
+  }
+  if (homeWins === 3 && awayWins === 0) return homeAbbr;
+  if (awayWins === 3 && homeWins === 0) return awayAbbr;
+  return null;
 }
 
 function calcGameProjection(series, seriesId, gameNum) {
@@ -1291,23 +1318,31 @@ function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
     }
   }
 
-  // ---- 17. CLOSEOUT-BLOWOUT STARTER CAP (Phase 73o — May 25 backtest) ----
-  // When game N is a closeout opportunity (either side enters with 3 wins)
-  // AND the team-level projection has the favored side winning by 15+,
-  // the favored side's top-5 starters get pulled Q3 in garbage time.
-  // 2026 backtest (test-closeout-edge-backtest.js, n=10 blowout-closeout
-  // starter records): median minutes 83% of prior avg, median PTS 93%,
-  // median PRA 93%. Apply a -7% cap on PTS/REB/AST to favored starters.
-  // CLOSE closeouts (margin <15) show the OPPOSITE — starters extended
-  // and stats spike, so the cap is conditional on projected blowout.
-  //
-  // Sample is small (10 records, n=4 closeout games). Treat as
-  // directional pending more data. Re-validate after R3 + Finals add
-  // ~5-10 more closeout games.
+  // ---- 17. CLOSEOUT-BLOWOUT STARTER CAP (Phase 73o + 73o.b) ----
+  // Two triggers for the cap:
+  //   (a) Phase 73o: closeout opportunity + projected margin >= 15 + favored side
+  //       Source: 2026 closeout backtest (n=10 blowout-closeout records)
+  //       Effect: -7% PTS/REB/AST on top-5 starters
+  //   (b) Phase 73o.b: 3-0 SWEEP closeout opportunity, regardless of projected margin
+  //       Source: ECF G4 (NYK 130-93, projected close but blew out by 37) revealed
+  //       a gap in the 73o trigger. 2026 sample of 3-0 closeouts: n=4, 2 blowout
+  //       (NYK-PHI 30, NYK-CLE 37) + 2 close (OKC-PHX 9, OKC-LAL 5). User accepted
+  //       full -7% cap on 3-0 closeouts (overcorrects close cases ~9% of the time;
+  //       acceptable risk vs missing 30+pt blowouts entirely).
   if (isCloseoutOpportunity(series, gameNum)) {
-    // Avoid recursion: only invoke calcGameProjection if not already
-    // in a calcGameProjection call (it doesn't currently call
-    // calcExpectedPlayerStats, but guard for future safety).
+    // Identify the favored-side team (either via projected margin OR via 3-0 leader).
+    let favoredAbbr = null;
+    let triggerSource = null;
+    let projectedMargin = null;
+
+    // Check 73o.b trigger first (cheaper — no calcGameProjection needed)
+    const sweeper = is30CloseoutOpportunity(series, gameNum);
+    if (sweeper) {
+      favoredAbbr = sweeper;
+      triggerSource = '3-0 sweep closeout';
+    }
+
+    // Check 73o trigger (margin-based) — invoke calcGameProjection for projected margin
     if (typeof calcGameProjection === 'function' && !calcExpectedPlayerStats._inGameProj) {
       calcExpectedPlayerStats._inGameProj = true;
       let proj;
@@ -1315,27 +1350,34 @@ function calcExpectedPlayerStats(player, series, gameIdx, side, applyCHS) {
       catch (e) { proj = null; }
       finally { calcExpectedPlayerStats._inGameProj = false; }
       if (proj && typeof proj.margin === 'number') {
-        const projectedMargin = proj.margin;  // home-relative; positive = home favored
-        const isHomeFavored = projectedMargin >= 0;
-        const playerOnFavoredSide = (isHome === isHomeFavored);
-        if (Math.abs(projectedMargin) >= 15 && playerOnFavoredSide) {
-          // Starter detection: top-5 by baseRating (stable across scenarios)
-          const sortedByRating = [...team.players].sort((a, b) =>
-            (b.baseRating || b.rating || 0) - (a.baseRating || a.rating || 0));
-          const playerRank = sortedByRating.findIndex(p => p.name === player.name);
-          const isStarter = playerRank >= 0 && playerRank < 5;
-          if (isStarter) {
-            const ptsCap = -pts * 0.07;
-            const rebCap = -reb * 0.07;
-            const astCap = -ast * 0.07;
-            pts += ptsCap; reb += rebCap; ast += astCap;
-            modifiers.push({
-              label: `Closeout Blowout Cap (proj margin ${Math.abs(projectedMargin).toFixed(0)})`,
-              ptsDelta: ptsCap, rebDelta: rebCap, astDelta: astCap,
-              pct: -7,
-              source: 'Phase 73o · 2026 closeout backtest',
-            });
-          }
+        projectedMargin = proj.margin;
+        if (Math.abs(projectedMargin) >= 15 && !favoredAbbr) {
+          const homeFav = projectedMargin >= 0;
+          favoredAbbr = homeFav ? series.homeTeam.abbr : series.awayTeam.abbr;
+          triggerSource = `projected blowout margin ${Math.abs(projectedMargin).toFixed(0)}`;
+        }
+      }
+    }
+
+    if (favoredAbbr) {
+      const playerOnFavoredSide = (team.abbr === favoredAbbr);
+      if (playerOnFavoredSide) {
+        // Starter detection: top-5 by baseRating (stable across scenarios)
+        const sortedByRating = [...team.players].sort((a, b) =>
+          (b.baseRating || b.rating || 0) - (a.baseRating || a.rating || 0));
+        const playerRank = sortedByRating.findIndex(p => p.name === player.name);
+        const isStarter = playerRank >= 0 && playerRank < 5;
+        if (isStarter) {
+          const ptsCap = -pts * 0.07;
+          const rebCap = -reb * 0.07;
+          const astCap = -ast * 0.07;
+          pts += ptsCap; reb += rebCap; ast += astCap;
+          modifiers.push({
+            label: `Closeout Blowout Cap (${triggerSource})`,
+            ptsDelta: ptsCap, rebDelta: rebCap, astDelta: astCap,
+            pct: -7,
+            source: 'Phase 73o/73o.b · 2026 closeout backtest',
+          });
         }
       }
     }
@@ -2415,5 +2457,6 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = module.exports || {};
   module.exports.estimateProjectedMinutes = estimateProjectedMinutes;
   module.exports.isCloseoutOpportunity = isCloseoutOpportunity;
+  module.exports.is30CloseoutOpportunity = is30CloseoutOpportunity;
 }
 

@@ -2947,7 +2947,29 @@ function runTests() {
     assert(tc.isCloseoutOpportunity(synthEmpty, 1) === false,
       `Series with no settled games → not a closeout opportunity`);
 
-    // 31d — apply the cap on a real settled CF game. We use NYK-CLE G4
+    // 31d — Phase 73o.b: is30CloseoutOpportunity returns abbr on 3-0 sweep
+    const synth30 = {
+      games: [
+        { num: 1, winner: 'AAA' }, { num: 2, winner: 'AAA' },
+        { num: 3, winner: 'AAA' }, { num: 4, winner: null },
+      ],
+      homeTeam: { abbr: 'AAA' }, awayTeam: { abbr: 'BBB' },
+    };
+    assert(tc.is30CloseoutOpportunity(synth30, 4) === 'AAA',
+      `is30CloseoutOpportunity returns sweeper abbr on 3-0 (got ${tc.is30CloseoutOpportunity(synth30, 4)})`);
+    // 3-1 should NOT trigger (sweeper had one loss)
+    const synth31 = {
+      games: [
+        { num: 1, winner: 'AAA' }, { num: 2, winner: 'AAA' },
+        { num: 3, winner: 'BBB' }, { num: 4, winner: 'AAA' },
+        { num: 5, winner: null },
+      ],
+      homeTeam: { abbr: 'AAA' }, awayTeam: { abbr: 'BBB' },
+    };
+    assert(tc.is30CloseoutOpportunity(synth31, 5) === null,
+      `is30CloseoutOpportunity returns null on 3-1 closeout (still closeout opp but not 3-0)`);
+
+    // 31e — apply the cap on a real settled CF game. We use NYK-CLE G4
     // which (at the time of authoring) has prediction.homeWin:false but
     // homeScore/awayScore that imply a NYK closeout. Reverse-check by
     // computing calcExpectedPlayerStats for Brunson (top starter on
