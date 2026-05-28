@@ -3503,6 +3503,23 @@ const FEATURED_PARLAYS = [
     thesis:'A CORRELATED SAS-forces-G7 stack — applying the G5 lesson that correlated theses (the OKC home stack that won +$170) beat mixed-direction legs. If SAS wins this elimination game at home, Wemby scoring 25+ and an uptempo Over are the natural co-occurrences. Math: 0.56 × 0.55 × 0.55 ≈ 17% combined; at +360 (4.6x) that\'s roughly break-even EV, lifted by the positive leg correlation the raw multiplication ignores. Phase 73 elimination amplifier ACTIVE + G6 CAUTION downgrade → reduced $50 stake. The first CF traditional only just broke through (G5); keep stakes small.',
     result: null,
   },
+  {
+    id: 'wcf-g6-may28-floor-role-pra',
+    slate: 'CF-G6', date: '2026-05-28',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G6 — SAS Role-Player PRA Floor (3-Leg)',
+    stake: 100, odds: '+135', payout: 'To Win: ~$135 (verify Thu evening)',
+    legs: [
+      { pick:'Champagnie Over 9.5 PRA (alt — WCF G6)', odds:'-350', confidence:'floor', status:null,
+        note:'Champagnie cleared this easily in G5 (28 PRA, career playoff-high 22pts). 24-28 min role at home. Deep PRA floor is blowout-resilient — clears even in a SAS loss.' },
+      { pick:'Keldon Johnson Over 9.5 PRA (alt — WCF G6)', odds:'-330', confidence:'floor', status:null,
+        note:'Keldon 15 PRA in G5; steady bench-wing minutes. PRA composite (pts+reb+ast) smooths single-stat variance — the safest role-player floor dimension.' },
+      { pick:'Harper Over 9.5 PRA (alt — WCF G6)', odds:'-300', confidence:'floor', status:null,
+        note:'Rookie Harper 14 PRA in G5 (8/3/3). Combo-guard line accrues across pts+reb+ast even on a quiet scoring night.' },
+    ],
+    thesis:'Replicates the validated user edge (G5 CHS Lab role-player PRA stack went 4-for-4 and cashed DESPITE SAS losing by 13). The structural insight: role-player PRA floors at deep lines (9.5) are BLOWOUT-RESILIENT and diversified across three players, so they avoid the correlated single-player downside that sank the G5 Wemby stacks (OKC\'s box-out suppressed Wemby PTS and REB simultaneously). PRA is 10/10 in the user-bet ledger — the most reliable dimension on record. Math: 0.90 × 0.89 × 0.87 ≈ 70% combined; each leg independently clears the 80% deep-alt zone. At SAS home in an elimination game these role players see secure minutes. CF stake cap $100.',
+    result: null,
+  },
 ];
 
 // ============================================================

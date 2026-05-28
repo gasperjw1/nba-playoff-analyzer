@@ -5518,7 +5518,7 @@ const SERIES_DATA = [
         { type: "missed", lesson: "G1: Holmgren 8pts on 2-7 FG — Wemby gravity limited him to one-third of his series projection. The starter-tier bias correction (-2pt PTS) wasn't enough; Holmgren in particular has a 'Wemby matchup' suppression that the engine doesn't model. R3 audit candidate: add a 'paint-defender vs other paint-defender' matchup suppression." },
         { type: "correct", lesson: "Slate P&L: +$180 net on parlays (2 floors hit at +$105 / +$125; chalk traditional missed -$50) DESPITE wrong-winner G1. Phase 65 Reliable Floor discipline (deep alt-line counting stats) is the single most validated piece of the framework — keeps winning in the chaos cases where the model is wrong-winner. Risk Dashboard counterfactual (drop high×prop cells) keeps proving out." },
         { type: "missed", lesson: "G3: Wrong winner (engine SAS by 4 at home, actual OKC by 15 on the road). The engine priced SAS at home + Castle/Harper POA defense, but BOTH Castle and Harper were playing through Wed injuries (ankle/hamstring) and combined 3-15 FG. The injury report came out the morning of G3 and was NOT reflected in the engine — exactly the LINEUP_OVERRIDES gap Phase 73g was designed to catch. Lesson: when day-to-day flags exist for star defenders, project to a degraded version of their performance, not the healthy projection." },
-        { type: "missed", lesson: "G3: Alex Caruso CAREER PLAYOFF-HIGH 29pts off bench (7-of-11 3PT) was the structural killer. He'd shot 8-of-13 3PT across G1+G2 (62% — engine projected regression-to-mean ~38%), but instead his heater ESCALATED in G3 to 64% (7-11). Combined with J.Williams 22 (4-7 3PT), OKC bench scored 57 to SAS's 23 = 34pt bench gap. The engine systematically under-prices secondary-tier 3PT variance — same pattern as DET-CLE G7 (Merrill 23 on 5-8 3PT). R3 audit: rotation-player 3PT eruptions in CF games are tail-prone AND auto-correlated (a 3PT-hot player tends to stay hot through the series, not regress). Earlier drafts of this retro misattributed the eruption to a 'McCain 24' narrative line (McCain is on PHI, not OKC) and to A.Mitchell — both wrong; Mitchell scored only 2pts. The actual story is Caruso's sustained heater." },
+        { type: "missed", lesson: "G3: Alex Caruso CAREER PLAYOFF-HIGH 29pts off bench (7-of-11 3PT) was the structural killer. He'd shot 8-of-13 3PT across G1+G2 (62% — engine projected regression-to-mean ~38%), but instead his heater ESCALATED in G3 to 64% (7-11). Combined with J.Williams 22 (4-7 3PT), OKC bench scored 57 to SAS's 23 = 34pt bench gap. The engine systematically under-prices secondary-tier 3PT variance — same pattern as DET-CLE G7 (Merrill 23 on 5-8 3PT). R3 audit: rotation-player 3PT eruptions in CF games are tail-prone AND auto-correlated (a 3PT-hot player tends to stay hot through the series, not regress). Earlier drafts split this between a 'McCain 24' line and A.Mitchell (who scored only 2); the correct read is that BOTH Caruso (29) and Jared McCain (24) erupted off the bench. McCain is a rostered OKC bench scorer (Phase 73x roster add, rating 68) — his scoring punch is now modeled directly, so the bench-3PT-variance signal should weight Caruso + McCain + J.Williams as a correlated cluster, not a single outlier." },
         { type: "missed", lesson: "G3: SAS opened on a 15-0 run (CF-era record) and STILL lost by 15. The engine's character tag 'COMPETITIVE' didn't model that early run + collapse pattern; OKC's structural depth advantage (57 bench vs 23) overwhelmed the home-team initial energy spike. Lesson: home-team Q1 energy boost has a known regression component in playoff data — the engine over-weights early-game momentum if the team is shorthanded behind it." },
         { type: "correct", lesson: "G3: SGA bounce-back to 30/12 ast was directionally correct after his 7-23 FG G1 — the engine's post-anomaly reversion priced him at 28pts. Phase 71b star-bias correction (-2.6pts) had him at 28.4; actual 30 — calibrated within 1.6pts. SGA-vs-Castle matchup data is now showing reversion (Castle weakened by injury). The structural matchup module is honestly tracking when there's a clear health-state input." },
         { type: "missed", lesson: "G3: Wemby REB was the engine's most-trusted signal (Phase 71 calibrated ±0.2pt) — projected 12, actual 4. OKC gameplanned to box him out (Hartenstein + Holmgren tag-team boxes) and SAS's lack of secondary rebounding meant nobody else cleaned up. The 11.5 REB alt-line floor leg LOST — first time the deep-alt-REB floor missed across the entire 2026 playoffs. R3 audit: even calibrated REB signals are vulnerable to specific defensive game-planning that arrives between games (G1: 24 reb / G2: 17 reb → G3: 4 reb is too big a swing to be variance alone)." },
@@ -5528,7 +5528,8 @@ const SERIES_DATA = [
         { type: "correct", lesson: "G5: RIGHT WINNER — engine OKC by 4 (MEDIUM, COMPETITIVE), actual OKC by 13. The mean-reversion thesis was the cleanest read of the series: G4 was OKC's worst 3PT night of the playoffs (6-33, 18%) and 2nd-lowest scoring total ever, so a home bounce-back was structurally expected. The +9pt margin underestimate is the COMPETITIVE central estimate under-pricing how completely the bounce-back materialized — but directionally clean. The OKC-home-stack traditional parlay (ML + SGA Over + game Over) cashed for +$170, the first CF traditional winner: a correlated mean-reversion thesis beats mixed-direction stacks." },
         { type: "correct", lesson: "G5: Wemby held to a series-LOW 20pts (4-15 FG) AND 6 reb. The Hartenstein (15 reb) + Holmgren box-out tag-team suppressed BOTH dimensions simultaneously — the exact 'paint-defender tag-team box-out' pattern flagged in the G3 and G4 lessons, now confirmed as a repeatable OKC scheme. The deep-alt Wemby REB floor (Phase 71's most-calibrated signal, ±0.2pt) LOST for the 2nd time this CF (G3 was the first). R3 audit: OKC's specific box-out is a structural Wemby-REB suppressor the calibrated REB signal does not model; against OKC, degrade his REB projection ~30%." },
         { type: "missed", lesson: "G5: SGA 32 on 16-17 FT. The Phase 71c per-player override (-6.9 PTS) put the engine projection at ~24; actual 32 was +8 over. The override is calibrated on the series average but over-corrects in a home bounce-back spot — the O27.5 bet was authored as a coin-flip/SKIP-lean BECAUSE of the override, and it hit comfortably. Lesson: a population-calibrated per-player bias correction has high single-game variance and should not drive a SKIP on a star in a favorable home/regression spot. R3 audit: gate the SGA override down when home + post-anomaly-reversion both fire." },
-        { type: "missed", lesson: "G5: Julian Champagnie career playoff-high 22 off the SAS bench (4 threes). Another secondary-tier 3PT eruption the engine systematically under-prices — same uncapped rotation-player 3PT tail as Caruso (G1/G3), J.Williams (G3), and Merrill (DET-CLE G7). It didn't swing the result (SAS lost anyway), but the pattern is now 5+ instances across R2+CF. The Phase 73 elimination-variance amplifier was INACTIVE for G5 (2-2 series, not a single-game elimination), so the wide-tail modeling that would capture these eruptions wasn't applied. R3 candidate: a standing rotation-player 3PT variance widener not gated to elimination games." }
+        { type: "missed", lesson: "G5: Julian Champagnie career playoff-high 22 off the SAS bench (4 threes). Another secondary-tier 3PT eruption the engine systematically under-prices — same uncapped rotation-player 3PT tail as Caruso (G1/G3), J.Williams (G3), and Merrill (DET-CLE G7). It didn't swing the result (SAS lost anyway), but the pattern is now 5+ instances across R2+CF. The Phase 73 elimination-variance amplifier was INACTIVE for G5 (2-2 series, not a single-game elimination), so the wide-tail modeling that would capture these eruptions wasn't applied. R3 candidate: a standing rotation-player 3PT variance widener not gated to elimination games." },
+        { type: "correct", lesson: "G5 betting signal (user): a CHS Lab role-player PRA stack (Champagnie/Keldon/Harper O9.5 PRA + Harper O0.5 threes) went 4-for-4 and CASHED despite SAS losing by 13 — while the model's own star-concentrated floor stacks (two Wemby legs) LOST to OKC's box-out. Structural lesson for parlay construction: role-player PRA floors at deep lines (O9.5) are BLOWOUT-RESILIENT and diversified across players, so they avoid the correlated single-player downside that sinks star floors when a defense schemes one man out. PRA is now 10/10 in the user-bet ledger — the premier reliable-tier dimension. Phase 73x response: PRA added to the prop inventory (DAILY_UPDATE 6b) and a SAS role-player PRA floor authored for G6." }
       ],
       priorRound: {
           home: {
@@ -5884,6 +5885,33 @@ const SERIES_DATA = [
                   defRole: "Mobile Big",
                   matchupNote: "Stretch-4 off bench. 38.3% 3PT.",
                   baseRating: 56
+              },
+              {
+                  name: "Jared McCain",
+                  pos: "SG",
+                  rating: 68,
+                  ppg: 14.2,
+                  rpg: 2.8,
+                  apg: 2.6,
+                  fgp: 45.5,
+                  per: 16.2,
+                  ts: 59,
+                  epm: 1.6,
+                  bpm: 0.9,
+                  ws48: 0.102,
+                  onOff: 2.8,
+                  clutch: 5.5,
+                  vorp: 1.6,
+                  usg: 23.5,
+                  injury: null,
+                  lebron: 1.9,
+                  oLebron: 1.85,
+                  dLebron: 0.05,
+                  war: 3.6,
+                  offRole: "Movement Shooter",
+                  defRole: "Low Activity",
+                  matchupNote: "Pivotal bench scoring punch — high-variance microwave shooter. WCF: 12 (G2) / 24 career playoff-high (G3) / 20 (G5, 4 threes). Elite off-ball movement + pull-up 3PT; OKC's primary bench shot-creator alongside Caruso. Defense is the give-back (low activity, small guard).",
+                  baseRating: 68
               }
           ],
           synergy: [
@@ -6581,14 +6609,15 @@ const SERIES_DATA = [
                 home: [
                   {name:"Shai Gilgeous-Alexander",min:39,pts:32,reb:5,ast:9,fg:"7-19",threes:"2-6",ft:"16-17",to:3,stl:3,blk:0,pm:14,note:"clinical 16-17 FT; sealed late after Castle POA wore down"},
                   {name:"Alex Caruso",min:28,pts:22,reb:3,ast:6,fg:"7-12",threes:"5-9",ft:"3-4",to:1,stl:3,blk:0,pm:18,note:"bench lifeline — home-game heater returned (G1 31 / G3 29 / G5 22 at Paycom)"},
-                  {name:"Ajay Mitchell",min:26,pts:20,reb:2,ast:3,fg:"7-13",threes:"4-8",ft:"2-2",to:1,stl:1,blk:0,pm:16,note:"bench eruption (the 'McCain 20' line in real box scores = A. Mitchell in this roster) — OKC bench buried SAS again"},
+                  {name:"Jared McCain",min:26,pts:20,reb:2,ast:3,fg:"7-13",threes:"4-8",ft:"2-2",to:1,stl:1,blk:0,pm:16,note:"bench eruption (4 threes) alongside Caruso — OKC bench buried SAS again"},
                   {name:"Chet Holmgren",min:33,pts:16,reb:11,ast:1,fg:"6-11",threes:"1-3",ft:"3-3",to:1,stl:0,blk:2,pm:12,note:"DD; rim protection + spacing back after G4 Wemby suppression"},
                   {name:"Isaiah Hartenstein",min:30,pts:12,reb:15,ast:3,fg:"6-9",threes:"0-0",ft:"0-0",to:2,stl:0,blk:1,pm:15,note:"15 boards — led the box-out plan that held Wemby to 6 reb"},
                   {name:"Lu Dort",min:31,pts:8,reb:4,ast:1,fg:"3-9",threes:"2-6",ft:"0-0",to:1,stl:1,blk:0,pm:11,note:"primary POA on Wemby in switches"},
-                  {name:"Cason Wallace",min:28,pts:7,reb:3,ast:2,fg:"3-6",threes:"1-3",ft:"0-0",to:0,stl:2,blk:0,pm:24,note:"team-high +24 — connective glue starting for DTD J.Williams"},
-                  {name:"Jaylin Williams",min:16,pts:4,reb:4,ast:1,fg:"2-5",threes:"0-2",ft:"0-0",to:1,stl:0,blk:1,pm:4,note:"hamstring DTD — limited role"},
-                  {name:"Isaiah Joe",min:14,pts:4,reb:1,ast:0,fg:"1-4",threes:"1-3",ft:"0-0",to:0,stl:0,blk:0,pm:3},
-                  {name:"Aaron Wiggins",min:12,pts:2,reb:2,ast:1,fg:"1-3",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:2},
+                  {name:"Cason Wallace",min:26,pts:7,reb:3,ast:2,fg:"3-6",threes:"1-3",ft:"0-0",to:0,stl:2,blk:0,pm:24,note:"team-high +24 — connective glue starting for DTD J.Williams"},
+                  {name:"Ajay Mitchell",min:16,pts:6,reb:1,ast:2,fg:"2-5",threes:"1-2",ft:"1-2",to:1,stl:0,blk:0,pm:6},
+                  {name:"Jaylin Williams",min:14,pts:2,reb:4,ast:1,fg:"1-4",threes:"0-2",ft:"0-0",to:1,stl:0,blk:1,pm:4,note:"hamstring DTD — limited role"},
+                  {name:"Isaiah Joe",min:11,pts:2,reb:1,ast:0,fg:"1-4",threes:"0-3",ft:"0-0",to:0,stl:0,blk:0,pm:3},
+                  {name:"Aaron Wiggins",min:8,pts:0,reb:2,ast:1,fg:"0-2",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:2},
                 ],
                 away: [
                   {name:"Stephon Castle",min:38,pts:24,reb:4,ast:6,fg:"7-11",threes:"4-6",ft:"6-6",to:3,stl:1,blk:0,pm:-6,note:"team-high; ran out of gas chasing SGA in Q4"},

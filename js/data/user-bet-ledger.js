@@ -274,6 +274,74 @@ const USER_BET_LEDGER = [
       "pnl": 50,
       "settledAt": "2026-05-25T06:33:19.059Z"
     }
+  },
+  {
+    "id": "user-2026-05-26-001",
+    "date": "2026-05-26",
+    "loggedAt": "2026-05-28T21:24:05.428Z",
+    "series": "OKC-SAS",
+    "game": 5,
+    "type": "parlay",
+    "source": "chs-lab",
+    "inspiredBy": "OKC-SAS-G5-2026-05-26",
+    "stake": 50,
+    "americanOdds": 250,
+    "legs": [
+      {
+        "player": "Julian Champagnie",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "odds": -350,
+        "fromCandidate": true,
+        "candidateHitRate": 0.9,
+        "note": "CHS Lab reliable candidate — role-player PRA floor",
+        "hit": true,
+        "actualValue": 28
+      },
+      {
+        "player": "Keldon Johnson",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "odds": -350,
+        "fromCandidate": true,
+        "candidateHitRate": 0.9,
+        "note": "CHS Lab reliable candidate — role-player PRA floor",
+        "hit": true,
+        "actualValue": 15
+      },
+      {
+        "player": "Dylan Harper",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "odds": -350,
+        "fromCandidate": true,
+        "candidateHitRate": 0.88,
+        "note": "CHS Lab reliable candidate — rookie role-player PRA floor",
+        "hit": true,
+        "actualValue": 14
+      },
+      {
+        "player": "Dylan Harper",
+        "stat": "threes",
+        "line": 0.5,
+        "direction": "over",
+        "odds": -160,
+        "fromCandidate": true,
+        "candidateHitRate": 0.78,
+        "note": "CHS Lab candidate — at least one make",
+        "hit": true,
+        "actualValue": 1
+      }
+    ],
+    "notes": "All 4 legs taken directly from CHS Lab reliable candidates. SAS role-player PRA floor stack — hit despite SAS losing G5 by 13 (role-player counting-stat floors are blowout-resilient). Stake + odds estimated (user reported the win but not the slip $/price).",
+    "result": {
+      "outcome": "win",
+      "pnl": 125,
+      "settledAt": "2026-05-28T21:24:05.586Z"
+    }
   }
 ];
 

@@ -529,10 +529,11 @@ manual workflow below.
 ### 6b · Prop dimension inventory
 
 Don't default to points/rebounds. Available dimensions (with audit notes):
-- **Rebounds** — Phase 71-calibrated (bias ±0.2pt across tiers). Best floor signal.
+- **PRA (pts+reb+ast composite)** — ⭐ MOST RELIABLE FLOOR (10/10 in the user-bet ledger as of WCF G5). Role-player PRA at deep lines (O9.5) is BLOWOUT-RESILIENT: a 20-25min role player accrues across three stats regardless of game script, so the floor clears even when the team loses big (proven WCF G5 — Champagnie/Keldon/Harper all cleared O9.5 PRA as SAS lost by 13). **Diversify across 3 players** to avoid the correlated single-player suppression that sinks star-concentrated floors. PREFER this over single-stat star floors when building the reliable tier. Auto-resolver supports `pra` (and `pr`/`pa`/`stocks`) natively.
+- **Rebounds** — Phase 71-calibrated (bias ±0.2pt across tiers). Strong floor signal BUT vulnerable to matchup-specific suppression: OKC's Hartenstein/Holmgren box-out held Wemby to 4 reb (G3) and 6 reb (G5), and the deep-alt Wemby REB floor LOST both times. Degrade REB ~30% vs a committed box-out scheme; never stack two legs on one player's REB.
 - **Assists** — Calibrated. Best for primary ball-handlers in facilitator mode.
 - **Points** — Star bias correction applied. Use deep alt lines (proj−5 hits ~70%).
-- **Blocks / Steals / 3PM** — Engine returns 0. CAUTION pill auto-applies. Hand-author only with explicit justification.
+- **Blocks / Steals / 3PM** — Engine returns 0. CAUTION pill auto-applies. Hand-author only with explicit justification. Rotation-player 3PM eruptions (Caruso, McCain, J.Williams, Merrill) are tail-prone AND auto-correlated — under-priced but high-variance.
 - **Alt spreads / alt totals** — Same CAUTION as primary spread/total (audit MAE 13pt).
 
 ### 6c · Reliable vs Traditional parlays
