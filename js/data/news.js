@@ -490,4 +490,28 @@ const NEWS = [
     body: 'New York advances to the NBA Finals after sweeping CLE 4-0 in the ECF. Brunson named ECF MVP (25.5/7.8 across four games). Awaiting the WCF winner — OKC and SAS are tied 2-2 with Game 5 tonight in Oklahoma City. NYK gets a long rest (Finals G1 won\'t tip until at least 5/29 even if WCF ends in 5; later if it goes 6 or 7). The structural NYK advantages going into the Finals: 11-game playoff win streak (deepest postseason run since the 1973 championship team), Brunson clutch composure, KAT/Mobley-style stretch-5 matchups that translate against either WCF opponent, and depth (10-man rotation with closeout-blowout Q4 bench minutes). Risks: rust from extended rest (similar to the 9-day-rest-before-ECF-G1 stretch where NYK trailed by 22 in Q4 before the historic comeback). Will write injury watch + Finals series predictions once the WCF resolves.',
     source: 'NBA.com',
   },
+  {
+    date: '2026-05-26',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G5: OKC 127-114 — Thunder take 3-2 lead, one win from the Finals',
+    body: 'Oklahoma City bounced back emphatically from its Game 4 dud, lighting it up at home to move within a win of the Finals. <strong>Shai Gilgeous-Alexander 32/9ast</strong> (7-19 FG but a surgical 16-of-17 from the line), <strong>Alex Caruso 22 off the bench</strong> (3 stl — the home heater is real at 31/29/22 across the Paycom games), Jared McCain 20 (bench eruption, 4 threes), Chet Holmgren 16/11, Isaiah Hartenstein 12/15 dominating the glass. <strong>The defense was the story:</strong> Victor Wembanyama was held to a series-LOW 20 points on 4-of-15 FG (12-of-12 FT kept the line respectable) and just 6 rebounds, as the Hartenstein/Holmgren box-out plan suppressed both his scoring AND his boards. San Antonio: Stephon Castle 24/6ast (7-11 FG), Julian Champagnie a career playoff-high 22 off the bench (4 threes), De\'Aaron Fox 9/8ast gritting through the leg. The Spurs\' stars went quiet and the bench couldn\'t keep pace. <strong>Model:</strong> predicted OKC by 4 → actual OKC by 13 — RIGHT WINNER, +9pt margin underestimate; the mean-reversion read (OKC\'s worst 3PT night of the playoffs → home bounce-back) landed cleanly. Slate went 2-2 (+$95): the OKC home stack (ML / SGA 32 / Over 215.5 → 241) was the first CF traditional winner; both Wemby-dependent floor stacks lost to the box-out.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-28',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G6 tonight: OKC @ SAS 8:30 PM (NBC) — Spurs face elimination, SAS -3.5 / 219.5',
+    body: 'Tip-off 8:30 PM ET on NBC/Peacock from Frost Bank Center. San Antonio must win to force a Game 7; Oklahoma City can close out its first NBA Finals trip since 2012. DK current: SAS -3.5 / total 219.5 / ML SAS -155, OKC +130 — San Antonio favored at home to extend the series. <strong>Structural drivers:</strong> SAS home (Frost Bank Center, 4-1 vs OKC in the regular season) + healthy Castle/Harper backcourt + a Wembanyama bounce-back narrative after his series-low 20/6, vs OKC\'s deeper bench (Caruso/McCain) and a clean shot to advance. <strong>Phase 73 elimination amplifier ACTIVE:</strong> the win-or-go-home tail widens 1.4×, and the framework auto-downgrades any PLACE pill to CAUTION in G6/G7 (elimination games run ~50% winner accuracy / 19.8pt MAE historically). <strong>Key adjustment:</strong> SAS has to solve the OKC box-out that held Wemby to 6 rebounds in G5 — getting him deep touches before the double arrives. Engine view: SAS by ~3 at home (COMPETITIVE), essentially market-aligned. <strong>The picks:</strong> see Featured Parlays — reduced CF stakes ($100 floor / $50 trad) hold; Phase 71 R3 out-of-sample cap at 50%.',
+    source: 'DraftKings / NBA.com',
+  },
+  {
+    date: '2026-05-28',
+    severity: 'minor',
+    series: 'NYK-CLE',
+    headline: 'Finals watch: NYK rests as WCF heads toward a Game 6 (or 7)',
+    body: 'New York continues to wait on the WCF, now 4 days into its post-sweep rest. If OKC closes out San Antonio in G6 tonight, the Thunder advance and Finals G1 likely tips this weekend; if SAS forces a Game 7 (Sat 5/30 at Paycom), the Finals push back to early next week and NYK\'s layoff stretches past a week. The rest cuts both ways for the Knicks: maximal recovery for the 10-man rotation, but the 9-day-rest-before-ECF-G1 game (a 22-point Q4 deficit before the historic comeback) is the cautionary precedent for rust. Matchup-wise NYK projects competitively against either opponent — KAT\'s stretch-5 game travels against both Holmgren and Wembanyama, and the switch-everything scheme that erased Harden\'s gravity in the ECF is the same template they\'d use on SGA or the SAS guards. Full Finals series prediction comes once the WCF resolves.',
+    source: 'NBA.com',
+  },
 ];

@@ -912,6 +912,250 @@ const CHS_LAB_LEDGER = [
         }
       ]
     },
+    "actual": {
+      "winner": "OKC",
+      "homeScore": 127,
+      "awayScore": 114,
+      "margin": 13
+    },
+    "settlement": {
+      "reliable": null,
+      "traditional": {
+        "outcome": "win",
+        "legResults": [
+          {
+            "player": "Keldon Johnson",
+            "stat": "pra",
+            "line": 9.5,
+            "hit": true,
+            "actualValue": 15
+          },
+          {
+            "player": "Shai Gilgeous-Alexander",
+            "stat": "pra",
+            "line": 21.5,
+            "hit": true,
+            "actualValue": 46
+          },
+          {
+            "player": "Devin Vassell",
+            "stat": "pra",
+            "line": 15.5,
+            "hit": true,
+            "actualValue": 20
+          },
+          {
+            "player": "Isaiah Hartenstein",
+            "stat": "pra",
+            "line": 15.5,
+            "hit": true,
+            "actualValue": 30
+          }
+        ],
+        "pnl": 129
+      },
+      "settledAt": "2026-05-28T20:44:44.743Z"
+    }
+  },
+  {
+    "date": "2026-05-28",
+    "series": "OKC-SAS",
+    "game": 6,
+    "capturedAt": "2026-05-28T20:44:45.713Z",
+    "iterations": 3000,
+    "mc": {
+      "homeWinProb": 0.491,
+      "blowoutRisk": 0.406,
+      "marginP50": -0.4
+    },
+    "candidates": [
+      {
+        "player": "De'Aaron Fox",
+        "stat": "pra",
+        "line": 18.5,
+        "direction": "over",
+        "hitRate": 0.801,
+        "estJuice": -403,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 30.2
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "reb",
+        "line": 7.5,
+        "direction": "over",
+        "hitRate": 0.805,
+        "estJuice": -413,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 37.8
+      },
+      {
+        "player": "Keldon Johnson",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "hitRate": 0.805,
+        "estJuice": -413,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 23.2
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pra",
+        "line": 25.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 37.8
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 37.8
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "pts",
+        "line": 6.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 22
+      },
+      {
+        "player": "Stephon Castle",
+        "stat": "pts",
+        "line": 10.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 36.8
+      },
+      {
+        "player": "Stephon Castle",
+        "stat": "pra",
+        "line": 17.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 36.8
+      },
+      {
+        "player": "Dylan Harper",
+        "stat": "pra",
+        "line": 10.5,
+        "direction": "over",
+        "hitRate": 0.811,
+        "estJuice": -429,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 24
+      },
+      {
+        "player": "Shai Gilgeous-Alexander",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.81,
+        "estJuice": -426,
+        "team": "OKC",
+        "position": "PG",
+        "projMinutes": 38.6
+      },
+      {
+        "player": "Shai Gilgeous-Alexander",
+        "stat": "pra",
+        "line": 20.5,
+        "direction": "over",
+        "hitRate": 0.821,
+        "estJuice": -459,
+        "team": "OKC",
+        "position": "PG",
+        "projMinutes": 38.6
+      },
+      {
+        "player": "Devin Vassell",
+        "stat": "pra",
+        "line": 15.5,
+        "direction": "over",
+        "hitRate": 0.818,
+        "estJuice": -449,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 32.8
+      }
+    ],
+    "reliable": null,
+    "traditional": {
+      "legCount": 4,
+      "combinedMC": 0.432,
+      "calibratedCombined": 0.131,
+      "americanOdds": 131,
+      "stake": 100,
+      "legs": [
+        {
+          "player": "De'Aaron Fox",
+          "stat": "pra",
+          "line": 18.5,
+          "direction": "over",
+          "hitRate": 0.801,
+          "estJuice": -403,
+          "team": "SAS",
+          "position": "PG",
+          "projMinutes": 30.2
+        },
+        {
+          "player": "Victor Wembanyama",
+          "stat": "reb",
+          "line": 7.5,
+          "direction": "over",
+          "hitRate": 0.805,
+          "estJuice": -413,
+          "team": "SAS",
+          "position": "C",
+          "projMinutes": 37.8
+        },
+        {
+          "player": "Shai Gilgeous-Alexander",
+          "stat": "pts",
+          "line": 14.5,
+          "direction": "over",
+          "hitRate": 0.81,
+          "estJuice": -426,
+          "team": "OKC",
+          "position": "PG",
+          "projMinutes": 38.6
+        },
+        {
+          "player": "Cason Wallace",
+          "stat": "pra",
+          "line": 8.5,
+          "direction": "over",
+          "hitRate": 0.829,
+          "estJuice": -485,
+          "team": "OKC",
+          "position": "SG",
+          "projMinutes": 26.4
+        }
+      ]
+    },
     "actual": null,
     "settlement": null
   }
