@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Thu May 28 | WCF G6: OKC @ SAS 8:30 PM @ Frost Bank Center (SAS -3.5 / 219.5) OKC leads 3-2 — SAS faces elimination | WCF G5 ARCHIVED — Tue 5/26: OKC 127-114 (SGA 32/9; Wemby held to series-low 20/6) — OKC one win from the Finals | ECF SWEEP — NYK advances to NBA FINALS (first since 1999) | WCF series OKC 3-2 — SAS must win to force G7</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">NEXT — Sat May 30 | WCF G7: SAS @ OKC 8:00 PM @ Paycom Center (OKC -4.5 / 213.5) series TIED 3-3 — winner-take-all for a Finals berth | WCF G6 ARCHIVED — Thu 5/28: SAS 118-91 (Wemby 28/10; SGA held to series-low 15) — Spurs force Game 7 | ECF SWEEP — NYK advances to NBA FINALS (first since 1999), awaits the WCF winner | Finals G1 Wed June 3 at the WCF winner's home</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2537,29 +2537,29 @@ function renderCFBets(el) {
     <div style="background:rgba(0,0,0,0.3);border:1px solid #22d3ee;border-radius:10px;padding:14px;margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 CONFERENCE FINALS P&amp;L</span>
-        <span style="font-size:11px;color:#666;">Live tracking — through WCF G5; OKC leads 3-2, one win from the Finals</span>
+        <span style="font-size:11px;color:#666;">Live tracking — through WCF G6; series TIED 3-3, winner-take-all G7 Sat 5/30</span>
       </div>
       <!-- Row 1: Net $ by category -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(34,211,238,0.08);">
           <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">Floor Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$375</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">5-2 record</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$310</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">6-4 record</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(167,139,250,0.08);">
           <div style="font-size:9px;color:#a78bfa;text-transform:uppercase;">Traditional Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$70</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">1-2 record</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$20</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">1-3 record</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);border:1px solid rgba(61,214,140,0.4);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Combined</div>
-          <div style="font-size:18px;font-weight:700;color:#3dd68c;">+$445</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">6-4 (60%)</div>
+          <div style="font-size:18px;font-weight:700;color:#3dd68c;">+$330</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">7-7 (50%)</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Wagered</div>
-          <div style="font-size:16px;font-weight:700;color:#aaa;">$850</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">ROI: <strong style="color:#3dd68c;">+52%</strong></div>
+          <div style="font-size:16px;font-weight:700;color:#aaa;">$1,200</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">ROI: <strong style="color:#3dd68c;">+28%</strong></div>
         </div>
       </div>
       <!-- Row 2: Per-game breakdown -->
@@ -2610,20 +2610,25 @@ function renderCFBets(el) {
           <span style="color:#aaa;">WCF G5: <strong style="color:#fff;">OKC 127-114</strong> · model OKC by 4 (<span style="color:#3dd68c;">right winner, err 9pt</span>)</span>
           <span style="color:#aaa;">1W 2L floor, 1W trad</span>
           <span style="color:#3dd68c;font-weight:700;">+$95</span>
+
+          <span style="color:#aaa;">Thu 5/28</span>
+          <span style="color:#aaa;">WCF G6: <strong style="color:#fff;">SAS 118-91</strong> · model SAS by 3 (<span style="color:#3dd68c;">right winner, err 24pt</span>)</span>
+          <span style="color:#aaa;">1W 2L floor, 1L trad</span>
+          <span style="color:#ef4444;font-weight:700;">-$115</span>
         </div>
       </div>
       <!-- Row 3: In-play wagers -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#888;">IN PLAY (WCF G6 — Thu 5/28 @ Frost Bank Center):</span>
-          <span><strong style="color:#22d3ee;">$300</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$350 wagered, settles 5/29 morning</strong></span>
+          <span style="color:#888;">IN PLAY (WCF G7 — Sat 5/30 @ Paycom Center):</span>
+          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 5/31 morning</strong></span>
         </div>
       </div>
       <!-- Row 4: Aggregate notes -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#666;line-height:1.5;">
-        <strong style="color:#3dd68c;">CF model accuracy:</strong> 5/8 winners (63%) · ~10.5pt main MAE through WCF G5 — the two G3 wrong-winner calls + G4 magnitude miss widened the error band, but G5 added a clean right-winner mean-reversion read (OKC by 4 → OKC by 13). The central directional reads continue to land. R3 out-of-sample caveat continues to fire.
-        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays now 5-2 across CF. G5 added 1 win (Fox 8ast + Caruso 22) and 2 losses — both Wemby-dependent stacks, which the OKC box-out sank simultaneously (20pts / 6reb, his series-low in BOTH). Lesson reinforced: stacking two legs on one player removes the diversification that makes a floor parlay safe.
-        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional broke through in WCF G5 (now 1-2) — the OKC home bounce-back stack (ML + SGA Over + game Over) was the first CF traditional winner. The difference vs the prior 0-fer: a correlated mean-reversion thesis rather than mixed-direction legs that each needed independent luck.
+        <strong style="color:#3dd68c;">CF model accuracy:</strong> 6/9 winners (67%) · ~12pt main MAE through WCF G6 — WCF G6 added a clean right-winner call (SAS by 3 → SAS by 27) but a +24pt margin miss that nudged the MAE up; the Phase 73 elimination amplifier honestly carried the blowout tail. The central directional reads continue to land. R3 out-of-sample caveat continues to fire.
+        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays now 6-4 across CF. G6 added 1 win (the role-player PRA stack — Champagnie/Keldon/Harper) and 2 losses — both star-floor stacks, which SGA's down game (4 ast / 15 pts) sank. Lesson reinforced: role-player PRA is blowout-resilient; a star's scoring/AST floor is NOT, even diversified across teams, because his volume falls with the game script.
+        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional fell back to 1-3 — the SAS-forces-G7 stack hit 2 of 3 (SAS ML + Wemby 28) but the Over broke (total 209, elimination defense). Even a correctly-correlated thesis loses a traditional when one leg is a coin-flip total; the G5 winner remains the lone correlated-thesis success.
       </div>
     </div>
 
@@ -3014,11 +3019,11 @@ function renderR2Bets(el) {
         </div>
         <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);border:1px solid rgba(34,211,238,0.3);">
           <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">CF Parlays</div>
-          <div style="font-size:12px;font-weight:700;color:#3dd68c;">6-4</div>
+          <div style="font-size:12px;font-weight:700;color:#aaa;">7-7</div>
         </div>
         <div style="text-align:center;padding:6px;border-radius:6px;background:rgba(0,0,0,0.15);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">R2+CF Combined</div>
-          <div style="font-size:12px;font-weight:700;color:#aaa;">23-43</div>
+          <div style="font-size:12px;font-weight:700;color:#aaa;">24-46</div>
         </div>
       </div>
       <!-- CF G1 parlay timeline (Phase 73j: live tracking) -->
@@ -3045,7 +3050,7 @@ function renderR2Bets(el) {
           <span style="color:#3dd68c;font-weight:700;">4-2 (+$350)</span>
         </div>
         <div style="font-size:9px;color:#666;margin-top:6px;font-style:italic;text-align:center;">
-          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF G5 settled (OKC 127-114, OKC leads 3-2). WCF G6 in play (5/28 OKC @ SAS) — $350 wagered, settles 5/29 morning.
+          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF G6 settled (SAS 118-91, series TIED 3-3). WCF G7 in play (5/30 SAS @ OKC, winner-take-all) — $250 wagered, settles 5/31 morning.
         </div>
       </div>
     </div>
@@ -3106,11 +3111,12 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Sun May 24</span><span style="color:#aaa;">Wemby+Fox Floor &#x2713; (+$105; Wemby 33pts cleared O19.5 by 13.5 / Fox 5ast cleared O4.5 by 0.5 — closest floor leg of the playoffs)</span><span style="color:#aaa;">1-0</span><span style="color:#3dd68c;font-weight:700;">+$105</span>
             <span style="color:#aaa;">Mon May 25</span><span style="color:#aaa;">Brunson+Bridges Floor &#x2717; (Brunson 15pts in 28min / 0 Q4 min broke Over 19.5 — closeout-blowout cap fired in real life; Bridges hit), Hart+KAT REB Floor &#x2713; (+$120; Hart 9reb / KAT 14reb — counting-stat-blowout-stable signal cleanest of the playoffs)</span><span style="color:#aaa;">1-1</span><span style="color:#3dd68c;font-weight:700;">+$20</span>
             <span style="color:#aaa;">Tue May 26</span><span style="color:#aaa;">Fox+Caruso Floor &#x2713; (+$125; Fox 8ast / Caruso 22), SAS Stars 2-Leg &#x2717; (Wemby 20pts &amp; 6reb both missed — OKC box-out suppressed scoring AND boards), Counting-Stat Stack 3-Leg &#x2717; (Wemby 6reb killed it; Fox 8ast / SGA 9ast both hit)</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$75</span>
+            <span style="color:#aaa;">Thu May 28</span><span style="color:#aaa;">Role-Player PRA Floor &#x2713; (+$135; Champagnie 18 / Keldon 21 / Harper 20 PRA — only winner on the slate, blowout-resilient thesis validated AGAIN), Cross-Team Creator Floor &#x2717; (Castle 9ast hit / SGA 4ast missed — a star\'s AST floor is NOT blowout-resilient on the road), Deep-Alt Star Scoring Floor &#x2717; (Wemby 28 hit / SGA 15 series-low missed even the proj−5 alt)</span><span style="color:#aaa;">1-2</span><span style="color:#ef4444;font-weight:700;">-$65</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$3,900</strong></span>
-            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$177</strong></span>
-            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">19-21</strong></span>
+            <span style="color:#888;">Floor Wagered (settled): <strong style="color:#aaa;">$4,200</strong></span>
+            <span style="color:#888;">Floor Net: <strong style="color:#ef4444;">-$242</strong></span>
+            <span style="color:#888;">Floor Record: <strong style="color:#aaa;">20-23</strong></span>
           </div>
         </div>
 
@@ -3141,21 +3147,22 @@ function renderR2Bets(el) {
             <span style="color:#aaa;">Sun May 24</span><span style="color:#aaa;">SAS Home Stack 3-Leg (SAS ML / Wemby 26.5 / Castle 19.5) &#x2717; (SAS won 103-82 — 2 of 3 legs hit; Castle U19.5 broke the stack at 13pts/5ast distribution mode; the 5/23 MC re-validation flagged Castle as a coin-flip leg)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
             <span style="color:#aaa;">Mon May 25</span><span style="color:#aaa;">NYK Closeout 3-Leg (NYK ML / Brunson 24.5 / Under 218.5) &#x2717; (NYK 130-93 — only ML hit; Brunson 15 in 28min broke from Phase 73o closeout-blowout cap, Over 218.5 broke from NYK 16-of-36 3PT eruption)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
             <span style="color:#aaa;">Tue May 26</span><span style="color:#aaa;">OKC Home Stack 3-Leg &#x2713; (+$170; OKC ML / SGA 32 O27.5 / 241 total O215.5 — first CF traditional winner; correlated mean-reversion thesis hit on all three)</span><span style="color:#aaa;">1-0</span><span style="color:#3dd68c;font-weight:700;">+$170</span>
+            <span style="color:#aaa;">Thu May 28</span><span style="color:#aaa;">SAS Forces G7 Stack 3-Leg &#x2717; (SAS ML &#x2713; 118-91 / Wemby 28 O25.5 &#x2713; / Over 219.5 &#x2717; — total 209, elimination defense compressed it; 2 of 3 correlated legs still loses a traditional)</span><span style="color:#aaa;">0-1</span><span style="color:#ef4444;font-weight:700;">-$50</span>
           </div>
           <div style="border-top:1px dashed #333;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-size:11px;">
-            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$3,100</strong></span>
-            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$641</strong></span>
-            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">8-29</strong></span>
+            <span style="color:#888;">Traditional Wagered (settled): <strong style="color:#aaa;">$3,150</strong></span>
+            <span style="color:#888;">Traditional Net: <strong style="color:#ef4444;">-$691</strong></span>
+            <span style="color:#888;">Traditional Record: <strong style="color:#aaa;">8-30</strong></span>
           </div>
         </div>
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$7,000</strong></span>
-          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$818</strong></span>
-          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">27-50</strong></span>
+          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$7,350</strong></span>
+          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$933</strong></span>
+          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">28-53</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight Thu May 28 (WCF G6 — OKC @ SAS, OKC leads 3-2, SAS faces elimination): <strong style="color:#22d3ee;">$300</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">No games today (rest day). Next — Sat May 30 (WCF G7 — SAS @ OKC, series tied 3-3, winner to the Finals): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

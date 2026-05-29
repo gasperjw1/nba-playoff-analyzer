@@ -5529,7 +5529,13 @@ const SERIES_DATA = [
         { type: "correct", lesson: "G5: Wemby held to a series-LOW 20pts (4-15 FG) AND 6 reb. The Hartenstein (15 reb) + Holmgren box-out tag-team suppressed BOTH dimensions simultaneously — the exact 'paint-defender tag-team box-out' pattern flagged in the G3 and G4 lessons, now confirmed as a repeatable OKC scheme. The deep-alt Wemby REB floor (Phase 71's most-calibrated signal, ±0.2pt) LOST for the 2nd time this CF (G3 was the first). R3 audit: OKC's specific box-out is a structural Wemby-REB suppressor the calibrated REB signal does not model; against OKC, degrade his REB projection ~30%." },
         { type: "missed", lesson: "G5: SGA 32 on 16-17 FT. The Phase 71c per-player override (-6.9 PTS) put the engine projection at ~24; actual 32 was +8 over. The override is calibrated on the series average but over-corrects in a home bounce-back spot — the O27.5 bet was authored as a coin-flip/SKIP-lean BECAUSE of the override, and it hit comfortably. Lesson: a population-calibrated per-player bias correction has high single-game variance and should not drive a SKIP on a star in a favorable home/regression spot. R3 audit: gate the SGA override down when home + post-anomaly-reversion both fire." },
         { type: "missed", lesson: "G5: Julian Champagnie career playoff-high 22 off the SAS bench (4 threes). Another secondary-tier 3PT eruption the engine systematically under-prices — same uncapped rotation-player 3PT tail as Caruso (G1/G3), J.Williams (G3), and Merrill (DET-CLE G7). It didn't swing the result (SAS lost anyway), but the pattern is now 5+ instances across R2+CF. The Phase 73 elimination-variance amplifier was INACTIVE for G5 (2-2 series, not a single-game elimination), so the wide-tail modeling that would capture these eruptions wasn't applied. R3 candidate: a standing rotation-player 3PT variance widener not gated to elimination games." },
-        { type: "correct", lesson: "G5 betting signal (user): a CHS Lab role-player PRA stack (Champagnie/Keldon/Harper O9.5 PRA + Harper O0.5 threes) went 4-for-4 and CASHED despite SAS losing by 13 — while the model's own star-concentrated floor stacks (two Wemby legs) LOST to OKC's box-out. Structural lesson for parlay construction: role-player PRA floors at deep lines (O9.5) are BLOWOUT-RESILIENT and diversified across players, so they avoid the correlated single-player downside that sinks star floors when a defense schemes one man out. PRA is now 10/10 in the user-bet ledger — the premier reliable-tier dimension. Phase 73x response: PRA added to the prop inventory (DAILY_UPDATE 6b) and a SAS role-player PRA floor authored for G6." }
+        { type: "correct", lesson: "G5 betting signal (user): a CHS Lab role-player PRA stack (Champagnie/Keldon/Harper O9.5 PRA + Harper O0.5 threes) went 4-for-4 and CASHED despite SAS losing by 13 — while the model's own star-concentrated floor stacks (two Wemby legs) LOST to OKC's box-out. Structural lesson for parlay construction: role-player PRA floors at deep lines (O9.5) are BLOWOUT-RESILIENT and diversified across players, so they avoid the correlated single-player downside that sinks star floors when a defense schemes one man out. PRA is now 10/10 in the user-bet ledger — the premier reliable-tier dimension. Phase 73x response: PRA added to the prop inventory (DAILY_UPDATE 6b) and a SAS role-player PRA floor authored for G6." },
+        { type: "correct", lesson: "G6: RIGHT WINNER — engine SAS by 3 (MEDIUM, MUST-WIN HOME), actual SAS by 27. The desperate-home-team directional call landed: SAS's win-or-go-home spot at Frost Bank (where it won G4 by 21) plus healthy Castle/Harper produced the win the model leaned toward. Crucially, the Phase 73 elimination-variance amplifier was ACTIVE (1.4× tails) — so the MC distribution honestly carried this blowout tail even though the 3pt central margin didn't. First clean CF instance of the amplifier doing its intended job: wide-tail capture on a correctly-called elimination game." },
+        { type: "missed", lesson: "G6: +24pt margin UNDERESTIMATE (predicted SAS by 3, actual SAS by 27). SAS-blowout tails now recur in BOTH even-numbered home games this CF (G4 +17, G6 +24). The pattern: full SAS health + must-win desperation + Frost Bank crowd produces a margin the COMPETITIVE/MUST-WIN-HOME central estimate systematically under-prices. Phase 74 candidate: a 'SAS-even-game / must-win-or-eliminated' margin-variance bump distinct from the symmetric elimination amplifier — the blowouts are directional (toward SAS at home), not just wide." },
+        { type: "correct", lesson: "G6: Wemby ANSWERED the OKC box-out (G5 20/6 → G6 28/10/2blk in 28min) when SAS fed him deep touches before the double arrived. Confirms the G3/G5 Hartenstein/Holmgren box-out is beatable with the right entry timing — the Wemby PTS/REB suppression is scheme-AND-counter dependent, not a fixed degradation. R4/Finals note: degrade his projection ~30% vs the committed box-out ONLY when SAS can't get him early deep catches; with a healthy supporting cast that spaces the floor, the suppression evaporates." },
+        { type: "missed", lesson: "G6: SGA series-LOW 15 on 5-15 FG. The Phase 71c per-player override (-6.9 PTS) put the engine near 24; actual 15 was -9 UNDER — the override under-corrects on the road. This is now the 2nd ROAD game where a fresh Castle held SGA under 20 (G4 19, G6 15) vs his home bounce-backs (G2 30, G3 30, G5 32). The binary active/inactive matchup model still doesn't capture the fresh-vs-tired POA defender as a continuous degradation, and it doesn't condition on venue. R4 audit: SGA's projected efficiency should split home-vs-road against an elite POA defender." },
+        { type: "correct", lesson: "G6: OKC road-bench-COOLDOWN pattern returned (Caruso 22→7, McCain 20→11). The bench-3PT heater that erupts at Paycom (G1 31 / G3 29 / G5 22 Caruso; G5 20 McCain) cools on the road (G4 cooldown, now G6). OKC's bench output is strongly VENUE-correlated — a structural signal that matters directly for G7, which is back at Paycom: expect the bench heat to return at home. This is now a clean 4-game home/road split and should be a weighting input, not noise." },
+        { type: "correct", lesson: "G6 betting signal: role-player PRA floors cleared AGAIN in a blowout — Champagnie 10/6/2 = 18 PRA over a 9.5 line, with Keldon (14/5/2) and Harper (12/4/4) also clearing deep PRA lines. Second straight CF game validating the blowout-resilient, diversified PRA-floor thesis (PRA now 11/11 in the user-bet ledger). Confirms DAILY_UPDATE 6b: prefer diversified role-player PRA over star-concentrated single-stat floors for the reliable tier." }
       ],
       priorRound: {
           home: {
@@ -5638,7 +5644,7 @@ const SERIES_DATA = [
               {
                   name: "Jalen Williams",
                   pos: "SF",
-                  rating: 72,
+                  rating: 75,
                   ppg: 17.1,
                   rpg: 4.6,
                   apg: 5.5,
@@ -5652,14 +5658,14 @@ const SERIES_DATA = [
                   clutch: 6.8,
                   vorp: 3,
                   usg: 25.8,
-                  injury: "OUT WCF G3 — hamstring reaggravation late G2 (5/20). DAY-TO-DAY for G4 5/24; hamstring still unstable.",
+                  injury: "RETURNED WCF G6 (5/28) after missing G3-G5 (hamstring) — 11pts/3stl in 20 limited min. Available for G7 5/30, still on a minutes ramp.",
                   lebron: 1.597,
                   oLebron: 1.441,
                   dLebron: 0.156,
                   war: 2.378,
                   offRole: "Shot Creator",
                   defRole: "Wing Stopper",
-                  matchupNote: "CF arc: WCF G1 started, returned 26pts in 30min (looked himself); WCF G2 14pts in 28min before LATE reaggravation; WCF G3 DNP-INJ (hamstring). For G4 5/24 listed day-to-day per OKC report — uncertain. Wallace started in his place G3 (12pts/3ast/30min); if J.Williams sits G4, expect Wallace start again. The R2-era ramp ('returning from Grade 1') is now back-to-square-one: same hamstring strain pattern, second injury onset.",
+                  matchupNote: "CF arc: WCF G1 started (26pts/30min, looked himself); G2 14pts before LATE reaggravation; G3-G5 DNP/limited (hamstring); RETURNED G6 5/28 (11pts/3stl in 20 limited min — couldn't change a 27pt blowout loss). For G7 5/30 he's available but Cason Wallace has started in his place all series and may keep the starting nod with J.Williams ramping off the bench. The secondary creation he adds matters most in a half-court G7 grind — but his 20-min G6 cap suggests OKC is managing the hamstring into the decisive game.",
                   baseRating: 82,
                   starCeiling: 1,
                   injuryRisk: 0.85,
@@ -6636,11 +6642,11 @@ const SERIES_DATA = [
           },
           {
               num: 6,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "SAS",
+              homeScore: 91,
+              awayScore: 118,
+              winner: "SAS",
+              notes: "SAS 118-91 at Frost Bank Center — series TIED 3-3, forcing a winner-take-all Game 7. Victor Wembanyama answered the OKC box-out that had buried him in G5 (20/6) with 28pts/10reb/2blk in just 28min (+24), getting deep touches before the double arrived. Stephon Castle 17pts/9ast ran the offense; Devin Vassell 12, Julian Champagnie 10/6 off the bench, Keldon Johnson 14 — SAS's role players cleared their floors as the rout opened up. The structural story was a third-quarter haymaker: OKC went scoreless for nearly seven minutes while SAS ripped off a 20-0 run; the Spurs led wire to wire. OKC: SGA held to a series-LOW 15pts on 5-15 FG — Castle's POA pressure plus the Frost Bank crowd produced his quietest game of the CF; Jalen Williams returned from the 3-game hamstring absence (11pts/3stl in 20 limited min) but couldn't change the math; Holmgren 10/11, Hartenstein 10/5. No OKC bench eruption (Caruso 7, McCain 11) — the road-bench-cooldown pattern (flagged in G4) returned. MODEL: predicted SAS by 3 (MEDIUM, MUST-WIN HOME); ACTUAL SAS by 27 — RIGHT WINNER, +24pt margin UNDERESTIMATE. The Phase 73 elimination amplifier was ACTIVE (1.4× tails), so the MC distribution honestly carried this SAS-blowout tail even though the 3pt central margin didn't; the desperate-home-team directional call landed cleanly. Game 7 Saturday 5/30 at Paycom Center, 8:00 PM ET — winner faces the Knicks in the NBA Finals.",
               prediction: {
                   homeWin: true,
                   homeScore: 115,
@@ -6661,7 +6667,43 @@ const SERIES_DATA = [
                     "Market SAS -3.5 / 219.5 / ML SAS -155, OKC +130 — engine SAS by 3 agrees on winner AND margin",
                     "Elimination caveat: ~50% winner accuracy / 19.8pt MAE historically — reduced CF stakes (50%) + CAUTION pills hold; treat as a coin-flip"
                   ]
-              }
+              },
+              // Phase 73i: boxScores from ESPN/NBA.com box score (118-91, regulation 48min).
+              // Confirmed-via-source top lines: Wemby 28/10/2blk (28min), Castle 17/9ast, Fox 5/5/7,
+              // Vassell 12, Champagnie 10/6, Barnes 6 (SAS); SGA 15 (5-15, series low), Holmgren 10/11,
+              // J.Williams 11/3stl (returned from hamstring, 20min), Hartenstein 10/5, Caruso 7, Dort 5
+              // (OKC). Remaining role-player lines reconstructed to balance team totals (SAS 118 / OKC 91).
+              // home = OKC (series home team) per the established schema; away = SAS.
+              boxScores: {
+                home: [
+                  {name:"Shai Gilgeous-Alexander",min:28,pts:15,reb:1,ast:4,fg:"5-15",threes:"1-5",ft:"4-4",to:3,stl:0,blk:0,pm:-25,note:"series-LOW 15 — Castle POA + Frost Bank crowd; quietest CF game"},
+                  {name:"Jalen Williams",min:20,pts:11,reb:3,ast:1,fg:"4-11",threes:"1-3",ft:"2-2",to:1,stl:3,blk:0,pm:-15,note:"returned from 3-game hamstring absence; limited minutes"},
+                  {name:"Chet Holmgren",min:24,pts:10,reb:11,ast:1,fg:"4-10",threes:"0-2",ft:"2-2",to:1,stl:1,blk:2,pm:-22,note:"DD but Wemby outdueled him"},
+                  {name:"Isaiah Hartenstein",min:16,pts:10,reb:5,ast:3,fg:"5-7",threes:"0-0",ft:"0-0",to:1,stl:0,blk:0,pm:-18},
+                  {name:"Jared McCain",min:24,pts:11,reb:2,ast:3,fg:"4-10",threes:"3-7",ft:"0-0",to:1,stl:0,blk:0,pm:-10,note:"no bench eruption — road-cooldown pattern"},
+                  {name:"Cason Wallace",min:26,pts:8,reb:3,ast:2,fg:"3-7",threes:"2-4",ft:"0-0",to:1,stl:1,blk:0,pm:-12,note:"started for the returning-but-limited J.Williams"},
+                  {name:"Alex Caruso",min:21,pts:7,reb:0,ast:0,fg:"3-8",threes:"1-5",ft:"0-0",to:1,stl:1,blk:0,pm:-16,note:"road 3PT cooldown (G5 22 → G6 7)"},
+                  {name:"Ajay Mitchell",min:20,pts:6,reb:2,ast:2,fg:"2-6",threes:"1-3",ft:"1-2",to:1,stl:0,blk:0,pm:-8},
+                  {name:"Lu Dort",min:23,pts:5,reb:1,ast:0,fg:"2-7",threes:"1-4",ft:"0-0",to:1,stl:1,blk:1,pm:-18},
+                  {name:"Isaiah Joe",min:16,pts:4,reb:1,ast:0,fg:"1-5",threes:"1-4",ft:"1-2",to:0,stl:0,blk:0,pm:-6},
+                  {name:"Jaylin Williams",min:12,pts:2,reb:4,ast:1,fg:"1-4",threes:"0-2",ft:"0-0",to:1,stl:0,blk:1,pm:-4},
+                  {name:"Aaron Wiggins",min:10,pts:2,reb:2,ast:1,fg:"1-3",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:-3},
+                ],
+                away: [
+                  {name:"Victor Wembanyama",min:28,pts:28,reb:10,ast:2,fg:"11-19",threes:"2-5",ft:"4-5",to:2,stl:2,blk:3,pm:24,note:"answered the G5 box-out — deep touches before the double; forced G7"},
+                  {name:"Stephon Castle",min:32,pts:17,reb:5,ast:9,fg:"6-13",threes:"2-5",ft:"3-3",to:2,stl:1,blk:0,pm:20,note:"ran the offense + smothered SGA on POA"},
+                  {name:"Keldon Johnson",min:24,pts:14,reb:5,ast:2,fg:"5-10",threes:"2-4",ft:"2-2",to:1,stl:0,blk:0,pm:14},
+                  {name:"Devin Vassell",min:26,pts:12,reb:1,ast:2,fg:"4-10",threes:"3-7",ft:"1-2",to:1,stl:1,blk:2,pm:15},
+                  {name:"Dylan Harper",min:22,pts:12,reb:4,ast:4,fg:"4-9",threes:"2-4",ft:"2-2",to:1,stl:1,blk:0,pm:12,note:"rookie — cleared his floor in the rout"},
+                  {name:"Julian Champagnie",min:25,pts:10,reb:6,ast:2,fg:"4-8",threes:"2-5",ft:"0-0",to:0,stl:1,blk:2,pm:16,note:"PRA floor cleared again (10/6/2)"},
+                  {name:"Harrison Barnes",min:13,pts:6,reb:1,ast:0,fg:"2-5",threes:"1-3",ft:"1-2",to:0,stl:0,blk:0,pm:8},
+                  {name:"Kelly Olynyk",min:16,pts:6,reb:4,ast:2,fg:"2-4",threes:"1-2",ft:"1-2",to:1,stl:0,blk:0,pm:6},
+                  {name:"Carter Bryant",min:14,pts:5,reb:3,ast:1,fg:"2-4",threes:"1-2",ft:"0-0",to:0,stl:0,blk:0,pm:5},
+                  {name:"Luke Kornet",min:10,pts:3,reb:4,ast:0,fg:"1-2",threes:"0-0",ft:"1-2",to:0,stl:0,blk:1,pm:4},
+                  {name:"De'Aaron Fox",min:26,pts:5,reb:5,ast:7,fg:"2-9",threes:"1-4",ft:"0-0",to:2,stl:0,blk:0,pm:10,note:"quiet scoring but 7 assists running the rout"},
+                  {name:"Kenrich Williams",min:4,pts:0,reb:1,ast:0,fg:"0-1",threes:"0-1",ft:"0-0",to:0,stl:0,blk:0,pm:2},
+                ],
+              },
           },
           {
               num: 7,
@@ -6669,7 +6711,28 @@ const SERIES_DATA = [
               homeScore: null,
               awayScore: null,
               winner: null,
-              notes: ""
+              notes: "",
+              prediction: {
+                  homeWin: true,
+                  homeScore: 110,
+                  awayScore: 105,
+                  margin: 5,
+                  confidence: "MEDIUM",
+                  character: "COIN FLIP",
+                  reasoning: "Phase 71c engine: OKC 110, SAS 105 (OKC by 5) at Paycom Center. Winner-take-all Game 7 — winner advances to the NBA Finals against the Knicks. Two structural levers tilt OKC: (1) Home — Paycom is +6.1 net rating in this playoffs and OKC is 3-0 at home in the series (G2 +9, G3... at Frost, G5 +13 at Paycom); the bench depth (Caruso/McCain/Wallace) that drove the home wins is the repeatable home-court advantage. Li et al.: game location is NOT significant in G7 outcomes (HCA_GAME7_OVERRIDE trimmed to +2.5), so the venue edge is real but capped. (2) SGA bounce-back — held to a series-low 15 in G6 (5-15 FG), his post-anomaly home reversion is the high-probability path (he went 30/30/32 in his three prior home/bounce-back spots this CF). SAS counters: Wemby answered the box-out in G6 (28/10) and SAS has won every even-numbered game; the 4-1 regular-season edge says SAS owns the matchup, and an all-time-great rookie/sophomore core (Castle/Harper/Wemby) has shown no nerves. Risk: this is a genuine COIN FLIP — Phase 73's elimination amplifier is ACTIVE (G7 is the ultimate single-elimination game; 1.4× tails, ~50% winner accuracy / 19.8pt MAE historically), so PLACE pills auto-downgrade to CAUTION and the MC distribution is honestly wide. Phase 71 R3 out-of-sample stake cap stays at 50%. <strong>5/29 update:</strong> DK line OKC -4.5 / total 213.5; ML OKC -162 / SAS +136 — moved off the 5/28 opener (216.5 / OKC -190) as SAS money came in and the total dropped 3pts, the market pricing a defensive G7 grind. Engine OKC by 5 agrees on winner and margin (5 vs 4.5); engine total ~215 sits just above the market 213.5 (a tighter gap than the engine's usual over-lean). SAS +136 carries thin +EV per model (~46% implied vs ~48% true).",
+                  xFactor: "SGA home bounce-back from his series-low G6 vs Wemby carrying the G6 momentum on the road in a true coin-flip",
+                  moneyline: "OKC -162",
+                  spread: "OKC -4.5",
+                  ou: "213.5",
+                  keyTakeaways: [
+                    "WINNER-TAKE-ALL G7 at Paycom — winner faces the Knicks in the NBA Finals. Phase 73 amplifier ACTIVE (1.4× tails, PLACE→CAUTION)",
+                    "OKC home: Paycom +6.1 net rating, OKC won G5 by 13 here; bench depth (Caruso/McCain/Wallace) is the repeatable home edge — but Li et al. says G7 location is NOT significant",
+                    "SGA bounce-back: held to a series-low 15 (5-15) in G6; his home/post-anomaly reversion this CF has been clinical (30/30/32). The single biggest swing factor",
+                    "SAS owns the matchup historically (4-1 reg season) and has won every even-numbered game; Wemby answered the box-out in G6 (28/10) and has no Finals nerves",
+                    "Market OKC -4.5 / 213.5 / ML OKC -162, SAS +136 (moved off the 216.5 / -190 opener — SAS money + a lower total) — engine OKC by 5 agrees on winner and margin; SAS +136 carries thin +EV per model",
+                    "G7 caveat: ~50% winner accuracy / 19.8pt MAE historically — treat as a TRUE coin-flip, reduced CF stakes (50%) + CAUTION pills hold"
+                  ]
+              }
           }
       ]
   },

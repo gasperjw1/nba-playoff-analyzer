@@ -2092,7 +2092,7 @@ const BETS = [
     ],
     reasoning: "Phase 71c engine: SAS 115, OKC 112 (SAS by 3). DK has SAS -3.5, ML SAS -155 / OKC +130. Engine winner and margin both agree with the market. The case for SAS: home + must-win desperation (down-3-2 with HCA extends ~55-60%), Castle/Harper healthy, the 4-1 regular-season pattern, and a Wemby bounce-back after the G5 box-out held him to 20/6. The case against: OKC is the better team, can close, and SGA/Caruso/McCain just dropped 127 — a road closeout is well within range. Phase 73 elimination amplifier ACTIVE → this is honestly a coin-flip the model nudges toward the desperate home side; the pill auto-downgrades to CAUTION. Lean SAS at a reduced CF stake.",
     confidence: 'lean', thesis: ['model','market'], narrative: 'home-desperation',
-    result: null,
+    result: { outcome:'win', actual:'SAS 118-91 — SAS ML cashed. Wemby answered the G5 box-out (28/10/2blk), SGA held to a series-low 15, and SAS forced Game 7. The desperate-home-team lean landed.' },
   },
   {
     id: 'cf-g6-okc-sas-spread',
@@ -2105,7 +2105,7 @@ const BETS = [
     ],
     reasoning: "Engine margin SAS by 3 sits just inside the SAS -3.5 line, so OKC +3.5 carries marginal value (the model says SAS wins by 3, half a point short of the cover). OKC +3.5 hits if SAS wins by ≤3 or OKC wins outright — and OKC has the talent to win this game straight up. In an elimination spot the trailing-but-better road team taking points is the cleaner ticket than backing the host's exact margin. Phase 71 spread CAUTION auto-applies + Phase 73 elimination amplifier widens the band; half-stake lean.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'SAS won by 27 (118-91) — OKC +3.5 lost easily. The spread-CAUTION pill flagged it; the SAS-even-game blowout (G4 +21, now G6 +27) is the recurring tail the margin model under-prices.' },
   },
   {
     id: 'cf-g6-okc-sas-total',
@@ -2118,7 +2118,7 @@ const BETS = [
     ],
     reasoning: "Four of the five WCF games cleared 219.5 comfortably (237/235/231/241); only the G4 SAS defensive masterpiece (185) went under. Engine projects ~227 (SAS 115 + OKC 112). The risk is elimination-game defensive intensity compressing pace — but both offenses are humming (G5 went 241) and a desperate SAS plays uptempo to maximize possessions. Phase 71 total SKIP at medium confidence keeps this a lean; the series scoring profile is the anchor.",
     confidence: 'lean', thesis: ['historical','model'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'Total 209 (118+91) — Under 219.5 by 10.5. Elimination-game defensive intensity DID compress the total (SGA 15, OKC 91), exactly the risk the reasoning flagged; the over missed.' },
   },
   {
     id: 'cf-g6-okc-sas-wemby-pts',
@@ -2131,7 +2131,7 @@ const BETS = [
     ],
     reasoning: "Wemby was held to a series-low 20 on 4-15 FG in G5 as OKC threw the Hartenstein/Holmgren box-out and length at him. The bounce-back narrative at home in an elimination game is strong (his even-game pattern this CF: 21→33; 26→20 reversed), and SAS will scheme deep touches. Engine ~27 with ELITE tier correction. Line 25.5 sits just below projection. Deep alt 21.5 (~-260) for floor coverage given the OKC suppression risk is real.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Wembanyama 28 pts — Over 25.5 cashed. The bounce-back read landed: SAS fed him deep touches before the double and he answered the G5 box-out (20) with 28/10.' },
   },
   {
     id: 'cf-g6-okc-sas-wemby-reb',
@@ -2144,7 +2144,7 @@ const BETS = [
     ],
     reasoning: "⚠ The G5 lesson stands: OKC's Hartenstein/Holmgren tag-team box-out is a repeatable Wemby-REB suppressor — he posted 24/17 in G1/G2 but 4/6 in the two OKC-gameplanned games (G3/G5). Against OKC specifically, degrade the calibrated REB projection ~30% to ~9, which puts the 9.5 line at a TRUE coin-flip, NOT the floor it would be vs any other opponent. The deep-alt-REB floor (Phase 71's most-trusted signal) has already LOST twice this CF on exactly this matchup. Do NOT use as a floor leg vs OKC. Standalone lean at best; prefer the deeper 6.5 alt if anything.",
     confidence: 'coin-flip', thesis: ['matchup'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Wembanyama 10 reb — Over 9.5 cashed (barely). The coin-flip call was right to not treat this as a floor: it cleared by half a board. With deep touches and a healthy supporting cast, the OKC box-out did NOT suppress him this time (G3/G5 it held him to 4/6).' },
   },
   {
     id: 'cf-g6-okc-sas-sga-pts',
@@ -2157,7 +2157,7 @@ const BETS = [
     ],
     reasoning: "SGA dropped 32 (16-17 FT) in the G5 home bounce-back. On the road for a closeout, the Castle POA matchup is the variable — it suppressed him to 19 in G4 (fresh Castle) but he got 26 in G3. The Phase 71c override (-6.9) is the reason the engine lands ~24-25, but the G5 lesson flagged that the override over-corrects in favorable spots and shouldn't drive a SKIP on a star. Closeout-game usage tends to rise. Line 27.5 sits at the road-game ceiling; lean over with the override caveat noted. Deep alt 21.5 for floor.",
     confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    result: { outcome:'loss', actual:'SGA 15 pts (5-15 FG) — series-LOW; Over 27.5 missed badly. Castle POA + Frost Bank crowd suppressed him just like G4 (19). Even the deep alt 21.5 would have lost. The road-vs-fresh-Castle suppression is now a 2-game pattern (G4 19, G6 15).' },
   },
   {
     id: 'cf-g6-okc-sas-castle-ast',
@@ -2170,7 +2170,7 @@ const BETS = [
     ],
     reasoning: "Castle has been SAS's steadiest secondary creator (8/8/6/5/6 ast across the CF) alongside his POA defense workload. Engine projects 6.0 ast. Line 4.5 sits proj−1.5 in the calibrated deep-alt zone — a clean facilitator floor leg that's independent of the Wemby-scoring variance. Phase 71 AST is well-calibrated for primary ball-handlers; this is the cleanest SAS counting-stat floor on the board.",
     confidence: 'lean', thesis: ['model'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Castle 9 ast — Over 4.5 cashed comfortably (17/5/9). The facilitator AST floor held exactly as the calibrated-AST signal predicted, independent of the game script.' },
   },
   {
     id: 'cf-g6-okc-sas-fox-ast',
@@ -2182,6 +2182,106 @@ const BETS = [
       {label:'Engine',value:'6.3 AST'},
     ],
     reasoning: "Fox went to facilitator mode in G5 (9pts/8ast) playing through the leg, and that's the likely template again — let Wemby/Castle score while he runs the offense. Series ast 6/7/6/5/8 = steady 6.4. Engine 6.3. Line 5.5 sits right at projection; the deep alt 4.5 (~-240) is the floor-parlay value. Primary-ball-handler AST is the most reliable counting-stat dimension.",
+    confidence: 'lean', thesis: ['model'], narrative: null,
+    result: { outcome:'win', actual:'Fox 7 ast — Over 5.5 cashed. Facilitator mode again (5pts/7ast); the AST floor held as projected, the steadiest SAS counting-stat signal of the series.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF-G7 — WCF Game 7, Sat 5/30 @ Paycom Center. Series tied 3-3.
+  // Winner-take-all; winner faces the Knicks in the NBA Finals.
+  // Engine: OKC by 5 (MEDIUM, COIN FLIP). DK: OKC -4.5 / total 213.5 /
+  // ML OKC -162, SAS +136. Phase 73 elimination amplifier ACTIVE —
+  // PLACE pills auto→CAUTION; treat as a true coin-flip (50% acc / 19.8 MAE).
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'cf-g7-okc-sas-ml',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'ml', pick: 'OKC ML vs SAS', odds: '-162',
+    facts: [
+      {label:'Series',value:'tied 3-3 — winner to the Finals'},
+      {label:'OKC home',value:'won G2 & G5 at Paycom (+6.1 net rating)'},
+      {label:'Engine',value:'OKC by 5 (MEDIUM)'},
+      {label:'Market',value:'OKC -4.5 / 213.5'},
+    ],
+    reasoning: "Phase 71c engine: OKC 110, SAS 105 (OKC by 5) at Paycom. DK has OKC -4.5, ML OKC -162 / SAS +136 — winner and margin both agree with the market. The case for OKC: home court (won G2 & G5 here), the bench depth (Caruso/McCain/Wallace) that only erupts at Paycom, and an SGA home bounce-back from his series-low 15 (his Paycom reversions this CF: 30/30/32). The case against: SAS owns the matchup (4-1 reg season + every even-numbered-game win) and Wemby is rolling (28/10 in G6). This is a TRUE coin-flip — Phase 73 elimination amplifier ACTIVE, pill auto-downgrades to CAUTION, and G7s historically run ~50% winner accuracy. Lean OKC at a reduced CF stake; SAS +136 carries thin standalone +EV per model for those wanting the dog.",
+    confidence: 'lean', thesis: ['model','market'], narrative: 'home-coinflip',
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-spread',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'spread', pick: 'SAS +4.5', odds: '-110',
+    facts: [
+      {label:'Market',value:'OKC -4.5 (-110)'},
+      {label:'Engine margin',value:'OKC by 5'},
+      {label:'Phase 71 audit',value:'Spread CAUTION (MAE 13pt); G7 19.8pt MAE'},
+    ],
+    reasoning: "Engine margin OKC by 5 sits a hair past the -4.5 line, so OKC -4.5 is the nominal engine-value side. But in a true coin-flip G7 (elimination MAE 19.8pt — the widest band in the audit), the live-underdog points are the variance-absorbing play: SAS +4.5 hits if SAS wins outright OR loses by ≤4, and SAS has the talent to win this game straight up (it just won G6 by 27). Backing the host's exact margin in a G7 is the lower-EV ticket. Phase 71 spread CAUTION + Phase 73 amplifier widen the band → half-stake lean on SAS +4.5.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-total',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'total', pick: 'Under 213.5', odds: '-110',
+    facts: [
+      {label:'Series totals',value:'237 / 235 / 231 / 185 / 241 / 209'},
+      {label:'G7 pattern',value:'defensive intensity → unders'},
+      {label:'Engine',value:'~215 (marginally over)'},
+    ],
+    reasoning: "The engine projects ~215 (OKC 110 + SAS 105), a hair OVER the 213.5 line — but two structural reads push Under: (1) G7s run defensive and the line itself dropped from a 216.5 opener to 213.5, the market pricing a grind; (2) the two SAS-controlled games went 185 (G4) and 209 (G6) — when the defense ramps in this series the total craters, and a stakes-max G7 is the spot for it. The risk is an SGA/Caruso home shootout (G5 went 241 at Paycom). Engine disagreement noted — this is the rare lean AGAINST the engine total, anchored on the G7-defense pattern. Phase 71 total SKIP/CAUTION applies; coin-flip lean Under.",
+    confidence: 'coin-flip', thesis: ['historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-sga-pts',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'prop', pick: 'SGA Over 27.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'24, 30, 26, 19, 32, 15 → 24.3 avg'},
+      {label:'Home (G1/G2/G5)',value:'24, 30, 32 → 28.7 avg'},
+      {label:'Phase 71c bias',value:'-6.9 PTS per-player override'},
+    ],
+    reasoning: "SGA was held to a series-LOW 15 in G6 on the road (Castle POA + Frost Bank crowd) — but the G7 is at Paycom, where his three home games went 24/30/32 (avg 28.7) and his post-anomaly reversions this CF have been clinical. The G5 lesson stands: the Phase 71c override (-6.9) over-corrects in home bounce-back spots and shouldn't drive a SKIP on a star in a favorable home/regression G7. Closeout-game usage rises. Line 27.5 sits just below his home average; lean Over. Deep alt 21.5 (~-280) for floor coverage given the Castle-matchup variance.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-wemby-pts',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'prop', pick: 'Wembanyama Over 24.5 points', odds: '-115',
+    facts: [
+      {label:'Series PTS',value:'41, 21, 26, 33, 20, 28 → 28.2 avg'},
+      {label:'At Paycom (reg.)',value:'21 (G2), 20 (G5) — OKC box-out the swing'},
+      {label:'Engine (Phase 71c, OKC-degraded)',value:'~24'},
+    ],
+    reasoning: "⚠ The matchup caveat: OKC's Hartenstein/Holmgren box-out held Wemby to 20 at Paycom in G5 (and 4/6 reb in the two gameplanned games). His Paycom scoring in regulation (G2 21, G5 20) is well below his 28.2 series avg — the road environment + the box-out is a real suppressor. He answered it in G6 with deep early touches (28), but that was at home. Engine degrades to ~24 vs this scheme on the road. Line 24.5 is a TRUE coin-flip, NOT a floor — prefer the deep alt 19.5 (~-260) for any parlay leg. Standalone lean over given his G6 momentum, with the OKC-suppression risk flagged.",
+    confidence: 'coin-flip', thesis: ['matchup'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-castle-ast',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'prop', pick: 'Castle Over 4.5 assists', odds: '-160',
+    facts: [
+      {label:'Series AST',value:'8, 8, 6, 5, 6, 9 → 7.0 avg'},
+      {label:'Role',value:'primary creator + POA defender'},
+      {label:'Engine',value:'6.2 AST'},
+    ],
+    reasoning: "Castle has been SAS's steadiest creator all series (8/8/6/5/6/9 ast = 7.0 avg) alongside his POA defense workload, and he just posted 9 ast in G6. Engine projects 6.2. Line 4.5 sits proj−1.7 in the calibrated deep-alt zone — a clean facilitator floor independent of the Wemby-scoring and OKC-box-out variance. Phase 71 AST is well-calibrated for primary ball-handlers; this is the cleanest SAS counting-stat floor on the board for G7.",
+    confidence: 'lean', thesis: ['model'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'cf-g7-okc-sas-champagnie-pra',
+    slate: 'CF-G7', series: 'OKC-SAS', game: 7, postedAt: '2026-05-29',
+    type: 'prop', pick: 'Champagnie Over 9.5 PRA', odds: '-330',
+    facts: [
+      {label:'PRA last 2',value:'G5 28 / G6 18 (10/6/2)'},
+      {label:'Role',value:'24-28 min bench wing at home or road'},
+      {label:'Dimension',value:'PRA 11/11 in user-bet ledger'},
+    ],
+    reasoning: "PRA is the premier reliable-tier dimension (11/11 in the user-bet ledger; cleared again in G6 across Champagnie/Keldon/Harper even in a blowout). Champagnie has cleared 9.5 PRA comfortably the last two games (28, 18). The composite (pts+reb+ast) smooths single-stat variance and is blowout-resilient — it clears whether SAS wins or loses a G7. Line 9.5 = a deep, blowout-stable floor; the safest role-player leg on the slate. Phase 73x-validated; the anchor of the reliable parlay.",
     confidence: 'lean', thesis: ['model'], narrative: null,
     result: null,
   },
@@ -3463,13 +3563,13 @@ const FEATURED_PARLAYS = [
     name: 'WCF G6 — Cross-Team Creator Floor (2-Leg)',
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify Thu evening)',
     legs: [
-      { pick:'Castle Over 4.5 assists (alt — WCF G6)', odds:'-160', confidence:'floor', status:null,
+      { pick:'Castle Over 4.5 assists (alt — WCF G6)', odds:'-160', confidence:'floor', status:'hit',
         note:'Castle series ast 8/8/6/5/6 = 6.6 avg. Engine 6.0. Line 4.5 = proj−1.5 deep alt. Primary SAS creator at home — facilitator floor independent of the Wemby scoring variance.' },
-      { pick:'SGA Over 7.5 assists (alt — WCF G6)', odds:'-220', confidence:'floor', status:null,
+      { pick:'SGA Over 7.5 assists (alt — WCF G6)', odds:'-220', confidence:'floor', status:'miss',
         note:'SGA series ast 12/9/12/5/9 = 9.4 avg. Engine ~9. Line 7.5 = proj−1.5 deep alt. Elite creator; cross-team leg keeps the parlay independent of any single game script.' },
     ],
     thesis:'Two primary-creator assist floors on opposite teams (Castle SAS + SGA OKC) — deliberately diversified after the G5 same-player Wemby stack imploded. Math: 0.86 × 0.85 ≈ 73% combined; each leg independently clears the 80% deep-alt zone. AST is Phase 71\'s best-calibrated dimension for primary ball-handlers and is structurally independent of the OKC box-out that wrecked the Wemby-REB floors. CF stake cap $100.',
-    result: null,
+    result: { outcome:'loss', delta:'-$100', actual:'1 of 2 legs hit — Castle 9 ast ✓ but SGA had only 4 ast (quiet 15/1/4 in the blowout loss, minutes cut on the road) and broke the floor. The cross-team diversification still failed because SGA\'s down game collapsed BOTH his scoring and playmaking at once. Lesson: a star\'s AST floor is NOT blowout-resilient the way a role-player PRA floor is — when his team is routed on the road his minutes and usage both fall. Diversifying across teams doesn\'t help if one leg is a star whose volume is game-script-dependent.' },
   },
   {
     id: 'wcf-g6-may28-floor-star-scoring',
@@ -3478,13 +3578,13 @@ const FEATURED_PARLAYS = [
     name: 'WCF G6 — Deep-Alt Star Scoring Floor (2-Leg)',
     stake: 100, odds: '+120', payout: 'To Win: ~$120 (verify Thu evening)',
     legs: [
-      { pick:'Wembanyama Over 17.5 points (alt — WCF G6)', odds:'-280', confidence:'floor', status:null,
+      { pick:'Wembanyama Over 17.5 points (alt — WCF G6)', odds:'-280', confidence:'floor', status:'hit',
         note:'Wemby PTS by game: 41/21/26/33/20 — floor was 20 even on the G5 box-out night. Line 17.5 = proj−9 deep alt, well clear of his worst CF output. This is the SAFE Wemby leg: scoring floor, NOT the OKC-suppressed REB floor that lost twice.' },
-      { pick:'SGA Over 21.5 points (alt — WCF G6)', odds:'-240', confidence:'floor', status:null,
+      { pick:'SGA Over 21.5 points (alt — WCF G6)', odds:'-240', confidence:'floor', status:'miss',
         note:'SGA PTS 24/30/26/19/32 — only G4 (19) dipped under 21.5. Line 21.5 = proj−5 deep alt. Closeout-game usage tends to rise; cross-team scoring floor.' },
     ],
     thesis:'Two deep-alt SCORING floors on opposite-team stars — explicitly avoiding the Wemby-REB dimension that OKC\'s box-out has suppressed (4 and 6 reb in the two gameplanned games). Both stars have scored above these lines in 4 of 5 CF games. Math: 0.85 × 0.86 ≈ 73% combined; each clears the 80% deep-alt zone. Diversified across teams so neither leg depends on who wins. CF stake cap $100.',
-    result: null,
+    result: { outcome:'loss', delta:'-$100', actual:'1 of 2 legs hit — Wemby 28 ✓ cleared the 17.5 deep alt easily, but SGA scored a series-LOW 15 (5-15 FG) and missed even the proj−5 deep alt 21.5. The "over in 4 of 5 CF games" prior didn\'t protect against a fresh-Castle POA + road-blowout suppression game (his 2nd sub-20 road game: G4 19, G6 15). Same root cause as the creator floor: SGA\'s production floor is matchup-fragile vs Castle on the road, not the safe deep-alt the line implied.' },
   },
   {
     id: 'wcf-g6-may28-trad-sas-elimination',
@@ -3493,15 +3593,15 @@ const FEATURED_PARLAYS = [
     name: 'WCF G6 — SAS Forces Game 7 Stack (3-Leg)',
     stake: 50, odds: '+360', payout: 'To Win: ~$180 (verify Thu evening)',
     legs: [
-      { pick:'SAS ML vs OKC (WCF G6)', odds:'-155', confidence:'lean', status:null,
+      { pick:'SAS ML vs OKC (WCF G6)', odds:'-155', confidence:'lean', status:'hit',
         note:'Engine SAS by 3 at home; must-win desperation + 4-1 reg-season pattern. Lead bet of the correlated stack.' },
-      { pick:'Wembanyama Over 25.5 points (WCF G6)', odds:'-115', confidence:'lean', status:null,
+      { pick:'Wembanyama Over 25.5 points (WCF G6)', odds:'-115', confidence:'lean', status:'hit',
         note:'Bounce-back spot at home; if SAS wins, Wemby almost certainly leads the scoring. Engine ~27. Correlated with the SAS ML leg.' },
-      { pick:'Over 219.5 total (WCF G6)', odds:'-110', confidence:'lean', status:null,
+      { pick:'Over 219.5 total (WCF G6)', odds:'-110', confidence:'lean', status:'miss',
         note:'4 of 5 CF games cleared 219.5; a desperate uptempo SAS keeps possessions high. Engine ~227. The mean-reversion-style anchor.' },
     ],
     thesis:'A CORRELATED SAS-forces-G7 stack — applying the G5 lesson that correlated theses (the OKC home stack that won +$170) beat mixed-direction legs. If SAS wins this elimination game at home, Wemby scoring 25+ and an uptempo Over are the natural co-occurrences. Math: 0.56 × 0.55 × 0.55 ≈ 17% combined; at +360 (4.6x) that\'s roughly break-even EV, lifted by the positive leg correlation the raw multiplication ignores. Phase 73 elimination amplifier ACTIVE + G6 CAUTION downgrade → reduced $50 stake. The first CF traditional only just broke through (G5); keep stakes small.',
-    result: null,
+    result: { outcome:'loss', delta:'-$50', actual:'2 of 3 legs hit — SAS ML ✓ (118-91) and Wemby O25.5 ✓ (28) both cashed, but Over 219.5 broke (total 209). The correlated SAS-forces-G7 read was right on the win AND the Wemby scoring, but elimination-game defensive intensity compressed the total — OKC managed only 91. The Under was the structural risk the model under-weighted in a desperate-defense elimination spot; 2 of 3 correlated legs landing still loses a traditional.' },
   },
   {
     id: 'wcf-g6-may28-floor-role-pra',
@@ -3510,14 +3610,70 @@ const FEATURED_PARLAYS = [
     name: 'WCF G6 — SAS Role-Player PRA Floor (3-Leg)',
     stake: 100, odds: '+135', payout: 'To Win: ~$135 (verify Thu evening)',
     legs: [
-      { pick:'Champagnie Over 9.5 PRA (alt — WCF G6)', odds:'-350', confidence:'floor', status:null,
+      { pick:'Champagnie Over 9.5 PRA (alt — WCF G6)', odds:'-350', confidence:'floor', status:'hit',
         note:'Champagnie cleared this easily in G5 (28 PRA, career playoff-high 22pts). 24-28 min role at home. Deep PRA floor is blowout-resilient — clears even in a SAS loss.' },
-      { pick:'Keldon Johnson Over 9.5 PRA (alt — WCF G6)', odds:'-330', confidence:'floor', status:null,
+      { pick:'Keldon Johnson Over 9.5 PRA (alt — WCF G6)', odds:'-330', confidence:'floor', status:'hit',
         note:'Keldon 15 PRA in G5; steady bench-wing minutes. PRA composite (pts+reb+ast) smooths single-stat variance — the safest role-player floor dimension.' },
-      { pick:'Harper Over 9.5 PRA (alt — WCF G6)', odds:'-300', confidence:'floor', status:null,
+      { pick:'Harper Over 9.5 PRA (alt — WCF G6)', odds:'-300', confidence:'floor', status:'hit',
         note:'Rookie Harper 14 PRA in G5 (8/3/3). Combo-guard line accrues across pts+reb+ast even on a quiet scoring night.' },
     ],
     thesis:'Replicates the validated user edge (G5 CHS Lab role-player PRA stack went 4-for-4 and cashed DESPITE SAS losing by 13). The structural insight: role-player PRA floors at deep lines (9.5) are BLOWOUT-RESILIENT and diversified across three players, so they avoid the correlated single-player downside that sank the G5 Wemby stacks (OKC\'s box-out suppressed Wemby PTS and REB simultaneously). PRA is 10/10 in the user-bet ledger — the most reliable dimension on record. Math: 0.90 × 0.89 × 0.87 ≈ 70% combined; each leg independently clears the 80% deep-alt zone. At SAS home in an elimination game these role players see secure minutes. CF stake cap $100.',
+    result: { outcome:'win', delta:'+$135', actual:'3 of 3 ✓ — Champagnie 18 PRA (10/6/2), Keldon 21 PRA (14/5/2), Harper 20 PRA (12/4/4). The role-player PRA floor cashed AGAIN — a second straight CF game validating the blowout-resilient thesis, and the ONLY winning parlay on a slate where BOTH star-floor stacks broke on SGA\'s down game (4 ast / 15 pts). The edge is now unmistakable: diversified deep-alt role-player PRA >> star-concentrated floors. PRA stays the premier reliable-tier dimension. +$135 on $100.' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // CF-G7 PARLAYS — Sat 5/30 @ Paycom. Series tied 3-3, winner to Finals.
+  // Lead with the validated role-player PRA floor (3-for-3 in G6, the lone
+  // slate winner). Avoid star-concentrated floors (both broke on SGA's G6
+  // down game). G7 elimination amplifier ACTIVE → CAUTION pills, reduced stakes.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'wcf-g7-may30-floor-role-pra',
+    slate: 'CF-G7', date: '2026-05-30',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G7 — SAS Role-Player PRA Floor (3-Leg)',
+    stake: 100, odds: '+135', payout: 'To Win: ~$135 (verify Sat evening)',
+    legs: [
+      { pick:'Champagnie Over 9.5 PRA (alt — WCF G7)', odds:'-350', confidence:'floor', status:null,
+        note:'Champagnie PRA last two: G5 28, G6 18 (10/6/2). 24-28 min bench-wing role. Deep PRA floor is blowout-resilient whether SAS wins or loses.' },
+      { pick:'Keldon Johnson Over 9.5 PRA (alt — WCF G7)', odds:'-330', confidence:'floor', status:null,
+        note:'Keldon PRA G5 15, G6 21 (14/5/2). Steady bench-wing minutes; PRA composite smooths single-stat variance.' },
+      { pick:'Harper Over 9.5 PRA (alt — WCF G7)', odds:'-300', confidence:'floor', status:null,
+        note:'Rookie Harper PRA G5 14, G6 20 (12/4/4). Combo-guard line accrues across pts+reb+ast even on a quiet scoring night.' },
+    ],
+    thesis:'The validated reliable-tier play: this exact role-player PRA stack went 3-for-3 in G6 (Champagnie 18 / Keldon 21 / Harper 20) and was the ONLY winning parlay on the slate while both star floors broke on SGA. Role-player PRA at deep lines (9.5) is BLOWOUT-RESILIENT and diversified across three players — it clears whether SAS wins or loses the G7. PRA is now 11/11 in the user-bet ledger, the most reliable dimension on record. Math: 0.90 × 0.89 × 0.87 ≈ 70% combined; each leg independently clears the 80% deep-alt zone. CF stake cap $100.',
+    result: null,
+  },
+  {
+    id: 'wcf-g7-may30-floor-creator-big',
+    slate: 'CF-G7', date: '2026-05-30',
+    category: 'floor', type: 'best-bet',
+    name: 'WCF G7 — Cross-Team Creator + Big PRA Floor (2-Leg)',
+    stake: 100, odds: '+115', payout: 'To Win: ~$115 (verify Sat evening)',
+    legs: [
+      { pick:'Castle Over 4.5 assists (alt — WCF G7)', odds:'-160', confidence:'floor', status:null,
+        note:'Castle ast 8/8/6/5/6/9 = 7.0 avg; 9 in G6. Engine 6.2. Line 4.5 = proj−1.7 deep alt. Primary SAS creator — facilitator floor independent of the game script.' },
+      { pick:'Holmgren Over 15.5 PRA (alt — WCF G7)', odds:'-280', confidence:'floor', status:null,
+        note:'Holmgren PRA has been 17-28 across the CF (22 in G6, 28 in G5) — never below 17. At home in a G7 his minutes are secure; a starting-center PRA floor is the OKC-side counterpart to the SAS role-player PRA. Deep 15.5 line.' },
+    ],
+    thesis:'Two STABLE-dimension floors on opposite teams (Castle AST + Holmgren PRA) — deliberately avoiding the star-scoring/star-AST legs that broke the G6 cross-team floors when SGA cratered (4 ast / 15 pts). AST and big-man PRA are the two dimensions least sensitive to game script: a creator keeps facilitating and a starting center keeps accruing pts+reb regardless of who wins. Math: 0.86 × 0.84 ≈ 72% combined; each clears the 80% deep-alt zone. Cross-team so neither leg depends on the winner. CF stake cap $100.',
+    result: null,
+  },
+  {
+    id: 'wcf-g7-may30-trad-okc-home-close',
+    slate: 'CF-G7', date: '2026-05-30',
+    category: 'traditional', type: 'best-bet',
+    name: 'WCF G7 — OKC Closes At Home Stack (3-Leg)',
+    stake: 50, odds: '+340', payout: 'To Win: ~$170 (verify Sat evening)',
+    legs: [
+      { pick:'OKC ML vs SAS (WCF G7)', odds:'-162', confidence:'lean', status:null,
+        note:'Engine OKC by 5 at home; Paycom + bench depth + SGA home bounce-back. Lead leg of the correlated stack.' },
+      { pick:'SGA Over 27.5 points (WCF G7)', odds:'-115', confidence:'lean', status:null,
+        note:'Home bounce-back from his series-low 15; Paycom games 24/30/32. If OKC wins, SGA almost certainly leads the scoring — correlated with OKC ML.' },
+      { pick:'Under 213.5 total (WCF G7)', odds:'-110', confidence:'lean', status:null,
+        note:'G7 defensive grind; the line dropped to 213.5 and the SAS-controlled games went 185/209. A "SGA carries, defense wins" G7 is the coherent co-occurrence with an OKC home win.' },
+    ],
+    thesis:'A CORRELATED OKC-closes-at-home stack — applying the G5 lesson (the +$170 OKC home stack was the first CF traditional winner; correlated theses beat mixed-direction legs). The coherent G7 script: OKC wins a defensive grind at home behind an SGA bounce-back — OKC ML + Under are correlated (a defensive win) and SGA O27.5 is the bounce-back carry. Two OKC-team legs + one game total respects the 2-per-team parlay cap. Math: 0.55 × 0.55 × 0.53 ≈ 16% combined; at +340 (4.4x) ≈ break-even EV, lifted by the positive leg correlation. Phase 73 elimination amplifier ACTIVE + G7 CAUTION downgrade → reduced $50 stake. Keep stakes small in a coin-flip G7.',
     result: null,
   },
 ];
@@ -3674,10 +3830,17 @@ const BET_SLATES = {
     ],
   },
   'CF-G6': {
-    label: 'Conference Finals — Game 6 (Live)',
+    label: 'Conference Finals — Game 6 (Archive)',
     games: [
       { series:'OKC-SAS', date:'2026-05-28', time:'8:30 PM ET', venue:'Frost Bank Center', context:'OKC leads 3-2',
-        recap:'<strong style="color:var(--purple)">WCF G6 Preview (Thu 5/28):</strong> Elimination night in San Antonio — SAS must win to force Game 7; OKC can clinch its first Finals trip since 2012. After the G5 road loss, the Spurs come home where they went 4-1 vs OKC in the regular season, with Castle/Harper healthy and a Wembanyama bounce-back narrative (held to a series-low 20/6 in G5). The OKC counter: deeper bench (Caruso 22 + McCain 20 in G5) and the Hartenstein/Holmgren box-out that erased Wemby on the glass. DK opener SAS -3.5 / 219.5; ML SAS -155 / OKC +130. Engine view: SAS by ~3 at home (COMPETITIVE) — essentially market-aligned. <strong>Phase 73 elimination amplifier ACTIVE</strong> (SAS win-or-go-home): tail widens 1.4×, PLACE pills auto-downgrade to CAUTION (elimination games ~50% winner acc / 19.8pt MAE). Phase 71 R3 stake reduction stays at 50%; CF caps ($100 floor / $50 trad) hold.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> SAS 118-91 — series TIED 3-3, forcing a winner-take-all Game 7. Wembanyama answered the G5 box-out (28/10/2blk in 28min) by getting deep touches before the double arrived; Castle 17/9ast ran the offense, Champagnie 10/6 and Keldon 14 off the bench. A 20-0 third-quarter run (OKC scoreless for nearly seven minutes) blew it open and SAS led wire to wire. OKC: SGA held to a series-LOW 15 on 5-15 FG (Castle POA + the Frost Bank crowd), Jalen Williams returned from the 3-game hamstring absence (11/3stl in 20 limited min), Holmgren 10/11. No bench eruption (Caruso 7, McCain 11 — the road-cooldown pattern). <strong>Model: SAS by 3 predicted, SAS by 27 actual — RIGHT WINNER, +24 margin underestimate</strong> (the Phase 73 elimination amplifier honestly carried the blowout tail). Slate 1-3 (-$115): the role-player PRA floor was the lone winner (+$135; Champagnie/Keldon/Harper all cleared O9.5 PRA), while BOTH star floors broke on SGA\'s 4ast/15pt down game. Winner-take-all G7 Sat 5/30 at Paycom Center — winner faces the Knicks in the NBA Finals.' },
+    ],
+  },
+  'CF-G7': {
+    label: 'Conference Finals — Game 7 (Live)',
+    games: [
+      { series:'OKC-SAS', date:'2026-05-30', time:'8:00 PM ET', venue:'Paycom Center', context:'Series tied 3-3',
+        recap:'<strong style="color:var(--purple)">WCF G7 Preview (Sat 5/30):</strong> Winner-take-all at Paycom Center — the winner advances to the NBA Finals against the Knicks (who swept the ECF and have been waiting since 5/26). OKC is home, where it won G2 and G5 and carries a +6.1 net-rating edge plus the bench depth (Caruso/McCain/Wallace) that has only erupted at Paycom. The SGA bounce-back is the swing factor — held to a series-low 15 in G6, his home/post-anomaly reversions this CF have been clinical (30/30/32). SAS counters: Wemby answered the box-out in G6 (28/10), SAS owns the matchup (4-1 reg season + every even-game win), and the Castle/Harper/Wemby core has shown no nerves. Jalen Williams (hamstring) is back but on a minutes ramp. DK (5/29): OKC -4.5 / 213.5; ML OKC -162 / SAS +136 — moved off the 5/28 opener (216.5 / OKC -190) as SAS money came in and the total dropped, pricing a defensive grind. Engine view: OKC by ~5 at home — market-aligned. <strong>Phase 73 elimination amplifier ACTIVE</strong> (ultimate single-elimination game): tails widen 1.4×, PLACE pills auto-downgrade to CAUTION (G7 historically ~50% winner acc / 19.8pt MAE — a TRUE coin-flip). Phase 71 R3 stake reduction stays at 50%; CF caps ($100 floor / $50 trad) hold.' },
     ],
   },
 };

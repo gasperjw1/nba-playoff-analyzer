@@ -514,4 +514,28 @@ const NEWS = [
     body: 'New York continues to wait on the WCF, now 4 days into its post-sweep rest. If OKC closes out San Antonio in G6 tonight, the Thunder advance and Finals G1 likely tips this weekend; if SAS forces a Game 7 (Sat 5/30 at Paycom), the Finals push back to early next week and NYK\'s layoff stretches past a week. The rest cuts both ways for the Knicks: maximal recovery for the 10-man rotation, but the 9-day-rest-before-ECF-G1 game (a 22-point Q4 deficit before the historic comeback) is the cautionary precedent for rust. Matchup-wise NYK projects competitively against either opponent — KAT\'s stretch-5 game travels against both Holmgren and Wembanyama, and the switch-everything scheme that erased Harden\'s gravity in the ECF is the same template they\'d use on SGA or the SAS guards. Full Finals series prediction comes once the WCF resolves.',
     source: 'NBA.com',
   },
+  {
+    date: '2026-05-28',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G6: SAS 118-91 — Spurs force Game 7, series tied 3-3',
+    body: 'San Antonio staved off elimination with a 27-point rout at Frost Bank Center, forcing a winner-take-all Game 7. <strong>Victor Wembanyama 28/10/2blk in just 28 minutes</strong> — the answer to OKC\'s G5 box-out, as SAS fed him deep touches before the double arrived. <strong>Stephon Castle 17/9ast</strong> ran the offense and smothered SGA on the point of attack; Julian Champagnie 10/6 and Keldon Johnson 14 off the bench. The dagger was a third-quarter haymaker — OKC went scoreless for nearly seven minutes while the Spurs ripped off a 20-0 run and led wire to wire. <strong>Oklahoma City:</strong> SGA was held to a series-LOW 15 on 5-15 FG (Castle\'s pressure + the Frost Bank crowd produced his quietest game of the CF); <strong>Jalen Williams returned</strong> from his 3-game hamstring absence (11/3stl in 20 limited minutes) but couldn\'t change the math; Holmgren 10/11, Hartenstein 10/5. No bench eruption this time (Caruso 7, McCain 11) — the road-cooldown pattern returned. <strong>Model:</strong> predicted SAS by 3 → actual SAS by 27 — RIGHT WINNER, +24pt margin underestimate; the Phase 73 elimination amplifier (1.4× tails) honestly carried the blowout tail even though the central margin didn\'t. Slate went 1-3 (-$115): the role-player PRA floor was the lone winner (+$135; Champagnie/Keldon/Harper all cleared O9.5 PRA), while BOTH star floors broke on SGA\'s 4-assist / 15-point down game — a textbook reminder that diversified role-player PRA beats star-concentrated floors. Game 7 is Saturday 5/30 at Paycom Center.',
+    source: 'NBA.com / ESPN',
+  },
+  {
+    date: '2026-05-29',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: 'WCF G7 Saturday: SAS @ OKC 8:00 PM (NBC) — winner-take-all for a Finals berth, OKC -4.5',
+    body: 'The Western Conference Finals goes the distance. Game 7 tips Saturday 5/30 at 8:00 PM ET on NBC/Peacock from Paycom Center, with the winner advancing to the NBA Finals against the Knicks. DK (5/29): <strong>OKC -4.5 / total 213.5 / ML OKC -162, SAS +136</strong> — Oklahoma City favored at home, with the line moved off the 5/28 opener (216.5 / OKC -190) as SAS money came in and the total dropped, pricing a defensive grind. <strong>Structural drivers:</strong> OKC owns home court (won G2 and G5 at Paycom, +6.1 net rating there) and the bench depth (Caruso/McCain/Wallace) that has only erupted at home; the SGA bounce-back is the swing factor after his series-low 15 in G6 — his home/post-anomaly reversions this CF have been clinical (30/30/32). San Antonio counters with a matchup it owns (4-1 regular season + every even-numbered-game win), a Wembanyama who answered the box-out in G6 (28/10), and a young core showing no nerves. Jalen Williams is back from the hamstring but on a minutes ramp. <strong>Phase 73 elimination amplifier ACTIVE</strong> — G7 is the ultimate single-elimination game (historically ~50% winner accuracy / 19.8pt MAE), so PLACE pills auto-downgrade to CAUTION and the MC distribution is honestly wide. Engine view: OKC by ~5 at home, market-aligned — treat it as a TRUE coin-flip. Picks in Featured Parlays; reduced CF stakes ($100 floor / $50 trad) and the Phase 71 R3 50% cap hold.',
+    source: 'DraftKings / NBA.com',
+  },
+  {
+    date: '2026-05-29',
+    severity: 'minor',
+    series: 'NYK-CLE',
+    headline: 'Finals watch: WCF goes 7 — NYK\'s wait stretches, Finals G1 set for June 3',
+    body: 'With San Antonio forcing a Game 7, New York\'s post-sweep layoff now extends past a week: the WCF resolves Saturday 5/30 and the NBA Finals are scheduled to tip <strong>Wednesday June 3 on ABC</strong>. The Western Conference winner gets home-court advantage in the Finals — both OKC (64-18) and SAS (62-20) finished with better regular-season records than the Knicks (53-29), so NYK opens on the road regardless of who emerges. The rest cuts both ways: maximal recovery for the 10-man rotation, but the 9-day-rest-before-ECF-G1 game (a 22-point Q4 deficit before the historic comeback) is the cautionary precedent for rust. Matchup-wise NYK projects competitively against either opponent — KAT\'s stretch-5 game travels against both Holmgren and Wembanyama, and the switch-everything scheme that erased Harden\'s gravity in the ECF is the template they\'d apply to SGA or the SAS guards. A full Finals series prediction comes once the WCF resolves Saturday night.',
+    source: 'NBA.com / ESPN',
+  },
 ];

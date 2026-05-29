@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> Snapshot of project state for future sessions. Last updated **May 28, 2026** (Daily 5/28 — WCF G5 recorded, G6 authored; ECF complete, NYK in Finals).
+> Snapshot of project state for future sessions. Last updated **May 29, 2026** (Daily 5/29 — WCF G6 recorded: SAS 118-91 forced Game 7, series TIED 3-3; G7 authored for Sat 5/30; ECF complete, NYK in Finals).
 
 For day-to-day workflow see [DAILY_UPDATE.md](DAILY_UPDATE.md).
 For the calibration audit findings see [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).
@@ -21,23 +21,24 @@ Three-layer architecture:
 
 ---
 
-## Current state (May 28, 2026)
+## Current state (May 29, 2026)
 
-**Live round:** Conference Finals (R3) — WCF deciding stretch
-- **WCF:** OKC leads SAS 3-2 — G6 tonight Thu 5/28 at Frost Bank Center, 8:30 PM ET (SAS elimination; OKC can clinch first Finals since 2012). G7 if needed Sat 5/30 at Paycom.
-- **ECF:** COMPLETE — NYK swept CLE 4-0, advances to first NBA Finals since 1999 (Brunson ECF MVP). Awaiting WCF winner; Finals G1 tips this weekend (or early next week if WCF goes 7).
+**Live round:** Conference Finals (R3) — WCF Game 7
+- **WCF:** SERIES TIED 3-3 — SAS won G6 118-91 to force a winner-take-all Game 7 Sat 5/30 at Paycom Center, 8:00 PM ET (OKC home). Winner advances to the NBA Finals. Today 5/29 is a rest day (no games).
+- **ECF:** COMPLETE — NYK swept CLE 4-0, advances to first NBA Finals since 1999 (Brunson ECF MVP). Awaiting WCF winner; Finals G1 set for Wed June 3 at the WCF winner's home (both WCF teams out-recorded NYK 53-29).
 
 **Series complete:**
 - R1: 8/8 done
 - R2: NYK 4-0 PHI, SAS 4-2 MIN, OKC 4-0 LAL, CLE 4-3 DET (G7 125-94 road win)
 - ECF: NYK 4-0 CLE
 
-**R3 results so far (WCF through G5, ECF complete):**
+**R3 results so far (WCF through G6, ECF complete):**
 - WCF G1: SAS 122-115 (2OT) — Wemby 41/24 historic; engine wrong-winner (had OKC by 6)
 - WCF G2: OKC 122-113 — SGA 30/9 bounce-back; engine calibrated (had OKC by 7, actual 9)
 - WCF G3: OKC 123-108 — McCain 24 (career playoff-high) + Caruso 29 bench; engine wrong-winner (had SAS by 4)
 - WCF G4: SAS 103-82 — Wemby 33/8/5/3blk, SAS held OKC to 82 (6-33 from 3); engine right-winner, +17 margin miss
 - WCF G5: OKC 127-114 — SGA 32/9, Wemby held to series-low 20/6 (OKC box-out); engine right-winner (OKC by 4, actual 13)
+- WCF G6: SAS 118-91 — Wemby 28/10 answered the box-out, SGA held to series-low 15; engine right-winner (SAS by 3, actual 27 — +24 margin miss); SAS forces G7
 - ECF G1: NYK 115-104 (OT) — 22pt 4Q comeback, Brunson 38; engine wrong-winner (had CLE by 4)
 - ECF G2: NYK 109-93 — Hart playoff career-high 26; engine right-winner, +6pt margin miss
 - ECF G3: NYK 121-108 — Brunson 30, Anunoby 21; engine wrong-winner (had CLE by 6)
