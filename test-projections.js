@@ -1101,13 +1101,20 @@ function runTests() {
     // suitable for this assertion since their projected minutes can
     // cross the 18-min threshold based on which games are settled.
     if (nykCleSeries) {
-      const mcEcf = c.runMonteCarlo(nykCleSeries, 4, { iterations: 600 });
+      const mcEcf = c.runMonteCarlo(nykCleSeries, 4, { iterations: 1500 });
+      // Isolate the ROTATION filter from the Phase 73m SCRIPT signals by
+      // disabling applyScriptSignals. Otherwise Brunson's PTS legs get
+      // dropped by the facilitator-risk signal (he's flagged from his
+      // G2 19/14ast night), which — combined with MC variance on whether
+      // his PRA leg clears 80% in a given run — made the "keeps Brunson"
+      // assertion intermittently fail. With script signals off, only the
+      // minutes-based rotation filter is under test, which is 16i's intent.
       const filtered = c.safeLinesForAllPlayers(mcEcf, {
         threshold: 0.80, maxJuice: -500,
-        series: nykCleSeries, minProjectedMinutes: 18,
+        series: nykCleSeries, minProjectedMinutes: 18, applyScriptSignals: false,
       });
       const unfiltered = c.safeLinesForAllPlayers(mcEcf, {
-        threshold: 0.80, maxJuice: -500,
+        threshold: 0.80, maxJuice: -500, applyScriptSignals: false,
       });
       assert(filtered.length < unfiltered.length,
         `rotation filter trims candidates (filtered ${filtered.length} < unfiltered ${unfiltered.length})`);
@@ -1120,7 +1127,8 @@ function runTests() {
         const stillPresent = filtered.find(r => r.player === name);
         assert(!stillPresent, `rotation filter drops ${name} (stable deep bench)`);
       });
-      // Stars are kept
+      // Stars are kept by the rotation filter (39-min player; script
+      // signals off so his PTS legs aren't facilitator-dropped here).
       const brunsonPresent = filtered.find(r => r.player === 'Jalen Brunson');
       assert(brunsonPresent, 'rotation filter keeps Brunson (star)');
     }
