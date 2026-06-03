@@ -479,7 +479,7 @@ recommended $ per bet) — default $500 bankroll, $5 floor, $25 cap.
 5. Parlay legs: max 2 per team (parlay-builder enforces). Prefer
    deep alt-line REB props (70% calibrated zone) over PTS at the line.
 
-**Re-run periodically:** `node test-calibration-audit.js` after every
+**Re-run periodically:** `node backtest-calibration-audit.js` after every
 3 settled CF games. If tier biases drift >1pp, re-tune
 `STAR_BIAS_CONFIG`. Full audit + recommendations in
 [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).

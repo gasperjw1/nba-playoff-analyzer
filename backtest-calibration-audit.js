@@ -25,7 +25,7 @@
 // not a strict retroactive audit. That's fine — what we want to know
 // is whether the CURRENT model is fit to make CURRENT predictions.
 //
-// Run: node test-calibration-audit.js
+// Run: node backtest-calibration-audit.js
 // ============================================================
 
 const fs = require('fs');

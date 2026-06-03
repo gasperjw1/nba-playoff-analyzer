@@ -19,7 +19,7 @@ function getGamesPlayed(series) {
 // game is a potential series-clinching game). Used by the closeout-
 // blowout starter cap modifier in calcExpectedPlayerStats.
 //
-// Backtest (test-closeout-edge-backtest.js): in 2026 closeout games
+// Backtest (backtest-closeout-edge.js): in 2026 closeout games
 // where the winner blew the loser out by 15+, the winning team's
 // top-5 starters played 83% of their prior-games average minutes
 // and put up 93% of prior PTS/PRA. In CLOSE closeouts (margin <15),

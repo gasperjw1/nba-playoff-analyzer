@@ -25,7 +25,7 @@
 //   4. Small sample — only 5 CF games settled so far. Treat as a
 //      directional signal, not a calibrated EV estimate.
 //
-// Usage: node test-chs-lab-backtest.js [--round CF] [--trials 5] [--iter 2000]
+// Usage: node backtest-chs-lab-starters.js [--round CF] [--trials 5] [--iter 2000]
 // ============================================================
 
 const fs = require('fs');

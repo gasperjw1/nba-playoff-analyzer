@@ -2536,7 +2536,7 @@ function renderCFBets(el) {
         The 68-game calibration audit was R1+R2 only. <strong>Every ${roundLabelShort} prediction is out-of-sample.</strong>
         Daily process: <strong>REDUCED STAKES (50% normal)</strong> for the first 5 R3+ games while we accumulate evidence.
         Each bet card carries a PLACE / CAUTION / SKIP pill from <code>edge-detector.js</code> reflecting the historical cross-tab.
-        Re-run <code>node test-calibration-audit.js</code> after every 3 resolved games to check for bias drift.
+        Re-run <code>node backtest-calibration-audit.js</code> after every 3 resolved games to check for bias drift.
       </div>
     </div>
 

@@ -973,7 +973,7 @@ function chsLabRenderEdgeFilter() {
       </summary>
       <div style="padding:0 16px 16px;">
         <p style="margin:0 0 12px;font-size:11px;color:var(--text-dim);line-height:1.5;">
-          Data-driven recommendations from <code>test-pl-with-filters.js</code>. Every bet rendered in the app gets a
+          Data-driven recommendations from <code>backtest-pl-with-filters.js</code>. Every bet rendered in the app gets a
           <span style="color:#22c55e;font-weight:700;">PLACE</span> / <span style="color:#eab308;font-weight:700;">CAUTION</span> /
           <span style="color:#ef4444;font-weight:700;">SKIP</span> pill from <code>edge-detector.js</code> based on the
           confidence × type cross-tab.

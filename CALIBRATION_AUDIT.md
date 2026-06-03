@@ -1,6 +1,6 @@
 # Calibration Audit — 2026 Playoffs
 
-**Phase 71 · May 17, 2026** — full evaluation of the engine against 68 resolved games (48 R1, 20 R2) + 931 player-games with box scores. Re-run with `node test-calibration-audit.js`.
+**Phase 71 · May 17, 2026** — full evaluation of the engine against 68 resolved games (48 R1, 20 R2) + 931 player-games with box scores. Re-run with `node backtest-calibration-audit.js`.
 
 > **Status:** All four ranked fixes shipped in Phase 71b + 71c. Post-fix numbers in the "After Fix" column below.
 
@@ -88,7 +88,7 @@ Deep alt lines clear at expected rates — distribution shape is correct, only t
 
 ## Re-tune trigger
 
-Re-run `node test-calibration-audit.js` after every 3 settled CF games. If any of these drift >1pp from post-fix baseline:
+Re-run `node backtest-calibration-audit.js` after every 3 settled CF games. If any of these drift >1pp from post-fix baseline:
 - Elite PTS bias > ±0.5 → consider `STAR_BIAS_CONFIG.elitePtsDelta`
 - Starter PTS bias > ±0.5 → consider `STAR_BIAS_CONFIG.starterPtsDelta`
 - Specific player MAE > 8pt with n≥4 → consider `PLAYER_BIAS_OVERRIDE[name]`

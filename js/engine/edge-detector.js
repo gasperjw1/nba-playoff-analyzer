@@ -4,7 +4,7 @@
 // Born from the R2 P&L retro: at $25/bet across 99 R2 straight bets we
 // netted -$203 with a 52.0% hit rate. The original hypothesis (coin-
 // flip MC bucket is inverted) turned out to be only partly right —
-// the actual cross-tab is far more damning. See test-pl-with-filters.js.
+// the actual cross-tab is far more damning. See backtest-pl-with-filters.js.
 //
 //   R2 BREAKDOWN BY TYPE (the actual signal):
 //     ml:     19 bets, 73.7% hit, +$54   (+11% ROI)
@@ -49,7 +49,7 @@
 //   SKIP    — historically -EV, do not bet
 //
 // IMPORTANT: when the sample grows or a new playoff round opens, these
-// numbers must be recomputed by running test-pl-with-filters.js and
+// numbers must be recomputed by running backtest-pl-with-filters.js and
 // updating this table. The whole point of building this as data is so
 // the engine isn't married to outdated thresholds.
 const HISTORICAL_R2 = {
@@ -72,7 +72,7 @@ const HISTORICAL_R2 = {
     'coin-flip': { n:  1, hitRate: 0.000, roi: -1.000, recommendation: 'SKIP' },
   },
   // Cross-tab of confidence × type. Cells with n<3 are flagged 'INSUFFICIENT'.
-  // Numbers from R2 retro (test-pl-with-filters.js output, May 16).
+  // Numbers from R2 retro (backtest-pl-with-filters.js output, May 16).
   byCross: {
     'best-bet|ml':     { n: 6,  hitRate: 0.833, roi:  0.001, recommendation: 'PLACE' },
     'best-bet|total':  { n: 1,  hitRate: 1.000, roi:  0.909, recommendation: 'INSUFFICIENT' },

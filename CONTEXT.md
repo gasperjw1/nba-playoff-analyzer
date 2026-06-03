@@ -103,9 +103,9 @@ nba-playoff-analyzer/
 │       ├── learnings.js
 │       └── definitions.js
 ├── test-projections.js              # 3860+ assertions
-├── test-calibration-audit.js        # Game + player-level calibration audit
-├── test-pl-with-filters.js          # P&L retro with edge-detector filters
-├── test-risk-analytics.js           # VaR/Sharpe/RoR historical analysis
+├── backtest-calibration-audit.js        # Game + player-level calibration audit
+├── backtest-pl-with-filters.js          # P&L retro with edge-detector filters
+├── backtest-risk-analytics.js           # VaR/Sharpe/RoR historical analysis
 ├── DAILY_UPDATE.md                  # Morning checklist
 ├── CALIBRATION_AUDIT.md             # Phase 71 audit findings + recommendations
 ├── BACKTEST_R1.md                   # R1 retrospective
@@ -226,7 +226,7 @@ Full history in `js/ui/learnings.js` (collapsible UI timeline).
 
 **Adding a new bet slate** — append `BETS[]` entries with the right slate key (e.g. `CF-G2`), add a `BET_SLATES['CF-G2']` entry, parlays go in `FEATURED_PARLAYS[]` with same slate. Bet cards auto-render with edge pills.
 
-**Re-running the audit** — `node test-calibration-audit.js`. If R3 tier biases drift > 1pp from the baseline in `CALIBRATION_AUDIT.md`, re-tune `STAR_BIAS_CONFIG` deltas.
+**Re-running the audit** — `node backtest-calibration-audit.js`. If R3 tier biases drift > 1pp from the baseline in `CALIBRATION_AUDIT.md`, re-tune `STAR_BIAS_CONFIG` deltas.
 
 **Pre-deploy check** — `node test-projections.js` must report 0 failures. Then commit, push, GitHub Pages rebuilds in ~1-5 min.
 

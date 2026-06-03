@@ -12,7 +12,7 @@
 // Output is a per-series breakdown plus aggregate that shows whether
 // the proposed rules would have flipped the slate from -$197 to +EV.
 //
-// Run: node test-pl-with-filters.js
+// Run: node backtest-pl-with-filters.js
 // ============================================================
 
 const fs = require('fs');

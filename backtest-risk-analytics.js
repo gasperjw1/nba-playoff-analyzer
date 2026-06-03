@@ -4,7 +4,7 @@
 // Computes the risk-analyst view of our historical R2 betting record
 // and reports the metrics that the prior "did we win?" framing missed.
 //
-// Run: node test-risk-analytics.js
+// Run: node backtest-risk-analytics.js
 // ============================================================
 
 const fs = require('fs');
