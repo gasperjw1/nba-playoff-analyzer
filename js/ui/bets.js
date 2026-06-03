@@ -2375,8 +2375,16 @@ function renderR2DynamicOverview() {
 //   - Surfaces the Phase 71 R3 out-of-sample caveat prominently
 // ============================================================
 function renderCFBets(el) {
-  // Compute dynamic projections for every CF series + game (1-7)
-  const cfSeries = SERIES_DATA.filter(s => s.round === 'CF' && !s.tbdOpponent);
+  // Phase 73 (June 3): generalized for both CF and Finals routing.
+  // currentPlayoffRound drives the filter + slate prefix + display labels;
+  // architecture is otherwise identical (same bet schema, parlay grid, P&L card).
+  const activeRound = (currentPlayoffRound === 'Finals') ? 'Finals' : 'CF';
+  const slatePrefix = (activeRound === 'Finals') ? 'Finals-' : 'CF-';
+  const roundLabel = (activeRound === 'Finals') ? 'NBA Finals' : 'Conference Finals';
+  const roundLabelShort = (activeRound === 'Finals') ? 'Finals' : 'CF';
+
+  // Compute dynamic projections for every active-round series + game (1-7)
+  const cfSeries = SERIES_DATA.filter(s => s.round === activeRound && !s.tbdOpponent);
   const bp = {};
   cfSeries.forEach(s => {
     for (let g = 1; g <= 7; g++) {
@@ -2413,7 +2421,7 @@ function renderCFBets(el) {
       return '<p style="color:var(--text-dim);font-size:12px;margin:0 0 12px;">Series 0-0 — CF G1 pending.</p>';
     }
     const pills = completed.map(g => {
-      const slate = `CF-G${g.num}`;
+      const slate = `${slatePrefix}G${g.num}`;
       const bets = (typeof BETS !== 'undefined' ? BETS : []).filter(b => b.slate === slate && b.series === series.id);
       const w = bets.filter(b => b.result && b.result.outcome === 'win').length;
       const l = bets.filter(b => b.result && b.result.outcome === 'loss').length;
@@ -2434,7 +2442,7 @@ function renderCFBets(el) {
     const completed = series.games.filter(g => g.winner);
     if (!completed.length) return '';
     const sections = completed.map(g => {
-      const slate = `CF-G${g.num}`;
+      const slate = `${slatePrefix}G${g.num}`;
       return renderBetSlateSeries(slate, series.id, dyn);
     }).filter(Boolean).join('');
     if (!sections) return '';
@@ -2457,7 +2465,7 @@ function renderCFBets(el) {
         ${renderPastGamesAccordion(series, dyn)}
       </div>`;
     }
-    const slateId = `CF-G${game}`;
+    const slateId = `${slatePrefix}G${game}`;
     return `
       <h3 style="color:#fff;margin:0 0 8px;font-size:18px;">${series.id} <span style="color:var(--text-dim);font-size:13px;font-weight:500;">— G${game} upcoming</span></h3>
       ${renderSeriesProgressHeader(series)}
@@ -2467,15 +2475,15 @@ function renderCFBets(el) {
   }
 
   // Today's parlays — pulls from FEATURED_PARLAYS where date === CURRENT_DATE
-  // AND slate starts with 'CF-'. The slate filter prevents R2 archived
-  // parlays from showing up on the CF page even when CURRENT_DATE matches.
+  // AND slate matches the active round prefix. Prevents R2 archived parlays
+  // from showing up + keeps CF/Finals views correctly isolated.
   function renderTodaysCFParlays() {
     if (typeof FEATURED_PARLAYS === 'undefined') return '';
     const today = (typeof CURRENT_DATE !== 'undefined') ? CURRENT_DATE : '';
     const todays = FEATURED_PARLAYS.filter(p =>
-      p.date === today && typeof p.slate === 'string' && p.slate.startsWith('CF-'));
+      p.date === today && typeof p.slate === 'string' && p.slate.startsWith(slatePrefix));
     if (!todays.length) {
-      return '<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:13px;">No CF parlays posted for today.</div>';
+      return `<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:13px;">No ${roundLabelShort} parlays posted for today.</div>`;
     }
     const floor = todays.filter(p => p.category === 'floor');
     const traditional = todays.filter(p => p.category === 'traditional');
@@ -2504,7 +2512,7 @@ function renderCFBets(el) {
   const todaysGames = [];
   if (typeof BET_SLATES !== 'undefined') {
     Object.entries(BET_SLATES).forEach(([slateKey, slate]) => {
-      if (!slateKey.startsWith('CF-')) return;
+      if (!slateKey.startsWith(slatePrefix)) return;
       slate.games.forEach(g => {
         if (g.date === today) todaysGames.push(`${g.series} (${slateKey})`);
       });
@@ -2517,49 +2525,49 @@ function renderCFBets(el) {
   el.innerHTML = `
   <div style="max-width:1280px;margin:0 auto;padding:20px 10px;" class="bets-container">
 
-    <!-- CF HEADER -->
-    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — Conference Finals</h2>
-    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:8px;">${cfSeries.length} CF series | Lines per DraftKings | ${todaysLabel}</p>
+    <!-- HEADER -->
+    <h2 style="text-align:center;color:#fff;margin-bottom:4px;">2026 NBA Playoff Bets — ${roundLabel}</h2>
+    <p style="text-align:center;color:#aaa;font-size:12px;margin-bottom:8px;">${cfSeries.length} ${roundLabelShort} series | Lines per DraftKings | ${todaysLabel}</p>
 
     <!-- PHASE 71 OUT-OF-SAMPLE BANNER -->
     <div style="background:rgba(234,179,8,0.08);border:1px solid #eab308;border-radius:10px;padding:12px 14px;margin-bottom:16px;">
       <div style="font-size:11px;font-weight:700;color:#eab308;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">⚠ Phase 71 — Out-of-sample discipline</div>
       <div style="font-size:11px;color:#ddd;line-height:1.5;">
-        The 68-game calibration audit was R1+R2 only. <strong>Every CF prediction is out-of-sample.</strong>
-        Daily process: <strong>REDUCED STAKES (50% normal)</strong> for the first 5 CF games while we accumulate evidence.
+        The 68-game calibration audit was R1+R2 only. <strong>Every ${roundLabelShort} prediction is out-of-sample.</strong>
+        Daily process: <strong>REDUCED STAKES (50% normal)</strong> for the first 5 R3+ games while we accumulate evidence.
         Each bet card carries a PLACE / CAUTION / SKIP pill from <code>edge-detector.js</code> reflecting the historical cross-tab.
-        Re-run <code>node test-calibration-audit.js</code> after every 3 resolved CF games to check for bias drift.
+        Re-run <code>node test-calibration-audit.js</code> after every 3 resolved games to check for bias drift.
       </div>
     </div>
 
-    <!-- ═══ CF P&L LEDGER (Phase 73j) ═══ -->
-    <!-- CF-specific P&L tracking. Updates as each CF game settles. -->
+    <!-- ═══ P&L LEDGER (Phase 73j) ═══ -->
+    <!-- Round-specific P&L tracking. Updates as each game settles. -->
     <div style="background:rgba(0,0,0,0.3);border:1px solid #22d3ee;border-radius:10px;padding:14px;margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 CONFERENCE FINALS P&amp;L</span>
-        <span style="font-size:11px;color:#666;">Live tracking — through WCF G6; series TIED 3-3, winner-take-all G7 Sat 5/30</span>
+        <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 ${activeRound === 'Finals' ? 'NBA FINALS' : 'CONFERENCE FINALS'} P&amp;L</span>
+        <span style="font-size:11px;color:#666;">${activeRound === 'Finals' ? 'Live tracking — Finals G1 in-play tonight 6/3 (SAS hosts NYK)' : 'Live tracking — WCF closed (SAS won 4-3); series advances to NBA Finals 6/3'}</span>
       </div>
-      <!-- Row 1: Net $ by category -->
+      <!-- Row 1: Net $ by category (CF cumulative through WCF G7) -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(34,211,238,0.08);">
-          <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">Floor Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$310</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">6-4 record</div>
+          <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;">CF Floor Net</div>
+          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$560</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">8-4 record</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(167,139,250,0.08);">
-          <div style="font-size:9px;color:#a78bfa;text-transform:uppercase;">Traditional Net</div>
-          <div style="font-size:16px;font-weight:700;color:#3dd68c;">+$20</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">1-3 record</div>
+          <div style="font-size:9px;color:#a78bfa;text-transform:uppercase;">CF Traditional Net</div>
+          <div style="font-size:16px;font-weight:700;color:#ef4444;">-$30</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">1-4 record</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);border:1px solid rgba(61,214,140,0.4);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Combined</div>
-          <div style="font-size:18px;font-weight:700;color:#3dd68c;">+$330</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">7-7 (50%)</div>
+          <div style="font-size:18px;font-weight:700;color:#3dd68c;">+$530</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">9-8 (53%)</div>
         </div>
         <div style="text-align:center;padding:8px;border-radius:6px;background:rgba(0,0,0,0.2);">
           <div style="font-size:9px;color:#888;text-transform:uppercase;">CF Wagered</div>
-          <div style="font-size:16px;font-weight:700;color:#aaa;">$1,200</div>
-          <div style="font-size:9px;color:#888;margin-top:2px;">ROI: <strong style="color:#3dd68c;">+28%</strong></div>
+          <div style="font-size:16px;font-weight:700;color:#aaa;">$1,450</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">ROI: <strong style="color:#3dd68c;">+36%</strong></div>
         </div>
       </div>
       <!-- Row 2: Per-game breakdown -->
@@ -2615,20 +2623,25 @@ function renderCFBets(el) {
           <span style="color:#aaa;">WCF G6: <strong style="color:#fff;">SAS 118-91</strong> · model SAS by 3 (<span style="color:#3dd68c;">right winner, err 24pt</span>)</span>
           <span style="color:#aaa;">1W 2L floor, 1L trad</span>
           <span style="color:#ef4444;font-weight:700;">-$115</span>
+
+          <span style="color:#aaa;">Sat 5/30</span>
+          <span style="color:#aaa;">WCF G7: <strong style="color:#fff;">SAS 111-103</strong> · model OKC by 5 (<span style="color:#ef4444;">wrong winner, err 13pt</span>) — SAS to Finals 4-3</span>
+          <span style="color:#aaa;">2W floor, 1L trad</span>
+          <span style="color:#3dd68c;font-weight:700;">+$200</span>
         </div>
       </div>
       <!-- Row 3: In-play wagers -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#888;">IN PLAY (WCF G7 — Sat 5/30 @ Paycom Center):</span>
-          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 5/31 morning</strong></span>
+          <span style="color:#888;">${activeRound === 'Finals' ? 'IN PLAY (Finals G1 — Wed 6/3 @ Frost Bank Center):' : 'IN PLAY (next CF game):'}</span>
+          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 6/4 morning</strong></span>
         </div>
       </div>
       <!-- Row 4: Aggregate notes -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#666;line-height:1.5;">
-        <strong style="color:#3dd68c;">CF model accuracy:</strong> 6/9 winners (67%) · ~12pt main MAE through WCF G6 — WCF G6 added a clean right-winner call (SAS by 3 → SAS by 27) but a +24pt margin miss that nudged the MAE up; the Phase 73 elimination amplifier honestly carried the blowout tail. The central directional reads continue to land. R3 out-of-sample caveat continues to fire.
-        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays now 6-4 across CF. G6 added 1 win (the role-player PRA stack — Champagnie/Keldon/Harper) and 2 losses — both star-floor stacks, which SGA's down game (4 ast / 15 pts) sank. Lesson reinforced: role-player PRA is blowout-resilient; a star's scoring/AST floor is NOT, even diversified across teams, because his volume falls with the game script.
-        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional fell back to 1-3 — the SAS-forces-G7 stack hit 2 of 3 (SAS ML + Wemby 28) but the Over broke (total 209, elimination defense). Even a correctly-correlated thesis loses a traditional when one leg is a coin-flip total; the G5 winner remains the lone correlated-thesis success.
+        <strong style="color:#3dd68c;">CF model accuracy:</strong> 6/10 winners (60%) · ~14pt main MAE — WCF closed at 3-4 on winners (Phase 71 R3 audit predicted ~50% G6/G7 winner accuracy; the engine landed right at the band). WCF G7 was the 4th wrong-winner call of the series; the SAS-NYK Finals is now the next out-of-sample test (Phase 71 R3 stake cap stays 50%).
+        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays now 8-4 across CF (added G7 +$135 role-player PRA + +$115 cross-team stable-dim). PRA dimension is 13/13 — the cleanest reliable-tier rule in the framework. Going into Finals: NYK perimeter D (OG/Bridges 0.9-1.7 dLEBRON) is tighter than OKC's, so PRA lines may have less air — trimmed Keldon + Harper book lines from 9.5 to 8.5 accordingly.
+        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional fell to 1-4 (-$30) — G7 OKC home stack lost when SAS won outright. Even a coherent correlated thesis loses ~50% in G7 (Phase 71 audit confirmed). The Finals G1 traditional stake stays at the reduced $50 CF cap.
       </div>
     </div>
 
@@ -2636,7 +2649,10 @@ function renderCFBets(el) {
     <div style="text-align:center;margin-bottom:16px;display:flex;justify-content:center;gap:0;">
       <button onclick="syncSeriesCursorToRound('R1');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:6px 0 0 6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:600;">R1 Archive</button>
       <button onclick="syncSeriesCursorToRound('R2');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;cursor:pointer;font-size:12px;font-weight:600;">R2 Archive</button>
-      <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);border-left:none;cursor:default;font-size:12px;font-weight:700;">Conference Finals</button>
+      ${activeRound === 'Finals'
+        ? `<button onclick="syncSeriesCursorToRound('CF');renderBetsPage(document.getElementById('main'))" style="padding:7px 18px;border-radius:0;background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-left:none;cursor:pointer;font-size:12px;font-weight:600;">Conference Finals</button>
+           <button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);border-left:none;cursor:default;font-size:12px;font-weight:700;">NBA Finals</button>`
+        : `<button disabled style="padding:7px 18px;border-radius:0 6px 6px 0;background:var(--accent);color:#fff;border:1px solid var(--accent);border-left:none;cursor:default;font-size:12px;font-weight:700;">Conference Finals</button>`}
     </div>
 
     <!-- CF BET TABS -->
