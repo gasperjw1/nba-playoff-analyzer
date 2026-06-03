@@ -342,6 +342,98 @@ const USER_BET_LEDGER = [
       "pnl": 125,
       "settledAt": "2026-05-28T21:24:05.586Z"
     }
+  },
+  {
+    "id": "user-2026-06-03-001",
+    "date": "2026-06-03",
+    "loggedAt": "2026-06-03T20:23:04.008Z",
+    "series": "SAS-NYK",
+    "game": 1,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": "SAS-NYK-G1-2026-06-03",
+    "stake": 50,
+    "americanOdds": 130,
+    "legs": [
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 19.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "OPPOSITE-DIRECTION to model's Brunson U26.5 PTS lean — user pivoted to the OVER at a deep-alt threshold 7pts below the standard line. Brunson ECF avg 25.5 PPG; getting to 20 even vs Castle suppression is very likely. Classic Phase 65 reliable floor — deep alt below central projection.",
+        "hit": null,
+        "actualValue": null
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pts",
+        "line": 31.5,
+        "direction": "under",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Inverse of model's Wemby OVER lean (PRA O32.5, PTS O27.5). U31.5 PTS is a much higher line than O27.5 — gives more cushion. Wemby's WCF PTS avg 25; Finals G1 layoff rust caveat. Statistically safer UNDER than the model's OVER side at 27.5.",
+        "hit": null,
+        "actualValue": null
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "pra",
+        "line": 14.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": true,
+        "candidateHitRate": 0.74,
+        "note": "FanDuel's minimum Champagnie PRA line — the model's 9.5 alt was NOT available. Champagnie WCF last 3 games: 28/18/26 PRA → 14.5 still clears comfortably. LINE-AVAILABILITY GAP: book floor is 14.5 vs model floor 9.5 — meaningful calibration note for Phase 73 (the +5pt jump from candidate-to-book makes book lines lower hit-rate than model candidate hit-rates).",
+        "hit": null,
+        "actualValue": null
+      }
+    ],
+    "notes": "FanDuel 3-leg parlay (~+130). Adapts the model's role-player PRA + market-line discipline to AVAILABLE FD alt lines (model candidate Champagnie 9.5 was not offered — minimum 14.5). Cross-team scoring stack with Brunson floor + Wemby ceiling-cap + Champagnie role-player floor. Hedges direction on the two stars.",
+    "result": null
+  },
+  {
+    "id": "user-2026-06-03-002",
+    "date": "2026-06-03",
+    "loggedAt": "2026-06-03T20:23:04.013Z",
+    "series": "SAS-NYK",
+    "game": 1,
+    "type": "parlay",
+    "source": "chs-lab-modified",
+    "inspiredBy": "SAS-NYK-G1-2026-06-03",
+    "stake": 50,
+    "americanOdds": 125,
+    "legs": [
+      {
+        "player": "Dylan Harper",
+        "stat": "threes",
+        "line": 0.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Rookie Harper made at least one three in WCF G5/G7. Series 3PT trajectory rising; bench scoring role secure. The 'at least one make' bet is a statistical floor on a 24-min bench guard.",
+        "hit": null,
+        "actualValue": null
+      },
+      {
+        "player": "Keldon Johnson",
+        "stat": "threes",
+        "line": 0.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Keldon ~36% from 3 across WCF; 18-24 min bench wing role. Same 'at least one make' statistical floor — even modest minutes + average shooting hits 0.5 makes consistently.",
+        "hit": null,
+        "actualValue": null
+      }
+    ],
+    "notes": "FanDuel 2-leg role-player 3PT-make floor (~+125). Same diversified-role-player-floor thesis as the PRA stack but on a different stat dimension — 'at least one make from 3' is statistically floor-like for any 36%+ shooter in 20+min. Phase 73x candidate: validate this dimension across the playoffs (currently undocumented).",
+    "result": null
   }
 ];
 
