@@ -7187,6 +7187,58 @@ const SERIES_DATA = [
           homeDefOnAway: { defender:"Stephon Castle", target:"Jalen Brunson", dLebron:0.908, targetUsg:29.8, note:"Castle (6-6, 0.91 dLEBRON) draws the Brunson assignment — best on-ball defender Brunson has faced this run. Harper backup. This is the central matchup of the series." },
           awayDefOnHome: { defender:"OG Anunoby", target:"Stephon Castle", dLebron:1.724, targetUsg:24.0, note:"OG (1.72 dLEBRON) likely on Castle to neutralize the WCF MVP arc. Bridges + Hart switch on Fox in PnR. Robinson on Wemby in spot stretches." }
       },
+      game1: {
+        spread: "SAS -2.5",
+        moneyline: "SAS -135 / NYK +115",
+        ou: "O/U 215.5",
+        pick: "SAS",
+        confidence: "medium",
+        projScore: "SAS 113 — NYK 111",
+        reasoning: "Finals G1 at Frost Bank Center (1999 rematch, Spurs won 4-1 then). Phase 71c engine: SAS 113, NYK 111 (SAS by 2). The opening NBA Finals game prices as a true coin flip the model leans a hair toward the home team. Two structural levers tilt slight SAS: (1) HCA + 6-1 record at Frost Bank this playoffs (including +21 G4 vs OKC + +27 G6 vs OKC); (2) Castle-on-Brunson is THE central matchup — Castle's 0.91 dLEBRON is the best on-ball POA defender Brunson has faced (CLE's Garland was 0.21, PHI's Maxey nominal). Same fresh-POA-vs-star-scorer pattern that held SGA under 20 in BOTH WCF road games. NYK counters: (1) Sweep momentum + 8-day rest vs SAS's 3-day G7 grind — NYK has cleaner legs (12-1 playoff record); (2) KAT-vs-Wemby is meaningfully fairer rim duel than SAS faced from Holmgren/Hartenstein; (3) Brunson's 9.2 clutchNetRtg is best on the floor in a tight game. REST GAP NUANCE: NYK's 8 days off can produce sluggish Q1 (Mavericks-style layoff rust) — SAS exploited this dynamic every WCF even-numbered home game. Phase 73 elimination amplifier INACTIVE (G1 of a series), MC central margin honest at SAS by 2. Phase 71 R3 out-of-sample stake cap stays 50% — Finals is first-ever Finals calibration data. DK lines (6/3): SAS -2.5 / 215.5 / ML SAS -135, NYK +115 — engine SAS by 2 agrees with the market (model 2 vs market 2.5); ML implied 57.4% vs model ~54% (mild market overbid on SAS, NYK +115 ~46% true vs 46.5% implied, essentially fair). Engine total ~224 is meaningfully OVER market 215.5 (+8.5pt gap) — the OVER 215.5 is the cleanest model edge tonight, but Finals G1s historically run UNDER the season-average totals (defensive tightness from layoff + first-look unfamiliarity), so even with the engine OVER lean the bet authoring stays cautious.",
+        prosHome: [
+          "Home court — 6-1 at Frost Bank Center this playoffs (G4 +21 vs OKC, G6 +27 vs OKC)",
+          "Castle (0.91 dLEBRON) is the best POA defender Brunson has faced — held SGA to 19 G4 + 15 G6 on the road",
+          "Wemby (94 rating, 24.8/11.5/3.1/3.7blk) anchors both ends — NYK paint D is the softest he's seen this playoffs",
+          "SAS won every even-numbered game of the WCF — even-game pattern + must-win discipline",
+          "Champagnie/Keldon/Harper bench depth has the WCF-validated diversified PRA floor",
+          "WCF MVP-tier Castle (74→76 rating with Phase 73 playoff ascension) is the X-factor"
+        ],
+        consHome: [
+          "Just played a 7-game WCF; only 3 days rest vs NYK's 8 (fatigue tail of a G7 grind)",
+          "Brunson 9.2 clutchNetRtg is the best on the floor in a tight game — closeout danger",
+          "KAT-vs-Wemby is a meaningfully fairer rim duel than Holmgren/Hartenstein — Wemby PRA is less of a lock here",
+          "First Finals for the SAS core (Wemby/Castle/Harper); pressure of the stage is real"
+        ],
+        prosAway: [
+          "12-1 playoff record + 8 days of rest = cleanest legs of any Finals team since 2017 GSW",
+          "Brunson (88 rating, 9.2 clutch) is the best clutch player on the floor",
+          "KAT stretch-5 (37.5% 3PT) pulls Wemby out of the paint — neutralizes the OKC-style box-out",
+          "Bridges/OG perimeter D (combined dLEBRON ~3.5) is meaningfully tighter than what SAS bench faced from OKC",
+          "Thibodeau closeout discipline + tight 7-8 man rotation suited for Finals-stakes intensity"
+        ],
+        consAway: [
+          "8-day layoff = Q1 rust risk (Mavericks-Boston 2024 G1 went 14 UNDER on this exact pattern)",
+          "Castle-on-Brunson is the worst POA matchup Brunson has faced this run — iso scoring may collapse",
+          "Frost Bank Center has been hostile to road teams (SAS +21 G4 / +27 G6 vs OKC)",
+          "Robinson (rim-only) can't space the floor on the Wemby end — KAT must shoulder both sides"
+        ],
+        playerProjections: {
+          home: [
+            { name:"Victor Wembanyama", pts:"24-32", reb:"10-14", ast:"2-5", note:"Phase 71c: 28pts/12reb. Softer rim duel vs KAT/Robinson than Holmgren/Hartenstein. PRA floor 32.5 is the cleanest leg on the slate." },
+            { name:"De'Aaron Fox", pts:"15-22", reb:"3-5", ast:"6-9", note:"Phase 71c: 18pts/7.5ast. Brunson defense is favorable (1.45 dLEBRON BELOW average). Expect Fox to attack early." },
+            { name:"Stephon Castle", pts:"14-20", reb:"3-6", ast:"4-7", note:"Phase 71c: 17pts/6ast. Brunson POA assignment + secondary scoring — usage stays high; AST floor 4.5 is the cleanest SAS counting-stat leg." },
+            { name:"Julian Champagnie", pts:"10-16", reb:"4-7", ast:"1-3", note:"Phase 71c: 12pts. WCF bench scorer of the series (G5 22, G6 10, G7 20). Engine ~14 PRA — line 9.5 deep floor." },
+            { name:"Devin Vassell", pts:"10-16", reb:"3-5", ast:"2-4", note:"Phase 71c: 13pts. OG/Bridges matchup tougher than Dort — expect efficiency dip from WCF avg." }
+          ],
+          away: [
+            { name:"Jalen Brunson", pts:"18-26", reb:"3-5", ast:"5-8", note:"Phase 71c: 22pts (suppressed from ECF avg 25.5). Castle 0.91 dLEBRON is the toughest POA D he's faced. Lean UNDER 26.5; deep alt 19.5 still likely." },
+            { name:"Karl-Anthony Towns", pts:"18-26", reb:"10-14", ast:"2-5", note:"Phase 71c: 21pts/12reb. Wemby is the toughest rim defender he's faced — but KAT's perimeter pull is the counter. PRA O35.5 is workable." },
+            { name:"OG Anunoby", pts:"12-20", reb:"4-7", ast:"1-3", note:"Phase 71c: 15pts. Castle assignment + spot-up shooting opportunities. Bridges/OG carries the perimeter D load." },
+            { name:"Mikal Bridges", pts:"12-18", reb:"3-6", ast:"2-4", note:"Phase 71c: 14pts. Vassell matchup + occasional Fox switches. Ironman role secure." },
+            { name:"Josh Hart", pts:"10-16", reb:"6-10", ast:"3-6", note:"Phase 71c: 12pts/7reb. Hustle role + rebounding floor vs Wemby-anchored boards." }
+          ]
+        }
+      },
       games: [
           {
               num: 1,

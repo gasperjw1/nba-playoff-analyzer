@@ -666,6 +666,20 @@ function runTests() {
     });
   });
 
+  // TEST 11b: Series Analysis G1 tab REQUIRES top-level `s.game1` field.
+  // The renderer at js/ui/series-renderer.js gIdx===0 path unconditionally
+  // calls renderGamePrediction(s, 'game1', ...) which reads s.game1; if
+  // missing, renderGamePrediction returns '' and the G1 tab shows blank
+  // content for the prediction section. Caught on 6/3 when the SAS-NYK
+  // Finals series was authored with only the modern games[0].prediction.
+  // (G2-G7 have soft-fallback paths so they don't hit this.)
+  SERIES_DATA.forEach(series => {
+    if (!series.games || series.tbdOpponent || !series.games[0]) return;
+    if (!series.games[0].prediction) return;
+    assert(series.game1,
+      `${series.id} has games[0].prediction but is missing top-level game1 — Series Analysis G1 tab renders empty. Add a game1 block mirroring games[0].prediction's data.`);
+  });
+
   // ============================================================
   // TEST 12: CHS ledger schema (CHS shadow architecture, May 9)
   // ------------------------------------------------------------
