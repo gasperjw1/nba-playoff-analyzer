@@ -3162,7 +3162,7 @@ function renderR2Bets(el) {
           <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$933</strong></span>
           <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">28-53</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">No games today (rest day). Next — Sat May 30 (WCF G7 — SAS @ OKC, series tied 3-3, winner to the Finals): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight — Wed Jun 3 (NBA Finals G1 — NYK @ SAS, 1999 Finals rematch, series 0-0): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

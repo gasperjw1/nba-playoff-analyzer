@@ -5535,7 +5535,13 @@ const SERIES_DATA = [
         { type: "correct", lesson: "G6: Wemby ANSWERED the OKC box-out (G5 20/6 → G6 28/10/2blk in 28min) when SAS fed him deep touches before the double arrived. Confirms the G3/G5 Hartenstein/Holmgren box-out is beatable with the right entry timing — the Wemby PTS/REB suppression is scheme-AND-counter dependent, not a fixed degradation. R4/Finals note: degrade his projection ~30% vs the committed box-out ONLY when SAS can't get him early deep catches; with a healthy supporting cast that spaces the floor, the suppression evaporates." },
         { type: "missed", lesson: "G6: SGA series-LOW 15 on 5-15 FG. The Phase 71c per-player override (-6.9 PTS) put the engine near 24; actual 15 was -9 UNDER — the override under-corrects on the road. This is now the 2nd ROAD game where a fresh Castle held SGA under 20 (G4 19, G6 15) vs his home bounce-backs (G2 30, G3 30, G5 32). The binary active/inactive matchup model still doesn't capture the fresh-vs-tired POA defender as a continuous degradation, and it doesn't condition on venue. R4 audit: SGA's projected efficiency should split home-vs-road against an elite POA defender." },
         { type: "correct", lesson: "G6: OKC road-bench-COOLDOWN pattern returned (Caruso 22→7, McCain 20→11). The bench-3PT heater that erupts at Paycom (G1 31 / G3 29 / G5 22 Caruso; G5 20 McCain) cools on the road (G4 cooldown, now G6). OKC's bench output is strongly VENUE-correlated — a structural signal that matters directly for G7, which is back at Paycom: expect the bench heat to return at home. This is now a clean 4-game home/road split and should be a weighting input, not noise." },
-        { type: "correct", lesson: "G6 betting signal: role-player PRA floors cleared AGAIN in a blowout — Champagnie 10/6/2 = 18 PRA over a 9.5 line, with Keldon (14/5/2) and Harper (12/4/4) also clearing deep PRA lines. Second straight CF game validating the blowout-resilient, diversified PRA-floor thesis (PRA now 11/11 in the user-bet ledger). Confirms DAILY_UPDATE 6b: prefer diversified role-player PRA over star-concentrated single-stat floors for the reliable tier." }
+        { type: "correct", lesson: "G6 betting signal: role-player PRA floors cleared AGAIN in a blowout — Champagnie 10/6/2 = 18 PRA over a 9.5 line, with Keldon (14/5/2) and Harper (12/4/4) also clearing deep PRA lines. Second straight CF game validating the blowout-resilient, diversified PRA-floor thesis (PRA now 11/11 in the user-bet ledger). Confirms DAILY_UPDATE 6b: prefer diversified role-player PRA over star-concentrated single-stat floors for the reliable tier." },
+        { type: "missed", lesson: "G7: WRONG WINNER — engine OKC by 5 (MEDIUM, COIN FLIP), actual SAS by 8. The Phase 73 elimination amplifier was ACTIVE (1.4× tails) and the MC distribution honestly carried SAS-win mass, but the central estimate still landed on OKC home + SGA bounce-back. The expected post-anomaly SGA home reversion DID materialize (35pts on 26 FGA) — the structural story was right; the team result was the inverse. R4 candidate: when a star is bouncing back from a road dud, the team result is uncorrelated with the star's individual bounce-back in a winner-take-all spot. Phase 71 R3 out-of-sample winner accuracy across the WCF closed at 3-4 — exactly the ~50% G7-class accuracy the audit predicted." },
+        { type: "missed", lesson: "G7: SGA POA SUPPRESSION RIGHT-DIRECTION-WRONG-MAGNITUDE — Castle/Harper forced SGA into 5 TOs on 26 FGA. The 12-26 line was statistically a 'good' SGA night (35pts/9ast) but the inefficiency + turnovers cost OKC the possession battle vs a SAS team that had fewer giveaways and more deep touches for Wemby. R4 audit: the structural matchup module should weight 'pressure-induced inefficiency at high volume' as a separate signal from raw point totals. SGA 35 with 5 TOs is closer in WPA terms to a 22-point dud than a 35-point clean night." },
+        { type: "correct", lesson: "G7: WEMBY-HOLMGREN GRAVITY READ HELD — Holmgren 12pts/9reb on 5-12 FG, exactly the suppressed line the 'paint-defender vs other paint-defender' pattern predicted (series totals 8/13/8/15/14/10/12 — variance ±3 around 11). For the Finals, this is no longer a candidate signal — it's a documented R3 read. Confirms the structural read that started in G1 lessons: Holmgren scores ~25% less in games where Wemby is the assignment than his career playoff average." },
+        { type: "missed", lesson: "G7: BENCH HEATER COOLDOWN AT HOME — OKC bench at Paycom finally NORMALIZED in the highest-stakes game. Caruso 8 / McCain 6 / J.Williams 11 / Wallace 17 (14 in Q4 the lone heater). The home-bench-erupts pattern from G1/G3/G5 (Caruso 31/29/22) compressed to baseline in G7. R4 candidate: G7 / Finals winner-take-all may DAMPEN variance amplifier for role players rather than widen — the inverse of Phase 73's symmetric amplifier. The Phase 73 elimination amplifier widens BOTH tails in MC; reality may be that the central tendency compresses for bench players while widening for stars." },
+        { type: "correct", lesson: "G7 betting signal: role-player PRA floors cleared a 3rd straight CF game — Champagnie 20/4/2 = 26 PRA (smashed 9.5 line). The diversified-role-player-PRA reliable tier is now ~13/13 across the playoffs. Going into the Finals against NYK's depth (KAT/Bridges/Anunoby/Hart/McBride), this should remain the cleanest reliable-tier discipline — but note that NYK's perimeter D is meaningfully better than OKC's, so the PRA lines may have less air relative to chalk." },
+        { type: "missed", lesson: "G7 WCF series retrospective: SAS won 4-3 over OKC despite the regular-season 4-1 SAS edge being the strongest pre-series structural lever in the engine. Phase 71b correctly priced SAS as roughly even with OKC accounting for OKC's R1/R2 dominance, but the series was still decided by the high-variance G1/G3/G7 swings the model couldn't price. The lesson for the Finals: when one side has a strong head-to-head signal (NYK swept BOS-PHI-CLE in three straight rounds; SAS won the WCF), give that signal more weight than the Vegas line suggests." }
       ],
       priorRound: {
           home: {
@@ -6707,11 +6713,11 @@ const SERIES_DATA = [
           },
           {
               num: 7,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
-              notes: "",
+              result: "SAS",
+              homeScore: 103,
+              awayScore: 111,
+              winner: "SAS",
+              notes: "SAS 111-103 at Paycom Center. SAS WINS WCF 4-3 — advances to NBA Finals (first Finals appearance since 2014 championship). Spurs led 92% of the game; up 12 at 3:45 Q4, withstood a late OKC push that trimmed to 6 inside 2:00 before Wemby/Castle closed it. SAS: Wembanyama 22pts/7reb/3blk (8-19 FG, 4-9 3PT, 2-3 FT) — quieter than CF norm but the rim deterrence anchored a 102-104 def rating night, Julian Champagnie 20pts off bench (6-10 FG, 4-7 3PT) — bench scorer of the series, Stephon Castle 18pts/6ast/5reb (POA pressure on SGA), Dylan Harper 14pts/5reb/4ast, De'Aaron Fox 13pts/8ast (3-12 FG but ran the offense + late free throws), Devin Vassell 11. OKC: SGA 35pts/9ast (12-26 FG, 9-10 FT) — series-best volume but Castle/Harper hounded him into 5 TOs, Cason Wallace 17pts (14 in Q4 — the bench heater that almost saved it), Holmgren 12pts/9reb (limited by Wemby gravity again), Caruso 8 / McCain 6 (the home-bench eruption never quite landed). MODEL: predicted OKC 110-SAS 105 (OKC by 5, MEDIUM, COIN FLIP); ACTUAL SAS 111-103 (SAS by 8) — WRONG WINNER, 13pt margin miss. Phase 73 elimination amplifier was ACTIVE (1.4× tails) and the MC distribution honestly carried SAS-win mass. The Phase 71 R3 out-of-sample caveat fires for the 4th time this CF (G1, G3, G6, G7 — engine 3-4 on winner across the series). Series shifts to NBA Finals: SAS hosts NYK G1 at Frost Bank Center Wed 6/3 8:30 PM ET on ABC.\n\nKEY MODEL TAKEAWAYS:\n(1) WCF SERIES PREDICTION ACCURACY — engine went 3-4 on winners (right: G2, G4, G5; wrong: G1, G3, G6, G7), with MAE ~16pts. The Phase 71 R3 out-of-sample caveat was right to flag the CF as a true-test domain; the calibrated 13-modifier engine ports from R1+R2 with degraded winner accuracy. SAS-NYK Finals is now the next out-of-sample test.\n(2) SGA POA SUPPRESSION VALIDATED — Castle (+Harper when healthy) held SGA under 20 in BOTH road games (G4 19, G6 15) and forced 5 TOs in this G7. The 'fresh POA defender vs star scorer' continuous-degradation pattern is now well-documented across 4 games. The Phase 71c per-player override held SGA's central projection too high; binary active/inactive modeling under-prices defensive matchup quality even on the home bounce-back spot.\n(3) WEMBY-GRAVITY OKC SUPPRESSION REAL — Holmgren series totals: 8/13/8/15/14/10/12 with Wemby on the floor. The 'paint-defender vs other paint-defender' suppression flagged in G1 lessons is now an established structural read. R4 candidate: model Wemby-vs-Holmgren as a continuous offensive degradation for Chet, not binary.\n(4) BENCH HEATER COOLDOWN AT HOME — OKC's bench scoring at Paycom across the series (G1 +bench, G3 76, G5 22 Caruso/20 McCain) versus G7 (Caruso 8, McCain 6, Wallace's 14 in Q4 the lone exception) suggests the bench-3PT variance compresses in the absolute biggest single-game pressure spot, not expands. Wallace's late heater was the only exception. R4 candidate: G7 / Finals winner-take-all dampens variance bumps for role players relative to series midgame.\n(5) ROLE-PLAYER FLOOR PARLAYS HELD — Champagnie's 20pts off the SAS bench cleared every reasonable PRA / 3PM alt line — the diversified role-player floor that dominated G5/G6 cashed again. PRA is now ~13/13 in the user-bet ledger across the playoffs. The 'diversified role-player floors > star-concentrated single-stat floors' thesis is now the cleanest reliable-tier rule of the framework.\n(6) FINALS PREVIEW — SAS hosts NYK G1 Wed 6/3 at Frost Bank Center. SAS won every even-numbered game this CF and has HCA + 6 days rest; NYK swept its way to Finals (5/26) and has 8 days rest with all-time-great offensive efficiency (KAT/Brunson/Bridges/Hart/Anunoby/McBride). 1999 Finals rematch (Spurs won that series 4-1). DK opener (6/2): SAS -2.5, total 215.5, ML SAS -135 / NYK +115. Phase 71 R3 out-of-sample stake cap remains at 50% for Finals.",
               prediction: {
                   homeWin: true,
                   homeScore: 110,
@@ -6732,8 +6738,491 @@ const SERIES_DATA = [
                     "Market OKC -4.5 / 213.5 / ML OKC -162, SAS +136 (moved off the 216.5 / -190 opener — SAS money + a lower total) — engine OKC by 5 agrees on winner and margin; SAS +136 carries thin +EV per model",
                     "G7 caveat: ~50% winner accuracy / 19.8pt MAE historically — treat as a TRUE coin-flip, reduced CF stakes (50%) + CAUTION pills hold"
                   ]
+              },
+              boxScores: {
+                  home: [
+                      {name:"SGA",min:42,pts:35,reb:5,ast:9,fg:"12-26",threes:"2-7",ft:"9-10",to:5,stl:1,blk:0,pm:-8,note:"Series-best volume but 5 TOs vs Castle/Harper POA pressure"},
+                      {name:"Holmgren",min:34,pts:12,reb:9,ast:1,fg:"5-12",threes:"0-2",ft:"2-3",to:1,stl:0,blk:2,pm:-10,note:"Suppressed again by Wemby gravity"},
+                      {name:"Hartenstein",min:24,pts:6,reb:11,ast:2,fg:"3-7",threes:"0-0",ft:"0-0",to:0,stl:1,blk:0,pm:-6},
+                      {name:"Dort",min:30,pts:7,reb:3,ast:1,fg:"2-7",threes:"1-4",ft:"2-2",to:1,stl:1,blk:0,pm:-12},
+                      {name:"J.Williams",min:30,pts:11,reb:4,ast:3,fg:"4-11",threes:"1-4",ft:"2-2",to:2,stl:1,blk:0,pm:-9,note:"Limited burst still recovering from hamstring"},
+                      {name:"Caruso",min:24,pts:8,reb:2,ast:3,fg:"3-9",threes:"1-5",ft:"1-2",to:1,stl:2,blk:0,pm:-7,note:"Home bench-heater pattern compressed in winner-take-all"},
+                      {name:"C.Wallace",min:22,pts:17,reb:2,ast:2,fg:"6-11",threes:"3-6",ft:"2-2",to:1,stl:1,blk:0,pm:-2,note:"14 of his 17 came in Q4 — the lone OKC heater"},
+                      {name:"McCain",min:18,pts:6,reb:1,ast:2,fg:"2-7",threes:"1-4",ft:"1-2",to:0,stl:0,blk:0,pm:-5,note:"Cooled off the G5 20-pt bench eruption"},
+                      {name:"A.Mitchell",min:8,pts:1,reb:1,ast:0,fg:"0-3",threes:"0-1",ft:"1-2",to:0,stl:0,blk:0,pm:-3},
+                      {name:"Joe",min:8,pts:0,reb:0,ast:0,fg:"0-2",threes:"0-2",ft:"0-0",to:0,stl:0,blk:0,pm:-2}
+                  ],
+                  away: [
+                      {name:"Wembanyama",min:38,pts:22,reb:7,ast:2,fg:"8-19",threes:"4-9",ft:"2-3",to:2,stl:0,blk:3,pm:10,note:"Quieter than CF norm but rim deterrence anchored SAS def rating"},
+                      {name:"Castle",min:39,pts:18,reb:5,ast:6,fg:"7-15",threes:"2-5",ft:"2-3",to:1,stl:2,blk:0,pm:14,note:"POA defense forced 5 SGA TOs"},
+                      {name:"Harper",min:32,pts:14,reb:5,ast:4,fg:"5-12",threes:"1-4",ft:"3-4",to:2,stl:2,blk:0,pm:11},
+                      {name:"Vassell",min:30,pts:11,reb:3,ast:2,fg:"4-11",threes:"2-7",ft:"1-2",to:1,stl:0,blk:0,pm:6},
+                      {name:"Fox",min:34,pts:13,reb:3,ast:8,fg:"3-12",threes:"1-4",ft:"6-7",to:2,stl:1,blk:0,pm:9,note:"3-12 FG but ran the offense + closing free throws"},
+                      {name:"Champagnie",min:24,pts:20,reb:4,ast:2,fg:"6-10",threes:"4-7",ft:"4-4",to:0,stl:1,blk:0,pm:12,note:"Bench scorer of the series — diversified PRA floor cashed again"},
+                      {name:"K.Johnson",min:18,pts:7,reb:2,ast:1,fg:"3-6",threes:"1-3",ft:"0-0",to:1,stl:0,blk:0,pm:4},
+                      {name:"H.Barnes",min:14,pts:4,reb:3,ast:1,fg:"1-3",threes:"0-1",ft:"2-2",to:0,stl:0,blk:0,pm:2},
+                      {name:"Kornet",min:6,pts:2,reb:2,ast:0,fg:"1-2",threes:"0-0",ft:"0-0",to:0,stl:0,blk:1,pm:2}
+                  ]
               }
           }
+      ]
+  },
+
+  // ============================================================
+  // NBA FINALS — SAS vs NYK (authored 6/3/2026)
+  // ============================================================
+  // 1999 Finals rematch (SAS won 4-1). SAS won WCF 4-3 over OKC (6 days
+  // ago after G7 5/30). NYK swept all three rounds (BOS R1, PHI R2, CLE
+  // ECF) — 12-1 playoff record, 8 days rest since 5/26 sweep.
+  // SAS has HCA (better regular-season record: 58-24 vs 55-27).
+  // G1: Wed 6/3 at Frost Bank Center, 8:30 PM ET on ABC.
+  //
+  // PHASE 71 R3 OUT-OF-SAMPLE: stake cap stays at 50% — the WCF
+  // closed at 3-4 on winners and the engine has zero direct Finals
+  // calibration data.
+  {
+      id: "SAS-NYK",
+      conf: "Finals",
+      round: "Finals",
+      modelLessons: [],
+      priorRound: {
+          home: {
+              seriesId: "OKC-SAS",
+              gamesPlayed: 7,
+              round: "CF",
+              restDays: 3
+          },
+          away: {
+              seriesId: "NYK-CLE",
+              gamesPlayed: 4,
+              round: "CF",
+              restDays: 8
+          }
+      },
+      homeTeam: {
+          name: "Spurs",
+          city: "San Antonio",
+          abbr: "SAS",
+          seed: 2,
+          record: "58-24",
+          systemBonus: 2.0,
+          playoffPedigree: 0.5,
+          offStyle: "Wemby-centric. Fox PnR + Castle/Vassell secondary. Bench depth (Harper/Champagnie/K.Johnson) elite. Beat POR 4-1, MIN 4-2, OKC 4-3 (WCF G7).",
+          initiators: 2,
+          color: "#C4CED4",
+          color2: "#000000",
+          advStats: {
+              ortg: 118.5,
+              drtg: 108.2,
+              netRtg: 10.3,
+              pace: 98.1,
+              ts: 59.2,
+              efg: 56,
+              tov: 12,
+              reb: 51.5,
+              ortgRk: 2,
+              drtgRk: 2,
+              clutchNetRtg: 6.5,
+              last10: "9-1",
+              fgPct: 53,
+              threePct: 37.5,
+              ftPct: 80.4,
+              orbPct: 25.2
+          },
+          players: [
+              {
+                  name: "Victor Wembanyama",
+                  pos: "C",
+                  rating: 94,
+                  ppg: 24.8, rpg: 11.5, apg: 3.1, fgp: 51.2, per: 29.5, ts: 63.2,
+                  epm: 8.8, bpm: 10.7, ws48: 0.255, onOff: 16.9, clutch: 7.5, vorp: 5.7, usg: 32.4,
+                  injury: null,
+                  lebron: 7.647, oLebron: 3.655, dLebron: 3.992, war: 11.25,
+                  offRole: "Shot Creator",
+                  defRole: "Anchor Big",
+                  matchupNote: "Finals matchup vs KAT/Robinson is the most favorable rim duel he's seen this playoffs — KAT is a stretch-5 (37.5% 3PT) with limited rim deterrence (1.2 bpg), Robinson is rim-protection-only with no shooting. WCF arc: avg 28pts/11reb across 7 games. Holmgren-style suppression IS NOT in NYK's repertoire — Wemby's PRA floor should clear cleanly. Spacing for him better than vs OKC's double-big lineups.",
+                  baseRating: 94,
+                  starCeiling: 2,
+                  injuryRisk: 0.3
+              },
+              {
+                  name: "De'Aaron Fox",
+                  pos: "PG",
+                  rating: 80,
+                  ppg: 18.5, rpg: 3.2, apg: 6.8, fgp: 47.5, per: 20.2, ts: 58.8,
+                  epm: 3.5, bpm: 3.2, ws48: 0.155, onOff: 5.5, clutch: 7.2, vorp: 3.1, usg: 25.2,
+                  injury: null,
+                  lebron: 1.7, oLebron: 1.478, dLebron: 0.222, war: 5.812,
+                  offRole: "Shot Creator",
+                  defRole: "Point of Attack",
+                  matchupNote: "Fox-Wemby PnR is SAS's half-court engine. WCF G7: 13/8ast on 3-12 FG — ran the offense + late FTs. Brunson matchup is favorable on D (Brunson's 1.45 dLEBRON is BELOW-average; he'll struggle staying in front of Fox's speed). Expect Fox to attack Brunson early.",
+                  baseRating: 80
+              },
+              {
+                  name: "Stephon Castle",
+                  pos: "SG",
+                  rating: 76,
+                  ppg: 16.8, rpg: 4.5, apg: 4.2, fgp: 46.5, per: 17.8, ts: 57.5,
+                  epm: 2.0, bpm: 1.8, ws48: 0.118, onOff: 3.2, clutch: 5.5, vorp: 2.1, usg: 24,
+                  injury: null,
+                  lebron: 1.464, oLebron: 0.556, dLebron: 0.908, war: 5.009,
+                  offRole: "Primary Ball Handler",
+                  defRole: "Point of Attack",
+                  matchupNote: "WCF MVP candidate after holding SGA to series-low 15 in G6 + forcing 5 TOs in G7. Finals: gets the BRUNSON assignment. Brunson's iso scoring vs Castle's 6-6 frame + 0.91 dLEBRON is THE structural matchup of the series — same fresh-POA-vs-star-scorer pattern that worked vs SGA. Rating bumped 74→76 reflecting Phase 73 playoff ascension.",
+                  baseRating: 76,
+                  playoffAscension: 1.0
+              },
+              {
+                  name: "Devin Vassell",
+                  pos: "SG",
+                  rating: 72,
+                  ppg: 14.8, rpg: 4.2, apg: 3.5, fgp: 45.5, per: 16.2, ts: 58,
+                  epm: 1.8, bpm: 1.5, ws48: 0.112, onOff: 2.8, clutch: 5.8, vorp: 1.8, usg: 23,
+                  injury: null,
+                  lebron: -0.084, oLebron: 0.769, dLebron: -0.853, war: 3.044,
+                  offRole: "Movement Shooter",
+                  defRole: "Helper",
+                  matchupNote: "39.2% from 3 — secondary scorer. Likely matched up vs OG Anunoby (elite wing D). Tougher matchup than vs OKC's Dort; expect efficiency dip.",
+                  baseRating: 72
+              },
+              {
+                  name: "Julian Champagnie",
+                  pos: "SF",
+                  rating: 68,
+                  ppg: 11.2, rpg: 4.8, apg: 1.5, fgp: 44.8, per: 13.5, ts: 56.5,
+                  epm: 0.5, bpm: 0.2, ws48: 0.078, onOff: 1.2, clutch: 4.5, vorp: 1.1, usg: 20,
+                  injury: null,
+                  lebron: 1.54, oLebron: 0.16, dLebron: 1.38, war: 5.678,
+                  offRole: "Movement Shooter",
+                  defRole: "Helper",
+                  matchupNote: "WCF bench scorer of the series — 22 G5, 10 G6, 20 G7. The role-player PRA floor anchor (cleared O9.5 3 straight CF games). NYK's perimeter D (OG/Bridges/Hart) is tighter than OKC's, so the PRA line may have less air than vs OKC — but the floor (counting stats across PTS/REB/AST) is still the reliable bet. Rating bumped 66→68 for sustained ascension.",
+                  baseRating: 68,
+                  playoffAscension: 1.0
+              },
+              {
+                  name: "Kelly Olynyk",
+                  pos: "PF",
+                  rating: 62,
+                  ppg: 9.5, rpg: 5.5, apg: 3, fgp: 47.2, per: 14.2, ts: 57.8,
+                  epm: 0.5, bpm: 0.2, ws48: 0.082, onOff: 1.5, clutch: 4.5, vorp: 0.9, usg: 18.8,
+                  injury: null,
+                  offRole: "Stretch Big",
+                  defRole: "Helper",
+                  matchupNote: "Stretch big, 37% from 3. Closes vs NYK's 5-out KAT lineup for spacing. Mismatch on KAT-driven PnR.",
+                  baseRating: 62
+              },
+              {
+                  name: "Keldon Johnson",
+                  pos: "SF",
+                  rating: 62,
+                  ppg: 9.8, rpg: 4.2, apg: 1.8, fgp: 46.2, per: 12.5, ts: 55.5,
+                  epm: 0.2, bpm: -0.1, ws48: 0.068, onOff: 0.4, clutch: 4.5, vorp: 0.7, usg: 18.8,
+                  injury: null,
+                  lebron: 0.471, oLebron: 1.14, dLebron: -0.67, war: 3.511,
+                  offRole: "Movement Shooter",
+                  defRole: "Helper",
+                  matchupNote: "Energy wing off bench. WCF: cleared O9.5 PRA in G5 (15) + G6 (14) — the diversified role-player floor. Physical playoff energy.",
+                  baseRating: 62
+              },
+              {
+                  name: "Dylan Harper",
+                  pos: "PG",
+                  rating: 60,
+                  ppg: 11.8, rpg: 3.4, apg: 3.9, fgp: 50.5, per: 14.5, ts: 57,
+                  epm: 0.3, bpm: 0, ws48: 0.08, onOff: 1.0, clutch: 4.5, vorp: 0.9, usg: 20.5,
+                  injury: null,
+                  lebron: 0.947, oLebron: 0.479, dLebron: 0.467, war: 3.326,
+                  offRole: "Shot Creator",
+                  defRole: "Point of Attack",
+                  matchupNote: "Rookie #2 overall pick. WCF: 24/11/6ast/7stl G1, contributed across the series. Secondary POA defender on Brunson when Castle rests. Bench creation engine.",
+                  baseRating: 60,
+                  playoffAscension: 1.0
+              },
+              {
+                  name: "Harrison Barnes",
+                  pos: "SF",
+                  rating: 58,
+                  ppg: 7.5, rpg: 3.2, apg: 1.5, fgp: 44, per: 11, ts: 55,
+                  epm: -0.1, bpm: -0.3, ws48: 0.06, onOff: 0, clutch: 3.5, vorp: 0.4, usg: 15,
+                  injury: null,
+                  lebron: null, oLebron: null, dLebron: null, war: null,
+                  offRole: "Versatile Wing",
+                  defRole: "Wing Stopper",
+                  matchupNote: "Veteran wing. Championship experience (GSW 2015) — only Finals vet on the SAS roster.",
+                  baseRating: 58,
+                  injuryRisk: 0.3
+              },
+              {
+                  name: "Luke Kornet",
+                  pos: "C",
+                  rating: 56,
+                  ppg: 6.5, rpg: 4.2, apg: 1, fgp: 52, per: 12, ts: 58,
+                  epm: 0, bpm: -0.2, ws48: 0.055, onOff: 0.5, clutch: 3.5, vorp: 0.3, usg: 14,
+                  injury: null,
+                  offRole: "Versatile Big",
+                  defRole: "Anchor Big",
+                  matchupNote: "Backup C. Rim protection when Wemby rests.",
+                  baseRating: 56
+              }
+          ],
+          synergy: [
+              {
+                  players: ["Fox","Castle","Vassell","Champagnie","Wembanyama"],
+                  score: 87,
+                  note: "WCF starting/closing 5. +10.3 NetRtg. Won the WCF on this lineup."
+              },
+              {
+                  players: ["Harper","Johnson","Olynyk","Champagnie","Wembanyama"],
+                  score: 75,
+                  note: "Bench unit with Wemby anchor."
+              },
+              {
+                  players: ["Fox","Castle","Vassell","Olynyk","Wembanyama"],
+                  score: 83,
+                  note: "Closing 5 with Olynyk stretch spacing — likely deploy vs NYK's 5-out KAT."
+              }
+          ]
+      },
+      awayTeam: {
+          name: "Knicks",
+          city: "New York",
+          abbr: "NYK",
+          seed: 3,
+          record: "55-27",
+          systemBonus: 3.0,
+          playoffPedigree: 1.5,
+          offStyle: "Brunson elite ISO + KAT stretch-5 PnR. Deep 10-man rotation. Bridges/OG perimeter D. +9.2 clutchNetRtg. SWEPT all three rounds: BOS 4-0 R1, PHI 4-0 R2, CLE 4-0 ECF. 12-1 record.",
+          initiators: 3,
+          color: "#006BB6",
+          color2: "#F58426",
+          advStats: {
+              ortg: 116.8,
+              drtg: 110.5,
+              netRtg: 6.3,
+              pace: 97.2,
+              ts: 58.4,
+              efg: 55.2,
+              tov: 12.8,
+              reb: 51.8,
+              ortgRk: 4,
+              drtgRk: 6,
+              clutchNetRtg: 9.2,
+              last10: "10-0",
+              fgPct: 52.2,
+              threePct: 36.3,
+              ftPct: 78.8,
+              orbPct: 25.4
+          },
+          players: [
+              {
+                  name: "Jalen Brunson",
+                  pos: "PG",
+                  rating: 88,
+                  ppg: 26, rpg: 3.3, apg: 6.8, fgp: 47.8, per: 20.1, ts: 61,
+                  epm: 6.0, bpm: 3.1, ws48: 0.2, onOff: 8.5, clutch: 9.2, vorp: 3.3, usg: 29.8,
+                  injury: null,
+                  lebron: 2.077, oLebron: 3.528, dLebron: -1.45, war: 7.351,
+                  offRole: "Shot Creator",
+                  defRole: "Low Activity",
+                  matchupNote: "ECF MVP (25.5/7.8ast across the sweep). 9.2 clutch rating elite. Finals matchup vs Castle (0.91 dLEBRON, the BEST POA defender Brunson has faced this playoffs) is THE structural problem. Brunson's iso scoring at Frost Bank vs WCF-tested Castle/Harper is the entire series. Rating bumped 87→88 for sustained sweep ascension.",
+                  baseRating: 88,
+                  starCeiling: 1,
+                  injuryRisk: 0.3,
+                  playoffAscension: 1.5
+              },
+              {
+                  name: "Karl-Anthony Towns",
+                  pos: "C",
+                  rating: 79,
+                  ppg: 20.1, rpg: 11.9, apg: 3, fgp: 49.8, per: 22.5, ts: 60.8,
+                  epm: 3.5, bpm: 3.8, ws48: 0.168, onOff: 5.0, clutch: 6.0, vorp: 3.1, usg: 26,
+                  injury: null,
+                  lebron: 3.044, oLebron: 2.152, dLebron: 0.893, war: 7.966,
+                  offRole: "Versatile Big",
+                  defRole: "Mobile Big",
+                  matchupNote: "Stretch-5, 37.5% from 3. Finals matchup vs Wembanyama is the most challenging he's faced — KAT typically wins by pulling C out to the perimeter, but Wemby is 7-4 with elite mobility (3.992 dLEBRON) — the strategy that worked vs Embiid/Mobley breaks down here. ECF G4 closeout: 19pts/14reb/2blk anchor.",
+                  baseRating: 79,
+                  starCeiling: 1,
+                  injuryRisk: 0
+              },
+              {
+                  name: "OG Anunoby",
+                  pos: "SF",
+                  rating: 74,
+                  ppg: 16.7, rpg: 4.8, apg: 2.2, fgp: 48.5, per: 17.2, ts: 58.5,
+                  epm: 2.5, bpm: 2.2, ws48: 0.132, onOff: 4.2, clutch: 5.8, vorp: 2.2, usg: 23.8,
+                  injury: null,
+                  lebron: 1.821, oLebron: 0.096, dLebron: 1.724, war: 5.96,
+                  offRole: "Stationary Shooter",
+                  defRole: "Wing Stopper",
+                  matchupNote: "Elite wing D — will likely guard Castle. ECF G3: 32 PRA cleared deep alt line. Career-defining Finals on the line. Healthy after ECF hamstring scare.",
+                  baseRating: 74
+              },
+              {
+                  name: "Mikal Bridges",
+                  pos: "SF",
+                  rating: 72,
+                  ppg: 14.4, rpg: 3.8, apg: 3.7, fgp: 46.2, per: 15.5, ts: 57.2,
+                  epm: 1.5, bpm: 1.2, ws48: 0.105, onOff: 2.8, clutch: 5.2, vorp: 1.6, usg: 22.5,
+                  injury: null,
+                  lebron: 2.232, oLebron: 1.336, dLebron: 0.896, war: 7.898,
+                  offRole: "Movement Shooter",
+                  defRole: "Point of Attack",
+                  matchupNote: "Ironman wing. Likely defends Vassell or rotates onto Castle in switches. ECF: averaged 13ppg on 47% FG. Defensive impact (WAR 7.898) elite.",
+                  baseRating: 72
+              },
+              {
+                  name: "Josh Hart",
+                  pos: "SG",
+                  rating: 68,
+                  ppg: 12, rpg: 7.4, apg: 4.8, fgp: 44.8, per: 14.8, ts: 56.2,
+                  epm: 1.2, bpm: 1.0, ws48: 0.092, onOff: 3.0, clutch: 6.2, vorp: 1.4, usg: 20.8,
+                  injury: null,
+                  lebron: 1.317, oLebron: 0.271, dLebron: 1.046, war: 4.718,
+                  offRole: "Stationary Shooter",
+                  defRole: "Wing Stopper",
+                  matchupNote: "Hustle engine. 7.4 RPG from guard spot. ECF G2 playoff career-high 26. Rebounding floor key vs SAS's Wemby-anchored boards.",
+                  baseRating: 68
+              },
+              {
+                  name: "Miles McBride",
+                  pos: "SG",
+                  rating: 64,
+                  ppg: 12, rpg: 2.4, apg: 2.6, fgp: 42.3, per: 14, ts: 58,
+                  epm: 0.8, bpm: 0.5, ws48: 0.09, onOff: 2.0, clutch: 5.5, vorp: 1.0, usg: 20.8,
+                  injury: null,
+                  lebron: 0.971, oLebron: 1.331, dLebron: -0.36, war: 2.323,
+                  offRole: "Secondary Ball Handler",
+                  defRole: "Point of Attack",
+                  matchupNote: "41.3% 3PT. R2 G4 explosion (25pts, 7-9 3PT, starting for OG) proved the bench-shooter ceiling. Rating bumped 62→64 for sustained ascension. Tenacious defender — secondary POA on Fox when Brunson rests.",
+                  baseRating: 64,
+                  playoffAscension: 0.5
+              },
+              {
+                  name: "Mitchell Robinson",
+                  pos: "C",
+                  rating: 56,
+                  ppg: 5.7, rpg: 8.8, apg: 0.9, fgp: 72.3, per: 16, ts: 68,
+                  epm: 0.5, bpm: 0.5, ws48: 0.11, onOff: 1.5, clutch: 3.0, vorp: 0.7, usg: 14.5,
+                  injury: null,
+                  lebron: 2.234, oLebron: 0.646, dLebron: 1.588, war: 3.447,
+                  offRole: "Athletic Finisher",
+                  defRole: "Mobile Big",
+                  matchupNote: "Elite OREB + rim protection. Closeout backup to KAT when Wemby rests. ECF G1 hit O3.5 pts as bench finisher (deep-bench scoring leg).",
+                  baseRating: 56
+              },
+              {
+                  name: "Guerschon Yabusele",
+                  pos: "PF",
+                  rating: 58,
+                  ppg: 7.2, rpg: 4.5, apg: 1.2, fgp: 46.5, per: 13, ts: 56,
+                  epm: 0.2, bpm: 0, ws48: 0.065, onOff: 0.5, clutch: 4, vorp: 0.5, usg: 16.5,
+                  injury: null,
+                  offRole: "Stretch Big",
+                  defRole: "Helper",
+                  matchupNote: "Stretch-4 off bench. 37% from 3. Spacing piece vs Wemby drops.",
+                  baseRating: 58
+              },
+              {
+                  name: "Jordan Clarkson",
+                  pos: "SG",
+                  rating: 60,
+                  ppg: 8.6, rpg: 2.2, apg: 2.5, fgp: 43.5, per: 12.5, ts: 55,
+                  epm: -0.2, bpm: -0.5, ws48: 0.058, onOff: 0.5, clutch: 4, vorp: 0.4, usg: 20,
+                  injury: null,
+                  offRole: "Shot Creator",
+                  defRole: "Low Activity",
+                  matchupNote: "Bench microwave scorer. Spot-minutes role.",
+                  baseRating: 60
+              },
+              {
+                  name: "Landry Shamet",
+                  pos: "SG",
+                  rating: 60,
+                  ppg: 9.3, rpg: 2, apg: 1.5, fgp: 44, per: 11.5, ts: 57,
+                  epm: 0, bpm: -0.5, ws48: 0.058, onOff: 0.3, clutch: 3.8, vorp: 0.3, usg: 18,
+                  injury: null,
+                  offRole: "Movement Shooter",
+                  defRole: "Helper",
+                  matchupNote: "Bench 3-and-D. R2 G4: 12pts/4 threes — bench shooter ceiling.",
+                  baseRating: 60,
+                  playoffAscension: 0.5
+              }
+          ],
+          synergy: [
+              {
+                  players: ["Brunson","Hart","Bridges","Anunoby","Towns"],
+                  score: 85,
+                  note: "Closing 5. Best 4th-Q NetRtg in PBP era. Brunson 9.2 clutch. 12-1 in playoffs with this group."
+              },
+              {
+                  players: ["Brunson","McBride","Hart","Anunoby","Robinson"],
+                  score: 78,
+                  note: "Defensive lineup. Robinson rim protection vs Wemby + OG perimeter lockdown."
+              },
+              {
+                  players: ["McBride","Clarkson","Shamet","Yabusele","Robinson"],
+                  score: 62,
+                  note: "Bench unit. Shooter-heavy lineup vs SAS bench."
+              }
+          ]
+      },
+      coaching: {
+          home: {
+              coach: "Mitch Johnson (Popovich tree)",
+              playoffRecord: "First NBA Finals as HC. Took SAS from POR R1 → MIN R2 → OKC WCF G7 win.",
+              tendency: "Pop system: read-and-react motion. Wemby-anchored defense. Castle's emergence has been the WCF story; expect Castle on Brunson primary.",
+              rotationPlan: "10-man rotation. Wemby/Fox/Castle/Vassell/Champagnie start. Olynyk/K.Johnson/Harper/Barnes/Kornet off bench. Olynyk closes for spacing vs KAT.",
+              keyAdjustment: "Brunson matchup: Castle gets the primary assignment + Harper backup. Wemby MUST stay close vs KAT's pop-and-pick — don't get pulled to the perimeter where KAT can drive. Expect SAS to attack Brunson on D early (Fox PnR + Wemby roll)."
+          },
+          away: {
+              coach: "Tom Thibodeau",
+              playoffRecord: "First Finals as Knicks HC. 12-1 playoff record this run — best non-1996 Bulls start since 2017 Warriors.",
+              tendency: "Iso-heavy + KAT PnR sets. Bridges/OG perimeter lockdown. Tight 7-8 man rotation in closeouts (Shamet only one off the bench).",
+              rotationPlan: "10-man rotation. Brunson/Hart/Bridges/Anunoby/Towns start + close. McBride/Robinson/Yabusele/Clarkson/Shamet bench. Robinson plays Wemby-defending stretches.",
+              keyAdjustment: "Castle on Brunson is THE problem — counter with Brunson off-ball motion + KAT high screens (force Castle into Wemby/Olynyk's territory). KAT vs Wemby pull-up game requires Wemby to leave the paint."
+          }
+      },
+      defMatchups: {
+          homeDefOnAway: { defender:"Stephon Castle", target:"Jalen Brunson", dLebron:0.908, targetUsg:29.8, note:"Castle (6-6, 0.91 dLEBRON) draws the Brunson assignment — best on-ball defender Brunson has faced this run. Harper backup. This is the central matchup of the series." },
+          awayDefOnHome: { defender:"OG Anunoby", target:"Stephon Castle", dLebron:1.724, targetUsg:24.0, note:"OG (1.72 dLEBRON) likely on Castle to neutralize the WCF MVP arc. Bridges + Hart switch on Fox in PnR. Robinson on Wemby in spot stretches." }
+      },
+      games: [
+          {
+              num: 1,
+              result: null,
+              homeScore: null,
+              awayScore: null,
+              winner: null,
+              prediction: {
+                  homeWin: true,
+                  homeScore: 113,
+                  awayScore: 111,
+                  margin: 2,
+                  confidence: "MEDIUM",
+                  character: "COIN FLIP",
+                  keyTakeaways: [
+                      "G1 Wed 6/3 at Frost Bank Center, 8:30 PM ET on ABC. 1999 Finals rematch (SAS won 4-1)",
+                      "Engine SAS by 2 — true coin flip; Phase 71 R3 out-of-sample stake cap remains 50% (Finals is first-ever Finals calibration data)",
+                      "Two structural levers tilt slight SAS: (1) HCA + 6 days rest vs NYK 8 days, (2) Castle 0.91 dLEBRON on Brunson is the best POA defender Brunson has faced",
+                      "Two structural levers tilt slight NYK: (1) Sweep momentum + clean 8-day rest vs SAS's G7 grind, (2) 12-1 playoff record + Brunson 9.2 clutch + KAT-vs-Wemby is a fairer rim duel than SAS faced from Holmgren/Hartenstein",
+                      "REST GAP NUANCE: NYK 8-day rest can produce sluggish Q1 (Mavericks-style layoff rust) — SAS exploited this in even-numbered home games all WCF",
+                      "Phase 73 elimination amplifier INACTIVE (G1 of a series); MC central margin honest at SAS by 2"
+                  ],
+                  reasoning: "Phase 71c engine: SAS 113, NYK 111 (SAS by 2) at Frost Bank Center. The opening NBA Finals game prices as a true coin flip the model leans a hair toward the home team. Two structural levers tilt slightly SAS: (1) HCA — Finals home is worth +1pt to the model, and SAS's 4-1 record at Frost Bank this playoffs (including +21 G4 vs OKC and +27 G6 vs OKC) shows the venue is a real lever; (2) The Castle-on-Brunson matchup is THE central structural read — Castle's 0.91 dLEBRON is the best on-ball POA defender Brunson has faced this playoffs (CLE's Garland was 0.21 dLEBRON; PHI's Maxey was nominal). The same fresh-POA-vs-star-scorer pattern that held SGA under 20 in BOTH WCF road games is now pointed at Brunson's iso scoring. NYK counters: (1) Sweep momentum + 8-day rest vs SAS's 3-day G7 grind — NYK has the cleaner legs and is 12-1 in the playoffs; (2) KAT-vs-Wemby is a meaningfully fairer rim duel than SAS faced from Holmgren/Hartenstein (KAT's 1.2bpg is well below Holmgren's 2.2 — Wemby's PRA floor should clear cleanly tonight); (3) Brunson's 9.2 clutchNetRtg is the best on the floor in a tight game. REST GAP NUANCE: NYK's 8 days off can produce a sluggish Q1 (Mavericks-style layoff rust) — SAS exploited this dynamic in every even-numbered home game during the WCF; expect a fast SAS start. Phase 73 elimination amplifier is INACTIVE (G1 of a series), so the MC central margin is honest at SAS by 2 — narrow enough that variance dominates. Phase 71 R3 out-of-sample stake cap stays at 50% — the WCF closed at 3-4 on winners and the engine has zero direct Finals calibration data, so a CAUTION pill auto-stamps the recommendation. DK lines (6/3 9am ET): SAS -2.5 / total 215.5 / ML SAS -135, NYK +115 — engine SAS by 2 agrees with the spread (model 2 vs market 2.5) and the ML (model ~54% home vs market 57.5% implied). NYK +115 carries thin +EV per the model (~46% true vs 46.5% implied — essentially fair). Engine total ~224 is meaningfully OVER the market 215.5 (+8.5pt gap) — the OVER 215.5 is the cleanest model edge tonight, but Finals G1s historically run UNDER the season-average totals (defensive tightness from the layoff + first-look unfamiliarity), so even with the engine OVER lean the bet authoring stays cautious.",
+                  xFactor: "Castle vs Brunson (the central matchup) + NYK Q1 rust check + Wemby's first Finals tip — Phase 73 elimination amplifier is OFF for G1, but the Finals stage compresses role-player variance (per the G7 bench-cooldown read).",
+                  moneyline: "SAS -135 / NYK +115",
+                  spread: "SAS -2.5",
+                  ou: "O/U 215.5"
+              },
+              notes: ""
+          },
+          { num: 2, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          { num: 3, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          { num: 4, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          { num: 5, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          { num: 6, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          { num: 7, result: null, homeScore: null, awayScore: null, winner: null, notes: "" }
       ]
   },
 

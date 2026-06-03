@@ -15,6 +15,30 @@
 
 const NEWS = [
   {
+    date: '2026-06-03',
+    severity: 'major',
+    series: 'SAS-NYK',
+    headline: '🏆 NBA Finals G1 tonight — SAS hosts NYK at Frost Bank Center, 8:30 PM ET on ABC (1999 rematch)',
+    body: 'Tip-off in San Antonio for Game 1 of the 2026 NBA Finals. The Knicks (12-1 playoff record, swept all three prior rounds) face the Spurs (won WCF 4-3 over OKC on 5/30). This is the 1999 Finals rematch — SAS won that lockout-shortened series 4-1. Rest gap is the headline storyline: NYK has 8 days off (Mavericks-style layoff rust risk), SAS has 3 days. The central structural matchup is Castle on Brunson — Castle\'s 0.91 dLEBRON is the best POA defender Brunson has faced this run (CLE Garland 0.21, PHI Maxey nominal); his WCF MVP pattern was to hold star scorers to suppressed lines (held SGA to 19 G4 / 15 G6 on the road). Tilting NYK: KAT vs Wemby is a meaningfully fairer rim duel than SAS faced from Holmgren/Hartenstein — Wemby\'s PRA floor should clear cleanly vs the softer NYK paint D. DK lines (6/3 9am): SAS -2.5 / total 215.5 / ML SAS -135, NYK +115. Engine SAS by 2 — agrees on winner + margin; OVER 215.5 is the cleanest engine edge (engine ~224). Phase 71 R3 out-of-sample stake cap remains 50% — Finals is first-ever Finals calibration data.',
+    source: 'NBA / Phase 71c engine output / 6/3 morning update',
+  },
+  {
+    date: '2026-06-03',
+    severity: 'minor',
+    series: 'SAS-NYK',
+    headline: 'Finals G1 injury report: both teams healthy — no scratches or DTDs',
+    body: 'Official inactive list released 30 min before tip. SAS: no scratches (Castle\'s G3 bruise + Fox\'s ankle scare both healed during the WCF; Wemby concussion protocol fully cleared since R1). NYK: no scratches (Anunoby\'s ECF hamstring scare fully healed during the 8-day layoff; all five starters available). First Finals game in 27 years for both franchises (SAS 2014 championship was last; NYK 1999). The rest gap means NYK has the cleaner legs but the rust risk; SAS has the WCF momentum but the fatigue tail of a G7 grind 3 days ago.',
+    source: 'Official NBA inactive list / 8:00 PM ET 6/3',
+  },
+  {
+    date: '2026-06-02',
+    severity: 'major',
+    series: 'OKC-SAS',
+    headline: '🏆 SAS beats OKC 111-103 in WCF G7 — Spurs advance to NBA Finals (first since 2014)',
+    body: 'San Antonio wins the Western Conference Finals 4-3 over Oklahoma City, advancing to its first NBA Finals since the 2014 championship vs Miami. Spurs led 92% of the game; up 12 at 3:45 Q4, withstood a late OKC push that trimmed to 6 inside 2:00 before Wemby/Castle closed it. SAS: Wembanyama 22pts/7reb/3blk (8-19 FG, 4-9 3PT) — quieter than CF norm but rim deterrence anchored a 102-104 def rating night; Julian Champagnie 20 off bench (4-7 3PT) — bench scorer of the series; Stephon Castle 18pts/6ast/5reb (POA pressure on SGA); Dylan Harper 14/5/4; De\'Aaron Fox 13/8ast. OKC: SGA 35/9ast (12-26 FG, 9-10 FT) — series-best volume but Castle/Harper forced 5 TOs; Cason Wallace 17 (14 in Q4 lone heater); Holmgren 12/9; the home-bench eruption (Caruso 8 / McCain 6) never landed in the highest-stakes game. MODEL: predicted OKC by 5 (MEDIUM, COIN FLIP); ACTUAL SAS by 8 — WRONG WINNER, 4th time in WCF (engine closed 3-4 on winners with ~16pt MAE). Phase 73 elimination amplifier was ACTIVE and the MC distribution honestly carried SAS-win mass. WCF G7 slate finished 2-3 (+$200): role-player PRA floor +$135 / cross-team stable-dim floor +$115 / OKC home stack -$50.',
+    source: 'NBA.com / ESPN game recap',
+  },
+  {
     date: '2026-05-18',
     severity: 'info',
     series: 'DET-CLE',

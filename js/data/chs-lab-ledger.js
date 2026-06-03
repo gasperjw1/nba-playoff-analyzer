@@ -1400,6 +1400,251 @@ const CHS_LAB_LEDGER = [
         }
       ]
     },
+    "actual": {
+      "winner": "SAS",
+      "homeScore": 103,
+      "awayScore": 111,
+      "margin": 8
+    },
+    "settlement": {
+      "reliable": null,
+      "traditional": {
+        "outcome": "loss",
+        "legResults": [
+          {
+            "player": "Shai Gilgeous-Alexander",
+            "stat": "pts",
+            "line": 14.5,
+            "hit": true,
+            "actualValue": 35,
+            "note": "Manually resolved — boxScore uses 'SGA' shorthand; auto-resolver couldn't match."
+          },
+          {
+            "player": "Victor Wembanyama",
+            "stat": "reb",
+            "line": 7.5,
+            "hit": false,
+            "actualValue": 7
+          },
+          {
+            "player": "Stephon Castle",
+            "stat": "pra",
+            "line": 17.5,
+            "hit": true,
+            "actualValue": 29
+          },
+          {
+            "player": "Chet Holmgren",
+            "stat": "pra",
+            "line": 18.5,
+            "hit": true,
+            "actualValue": 22
+          }
+        ],
+        "pnl": -100
+      },
+      "settledAt": "2026-06-03T20:11:02.689Z"
+    }
+  },
+  {
+    "date": "2026-06-03",
+    "series": "SAS-NYK",
+    "game": 1,
+    "capturedAt": "2026-06-03T20:11:47.351Z",
+    "iterations": 3000,
+    "mc": {
+      "homeWinProb": 0.532,
+      "blowoutRisk": 0.214,
+      "marginP50": 1.2
+    },
+    "candidates": [
+      {
+        "player": "De'Aaron Fox",
+        "stat": "pra",
+        "line": 23.5,
+        "direction": "over",
+        "hitRate": 0.802,
+        "estJuice": -405,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 32
+      },
+      {
+        "player": "Josh Hart",
+        "stat": "pts",
+        "line": 9.5,
+        "direction": "over",
+        "hitRate": 0.802,
+        "estJuice": -405,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 22
+      },
+      {
+        "player": "Devin Vassell",
+        "stat": "ast",
+        "line": 2.5,
+        "direction": "over",
+        "hitRate": 0.809,
+        "estJuice": -424,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 28
+      },
+      {
+        "player": "Stephon Castle",
+        "stat": "pts",
+        "line": 13.5,
+        "direction": "over",
+        "hitRate": 0.808,
+        "estJuice": -421,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 28
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pra",
+        "line": 30.5,
+        "direction": "over",
+        "hitRate": 0.807,
+        "estJuice": -418,
+        "team": "NYK",
+        "position": "C",
+        "projMinutes": 32
+      },
+      {
+        "player": "OG Anunoby",
+        "stat": "pra",
+        "line": 26.5,
+        "direction": "over",
+        "hitRate": 0.807,
+        "estJuice": -418,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 28
+      },
+      {
+        "player": "Josh Hart",
+        "stat": "pra",
+        "line": 20.5,
+        "direction": "over",
+        "hitRate": 0.806,
+        "estJuice": -415,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 22
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pts",
+        "line": 18.5,
+        "direction": "over",
+        "hitRate": 0.816,
+        "estJuice": -443,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 35
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "ast",
+        "line": 1.5,
+        "direction": "over",
+        "hitRate": 0.815,
+        "estJuice": -441,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 35
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "reb",
+        "line": 8.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 35
+      },
+      {
+        "player": "Devin Vassell",
+        "stat": "pts",
+        "line": 11.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 28
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "reb",
+        "line": 3.5,
+        "direction": "over",
+        "hitRate": 0.813,
+        "estJuice": -435,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 22
+      }
+    ],
+    "reliable": null,
+    "traditional": {
+      "legCount": 4,
+      "combinedMC": 0.41,
+      "calibratedCombined": 0.125,
+      "americanOdds": 138,
+      "stake": 100,
+      "legs": [
+        {
+          "player": "De'Aaron Fox",
+          "stat": "pra",
+          "line": 23.5,
+          "direction": "over",
+          "hitRate": 0.802,
+          "estJuice": -405,
+          "team": "SAS",
+          "position": "PG",
+          "projMinutes": 32
+        },
+        {
+          "player": "Josh Hart",
+          "stat": "pts",
+          "line": 9.5,
+          "direction": "over",
+          "hitRate": 0.802,
+          "estJuice": -405,
+          "team": "NYK",
+          "position": "SG",
+          "projMinutes": 22
+        },
+        {
+          "player": "Devin Vassell",
+          "stat": "ast",
+          "line": 2.5,
+          "direction": "over",
+          "hitRate": 0.809,
+          "estJuice": -424,
+          "team": "SAS",
+          "position": "SG",
+          "projMinutes": 28
+        },
+        {
+          "player": "Karl-Anthony Towns",
+          "stat": "pra",
+          "line": 30.5,
+          "direction": "over",
+          "hitRate": 0.807,
+          "estJuice": -418,
+          "team": "NYK",
+          "position": "C",
+          "projMinutes": 32
+        }
+      ]
+    },
     "actual": null,
     "settlement": null
   }
