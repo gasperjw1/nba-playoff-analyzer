@@ -5199,11 +5199,11 @@ const SERIES_DATA = [
       },
       coaching: {
         home: {
-          coach: "Tom Thibodeau",
-          playoffRecord: "Conf Finals 2024 (lost 4-1 to BOS); ECF G1 2026 marks 2nd CF appearance in 3 years",
-          tendency: "Defensive intensity-first system. Top-5 D every year. Heavy starter minutes (Brunson/Bridges 38+); thin bench rotation. Late-game Brunson ISO + KAT high-post.",
-          rotationPlan: "8-man rotation. Brunson/Bridges/OG/KAT/Robinson start. Hart/McBride/Shamet first off bench. KAT closes; Robinson sits for offense-side small-ball.",
-          keyAdjustment: "After 9-day layoff: Q1 ramp may be slow — first 4 minutes will determine if NYK rust or NYK fresh-legs narrative dominates. Thibodeau will pre-prep starters with extra shootaround."
+          coach: "Mike Brown",
+          playoffRecord: "1st year as Knicks HC (hired July 2025). 2-time Coach of the Year (2009 CLE, 2023 SAC). Took CLE to 2007 NBA Finals; Steve Kerr GSW assistant 2017-22 (3 rings). ECF G1 2026 = first ECF as NYK HC.",
+          tendency: "Motion offense + ball-movement + pace (departure from Thibs-era iso). KAT PnR/pop is the GSW-style hub action. Defensively flexible — switching from Kerr-era GSW + Pop-tree foundations. Brown is a SPURS COACHING TREE coach (former Pop assistant).",
+          rotationPlan: "10-man rotation but FLEXIBLE — Brown rides hot hands. Brunson/Bridges/OG/Hart/KAT start + close. McBride/Robinson/Shamet/Yabusele/Clarkson bench. Robinson plays Wemby-defending stretches.",
+          keyAdjustment: "After 9-day layoff: Q1 ramp may be slow — first 4 minutes will determine if NYK rust or NYK fresh-legs narrative dominates. Brown will pre-prep starters with extra shootaround + motion-set warmup."
         },
         away: {
           coach: "Kenny Atkinson",
@@ -5248,7 +5248,7 @@ const SERIES_DATA = [
           "1 day rest after G7 + travel from DET to NYC — fatigue is real for Mitchell (31min) + Allen (28min on knee)",
           "Mobley's interior matchup with KAT pulls him outside the paint where his rebounding helps",
           "Strus/Merrill regression after Merrill's 23pt G7 (5-8 3PT) — bench shooting variance bites both ways",
-          "Bickerstaff has never coached an ECF G1 — coaching-experience edge to Thibodeau"
+          "Bickerstaff has never coached an ECF G1 — coaching-experience edge to Brown (2-time COY, prior Finals as HC)"
         ],
         playerProjections: {
           home: [
@@ -7183,11 +7183,11 @@ const SERIES_DATA = [
               keyAdjustment: "Brunson matchup: Castle gets the primary assignment + Harper backup. Wemby MUST stay close vs KAT's pop-and-pick — don't get pulled to the perimeter where KAT can drive. Expect SAS to attack Brunson on D early (Fox PnR + Wemby roll)."
           },
           away: {
-              coach: "Tom Thibodeau",
-              playoffRecord: "First Finals as Knicks HC. 12-1 playoff record this run — best non-1996 Bulls start since 2017 Warriors.",
-              tendency: "Iso-heavy + KAT PnR sets. Bridges/OG perimeter lockdown. Tight 7-8 man rotation in closeouts (Shamet only one off the bench).",
-              rotationPlan: "10-man rotation. Brunson/Hart/Bridges/Anunoby/Towns start + close. McBride/Robinson/Yabusele/Clarkson/Shamet bench. Robinson plays Wemby-defending stretches.",
-              keyAdjustment: "Castle on Brunson is THE problem — counter with Brunson off-ball motion + KAT high screens (force Castle into Wemby/Olynyk's territory). KAT vs Wemby pull-up game requires Wemby to leave the paint."
+              coach: "Mike Brown",
+              playoffRecord: "First Finals as Knicks HC (his 1st year). 2-time Coach of the Year (2009 CLE, 2023 SAC). Prior Finals experience as LeBron-era CLE HC + Steve Kerr GSW assistant (3 rings). 12-1 NYK playoff record this run — best non-1996 Bulls start since 2017 Warriors.",
+              tendency: "Motion offense + ball-movement + pace (departure from prior NYK iso-heavy era). KAT PnR/pop is the GSW-style hub action. Defensively flexible — switching schemes from Kerr-era GSW + Pop-tree foundations. Brown is a SPURS COACHING TREE coach (former Pop assistant) — same lineage as Mitch Johnson.",
+              rotationPlan: "10-man rotation but FLEXIBLE — Brown rides hot hands (Shamet 33 min in G1 when shooting), benches cold ones. Brunson/Hart/Bridges/Anunoby/Towns start + close. McBride/Robinson/Shamet/Yabusele/Clarkson bench. Robinson plays Wemby-defending stretches (through broken pinky).",
+              keyAdjustment: "Castle on Brunson is THE problem — Brown's counter is KAT high screens + Brunson off-ball motion to force Castle onto KAT-vs-Olynyk territory. The G1 H2 corner-closeout adjustment that strangled Champagnie 5-6→0-5 is the Brown signature: identify the scheme leak, scheme-tweak at halftime, win the 2nd half. Brown is MORE adaptive than Pop-tree-as-usual — he changes coverages possession-by-possession."
           }
       },
       defMatchups: {
@@ -7221,7 +7221,7 @@ const SERIES_DATA = [
           "Brunson (88 rating, 9.2 clutch) is the best clutch player on the floor",
           "KAT stretch-5 (37.5% 3PT) pulls Wemby out of the paint — neutralizes the OKC-style box-out",
           "Bridges/OG perimeter D (combined dLEBRON ~3.5) is meaningfully tighter than what SAS bench faced from OKC",
-          "Thibodeau closeout discipline + tight 7-8 man rotation suited for Finals-stakes intensity"
+          "Mike Brown coaching edge — 2-time COY + prior Finals HC experience (2007 CLE) vs Mitch Johnson's first Finals; both are Pop-tree but Brown has the playoff résumé"
         ],
         consAway: [
           "8-day layoff = Q1 rust risk (Mavericks-Boston 2024 G1 went 14 UNDER on this exact pattern)",
