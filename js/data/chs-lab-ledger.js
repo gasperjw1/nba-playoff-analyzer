@@ -1645,6 +1645,250 @@ const CHS_LAB_LEDGER = [
         }
       ]
     },
+    "actual": {
+      "winner": "NYK",
+      "homeScore": 95,
+      "awayScore": 105,
+      "margin": 10
+    },
+    "settlement": {
+      "reliable": null,
+      "traditional": {
+        "outcome": "loss",
+        "legResults": [
+          {
+            "player": "De'Aaron Fox",
+            "stat": "pra",
+            "line": 23.5,
+            "hit": false,
+            "actualValue": 16
+          },
+          {
+            "player": "Josh Hart",
+            "stat": "pts",
+            "line": 9.5,
+            "hit": false,
+            "actualValue": 3
+          },
+          {
+            "player": "Devin Vassell",
+            "stat": "ast",
+            "line": 2.5,
+            "hit": true,
+            "actualValue": 3
+          },
+          {
+            "player": "Karl-Anthony Towns",
+            "stat": "pra",
+            "line": 30.5,
+            "hit": true,
+            "actualValue": 34
+          }
+        ],
+        "pnl": -100
+      },
+      "settledAt": "2026-06-04T17:46:49.417Z"
+    }
+  },
+  {
+    "date": "2026-06-05",
+    "series": "SAS-NYK",
+    "game": 2,
+    "capturedAt": "2026-06-04T17:46:50.272Z",
+    "iterations": 3000,
+    "mc": {
+      "homeWinProb": 0.464,
+      "blowoutRisk": 0.186,
+      "marginP50": -1.3
+    },
+    "candidates": [
+      {
+        "player": "OG Anunoby",
+        "stat": "threes",
+        "line": 1.5,
+        "direction": "over",
+        "hitRate": 0.802,
+        "estJuice": -405,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 31
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "pra",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.808,
+        "estJuice": -421,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 31
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "reb",
+        "line": 3.5,
+        "direction": "over",
+        "hitRate": 0.807,
+        "estJuice": -418,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 31
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pra",
+        "line": 28.5,
+        "direction": "over",
+        "hitRate": 0.805,
+        "estJuice": -413,
+        "team": "NYK",
+        "position": "C",
+        "projMinutes": 34
+      },
+      {
+        "player": "OG Anunoby",
+        "stat": "pra",
+        "line": 25.5,
+        "direction": "over",
+        "hitRate": 0.805,
+        "estJuice": -413,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 31
+      },
+      {
+        "player": "Landry Shamet",
+        "stat": "pra",
+        "line": 9.5,
+        "direction": "over",
+        "hitRate": 0.804,
+        "estJuice": -410,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 33
+      },
+      {
+        "player": "De'Aaron Fox",
+        "stat": "pra",
+        "line": 21.5,
+        "direction": "over",
+        "hitRate": 0.816,
+        "estJuice": -443,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 38
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.816,
+        "estJuice": -443,
+        "team": "NYK",
+        "position": "C",
+        "projMinutes": 34
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "reb",
+        "line": 8.5,
+        "direction": "over",
+        "hitRate": 0.815,
+        "estJuice": -441,
+        "team": "NYK",
+        "position": "C",
+        "projMinutes": 34
+      },
+      {
+        "player": "De'Aaron Fox",
+        "stat": "ast",
+        "line": 4.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 38
+      },
+      {
+        "player": "Julian Champagnie",
+        "stat": "pts",
+        "line": 8.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "SAS",
+        "position": "SF",
+        "projMinutes": 31
+      },
+      {
+        "player": "Miles McBride",
+        "stat": "pra",
+        "line": 13.5,
+        "direction": "over",
+        "hitRate": 0.812,
+        "estJuice": -432,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 22
+      }
+    ],
+    "reliable": null,
+    "traditional": {
+      "legCount": 4,
+      "combinedMC": 0.428,
+      "calibratedCombined": 0.128,
+      "americanOdds": 135,
+      "stake": 100,
+      "legs": [
+        {
+          "player": "OG Anunoby",
+          "stat": "threes",
+          "line": 1.5,
+          "direction": "over",
+          "hitRate": 0.802,
+          "estJuice": -405,
+          "team": "NYK",
+          "position": "SF",
+          "projMinutes": 31
+        },
+        {
+          "player": "Julian Champagnie",
+          "stat": "pra",
+          "line": 14.5,
+          "direction": "over",
+          "hitRate": 0.808,
+          "estJuice": -421,
+          "team": "SAS",
+          "position": "SF",
+          "projMinutes": 31
+        },
+        {
+          "player": "Karl-Anthony Towns",
+          "stat": "pra",
+          "line": 28.5,
+          "direction": "over",
+          "hitRate": 0.805,
+          "estJuice": -413,
+          "team": "NYK",
+          "position": "C",
+          "projMinutes": 34
+        },
+        {
+          "player": "De'Aaron Fox",
+          "stat": "pra",
+          "line": 21.5,
+          "direction": "over",
+          "hitRate": 0.816,
+          "estJuice": -443,
+          "team": "SAS",
+          "position": "PG",
+          "projMinutes": 38
+        }
+      ]
+    },
     "actual": null,
     "settlement": null
   }

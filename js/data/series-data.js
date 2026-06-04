@@ -6784,7 +6784,14 @@ const SERIES_DATA = [
       id: "SAS-NYK",
       conf: "Finals",
       round: "Finals",
-      modelLessons: [],
+      modelLessons: [
+        { type: "missed", lesson: "G1: WRONG WINNER (predicted SAS by 2, actual NYK by 10). The Finals out-of-sample caveat fired on the very first game — the engine's slight home/SAS lean was the wrong read. The decisive factor was the one the model under-weighted: NYK's 8-day rest produced FRESH legs in the second half, not Q1 rust. SAS (3 days off a 7-game WCF grind) faded — NYK outscored them 57-40 in the second half and closed on an 11-0 run. The rest-gap nuance was framed as a NYK NEGATIVE (sluggish Q1); it was actually a NYK POSITIVE (4th-quarter conditioning edge). R4 lesson: heavily weight the fresh-vs-fatigued split in the SECOND half of close games, especially the rested team coming off a sweep." },
+        { type: "correct", lesson: "G1: The Finals-G1-runs-UNDER pattern beat the engine total cleanly. Engine projected ~224 (an +8.5 OVER lean vs market 215.5); actual total was 200 — a comfortable UNDER. The bet authoring correctly leaned UNDER 215.5 AGAINST the engine number on the historical first-look-defense + layoff-rust pattern. Confirms: trust the documented Finals-G1 UNDER tendency over the raw engine total. Both teams shot poorly (SAS 36% FG / 26% 3PT; NYK 41% FG) — first-look defensive tightness was real." },
+        { type: "missed", lesson: "G1: ROLE-PLAYER PRA FLOOR FINALLY BROKE — Keldon Johnson played a PLAYOFF-LOW 8 minutes and produced 4 PRA, busting the O8.5 leg and sinking the 3-leg reliable parlay (Champagnie 27 PRA HIT, Harper 25 PRA HIT, but Keldon MISS). PRA falls to 13/14 on the playoff ledger. The lesson is NOT that PRA is unreliable — it's that the floor depends on MINUTES SECURITY, and Keldon's minutes were NOT secure in a tight, starter-heavy game (Wemby 38, Fox 38, Vassell 36). R4 rule: vet each PRA-floor leg's minutes floor explicitly; a bench wing who can be staple-benched in a close game (vs a blowout) is a hidden correlation risk. Diversify the floor across players with GUARANTEED rotation minutes (Champagnie/Harper held; Keldon didn't)." },
+        { type: "correct", lesson: "G1: CASTLE-ON-BRUNSON held the EFFICIENCY but not the POINTS — Brunson 30 on 12-31 FG (38.7%), exactly the suppressed-FG% the matchup projected, but the raw point total still cleared (volume + 4-4 FT + clutch closing shots). The Brunson Under 26.5 LOST. Lesson: an elite POA defender suppresses a high-usage star's EFFICIENCY, but a determined 31-FGA volume night can still clear a points line. Project FG% suppression, not necessarily a points-total miss, when the star's usage is unconstrained. (Same nuance the SGA-vs-Castle WCF reads hinted at — Castle held SGA's FG% down but SGA still hit 35 in G7.)" },
+        { type: "correct", lesson: "G1: WEMBY REB FLOOR + PRA FLOOR HELD as projected vs the softer NYK rim D — 12 reb (cleared O11.5) and 40 PRA (cleared O32.5) even on a 6-21 shooting night, because the rebounding/FT volume carried the composite. The 'KAT/Robinson is a softer rim duel than Holmgren/Hartenstein' read was directionally right on the glass. BUT his SCORING was suppressed harder than expected (26 on 6-21) because Mitchell Robinson — playing through a fractured hand — was a better individual rim deterrent than the stretch-5 framing assumed. Don't conflate team rim-protection softness with the absence of a single capable deterrent." },
+        { type: "missed", lesson: "G1: NYK ROLE-PLAYER 3PT EDGE under-priced — Shamet 3-6, OG 3-6, McBride 2-5 from deep (NYK 11-36 / SAS 11-43 — same makes on 7 fewer attempts). The model flagged NYK's shooting depth but priced SAS's home-3PT-variance as the swing factor; instead NYK's spacing (Shamet out-minuting three starters at 33 min) was the structural counter to SAS's defense. R4 candidate: weight NYK's catch-and-shoot depth as a repeatable edge, not a variance coin flip." }
+      ],
       priorRound: {
           home: {
               seriesId: "OKC-SAS",
@@ -7242,10 +7249,34 @@ const SERIES_DATA = [
       games: [
           {
               num: 1,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
+              result: "NYK",
+              homeScore: 95,
+              awayScore: 105,
+              winner: "NYK",
+              boxScores: {
+                  home: [
+                      { name:"V. Wembanyama", min:38, pts:26, reb:12, ast:2, stl:1, blk:3, fg:"6-21", threes:"2-9", ft:"12-13", to:6, note:"Finals debut — 26/12/3blk but 6-21 FG; Mitchell Robinson (fractured hand) was the primary deterrent. 12-13 FT propped the line." },
+                      { name:"De'Aaron Fox", min:38, pts:7, reb:4, ast:5, stl:1, blk:0, fg:"3-13", threes:"0-4", ft:"1-2", to:3, note:"3-13 FG — Brunson/Bridges POA pressure smothered his rim attack; ran the offense but never got going." },
+                      { name:"Stephon Castle", min:34, pts:17, reb:8, ast:3, stl:0, blk:0, fg:"7-16", threes:"1-5", ft:"2-2", to:2, note:"Held Brunson to 12-31 FG on the POA but only 3 AST — usage tilted to scoring, not creating." },
+                      { name:"Devin Vassell", min:36, pts:9, reb:9, ast:3, stl:0, blk:0, fg:"4-11", threes:"1-6", ft:"0-0", to:1, note:"1-6 from 3 — OG/Bridges perimeter D tougher than Dort, as projected." },
+                      { name:"Julian Champagnie", min:31, pts:16, reb:10, ast:1, stl:0, blk:1, fg:"5-11", threes:"5-10", ft:"1-2", to:0, note:"Bench scorer of the run again — 5-10 from 3, 27 PRA cleared the 9.5 floor with room." },
+                      { name:"Dylan Harper", min:28, pts:16, reb:8, ast:1, stl:1, blk:0, fg:"6-10", threes:"1-4", ft:"3-3", to:1, note:"16/8 off the bench (6-10 FG) — 25 PRA, the lone other SAS reserve to produce." },
+                      { name:"Keldon Johnson", min:8, pts:2, reb:2, ast:0, stl:0, blk:0, fg:"1-4", threes:"0-2", ft:"0-0", to:0, note:"8 MIN — playoff low. Buried in the rotation as SAS starters absorbed heavy minutes in a tight game; 4 PRA BROKE the O8.5 floor leg." },
+                      { name:"Harrison Barnes", min:10, pts:2, reb:1, ast:1, stl:0, blk:0, fg:"1-3", threes:"0-1", ft:"0-0", to:0 }
+                  ],
+                  away: [
+                      { name:"Jalen Brunson", min:37, pts:30, reb:3, ast:2, stl:0, blk:0, fg:"12-31", threes:"2-9", ft:"4-4", to:4, note:"30 on 12-31 (inefficient vs Castle) but hit the clutch shots in the closing 11-0 run — Castle held the FG% down, not the points. BUSTED the Under 26.5." },
+                      { name:"Karl-Anthony Towns", min:34, pts:18, reb:12, ast:4, stl:0, blk:1, fg:"7-15", threes:"0-2", ft:"4-4", to:2, note:"18/12 double-double; stretch-5 pull kept Wemby honest on the perimeter as projected." },
+                      { name:"OG Anunoby", min:31, pts:17, reb:3, ast:0, stl:1, blk:1, fg:"5-12", threes:"3-6", ft:"4-4", to:0, note:"17 on 3-6 from 3 — efficient two-way wing game." },
+                      { name:"Mikal Bridges", min:28, pts:9, reb:3, ast:3, stl:2, blk:0, fg:"3-6", threes:"0-0", ft:"3-4", to:1 },
+                      { name:"Josh Hart", min:27, pts:3, reb:15, ast:6, stl:4, blk:1, fg:"1-5", threes:"0-3", ft:"1-1", to:0, note:"3 PTS but a 15-reb/6-ast/4-stl all-over-the-floor line — the unsung engine of the comeback." },
+                      { name:"Landry Shamet", min:33, pts:13, reb:2, ast:1, stl:0, blk:0, fg:"5-9", threes:"3-6", ft:"0-0", to:1, note:"13 off the bench (3-6 from 3) in 33 min — out-minuted three starters; the spacing that unlocked the rally." },
+                      { name:"Miles McBride", min:22, pts:6, reb:1, ast:4, stl:1, blk:1, fg:"2-7", threes:"2-5", ft:"0-0", to:1 },
+                      { name:"Mitchell Robinson", min:12, pts:4, reb:6, ast:0, stl:0, blk:3, fg:"2-3", threes:"0-0", ft:"0-1", to:1, note:"Played through a fractured (bandaged) right hand; primary Wemby deterrent — anchored the 6-21 Wemby shooting night." },
+                      { name:"Guerschon Yabusele", min:10, pts:5, reb:2, ast:0, stl:0, blk:0, fg:"2-4", threes:"1-2", ft:"0-0", to:0 }
+                  ]
+              },
+              notes: "NYK 105-95 at Frost Bank Center — NYK leads Finals 1-0, steals home court in Game 1. 22-point comeback territory again: SAS led 55-48 at the half and by 14 early in Q3, then NYK outscored SAS 57-40 across the second half (28-21 Q3, 29-19 Q4) and closed on an 11-0 run. Brunson 30 (12-31 FG, clutch in the closing run), KAT 18/12, OG Anunoby 17 (3-6 3PT), Josh Hart 3/15reb/6ast/4stl (unsung hero), Landry Shamet 13 off the bench (3-6 3PT, 33 min). Mitchell Robinson played through a fractured hand and anchored Wemby's 6-21 FG night. SAS: Wembanyama 26/12/3blk in his Finals debut but inefficient (6-21, 12-13 FT), Castle 17/8/3 (held Brunson to 12-31 but only 3 AST), Champagnie 16/10 + Harper 16/8 off the bench, De'Aaron Fox catastrophic 7pts on 3-13. SAS shot 32-89 (36%), 11-43 from 3 (26%) — the rust/first-look defensive tightness hit the HOME team, not the rested road team. MODEL: predicted SAS 113-111 (SAS by 2, MEDIUM, COIN FLIP); ACTUAL NYK 105-95 (NYK by 10) — WRONG WINNER, 12pt margin swing. Phase 71 R3 out-of-sample caveat fires immediately in the Finals: the engine has zero Finals calibration data and leaned home/SAS, but NYK's rested legs + Castle-can't-stop-clutch-Brunson + the role-player 3PT edge (Shamet/OG/Champagnie all hit) flipped it. The OVER-lean engine total (~224) also missed — actual 200, a clean UNDER, vindicating the Finals-G1-runs-under historical pattern the bet authoring leaned on over the engine number.",
               prediction: {
                   homeWin: true,
                   homeScore: 113,
@@ -7269,7 +7300,35 @@ const SERIES_DATA = [
               },
               notes: ""
           },
-          { num: 2, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
+          {
+              num: 2,
+              result: null,
+              homeScore: null,
+              awayScore: null,
+              winner: null,
+              prediction: {
+                  homeWin: true,
+                  homeScore: 112,
+                  awayScore: 108,
+                  margin: 4,
+                  confidence: "MEDIUM",
+                  character: "COMPETITIVE",
+                  keyTakeaways: [
+                      "G2 Fri 6/5 at Frost Bank Center, 8:30 PM ET on ABC. SAS trails 0-1 — a near-must-win to avoid going to MSG down 0-2",
+                      "Engine SAS by 4 (COMPETITIVE) — UNDER the market's SAS -5.5; NYK +5.5 carries the spread value (same edge that cashed NYK +2.5 in G1)",
+                      "WEMBY BOUNCE-BACK is the central swing: 6-21 FG in G1 vs a wall-the-paint scheme; regression to his ~25/11 WCF norms is the high-probability path and the engine's SAS-by-4 lean assumes it",
+                      "FOX MUST BE BETTER: 7pts on 3-13 in G1 (Brunson/Bridges POA pressure). A cleaner Fox is the difference between SAS by 4 and a second NYK steal",
+                      "G1 LESSON BAKED IN: NYK's 8-day rest was a SECOND-HALF asset (outscored SAS 57-40 after the break), not a Q1 liability — model now weights NYK's late-game conditioning edge in close games",
+                      "Mitchell Robinson (fractured hand, 12 min in G1) is the NYK swing — his rim deterrence anchored Wemby's poor night; if the hand limits him, KAT absorbs the Wemby assignment and the SAS interior opens up"
+                  ],
+                  reasoning: "Phase 71c engine: SAS 112, NYK 108 (SAS by 4) at Frost Bank Center — a COMPETITIVE home bounce-back the model leans toward but UNDER the market's -5.5. San Antonio lost G1 on shooting variance (36% FG, 26% from 3, Fox 3-13, Wemby 6-21), not on being structurally outplayed — the Spurs led by 14 in Q3 before NYK's rested second-half surge. The G2 case for SAS: (1) HOME desperation down 0-1 (no Finals team wants to travel down 0-2) + the 6-1 Frost Bank record this playoffs; (2) WEMBY REGRESSION — a 6-21 night against a defense built to wall the paint is below his floor; his WCF norms (~25/11) and the FT volume (12-13 in G1) say the scoring ceiling reopens, especially if Mitchell Robinson's fractured hand limits the one NYK deterrent that worked; (3) a cleaner De'Aaron Fox after a 3-13 dud. The NYK counter is the same set of edges that won G1: (1) the rest-fueled SECOND-HALF conditioning advantage (the G1 lesson — NYK's legs were fresher down the stretch, not rusty early); (2) role-player 3PT depth (Shamet 3-6, OG 3-6, McBride 2-5 in G1 — NYK matched SAS's made-3 total on 7 fewer attempts); (3) Brunson's clutch gene (9.2 clutchNetRtg, the best on the floor) in another tight finish. Phase 73 elimination amplifier is INACTIVE (not an elimination game), so the MC central margin is honest at SAS by 4 — but the Finals out-of-sample caveat (the engine went wrong-winner in G1) keeps confidence at MEDIUM and the Phase 71 R3 stake cap at 50%. DK lines (6/4): SAS -5.5 / total 214.5 / ML SAS -230, NYK +180 — the engine SAS by 4 sits inside the -5.5 (so NYK +5.5 is the value), and SAS -230 implied 69.7% is RICHER than the model's ~62% home win, so NYK +180 (~36% implied) carries thin standalone value vs the model's ~38%. Engine total lands near the 214.5 market after the defensive G1, so neither side of the total is a clean edge.",
+                  xFactor: "Wembanyama's bounce-back vs the NYK paint wall + Mitchell Robinson's hand + whether NYK's road shooting (Shamet/OG/McBride) travels a second time. A Wemby 30/12 unlocks SAS by 6-8; another 6-21 and NYK likely steals G2 too.",
+                  moneyline: "SAS -230 / NYK +180",
+                  spread: "SAS -5.5",
+                  ou: "O/U 214.5"
+              },
+              notes: ""
+          },
           { num: 3, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
           { num: 4, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
           { num: 5, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },

@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">NEXT — Sat May 30 | WCF G7: SAS @ OKC 8:00 PM @ Paycom Center (OKC -4.5 / 213.5) series TIED 3-3 — winner-take-all for a Finals berth | WCF G6 ARCHIVED — Thu 5/28: SAS 118-91 (Wemby 28/10; SGA held to series-low 15) — Spurs force Game 7 | ECF SWEEP — NYK advances to NBA FINALS (first since 1999), awaits the WCF winner | Finals G1 Wed June 3 at the WCF winner's home</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">NEXT — Fri June 5 | NBA Finals G2: NYK @ SAS 8:30 PM @ Frost Bank Center (SAS -5.5 / 214.5) NYK leads 1-0 — Spurs near-must-win | Finals G1 ARCHIVED — Wed 6/3: NYK 105-95 (Brunson 30; Wemby 26/12 on 6-21) — Knicks steal Game 1 on the road | WCF FINAL — SAS won 4-3 over OKC (G7 SAS 111-103) | 1999 Finals rematch in San Antonio</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2545,7 +2545,7 @@ function renderCFBets(el) {
     <div style="background:rgba(0,0,0,0.3);border:1px solid #22d3ee;border-radius:10px;padding:14px;margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 ${activeRound === 'Finals' ? 'NBA FINALS' : 'CONFERENCE FINALS'} P&amp;L</span>
-        <span style="font-size:11px;color:#666;">${activeRound === 'Finals' ? 'Live tracking — Finals G1 in-play tonight 6/3 (SAS hosts NYK)' : 'Live tracking — WCF closed (SAS won 4-3); series advances to NBA Finals 6/3'}</span>
+        <span style="font-size:11px;color:#666;">${activeRound === 'Finals' ? 'Live tracking — Finals G1 settled (NYK 105-95, parlays 0-3 -$250); G2 Fri 6/5' : 'Live tracking — WCF closed (SAS won 4-3); series advances to NBA Finals 6/3'}</span>
       </div>
       <!-- Row 1: Net $ by category (CF cumulative through WCF G7) -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
@@ -2572,7 +2572,7 @@ function renderCFBets(el) {
       </div>
       <!-- Row 2: Per-game breakdown -->
       <div style="font-size:10px;color:#aaa;border-top:1px solid #333;padding-top:8px;">
-        <div style="font-size:10px;font-weight:700;color:#22d3ee;margin-bottom:6px;letter-spacing:0.5px;">SETTLED CF GAMES</div>
+        <div style="font-size:10px;font-weight:700;color:#22d3ee;margin-bottom:6px;letter-spacing:0.5px;">SETTLED CF + FINALS GAMES</div>
         <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:4px 12px;line-height:1.7;">
           <span style="color:#888;font-weight:700;">DATE</span>
           <span style="color:#888;font-weight:700;">GAME · RESULT · MODEL</span>
@@ -2628,20 +2628,25 @@ function renderCFBets(el) {
           <span style="color:#aaa;">WCF G7: <strong style="color:#fff;">SAS 111-103</strong> · model OKC by 5 (<span style="color:#ef4444;">wrong winner, err 13pt</span>) — SAS to Finals 4-3</span>
           <span style="color:#aaa;">2W floor, 1L trad</span>
           <span style="color:#3dd68c;font-weight:700;">+$200</span>
+
+          <span style="color:#a78bfa;font-weight:700;">Wed 6/3</span>
+          <span style="color:#aaa;"><strong style="color:#a78bfa;">FINALS G1</strong>: <strong style="color:#fff;">NYK 105-95</strong> · model SAS by 2 (<span style="color:#ef4444;">wrong winner, err 12pt</span>) — NYK leads 1-0</span>
+          <span style="color:#aaa;">0W 2L floor, 1L trad</span>
+          <span style="color:#ef4444;font-weight:700;">-$250</span>
         </div>
       </div>
       <!-- Row 3: In-play wagers -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#888;">${activeRound === 'Finals' ? 'IN PLAY (Finals G1 — Wed 6/3 @ Frost Bank Center):' : 'IN PLAY (next CF game):'}</span>
-          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 6/4 morning</strong></span>
+          <span style="color:#888;">${activeRound === 'Finals' ? 'IN PLAY (Finals G2 — Fri 6/5 @ Frost Bank Center):' : 'IN PLAY (next CF game):'}</span>
+          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 6/6 morning</strong></span>
         </div>
       </div>
       <!-- Row 4: Aggregate notes -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#666;line-height:1.5;">
-        <strong style="color:#3dd68c;">CF model accuracy:</strong> 6/10 winners (60%) · ~14pt main MAE — WCF closed at 3-4 on winners (Phase 71 R3 audit predicted ~50% G6/G7 winner accuracy; the engine landed right at the band). WCF G7 was the 4th wrong-winner call of the series; the SAS-NYK Finals is now the next out-of-sample test (Phase 71 R3 stake cap stays 50%).
-        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays now 8-4 across CF (added G7 +$135 role-player PRA + +$115 cross-team stable-dim). PRA dimension is 13/13 — the cleanest reliable-tier rule in the framework. Going into Finals: NYK perimeter D (OG/Bridges 0.9-1.7 dLEBRON) is tighter than OKC's, so PRA lines may have less air — trimmed Keldon + Harper book lines from 9.5 to 8.5 accordingly.
-        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional fell to 1-4 (-$30) — G7 OKC home stack lost when SAS won outright. Even a coherent correlated thesis loses ~50% in G7 (Phase 71 audit confirmed). The Finals G1 traditional stake stays at the reduced $50 CF cap.
+        <strong style="color:#3dd68c;">Model accuracy:</strong> CF closed 6/10 winners (60%) · ~14pt MAE. <strong style="color:#ef4444;">Finals G1 WRONG WINNER</strong> (model SAS by 2, actual NYK by 10) — the Phase 71 R3 out-of-sample caveat fired on the very first Finals game. The engine's slight home/SAS lean missed; NYK's rested legs were a 2nd-half ASSET, not a Q1-rust liability (NYK outscored SAS 57-40 after halftime). Stake cap stays 50%.
+        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays fell to 8-6 after Finals G1 went 0-2 (-$200). <strong style="color:#ef4444;">The role-player PRA floor BROKE for the first time</strong> — Keldon Johnson played a PLAYOFF-LOW 8 min (4 PRA) and sank the 3-leg reliable parlay even though Champagnie (27) + Harper (25) cleared. PRA's first loss is a MINUTES-SECURITY lesson, not a dimension failure: vet each leg's rotation-minutes floor; a wing who can be staple-benched in a tight game is a hidden correlation risk. The cross-team floor also lost on Castle's 3 AST (usage went to scoring, not creating).
+        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional fell to 1-5 — the Finals G1 SAS-defends-home stack went 0-for-3 (SAS ML ✗ / Wemby O27.5 ✗ / Brunson U26.5 ✗). The correlation cut the wrong way: NYK won AND both star-prop reads missed. Finals traditional stake stays at the reduced $50 cap.
       </div>
     </div>
 
@@ -3066,7 +3071,7 @@ function renderR2Bets(el) {
           <span style="color:#3dd68c;font-weight:700;">4-2 (+$350)</span>
         </div>
         <div style="font-size:9px;color:#666;margin-top:6px;font-style:italic;text-align:center;">
-          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF G6 settled (SAS 118-91, series TIED 3-3). WCF G7 in play (5/30 SAS @ OKC, winner-take-all) — $250 wagered, settles 5/31 morning.
+          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF complete (SAS won 4-3). NBA Finals G1 settled (NYK 105-95, parlays 0-3 -$250); G2 Fri 6/5 — see the Finals P&amp;L card on the NBA Finals tab for live Finals tracking.
         </div>
       </div>
     </div>
@@ -3174,11 +3179,11 @@ function renderR2Bets(el) {
 
         <!-- ─── Combined totals ─── -->
         <div style="border-top:2px solid #555;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;">
-          <span style="color:#aaa;">R2 + CF Settled Wagered: <strong style="color:#fff;">$7,350</strong></span>
-          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$933</strong></span>
-          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">28-53</strong></span>
+          <span style="color:#aaa;">R2 + CF + Finals Settled Wagered: <strong style="color:#fff;">$7,600</strong></span>
+          <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$1,183</strong></span>
+          <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">28-56</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">In play tonight — Wed Jun 3 (NBA Finals G1 — NYK @ SAS, 1999 Finals rematch, series 0-0): <strong style="color:#22d3ee;">$200</strong> Floor &middot; <strong style="color:#a78bfa;">$50</strong> Traditional</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">Finals G1 SETTLED — NYK 105-95 (NYK leads 1-0): parlays 0-3, <strong style="color:#ef4444;">-$250</strong>. Next: Finals G2 Fri 6/5 @ Frost Bank Center.</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

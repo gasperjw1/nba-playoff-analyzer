@@ -800,5 +800,30 @@ const CHS_LEDGER = [
       "awayScore": 115,
       "marginDeltaVsMain": 0
     }
+  },
+  {
+    "date": "2026-06-03",
+    "series": "SAS-NYK",
+    "game": 1,
+    "retroactive": false,
+    "actual": {
+      "winner": "NYK",
+      "margin": 10,
+      "homeScore": 95,
+      "awayScore": 105
+    },
+    "mainPred": {
+      "winner": "SAS",
+      "margin": 2,
+      "homeScore": 113,
+      "awayScore": 111
+    },
+    "chsPred": {
+      "winner": "SAS",
+      "margin": 2,
+      "homeScore": 113,
+      "awayScore": 111,
+      "marginDeltaVsMain": 0
+    }
   }
 ];

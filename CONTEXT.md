@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> Snapshot of project state for future sessions. Last updated **May 29, 2026** (Daily 5/29 — WCF G6 recorded: SAS 118-91 forced Game 7, series TIED 3-3; G7 authored for Sat 5/30; ECF complete, NYK in Finals).
+> Snapshot of project state for future sessions. Last updated **June 4, 2026** (Daily 6/4 — Finals G1 recorded: NYK 105-95 over SAS, Knicks steal Game 1 on the road and lead 1-0; engine wrong-winner G1 [SAS by 2]; role-player PRA floor broke for the first time on Keldon Johnson's 8-min playoff low; Finals G2 authored for Fri 6/5).
 
 For day-to-day workflow see [DAILY_UPDATE.md](DAILY_UPDATE.md).
 For the calibration audit findings see [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).
@@ -21,11 +21,16 @@ Three-layer architecture:
 
 ---
 
-## Current state (May 29, 2026)
+## Current state (June 4, 2026)
 
-**Live round:** Conference Finals (R3) — WCF Game 7
-- **WCF:** SERIES TIED 3-3 — SAS won G6 118-91 to force a winner-take-all Game 7 Sat 5/30 at Paycom Center, 8:00 PM ET (OKC home). Winner advances to the NBA Finals. Today 5/29 is a rest day (no games).
-- **ECF:** COMPLETE — NYK swept CLE 4-0, advances to first NBA Finals since 1999 (Brunson ECF MVP). Awaiting WCF winner; Finals G1 set for Wed June 3 at the WCF winner's home (both WCF teams out-recorded NYK 53-29).
+**Live round:** NBA Finals (R4) — SAS vs NYK, 1999 rematch. **NYK leads 1-0.**
+- **Finals G1 (Wed 6/3):** NYK 105-95 at Frost Bank Center — Knicks erased a 14-pt Q3 deficit and outscored SAS 57-40 in the 2nd half (11-0 close). Brunson 30 (12-31), KAT 18/12, OG 17, Hart 3/15reb/6ast/4stl, Shamet 13 off the bench; Mitchell Robinson played through a fractured hand and anchored Wemby's 6-21 night. SAS: Wemby 26/12/3blk (inefficient), Castle 17/8, Champagnie 16/10 + Harper 16/8 off the bench, Fox 7 on 3-13. **Engine wrong-winner** (SAS by 2 → NYK by 10) — Finals out-of-sample caveat fired G1. Total 200 cashed the UNDER.
+- **Today 6/4 is an OFF-DAY** (between G1 and G2). Finals G2 is **Fri 6/5, 8:30 PM ET on ABC** at Frost Bank Center — SAS near-must-win, DK SAS -5.5 / 214.5 / ML SAS -230, NYK +180. Engine SAS by ~4 (COMPETITIVE), UNDER the -5.5 → NYK +5.5 is the model value side.
+- **Betting retro (G1):** singles 4-3 (spread/total/Wemby PRA/Champagnie PRA won; ML/Brunson/Castle lost). Featured parlays 0-3 (-$250) — **the role-player PRA floor BROKE for the first time** when Keldon Johnson played an 8-min playoff low (4 PRA), even though minutes-secure Champagnie (27) + Harper (25) cleared. New rule baked into G2: vet each floor leg's rotation-minutes floor; drop staple-benchable wings. User's own logged bets went 1-1 (now 6-1 all-time, PRA legs still 11/11).
+
+**Series complete (R1-R3):**
+- WCF: **SAS won 4-3 over OKC** (G7 5/30, SAS 111-103 — Champagnie 20 off bench, Castle hounded SGA; engine wrong-winner). SAS reaches first Finals since 2014.
+- ECF: NYK swept CLE 4-0 (Brunson ECF MVP), first Finals since 1999.
 
 **Series complete:**
 - R1: 8/8 done

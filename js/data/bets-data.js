@@ -2306,7 +2306,7 @@ const BETS = [
     ],
     reasoning: "Phase 71c engine: SAS 113, NYK 111 (SAS by 2) at Frost Bank Center. DK ML SAS -135 / NYK +115 — engine SAS by 2 agrees on winner; -135 implied 57.4% vs model ~54% (mild market overbid on SAS). Two structural levers tilt slight SAS: (1) HCA + 6-1 record at Frost Bank this playoffs, (2) Castle-on-Brunson is the best POA defender Brunson has faced (0.91 dLEBRON vs CLE Garland's 0.21). NYK counters: 12-1 sweep momentum + 8-day rest + Brunson 9.2 clutch + KAT-Wemby is a fairer rim duel than SAS faced from Holmgren. This is a TRUE coin-flip the model leans a hair toward the home team. NYK +115 carries thin standalone +EV (~46% true vs 46.5% implied — fair). Phase 71 R3 out-of-sample stake cap stays 50% — Finals is first-ever Finals calibration data, CAUTION pill auto-stamps. Lean SAS ML at reduced 50% Finals stake.",
     confidence: 'lean', thesis: ['model','market'], narrative: 'home-coinflip',
-    result: null,
+    result: { outcome:'loss', actual:'NYK 105-95 — SAS lost at home; wrong-winner G1' },
   },
   {
     id: 'finals-g1-sas-nyk-spread',
@@ -2319,7 +2319,7 @@ const BETS = [
     ],
     reasoning: "Engine SAS by 2 sits a HAIR INSIDE the -2.5 line, so NYK +2.5 carries the model push/cover edge (+0.5pt). The G1 layoff dynamic: NYK on 8 days rest after a sweep, SAS on 3 days after a G7 grind — the rust-vs-fatigue cancellation usually leans the rested team's way once they shake off Q1 sluggishness. NYK +2.5 hits if NYK wins outright OR loses by ≤2 (covers OT, covers any tight finish). Phase 71 spread CAUTION + Finals out-of-sample widen the band → lean NYK +2.5 at half-stake. The cleanest spread value on the slate.",
     confidence: 'lean', thesis: ['model','market'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'NYK won by 10 (line +2.5) — covered outright' },
   },
   {
     id: 'finals-g1-sas-nyk-total',
@@ -2332,7 +2332,7 @@ const BETS = [
     ],
     reasoning: "Engine projects ~224 (a +8.5pt OVER lean) — but Finals G1 historically runs UNDER market totals by 3-5% via two reliable patterns: (1) rust on the rested side suppresses Q1-Q2 efficiency (NYK 8 days off → Mavericks-Boston 2024 G1 went 14 UNDER); (2) first-look unfamiliarity tightens both defenses early. The Castle-Brunson matchup specifically should compress NYK ORtg in the first half. SAS's two G7-deciding games (G4 185, G6 209) also show this defense ramping when the stakes peak. This is a lean AGAINST the engine total, anchored on the G1-defense pattern. The model OVER lean is the genuine counter-case — if both teams shake out rust quickly the OVER cashes easily.",
     confidence: 'coin-flip', thesis: ['historical'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'200 total (line under 215.5) — Finals-G1-UNDER pattern held' },
   },
   {
     id: 'finals-g1-sas-nyk-wemby-pra',
@@ -2344,8 +2344,8 @@ const BETS = [
       {label:'Engine',value:'~36 PRA'},
     ],
     reasoning: "Wemby's WCF series PRA averaged ~35 (avg 28pts/11reb/3ast across 7 games) against Holmgren/Hartenstein — the two best paint defenders in the West. NYK's defensive bigs are MEANINGFULLY softer: KAT (1.2 bpg, 79 rating) is a stretch-5 prone to perimeter pulls, and Mitchell Robinson (1.0 bpg, rim-protection-only) provides limited deterrence. No 'Wemby gravity' suppression scheme is in NYK's repertoire. Engine ~36 PRA. Line 32.5 sits proj-3.5 in the deep-alt zone; the safest Wemby leg of the playoffs given the rim-duel upgrade. Slight Finals-G1 layoff rust caveat → cautious over (deep alt 27.5 ~-260 available for parlays).",
-    confidence: 'lean', thesis: ['model','matchup'], narrative: null,
-    result: null,
+    confidence: 'lean', thesis: ['model','matchup'], narrative: 'pra-floor',
+    result: { outcome:'win', actual:'Wembanyama 40 PRA (26pts/12reb/2ast) — cleared 32.5' },
   },
   {
     id: 'finals-g1-sas-nyk-brunson-pts',
@@ -2358,7 +2358,7 @@ const BETS = [
     ],
     reasoning: "Brunson averaged 25.5 PPG across the ECF sweep, but those games were against CLE (Garland 0.21 dLEBRON) + PHI (Maxey nominal) — NOT against an elite POA defender. The Finals matchup vs Castle is structurally different: Castle's 0.91 dLEBRON is the BEST on-ball defender Brunson has faced this run, and Castle's WCF pattern is documented (held SGA to 19 in G4 + 15 in G6 — BOTH road games where the matchup imposed). Brunson on the road, vs the same matchup type, after an 8-day layoff (rust caveat) → the structural read is suppression. Engine projects Brunson ~22 pts vs Castle. Line 26.5 sits proj+4.5 — a clean fade. The risk: Brunson's 9.2 clutch + ECF MVP-mode could absorb. Phase 71b star-bias correction was -2.6pt for SGA in similar spot; this is the NYK equivalent.",
     confidence: 'lean', thesis: ['matchup','model'], narrative: 'star-vs-elite-D',
-    result: null,
+    result: { outcome:'loss', actual:'Brunson 30 pts (12-31 FG) — Castle held the FG% but not the volume' },
   },
   {
     id: 'finals-g1-sas-nyk-champagnie-pra',
@@ -2371,7 +2371,7 @@ const BETS = [
     ],
     reasoning: "Champagnie is now the bench scorer of the SAS playoff run — cleared 9.5 PRA in 3 straight CF games (28/18/26 avg ~24). Role secure at 24-28 min. PRA is the premier reliable-tier dimension at 13/13 across the playoffs. NYK's perimeter D (OG/Bridges/Hart at 0.9-1.7 dLEBRON) is meaningfully tighter than OKC's Dort, so the PRA line has LESS AIR than vs OKC — but the floor itself (composite pts+reb+ast at deep alt) holds even with mild efficiency degradation. Engine projects ~14 PRA. Line 9.5 = a deep blowout-stable floor. The anchor of the Finals reliable parlay.",
     confidence: 'lean', thesis: ['model'], narrative: null,
-    result: null,
+    result: { outcome:'win', actual:'Champagnie 27 PRA (16pts/10reb/1ast) — cleared 9.5 easily' },
   },
   {
     id: 'finals-g1-sas-nyk-castle-ast',
@@ -2384,6 +2384,97 @@ const BETS = [
     ],
     reasoning: "Castle had the WCF of his life (WCF MVP candidate). AST series totals 8/8/6/5/6/9/6 = 6.9 avg. He's the primary SAS creator AND draws the Brunson POA assignment — his usage stays high. Engine projects 6.5 AST. Line 4.5 = proj-2.0 deep-alt zone. AST is well-calibrated for primary ball-handlers; this is the cleanest SAS counting-stat floor on the Finals G1 board.",
     confidence: 'lean', thesis: ['model'], narrative: null,
+    result: { outcome:'loss', actual:'Castle 3 ast — usage tilted to scoring (17pts) not creating; missed 4.5' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // FINALS G2 — Fri 6/5 @ Frost Bank Center. NYK leads 1-0.
+  // SAS near-must-win; DK SAS -5.5 / 214.5 / ML SAS -230, NYK +180.
+  // Engine SAS by 4 (COMPETITIVE) UNDER the -5.5 → NYK +5.5 is value.
+  // G1 LESSONS BAKED IN: (1) floor legs must be MINUTES-SECURE
+  // (Keldon's 8-min playoff low broke the role-PRA floor) — Champagnie
+  // (31 min) + Harper (28 min) held, so they anchor the G2 floor;
+  // (2) Wemby PRA floor cleared even on a 6-21 night (40 PRA) — the
+  // REB/FT composite is blowout/cold-shooting resilient. Phase 71 R3
+  // out-of-sample stake cap stays 50% after the G1 wrong-winner.
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: 'finals-g2-sas-nyk-ml',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'ml', pick: 'SAS ML vs NYK', odds: '-230',
+    facts: [
+      {label:'Series',value:'NYK leads 1-0'},
+      {label:'Engine',value:'SAS by 4 (COMPETITIVE)'},
+      {label:'Market',value:'SAS -5.5 / 214.5'},
+      {label:'Spot',value:'SAS near-must-win at home, down 0-1'},
+    ],
+    reasoning: "Phase 71c engine: SAS 112, NYK 108 (SAS by 4) at Frost Bank Center — a home bounce-back the model leans toward but UNDER the -5.5. SAS lost G1 on shooting variance (36% FG, Wemby 6-21, Fox 3-13), not on being outplayed — they led by 14 before NYK's rested second half. The G2 case: home desperation down 0-1 + Wemby regression toward his ~25/11 WCF norms + a cleaner Fox. BUT the juice is the problem: SAS -230 implies 69.7% vs the model's ~62% home win — the market is OVERPRICING the bounce-back. The straight ML is a thin lean at best; the value is on the spread (NYK +5.5), not the moneyline. Phase 71 R3 out-of-sample cap stays 50% after the G1 wrong-winner — CAUTION pill auto-stamps.",
+    confidence: 'lean', thesis: ['model','market'], narrative: 'home-bounceback',
+    result: null,
+  },
+  {
+    id: 'finals-g2-sas-nyk-spread',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'spread', pick: 'NYK +5.5', odds: '-110',
+    facts: [
+      {label:'Market',value:'SAS -5.5 (-110)'},
+      {label:'Engine margin',value:'SAS by 4'},
+      {label:'G1 precedent',value:'NYK +2.5 covered (won outright)'},
+    ],
+    reasoning: "Engine SAS by 4 sits 1.5pts INSIDE the -5.5 line, so NYK +5.5 carries the model's cover edge. The structural case mirrors G1: NYK's rested legs were a second-half ASSET (outscored SAS 57-40 after the break), role-player 3PT depth travels (Shamet/OG/McBride combined for makes that matched SAS on 7 fewer attempts), and Brunson's 9.2 clutch is the best on the floor in a tight finish. Even in a SAS bounce-back WIN, the model sees a single-digit margin — NYK +5.5 hits if NYK wins OR loses by ≤5. This is the cleanest value on the G2 board: the market priced SAS as a -5.5 home favorite the day AFTER it lost at home as a -2.5 favorite, leaning hard on the bounce-back narrative. Phase 71 spread CAUTION + Finals out-of-sample → half-stake lean.",
+    confidence: 'lean', thesis: ['model','market'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'finals-g2-sas-nyk-total',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'total', pick: 'Under 214.5', odds: '-110',
+    facts: [
+      {label:'G1 total',value:'200 (cashed Under 215.5)'},
+      {label:'Engine',value:'~214 (market-aligned)'},
+      {label:'Pattern',value:'Both defenses set in; SAS desperation = grind'},
+    ],
+    reasoning: "Engine projects ~214, essentially ON the 214.5 market — there is NO clean edge here, which is why this is a coin-flip-tier bet (the CAUTION pill auto-stamps totals regardless). The mild lean is UNDER: G1 was a 200-point defensive rock-fight (SAS 36% FG, NYK 41%), both teams now have a film look at each other, and a desperate home team typically plays a tighter, lower-possession grind to control variance rather than a track meet. The counter-case is real — a Wemby/Fox bounce-back plus NYK's road shooting repeating could push it OVER quickly. Lowest-conviction play on the slate; included for completeness, not as a recommended stake.",
+    confidence: 'coin-flip', thesis: ['historical'], narrative: null,
+    result: null,
+  },
+  {
+    id: 'finals-g2-sas-nyk-wemby-pra',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'prop', pick: 'Wembanyama Over 33.5 PRA', odds: '-120',
+    facts: [
+      {label:'G1 PRA',value:'40 (26pts/12reb/2ast) even on 6-21 FG'},
+      {label:'Bounce-back',value:'6-21 below floor → scoring regression up'},
+      {label:'Engine',value:'~37 PRA'},
+    ],
+    reasoning: "Wemby's PRA cleared 32.5 in G1 (40 PRA) even on a 6-21 shooting dud, because the REB/FT composite is cold-shooting resilient — 12 reb + 12-13 FT carried it. For G2, the scoring side has nowhere to go but up: 6-21 against a wall-the-paint scheme is below his established floor, and a bounce-back toward his ~25/11 WCF norms lifts the central PRA estimate to ~37. The line nudges up to 33.5 (from G1's 32.5) but still sits proj-3.5 in the deep-alt zone. The G1 result PROVED this is the most reliable Wemby leg — it cleared on his worst shooting night of the playoffs. The minutes are guaranteed (38 in G1). The cleanest single-player floor on the G2 board.",
+    confidence: 'lean', thesis: ['model','matchup'], narrative: 'pra-floor',
+    result: null,
+  },
+  {
+    id: 'finals-g2-sas-nyk-champagnie-pra',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'prop', pick: 'Champagnie Over 9.5 PRA', odds: '-300',
+    facts: [
+      {label:'Recent PRA',value:'WCF G5-G7 24 avg; G1 27 (16/10/1)'},
+      {label:'Minutes',value:'31 min in G1 — SECURE rotation role'},
+      {label:'G1 lesson',value:'Minutes-secure legs held; Keldon (8 min) broke'},
+    ],
+    reasoning: "Champagnie cleared 9.5 PRA AGAIN in G1 (27 — 16pts/10reb/1ast, 5-10 from 3) and crucially logged 31 SECURE minutes. The G1 lesson is the whole thesis: the role-player PRA floor broke ONLY on Keldon Johnson's 8-minute playoff-low burial — the minutes-secure legs (Champagnie, Harper) both cleared with room. Champagnie is now the locked-in bench scorer of the SAS run (24-28 min every game), so his PRA floor doesn't carry the minutes-correlation risk that sank the Keldon leg. Engine ~14 PRA; line 9.5 is a deep blowout-stable floor. The anchor of the G2 reliable parlay — vetted for minutes security per the G1 retro.",
+    confidence: 'lean', thesis: ['model'], narrative: 'minutes-secure-floor',
+    result: null,
+  },
+  {
+    id: 'finals-g2-sas-nyk-harper-pra',
+    slate: 'Finals-G2', series: 'SAS-NYK', game: 2, postedAt: '2026-06-04',
+    type: 'prop', pick: 'Harper Over 9.5 PRA', odds: '-240',
+    facts: [
+      {label:'Recent PRA',value:'WCF G5-G7 19 avg; G1 25 (16/8/1)'},
+      {label:'Minutes',value:'28 min in G1 — SECURE bench role'},
+      {label:'Engine',value:'~16 PRA'},
+    ],
+    reasoning: "Harper cleared the G1 floor comfortably (25 PRA — 16pts/8reb/1ast on 6-10 FG) in 28 SECURE minutes, the other minutes-stable leg that held when Keldon's didn't. The rookie's combo-guard PRA composite (scoring + rebounding + the occasional dime) is game-script-independent and his bench role is locked at 26-30 min. Line bumped to 9.5 (from G1's 8.5 — the alt re-priced after he cleared) but still proj-6 deep. Pairs with Champagnie as the two minutes-vetted legs of the G2 reliable parlay; the G1 retro explicitly confirmed both held while the staple-benched wing broke.",
+    confidence: 'lean', thesis: ['model'], narrative: 'minutes-secure-floor',
     result: null,
   },
 ];
@@ -3792,15 +3883,15 @@ const FEATURED_PARLAYS = [
     name: 'Finals G1 — SAS Role-Player PRA Floor (3-Leg)',
     stake: 100, odds: '+125', payout: 'To Win: ~$125 (verify Wed evening)',
     legs: [
-      { pick:'Champagnie Over 9.5 PRA (alt — Finals G1)', odds:'-350', confidence:'floor', status:null,
-        note:'WCF PRA streak G5 28 / G6 18 / G7 26 → 24 avg. 24-28 min bench scorer role secure. NYK perimeter D (OG/Bridges) tighter than Dort but the deep 9.5 line still clears.' },
-      { pick:'Keldon Johnson Over 8.5 PRA (alt — Finals G1)', odds:'-280', confidence:'floor', status:null,
-        note:'WCF G5 15, G6 21, G7 10 → 15 avg. Line trimmed 9.5→8.5 to account for tighter NYK perimeter D. Bench-wing minutes secure.' },
-      { pick:'Harper Over 8.5 PRA (alt — Finals G1)', odds:'-260', confidence:'floor', status:null,
-        note:'WCF G5 14, G6 20, G7 23 → 19 avg, with sustained ascension. Line trimmed 9.5→8.5 for NYK D quality. Combo-guard PRA composite holds.' },
+      { pick:'Champagnie Over 9.5 PRA (alt — Finals G1)', odds:'-350', confidence:'floor', status:'hit',
+        note:'HIT — 27 PRA (16pts/10reb/1ast, 5-10 from 3). 24-28 min role held; cleared with room.' },
+      { pick:'Keldon Johnson Over 8.5 PRA (alt — Finals G1)', odds:'-280', confidence:'floor', status:'miss',
+        note:'MISS — 4 PRA (2pts/2reb/0ast) in a PLAYOFF-LOW 8 min. Minutes were NOT secure in a tight starter-heavy game (Wemby 38, Fox 38, Vassell 36). The hidden minutes-correlation risk that sank the floor.' },
+      { pick:'Harper Over 8.5 PRA (alt — Finals G1)', odds:'-260', confidence:'floor', status:'hit',
+        note:'HIT — 25 PRA (16pts/8reb/1ast, 6-10 FG). Sustained ascension held off the bench.' },
     ],
     thesis:'The validated reliable-tier play, ported to Finals G1: this exact role-player PRA stack went 3-for-3 in WCF G6 + 3-for-3 again in WCF G7. PRA is now 13/13 across the playoffs — the cleanest reliable-tier rule in the framework. Trimmed Keldon + Harper lines (9.5→8.5) to account for NYK perimeter D (OG/Bridges/Hart 0.9-1.7 dLEBRON, all meaningfully tighter than OKC Dort). Math: 0.90 × 0.85 × 0.83 ≈ 64% combined; each leg independently clears the 80% deep-alt zone. Phase 71 R3 out-of-sample Finals stake cap: $100 ($50 reduced from R3 $100 cap initially feels right, but PRA has earned a full $100 — keeping cap at $100 to honor the validated edge).',
-    result: null,
+    result: { outcome:'loss', delta:'-$100', actual:'Champagnie 27 PRA ✓ / Harper 25 PRA ✓ / Keldon Johnson 4 PRA ✗ (8-min playoff low). The floor BROKE on minutes insecurity — first PRA-floor loss of the playoffs (13/14). The two minutes-secure legs cleared; the staple-benched wing did not.' },
   },
   {
     id: 'finals-g1-jun3-floor-creator-big',
@@ -3809,13 +3900,13 @@ const FEATURED_PARLAYS = [
     name: 'Finals G1 — Cross-Team Stable-Dimension Floor (2-Leg)',
     stake: 100, odds: '+105', payout: 'To Win: ~$105 (verify Wed evening)',
     legs: [
-      { pick:'Castle Over 4.5 assists (alt — Finals G1)', odds:'-160', confidence:'floor', status:null,
-        note:'WCF ast 8/8/6/5/6/9/6 = 6.9 avg. Engine 6.5. WCF MVP-tier creator; usage stays high regardless of game script. Cleared in WCF G7.' },
-      { pick:'Wembanyama Over 11.5 rebounds (alt — Finals G1)', odds:'-180', confidence:'floor', status:null,
-        note:'WCF rebounds: 24/13/4/8/6/10/7 = 10.3 avg. KAT/Robinson (KAT 11.9 rpg, Robinson 8.8) provides FAR less competition than OKC double-big (Hartenstein 9.4 + Holmgren 8.9). Wemby reb floor should be cleaner vs NYK than vs OKC. Line 11.5 = proj-3.5 deep alt.' },
+      { pick:'Castle Over 4.5 assists (alt — Finals G1)', odds:'-160', confidence:'floor', status:'miss',
+        note:'MISS — 3 ast. Usage tilted to scoring (17pts on 16 FGA, Brunson POA duty) rather than creating. The AST floor that held all WCF cracked when the offense ran through Fox/Wemby instead.' },
+      { pick:'Wembanyama Over 11.5 rebounds (alt — Finals G1)', odds:'-180', confidence:'floor', status:'hit',
+        note:'HIT — 12 reb (barely cleared 11.5). The softer NYK rim duel held on the glass as projected, even on a 6-21 shooting night.' },
     ],
     thesis:'Two STABLE-dimension floors on opposite teams (Castle AST + Wemby REB) — the WCF G7 validated this cross-team approach (Castle AST + Holmgren PRA cleared together). Each leg is structurally game-script-independent: a creator keeps facilitating and a 7-4 paint dominator keeps rebounding even on a quiet scoring night. Subbing Wemby REB for Holmgren PRA exploits the NYK rim-defense downgrade. Math: 0.86 × 0.82 ≈ 71% combined. Cross-team so neither leg depends on the winner.',
-    result: null,
+    result: { outcome:'loss', delta:'-$100', actual:'Wemby 12 reb ✓ / Castle 3 ast ✗. The cross-team structure didn\'t save it — Castle\'s AST collapsed when SAS ran offense through Fox/Wemby. REB floor was the right read; the AST floor assumed creator usage that the game script took away.' },
   },
   {
     id: 'finals-g1-jun3-trad-sas-home-defend',
@@ -3824,14 +3915,65 @@ const FEATURED_PARLAYS = [
     name: 'Finals G1 — SAS Defends Home + Wemby Carries (3-Leg)',
     stake: 50, odds: '+350', payout: 'To Win: ~$175 (verify Wed evening)',
     legs: [
-      { pick:'SAS ML vs NYK (Finals G1)', odds:'-135', confidence:'lean', status:null,
-        note:'Engine SAS by 2 at home; HCA + Castle-on-Brunson + 8-day NYK rust risk. Lead leg of the correlated stack.' },
-      { pick:'Wembanyama Over 27.5 points (Finals G1)', odds:'-115', confidence:'lean', status:null,
-        note:'WCF avg 25 PPG against TOUGHER paint defenders (Holmgren/Hartenstein). KAT/Robinson is the softest rim duel he has faced. Engine ~30. If SAS wins, Wemby almost certainly leads the scoring — correlated with SAS ML.' },
-      { pick:'Brunson Under 26.5 points (Finals G1)', odds:'-115', confidence:'lean', status:null,
-        note:'Castle 0.91 dLEBRON is the best POA defender Brunson has faced. Castle held SGA to 19/15 in BOTH WCF road games. Brunson on the road, suppressed → fits the SAS-defends-home script.' },
+      { pick:'SAS ML vs NYK (Finals G1)', odds:'-135', confidence:'lean', status:'miss',
+        note:'MISS — NYK 105-95. SAS led by 14 in Q3 then got outscored 57-40 in the second half; the 8-day NYK rest was a 4th-quarter ASSET, not a Q1 liability.' },
+      { pick:'Wembanyama Over 27.5 points (Finals G1)', odds:'-115', confidence:'lean', status:'miss',
+        note:'MISS — 26 pts on 6-21 FG. Mitchell Robinson (fractured hand) was a better individual deterrent than the stretch-5 framing assumed; 12-13 FT kept it close to the line but under.' },
+      { pick:'Brunson Under 26.5 points (Finals G1)', odds:'-115', confidence:'lean', status:'miss',
+        note:'MISS — Brunson 30 (12-31 FG). Castle held the FG% (38.7%) but a 31-FGA volume night + clutch closing shots cleared the points line anyway.' },
     ],
     thesis:'A CORRELATED SAS-defends-home stack — applying the WCF G5 + G7 lessons (correlated theses beat mixed-direction legs even when the ML is a coin-flip). The coherent G1 script: SAS wins at home behind a Wemby carry game (KAT softer-than-Holmgren rim D = Wemby ceiling unlocks) AND Castle suppresses Brunson on the road. Two SAS-positive legs + one NYK-negative leg are all internally consistent: a SAS home win is correlated with both stars trending the right way. Math: 0.54 × 0.55 × 0.55 ≈ 16% combined; at +350 (4.5x) ≈ break-even EV, lifted by positive leg correlation. Phase 71 R3 out-of-sample Finals stake cap → reduced $50 stake. Keep traditional stakes small in the first Finals game (CAUTION pill auto-stamps).',
+    result: { outcome:'loss', delta:'-$50', actual:'SAS ML ✗ / Wemby 26 pts ✗ (O27.5) / Brunson 30 pts ✗ (U26.5). 0-for-3 — the SAS-defends-home script inverted on every leg. The correlation cut the wrong way: NYK won AND both star-prop reads missed.' },
+  },
+
+  // ─── FINALS G2 (Fri 6/5) — minutes-vetted floors per the G1 retro ───
+  {
+    id: 'finals-g2-jun5-floor-minutes-vetted-pra',
+    slate: 'Finals-G2', date: '2026-06-05',
+    category: 'floor', type: 'best-bet',
+    name: 'Finals G2 — SAS Minutes-Vetted Role PRA (3-Leg)',
+    stake: 100, odds: '+135', payout: 'To Win: ~$135 (verify Fri evening)',
+    legs: [
+      { pick:'Champagnie Over 9.5 PRA (alt — Finals G2)', odds:'-300', confidence:'floor', status:null,
+        note:'G1: 27 PRA in 31 SECURE min. Locked-in bench scorer (24-28 min every game) — no minutes-correlation risk. The anchor.' },
+      { pick:'Harper Over 9.5 PRA (alt — Finals G2)', odds:'-240', confidence:'floor', status:null,
+        note:'G1: 25 PRA in 28 SECURE min. Combo-guard composite, game-script-independent; bench role locked at 26-30 min.' },
+      { pick:'Wembanyama Over 27.5 PRA (alt — Finals G2)', odds:'-280', confidence:'floor', status:null,
+        note:'G1: 40 PRA even on a 6-21 shooting DUD — the REB/FT composite is cold-shooting resilient. Deep 27.5 line clears regardless of scoring variance; 38 guaranteed min.' },
+    ],
+    thesis:'The role-PRA floor REBUILT around the G1 lesson: the only leg that broke G1 was Keldon Johnson\'s (8-min playoff low) — every MINUTES-SECURE leg cleared (Champagnie 27, Harper 25, Wemby 40 PRA). This parlay drops Keldon entirely and uses three players with guaranteed rotation minutes; Wemby\'s deep-alt PRA (27.5) is added because it cleared on his WORST shooting night of the playoffs, proving the composite is variance-proof. Math: 0.90 × 0.86 × 0.88 ≈ 68% combined; each leg independently in the 80%+ deep-alt zone. Phase 71 R3 Finals stake cap holds at $100 — the PRA edge survives even after its first loss, because that loss was minutes-driven and is now explicitly screened out.',
+    result: null,
+  },
+  {
+    id: 'finals-g2-jun5-floor-bigman-reb',
+    slate: 'Finals-G2', date: '2026-06-05',
+    category: 'floor', type: 'best-bet',
+    name: 'Finals G2 — Cross-Team Big-Man REB Floor (2-Leg)',
+    stake: 100, odds: '+110', payout: 'To Win: ~$110 (verify Fri evening)',
+    legs: [
+      { pick:'Wembanyama Over 11.5 rebounds (alt — Finals G2)', odds:'-180', confidence:'floor', status:null,
+        note:'G1: 12 reb vs the softer NYK paint (KAT 1.2bpg, Robinson on a fractured hand). WCF reb avg ~10.3 came against the TOUGHER OKC double-big — this matchup is cleaner. Bounce-back scoring should mean more rim attempts → more boards.' },
+      { pick:'Karl-Anthony Towns Over 9.5 rebounds (alt — Finals G2)', odds:'-200', confidence:'floor', status:null,
+        note:'G1: 12 reb. KAT is NYK\'s primary glass-cleaner (11.9 rpg) and draws heavy minutes at the 5 vs Wemby. Cross-team from the Wemby leg so the two boards floors are independent, not stacked.' },
+    ],
+    thesis:'Two STABLE big-man rebounding floors on OPPOSITE teams — both cleared their lines in G1 (Wemby 12, KAT 12). Rebounding is the most game-script-independent dimension for a paint anchor: a 7-4 shot-blocker and a 7-foot stretch-5 keep cleaning the glass whether their team wins by 10 or loses by 10. Cross-team structure means neither leg depends on the winner (the lesson the G1 cross-team floor confirmed even as one leg missed). NEVER stacked on one player (the documented REB rule) — two different bigs. Math: 0.84 × 0.82 ≈ 69% combined. The complement to the PRA floor.',
+    result: null,
+  },
+  {
+    id: 'finals-g2-jun5-trad-nyk-cover-stars',
+    slate: 'Finals-G2', date: '2026-06-05',
+    category: 'traditional', type: 'best-bet',
+    name: 'Finals G2 — NYK Cover + Stars Produce (3-Leg)',
+    stake: 50, odds: '+420', payout: 'To Win: ~$210 (verify Fri evening)',
+    legs: [
+      { pick:'NYK +5.5 vs SAS (Finals G2)', odds:'-110', confidence:'lean', status:null,
+        note:'Engine SAS by 4 sits 1.5pts inside the -5.5 → NYK +5.5 is the model value side. Hits if NYK wins OR loses by ≤5. Lead leg of the correlated NYK stack.' },
+      { pick:'Brunson Over 24.5 points (Finals G2)', odds:'-115', confidence:'lean', status:null,
+        note:'G1: 30 on 31 FGA — Castle held the FG% but not the volume. Brunson\'s usage stays elite; if NYK covers, he almost certainly led the scoring. Correlated with NYK +5.5.' },
+      { pick:'Karl-Anthony Towns Over 30.5 PRA (Finals G2)', odds:'-120', confidence:'lean', status:null,
+        note:'G1: 34 PRA (18/12/4). Stretch-5 pull + glass dominance vs Wemby; a NYK cover correlates with KAT producing the second-star line. Rounds out the internally-consistent NYK stack.' },
+    ],
+    thesis:'A CORRELATED NYK stack built on the model\'s actual G2 edge (NYK +5.5 is the value, NOT the SAS ML) — flipping the direction of the G1 traditional that lost 0-3 betting SAS-defends-home. The coherent G2 script: NYK covers (or wins outright) behind another Brunson volume night and a KAT double-double composite. All three legs move together — a NYK cover correlates with both NYK stars producing. Math: 0.55 × 0.58 × 0.60 ≈ 19% combined; at +420 (5.2x) ≈ positive EV, lifted by leg correlation. Phase 71 R3 Finals cap → reduced $50 stake; CAUTION pill auto-stamps in the out-of-sample Finals.',
     result: null,
   },
 ];
@@ -4002,10 +4144,17 @@ const BET_SLATES = {
     ],
   },
   'Finals-G1': {
-    label: 'NBA Finals — Game 1 (Live)',
+    label: 'NBA Finals — Game 1 (Archive)',
     games: [
       { series:'SAS-NYK', date:'2026-06-03', time:'8:30 PM ET', venue:'Frost Bank Center', context:'Series 0-0 — first Finals game',
-        recap:'<strong style="color:var(--purple)">Finals G1 Preview (Wed 6/3):</strong> 1999 Finals REMATCH at Frost Bank Center — Spurs hosting Knicks 27 years after the lockout-shortened series (SAS won 4-1 then). NYK swept all three prior rounds (BOS R1, PHI R2, CLE ECF) — 12-1 playoff record, the best non-1996 Bulls start since the 2017 Warriors. SAS won the WCF 4-3 over OKC in a 7-game grind. Rest gap: NYK 8 days off (Mavericks-style layoff rust risk) vs SAS 3 days. The central structural matchup: <strong>Castle on Brunson</strong> — Castle\'s 0.91 dLEBRON is the best POA defender Brunson has faced this run (CLE Garland 0.21, PHI Maxey nominal); Castle\'s WCF MVP pattern is to hold star scorers to suppressed lines (SGA held to 19 G4 / 15 G6 on the road). The structural matchup tilting NYK: <strong>KAT vs Wemby</strong> — a meaningfully fairer rim duel than SAS faced from Holmgren/Hartenstein (KAT 1.2bpg vs Holmgren 2.2). Wemby\'s PRA floor should clear cleanly vs the softer NYK paint D. DK (6/3 morning): SAS -2.5 / 215.5 / ML SAS -135, NYK +115. Engine view: SAS by 2 at home — agrees with market on winner + margin; OVER 215.5 is the cleanest engine edge (engine ~224) but Finals G1s historically run UNDER (rust + first-look defense). <strong>Phase 71 R3 out-of-sample stake cap stays at 50%</strong> — Finals is first-ever Finals calibration data, CAUTION pill auto-stamps. CF stakes ($100 floor / $50 trad) hold.' },
+        recap:'<strong style="color:var(--green)">Result:</strong> NYK 105-95 — Knicks STEAL Game 1 on the road, lead 1-0. New York erased a 14-point Q3 deficit and outscored SAS 57-40 in the second half, closing on an 11-0 run. Brunson 30 (12-31 FG, clutch late), KAT 18/12, OG Anunoby 17 (3-6 3PT), Josh Hart 3/15reb/6ast/4stl (unsung engine), Shamet 13 off the bench. Mitchell Robinson (fractured hand) anchored Wemby\'s 6-21 night. SAS: Wembanyama 26/12/3blk (inefficient debut), Castle 17/8 (held Brunson\'s FG% but only 3 ast), Champagnie 16/10 + Harper 16/8 off the bench, Fox 7 on 3-13. SAS shot 36% FG / 26% 3PT — first-look defensive tightness hit the HOME team. <strong>Model: SAS by 2 → actual NYK by 10 (WRONG WINNER, Finals out-of-sample caveat fired G1).</strong> Total 200 cashed the UNDER 215.5. Parlays 0-3 (-$250): the role-player PRA floor BROKE for the first time on Keldon Johnson\'s 8-min (4 PRA) playoff low. <span style="color:var(--text-dim)">— Original preview:</span> 1999 Finals REMATCH at Frost Bank Center — Spurs hosting Knicks 27 years after the lockout-shortened series (SAS won 4-1 then). NYK swept all three prior rounds (BOS R1, PHI R2, CLE ECF) — 12-1 playoff record, the best non-1996 Bulls start since the 2017 Warriors. SAS won the WCF 4-3 over OKC in a 7-game grind. Rest gap: NYK 8 days off (Mavericks-style layoff rust risk) vs SAS 3 days. The central structural matchup: <strong>Castle on Brunson</strong> — Castle\'s 0.91 dLEBRON is the best POA defender Brunson has faced this run (CLE Garland 0.21, PHI Maxey nominal); Castle\'s WCF MVP pattern is to hold star scorers to suppressed lines (SGA held to 19 G4 / 15 G6 on the road). The structural matchup tilting NYK: <strong>KAT vs Wemby</strong> — a meaningfully fairer rim duel than SAS faced from Holmgren/Hartenstein (KAT 1.2bpg vs Holmgren 2.2). Wemby\'s PRA floor should clear cleanly vs the softer NYK paint D. DK (6/3 morning): SAS -2.5 / 215.5 / ML SAS -135, NYK +115. Engine view: SAS by 2 at home — agrees with market on winner + margin; OVER 215.5 is the cleanest engine edge (engine ~224) but Finals G1s historically run UNDER (rust + first-look defense). <strong>Phase 71 R3 out-of-sample stake cap stays at 50%</strong> — Finals is first-ever Finals calibration data, CAUTION pill auto-stamps. CF stakes ($100 floor / $50 trad) hold.' },
+    ],
+  },
+  'Finals-G2': {
+    label: 'NBA Finals — Game 2 (Live)',
+    games: [
+      { series:'SAS-NYK', date:'2026-06-05', time:'8:30 PM ET', venue:'Frost Bank Center', context:'NYK leads 1-0',
+        recap:'<strong style="color:var(--purple)">Finals G2 Preview (Fri 6/5):</strong> San Antonio faces a near-must-win at Frost Bank Center — no team wants to travel to MSG down 0-2 in the Finals. The Spurs LOST G1 on shooting variance (36% FG, 26% 3PT, Fox 3-13, Wemby 6-21), not on being outplayed: they led by 14 in Q3 before NYK\'s rest-fueled second half (the Knicks outscored SAS 57-40 after the break and closed 11-0). The G2 case for SAS rests on regression — a <strong>Wembanyama bounce-back</strong> toward his ~25/11 WCF norms (his 6-21 was below floor vs a wall-the-paint scheme; 12-13 FT shows the rim pressure was there) and a cleaner <strong>De\'Aaron Fox</strong>. The NYK counter is the same edges that won G1: the rested second-half conditioning advantage (the G1 lesson — fresh legs late, not Q1 rust), role-player 3PT depth (Shamet 3-6 / OG 3-6 / McBride 2-5), and Brunson\'s clutch gene. <strong>Swing factor:</strong> Mitchell Robinson played G1 through a fractured hand (12 min) and was the one NYK deterrent that worked on Wemby — his availability/minutes tilt the SAS interior. DK (6/4): SAS -5.5 / 214.5 / ML SAS -230, NYK +180 — the market moved HARDER onto SAS than G1\'s -2.5 (home bounce-back priced in). Engine view: SAS by ~4 (COMPETITIVE) — UNDER the -5.5, so NYK +5.5 is the spread value (same edge that covered NYK +2.5 in G1). <strong>Phase 71 R3 out-of-sample stake cap stays 50%</strong> after the G1 wrong-winner; CAUTION pill auto-stamps. Finals stakes ($100 floor / $50 trad) hold.' },
     ],
   },
 };
