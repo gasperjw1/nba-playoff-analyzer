@@ -55,12 +55,17 @@ vm.runInContext(toVar(qualSrc), ctx);
 const externalSrc = fs.readFileSync(path.join(__dirname, 'js/data/external-research.js'), 'utf8');
 vm.runInContext(toVar(externalSrc), ctx);
 
+// Load signal calibration (predictive accuracy per evidence type)
+const calSrc = fs.readFileSync(path.join(__dirname, 'js/data/signal-calibration.js'), 'utf8');
+vm.runInContext(toVar(calSrc), ctx);
+
 // Load the council module
 const council = require('./js/engine/council.js');
 
 const SERIES_DATA = ctx.SERIES_DATA;
 const QUALITATIVE_SIGNALS = ctx.QUALITATIVE_SIGNALS;
 const EXTERNAL_RESEARCH = ctx.EXTERNAL_RESEARCH || [];
+const getCalibrationWeight = ctx.getCalibrationWeight || (() => 1.0);
 const series = SERIES_DATA.find(s => s.id === seriesId);
 if (!series) {
   console.error(`Series not found: ${seriesId}`);
@@ -91,7 +96,7 @@ const market = {
   ml: game.prediction ? parseML(game.prediction.moneyline) : { home: -150, away: +130 },
 };
 
-const result = council.runCouncil(series, gameNum, market, SERIES_DATA, QUALITATIVE_SIGNALS, EXTERNAL_RESEARCH);
+const result = council.runCouncil(series, gameNum, market, SERIES_DATA, QUALITATIVE_SIGNALS, EXTERNAL_RESEARCH, getCalibrationWeight);
 
 if (jsonOut) {
   console.log(JSON.stringify(result, null, 2));
@@ -129,7 +134,21 @@ result.verdicts.forEach(v => {
 });
 
 console.log('───────────────────────────────────────────────────────────────────');
-console.log('  SYNTHESIS');
+console.log('  CALIBRATION (Phase 75c) — pre-cal edge × signal-type calibration');
+console.log('───────────────────────────────────────────────────────────────────');
+if (result.synthesis.calibratedVerdicts) {
+  result.synthesis.calibratedVerdicts.forEach(v => {
+    const sideText = v.side === 'home' ? series.homeTeam.abbr : v.side === 'away' ? series.awayTeam.abbr : 'no-edge';
+    const rawPct = (Math.abs(v.edge) * 100).toFixed(0);
+    const calPct = (Math.abs(v.calibratedEdge) * 100).toFixed(0);
+    const shrinkPct = v.edge ? Math.round((1 - v.calibrationWeight) * 100) : 0;
+    console.log(`  ${v.agent.padEnd(15)} → ${sideText.padEnd(8)} raw ${rawPct.padStart(3)}% × cal ${v.calibrationWeight.toFixed(2)} = ${calPct.padStart(3)}% (${shrinkPct}% shrinkage)`);
+  });
+}
+console.log('');
+
+console.log('───────────────────────────────────────────────────────────────────');
+console.log('  SYNTHESIS (CALIBRATED)');
 console.log('───────────────────────────────────────────────────────────────────');
 const s = result.synthesis;
 const sideText = s.recommendedSide === 'home' ? series.homeTeam.abbr :

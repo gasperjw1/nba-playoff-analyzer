@@ -498,15 +498,38 @@ function riskAgent(series, gameNum, market, SERIES_DATA) {
 
 // ──────────────────────────────────────────────────────────────────
 // SYNTHESIZER — aggregates verdicts (not narratives)
+// Phase 75c: applies SIGNAL CALIBRATION — multiplies each agent's
+// raw edge by the calibration weight for its evidence type.
+// Mechanical signals (line/distribution) > narrative signals (analyst quotes).
+// See js/data/signal-calibration.js for the calibration table + rationale.
 // ──────────────────────────────────────────────────────────────────
 
-function synthesizeCouncil(verdicts) {
-  // Weighted vote: edge × confidence × evidenceCount
+// Map agent name → primary signal type for calibration lookup
+const AGENT_TO_SIGNAL_TYPE = {
+  'spread-value': 'spread-value',
+  'matchup': 'matchup-dlebron',
+  'fatigue': 'fatigue-analyst-claim', // worst-case for fatigue — actually has mix of mechanical + analyst
+  'coaching': 'coaching-resume',
+  'momentum': 'momentum-streak',
+  'market': 'market-divergence',
+  'historical': 'historical-base-rate',
+  'risk': 'risk-variance',
+};
+
+function synthesizeCouncil(verdicts, calibrationFn) {
+  // Apply per-agent calibration weight (defaults to 1.0 if no calibration fn provided)
+  const cal = typeof calibrationFn === 'function' ? calibrationFn : () => 1.0;
+
   let totalEdge = 0, totalWeight = 0;
   const directional = verdicts.filter(v => v.agent !== 'risk');
-  directional.forEach(v => {
+  const calibratedVerdicts = directional.map(v => {
+    const signalType = AGENT_TO_SIGNAL_TYPE[v.agent] || 'default';
+    const calWeight = cal(signalType);
+    return { ...v, calibrationWeight: calWeight, calibratedEdge: v.edge * calWeight };
+  });
+  calibratedVerdicts.forEach(v => {
     const w = v.confidence * Math.log(1 + v.evidenceCount);
-    totalEdge += v.edge * w;
+    totalEdge += v.calibratedEdge * w;
     totalWeight += w;
   });
   const aggregateEdge = totalWeight ? totalEdge / totalWeight : 0;
@@ -528,6 +551,7 @@ function synthesizeCouncil(verdicts) {
     confidence: Math.min(0.95, totalWeight / 5),
     variance: risk.variance || 0,
     sizing: sizingRec,
+    calibratedVerdicts, // include for transparency: shows pre-cal vs post-cal edge per agent
   };
 }
 
@@ -557,7 +581,7 @@ function adversarialCheck(verdicts, synthesis, series, gameNum) {
 // RUN THE COUNCIL
 // ──────────────────────────────────────────────────────────────────
 
-function runCouncil(series, gameNum, market, SERIES_DATA, qualitativeSignals, externalResearch) {
+function runCouncil(series, gameNum, market, SERIES_DATA, qualitativeSignals, externalResearch, calibrationFn) {
   const verdicts = [
     spreadValueAgent(series, gameNum, market, SERIES_DATA),
     matchupAgent(series, gameNum, market, SERIES_DATA),
@@ -568,7 +592,7 @@ function runCouncil(series, gameNum, market, SERIES_DATA, qualitativeSignals, ex
     historicalAgent(series, gameNum, market, SERIES_DATA),
     riskAgent(series, gameNum, market, SERIES_DATA),
   ];
-  const synthesis = synthesizeCouncil(verdicts);
+  const synthesis = synthesizeCouncil(verdicts, calibrationFn);
   const adversarial = adversarialCheck(verdicts, synthesis, series, gameNum);
   return { verdicts, synthesis, adversarial };
 }
