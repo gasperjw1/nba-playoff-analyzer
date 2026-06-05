@@ -29,6 +29,16 @@ For each claim in the essay:
    - WebSearch for confirmation if not in local database
    - If unverifiable, FLAG
 
+5. **SCOPE COMPLIANCE** — does each claim STAY IN THE AGENT'S LANE?
+   - Read the agent's specific "IN YOUR LANE / NOT YOUR LANE" sections
+     from their agent prompt
+   - For each claim, ask: does this argument depend on the agent's
+     specific methodology, or is it reaching outside?
+   - If outside → FLAG as `out_of_scope`
+   - Example: Fatigue Agent citing "NYK's 9.2 clutch NetRtg" — clutch
+     performance is a momentum/matchup signal, NOT a fatigue signal.
+     Flag as `out_of_scope` regardless of whether the stat is true.
+
 ## Your Output Format (STRICT JSON)
 
 ```json
@@ -39,10 +49,10 @@ For each claim in the essay:
     {
       "id": 1,
       "text": "the exact claim from essay (quote it)",
-      "category": "stat|citation|historical|player|other",
+      "category": "stat|citation|historical|player|scope|other",
       "citation": "what source the essay claims",
-      "verification": "verified|unverified|fabricated|partial",
-      "verificationNote": "specific finding — what matched or didn't"
+      "verification": "verified|unverified|fabricated|partial|out_of_scope",
+      "verificationNote": "specific finding — what matched or didn't. For out_of_scope: which other agent's lane this claim belongs to."
     }
   ],
   "summary": {
@@ -70,6 +80,8 @@ For each claim in the essay:
   - Any fabricated citation (URL doesn't exist, quote not in article)
   - Any made-up statistic
   - Critical thesis claim is unverified
+  - **3 or more `out_of_scope` claims** (scope creep — agent reaching
+    into other agents' lanes; breaks deliberation framework)
 
 - **HARD_FAIL** (no further rewrites — escalate immediately) if ANY of:
   - This is rewrite attempt 3 and verification rate still < 80%
