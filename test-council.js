@@ -51,11 +51,16 @@ vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, 'js/data/series-data.
 const qualSrc = fs.readFileSync(path.join(__dirname, 'js/data/qualitative-signals.js'), 'utf8');
 vm.runInContext(toVar(qualSrc), ctx);
 
+// Load external research (web-sourced findings)
+const externalSrc = fs.readFileSync(path.join(__dirname, 'js/data/external-research.js'), 'utf8');
+vm.runInContext(toVar(externalSrc), ctx);
+
 // Load the council module
 const council = require('./js/engine/council.js');
 
 const SERIES_DATA = ctx.SERIES_DATA;
 const QUALITATIVE_SIGNALS = ctx.QUALITATIVE_SIGNALS;
+const EXTERNAL_RESEARCH = ctx.EXTERNAL_RESEARCH || [];
 const series = SERIES_DATA.find(s => s.id === seriesId);
 if (!series) {
   console.error(`Series not found: ${seriesId}`);
@@ -86,7 +91,7 @@ const market = {
   ml: game.prediction ? parseML(game.prediction.moneyline) : { home: -150, away: +130 },
 };
 
-const result = council.runCouncil(series, gameNum, market, SERIES_DATA, QUALITATIVE_SIGNALS);
+const result = council.runCouncil(series, gameNum, market, SERIES_DATA, QUALITATIVE_SIGNALS, EXTERNAL_RESEARCH);
 
 if (jsonOut) {
   console.log(JSON.stringify(result, null, 2));

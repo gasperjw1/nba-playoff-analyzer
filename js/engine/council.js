@@ -187,9 +187,10 @@ function matchupAgent(series, gameNum, market, SERIES_DATA) {
 // scarcity multiplier. Qualitative signals from prior game.
 // ──────────────────────────────────────────────────────────────────
 
-function fatigueAgent(series, gameNum, market, SERIES_DATA, qualSignals) {
+function fatigueAgent(series, gameNum, market, SERIES_DATA, qualSignals, externalResearch) {
   const homeAbbr = series.homeTeam.abbr;
   const awayAbbr = series.awayTeam.abbr;
+  externalResearch = externalResearch || [];
 
   // Pull top-3 scorers/starters by rating for each team
   const homeTopPlayers = (series.homeTeam.players || []).filter(p => p.rating >= 70).slice(0, 4).map(p => p.name);
@@ -226,9 +227,29 @@ function fatigueAgent(series, gameNum, market, SERIES_DATA, qualSignals) {
     return (series.awayTeam.players || []).some(p => p.name === subj || subj.includes(p.name.split(' ').slice(-1)[0]));
   });
 
-  // Compute fatigue index: avg min + heavy-load fraction + qualitative weight
-  const homeIndex = homeFatigue.avgMin / 40 + homeFatigue.heavyLoad * 0.3 + qualHomeFatigue.reduce((a, s) => a + s.severity, 0) * 0.2;
-  const awayIndex = awayFatigue.avgMin / 40 + awayFatigue.heavyLoad * 0.3 + qualAwayFatigue.reduce((a, s) => a + s.severity, 0) * 0.2;
+  // Pull EXTERNAL RESEARCH findings (web-sourced analyst evidence)
+  const externalHomeFatigue = externalResearch.filter(r =>
+    r.signalType === 'fatigue' && r.series === series.id &&
+    (series.homeTeam.players || []).some(p => p.name === r.subject || r.subject === 'TEAM:' + homeAbbr)
+  );
+  const externalAwayFatigue = externalResearch.filter(r =>
+    r.signalType === 'fatigue' && r.series === series.id &&
+    (series.awayTeam.players || []).some(p => p.name === r.subject || r.subject === 'TEAM:' + awayAbbr)
+  );
+
+  // External evidence weight: sum of finding weights (each weighted by source credibility)
+  const externalHomeWeight = externalHomeFatigue.reduce((a, r) => a + r.weight, 0);
+  const externalAwayWeight = externalAwayFatigue.reduce((a, r) => a + r.weight, 0);
+
+  // Compute fatigue index: avg min + heavy-load fraction + qualitative weight + EXTERNAL evidence
+  const homeIndex = homeFatigue.avgMin / 40
+    + homeFatigue.heavyLoad * 0.3
+    + qualHomeFatigue.reduce((a, s) => a + s.severity, 0) * 0.2
+    + externalHomeWeight * 0.15;
+  const awayIndex = awayFatigue.avgMin / 40
+    + awayFatigue.heavyLoad * 0.3
+    + qualAwayFatigue.reduce((a, s) => a + s.severity, 0) * 0.2
+    + externalAwayWeight * 0.15;
   const netFatigueImpact = homeIndex - awayIndex; // positive = home is more fatigued = away edge
 
   const edge = -netFatigueImpact / 0.5; // scale to [-1,+1]
@@ -237,13 +258,17 @@ function fatigueAgent(series, gameNum, market, SERIES_DATA, qualSignals) {
   return {
     agent: 'fatigue',
     side, edge: Math.max(-1, Math.min(1, edge)),
-    confidence: 0.5 + 0.1 * lastGameSignals.length,
-    evidenceCount: homeFatigue.sampleSize + awayFatigue.sampleSize + lastGameSignals.length,
-    method: 'Last-5-game minute load for top-4 starters + qualitative signals from prior game',
+    confidence: 0.5 + 0.1 * lastGameSignals.length + 0.05 * (externalHomeFatigue.length + externalAwayFatigue.length),
+    evidenceCount: homeFatigue.sampleSize + awayFatigue.sampleSize + lastGameSignals.length + externalHomeFatigue.length + externalAwayFatigue.length,
+    method: 'Last-5-game minute load + user qualitative signals + web-sourced analyst evidence',
     evidence: [
       { type: 'home-team-load', finding: `${homeAbbr} top players avg ${homeFatigue.avgMin.toFixed(1)} min/game, ${(homeFatigue.heavyLoad * 100).toFixed(0)}% of appearances over 38min` },
       { type: 'away-team-load', finding: `${awayAbbr} top players avg ${awayFatigue.avgMin.toFixed(1)} min/game, ${(awayFatigue.heavyLoad * 100).toFixed(0)}% of appearances over 38min` },
-      ...lastGameSignals.map(s => ({ type: 'qual-signal', finding: `${s.subject}: ${s.signal} (severity ${s.severity}) — ${s.evidence.slice(0, 120)}...` })),
+      ...lastGameSignals.map(s => ({ type: 'qual-signal', finding: `[USER] ${s.subject}: ${s.signal} (sev ${s.severity}) — ${s.evidence.slice(0, 100)}...` })),
+      ...externalHomeFatigue.concat(externalAwayFatigue).map(r => ({
+        type: 'external',
+        finding: `[${r.source}] ${r.finding.slice(0, 140)}${r.quote ? ' "' + r.quote + '"' : ''}`
+      })),
       { type: 'fatigue-net', finding: `Net fatigue impact: ${netFatigueImpact > 0 ? homeAbbr : awayAbbr} more fatigued by index ${Math.abs(netFatigueImpact).toFixed(2)}` },
     ],
   };
@@ -532,11 +557,11 @@ function adversarialCheck(verdicts, synthesis, series, gameNum) {
 // RUN THE COUNCIL
 // ──────────────────────────────────────────────────────────────────
 
-function runCouncil(series, gameNum, market, SERIES_DATA, qualitativeSignals) {
+function runCouncil(series, gameNum, market, SERIES_DATA, qualitativeSignals, externalResearch) {
   const verdicts = [
     spreadValueAgent(series, gameNum, market, SERIES_DATA),
     matchupAgent(series, gameNum, market, SERIES_DATA),
-    fatigueAgent(series, gameNum, market, SERIES_DATA, qualitativeSignals),
+    fatigueAgent(series, gameNum, market, SERIES_DATA, qualitativeSignals, externalResearch),
     coachingAgent(series, gameNum, market, SERIES_DATA),
     momentumAgent(series, gameNum, market, SERIES_DATA),
     marketAgent(series, gameNum, market, SERIES_DATA),
