@@ -71,6 +71,65 @@ For each claim in the essay:
   - Any made-up statistic
   - Critical thesis claim is unverified
 
+- **HARD_FAIL** (no further rewrites — escalate immediately) if ANY of:
+  - This is rewrite attempt 3 and verification rate still < 80%
+  - Same fabricated claim has been re-asserted across ≥ 2 attempts
+    (the "stubborn fabrication" pattern — agent isn't learning)
+  - Rewrite N+1 has FEWER verified claims than rewrite N
+    (the "whack-a-mole" pattern — fixing one breaks another)
+  - Tool-failure rate > 30% (WebFetch timeouts skewing verification)
+    — in this case, retry the fact-check before failing the essay
+
+## Stuck-Loop Detection (you must implement this)
+
+You receive an attempt counter (`attemptNumber`) and the prior rewrite
+attempts (`priorAttempts`). Before issuing FAIL_REWRITE, check:
+
+1. **Stubborn fabrication**: Does this essay re-assert any claim that
+   was flagged as `fabricated` in `priorAttempts`?
+   → If yes, mark `HARD_FAIL` with reason `stubborn_fabrication`.
+
+2. **Whack-a-mole**: Does this essay introduce NEW fabrications while
+   leaving old ones unfixed?
+   → If yes AND `attemptNumber >= 2`, mark `HARD_FAIL` with reason `whack_a_mole`.
+
+3. **Tool-failure dominance**: Are > 30% of "unverified" results due
+   to WebFetch / WebSearch failure (vs claim actually being unsupported)?
+   → If yes, output `RETRY_FACTCHECK` not `FAIL_REWRITE` — the issue is
+     verification tools, not the essay.
+
+4. **Diminishing returns**: Is verification rate DECREASING across
+   attempts (1st: 75%, 2nd: 65%, 3rd: 50%)?
+   → If yes, mark `HARD_FAIL` with reason `diminishing_returns`.
+
+## What Happens at HARD_FAIL (essay can't be saved)
+
+The synthesizer treats HARD_FAILed essays differently per reason:
+
+- `stubborn_fabrication` → DROP the essay entirely. Agent's vote does
+  not count in synthesis. Logged for prompt revision.
+- `whack_a_mole` → REDACT the unverified claims; keep verified content
+  as a "stripped" essay; mark with reduced weight in synthesis.
+- `diminishing_returns` → KEEP last attempt's verified content only;
+  mark as "low confidence, partial essay."
+- `tool_failure_dominance` → DON'T HARD_FAIL; flag for manual review.
+- `attempt_limit_exceeded` (3 tries, still < 80%) → REDACT + low confidence.
+
+## Output Format Update
+
+```json
+{
+  "agentName": "fatigue|...",
+  "round": 1,
+  "attemptNumber": 1,
+  "claims": [...],
+  "summary": {...},
+  "overallVerdict": "PASS|FAIL_REWRITE|HARD_FAIL|RETRY_FACTCHECK",
+  "hardFailReason": "stubborn_fabrication|whack_a_mole|diminishing_returns|tool_failure_dominance|attempt_limit_exceeded" (only if HARD_FAIL),
+  "feedback": "..."
+}
+```
+
 ## Feedback Format (when FAIL_REWRITE)
 
 ```

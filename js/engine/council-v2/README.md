@@ -12,7 +12,25 @@ After each essay generation round, a **Fact-Check Agent** verifies every claim a
 - Local evidence DB (`js/data/external-research.js`, `series-data.js`, etc.)
 - Live web verification (WebFetch on cited URLs)
 
-If verification fails (<80% rate or any fabricated citation), the essay-generating agent is invoked AGAIN with the fact-check feedback and must rewrite. Up to N=3 rewrite attempts before the essay is marked "could not verify; weight reduced."
+### Fact-Check Loop Termination (Bounded)
+
+The loop is provably finite via multiple safeguards (not just N=3 retry cap):
+
+| Exit condition | Trigger | Synthesis treatment |
+|---|---|---|
+| **PASS** | ≥80% verified, no fabrications | Full weight |
+| **HARD_FAIL: stubborn_fabrication** | Same fabricated claim re-asserted across ≥2 attempts | Drop essay entirely |
+| **HARD_FAIL: whack_a_mole** | New fabrications introduced while old ones unfixed (after attempt 2) | Redact unverified, reduce weight |
+| **HARD_FAIL: diminishing_returns** | Verification rate decreases across attempts | Keep last attempt's verified content, low confidence |
+| **HARD_FAIL: attempt_limit_exceeded** | 3 attempts, still < 80% verified | Redact + low confidence |
+| **RETRY_FACTCHECK** | > 30% unverifieds due to tool-failures (WebFetch timeouts) | Re-run fact-check, no essay rewrite needed |
+
+Additional global safeguards:
+- **Per-essay max cost cap**: 8 subagent calls (1 original + 1 check + 3 rewrites + 3 rewrite-checks)
+- **Per-round max cost cap**: 64 subagent calls (8 essays × 8)
+- **Per-deliberation max cost cap**: 5 rounds × 64 + 1 synthesizer = 321 calls
+- **Workflow tool global cap**: 1000 agents per workflow run (hard ceiling, prevents runaway)
+- **Meta-check on the fact-checker**: every Nth deliberation, a second fact-checker spot-audits the first to catch fact-checker hallucinations
 
 ## Round Structure (with Fact-Check Loop)
 
