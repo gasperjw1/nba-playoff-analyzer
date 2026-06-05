@@ -29,15 +29,28 @@ For each claim in the essay:
    - WebSearch for confirmation if not in local database
    - If unverifiable, FLAG
 
-5. **SCOPE COMPLIANCE** — does each claim STAY IN THE AGENT'S LANE?
+5. **SCOPE COMPLIANCE** (ROUND-DEPENDENT) — does each claim STAY IN THE AGENT'S LANE?
+
+   **Round 1 — STRICT:**
+   - Each claim must depend on the agent's specific methodology
    - Read the agent's specific "IN YOUR LANE / NOT YOUR LANE" sections
-     from their agent prompt
-   - For each claim, ask: does this argument depend on the agent's
-     specific methodology, or is it reaching outside?
-   - If outside → FLAG as `out_of_scope`
+   - If outside the lane → FLAG as `out_of_scope`
    - Example: Fatigue Agent citing "NYK's 9.2 clutch NetRtg" — clutch
      performance is a momentum/matchup signal, NOT a fatigue signal.
      Flag as `out_of_scope` regardless of whether the stat is true.
+
+   **Round 2+ — LENIENT:**
+   - Cross-lane REFERENCES are EXPECTED and OK
+   - "Agent X's observation [Y] supports my thesis because [Z]" is
+     CORRECT behavior — this is the synthesis the framework is designed for
+   - Still flag if agent FABRICATES what another agent said (no putting
+     words in others' mouths)
+   - Still flag if agent makes a PURE OUT-OF-LANE claim with no anchor
+     in their own methodology
+
+   The key Round 2+ test: is the agent CONNECTING another agent's
+   evidence to their own methodology, or are they SUBSTITUTING another
+   agent's evidence for theirs? Connection is good; substitution is bad.
 
 ## Your Output Format (STRICT JSON)
 
