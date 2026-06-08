@@ -442,6 +442,138 @@ const USER_BET_LEDGER = [
       "pnl": -50,
       "settledAt": "2026-06-04T17:47:02.963Z"
     }
+  },
+  {
+    "id": "user-2026-06-05-001",
+    "date": "2026-06-05",
+    "loggedAt": "2026-06-08T22:03:23.869Z",
+    "series": "SAS-NYK",
+    "game": 2,
+    "type": "parlay",
+    "source": "manual-thesis",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": 170,
+    "legs": [
+      {
+        "player": "Dylan Harper",
+        "stat": "pra",
+        "line": 14.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Cross-team PRA double — role-player PRA on minutes-secure bench guard",
+        "hit": true,
+        "actualValue": 23
+      },
+      {
+        "player": "Karl-Anthony Towns",
+        "stat": "pra",
+        "line": 29.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Star PRA OVER on Brown hub-action amplification — KAT 38 PRA (21pts/13reb/4ast) crushed line by 8.5",
+        "hit": true,
+        "actualValue": 38
+      }
+    ],
+    "notes": "G2 parlay 1 — cross-team PRA OVER double (SAS bench + NYK star). Both cleared with room. Odds/stake estimated by Claude (user to confirm exact).",
+    "result": {
+      "outcome": "win",
+      "pnl": 85,
+      "settledAt": "2026-06-08T22:10:00.000Z"
+    }
+  },
+  {
+    "id": "user-2026-06-05-002",
+    "date": "2026-06-05",
+    "loggedAt": "2026-06-08T22:03:23.872Z",
+    "series": "SAS-NYK",
+    "game": 2,
+    "type": "parlay",
+    "source": "manual-thesis",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": 250,
+    "legs": [
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pts",
+        "line": 31.5,
+        "direction": "under",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Star UNDER on high pts line — fatigue/matchup ceiling cap. Wemby 29 pts (40 min) cleared.",
+        "hit": true,
+        "actualValue": 29
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 18.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Volume-floor OVER on opposite-direction star. Castle suppresses FG% (12-31) but volume + FTs delivered 20 pts.",
+        "hit": true,
+        "actualValue": 20
+      }
+    ],
+    "notes": "G2 parlay 2 — direction-hedged star pts (Wemby U + Brunson O). Repeats winning G1 Bet 1 pattern (Wemby U + Brunson O + role-player anchor). Odds/stake estimated.",
+    "result": {
+      "outcome": "win",
+      "pnl": 125,
+      "settledAt": "2026-06-08T22:10:00.000Z"
+    }
+  },
+  {
+    "id": "user-2026-06-05-003",
+    "date": "2026-06-05",
+    "loggedAt": "2026-06-08T22:03:23.872Z",
+    "series": "SAS-NYK",
+    "game": 2,
+    "type": "parlay",
+    "source": "manual-thesis",
+    "inspiredBy": null,
+    "stake": 50,
+    "americanOdds": 250,
+    "legs": [
+      {
+        "player": "Julian Champagnie",
+        "stat": "threes",
+        "line": 2.5,
+        "direction": "under",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "NEW DIMENSION — Champagnie 3PT UNDER on volume cap. Knicks H2 corner-closeout scheme from G1 expected to compress his attempts. Result: 2 threes — just under the line.",
+        "hit": true,
+        "actualValue": 2
+      },
+      {
+        "player": "Landry Shamet",
+        "stat": "threes",
+        "line": 1.5,
+        "direction": "over",
+        "odds": null,
+        "fromCandidate": false,
+        "candidateHitRate": null,
+        "note": "Bench shooter OVER on 1.5 threes — Brown rides hot hands. Shamet 33 min in G1, 26 in G2, 3 threes. Cleared by 1.5.",
+        "hit": true,
+        "actualValue": 3
+      }
+    ],
+    "notes": "G2 parlay 3 — cross-team threes hedge (one SAS UNDER + one NYK OVER). NEW THEMATIC PATTERN: directional-hedged 3PT props vs prior PRA stack focus. Both legs are role players. Odds/stake estimated.",
+    "result": {
+      "outcome": "win",
+      "pnl": 125,
+      "settledAt": "2026-06-08T22:10:00.000Z"
+    }
   }
 ];
 

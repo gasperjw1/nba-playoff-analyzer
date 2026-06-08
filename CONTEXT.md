@@ -1,6 +1,6 @@
 # NBA Playoff Analyzer 2026 — Project Context
 
-> Snapshot of project state for future sessions. Last updated **June 4, 2026** (Daily 6/4 — Finals G1 recorded: NYK 105-95 over SAS, Knicks steal Game 1 on the road and lead 1-0; engine wrong-winner G1 [SAS by 2]; role-player PRA floor broke for the first time on Keldon Johnson's 8-min playoff low; Finals G2 authored for Fri 6/5).
+> Snapshot of project state for future sessions. Last updated **June 8, 2026** (Daily 6/8 — Finals G2 recorded: NYK 105-104 over SAS, Knicks steal Game 2 too and lead **2-0**; engine wrong-winner AGAIN [SAS by 4 → NYK by 1] but margin/total/spread reads now **2-0** [NYK +5.5 + UNDER cashed both games]; minutes-vetted PRA floor BOUNCED BACK [+$135], cross-team REB floor lost on Wemby's 9-reb dip; Finals G3 authored for tonight Mon 6/8 at MSG, NYK -2.5 / 216.5).
 
 For day-to-day workflow see [DAILY_UPDATE.md](DAILY_UPDATE.md).
 For the calibration audit findings see [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).
@@ -21,12 +21,13 @@ Three-layer architecture:
 
 ---
 
-## Current state (June 4, 2026)
+## Current state (June 8, 2026)
 
-**Live round:** NBA Finals (R4) — SAS vs NYK, 1999 rematch. **NYK leads 1-0.**
-- **Finals G1 (Wed 6/3):** NYK 105-95 at Frost Bank Center — Knicks erased a 14-pt Q3 deficit and outscored SAS 57-40 in the 2nd half (11-0 close). Brunson 30 (12-31), KAT 18/12, OG 17, Hart 3/15reb/6ast/4stl, Shamet 13 off the bench; Mitchell Robinson played through a fractured hand and anchored Wemby's 6-21 night. SAS: Wemby 26/12/3blk (inefficient), Castle 17/8, Champagnie 16/10 + Harper 16/8 off the bench, Fox 7 on 3-13. **Engine wrong-winner** (SAS by 2 → NYK by 10) — Finals out-of-sample caveat fired G1. Total 200 cashed the UNDER.
-- **Today 6/4 is an OFF-DAY** (between G1 and G2). Finals G2 is **Fri 6/5, 8:30 PM ET on ABC** at Frost Bank Center — SAS near-must-win, DK SAS -5.5 / 214.5 / ML SAS -230, NYK +180. Engine SAS by ~4 (COMPETITIVE), UNDER the -5.5 → NYK +5.5 is the model value side.
-- **Betting retro (G1):** singles 4-3 (spread/total/Wemby PRA/Champagnie PRA won; ML/Brunson/Castle lost). Featured parlays 0-3 (-$250) — **the role-player PRA floor BROKE for the first time** when Keldon Johnson played an 8-min playoff low (4 PRA), even though minutes-secure Champagnie (27) + Harper (25) cleared. New rule baked into G2: vet each floor leg's rotation-minutes floor; drop staple-benchable wings. User's own logged bets went 1-1 (now 6-1 all-time, PRA legs still 11/11).
+**Live round:** NBA Finals (R4) — SAS vs NYK, 1999 rematch. **NYK leads 2-0.**
+- **Finals G1 (Wed 6/3):** NYK 105-95 at Frost Bank Center — Knicks erased a 14-pt Q3 deficit and outscored SAS 57-40 in the 2nd half (11-0 close). Brunson 30 (12-31), KAT 18/12, OG 17, Hart 3/15reb/6ast/4stl. **Engine wrong-winner** (SAS by 2 → NYK by 10). Total 200 cashed the UNDER. Parlays 0-3 (-$250) — PRA floor broke on Keldon's 8-min playoff low.
+- **Finals G2 (Fri 6/5):** NYK 105-104 at Frost Bank Center — Knicks steal Game 2 too, third team ever to start a Finals 2-0 on the road (1993 Bulls, 1995 Rockets). NYK led 97-83 in Q4, survived a SAS 14-0 run, then Brunson's go-ahead FT off a Wemby turnover + Wemby's missed buzzer look sealed it. KAT 21/13 (38 PRA), Bridges 20/6/6, OG 17, Brunson 20 on 7-25 (Castle finally suppressed the POINTS) + 6ast/5stl. SAS: Wemby 29/9/4blk (bounce-back scoring but only 9 reb + the late mistakes), Fox 20/5, Vassell 14/9/5, Harper 15/6 + Champagnie 8/4. **Engine wrong-winner AGAIN** (SAS by 4 → NYK by 1) — but the margin read was sharp and **NYK +5.5 + UNDER 214.5 both cashed** (total 209). The pattern across two games: **engine home/winner lean 0-2, margin/total/spread reads 2-0** — trust the derived spread/total, distrust the raw winner pick.
+- **Tonight 6/8 — Finals G3 at MSG** (first Finals at the Garden since 1999), 8:30 PM ET ABC — SAS @ NYK, **SAS faces the 0-3 cliff.** DK NYK -2.5 / 216.5 / ML NYK -125, SAS +105. Engine NYK by 1 (COMPETITIVE) — inside the -2.5 → SAS +2.5 is the model value side, engine ~210 UNDER 216.5 (Finals UNDER lean extends).
+- **Betting retro (G2):** singles 5-1 (spread/total/Wemby PRA/Champagnie PRA/Harper PRA won; SAS ML lost). Featured parlays 1-2 (-$15): **minutes-vetted PRA floor WON (+$135)** (Champagnie 13/Harper 23/Wemby 41 PRA — the G1 minutes-security fix worked), but the cross-team REB floor LOST on **Wemby's 9-reb dip** (Mitchell Robinson's increased deterrent minutes — validated the "degrade REB vs a committed box-out" rule) and the NYK-cover trad LOST on Brunson's 20-pt night (Castle suppressed the points). **User's own logged bets went 3-0 in G2** — now **9-1 all-time** (+$820, ROI 164%), PRA legs 13/13, pts 13/13. The user is hitting everything; their bets are a strong signal.
 
 **Series complete (R1-R3):**
 - WCF: **SAS won 4-3 over OKC** (G7 5/30, SAS 111-103 — Champagnie 20 off bench, Castle hounded SGA; engine wrong-winner). SAS reaches first Finals since 2014.
