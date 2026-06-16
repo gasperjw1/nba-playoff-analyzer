@@ -2621,6 +2621,250 @@ const CHS_LAB_LEDGER = [
         }
       ]
     },
+    "actual": {
+      "winner": "SAS",
+      "homeScore": 106,
+      "awayScore": 104,
+      "margin": 2
+    },
+    "settlement": {
+      "reliable": null,
+      "traditional": {
+        "outcome": "loss",
+        "legResults": [
+          {
+            "player": "Landry Shamet",
+            "stat": "pts",
+            "line": 5.5,
+            "hit": false,
+            "actualValue": 4
+          },
+          {
+            "player": "Karl-Anthony Towns",
+            "stat": "pra",
+            "line": 24.5,
+            "hit": true,
+            "actualValue": 38
+          },
+          {
+            "player": "Devin Vassell",
+            "stat": "pra",
+            "line": 15.5,
+            "hit": true,
+            "actualValue": 23
+          },
+          {
+            "player": "Victor Wembanyama",
+            "stat": "reb",
+            "line": 7.5,
+            "hit": true,
+            "actualValue": 14
+          }
+        ],
+        "pnl": -100
+      },
+      "settledAt": "2026-06-16T04:12:49.388Z"
+    }
+  },
+  {
+    "date": "2026-06-16",
+    "series": "SAS-NYK",
+    "game": 6,
+    "capturedAt": "2026-06-16T04:12:50.298Z",
+    "iterations": 3000,
+    "mc": {
+      "homeWinProb": 0.527,
+      "blowoutRisk": 0.349,
+      "marginP50": 1.5
+    },
+    "candidates": [
+      {
+        "player": "Josh Hart",
+        "stat": "pra",
+        "line": 16.5,
+        "direction": "over",
+        "hitRate": 0.803,
+        "estJuice": -408,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 31.2
+      },
+      {
+        "player": "Landry Shamet",
+        "stat": "pts",
+        "line": 5.5,
+        "direction": "over",
+        "hitRate": 0.803,
+        "estJuice": -408,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 24.6
+      },
+      {
+        "player": "OG Anunoby",
+        "stat": "pra",
+        "line": 22.5,
+        "direction": "over",
+        "hitRate": 0.801,
+        "estJuice": -403,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 35.8
+      },
+      {
+        "player": "Mikal Bridges",
+        "stat": "pts",
+        "line": 9.5,
+        "direction": "over",
+        "hitRate": 0.807,
+        "estJuice": -418,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 31.6
+      },
+      {
+        "player": "Dylan Harper",
+        "stat": "pts",
+        "line": 6.5,
+        "direction": "over",
+        "hitRate": 0.816,
+        "estJuice": -443,
+        "team": "SAS",
+        "position": "PG",
+        "projMinutes": 28.8
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "pra",
+        "line": 24.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 35
+      },
+      {
+        "player": "Stephon Castle",
+        "stat": "pra",
+        "line": 16.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "SAS",
+        "position": "SG",
+        "projMinutes": 33.2
+      },
+      {
+        "player": "OG Anunoby",
+        "stat": "pts",
+        "line": 14.5,
+        "direction": "over",
+        "hitRate": 0.814,
+        "estJuice": -438,
+        "team": "NYK",
+        "position": "SF",
+        "projMinutes": 35.8
+      },
+      {
+        "player": "Jalen Brunson",
+        "stat": "pts",
+        "line": 18.5,
+        "direction": "over",
+        "hitRate": 0.811,
+        "estJuice": -429,
+        "team": "NYK",
+        "position": "PG",
+        "projMinutes": 39.6
+      },
+      {
+        "player": "Miles McBride",
+        "stat": "reb",
+        "line": 1.5,
+        "direction": "over",
+        "hitRate": 0.811,
+        "estJuice": -429,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 22
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "reb",
+        "line": 7.5,
+        "direction": "over",
+        "hitRate": 0.81,
+        "estJuice": -426,
+        "team": "SAS",
+        "position": "C",
+        "projMinutes": 35
+      },
+      {
+        "player": "Miles McBride",
+        "stat": "pra",
+        "line": 11.5,
+        "direction": "over",
+        "hitRate": 0.81,
+        "estJuice": -426,
+        "team": "NYK",
+        "position": "SG",
+        "projMinutes": 22
+      }
+    ],
+    "reliable": null,
+    "traditional": {
+      "legCount": 4,
+      "combinedMC": 0.423,
+      "calibratedCombined": 0.129,
+      "americanOdds": 133,
+      "stake": 100,
+      "legs": [
+        {
+          "player": "Josh Hart",
+          "stat": "pra",
+          "line": 16.5,
+          "direction": "over",
+          "hitRate": 0.803,
+          "estJuice": -408,
+          "team": "NYK",
+          "position": "SG",
+          "projMinutes": 31.2
+        },
+        {
+          "player": "Landry Shamet",
+          "stat": "pts",
+          "line": 5.5,
+          "direction": "over",
+          "hitRate": 0.803,
+          "estJuice": -408,
+          "team": "NYK",
+          "position": "SG",
+          "projMinutes": 24.6
+        },
+        {
+          "player": "Dylan Harper",
+          "stat": "pts",
+          "line": 6.5,
+          "direction": "over",
+          "hitRate": 0.816,
+          "estJuice": -443,
+          "team": "SAS",
+          "position": "PG",
+          "projMinutes": 28.8
+        },
+        {
+          "player": "Victor Wembanyama",
+          "stat": "pra",
+          "line": 24.5,
+          "direction": "over",
+          "hitRate": 0.814,
+          "estJuice": -438,
+          "team": "SAS",
+          "position": "C",
+          "projMinutes": 35
+        }
+      ]
+    },
     "actual": null,
     "settlement": null
   }

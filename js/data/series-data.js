@@ -6806,7 +6806,12 @@ const SERIES_DATA = [
         { type: "missed", lesson: "G4: WRONG ABOUT THE GAME SHAPE EVEN WHILE RIGHT ON THE NUMBERS — the engine read G4 as a tight wire-to-wire COIN FLIP (projectedOT true), but the actual game was a 29-point SAS blowout that became the largest comeback in Finals history. The final margin matched (NYK by 1), so every market read cashed, but the model had NO signal for the 27-point halftime swing. R4 nuance: the engine predicts the FINISH well (margin/total/spread) but has no within-game trajectory model — a correct final margin can hide a wild path, which matters for live/in-game derivatives the model doesn't touch. The static pre-game read was right; don't over-credit it for 'seeing' a game it actually mis-shaped." },
         { type: "correct", lesson: "G4: MINUTES-VETTED ROLE-PRA FLOOR HELD A FOURTH STRAIGHT TIME — Harper (28 PRA / 21-4-3, 32 min) and Champagnie (13 PRA / 5-5-3 + 4 STL, 33 min) both cleared their 9.5 alts AGAIN, even though Champagnie shot a frigid 2-9. That cold-night clear is the whole thesis: the PRA composite is variance-proof for a minutes-secure role player because the rebounds/assists/steals backstop a bad shooting night. The SAS role-PRA reliable parlay is now 3-for-3 when authored (G2, G3, G4). R4 rule re-confirmed at maximum strength: this is the single most dependable dimension in the series — anchor every reliable parlay here." },
         { type: "correct", lesson: "G4: WEMBY PRA CLEARED A FOURTH TIME ON A COLD NIGHT (38 PRA on 9-25 shooting) — the reb/ast/blk-backed composite cleared 33.5 again (40/41/46/38) precisely because the 13 boards + FT volume carried it when the shot wasn't falling. This is the exact distinction from the G3 KAT break: a PRA floor backed by GUARANTEED reb/ast volume (Wemby ~12-13 reb) survives a bad shooting night; a scoring-dependent one (KAT, reb/ast base ~10) does not. R4 rule: prefer reb/ast-backed star PRA composites for floors; the shooting variance washes out." },
-        { type: "missed", lesson: "G4: KAT STAR-PRA STILL FELL SHORT (25 PRA, missed the 30.5) despite an EFFICIENT bounce-back (13/10 on 4-5) — this time the suppressor wasn't the matchup but MINUTES: foul trouble held KAT to 26 minutes, capping the counting stats even on great efficiency. R4 nuance layered onto the G3 lesson: the scoring-dependent star PRA is fragile to BOTH matchup suppression (G3, Wemby's blocks) AND minutes volatility (G4, foul trouble) — two independent failure modes the minutes-secure role floors don't carry. Keep KAT-type star PRA out of the reliable tier." }
+        { type: "missed", lesson: "G4: KAT STAR-PRA STILL FELL SHORT (25 PRA, missed the 30.5) despite an EFFICIENT bounce-back (13/10 on 4-5) — this time the suppressor wasn't the matchup but MINUTES: foul trouble held KAT to 26 minutes, capping the counting stats even on great efficiency. R4 nuance layered onto the G3 lesson: the scoring-dependent star PRA is fragile to BOTH matchup suppression (G3, Wemby's blocks) AND minutes volatility (G4, foul trouble) — two independent failure modes the minutes-secure role floors don't carry. Keep KAT-type star PRA out of the reliable tier." },
+        { type: "correct", lesson: "G5: THE ENGINE FINALLY HIT A FINALS WINNER ON THE HOME TEAM (predicted SAS by 3, actual SAS by 2) — the home/closeout read landed for the first time on a home favorite, improving the Finals winner pick to 2-3 and matching the margin within 1. The decisive factor was the one the Phase 73 elimination amplifier priced correctly: a desperate home team down 3-1, 6-1 at its own building, played its most controlled game of the series. R4 confirmation: the elimination amplifier's desperate-home-team bump is a REAL signal when the home team is both desperate AND structurally strong at home — distinct from the misleading flat +1pt HCA nudge that went 0-3. The winner pick's anchor remains the margin (close predicted, close delivered all five Finals games)." },
+        { type: "correct", lesson: "G5: SPREAD-VALUE SIDE IS NOW A PERFECT 5-FOR-5 — NYK +3 covered (SAS won by 2, inside the 3) after NYK +5.5, NYK +2.5, SAS +2.5, SAS +1.5. The engine's number sat AT the line (SAS by 3 vs SAS -3), the thinnest read of the series with no inside-the-number cushion, and the value side STILL cashed because SAS won by less than the number. R4 elevated to series law: the spread-value side the engine identifies is the single most reliable BET in the Finals — flawless across all five games regardless of who wins outright. Bet the points, ignore the moneyline." },
+        { type: "correct", lesson: "G5: THE FROST BANK UNDER HELD A THIRD STRAIGHT TIME (210, UNDER 211.5) — all three San Antonio games went UNDER (200, 209, 210), while MSG split (226 OVER, 213 UNDER). This confirms the venue-split read the G3 break first exposed: the Frost Bank grind pace is a real UNDER tailwind; MSG is a coin flip. R4 rule confirmed: read the Finals total PER-VENUE — lean UNDER in San Antonio, no conviction at MSG. Do not treat a series-long total tendency as venue-independent." },
+        { type: "correct", lesson: "G5: MINUTES-VETTED ROLE-PRA FLOOR HELD A FIFTH STRAIGHT TIME — Champagnie (15 PRA, 31 min) and Harper (17 PRA, 28 min) both cleared their 9.5 alts AGAIN, and Wemby's reb-backed composite cleared 33.5 for the fifth straight game (51 PRA on a 33/14 night). The SAS role-PRA reliable parlay is now 4-for-4 when authored (G2, G3, G4, G5) and every leg has cleared in all five games. R4 rule at maximum strength: this is the single most dependable STRUCTURE in the series — anchor every reliable parlay on minutes-secure role-player PRA backed by guaranteed reb/ast volume, never on a scoring-dependent star composite (KAT broke twice)." },
+        { type: "missed", lesson: "G5: THE 'FOX PROBLEM' INVERTED — after the G4 cold-shooting, late-mistakes collapse (the blocked layup), Fox bounced back to 24/9 and was the closer SAS needed in an elimination game. R4 nuance: a star's single-game closing failure is NOT a stable predictor of the next game; Fox's volatility cuts both ways and the model has no reliable signal for which Fox shows up game-to-game. Treat his scoring/closing as high-variance rather than extrapolating one bad close into the next prediction." }
       ],
       priorRound: {
           home: {
@@ -7474,10 +7479,34 @@ const SERIES_DATA = [
           },
           {
               num: 5,
-              result: null,
-              homeScore: null,
-              awayScore: null,
-              winner: null,
+              result: "SAS",
+              homeScore: 106,
+              awayScore: 104,
+              winner: "SAS",
+              boxScores: {
+                  home: [
+                      { name:"V. Wembanyama", min:38, pts:33, reb:14, ast:4, stl:1, blk:4, fg:"12-22", threes:"2-5", ft:"7-9", to:2, note:"The elimination masterpiece — 33/14/4 with 4 blocks (51 PRA, cleared the 33.5 alt for the fifth straight game) on an efficient 12-22. Maximum usage at home, anchored the rim down the stretch as NYK's offense stalled. The night SAS needed and the cleanest Wemby line of the series." },
+                      { name:"De'Aaron Fox", min:40, pts:24, reb:4, ast:9, stl:2, blk:0, fg:"9-19", threes:"3-7", ft:"3-4", to:3, note:"Atonement — 24/4/9 and the closer SAS lacked in G4 (the blocked layup). Hit the dagger pull-up inside a minute and ran the half-court offense that controlled the grind. The 'Fox problem' inverted for one night." },
+                      { name:"Devin Vassell", min:36, pts:16, reb:5, ast:2, stl:1, blk:0, fg:"6-13", threes:"4-9", ft:"0-0", to:1, note:"16 on 4-9 from deep — the movement shooting that kept SAS ahead through the middle quarters." },
+                      { name:"Stephon Castle", min:34, pts:13, reb:6, ast:5, stl:2, blk:0, fg:"5-12", threes:"1-3", ft:"2-2", to:2, note:"13/6/5 + 2 steals on the Brunson assignment — held Brunson to 10-25 and stayed out of foul trouble (34 min) in the game SAS had to have." },
+                      { name:"Julian Champagnie", min:31, pts:8, reb:6, ast:1, stl:2, blk:1, fg:"3-7", threes:"2-5", ft:"0-0", to:0, note:"8/6/1 + 2 stl = 15 PRA — cleared the 9.5 alt for the FIFTH straight game on 31 secure minutes. The minutes-vetted role floor held again, exactly as the thesis keys." },
+                      { name:"Dylan Harper", min:28, pts:9, reb:4, ast:4, stl:0, blk:0, fg:"4-9", threes:"1-3", ft:"0-0", to:2, note:"9/4/4 = 17 PRA — cleared the 9.5 alt for the fifth straight game on 28 secure minutes. The rookie combo-guard composite, game-script-independent as ever." },
+                      { name:"Keldon Johnson", min:16, pts:3, reb:3, ast:1, stl:0, blk:0, fg:"1-4", threes:"1-3", ft:"0-0", to:1, note:"Quiet 3 on 1-4 in the volatile rotation slot." },
+                      { name:"Carter Bryant", min:8, pts:0, reb:2, ast:0, stl:0, blk:0, fg:"0-2", threes:"0-1", ft:"0-0", to:0 },
+                      { name:"Luke Kornet", min:9, pts:0, reb:3, ast:0, stl:0, blk:1, fg:"0-1", threes:"0-0", ft:"0-0", to:0 }
+                  ],
+                  away: [
+                      { name:"Jalen Brunson", min:42, pts:30, reb:4, ast:9, stl:1, blk:0, fg:"10-25", threes:"3-8", ft:"7-8", to:4, note:"30/4/9 on 10-25 — Castle held the efficiency down again and the potential game-tying three rimmed out at the buzzer. Volume carried the points OVER but the offense couldn't crack the SAS half-court defense late." },
+                      { name:"OG Anunoby", min:38, pts:22, reb:6, ast:2, stl:1, blk:1, fg:"8-16", threes:"4-9", ft:"2-2", to:1, note:"22 on 4-9 from deep — the road shooting traveled a third straight game (28, 33, 22), but the supporting cast around Brunson couldn't match SAS's elimination intensity." },
+                      { name:"Karl-Anthony Towns", min:35, pts:23, reb:12, ast:3, stl:0, blk:0, fg:"9-16", threes:"2-4", ft:"3-4", to:2, note:"A clean 23/12 bounce-back (9-16) — the secondary scoring NYK needed, but Wemby's rim deterrence and the grind pace held the rest of the supporting cast quiet." },
+                      { name:"Mikal Bridges", min:33, pts:11, reb:4, ast:3, stl:1, blk:0, fg:"5-13", threes:"1-4", ft:"0-0", to:1, note:"11 on 5-13 — the secondary creation still hasn't fully returned (15/7/11 across G3-G5), and on a road elimination night NYK needed more." },
+                      { name:"Josh Hart", min:34, pts:10, reb:9, ast:6, stl:2, blk:0, fg:"4-8", threes:"2-4", ft:"0-0", to:2, note:"10/9/6 connective line + 2 steals — the glue again, but the transition surge that fueled the G4 comeback never materialized against a controlled SAS." },
+                      { name:"Mitchell Robinson", min:17, pts:4, reb:6, ast:0, stl:0, blk:2, fg:"2-3", threes:"0-0", ft:"0-2", to:1, note:"4/6/2blk on the fractured hand in 17 min — the rim deterrent, but Wemby's 33/14 was too much at the other end." },
+                      { name:"Landry Shamet", min:19, pts:4, reb:2, ast:1, stl:0, blk:0, fg:"1-4", threes:"1-3", ft:"1-1", to:0, note:"4 on 1-4 — the bench spacing went cold in San Antonio." },
+                      { name:"Jose Alvarado", min:13, pts:0, reb:1, ast:2, stl:0, blk:0, fg:"0-3", threes:"0-2", ft:"0-0", to:1, note:"Scoreless on 0-3 — the pace-pushing spark that lit G4 was smothered by the Frost Bank grind." },
+                      { name:"Jordan Clarkson", min:9, pts:0, reb:1, ast:0, stl:0, blk:0, fg:"0-2", threes:"0-1", ft:"0-0", to:1, note:"0 in 9 spot minutes." }
+                  ]
+              },
               prediction: {
                   homeWin: true,
                   homeScore: 108,
@@ -7499,9 +7528,37 @@ const SERIES_DATA = [
                   spread: "SAS -3",
                   ou: "O/U 211.5"
               },
+              notes: "SAS 106-104 at Frost Bank Center — San Antonio staves off elimination and forces G6, cutting NYK's lead to 3-2. The Spurs controlled a defensive grind and survived a late NYK push: Brunson's potential game-tying three rimmed out at the buzzer. Wembanyama delivered the elimination masterpiece — 33/14/4 with 4 blocks (51 PRA) on 12-22 — and De'Aaron Fox atoned for his G4 collapse with 24/9 (the closer SAS needed), while Vassell added 16 (4-9 3PT) and the minutes-vetted bench floors held a FIFTH straight time (Champagnie 15 PRA, Harper 17 PRA). NYK got 30/9 from Brunson (10-25, Castle held the efficiency down again), a bounce-back 23/12 from KAT, and 22 from OG Anunoby (4-9 3PT), but the offense stalled in the half-court and couldn't solve Wemby's rim protection down the stretch. MODEL: predicted SAS 108-105 (SAS by 3, MEDIUM, COMPETITIVE); ACTUAL SAS 106-104 (SAS by 2) — CORRECT WINNER (the engine's home/closeout read FINALLY lands on the home team; the Finals winner pick improves to 2-3) with a near-exact margin (off by 1). Every model read cashed AGAIN: SAS ML won, NYK +3 covered (SAS won by 2 — the spread-value side is now a PERFECT 5-for-5), the UNDER 211.5 hit on a 210 total (all three Frost Bank games went UNDER: 200, 209, 210), and all three PRA floors cleared (Wemby 51, Harper 17, Champagnie 15). The cleanest model night of the series — the first game where the winner, spread, total, AND every prop aligned. NYK still leads 3-2 with G6 back at MSG, where it gets a second shot at clinching its first title since 1973."
+          },
+          {
+              num: 6,
+              result: null,
+              homeScore: null,
+              awayScore: null,
+              winner: null,
+              prediction: {
+                  homeWin: true,
+                  homeScore: 107,
+                  awayScore: 106,
+                  margin: 1,
+                  confidence: "MEDIUM",
+                  character: "COIN FLIP",
+                  keyTakeaways: [
+                      "G6 Tue 6/16 at Madison Square Garden, 8:30 PM ET on ABC. NYK leads 3-2 and can CLINCH its first NBA title since 1973 at home; SAS must win to force a winner-take-all Game 7 back at Frost Bank Center",
+                      "Engine SAS by 1 (SAS 107 / NYK 106) — the Phase 73 elimination amplifier (SAS faces elimination) bumps the Spurs to a razor-thin edge even on the road, character COIN FLIP, projectedOT true. The tightest read the series can produce",
+                      "WINNER-PICK CAVEAT: the engine leans SAS, but the Finals winner pick is 2-3 and the home/elimination lean has whipsawed all series — the running R4 rule is to DISTRUST the raw side and lean on the margin/spread",
+                      "SPREAD-VALUE SIDE IS A PERFECT 5-FOR-5: engine SAS by 1 sits deep INSIDE the market NYK -4.5, so SAS +4.5 is the model value side — the same logic that cashed NYK +5.5, NYK +2.5, SAS +2.5, SAS +1.5, NYK +3",
+                      "TOTAL IS A MSG COIN FLIP: the two MSG games split (226 OVER, 213 UNDER) while all three San Antonio games went UNDER (200, 209, 210). Back at the Garden the venue gives no clean total edge; the engine OT-adjusted ~214 sits right at the 214.5",
+                      "CLINCH PSYCHOLOGY: NYK gets its first championship-point at home behind the Anunoby/Brunson scoring that won G4; SAS plays a second straight desperation game behind a Wembanyama who just found his half-court control (33/14/4 in G5). KAT's continued bounce-back is the NYK swing"
+                  ],
+                  reasoning: "Phase 71c engine: SAS 107, NYK 106 (SAS by 1) at Madison Square Garden — character COIN FLIP, projectedOT true, the tightest projection the series can produce. The Phase 73 elimination amplifier is ACTIVE (SAS faces elimination down 3-2) and bumps the Spurs to a razor-thin edge even on the road, which the running R4 lesson says to read with extreme caution: the engine's home/elimination winner lean has whipsawed all series and the Finals winner pick is only 2-3. The structural read for G6: (1) NYK CLINCH OPPORTUNITY — New York gets its first championship-point at home, where the MSG crowd and the Anunoby/Brunson scoring that authored the largest comeback in Finals history (G4) give it a clear path to its first title since 1973; even a loss sends it to a Game 7 with the series still in hand. (2) SAS SECOND DESPERATION GAME — the Spurs just found their half-court control in the G5 elimination win (Wembanyama 33/14/4, Fox's redemption 24/9) and must summon it again on the road; a confident, controlled SAS that protects the ball is the live underdog. (3) MARGIN OVER SIDE — the engine's winner pick is 2-3, but its margin calibration has been flawless (close predicted, close delivered all five games, an exact hit in G4) and the spread-value side is a perfect 5-for-5; with the engine putting SAS by 1 deep inside the NYK -4.5 market line, SAS +4.5 is the clean value side — bet the points, not the side. (4) THE RELIABLE THREADS — the SAS role-PRA floors (Wemby, Harper, Champagnie) have cleared every Finals game including both prior trips to MSG (G3, G4), so they travel; they anchor the reliable parlay regardless of who wins. DK opener (6/15): NYK -4.5 / total 214.5 / ML NYK -190, SAS +160 — the market has NYK as a clear home favorite to clinch, and the engine's SAS-by-1 sits ~5.5 points inside that line, making SAS +4.5 the model's spread-value side. The OT-adjusted total ~214 sits right at the 214.5 with no venue edge at MSG (the Garden split 226/213). The Finals out-of-sample caveat holds confidence at MEDIUM and the Phase 71 R3 stake cap at 50%; CAUTION pill auto-stamps.",
+                  xFactor: "Whether NYK's clinch poise + the MSG crowd close it out, or a desperate Wembanyama-led SAS extends to a winner-take-all Game 7. A NYK win delivers the franchise's first title since 1973 at home; a SAS win forces Game 7 back at Frost Bank, where the Spurs are nearly unbeaten. The SAS role-PRA floors (cleared every Finals game, including at MSG) are the reliable threads regardless of outcome; KAT's continued bounce-back and Brunson's efficiency vs Castle are the NYK swings.",
+                  moneyline: "NYK -190 / SAS +160",
+                  spread: "NYK -4.5",
+                  ou: "O/U 214.5"
+              },
               notes: ""
           },
-          { num: 6, result: null, homeScore: null, awayScore: null, winner: null, notes: "" },
           { num: 7, result: null, homeScore: null, awayScore: null, winner: null, notes: "" }
       ]
   },
