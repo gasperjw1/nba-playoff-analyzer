@@ -13,3 +13,4 @@ node_modules/
 # directories are local-only and not the project's responsibility.
 .claude/scheduled_tasks.lock
 .claude/worktrees/
+.claude/launch.json

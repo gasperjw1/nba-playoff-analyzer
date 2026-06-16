@@ -21,6 +21,10 @@
   </div>
 </div>
 
+<div class="sport-switcher" id="sportSwitcher">
+  <button class="sport-btn active" onclick="switchSport('nba')">🏀 NBA</button>
+  <button class="sport-btn" onclick="switchSport('baseball')">⚾ Baseball</button>
+</div>
 <div class="page-nav" id="pageNav">
   <button class="page-nav-btn active" onclick="switchPage('home')">Home</button>
   <button class="page-nav-btn" onclick="switchPage('series')">Series Analysis</button>
@@ -28,6 +32,10 @@
   <button class="page-nav-btn" onclick="switchPage('definitions')">Definitions</button>
   <button class="page-nav-btn" onclick="switchPage('bets')">Bets</button>
   <button class="page-nav-btn" onclick="switchPage('chs-lab')">CHS Lab</button>
+</div>
+<div class="page-nav" id="pageNavMlb" style="display:none">
+  <button class="page-nav-btn mlb-nav-btn active" onclick="switchBaseballPage('schedule')">Schedule</button>
+  <button class="page-nav-btn mlb-nav-btn" onclick="switchBaseballPage('bets')">Bets</button>
 </div>
 <div class="tabs" id="tabs"></div>
 <div class="main" id="main"></div>
@@ -138,6 +146,19 @@
 <script src="js/ui/home.js"></script>
 <script src="js/ui/chs-lab.js"></script>
 <script src="js/ui/navigation.js"></script>
+
+<!-- ============================================================ -->
+<!-- Baseball (MLB) — additive namespace, isolated MLB_* globals  -->
+<!-- Loads after edge-detector/risk-controls (reuse) + navigation -->
+<!-- (switchPage), before app.js. No NBA file is modified.         -->
+<!-- ============================================================ -->
+<script src="js/baseball/data/mlb-constants.js"></script>
+<script src="js/baseball/data/mlb-schedule.js"></script>
+<script src="js/baseball/data/mlb-bets.js"></script>
+<script src="js/baseball/engine/mlb-validators.js"></script>
+<script src="js/baseball/engine/mlb-projection.js"></script>
+<script src="js/baseball/engine/mlb-monte-carlo.js"></script>
+<script src="js/baseball/ui/baseball.js"></script>
 
 <!-- Boot -->
 <script src="js/app.js"></script>
