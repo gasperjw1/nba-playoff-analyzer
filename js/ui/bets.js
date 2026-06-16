@@ -40,7 +40,7 @@ function renderBetsPage(el) {
 
       <!-- ===== TODAY'S DATE BANNER ===== -->
       <div style="text-align:center;margin-bottom:16px;">
-        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">TONIGHT — Tue June 16: NBA Finals G6: SAS @ NYK 8:30 PM @ Madison Square Garden (NYK -4.5 / 214.5) NYK leads 3-2 — one win from first title since 1973 | Finals G5 ARCHIVED — Sat 6/13: SAS 106-104 (Wemby 33/14/4, SAS forces G6) | Finals G4 ARCHIVED — Wed 6/10: NYK 107-106 (largest comeback in Finals history; OG 33 + game-sealing block) | Finals G3 ARCHIVED — Mon 6/8: SAS 115-111 | Finals G2 ARCHIVED — Fri 6/5: NYK 105-104 | Finals G1 ARCHIVED — Wed 6/3: NYK 105-95</span>
+        <span style="font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);padding:5px 16px;border-radius:20px;letter-spacing:0.5px;">🏆 NEW YORK KNICKS — 2026 NBA CHAMPIONS (first title since 1973) | Finals G5 — Sat 6/13: NYK 94-90 @ SAS — Brunson 45 & Finals MVP, NYK wins series 4-1 | Finals G4 — Wed 6/10: NYK 107-106 (largest comeback in Finals history; OG 33 + game-sealing block) | Finals G3 — Mon 6/8: SAS 115-111 | Finals G2 — Fri 6/5: NYK 105-104 | Finals G1 — Wed 6/3: NYK 105-95 — 2025-26 season complete</span>
       </div>
 
       <!-- ===== R2 OVERVIEW ===== -->
@@ -2545,7 +2545,7 @@ function renderCFBets(el) {
     <div style="background:rgba(0,0,0,0.3);border:1px solid #22d3ee;border-radius:10px;padding:14px;margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:13px;font-weight:700;color:#22d3ee;">🏆 ${activeRound === 'Finals' ? 'NBA FINALS' : 'CONFERENCE FINALS'} P&amp;L</span>
-        <span style="font-size:11px;color:#666;">${activeRound === 'Finals' ? 'Live tracking — Finals G1-G5 settled (NYK leads 3-2; SAS took G5 106-104 to force G6); G6 Tue 6/16 @ MSG — NYK can clinch' : 'Live tracking — WCF closed (SAS won 4-3); series advances to NBA Finals 6/3'}</span>
+        <span style="font-size:11px;color:#666;">${activeRound === 'Finals' ? '🏆 NYK CHAMPIONS — Finals complete, NYK def. SAS 4-1 (G5 NYK 94-90, Brunson 45 & MVP). 2025-26 season over.' : 'Live tracking — WCF closed (SAS won 4-3); series advances to NBA Finals 6/3'}</span>
       </div>
       <!-- Row 1: Net $ by category (CF cumulative through WCF G7) -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
@@ -2650,7 +2650,7 @@ function renderCFBets(el) {
           <span style="color:#3dd68c;font-weight:700;">+$410</span>
 
           <span style="color:#a78bfa;font-weight:700;">Sat 6/13</span>
-          <span style="color:#aaa;"><strong style="color:#a78bfa;">FINALS G5</strong>: <strong style="color:#fff;">SAS 106-104</strong> · model SAS by 3 (<span style="color:#3dd68c;">right winner, err 1pt</span>) — SAS forces G6, NYK leads 3-2 (all reads cashed; spread-value side 5-5)</span>
+          <span style="color:#aaa;"><strong style="color:#a78bfa;">FINALS G5</strong>: <strong style="color:#fff;">NYK 94-90</strong> · model SAS by 3 (<span style="color:#ef4444;">wrong winner, err 7pt</span>) — 🏆 NYK CHAMPIONS 4-1 (Brunson 45/MVP; NYK +3, UNDER, all 3 PRA floors cashed; SAS ML lost)</span>
           <span style="color:#aaa;">2W floor, 1W trad</span>
           <span style="color:#3dd68c;font-weight:700;">+$415</span>
         </div>
@@ -2658,15 +2658,15 @@ function renderCFBets(el) {
       <!-- Row 3: In-play wagers -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#aaa;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#888;">${activeRound === 'Finals' ? 'IN PLAY (Finals G6 — Tue 6/16 @ MSG):' : 'IN PLAY (next CF game):'}</span>
-          <span><strong style="color:#22d3ee;">$200</strong> Floor · <strong style="color:#a78bfa;">$50</strong> Trad &nbsp;|&nbsp; <strong style="color:#fff;">$250 wagered, settles 6/17 morning</strong></span>
+          <span style="color:#888;">${activeRound === 'Finals' ? 'SEASON COMPLETE — no games in play:' : 'IN PLAY (next CF game):'}</span>
+          <span><strong style="color:#3dd68c;">🏆 Knicks champions 4-1</strong> &nbsp;|&nbsp; <strong style="color:#fff;">offseason — back for 2026-27</strong></span>
         </div>
       </div>
       <!-- Row 4: Aggregate notes -->
       <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #333;font-size:10px;color:#666;line-height:1.5;">
-        <strong style="color:#3dd68c;">Model accuracy:</strong> CF closed 6/10 winners (60%) · ~14pt MAE. <strong style="color:#3dd68c;">Finals winner pick is 2-3</strong> (model SAS by 2, SAS by 4, NYK by 1, NYK by 1, SAS by 3; actual NYK by 10, NYK by 1, SAS by 4, NYK by 1, SAS by 2) — G4 was an <strong style="color:#3dd68c;">EXACT-SCORE HIT (predicted NYK 107-106, got NYK 107-106)</strong> and G5 was a near-exact CORRECT winner (predicted SAS by 3, got SAS by 2). The honest read after five games: the winner pick is volatile but the MARGIN calibration is the anchor — close predicted, close delivered all five. The <strong style="color:#3dd68c;">spread-value side is now a PERFECT 5-for-5</strong> (NYK +5.5, NYK +2.5, SAS +2.5, SAS +1.5, NYK +3 all cashed) — bet it over the moneyline every time. The total read improved to 4-1: read it per-venue — all three Frost Bank games went UNDER (200, 209, 210), MSG split (226 OVER, 213 UNDER). G6 takeaway — the engine leans NYK to clinch at home, but trust the spread-value side over the side. Stake cap stays 50%.
-        <strong style="color:#22d3ee;">Floor discipline:</strong> Floor parlays climbed to 6-4 in the Finals after a perfect G5; <strong style="color:#3dd68c;">the minutes-vetted PRA floor is 4-1 and WON again in G5 (+$135)</strong> — Champagnie (15), Harper (17), and Wemby (51 PRA) all cleared for the fifth straight game. Every role-PRA leg has now cleared in all five Finals games, and the reb/ast/stl-backed composite on a minutes-secure player remains the single most reliable dimension in the series. The G3 KAT break stayed a one-off — the reb-backed Wemby and role-player floors hold; only the scoring-dependent KAT star-PRA kept falling short. G6 re-runs the same SAS role-PRA anchors (they travel — they cleared at MSG in G3/G4 too).
-        <strong style="color:#a78bfa;">Traditional lesson:</strong> Traditional improved to 2-3 in the Finals — the SAS-stays-alive grind stack WON +$165 at +330 as the correlated UNDER + Wemby/Harper PRA script played out exactly (SAS controlled a 210-total grind to force G6). The Frost Bank venue-backed UNDER was correctly trusted after the G3 MSG break. The G6 trad moves back to MSG, where the total is a coin flip (226 OVER / 213 UNDER), so it leans on the PRA floors + the spread-value side rather than a venue-backed total. Finals traditional stake stays at the reduced $50 cap.
+        <strong style="color:#3dd68c;">Model accuracy (Finals final):</strong> the <strong style="color:#ef4444;">Finals winner pick finished 1-4</strong> (model SAS by 2, SAS by 4, NYK by 1, NYK by 1, SAS by 3; actual NYK by 10, NYK by 1, SAS by 4, NYK by 1, NYK by 4) — the home/elimination lean was misleading every game. The one correct call was G4\'s <strong style="color:#3dd68c;">EXACT-SCORE HIT (predicted NYK 107-106, got NYK 107-106)</strong>. The lasting lesson: distrust the raw winner; trust the calibration around it. The <strong style="color:#3dd68c;">spread-value side finished a PERFECT 5-for-5</strong> (NYK +5.5, NYK +2.5, SAS +2.5, SAS +1.5, NYK +3 all cashed) — the single most reliable bet of the series. The total read finished 4-1, read per-venue: all three San Antonio games went UNDER (200, 209, 184), MSG split (226 OVER, 213 UNDER). For 2026-27, the priority is a within-game/second-half trajectory signal — NYK\'s comeback-every-game pattern is the edge the static engine missed.
+        <strong style="color:#22d3ee;">Floor discipline (Finals final):</strong> Floor parlays finished 6-4 in the Finals; <strong style="color:#3dd68c;">the minutes-vetted PRA floor went 4-1 and WON the clincher (+$135)</strong> — Champagnie (22), Harper (34 on a team-high 25), and Wemby (35 PRA) all cleared for the fifth straight game, even in the title-clinching SAS loss. Every SAS role-PRA leg cleared in all five Finals games — the reb/ast/stl-backed composite on a minutes-secure player was the single most reliable dimension of the entire playoffs. The G3 KAT break stayed a one-off; only the scoring-dependent star-PRA kept falling short. This is the structure to carry into next season.
+        <strong style="color:#a78bfa;">Traditional lesson (Finals final):</strong> Traditional finished 2-3 in the Finals — the G5 grind stack WON +$165 at +330 as the correlated UNDER + Harper/Wemby PRA script played out in the title-clinching 94-90 defensive rock fight (the UNDER blew out by 27). The series confirmed the traditional tier works best when it stacks the two reliable, venue-independent threads (spread-value side + role-PRA floors) rather than a venue-dependent total. Finals parlay P&L finished net positive, driven by the G4 and G5 clean sweeps (+$410, +$415). Offseason next.
       </div>
     </div>
 
@@ -3091,7 +3091,7 @@ function renderR2Bets(el) {
           <span style="color:#3dd68c;font-weight:700;">4-2 (+$350)</span>
         </div>
         <div style="font-size:9px;color:#666;margin-top:6px;font-style:italic;text-align:center;">
-          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF complete (SAS won 4-3). NBA Finals G1-G5 settled (NYK leads 3-2; SAS took G5 106-104 to force G6; G1 -$250, G2 -$15, G3 -$20, G4 +$410, G5 +$415); G6 Tue 6/16 @ MSG — see the Finals P&amp;L card on the NBA Finals tab for live Finals tracking.
+          R1 detail collapsed into round total above. R2 detail is in the Daily P&amp;L grid below. WCF complete (SAS won 4-3). 🏆 NBA Finals COMPLETE — NYK def. SAS 4-1 (G5 NYK 94-90, Brunson 45 &amp; Finals MVP; G1 -$250, G2 -$15, G3 -$20, G4 +$410, G5 +$415). 2025-26 season over — see the Finals P&amp;L card on the NBA Finals tab for the full series ledger.
         </div>
       </div>
     </div>
@@ -3203,7 +3203,7 @@ function renderR2Bets(el) {
           <span style="color:#aaa;">Settled Net: <strong style="color:#ef4444;">-$808</strong></span>
           <span style="color:#aaa;">Combined Record: <strong style="color:#aaa;">33-60</strong></span>
         </div>
-        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">Finals G1-G5 SETTLED — NYK leads 3-2 (G5 SAS 106-104, Wemby 33/14/4 forces G6): G1 parlays 0-3 -$250, G2 parlays 1-2 -$15, G3 parlays 1-2 -$20, G4 parlays 3-0 <strong style="color:#3dd68c;">+$410</strong>, G5 parlays 3-0 <strong style="color:#3dd68c;">+$415</strong>. Next: Finals G6 Tue 6/16 @ MSG — NYK can clinch.</div>
+        <div style="margin-top:6px;font-size:10px;color:#666;text-align:center;">🏆 Finals COMPLETE — NYK CHAMPIONS 4-1 (G5 NYK 94-90, Brunson 45 &amp; MVP): G1 parlays 0-3 -$250, G2 parlays 1-2 -$15, G3 parlays 1-2 -$20, G4 parlays 3-0 <strong style="color:#3dd68c;">+$410</strong>, G5 parlays 3-0 <strong style="color:#3dd68c;">+$415</strong>. 2025-26 season complete.</div>
       </div>
 
       <!-- ═══════ TODAY'S PARLAYS (data-driven from FEATURED_PARLAYS) ═══════ -->

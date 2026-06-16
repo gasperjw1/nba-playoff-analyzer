@@ -907,10 +907,10 @@ const CHS_LEDGER = [
     "game": 5,
     "retroactive": false,
     "actual": {
-      "winner": "SAS",
-      "margin": 2,
-      "homeScore": 106,
-      "awayScore": 104
+      "winner": "NYK",
+      "margin": 4,
+      "homeScore": 90,
+      "awayScore": 94
     },
     "mainPred": {
       "winner": "SAS",
