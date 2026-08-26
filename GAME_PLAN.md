@@ -127,7 +127,17 @@ coach overreacting to single-game duds (belief 0.78 off one bad game →
 minutes cut); fixed with evidence-discipline rules (n>=2 to react, top-2
 talent protected, conviction scales with sample) + playoff-weighted
 default rotations. Audit now confirms adaptive >= best static on fresh
-seeds. Remaining phases: 3.1 (in-game timeouts + halftime via steppable
+seeds. Coaching-depth iteration (user playtest feedback, same day): plans now
+PERSIST across games/series (reconcile-don't-reset + localStorage prefs);
+per-player role assignment selects with live miscast tinting; explicit
+STARTERS (drive OT minutes, garbage handling, and the new SPM synergy
+lever — analyzer chemistry engine reused, self-calibrated so the default
+five = 0, sized small after TEST 21 caught chemistry offsetting a benched
+star); stopper (defensive assignment) override with interior-miscast
+penalty; post-game COACH'S REPORT (true attribution: coverage outcomes vs
+season baselines, double tradeoff results, chemistry, overload warnings,
+spike/dud notes with the duds-2x-predictive framing).
+Remaining phases: 3.1 (in-game timeouts + halftime via steppable
 trajectory), 3.5 (boons + scouting-report depth), parallel role study.
 
 Phases 0-2 originally BUILT and GATED: `test-game.js` green (incl. factory calibration

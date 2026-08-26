@@ -22,6 +22,7 @@ const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname,
 load('js/data/constants.js');
 load('js/data/series-data.js');
 // Game namespace, in dependency order
+load('js/engine/chemistry.js');   // SPM chemistry (synergy reuse)
 load('js/game/data/game-constants.js');
 load('js/game/data/coach-profiles.js');
 load('js/game/data/team-db.js');
@@ -459,6 +460,72 @@ T('22: Persistence — save/restore round-trip continues identically');
   assert(runA.series[0].winner === runB.series[0].winner, 'same series winner after restore');
 }
 
+T('22b: Coverage override — stopper quality matters, miscast loses suppression');
+{
+  const sctx = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  const derived = sctx.defAssignments.homeOnAway;
+  const base = ctx.resolveCoverage(DB.NYK, {}, derived);
+  assert(base.defender === derived.defender && base.suppression > 0, 'default coverage from factory');
+  // Interior big miscast onto the point of attack loses most suppression
+  const big = DB.NYK.players.filter(p => p.initialStatus === 'available' &&
+    ctx.GAME_DEF_ROLE_FAMILY[p.defRole] === 'interior' && p.dLebron > 0)
+    .sort((a, b) => b.dLebron - a.dLebron)[0];
+  if (big) {
+    const miscast = ctx.resolveCoverage(DB.NYK, { stopper: big.name }, derived);
+    const straight = Math.max(0, Math.min(2.0, big.dLebron * 0.9));
+    assert(miscast.suppression < straight, big.name + ' miscast to PoA loses suppression (' +
+      miscast.suppression.toFixed(2) + ' < ' + straight.toFixed(2) + ')');
+  }
+}
+
+T('22c: Starters + synergy — explicit five honored, default five = 0 mod');
+{
+  const nyk = DB.NYK;
+  const cap = ctx.computeTeamCapacity(nyk, {});
+  const defaultFive = ctx.gameStarterNames({}, cap);
+  assert(defaultFive.length === 5, 'default starters = top-5 minutes');
+  const syn0 = ctx.gameSynergyMod(nyk, defaultFive);
+  assert(Math.abs(syn0.mod) < 1e-9 && syn0.score === nyk.synergyBase, 'default five → mod 0 (self-calibrated)');
+  // A scrambled five produces a different score and a bounded mod
+  const scrambled = nyk.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0)
+    .sort((a, b) => a.baseRating - b.baseRating).slice(0, 5).map(p => p.name);
+  const syn1 = ctx.gameSynergyMod(nyk, scrambled);
+  assert(syn1.score !== syn0.score, 'different five → different SPM score');
+  assert(Math.abs(syn1.mod) <= ctx.GAME_CONFIG.synergyCap + 1e-9, 'synergy mod respects cap');
+  // Explicit starters flow through the game: starters get OT minutes
+  const sctx = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  let g = null;
+  for (let seed = 1; seed < 400 && !g; seed++) {
+    const trial = ctx.simulateGameOnce(sctx, 1, { seed, homePlan: { starters: defaultFive } });
+    if (trial.ot > 0) g = trial;
+  }
+  if (g) {
+    const starterRows = g.box.home.filter(r => defaultFive.includes(r.name));
+    const benchRows = g.box.home.filter(r => !defaultFive.includes(r.name) && r.min > 0);
+    const avgS = starterRows.reduce((a, r) => a + r.min, 0) / starterRows.length;
+    const avgB = benchRows.length ? benchRows.reduce((a, r) => a + r.min, 0) / benchRows.length : 0;
+    assert(avgS > avgB, 'OT minutes flow to the chosen starters');
+  }
+}
+
+T('22d: Coach report — derived attribution matches the box score');
+{
+  const sctx = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');
+  const g = ctx.simulateGameOnce(sctx, 1, { seed: 99 });
+  assert(g.report && g.report.home && g.report.away, 'report present');
+  const cov = g.report.home.coverage;
+  assert(cov.defender && cov.target, 'coverage identities recorded');
+  const targetRow = g.box.away.find(r => r.name === cov.target);
+  assert(targetRow && cov.targetPts === targetRow.pts, 'coverage targetPts cross-checks with box');
+  assert(typeof cov.targetSeason === 'number' && cov.targetSeason > 0, 'season baseline attached');
+  assert(g.report.home.starters.length === 5, 'starters recorded');
+  // Doubling shows up in the report when planned
+  const star = DB.PHI.players.reduce((a, b) => (b.ppg > a.ppg ? b : a));
+  const g2 = ctx.simulateGameOnce(sctx, 1, { seed: 99, homePlan: { doubleTarget: star.name } });
+  assert(g2.report.home.double && g2.report.home.double.target === star.name &&
+    typeof g2.report.home.double.pts === 'number', 'double outcome recorded');
+}
+
 T('23: UI renderers — pure strings, key content, no leaks of hidden state');
 {
   const setup = ctx.renderGameSetup();
@@ -496,6 +563,34 @@ T('23: UI renderers — pure strings, key content, no leaks of hidden state');
   const bracket = ctx.renderBracketCols(ctx.GAME_UI.run);
   assert((bracket.match(/pr-bracket-cell/g) || []).length === 15, 'bracket shows 15 series');
   ctx.GAME_UI.run = null; ctx.GAME_UI.session = null;
+}
+
+T('23b: Plan persistence — reconcile keeps allocations, handles scratches');
+{
+  ctx.GAME_UI.run = ctx.createGameRun(DB, { seed: 12, userTeam: 'DEN' });
+  ctx.GAME_UI.session = ctx.openRunSeries(ctx.GAME_UI.run, 'DEN', 'MIN', 'R1');
+  ctx.GAME_UI.planMinutes = {}; ctx.GAME_UI.planStarters = [];
+  ctx.GAME_UI.planRoles = {}; ctx.GAME_UI.planStopper = ''; ctx.GAME_UI.planDouble = '';
+  ctx.gameReconcilePlan();
+  const t0 = Object.values(ctx.GAME_UI.planMinutes).reduce((a, b) => a + b, 0);
+  assert(t0 === 240, 'first reconcile initializes to exactly 240 (' + t0 + ')');
+  assert(ctx.GAME_UI.planStarters.length === 5, 'first reconcile picks 5 starters');
+  // User customizes; a later reconcile must NOT reset it
+  const names = Object.keys(ctx.GAME_UI.planMinutes).filter(n => ctx.GAME_UI.planMinutes[n] > 0);
+  ctx.GAME_UI.planMinutes[names[0]] = 40;
+  ctx.GAME_UI.planMinutes[names[1]] = 21;
+  const snapshot = JSON.stringify(ctx.GAME_UI.planMinutes);
+  ctx.gameReconcilePlan();
+  assert(JSON.stringify(ctx.GAME_UI.planMinutes) === snapshot, 'reconcile preserves the standing plan');
+  // A scratched starter is zeroed and replaced in the five
+  const scratched = ctx.GAME_UI.planStarters[0];
+  ctx.GAME_UI.run.teamState.DEN.injuries[scratched] = { gamesOut: 2, drag: 0.2, dragGames: 1 };
+  ctx.gameReconcilePlan();
+  assert(ctx.GAME_UI.planMinutes[scratched] === 0, 'scratched player zeroed');
+  assert(ctx.GAME_UI.planStarters.length === 5 && !ctx.GAME_UI.planStarters.includes(scratched),
+    'starters backfilled to 5 without the scratch');
+  ctx.GAME_UI.run = null; ctx.GAME_UI.session = null;
+  ctx.GAME_UI.planMinutes = {}; ctx.GAME_UI.planStarters = [];
 }
 
 // ════════════════════════════════════════════════════════════

@@ -35,6 +35,7 @@ const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname,
 load('js/data/constants.js');
 load('js/data/series-data.js');
 load('playoffs_2025_validation.js');
+load('js/engine/chemistry.js');   // SPM chemistry (synergy reuse)
 load('js/game/data/game-constants.js');
 load('js/game/data/coach-profiles.js');
 load('js/game/data/team-db.js');

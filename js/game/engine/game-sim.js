@@ -36,6 +36,63 @@ function _assignmentSuppression(assignment) {
 }
 
 /**
+ * Resolve one side's marquee defensive assignment: the plan's chosen
+ * stopper (a real lever — an interior body miscast onto the point of
+ * attack loses most of the suppression) or the factory-derived default.
+ * Returns {defender, target, suppression}.
+ */
+function resolveCoverage(defTeam, plan, derivedAssignment) {
+  if (plan && plan.stopper && derivedAssignment) {
+    const d = defTeam.players.find(p => p.name === plan.stopper);
+    if (d) {
+      const fit = gameRoleFitCost(d.defRole, 'Point of Attack', GAME_DEF_ROLE_FAMILY);
+      return {
+        defender: d.name, target: derivedAssignment.target,
+        suppression: Math.max(0, Math.min(2.0, d.dLebron * 0.9 * (1 - 0.7 * fit))),
+      };
+    }
+  }
+  return {
+    defender: derivedAssignment ? derivedAssignment.defender : null,
+    target: derivedAssignment ? derivedAssignment.target : null,
+    suppression: _assignmentSuppression(derivedAssignment),
+  };
+}
+
+/** Starter set for a plan: explicit choice, else top-5 planned minutes. */
+function gameStarterNames(plan, cap) {
+  if (plan && Array.isArray(plan.starters) && plan.starters.length === 5) return plan.starters.slice();
+  return cap.playerShares.slice().sort((a, b) => b.minutes - a.minutes)
+    .slice(0, 5).map(r => r.player.name);
+}
+
+/**
+ * Starting-five synergy vs the team's own default five (SPM chemistry,
+ * reused from the analyzer). Returns {mod, score}; 0 when chemistry is
+ * unavailable or the five matches the baseline by construction.
+ */
+const _gameSynergyCache = new Map();   // teamAbbr|sorted-five -> result
+function gameSynergyMod(team, starterNames) {
+  if (typeof calcSPMChemistry !== 'function' || team.synergyBase == null) return { mod: 0, score: null };
+  if (starterNames.length < 5) return { mod: 0, score: null };
+  // Memoized: lineups repeat across the hundreds of thousands of sim
+  // games in the backtests (CPU fives rarely change), and SPM is the
+  // priciest per-game computation.
+  const key = team.abbr + '|' + starterNames.slice().sort().join('|');
+  const hit = _gameSynergyCache.get(key);
+  if (hit) return hit;
+  const five = team.players.filter(p => starterNames.includes(p.name))
+    .map(p => ({ ...p, rating: p.baseRating }));
+  if (five.length < 5) return { mod: 0, score: null };
+  const score = calcSPMChemistry(five).score;
+  const cfg = GAME_CONFIG;
+  const mod = Math.max(-cfg.synergyCap, Math.min(cfg.synergyCap, (score - team.synergyBase) * cfg.synergyScale));
+  const out = { mod, score };
+  if (_gameSynergyCache.size < 20000) _gameSynergyCache.set(key, out);
+  return out;
+}
+
+/**
  * Simulate one game.
  * @param {Object} seriesCtx  from makeGameSeries
  * @param {number} gameNum    1-7
@@ -52,12 +109,15 @@ function _assignmentSuppression(assignment) {
  */
 function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, awayPlan) {
   homePlan = homePlan || {}; awayPlan = awayPlan || {};
-  let capHome = computeTeamCapacity(seriesCtx.home, {
-    ...homePlan, suppression: _assignmentSuppression(seriesCtx.defAssignments.awayOnHome),
-  });
-  let capAway = computeTeamCapacity(seriesCtx.away, {
-    ...awayPlan, suppression: _assignmentSuppression(seriesCtx.defAssignments.homeOnAway),
-  });
+  // Coverage (possibly user-overridden stopper) + starting-five synergy.
+  const covOnHome = resolveCoverage(seriesCtx.away, awayPlan, seriesCtx.defAssignments.awayOnHome);
+  const covOnAway = resolveCoverage(seriesCtx.home, homePlan, seriesCtx.defAssignments.homeOnAway);
+  let capHome = computeTeamCapacity(seriesCtx.home, { ...homePlan, suppression: covOnHome.suppression });
+  let capAway = computeTeamCapacity(seriesCtx.away, { ...awayPlan, suppression: covOnAway.suppression });
+  const synHome = gameSynergyMod(seriesCtx.home, gameStarterNames(homePlan, capHome));
+  const synAway = gameSynergyMod(seriesCtx.away, gameStarterNames(awayPlan, capAway));
+  if (synHome.mod) capHome = { ...capHome, ortg: capHome.ortg + synHome.mod };
+  if (synAway.mod) capAway = { ...capAway, ortg: capAway.ortg + synAway.mod };
   // Coverage plans: each side's doubleTarget reshapes the OPPONENT's
   // offense (suppressed star, elevated others, initiator-count tradeoff).
   capAway = applyDoubleCoverage(capAway, homePlan.doubleTarget, seriesCtx.away.initiators);
@@ -72,7 +132,7 @@ function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, away
   const baseAway = baseOf(seriesCtx.away, awayPlan, _assignmentSuppression(seriesCtx.defAssignments.homeOnAway));
   const exp = expectedGameScores(seriesCtx, capHome, capAway, gameNum,
     seriesScore || { home: 0, away: 0 }, baseHome, baseAway);
-  return { exp, capHome, capAway };
+  return { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway };
 }
 
 function simulateGameOnce(seriesCtx, gameNum, opts) {
@@ -82,7 +142,8 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
   const score = opts.seriesScore || { home: 0, away: 0 };
   const homePlan = opts.homePlan || {}, awayPlan = opts.awayPlan || {};
 
-  const { exp, capHome, capAway } = computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
+  const { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway } =
+    computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
   // Team-level series edge (rolled once per series by the caller): the
   // matchup-fit residual — see GAME_CONFIG.seriesEdgeSigma.
   const edge = opts.seriesEdge || 0;
@@ -95,9 +156,39 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
 
   const garbage = Math.abs(flow.homeScore - flow.awayScore) >= 18;
   const otMinutes = flow.ot * 5;
+  const homeStarters = gameStarterNames(homePlan, capHome);
+  const awayStarters = gameStarterNames(awayPlan, capAway);
   const box = {
-    home: allocateBox(capHome, flow.homeScore, rng, { shifts, garbage, otMinutes }),
-    away: allocateBox(capAway, flow.awayScore, rng, { shifts, garbage, otMinutes }),
+    home: allocateBox(capHome, flow.homeScore, rng, { shifts, garbage, otMinutes, starters: homeStarters }),
+    away: allocateBox(capAway, flow.awayScore, rng, { shifts, garbage, otMinutes, starters: awayStarters }),
+  };
+
+  // Coach's report: what the sim actually did with the plans — coverage
+  // outcomes, doubles, synergy. Derived data only (design law: the report
+  // is true attribution, never flavor text).
+  const findPts = (side, name) => {
+    const r = box[side].find(x => x.name === name);
+    return r ? r.pts : null;
+  };
+  const ppgOf = (team, name) => {
+    const p = team.players.find(x => x.name === name);
+    return p ? p.ppg : null;
+  };
+  const report = {
+    home: {
+      starters: homeStarters, synergy: synHome,
+      coverage: { ...covOnAway, targetPts: findPts('away', covOnAway.target), targetSeason: ppgOf(seriesCtx.away, covOnAway.target) },
+      double: homePlan.doubleTarget
+        ? { target: homePlan.doubleTarget, pts: findPts('away', homePlan.doubleTarget), season: ppgOf(seriesCtx.away, homePlan.doubleTarget) }
+        : null,
+    },
+    away: {
+      starters: awayStarters, synergy: synAway,
+      coverage: { ...covOnHome, targetPts: findPts('home', covOnHome.target), targetSeason: ppgOf(seriesCtx.home, covOnHome.target) },
+      double: awayPlan.doubleTarget
+        ? { target: awayPlan.doubleTarget, pts: findPts('home', awayPlan.doubleTarget), season: ppgOf(seriesCtx.home, awayPlan.doubleTarget) }
+        : null,
+    },
   };
 
   return {
@@ -107,7 +198,7 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
     quarters: flow.quarters, ot: flow.ot,
     regime: regime.type, capitulated: flow.capitulated,
     expected: { home: exp.home, away: exp.away },   // the center — internal, never the display
-    box,
+    box, report,
   };
 }
 
@@ -137,5 +228,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, computeExpectedForPlans, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, simulateGameOnce, simulateSeriesOnce };
 }

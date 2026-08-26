@@ -57,6 +57,14 @@ const GAME_CONFIG = {
   // full-time slot). Miscasting Kennard as a PoA stopper should hurt.
   fitScaleOff: 3.0,
   fitScaleDef: 3.0,
+  // Starting-five synergy (SPM chemistry, Maymin et al. via the analyzer's
+  // calcSPMChemistry): ORtg mod per SPM point vs the team's own default
+  // five (self-calibrating — default lineup = 0, same pattern as the
+  // capacity offsets), capped SMALL. TEST 21 caught the first sizing
+  // (±1.5): a balanced no-star five's chemistry offset most of a benched
+  // star's impact — synergy is a nudge, never a star substitute.
+  synergyScale: 0.04,
+  synergyCap: 0.8,
 
   // ── Player tiers + variance (measured Aug 2026, 138 player-series) ──
   // tier by season ppg; CV = game-noise coefficient of variation;

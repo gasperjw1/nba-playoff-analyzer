@@ -128,8 +128,9 @@ function allocateBox(cap, teamScore, rng, opts) {
   const shifts = opts.shifts || {};
   const cfg = GAME_CONFIG;
   const rows = cap.playerShares;
-  const starterCut = rows.slice().sort((a, b) => b.minutes - a.minutes)
-    .slice(0, 5).map(r => r.player.name);
+  const starterCut = (opts.starters && opts.starters.length === 5)
+    ? opts.starters
+    : rows.slice().sort((a, b) => b.minutes - a.minutes).slice(0, 5).map(r => r.player.name);
   const isStarter = new Set(starterCut);
 
   const noisy = rows.map(r => {

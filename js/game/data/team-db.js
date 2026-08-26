@@ -74,6 +74,12 @@ function _buildGameTeam(t, series) {
     tier: gamePlayerTier(src.ppg || 0),
     ppg: src.ppg || 0, rpg: src.rpg || 0, apg: src.apg || 0,
     usg: src.usg || 15, ts: src.ts || 55,
+    // SPM chemistry source stats (Maymin dimensions — see gameSynergy)
+    epm: (typeof src.epm === 'number') ? src.epm : 0,
+    bpm: (typeof src.bpm === 'number') ? src.bpm : 0,
+    onOff: (typeof src.onOff === 'number') ? src.onOff : 0,
+    clutch: (typeof src.clutch === 'number') ? src.clutch : 4,
+    fgp: src.fgp || 45,
     oLebron: gameOLebron(src), dLebron: gameDLebron(src),
     offRole: src.offRole || null, defRole: src.defRole || null,
     starCeiling: src.starCeiling || 0,
@@ -110,6 +116,17 @@ function _buildGameTeam(t, series) {
   gameDefaultRotation(players.filter(p => p.baseRating > 0), coach && coach.rotationDepth)
     .forEach(r => { fullMinutes[r.player.name] = r.minutes; });
 
+  // Synergy baseline: SPM chemistry score of the default starting five.
+  // gameSynergyMod measures the USER'S chosen five against this, so the
+  // default lineup is always mod 0 (fidelity preserved). Null when the
+  // analyzer chemistry engine isn't loaded (loaders must include it).
+  let synergyBase = null;
+  if (typeof calcSPMChemistry === 'function') {
+    const five = rotation.slice().sort((a, b) => b.minutes - a.minutes).slice(0, 5)
+      .map(r => ({ ...r.player, rating: r.player.baseRating }));
+    synergyBase = calcSPMChemistry(five).score;
+  }
+
   return {
     abbr: t.abbr, name: t.name, city: t.city,
     seed: t.seed, conf: series.conf, record: t.record,
@@ -123,6 +140,7 @@ function _buildGameTeam(t, series) {
     players,
     usgBaseline,
     fullMinutes,
+    synergyBase,
     offsetO: (adv.ortg || GAME_LEAGUE.ortg) - GAME_LEAGUE.ortg - impO,
     offsetD: (adv.drtg || GAME_LEAGUE.drtg) - GAME_LEAGUE.drtg + impD,
   };

@@ -36,7 +36,7 @@ const ctx = vm.createContext({
 });
 const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx, { filename: rel });
 ['js/data/constants.js', 'js/data/series-data.js',
- 'js/game/data/game-constants.js', 'js/game/data/coach-profiles.js', 'js/game/data/team-db.js',
+ 'js/engine/chemistry.js', 'js/game/data/game-constants.js', 'js/game/data/coach-profiles.js', 'js/game/data/team-db.js',
  'js/game/engine/matchup-factory.js', 'js/game/engine/capacity.js', 'js/game/engine/regime.js',
  'js/game/engine/trajectory.js', 'js/game/engine/coach-ai.js', 'js/game/engine/game-sim.js',
  'js/game/engine/injury-gen.js', 'js/game/run-state.js'].forEach(load);
