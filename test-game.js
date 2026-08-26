@@ -33,6 +33,7 @@ load('js/game/engine/coach-ai.js');
 load('js/game/engine/game-sim.js');
 load('js/game/engine/injury-gen.js');
 load('js/game/run-state.js');
+load('js/game/ui/game-ui.js');
 
 let passed = 0, failed = 0;
 function assert(cond, msg) {
@@ -272,14 +273,19 @@ T('14: Injury hazard — realistic run-level rates, book mechanics');
     for (let g = 0; g < GAMES; g++) fatEvents += ctx.sampleGameInjuries(rot, fat, rng).length;
   }
   assert(fatEvents > events * 1.2, 'fatigue raises hazard (' + events + ' -> ' + fatEvents + ')');
-  // Book mechanics: out N games then dragged, then cleared
+  // Book mechanics: peek is pure; advance moves time forward
   const book = { X: { gamesOut: 1, drag: 0.3, dragGames: 1 } };
-  let t1 = ctx.tickInjuryBook(book);
+  let t1 = ctx.peekInjuryBook(book);
   assert(t1.unavailable.includes('X'), 'game 1: out');
-  t1 = ctx.tickInjuryBook(book);
+  assert(JSON.stringify(ctx.peekInjuryBook(book)) === JSON.stringify(t1), 'peek is pure (no mutation)');
+  ctx.advanceInjuryBook(book);
+  t1 = ctx.peekInjuryBook(book);
   assert(!t1.unavailable.includes('X') && t1.drags.X === 0.3, 'game 2: plays with drag');
-  t1 = ctx.tickInjuryBook(book);
-  assert(!t1.unavailable.includes('X') && !t1.drags.X && !book.X, 'game 3: cleared');
+  ctx.advanceInjuryBook(book);
+  t1 = ctx.peekInjuryBook(book);
+  assert(!t1.unavailable.includes('X') && !t1.drags.X, 'game 3: clear view');
+  ctx.advanceInjuryBook(book);
+  assert(!book.X, 'book entry removed after drag expires');
 }
 
 T('15: Coach AI — evidence asymmetry (duds > spikes), bait resistance scales with adjust');
@@ -362,6 +368,134 @@ T('18: Equity table — sums to 1, seeds matter, everyone can win');
     (100 * topSeeds).toFixed(0) + '% vs ' + (100 * bottomSeeds).toFixed(0) + '%)');
   console.log('  (info) equity: ' + Object.entries(eq).sort((a, b) => b[1] - a[1])
     .map(([t, v]) => t + ' ' + (100 * v).toFixed(0) + '%').join(', '));
+}
+
+T('19: Bracket scheduler — 15 series, valid sequencing, champion detection');
+{
+  const records = [];
+  let pair, count = 0;
+  const winners = {};
+  while ((pair = ctx.gameNextSeriesPair(DB, records)) && count < 20) {
+    count++;
+    // scheduler must never repeat a pairing
+    assert(!records.some(r => (r.home === pair.a && r.away === pair.b) || (r.home === pair.b && r.away === pair.a)),
+      'no repeated pairing (' + pair.a + '-' + pair.b + ')');
+    const [h, a] = ctx.gameHomeCourt(DB, pair.a, pair.b, pair.round);
+    const winner = DB[h].seed <= DB[a].seed ? h : a;   // scripted: better seed wins
+    records.push({ home: h, away: a, round: pair.round, winner });
+  }
+  assert(count === 15, 'scheduler yields exactly 15 series (' + count + ')');
+  // Round-major ordering: no series of a later round before ALL series of
+  // the earlier round exist (the depth-first bug the browser playtest caught).
+  const order = records.map(r => r.round);
+  const firstIdx = {}, lastIdx = {};
+  order.forEach((r, i) => { if (!(r in firstIdx)) firstIdx[r] = i; lastIdx[r] = i; });
+  assert(lastIdx.R1 < firstIdx.R2 && lastIdx.R2 < firstIdx.CF && lastIdx.CF < firstIdx.Finals,
+    'strictly round-major schedule (' + order.join(',') + ')');
+  assert(ctx.gameRunChampion(records) !== null, 'champion detected when bracket completes');
+  assert(ctx.gameNextSeriesPair(DB, records) === null, 'scheduler returns null after Finals');
+}
+
+T('20: Stepwise session — parity with headless loop semantics');
+{
+  const run = ctx.createGameRun(DB, { seed: 314 });
+  const session = ctx.openRunSeries(run, 'BOS', 'PHI', 'R1');
+  let guard = 0;
+  while (!session.done && guard++ < 8) {
+    const pre = ctx.getUpcomingGameState(run, session, 'BOS');
+    assert(pre && pre.fatigue && Array.isArray(pre.unavailable), 'pre-game state well-formed');
+    const before = JSON.stringify(pre);
+    ctx.getUpcomingGameState(run, session, 'BOS');
+    assert(JSON.stringify(ctx.getUpcomingGameState(run, session, 'BOS')) === before, 'pre-game view is pure');
+    ctx.playSeriesGame(run, session, null);
+  }
+  assert(session.done && Math.max(session.score.home, session.score.away) === 4, 'session closes at 4 wins');
+  assert(run.series.length === 1 && run.series[0].games.length === session.games.length, 'series recorded');
+  assert(run.rng.draws > 0, 'counting rng tracked draws (' + run.rng.draws + ')');
+}
+
+T('21: Process CVA — assistant-identical plan ≈ 0, bench-the-star < 0');
+{
+  const run = ctx.createGameRun(DB, { seed: 555, userTeam: 'NYK' });
+  const session = ctx.openRunSeries(run, 'NYK', 'ATL', 'R1');
+  // User plan = exactly what the assistant would do → delta ≈ 0 modulo
+  // belief noise; then a deliberately bad plan → clearly negative.
+  const gs = ctx.getUpcomingGameState(run, session, 'NYK');
+  const aiLike = ctx.makeCoachPlan(DB.NYK, DB.ATL,
+    session.evidence.NYK.own, session.evidence.NYK.opp, gs,
+    ctx.gameCreateRNG((run.seed * 31 + run.rng.draws + 1) >>> 0));
+  const g1 = ctx.playSeriesGame(run, session, aiLike);
+  assert(g1.cva && Math.abs(g1.cva.delta) < 1.0, 'assistant-identical plan CVA ~0 (' + g1.cva.delta + ')');
+  // Bench the star: NYK's best player gets 0 minutes.
+  const star = DB.NYK.players.reduce((a, b) => (b.baseRating > a.baseRating ? b : a));
+  const pool = DB.NYK.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0 && p.name !== star.name);
+  const badPlan = { rotation: ctx.gameDefaultRotation(pool, 9), doubleTarget: null };
+  const g2 = ctx.playSeriesGame(run, session, badPlan);
+  assert(g2.cva && g2.cva.delta < -0.75, 'benching the star grades clearly negative (' + g2.cva.delta + ')');
+  assert(run.cvaTotal === +(g1.cva.delta + g2.cva.delta).toFixed(2), 'run cvaTotal accumulates');
+}
+
+T('22: Persistence — save/restore round-trip continues identically');
+{
+  // Copy A: play 2 games, serialize, keep playing to series end.
+  const runA = ctx.createGameRun(DB, { seed: 777, userTeam: 'DEN' });
+  const sesA = ctx.openRunSeries(runA, 'DEN', 'MIN', 'R1');
+  ctx.playSeriesGame(runA, sesA, null);
+  ctx.playSeriesGame(runA, sesA, null);
+  const saved = ctx.serializeRun(runA, sesA);
+  const contA = [];
+  while (!sesA.done) contA.push(ctx.playSeriesGame(runA, sesA, null));
+  // Copy B: restore from the snapshot and continue.
+  const { run: runB, session: sesB } = ctx.restoreRun(DB, saved);
+  assert(sesB && sesB.games.length === 2 && sesB.sctx, 'session restored mid-series');
+  const contB = [];
+  while (!sesB.done) contB.push(ctx.playSeriesGame(runB, sesB, null));
+  assert(contA.length === contB.length, 'same number of remaining games');
+  contA.forEach((g, i) => {
+    assert(g.homeScore === contB[i].homeScore && g.awayScore === contB[i].awayScore,
+      'restored game ' + (i + 1) + ' identical (' + g.homeScore + '-' + g.awayScore + ' vs ' +
+      contB[i].homeScore + '-' + contB[i].awayScore + ')');
+  });
+  assert(runA.series[0].winner === runB.series[0].winner, 'same series winner after restore');
+}
+
+T('23: UI renderers — pure strings, key content, no leaks of hidden state');
+{
+  const setup = ctx.renderGameSetup();
+  assert(setup.includes('Playoff Run') && setup.includes('Title equity'), 'setup renders with equity');
+  assert((setup.match(/pr-team-card/g) || []).length === 16, 'setup shows 16 team cards');
+  // drive a run far enough to render every screen
+  ctx.GAME_UI.run = ctx.createGameRun(DB, { seed: 4417, userTeam: 'DEN' });
+  ctx.GAME_UI.eliminated = false;
+  let pair;
+  while ((pair = ctx.gameNextSeriesPair(DB, ctx.GAME_UI.run.series))) {
+    if (pair.a === 'DEN' || pair.b === 'DEN') break;
+    ctx.playRunSeries(ctx.GAME_UI.run, pair.a, pair.b, pair.round);
+  }
+  ctx.GAME_UI.session = ctx.openRunSeries(ctx.GAME_UI.run, pair.a, pair.b, pair.round);
+  ctx.GAME_UI.planMinutes = {};
+  DB.DEN.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0).slice(0, 9)
+    .forEach((p, i) => { ctx.GAME_UI.planMinutes[p.name] = [36,34,33,31,29,24,20,18,15][i]; });
+  ctx.GAME_UI.planDouble = '';
+  const plan = ctx.renderGameplan();
+  assert(plan.includes('Rotation') && plan.includes('Coverage') && plan.includes('Game 1'), 'gameplan renders');
+  assert(!plan.includes('expected') && !plan.includes('shift'), 'gameplan leaks no hidden sim state');
+  const byName = {}; DB.DEN.players.forEach(p => { byName[p.name] = p; });
+  const rotation = Object.entries(ctx.GAME_UI.planMinutes).map(([n, m]) => ({ player: byName[n], minutes: m }));
+  ctx.GAME_UI.lastGame = ctx.playSeriesGame(ctx.GAME_UI.run, ctx.GAME_UI.session, { rotation, doubleTarget: null });
+  const result = ctx.renderGameResult();
+  assert(result.includes('pr-trace') && result.includes('box score') && result.includes('Coaching:'), 'result renders trace + boxes + CVA');
+  while (!ctx.GAME_UI.session.done) ctx.playSeriesGame(ctx.GAME_UI.run, ctx.GAME_UI.session, null);
+  ctx.GAME_UI.session = null;
+  let p2;
+  while ((p2 = ctx.gameNextSeriesPair(DB, ctx.GAME_UI.run.series))) {
+    ctx.playRunSeries(ctx.GAME_UI.run, p2.a, p2.b, p2.round);
+  }
+  const summary = ctx.renderRunSummary();
+  assert(summary.includes('Coaching Value Added') && summary.includes('Champion'), 'summary renders');
+  const bracket = ctx.renderBracketCols(ctx.GAME_UI.run);
+  assert((bracket.match(/pr-bracket-cell/g) || []).length === 15, 'bracket shows 15 series');
+  ctx.GAME_UI.run = null; ctx.GAME_UI.session = null;
 }
 
 // ════════════════════════════════════════════════════════════

@@ -24,6 +24,7 @@
 <div class="sport-switcher" id="sportSwitcher">
   <button class="sport-btn active" onclick="switchSport('nba')">🏀 NBA</button>
   <button class="sport-btn" onclick="switchSport('baseball')">⚾ Baseball</button>
+  <button class="sport-btn" onclick="switchSport('game')">🏆 Playoff Run</button>
 </div>
 <div class="page-nav" id="pageNav">
   <button class="page-nav-btn active" onclick="switchPage('home')">Home</button>
@@ -159,6 +160,24 @@
 <script src="js/baseball/engine/mlb-projection.js"></script>
 <script src="js/baseball/engine/mlb-monte-carlo.js"></script>
 <script src="js/baseball/ui/baseball.js"></script>
+
+<!-- ============================================================ -->
+<!-- Playoff Run (coaching sim game) — additive js/game/ namespace  -->
+<!-- Derives GAME_TEAM_DB from SERIES_DATA at load; GAME_* globals  -->
+<!-- only. Entry: renderGameSection via switchSport('game').        -->
+<!-- ============================================================ -->
+<script src="js/game/data/game-constants.js"></script>
+<script src="js/game/data/coach-profiles.js"></script>
+<script src="js/game/data/team-db.js"></script>
+<script src="js/game/engine/matchup-factory.js"></script>
+<script src="js/game/engine/capacity.js"></script>
+<script src="js/game/engine/regime.js"></script>
+<script src="js/game/engine/trajectory.js"></script>
+<script src="js/game/engine/coach-ai.js"></script>
+<script src="js/game/engine/game-sim.js"></script>
+<script src="js/game/engine/injury-gen.js"></script>
+<script src="js/game/run-state.js"></script>
+<script src="js/game/ui/game-ui.js"></script>
 
 <!-- Boot -->
 <script src="js/app.js"></script>

@@ -120,7 +120,11 @@ const GAME_CONFIG = {
   // Minutes template by rating rank; normalized to 240 for the coach's
   // rotationDepth. Player records carry no season MPG, so the full-strength
   // template doubles as each player's season-minutes proxy for share math.
-  minutesTemplate: [36, 34, 33, 31, 29, 24, 20, 16, 12, 8, 6, 4],
+  // PLAYOFF-WEIGHTED (solver-audit follow-up): real playoff coaches
+  // shorten benches and ride starters — the audit kept preferring
+  // heavy-starter statics until the adaptive baseline itself reflected
+  // playoff minute distribution.
+  minutesTemplate: [38, 36, 34, 32, 30, 24, 18, 14, 10, 8, 6, 4],
   defaultRotationDepth: 9,
   // Minutes physics (added by the first solver audit, which caught a
   // degenerate 48-minute-stars meta): hard per-player cap, plus an
@@ -138,6 +142,18 @@ function gameOverloadMult(minutes) {
   const over = Math.max(0, minutes - GAME_CONFIG.overloadThreshold);
   return Math.max(0.6, 1 - GAME_CONFIG.overloadSlope * over);
 }
+
+// ── Championship equity (run-setup display) ─────────────────────
+// CPU-vs-CPU baseline: 4,000 seeded brackets (computeEquityTable, seeds
+// 300000+, Aug 26 2026 tuning). Regenerate after any sim re-tune:
+//   node -e "...computeEquityTable(GAME_TEAM_DB, 4000, 300000)"
+// (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
+// difficulty select, and run scoring is measured against it.
+const GAME_EQUITY_2026 = {
+  OKC: 0.318, SAS: 0.161, DET: 0.16, BOS: 0.129, DEN: 0.052, NYK: 0.046,
+  ATL: 0.028, HOU: 0.026, CLE: 0.025, MIN: 0.018, TOR: 0.018, LAL: 0.007,
+  PHI: 0.005, POR: 0.003, ORL: 0.003, PHX: 0.002,
+};
 
 // ── Role taxonomy + fit costs ───────────────────────────────────
 // The 13 offensive / 7 defensive roles hand-labeled across the 2026
@@ -177,5 +193,5 @@ function gameRoleFitCost(nativeRole, assignedRole, familyMap) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { GAME_LEAGUE, GAME_CONFIG, GAME_OFF_ROLE_FAMILY, GAME_DEF_ROLE_FAMILY, gameRoleFitCost, gameOverloadMult };
+  module.exports = { GAME_LEAGUE, GAME_CONFIG, GAME_EQUITY_2026, GAME_OFF_ROLE_FAMILY, GAME_DEF_ROLE_FAMILY, gameRoleFitCost, gameOverloadMult };
 }

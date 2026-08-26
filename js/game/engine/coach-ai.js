@@ -97,17 +97,37 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
     p.baseRating > 0 && p.initialStatus === 'available' && !out.has(p.name));
 
   // Rotation: default, then bench-leash shifts by believed own-player form.
+  // Discipline rules (solver-audit fix — the v1 leash cut minutes off ONE
+  // dud, which made adaptive coaching value-destroying vs static plans):
+  //   - never react to a single game (n>=2 evidence required — our own
+  //     measured lesson about small samples)
+  //   - top-2 talent is protected from downward shifts (coaches don't
+  //     bench stars on cold stretches; duds persist, but a cold star
+  //     still outranks a warm bench player)
+  //   - conviction scales with both the belief gap and the sample size
   let rotation = gameDefaultRotation(pool, prof.rotationDepth);
   const leash = (prof.benchLeash || 5) * cfg.leashShiftPerPoint;
+  const protectedNames = new Set(pool.slice().sort((a, b) => b.baseRating - a.baseRating)
+    .slice(0, 2).map(p => p.name));
   let freed = 0;
   rotation.forEach(r => {
-    if (r.minutes <= 0) return;
+    if (r.minutes <= 0 || protectedNames.has(r.player.name)) return;
+    const e = ownEvidence.players[r.player.name];
+    if (!e || e.games < 2) return;
     const belief = coachShiftBelief(ownEvidence, r.player.name, prof.adjust, rng);
-    if (belief < 0.85) { const cut = r.minutes * leash; r.minutes -= cut; freed += cut; }
+    if (belief < 0.85) {
+      const conviction = Math.min(1, (0.85 - belief) / 0.15) * Math.min(1, e.games / 3);
+      const cut = r.minutes * leash * conviction;
+      r.minutes -= cut; freed += cut;
+    }
   });
   if (freed > 0) {
-    const hot = rotation.filter(r => r.minutes > 0 &&
-      coachShiftBelief(ownEvidence, r.player.name, prof.adjust, rng) >= 1.0);
+    const hot = rotation.filter(r => {
+      if (r.minutes <= 0) return false;
+      const e = ownEvidence.players[r.player.name];
+      return e && e.games >= 2 &&
+        coachShiftBelief(ownEvidence, r.player.name, prof.adjust, rng) >= 1.05;
+    });
     const pool2 = hot.length ? hot : rotation.filter(r => r.minutes > 0);
     pool2.forEach(r => { r.minutes += freed / pool2.length; });
   }
@@ -123,9 +143,15 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
   });
   if (best) {
     const prone = (prof.doublesStars || 5);
-    if ((best.belief >= cfg.doubleThreshold && prone >= 5) ||
-        (best.p.ppg >= cfg.doubleStarPpg && prone >= 7)) {
-      doubleTarget = best.p.name;
+    // Never volunteer to double a deep (3-initiator) offense — the
+    // tradeoff is priced against it — unless the coach is an extreme
+    // doubler by profile.
+    const deepOffense = (oppTeam.initiators || 2) >= 3;
+    if (!deepOffense || prone >= 8) {
+      if ((best.belief >= cfg.doubleThreshold && prone >= 5) ||
+          (best.p.ppg >= cfg.doubleStarPpg && prone >= 7)) {
+        doubleTarget = best.p.name;
+      }
     }
   }
 

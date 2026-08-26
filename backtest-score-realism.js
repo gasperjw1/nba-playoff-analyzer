@@ -42,6 +42,7 @@ load('js/game/engine/matchup-factory.js');
 load('js/game/engine/capacity.js');
 load('js/game/engine/regime.js');
 load('js/game/engine/trajectory.js');
+load('js/game/engine/coach-ai.js');
 load('js/game/engine/game-sim.js');
 
 const mean = a => a.reduce((x, y) => x + y, 0) / a.length;

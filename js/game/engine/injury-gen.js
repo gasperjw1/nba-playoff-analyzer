@@ -59,26 +59,29 @@ function sampleGameInjuries(rotationRows, fatigue, rng) {
 }
 
 /**
- * Advance a team's injury book by one game: returns {unavailable, drags}
- * for the UPCOMING game, then decrements counters.
- * book: { name: {gamesOut, drag, dragGames} } — mutated in place.
+ * PEEK the upcoming game's availability from a team's injury book —
+ * PURE (no mutation), so the UI can render the gameplan screen (scratches,
+ * compromised players) before the game is actually played.
+ * book: { name: {gamesOut, drag, dragGames} }
  */
-function tickInjuryBook(book) {
+function peekInjuryBook(book) {
   const unavailable = [], drags = {};
   Object.entries(book).forEach(([name, st]) => {
-    if (st.gamesOut > 0) {
-      unavailable.push(name);
-      st.gamesOut--;
-    } else if (st.dragGames > 0) {
-      drags[name] = st.drag;    // plays, but compromised (fed to capacity's fatigue map)
-      st.dragGames--;
-    } else {
-      delete book[name];
-    }
+    if (st.gamesOut > 0) unavailable.push(name);
+    else if (st.dragGames > 0) drags[name] = st.drag;  // plays, but compromised
   });
   return { unavailable, drags };
 }
 
+/** Commit one game's passage of time to the book (call AFTER the game). */
+function advanceInjuryBook(book) {
+  Object.entries(book).forEach(([name, st]) => {
+    if (st.gamesOut > 0) st.gamesOut--;
+    else if (st.dragGames > 0) st.dragGames--;
+    else delete book[name];
+  });
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { GAME_INJURY_CONFIG, sampleGameInjuries, tickInjuryBook };
+  module.exports = { GAME_INJURY_CONFIG, sampleGameInjuries, peekInjuryBook, advanceInjuryBook };
 }

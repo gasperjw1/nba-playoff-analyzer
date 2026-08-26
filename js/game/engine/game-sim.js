@@ -45,13 +45,13 @@ function _assignmentSuppression(assignment) {
  *   seriesScore : {home, away} entering this game (elimination/G7 detection)
  *   homePlan / awayPlan : plan objects (see header)
  */
-function simulateGameOnce(seriesCtx, gameNum, opts) {
-  opts = opts || {};
-  const rng = opts.rng || gameCreateRNG(opts.seed == null ? 1 : opts.seed);
-  const shifts = opts.shifts || rollSeriesShifts(seriesCtx, rng);
-  const score = opts.seriesScore || { home: 0, away: 0 };
-  const homePlan = opts.homePlan || {}, awayPlan = opts.awayPlan || {};
-
+/**
+ * Deterministic pre-noise expectation for a pair of plans — the shared
+ * core of simulateGameOnce AND the process-CVA comparison (grade the
+ * PLAN, not the dice: same function, different plans).
+ */
+function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, awayPlan) {
+  homePlan = homePlan || {}; awayPlan = awayPlan || {};
   let capHome = computeTeamCapacity(seriesCtx.home, {
     ...homePlan, suppression: _assignmentSuppression(seriesCtx.defAssignments.awayOnHome),
   });
@@ -60,12 +60,29 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
   });
   // Coverage plans: each side's doubleTarget reshapes the OPPONENT's
   // offense (suppressed star, elevated others, initiator-count tradeoff).
-  if (typeof applyDoubleCoverage === 'function') {
-    capAway = applyDoubleCoverage(capAway, homePlan.doubleTarget, seriesCtx.away.initiators);
-    capHome = applyDoubleCoverage(capHome, awayPlan.doubleTarget, seriesCtx.home.initiators);
-  }
+  capAway = applyDoubleCoverage(capAway, homePlan.doubleTarget, seriesCtx.away.initiators);
+  capHome = applyDoubleCoverage(capHome, awayPlan.doubleTarget, seriesCtx.home.initiators);
+  // Baseline capacities: default plan under the SAME availability/fatigue
+  // (injuries are physics; choices are not). The compression split in
+  // expectedGameScores compresses only the baseline gap.
+  const baseOf = (team, plan, suppression) => computeTeamCapacity(team, {
+    unavailable: plan.unavailable, fatigue: plan.fatigue, suppression,
+  });
+  const baseHome = baseOf(seriesCtx.home, homePlan, _assignmentSuppression(seriesCtx.defAssignments.awayOnHome));
+  const baseAway = baseOf(seriesCtx.away, awayPlan, _assignmentSuppression(seriesCtx.defAssignments.homeOnAway));
+  const exp = expectedGameScores(seriesCtx, capHome, capAway, gameNum,
+    seriesScore || { home: 0, away: 0 }, baseHome, baseAway);
+  return { exp, capHome, capAway };
+}
 
-  const exp = expectedGameScores(seriesCtx, capHome, capAway, gameNum, score);
+function simulateGameOnce(seriesCtx, gameNum, opts) {
+  opts = opts || {};
+  const rng = opts.rng || gameCreateRNG(opts.seed == null ? 1 : opts.seed);
+  const shifts = opts.shifts || rollSeriesShifts(seriesCtx, rng);
+  const score = opts.seriesScore || { home: 0, away: 0 };
+  const homePlan = opts.homePlan || {}, awayPlan = opts.awayPlan || {};
+
+  const { exp, capHome, capAway } = computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
   // Team-level series edge (rolled once per series by the caller): the
   // matchup-fit residual — see GAME_CONFIG.seriesEdgeSigma.
   const edge = opts.seriesEdge || 0;
@@ -120,5 +137,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, simulateGameOnce, simulateSeriesOnce };
 }

@@ -125,23 +125,37 @@ function computeTeamCapacity(team, opts) {
   return { ortg, drtg, pace: (team.advStats.pace || GAME_LEAGUE.pace), playerShares };
 }
 
-/**
- * Expected (pre-noise) scores for game N of a series — the distribution's
- * CENTER. Design law #2: the game never displays this; it samples around it.
- */
-function expectedGameScores(seriesCtx, capHome, capAway, gameNum, seriesScore) {
+function _rawScores(capHome, capAway) {
   const poss = ((capHome.pace + capAway.pace) / 2) * GAME_CONFIG.playoffPaceFactor;
   const effH = capHome.ortg + (capAway.drtg - GAME_LEAGUE.drtg);
   const effA = capAway.ortg + (capHome.drtg - GAME_LEAGUE.drtg);
-  let home = poss * effH / 100 * GAME_CONFIG.playoffOffFactor;
-  let away = poss * effA / 100 * GAME_CONFIG.playoffOffFactor;
-  // Playoff matchup compression (see GAME_CONFIG.matchupCompression):
-  // shrink the talent gap, keep the total. HCA is NOT compressed — it is
-  // calibrated at game level.
-  const mid = (home + away) / 2;
-  const gap = (home - away) * GAME_CONFIG.matchupCompression;
-  home = mid + gap / 2;
-  away = mid - gap / 2;
+  return {
+    home: poss * effH / 100 * GAME_CONFIG.playoffOffFactor,
+    away: poss * effA / 100 * GAME_CONFIG.playoffOffFactor,
+  };
+}
+
+/**
+ * Expected (pre-noise) scores for game N of a series — the distribution's
+ * CENTER. Design law #2: the game never displays this; it samples around it.
+ *
+ * Compression semantics: playoff matchup compression (upset-rate
+ * calibration) applies to the BASELINE talent gap — the gap between the
+ * two teams' default plans under tonight's availability. Deviations from
+ * baseline (minutes choices, role assignments, coverage) pass through
+ * UNCOMPRESSED: they are real coaching levers, and shrinking them was the
+ * bug TEST 21 caught (benching a star graded at -0.6 pts). HCA is never
+ * compressed — it is calibrated at game level.
+ */
+function expectedGameScores(seriesCtx, capHome, capAway, gameNum, seriesScore, baseCapHome, baseCapAway) {
+  const actual = _rawScores(capHome, capAway);
+  const base = (baseCapHome && baseCapAway) ? _rawScores(baseCapHome, baseCapAway) : actual;
+  const gapActual = actual.home - actual.away;
+  const gapBase = base.home - base.away;
+  const gap = gapBase * GAME_CONFIG.matchupCompression + (gapActual - gapBase);
+  const mid = (actual.home + actual.away) / 2;
+  let home = mid + gap / 2;
+  let away = mid - gap / 2;
   const hca = gameHcaForGame(seriesCtx, gameNum, seriesScore);
   const sign = gameVenueIsHome(gameNum) ? 1 : -1;
   home += sign * hca / 2;
@@ -150,5 +164,5 @@ function expectedGameScores(seriesCtx, capHome, capAway, gameNum, seriesScore) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { computeTeamCapacity, expectedGameScores };
+  module.exports = { computeTeamCapacity, expectedGameScores };  // _rawScores internal
 }

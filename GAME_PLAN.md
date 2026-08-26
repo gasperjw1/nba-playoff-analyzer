@@ -113,7 +113,24 @@ Orchestrated by `game-sim.js` (single game + best-of-7 series), consumed by
 
 ## Status (Aug 26, 2026)
 
-Phases 0-2 BUILT and GATED: `test-game.js` green (incl. factory calibration
+**Phases 0-3 BUILT and GATED — the game is playable.** Enter via the
+🏆 Playoff Run sport-switcher button. Setup (equity-honest team select,
+shareable seed) → Gameplan (minutes budget vs 240, coverage, scratches/
+fatigue badges, series log, league ticker) → Result (quarter margin trace,
+box scores, per-game process-CVA chip) → Bracket → Summary (CVA total,
+outcome vs baseline equity). Save/resume via localStorage (counting-RNG
+fast-forward; verified across real page reloads). Browser playtest caught
+and fixed: depth-first scheduler (whole West CF resolving before an East
+R1 G1 — now strictly round-major, regression-tested) and a 241/240
+default-minutes rounding drift. Solver-audit round 2 caught the adaptive
+coach overreacting to single-game duds (belief 0.78 off one bad game →
+minutes cut); fixed with evidence-discipline rules (n>=2 to react, top-2
+talent protected, conviction scales with sample) + playoff-weighted
+default rotations. Audit now confirms adaptive >= best static on fresh
+seeds. Remaining phases: 3.1 (in-game timeouts + halftime via steppable
+trajectory), 3.5 (boons + scouting-report depth), parallel role study.
+
+Phases 0-2 originally BUILT and GATED: `test-game.js` green (incl. factory calibration
 vs hand-authored defMatchups, 12/16 target agreement), score-realism
 harness green (18/18 metrics vs the 169-game reference, incl. favorite win
 rate 59.4% vs real 58.6%), solver audit green. Equity table (CPU-vs-CPU):

@@ -30,6 +30,13 @@ function switchSport(sport) {
     if (tabsEl) tabsEl.style.display = 'none';
     if (mlbNav) mlbNav.style.display = 'flex';
     switchBaseballPage('schedule');
+  } else if (sport === 'game') {
+    // Playoff Run (js/game/) — its own section with an internal flow,
+    // no top page-nav. renderGameSection is the game namespace's entry.
+    if (nbaNav) nbaNav.style.display = 'none';
+    if (mlbNav) mlbNav.style.display = 'none';
+    if (tabsEl) tabsEl.style.display = 'none';
+    renderGameSection(document.getElementById('main'));
   } else {
     if (mlbNav) mlbNav.style.display = 'none';
     if (nbaNav) nbaNav.style.display = 'flex';
