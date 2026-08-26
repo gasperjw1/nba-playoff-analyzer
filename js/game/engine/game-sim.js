@@ -109,9 +109,15 @@ function gameSynergyMod(team, starterNames) {
  */
 function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, awayPlan) {
   homePlan = homePlan || {}; awayPlan = awayPlan || {};
-  // Coverage (possibly user-overridden stopper) + starting-five synergy.
-  const covOnHome = resolveCoverage(seriesCtx.away, awayPlan, seriesCtx.defAssignments.awayOnHome);
-  const covOnAway = resolveCoverage(seriesCtx.home, homePlan, seriesCtx.defAssignments.homeOnAway);
+  // Coverage: derived PER GAME from the actual rotations (a returning or
+  // injured star can't be a ghost target), then the plan's stopper
+  // override applies. Falls back to the series-level derivation.
+  const derOnAway = gameDeriveAssignment(seriesCtx.home, seriesCtx.away,
+    awayPlan.rotation || null, homePlan.rotation || null) || seriesCtx.defAssignments.homeOnAway;
+  const derOnHome = gameDeriveAssignment(seriesCtx.away, seriesCtx.home,
+    homePlan.rotation || null, awayPlan.rotation || null) || seriesCtx.defAssignments.awayOnHome;
+  const covOnHome = resolveCoverage(seriesCtx.away, awayPlan, derOnHome);
+  const covOnAway = resolveCoverage(seriesCtx.home, homePlan, derOnAway);
   let capHome = computeTeamCapacity(seriesCtx.home, { ...homePlan, suppression: covOnHome.suppression });
   let capAway = computeTeamCapacity(seriesCtx.away, { ...awayPlan, suppression: covOnAway.suppression });
   const synHome = gameSynergyMod(seriesCtx.home, gameStarterNames(homePlan, capHome));

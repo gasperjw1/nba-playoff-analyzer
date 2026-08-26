@@ -82,6 +82,12 @@ const GAME_CONFIG = {
   // Allocation rescale (forcing player pts to sum to team score) shrinks
   // realized CV; inflate configured noise to compensate. Verified in harness.
   cvInflate: 1.12,
+  // Physical plausibility caps (user playtest caught Clarkson 29 pts in
+  // 12 min — a 116-pt pace): a player's line cannot exceed what his
+  // minutes allow. 1.3 pts/min ≈ the hottest real short stints.
+  ptsPerMinCap: 1.3,
+  rebPerMinCap: 0.65,
+  astPerMinCap: 0.45,
 
   // ── Regime layer (the 130-90 / 90-130 engine) ─────────────────
   // Game character sampled BEFORE trajectory. Calibrated against:
@@ -158,9 +164,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.318, SAS: 0.161, DET: 0.16, BOS: 0.129, DEN: 0.052, NYK: 0.046,
-  ATL: 0.028, HOU: 0.026, CLE: 0.025, MIN: 0.018, TOR: 0.018, LAL: 0.007,
-  PHI: 0.005, POR: 0.003, ORL: 0.003, PHX: 0.002,
+  OKC: 0.311, SAS: 0.174, DET: 0.145, BOS: 0.14, DEN: 0.054, NYK: 0.045,
+  ATL: 0.033, CLE: 0.029, HOU: 0.021, MIN: 0.014, TOR: 0.013, LAL: 0.007,
+  PHI: 0.005, ORL: 0.003, POR: 0.003, PHX: 0.002,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────

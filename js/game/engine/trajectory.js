@@ -118,10 +118,44 @@ function simulateGameFlow(exp, regime, rng) {
 
 // ── Player box allocation ───────────────────────────────────────
 /**
+ * Weighted integer allocation with PER-PLAYER CAPS: clip anyone whose
+ * share exceeds his cap, renormalize the rest, repeat; distribute the
+ * uncapped remainder by largest remainder. The physical-plausibility
+ * layer (user playtest caught 29 pts in 12 minutes).
+ */
+function gameCappedAllocate(weights, caps, total) {
+  const n = weights.length;
+  const out = new Array(n).fill(0);
+  const capped = new Array(n).fill(false);
+  let remaining = total;
+  for (let pass = 0; pass < 8; pass++) {
+    const wSum = weights.reduce((a, w, i) => a + (capped[i] ? 0 : w), 0);
+    if (wSum <= 0) break;
+    let newCap = false;
+    weights.forEach((w, i) => {
+      if (capped[i]) return;
+      if (w / wSum * remaining > caps[i]) {
+        out[i] = caps[i]; capped[i] = true; remaining -= caps[i]; newCap = true;
+      }
+    });
+    if (!newCap) break;
+  }
+  const idx = weights.map((w, i) => i).filter(i => !capped[i]);
+  if (idx.length) {
+    const wSum = idx.reduce((a, i) => a + weights[i], 0) || 1;
+    const ints = gameLargestRemainder(idx.map(i => weights[i] / wSum * remaining), Math.max(0, Math.round(remaining)));
+    idx.forEach((i, k) => { out[i] = ints[k]; });
+  } else if (remaining > 0) {
+    out[caps.indexOf(Math.max(...caps))] += Math.round(remaining);  // degenerate fallback
+  }
+  return out;
+}
+
+/**
  * Allocate a team's final totals down to player lines.
  * @param {Object} cap        capacity output for this team
  * @param {number} teamScore  final points to distribute
- * @param {Object} opts       { shifts: {name: mult}, garbage: bool, otMinutes }
+ * @param {Object} opts       { shifts, garbage, otMinutes, starters }
  */
 function allocateBox(cap, teamScore, rng, opts) {
   opts = opts || {};
@@ -133,6 +167,24 @@ function allocateBox(cap, teamScore, rng, opts) {
     : rows.slice().sort((a, b) => b.minutes - a.minutes).slice(0, 5).map(r => r.player.name);
   const isStarter = new Set(starterCut);
 
+  // Final minutes first (stat caps derive from them): garbage time trims
+  // starters and hands those minutes to the bench so the box still sums
+  // to ~240 (+25/OT); OT minutes go to the starters.
+  const otMin = opts.otMinutes || 0;
+  const finalMin = rows.map(r => r.minutes);
+  if (opts.garbage) {
+    let trimmed = 0;
+    const benchIdx = [];
+    rows.forEach((r, i) => {
+      if (isStarter.has(r.player.name)) { trimmed += finalMin[i] * 0.07; finalMin[i] *= 0.93; }
+      else if (finalMin[i] > 0) benchIdx.push(i);
+    });
+    benchIdx.forEach(i => {
+      finalMin[i] = Math.min(GAME_CONFIG.maxPlayerMinutes, finalMin[i] + trimmed / (benchIdx.length || 1));
+    });
+  }
+  rows.forEach((r, i) => { if (isStarter.has(r.player.name)) finalMin[i] += otMin; });
+
   const noisy = rows.map(r => {
     const tier = cfg.tiers[r.player.tier];
     let w = r.ptsShare
@@ -143,24 +195,20 @@ function allocateBox(cap, teamScore, rng, opts) {
     if (opts.garbage) w *= isStarter.has(r.player.name) ? 0.90 : 1.22;
     return w;
   });
-  const wSum = noisy.reduce((a, b) => a + b, 0);
-  const pts = gameLargestRemainder(noisy.map(w => w / wSum * teamScore), teamScore);
+  const pts = gameCappedAllocate(noisy, finalMin.map(m => Math.floor(m * cfg.ptsPerMinCap)), teamScore);
 
   // Team rebounds/assists: plausible totals, allocated by shares.
   const rebTotal = Math.max(28, Math.round(gameNormal(rng, 43, 4)));
   const astTotal = Math.max(12, Math.round(teamScore * 0.25 + gameNormal(rng, 0, 2.5)));
   const rebW = rows.map(r => r.rebShare * gameSkewNoise(rng, cfg.rebCV));
   const astW = rows.map(r => r.astShare * gameSkewNoise(rng, cfg.astCV));
-  const rebWS = rebW.reduce((a, b) => a + b, 0), astWS = astW.reduce((a, b) => a + b, 0);
-  const reb = gameLargestRemainder(rebW.map(w => w / rebWS * rebTotal), rebTotal);
-  const ast = gameLargestRemainder(astW.map(w => w / astWS * astTotal), astTotal);
+  const reb = gameCappedAllocate(rebW, finalMin.map(m => Math.floor(m * cfg.rebPerMinCap)), rebTotal);
+  const ast = gameCappedAllocate(astW, finalMin.map(m => Math.floor(m * cfg.astPerMinCap)), astTotal);
 
-  const otMin = opts.otMinutes || 0;
   return rows.map((r, i) => ({
     name: r.player.name,
     tier: r.player.tier,
-    min: Math.round(r.minutes * (opts.garbage && isStarter.has(r.player.name) ? 0.93 : 1))
-      + (isStarter.has(r.player.name) ? otMin : 0),
+    min: Math.round(finalMin[i]),
     pts: pts[i], reb: reb[i], ast: ast[i],
   }));
 }

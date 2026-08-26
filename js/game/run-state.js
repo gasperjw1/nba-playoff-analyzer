@@ -115,6 +115,13 @@ function createGameRun(db, opts) {
   };
   Object.keys(db).forEach(abbr => {
     run.teamState[abbr] = { fatigue: {}, injuries: {}, rusty: false };
+    // Real injuries at the playoffs' start enter the book with their
+    // parsed return timelines (Edwards ~9 games, Doncic ~6, Lillard 99).
+    db[abbr].players.forEach(p => {
+      if (p.initialStatus === 'returning') {
+        run.teamState[abbr].injuries[p.name] = { gamesOut: p.initialGamesOut, drag: 0.3, dragGames: 2 };
+      }
+    });
   });
   return run;
 }

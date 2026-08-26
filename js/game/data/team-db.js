@@ -63,6 +63,32 @@ function gameDefaultRotation(players, rotationDepth) {
   return players.map(p => ({ player: p, minutes: raw.get(p.name) * scale }));
 }
 
+/**
+ * Parse a rating-0 player's real status at playoffs start (user playtest:
+ * Anthony Edwards — "OUT, est. return May 9" — was permanently excluded).
+ *   'dnp'       : coach's rotation decision, stays out (Finney-Smith)
+ *   'returning' : injured with a timeline — seeded into the run's injury
+ *                 book (createGameRun) and RETURNS after gamesOut games.
+ * Return estimate: parsed date vs the Apr 19 playoff start at ~2.2
+ * days/game; season-ending markers → 99 (never returns within a run).
+ */
+function gameParseInitialInjury(src) {
+  if (src.rating !== 0) return null;
+  const inj = src.injury || '';
+  if (!/OUT|Questionable/i.test(inj)) return null;
+  if (/out of rotation|DNP/i.test(inj)) return { status: 'dnp' };
+  if (/season|Achilles|ACL/i.test(inj)) return { status: 'returning', gamesOut: 99 };
+  let gamesOut = 5;
+  const m = inj.match(/(Apr(?:il)?|May|Jun(?:e)?)\.?\s*(\d+)/i);
+  if (m) {
+    const month = /^apr/i.test(m[1]) ? 3 : /^may/i.test(m[1]) ? 4 : 5;
+    const days = (new Date(2026, month, parseInt(m[2])) - new Date(2026, 3, 19)) / 86400000;
+    gamesOut = Math.max(1, Math.min(30, Math.round(days / 2.2)));
+  }
+  if (/questionable/i.test(inj)) gamesOut = Math.min(gamesOut, 2);
+  return { status: 'returning', gamesOut };
+}
+
 /** Build one game-team from its series-data appearance. */
 function _buildGameTeam(t, series) {
   const players = (t.players || []).map(src => ({
@@ -85,12 +111,16 @@ function _buildGameTeam(t, series) {
     starCeiling: src.starCeiling || 0,
     injuryRisk: src.injuryRisk || 0,
     playoffAscension: src.playoffAscension || 0,
-    // Real status at the 2026 playoffs' start (historical-mode run seeds;
-    // rating 0 + OUT string = unavailable until the injury engine clears it).
-    initialStatus: (src.rating === 0 && /OUT/.test(src.injury || '')) ? 'out' : 'available',
+    // Real status at the 2026 playoffs' start — see gameParseInitialInjury.
+    ...(function () {
+      const st = gameParseInitialInjury(src);
+      return st
+        ? { initialStatus: st.status, initialGamesOut: st.gamesOut || 0 }
+        : { initialStatus: 'available', initialGamesOut: 0 };
+    })(),
   }));
 
-  const availableNow = players.filter(p => p.initialStatus === 'available' && p.baseRating > 0);
+  const availableNow = players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0);
   const coach = GAME_COACH_PROFILES[t.abbr] || null;
   const rotation = gameDefaultRotation(availableNow, coach && coach.rotationDepth);
   const rotPlayers = rotation.map(r => r.player);
@@ -163,5 +193,5 @@ function buildGameTeamDb(seriesData) {
 const GAME_TEAM_DB = (typeof SERIES_DATA !== 'undefined') ? buildGameTeamDb(SERIES_DATA) : {};
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { buildGameTeamDb, gameDefaultRotation, gamePlayerTier, gameOLebron, gameDLebron };
+  module.exports = { buildGameTeamDb, gameDefaultRotation, gamePlayerTier, gameOLebron, gameDLebron, gameParseInitialInjury };
 }

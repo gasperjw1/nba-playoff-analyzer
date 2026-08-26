@@ -17,15 +17,17 @@
  * dLEBRON among perimeter roles, target by usage among the opponent's
  * top scorers).
  */
-function gameDeriveAssignment(defTeam, offTeam, offRotation) {
+function gameDeriveAssignment(defTeam, offTeam, offRotation, defRotation) {
   const rotationNames = new Set((offRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
   const candidates = offTeam.players.filter(p =>
-    (rotationNames.size ? rotationNames.has(p.name) : p.initialStatus === 'available') && p.baseRating > 0);
+    (rotationNames.size ? rotationNames.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0);
   if (!candidates.length) return null;
   // Target: highest usage-weighted scorer on the floor.
   const target = candidates.reduce((a, b) => (a.usg * a.ppg >= b.usg * b.ppg ? a : b));
   const isPerimeterD = p => (GAME_DEF_ROLE_FAMILY[p.defRole] || '') !== 'interior';
-  const defenders = defTeam.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0 && isPerimeterD(p));
+  const defNames = new Set((defRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
+  const defenders = defTeam.players.filter(p =>
+    (defNames.size ? defNames.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0 && isPerimeterD(p));
   if (!defenders.length) return null;
   const defender = defenders.reduce((a, b) => (a.dLebron >= b.dLebron ? a : b));
   return { defender: defender.name, target: target.name, dLebron: defender.dLebron, targetUsg: target.usg };
@@ -54,10 +56,10 @@ function makeGameSeries(db, homeAbbr, awayAbbr, round) {
     // assignments override these in the plan object.
     defAssignments: {
       homeOnAway: gameDeriveAssignment(home, away, gameDefaultRotation(
-        away.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0),
+        away.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0),
         away.coach && away.coach.rotationDepth)),
       awayOnHome: gameDeriveAssignment(away, home, gameDefaultRotation(
-        home.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0),
+        home.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0),
         home.coach && home.coach.rotationDepth)),
     },
   };

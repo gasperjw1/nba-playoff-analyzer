@@ -234,6 +234,64 @@ T('12: Game invariants — scores, quarters, box coherence');
   }
 }
 
+T('12b: Physical plausibility — per-minute caps, box minutes coherent');
+{
+  const s = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  const cfg = ctx.GAME_CONFIG;
+  for (let seed = 500; seed < 560; seed++) {
+    const g = ctx.simulateGameOnce(s, 1 + (seed % 7), { seed });
+    ['home', 'away'].forEach(side => {
+      let minSum = 0;
+      g.box[side].forEach(r => {
+        minSum += r.min;
+        assert(r.pts <= Math.floor(r.min * cfg.ptsPerMinCap) + 1,
+          'pts within minutes cap (' + r.name + ': ' + r.pts + ' in ' + r.min + 'min, seed ' + seed + ')');
+        assert(r.reb <= Math.floor(r.min * cfg.rebPerMinCap) + 1, 'reb within cap (' + r.name + ')');
+        assert(r.ast <= Math.floor(r.min * cfg.astPerMinCap) + 1, 'ast within cap (' + r.name + ')');
+      });
+      const expected = 240 + 25 * (g.ot || 0);
+      assert(Math.abs(minSum - expected) <= 6,
+        side + ' box minutes ~' + expected + ' (' + minSum + ', ot ' + g.ot + ', seed ' + seed + ')');
+    });
+  }
+}
+
+T('12c: Returning players — real injuries seed the book and expire');
+{
+  // Edwards: OUT at playoffs start, est. return May 9 → ~9 games out.
+  const edwards = DB.MIN.players.find(p => p.name === 'Anthony Edwards');
+  assert(edwards && edwards.initialStatus === 'returning', 'Edwards is returning, not ghosted');
+  assert(edwards.initialGamesOut >= 6 && edwards.initialGamesOut <= 12,
+    'Edwards return parsed from "May 9" (' + edwards.initialGamesOut + ' games)');
+  const lillard = DB.SAS && Object.values(DB).flatMap(t => t.players).find(p => p.name === 'Damian Lillard');
+  assert(lillard && lillard.initialStatus === 'returning' && lillard.initialGamesOut === 99,
+    'Lillard (torn Achilles) out for the whole run');
+  const dfs = Object.values(DB).flatMap(t => t.players).find(p => p.name === 'Dorian Finney-Smith');
+  assert(dfs && dfs.initialStatus === 'dnp', 'Finney-Smith is a rotation DNP, not an injury');
+  // In a run: Edwards starts in the injury book and is unavailable G1...
+  const run = ctx.createGameRun(DB, { seed: 31 });
+  assert(run.teamState.MIN.injuries['Anthony Edwards'], 'Edwards seeded into MIN injury book');
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  const gs1 = ctx.getUpcomingGameState(run, ses, 'MIN');
+  assert(gs1.unavailable.includes('Anthony Edwards'), 'Edwards unavailable in G1');
+  // ...and the book counts down as games play.
+  const before = run.teamState.MIN.injuries['Anthony Edwards'].gamesOut;
+  ctx.playSeriesGame(run, ses, null);
+  ctx.playSeriesGame(run, ses, null);
+  const after = run.teamState.MIN.injuries['Anthony Edwards'].gamesOut;
+  assert(after === before - 2, 'return clock counts down (' + before + ' -> ' + after + ')');
+  // Watson (questionable) returns fast and actually PLAYS.
+  const watson = DB.DEN.players.find(p => p.name && /Watson/.test(p.name));
+  if (watson) {
+    assert(watson.initialStatus === 'returning' && watson.initialGamesOut <= 2, 'Watson back within 2 games');
+    let played = false;
+    ses.games.forEach((g, i) => { if (i >= watson.initialGamesOut) g.box.home.forEach(r => { if (r.name === watson.name && r.min > 0) played = true; }); });
+    while (!ses.done) ctx.playSeriesGame(run, ses, null);
+    ses.games.forEach((g, i) => { if (i >= watson.initialGamesOut) g.box.home.forEach(r => { if (r.name === watson.name && r.min > 0) played = true; }); });
+    assert(played, 'Watson returns and plays minutes after his clock expires');
+  }
+}
+
 T('13: Series invariants — first to 4, venue alternation, shifts persist');
 {
   const s = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');

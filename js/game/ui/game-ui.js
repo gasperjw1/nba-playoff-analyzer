@@ -167,7 +167,7 @@ function gameReconcilePlan() {
   const gs = getUpcomingGameState(run, session, run.userTeam);
   const out = new Set(gs.unavailable);
   const available = team.players.filter(p =>
-    p.initialStatus === 'available' && p.baseRating > 0 && !out.has(p.name));
+    p.initialStatus !== 'dnp' && p.baseRating > 0 && !out.has(p.name));
   const availNames = new Set(available.map(p => p.name));
 
   if (!Object.keys(GAME_UI.planMinutes).length) {
@@ -211,9 +211,18 @@ function renderGameplan() {
   const myWins = userIsHome ? session.score.home : session.score.away;
   const oppWins = userIsHome ? session.score.away : session.score.home;
 
-  // Marquee assignments both ways (factory-derived; stopper overridable).
-  const myCoverage = userIsHome ? sctx.defAssignments.homeOnAway : sctx.defAssignments.awayOnHome;
-  const theirCoverage = userIsHome ? sctx.defAssignments.awayOnHome : sctx.defAssignments.homeOnAway;
+  // Marquee assignments both ways — derived from TONIGHT'S availability
+  // (a returning star out this game can't be the target), stopper overridable.
+  const oppGs = getUpcomingGameState(run, session, opp.abbr);
+  const oppOut = new Set(oppGs.unavailable);
+  const oppAvail = opp.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && !oppOut.has(p.name));
+  const oppRotation = gameDefaultRotation(oppAvail, opp.coach.rotationDepth);
+  const myAvail = team.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && !out.has(p.name));
+  const myRotation = myAvail.map(p => ({ player: p, minutes: GAME_UI.planMinutes[p.name] || 0 }));
+  const myCoverage = gameDeriveAssignment(team, opp, oppRotation, myRotation)
+    || (userIsHome ? sctx.defAssignments.homeOnAway : sctx.defAssignments.awayOnHome);
+  const theirCoverage = gameDeriveAssignment(opp, team, myRotation, oppRotation)
+    || (userIsHome ? sctx.defAssignments.awayOnHome : sctx.defAssignments.homeOnAway);
 
   const offRoles = Object.keys(GAME_OFF_ROLE_FAMILY);
   const defRoles = Object.keys(GAME_DEF_ROLE_FAMILY);
@@ -231,7 +240,7 @@ function renderGameplan() {
   };
 
   const rows = team.players
-    .filter(p => p.baseRating > 0 && p.initialStatus === 'available')
+    .filter(p => p.baseRating > 0 && p.initialStatus !== 'dnp')
     .sort((a, b) => b.baseRating - a.baseRating)
     .map(p => {
       const isOut = out.has(p.name);
@@ -239,12 +248,16 @@ function renderGameplan() {
       const fat = gs.fatigue[p.name] || 0;
       const seriesAvg = gameSeriesAvg(session, userIsHome ? 'home' : 'away', p.name);
       const badge = isOut ? '<span class="pr-badge pr-out">OUT</span>'
-        : drag ? '<span class="pr-badge pr-drag">HURT</span>'
-        : fat >= 0.25 ? '<span class="pr-badge pr-tired">TIRED</span>' : '';
+        : drag ? '<span class="pr-badge pr-drag">HURT</span>' : '';
+      const fresh = Math.round((1 - fat) * 100);
+      const freshCls = fresh >= 85 ? 'pr-ok' : fresh >= 60 ? 'pr-mid' : 'pr-warn';
+      const freshCell = `<span class="${freshCls}" title="Freshness: fatigue reduces on-court impact and raises injury risk. Recovers between games; heavy minutes drain it.">${fresh}%</span>`;
       if (isOut) {
+        const book = run.teamState[run.userTeam].injuries[p.name];
+        const eta = book && book.gamesOut < 90 ? `<span class="pr-dim">~${book.gamesOut} game${book.gamesOut === 1 ? '' : 's'}</span>` : '<span class="pr-dim">—</span>';
         return `<tr class="pr-row-out"><td>${gameEsc(p.name)} ${badge}</td>
-          <td class="pr-dim" colspan="2">${gameEsc(p.pos)} · ${gameEsc(p.offRole || '')}</td>
-          <td>${p.ppg.toFixed(1)}</td><td>—</td><td>—</td><td></td></tr>`;
+          <td class="pr-dim" colspan="2">${gameEsc(p.pos)} · ${gameEsc(p.offRole || '')} · returns ${eta}</td>
+          <td>${p.ppg.toFixed(1)}</td><td>—</td><td>—</td><td>—</td><td></td></tr>`;
       }
       return `<tr>
         <td>${gameEsc(p.name)} ${badge}</td>
@@ -252,6 +265,7 @@ function renderGameplan() {
         <td>${roleSel(p, 'defRole', defRoles)}</td>
         <td>${p.ppg.toFixed(1)}</td>
         <td>${seriesAvg == null ? '<span class="pr-dim">—</span>' : seriesAvg.toFixed(1)}</td>
+        <td>${freshCell}</td>
         <td><input class="pr-min" type="number" min="0" max="42" data-player="${gameEsc(p.name)}"
              value="${GAME_UI.planMinutes[p.name] || 0}" oninput="gameSetMin(this)"></td>
         <td><input type="checkbox" class="pr-start" data-player="${gameEsc(p.name)}"
@@ -260,12 +274,12 @@ function renderGameplan() {
     }).join('');
 
   const stopperOptions = team.players
-    .filter(p => p.initialStatus === 'available' && p.baseRating > 0 && !out.has(p.name))
+    .filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && !out.has(p.name))
     .sort((a, b) => b.dLebron - a.dLebron)
     .map(p => `<option value="${gameEsc(p.name)}" ${GAME_UI.planStopper === p.name ? 'selected' : ''}>
       ${gameEsc(p.name)} (${gameEsc(p.defRole || '?')}, dLEBRON ${p.dLebron > 0 ? '+' : ''}${p.dLebron.toFixed(2)})</option>`).join('');
   const oppOptions = opp.players
-    .filter(p => p.initialStatus === 'available' && p.baseRating > 0 && p.ppg >= 14)
+    .filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.ppg >= 14)
     .sort((a, b) => b.ppg - a.ppg)
     .map(p => `<option value="${gameEsc(p.name)}" ${GAME_UI.planDouble === p.name ? 'selected' : ''}>
       Double ${gameEsc(p.name)} (${p.ppg.toFixed(1)} ppg)</option>`).join('');
@@ -285,11 +299,13 @@ function renderGameplan() {
         <h3>Rotation — <span id="prTot" class="pr-ok">240</span>/240 min
           <span class="pr-dim">· starters <span id="prStartCt">${GAME_UI.planStarters.length}</span>/5 · cap 42</span></h3>
         <table class="pr-table">
-          <tr><th>Player</th><th>Off role</th><th>Def role</th><th>Season</th><th>Series</th><th>Min</th><th>Start</th></tr>
+          <tr><th>Player</th><th>Off role</th><th>Def role</th><th>Season</th><th>Series</th><th>Fresh</th><th>Min</th><th>Start</th></tr>
           ${rows}
         </table>
         <p class="pr-dim">Roles default to each player's natural game — reassigning is a real lever with a real
-          miscast cost (tinted = out of position).</p>
+          miscast cost (tinted = out of position). <strong>Fresh</strong> is fatigue: it drains with heavy
+          minutes, recovers between games, cuts on-court impact, and raises injury risk. Injured players
+          show a return estimate.</p>
       </div>
       <div class="pr-panel">
         <h3>Matchups</h3>
@@ -661,7 +677,7 @@ function gameInjectCSS() {
   .pr-badge{font-size:10px;border-radius:3px;padding:1px 4px;margin-left:4px}
   .pr-out{background:#5c1a1a;color:#ff8181}.pr-drag{background:#5c451a;color:#ffc861}.pr-tired{background:#3a3a1a;color:#e0d060}
   .pr-row-out td{opacity:.45}
-  .pr-ok{color:#4caf7d}.pr-warn{color:#ff8181}
+  .pr-ok{color:#4caf7d}.pr-warn{color:#ff8181}.pr-mid{color:#e0d060}
   .pr-w{color:#4caf7d}.pr-l{color:#ff8181}.pr-dim{color:#9aa4b2;font-size:12px}
   .pr-play{margin:8px 6px 0 0}
   .pr-actions{margin:14px 0}

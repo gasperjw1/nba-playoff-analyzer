@@ -34,7 +34,7 @@ function computeTeamCapacity(team, opts) {
   const roles = opts.roleAssignments || {};
 
   const pool = team.players.filter(p =>
-    p.baseRating > 0 && p.initialStatus === 'available' && !out.has(p.name));
+    p.baseRating > 0 && p.initialStatus !== 'dnp' && !out.has(p.name));
 
   // Minutes plan: explicit or default; always renormalized to 240 so an
   // injury mid-plan doesn't silently leave a team playing 4-on-5.

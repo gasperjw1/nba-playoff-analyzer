@@ -94,7 +94,7 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
   const prof = team.coach || { adjust: 5, doublesStars: 5, benchLeash: 5, rotationDepth: 9 };
   const out = new Set(gameState && gameState.unavailable || []);
   const pool = team.players.filter(p =>
-    p.baseRating > 0 && p.initialStatus === 'available' && !out.has(p.name));
+    p.baseRating > 0 && p.initialStatus !== 'dnp' && !out.has(p.name));
 
   // Rotation: default, then bench-leash shifts by believed own-player form.
   // Discipline rules (solver-audit fix — the v1 leash cut minutes off ONE
