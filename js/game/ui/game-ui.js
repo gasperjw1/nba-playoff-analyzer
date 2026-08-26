@@ -249,6 +249,8 @@ function renderGameplan() {
       const seriesAvg = gameSeriesAvg(session, userIsHome ? 'home' : 'away', p.name);
       const badge = isOut ? '<span class="pr-badge pr-out">OUT</span>'
         : drag ? `<span class="pr-badge pr-drag" title="Playing hurt: performance drag, and minutes played risk AGGRAVATING the injury (a few % per heavy game). Resting him still runs the recovery clock.">HURT</span>` : '';
+      const desig = ({ guard: 'G', 'guard-wing': 'GW', wing: 'W', big: 'B', flex: 'F' })[p.designation] || '?';
+      const desigChip = `<span class="pr-desig" title="Designation: ${gameEsc(p.designation)} — derived from his actual profile (stats + roles), not listed position. Guard-wings count half toward each group; flex players count everywhere (that's their value).">${desig}</span>`;
       const fresh = Math.round((1 - fat) * 100);
       const freshCls = fresh >= 85 ? 'pr-ok' : fresh >= 60 ? 'pr-mid' : 'pr-warn';
       const freshCell = `<span class="${freshCls}" title="Freshness: fatigue reduces on-court impact and raises injury risk. Recovers between games; heavy minutes drain it.">${fresh}%</span>`;
@@ -260,7 +262,7 @@ function renderGameplan() {
           <td>${p.ppg.toFixed(1)}</td><td>—</td><td>—</td><td>—</td><td></td></tr>`;
       }
       return `<tr>
-        <td>${gameEsc(p.name)} ${badge}</td>
+        <td>${desigChip} ${gameEsc(p.name)} ${badge}</td>
         <td>${roleSel(p, 'offRole', offRoles)}</td>
         <td>${roleSel(p, 'defRole', defRoles)}</td>
         <td>${p.ppg.toFixed(1)}</td>
@@ -695,6 +697,7 @@ function gameInjectCSS() {
   .pr-fit-mild{border-color:#8a7a30}.pr-fit-warn{border-color:#b07a20;color:#ffc861}.pr-fit-bad{border-color:#a03030;color:#ff8181}
   .pr-start{accent-color:#4caf7d;width:15px;height:15px}
   .pr-badge{font-size:10px;border-radius:3px;padding:1px 4px;margin-left:4px}
+  .pr-desig{display:inline-block;min-width:20px;text-align:center;font-size:10px;font-weight:600;border-radius:3px;padding:1px 3px;background:#232d3f;color:#9fb6d8;margin-right:2px}
   .pr-out{background:#5c1a1a;color:#ff8181}.pr-drag{background:#5c451a;color:#ffc861}.pr-tired{background:#3a3a1a;color:#e0d060}
   .pr-row-out td{opacity:.45}
   .pr-ok{color:#4caf7d}.pr-warn{color:#ff8181}.pr-mid{color:#e0d060}

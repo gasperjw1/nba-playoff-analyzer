@@ -65,10 +65,12 @@ const GAME_CONFIG = {
   // star's impact — synergy is a nudge, never a star substitute.
   synergyScale: 0.04,
   synergyCap: 0.8,
-  // Lineup composition (guards PG/SG, wings SF, bigs PF/C): balanced
-  // five ≈ 2-2-1 in some order. Off-shape fives pay on the relevant end:
-  // spacing problems tax offense, size problems tax defense. A coaching
-  // lever → passes uncompressed; countered by composition-aware AI.
+  // Lineup composition — on DESIGNATION credits (guard / guard-wing /
+  // wing / big / flex, stat-derived in team-db.js; guard-wings count half
+  // toward each side, flex a third everywhere). Balanced ≈ 2-2-1-shaped
+  // credit. Off-shape fives pay on the relevant end: spacing problems tax
+  // offense, size problems tax defense. A coaching lever → passes
+  // uncompressed; countered by composition-aware AI.
   composition: {
     threeBigOrtg: -0.9,     // 3+ bigs: spacing collapses
     noGuardOrtg: -0.7,      // no creator pressure
@@ -106,6 +108,15 @@ const GAME_CONFIG = {
   ptsPerMinCap: 1.3,
   rebPerMinCap: 0.65,
   astPerMinCap: 0.45,
+  // Usage-aware scoring depth (user design: "some players should not be
+  // scoring so much" — a player's SHOT DIET bounds his eruptions, not
+  // just his minutes). The per-minute cap scales with usage, and
+  // low-usage players get damped upside noise: a 3&D role player in 30
+  // minutes can have a good night, not a 29-point one.
+  usgCapPivot: 24,            // usage at which the cap multiplier = 1.0
+  usgCapClamp: [0.7, 1.2],
+  usgNoiseFloor: 0.75,        // noise multiplier at zero usage...
+  usgNoisePivot: 20,          // ...rising to 1.0 at this usage
 
   // ── Regime layer (the 130-90 / 90-130 engine) ─────────────────
   // Game character sampled BEFORE trajectory. Calibrated against:
@@ -182,9 +193,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.368, DET: 0.162, SAS: 0.134, BOS: 0.119, DEN: 0.062, NYK: 0.056,
-  HOU: 0.02, ATL: 0.018, CLE: 0.017, TOR: 0.014, MIN: 0.01, PHI: 0.008,
-  LAL: 0.006, POR: 0.003, ORL: 0.003, PHX: 0.002,
+  OKC: 0.322, SAS: 0.178, DET: 0.147, BOS: 0.127, DEN: 0.066, NYK: 0.045,
+  ATL: 0.029, CLE: 0.027, HOU: 0.02, TOR: 0.015, LAL: 0.008, MIN: 0.007,
+  ORL: 0.003, PHI: 0.003, POR: 0.002, PHX: 0.001,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────
@@ -215,8 +226,11 @@ const GAME_ROLE_FAMILY_RELATED = {
  * Fit cost (0 = native, 1 = maximal miscast) for playing a role that is
  * not the player's labeled one.
  */
-function gameRoleFitCost(nativeRole, assignedRole, familyMap) {
+function gameRoleFitCost(nativeRole, assignedRole, familyMap, naturalRoles) {
   if (!assignedRole || assignedRole === nativeRole) return 0;
+  // A derived NATURAL secondary role (see gameNaturalOffRoles) is nearly
+  // free — the stats say he already plays this way (the Hart-Cutter fix).
+  if (naturalRoles && naturalRoles.includes(assignedRole)) return 0.05;
   const nf = familyMap[nativeRole], af = familyMap[assignedRole];
   if (!nf || !af) return 0.35;                       // unknown role: moderate cost
   if (nf === af) return 0.15;

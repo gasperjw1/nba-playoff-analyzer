@@ -147,6 +147,20 @@ LINEUP COMPOSITION (G/W/B shape: 3-big spacing tax, 3-guard size tax,
 shown live; composition-aware AI counters — lineups are observable, so
 no evidence discount, and composition-baiting works only vs low-adjust
 coaches), per-game coverage derivation (no ghost targets).
+Playtest round 4 (user design): POSITIONS → DESIGNATIONS (guard /
+guard-wing / wing / big / flex, derived from stats + roles, not listed
+position — LeBron and Hart grade flex); composition math runs on
+fractional designation credits (guard-wings half each side, flex
+everywhere — versatility priced as value); NATURAL SECONDARY ROLES
+derived from actual profiles (Hart→Cutter ≈ free: 7.4 rpg as a guard IS
+the cutting signal; his low fgp comes from skipping threes); usage-aware
+scoring depth (per-minute ceiling × shot-diet factor + damped upside
+noise for low-usage players — "some players should not be scoring so
+much" solved by analysis, not flat caps). NYK-ATL closeness DIAGNOSED as
+data, not bug: analyzer advStats have ATL +5.7 netRtg vs NYK +6.3 —
+near-even teams in 3-vs-6 clothing; sim gives NYK 65% (real series was a
+competitive 4-2). Ghost-double fix: coaches can't call coverage on
+players not dressing tonight.
 Known refinement queued: stopper fit assumes a perimeter (PoA) target —
 guarding a big initiator (Jokic) with an Anchor Big should be native fit.
 Remaining phases: 3.1 (in-game timeouts + halftime via steppable

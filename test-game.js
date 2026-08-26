@@ -292,39 +292,87 @@ T('12c: Returning players — real injuries seed the book and expire');
   }
 }
 
-T('12d: Lineup composition — balanced free, off-shape taxed, AI counters');
+T('12d: Designations + composition — stat-derived types, off-shape taxed, AI counters');
 {
+  // Designation sanity against known player types
+  const find = name => Object.values(DB).flatMap(t => t.players).find(p => p.name === name);
+  const hart = find('Josh Hart');
+  assert(hart && ['flex', 'guard-wing'].includes(hart.designation),
+    'Hart is a flex/guard-wing, not a plain guard (' + (hart && hart.designation) + ')');
+  const lebron = find('LeBron James');
+  assert(lebron && lebron.designation === 'flex', 'LeBron (point-forward) is flex (' + (lebron && lebron.designation) + ')');
+  const gobert = find('Rudy Gobert');
+  assert(gobert && gobert.designation === 'big', 'Gobert is a big');
+  const brunson = find('Jalen Brunson');
+  assert(brunson && brunson.designation === 'guard', 'Brunson is a guard');
+  // Natural secondary roles: Hart's finishing/rebounding profile makes
+  // Cutter ~free (the playtest complaint), while a pure shooter pays.
+  assert(hart.naturalOffRoles.includes('Cutter'), 'Hart has Cutter as a natural role (' + hart.naturalOffRoles.join(',') + ')');
+  const hartFit = ctx.gameRoleFitCost(hart.offRole, 'Cutter', ctx.GAME_OFF_ROLE_FAMILY, hart.naturalOffRoles);
+  assert(hartFit <= 0.05, 'Hart -> Cutter costs ~nothing (' + hartFit + ')');
+  // Composition on designation credits
   const nyk = DB.NYK;
-  const byGroup = { g: [], w: [], b: [] };
-  nyk.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0)
-    .forEach(p => byGroup[ctx.gamePosGroup(p.pos)].push(p.name));
-  if (byGroup.g.length >= 2 && byGroup.w.length >= 2 && byGroup.b.length >= 3) {
-    const balanced = [...byGroup.g.slice(0, 2), ...byGroup.w.slice(0, 2), byGroup.b[0]];
-    const cBal = ctx.gameLineupComposition(nyk, balanced);
-    assert(cBal.ortgMod === 0 && cBal.drtgMod === 0 && !cBal.notes.length,
-      '2G-2W-1B is penalty-free (' + cBal.label + ')');
-    const threeBig = [...byGroup.g.slice(0, 1), ...byGroup.w.slice(0, 1), ...byGroup.b.slice(0, 3)];
-    const cBig = ctx.gameLineupComposition(nyk, threeBig);
-    assert(cBig.ortgMod < 0, '3-big lineup pays a spacing tax (' + cBig.label + ', ' + cBig.ortgMod + ')');
-    const threeGuard = [...byGroup.g.slice(0, 3), byGroup.w[0], byGroup.b[0]];
-    const cSmall = ctx.gameLineupComposition(nyk, threeGuard);
-    assert(cSmall.drtgMod > 0, '3-guard lineup pays a size tax on defense (' + cSmall.label + ')');
+  const byCredit = b => nyk.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 &&
+    (ctx.GAME_DESIGNATION_CREDIT[p.designation] || [0, 1, 0])[2] >= (b ? 0.9 : 0) &&
+    (b ? true : (ctx.GAME_DESIGNATION_CREDIT[p.designation] || [0, 1, 0])[2] < 0.1)).map(p => p.name);
+  const bigs = byCredit(true), smalls = byCredit(false);
+  if (bigs.length >= 3 && smalls.length >= 2) {
+    const cBig = ctx.gameLineupComposition(nyk, [...bigs.slice(0, 3), ...smalls.slice(0, 2)]);
+    assert(cBig.ortgMod < 0, 'big-heavy five pays a spacing tax (' + cBig.label + ')');
   }
-  // Composition counter: a high-adjust coach facing a 3-big five tilts
-  // minutes toward his own bigs vs his no-info plan.
-  const okc = DB.OKC;   // Daigneault adjust 9
-  const den = DB.DEN;
-  const denBigs = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && ctx.gamePosGroup(p.pos) === 'b').map(p => p.name);
-  if (denBigs.length >= 3) {
-    const bigFive = [...denBigs.slice(0, 3),
-      ...den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && ctx.gamePosGroup(p.pos) !== 'b').slice(0, 2).map(p => p.name)];
+  // Balanced five with a flex dodges the taxes (versatility as value)
+  const flexes = nyk.players.filter(p => p.designation === 'flex' && p.initialStatus !== 'dnp').map(p => p.name);
+  if (flexes.length >= 1 && smalls.length >= 2 && bigs.length >= 1) {
+    const wings = nyk.players.filter(p => ['wing', 'guard-wing'].includes(p.designation) && p.initialStatus !== 'dnp').map(p => p.name);
+    if (wings.length >= 1) {
+      const five = [smalls[0], smalls[1] || wings[0], wings[0], flexes[0], bigs[0]].filter((v, i, a) => a.indexOf(v) === i);
+      if (five.length === 5) {
+        const c = ctx.gameLineupComposition(nyk, five);
+        assert(c.ortgMod === 0 && c.drtgMod === 0, 'balanced five with a flex is penalty-free (' + c.label + ')');
+      }
+    }
+  }
+  // Composition counter: high-adjust coach counters a big-heavy five
+  const okc = DB.OKC, den = DB.DEN;
+  const denBigs = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.designation === 'big').map(p => p.name);
+  const denSmalls = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.designation !== 'big').map(p => p.name);
+  if (denBigs.length >= 3 && denSmalls.length >= 2) {
+    const bigFive = [...denBigs.slice(0, 3), ...denSmalls.slice(0, 2)];
     const rngA = ctx.gameCreateRNG(7), rngB = ctx.gameCreateRNG(7);
     const planNoInfo = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {} }, rngA);
     const planCounter = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {}, oppLastStarters: bigFive }, rngB);
-    const bigMin = plan => plan.rotation.filter(r => ctx.gamePosGroup(r.player.pos) === 'b').reduce((a, r) => a + r.minutes, 0);
+    const bigMin = plan => plan.rotation.filter(r => (ctx.GAME_DESIGNATION_CREDIT[r.player.designation] || [0, 1, 0])[2] >= 0.33)
+      .reduce((a, r) => a + r.minutes, 0);
     assert(bigMin(planCounter) > bigMin(planNoInfo), 'high-adjust coach counters a big lineup with size (' +
-      bigMin(planNoInfo).toFixed(1) + ' -> ' + bigMin(planCounter).toFixed(1) + ' big minutes)');
+      bigMin(planNoInfo).toFixed(1) + ' -> ' + bigMin(planCounter).toFixed(1) + ')');
   }
+}
+
+T('12f: Usage-aware scoring depth — low-usage ceilings bind tighter');
+{
+  // Sweep many games: track the max pts per 30+ min for low-usage
+  // (usg < 15) vs high-usage (usg >= 26) players. Shot diet must bound
+  // eruptions: the low-usage max should be clearly below the high-usage
+  // max AND below the flat physical cap.
+  const s = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  let loMax = 0, hiMax = 0;
+  for (let seed = 900; seed < 1050; seed++) {
+    const g = ctx.simulateGameOnce(s, 1 + (seed % 7), { seed });
+    ['home', 'away'].forEach(side => {
+      const team = side === 'home' ? s.home : s.away;
+      g.box[side].forEach(r => {
+        const p = team.players.find(x => x.name === r.name);
+        if (!p || r.min < 15) return;
+        const cap = Math.floor(r.min * ctx.GAME_CONFIG.ptsPerMinCap *
+          Math.max(ctx.GAME_CONFIG.usgCapClamp[0], Math.min(ctx.GAME_CONFIG.usgCapClamp[1], p.usg / ctx.GAME_CONFIG.usgCapPivot)));
+        assert(r.pts <= cap + 1, 'usage-scaled ceiling holds (' + r.name + ' usg ' + p.usg + ': ' + r.pts + ' in ' + r.min + 'min)');
+        if (p.usg < 15) loMax = Math.max(loMax, r.pts);
+        if (p.usg >= 26) hiMax = Math.max(hiMax, r.pts);
+      });
+    });
+  }
+  assert(loMax < hiMax, 'low-usage eruptions stay below high-usage ones (' + loMax + ' vs ' + hiMax + ')');
+  console.log('  (info) max pts at 15+ min: low-usage ' + loMax + ', high-usage ' + hiMax);
 }
 
 T('12e: Playing hurt — aggravation risk; resting still recovers; light nights refresh');

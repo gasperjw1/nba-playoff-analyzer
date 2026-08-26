@@ -66,30 +66,35 @@ function gameStarterNames(plan, cap) {
     .slice(0, 5).map(r => r.player.name);
 }
 
-/** Position groups: PG/SG guard, SF wing, PF/C big. */
-function gamePosGroup(pos) {
-  if (pos === 'PG' || pos === 'SG') return 'g';
-  if (pos === 'SF') return 'w';
-  return 'b';
-}
-
 /**
- * Lineup composition of a starting five: counts, label (e.g. "2G-2W-1B"),
- * and the ORtg/DRtg mods for off-shape fives (see GAME_CONFIG.composition).
+ * Lineup composition of a starting five, on DESIGNATION credits (guard /
+ * guard-wing / wing / big / flex — user design). Guard-wings count half
+ * toward each side; flex players count a third everywhere, which is why
+ * they dodge the off-shape taxes — versatility priced as value.
  */
 function gameLineupComposition(team, starterNames) {
   const five = team.players.filter(p => starterNames.includes(p.name));
   const c = { g: 0, w: 0, b: 0 };
-  five.forEach(p => { c[gamePosGroup(p.pos)]++; });
+  const desigCounts = {};
+  five.forEach(p => {
+    const cr = GAME_DESIGNATION_CREDIT[p.designation] || GAME_DESIGNATION_CREDIT.wing;
+    c.g += cr[0]; c.w += cr[1]; c.b += cr[2];
+    desigCounts[p.designation] = (desigCounts[p.designation] || 0) + 1;
+  });
+  c.g = +c.g.toFixed(2); c.w = +c.w.toFixed(2); c.b = +c.b.toFixed(2);
+  const label = ['guard', 'guard-wing', 'wing', 'big', 'flex']
+    .filter(d => desigCounts[d])
+    .map(d => desigCounts[d] + ({ guard: 'G', 'guard-wing': 'GW', wing: 'W', big: 'B', flex: 'F' })[d])
+    .join('-');
   const cfg = GAME_CONFIG.composition;
   let ortgMod = 0, drtgMod = 0;
   const notes = [];
-  if (c.b >= 3) { ortgMod += cfg.threeBigOrtg; notes.push('3+ bigs: spacing suffers'); }
-  if (c.g === 0) { ortgMod += cfg.noGuardOrtg; notes.push('no guards: creation suffers'); }
-  if (c.g >= 3) { drtgMod += cfg.threeGuardDrtg; notes.push('3+ guards: size gives up the rim and glass'); }
-  if (c.b === 0) { drtgMod += cfg.noBigDrtg; notes.push('no bigs: no rim protection'); }
-  if (c.w === 0 && c.g > 0 && c.b > 0) { ortgMod += cfg.noWingMixed; notes.push('wingless: switch targets'); }
-  return { counts: c, label: `${c.g}G-${c.w}W-${c.b}B`, ortgMod, drtgMod, notes };
+  if (c.b >= 2.7) { ortgMod += cfg.threeBigOrtg; notes.push('big-heavy: spacing suffers'); }
+  if (c.g <= 0.4) { ortgMod += cfg.noGuardOrtg; notes.push('no guards: creation suffers'); }
+  if (c.g >= 2.7) { drtgMod += cfg.threeGuardDrtg; notes.push('guard-heavy: size gives up the rim and glass'); }
+  if (c.b <= 0.4) { drtgMod += cfg.noBigDrtg; notes.push('no bigs: no rim protection'); }
+  if (c.w <= 0.4 && c.g > 0.4 && c.b > 0.4) { ortgMod += cfg.noWingMixed; notes.push('wingless: switch targets'); }
+  return { counts: c, label, ortgMod, drtgMod, notes };
 }
 
 /**
@@ -264,5 +269,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, gamePosGroup, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
 }

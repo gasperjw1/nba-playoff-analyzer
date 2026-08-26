@@ -85,7 +85,7 @@ function computeTeamCapacity(team, opts) {
     impO += gameOLebron(p) * w * fat;
     impD += gameDLebron(p) * w * fat;
     const a = roles[p.name] || {};
-    fitO += gameRoleFitCost(p.offRole, a.offRole, GAME_OFF_ROLE_FAMILY) * w;
+    fitO += gameRoleFitCost(p.offRole, a.offRole, GAME_OFF_ROLE_FAMILY, p.naturalOffRoles) * w;
     fitD += gameRoleFitCost(p.defRole, a.defRole, GAME_DEF_ROLE_FAMILY) * w;
   });
 

@@ -53,12 +53,12 @@ function staticPlanFn(policy) {
     const opp = sctx.home.abbr === abbr ? sctx.away : sctx.home;
     const out = new Set(gameState.unavailable || []);
     const pool = team.players.filter(p =>
-      p.baseRating > 0 && p.initialStatus === 'available' && !out.has(p.name));
+      p.baseRating > 0 && p.initialStatus !== 'dnp' && !out.has(p.name));
     const ranked = pool.slice().sort((a, b) => b.baseRating - a.baseRating).slice(0, policy.depth);
     const weights = ranked.map(p => Math.pow(Math.max(1, p.baseRating), policy.skew));
     const wSum = weights.reduce((a, b) => a + b, 0);
     const rotation = ranked.map((p, i) => ({ player: p, minutes: 240 * weights[i] / wSum }));
-    const star = opp.players.filter(p => p.initialStatus === 'available')
+    const star = opp.players.filter(p => p.initialStatus !== 'dnp')
       .reduce((a, b) => (b.ppg > a.ppg ? b : a));
     return {
       rotation,

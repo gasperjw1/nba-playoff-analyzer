@@ -38,6 +38,62 @@ function gameDLebron(p) {
   return (typeof p.epm === 'number' ? p.epm : -2) * 0.4;
 }
 
+/**
+ * Player DESIGNATION — what kind of player he is, derived from stats and
+ * roles rather than listed position (user design: guard / guard-wing /
+ * wing / big / flex). Flex = profile genuinely spans groups (point-
+ * forwards, rebounding guards, playmaking bigs) — the lineup-composition
+ * math credits them fractionally, which is exactly their value.
+ */
+function gameDesignation(p) {
+  const pos = p.pos || 'SF', reb = p.rpg || 0, ast = p.apg || 0;
+  const interiorD = (GAME_DEF_ROLE_FAMILY[p.defRole] || '') === 'interior';
+  const bigOff = (GAME_OFF_ROLE_FAMILY[p.offRole] || '') === 'big';
+  if (pos === 'C') return 'big';
+  if (pos === 'PF') {
+    if (bigOff || interiorD || reb >= 6.5) return 'big';
+    return ast >= 4 ? 'flex' : 'wing';                    // playmaking/stretch forwards
+  }
+  if (pos === 'PG') return (reb >= 6 || interiorD) ? 'flex' : 'guard';
+  if (pos === 'SG') {
+    if (reb >= 5.5) return 'flex';                        // rebounding guards (Hart-types)
+    return reb >= 3.5 ? 'guard-wing' : 'guard';
+  }
+  // SF
+  if (ast >= 5.5) return 'flex';                          // point-forwards (LeBron)
+  if (bigOff || interiorD || reb >= 7.5) return 'flex';   // big-wings
+  return ast >= 3.5 ? 'guard-wing' : 'wing';
+}
+
+/** Fractional guard/wing/big credit per designation (composition math). */
+const GAME_DESIGNATION_CREDIT = {
+  guard: [1, 0, 0], 'guard-wing': [0.5, 0.5, 0], wing: [0, 1, 0],
+  big: [0, 0, 1], flex: [0.34, 0.33, 0.33],
+};
+
+/**
+ * NATURAL offensive roles beyond the labeled one — derived from what the
+ * player actually does (user playtest: Josh Hart assigned Cutter was
+ * flagged a miscast, but he finishes inside and crashes — that IS his
+ * game). Assigning a natural secondary role costs ~nothing.
+ */
+function gameNaturalOffRoles(p) {
+  const set = [p.offRole].filter(Boolean);
+  const add = r => { if (!set.includes(r)) set.push(r); };
+  const fgp = p.fgp || 45, ts = p.ts || 55, reb = p.rpg || 0, ast = p.apg || 0;
+  const isBigOff = (GAME_OFF_ROLE_FAMILY[p.offRole] || '') === 'big';
+  // Cutter: plays inside the arc and crashes — signal is REBOUNDING for
+  // a non-big (Hart: 7.4 rpg as a guard, low fgp BECAUSE he skips threes)
+  // or genuine finishing efficiency.
+  if (!isBigOff && (reb >= 5.5 || (fgp >= 48 && reb >= 4))) add('Cutter');
+  if (fgp >= 49 && p.pos !== 'C' && !isBigOff) add('Athletic Finisher');
+  if (ast >= 3) add('Secondary Ball Handler');
+  if (ast >= 5.5) add('Primary Ball Handler');
+  if (ts >= 57 && !isBigOff) add('Stationary Shooter');
+  if (isBigOff && ts >= 58) add('Stretch Big');
+  return set;
+}
+
 /** Tier by season scoring (thresholds in GAME_CONFIG.tiers). */
 function gamePlayerTier(ppg) {
   const t = GAME_CONFIG.tiers;
@@ -111,6 +167,8 @@ function _buildGameTeam(t, series) {
     starCeiling: src.starCeiling || 0,
     injuryRisk: src.injuryRisk || 0,
     playoffAscension: src.playoffAscension || 0,
+    designation: null,        // filled below (needs the full object)
+    naturalOffRoles: null,
     // Real status at the 2026 playoffs' start — see gameParseInitialInjury.
     ...(function () {
       const st = gameParseInitialInjury(src);
@@ -119,6 +177,11 @@ function _buildGameTeam(t, series) {
         : { initialStatus: 'available', initialGamesOut: 0 };
     })(),
   }));
+
+  players.forEach(p => {
+    p.designation = gameDesignation(p);
+    p.naturalOffRoles = gameNaturalOffRoles(p);
+  });
 
   const availableNow = players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0);
   const coach = GAME_COACH_PROFILES[t.abbr] || null;
@@ -193,5 +256,5 @@ function buildGameTeamDb(seriesData) {
 const GAME_TEAM_DB = (typeof SERIES_DATA !== 'undefined') ? buildGameTeamDb(SERIES_DATA) : {};
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { buildGameTeamDb, gameDefaultRotation, gamePlayerTier, gameOLebron, gameDLebron, gameParseInitialInjury };
+  module.exports = { buildGameTeamDb, gameDefaultRotation, gamePlayerTier, gameOLebron, gameDLebron, gameParseInitialInjury, gameDesignation, gameNaturalOffRoles, GAME_DESIGNATION_CREDIT };
 }

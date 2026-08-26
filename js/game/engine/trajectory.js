@@ -187,15 +187,23 @@ function allocateBox(cap, teamScore, rng, opts) {
 
   const noisy = rows.map(r => {
     const tier = cfg.tiers[r.player.tier];
+    // Usage-damped upside: low-usage players lack the shot diet to erupt
+    // (their noise narrows); the calibrated tier CVs still govern overall.
+    const usgNoise = cfg.usgNoiseFloor + (1 - cfg.usgNoiseFloor) * Math.min(1, (r.player.usg || 15) / cfg.usgNoisePivot);
     let w = r.ptsShare
       * (shifts[r.player.name] || 1)
-      * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate);
+      * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate * usgNoise);
     // Garbage time: starters sit, bench eats (extends the box-score gap
     // between blowout and competitive games — Phase 73o's observed pattern).
     if (opts.garbage) w *= isStarter.has(r.player.name) ? 0.90 : 1.22;
     return w;
   });
-  const pts = gameCappedAllocate(noisy, finalMin.map(m => Math.floor(m * cfg.ptsPerMinCap)), teamScore);
+  // Ceiling = minutes x per-minute cap x usage factor (shot diet).
+  const ptsCaps = rows.map((r, i) => {
+    const usgF = Math.max(cfg.usgCapClamp[0], Math.min(cfg.usgCapClamp[1], (r.player.usg || 15) / cfg.usgCapPivot));
+    return Math.floor(finalMin[i] * cfg.ptsPerMinCap * usgF);
+  });
+  const pts = gameCappedAllocate(noisy, ptsCaps, teamScore);
 
   // Team rebounds/assists: plausible totals, allocated by shares.
   const rebTotal = Math.max(28, Math.round(gameNormal(rng, 43, 4)));

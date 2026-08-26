@@ -140,9 +140,10 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
   const oppStarters = gameState && gameState.oppLastStarters;
   if (oppStarters && (prof.adjust || 5) >= 6 && typeof gameLineupComposition === 'function') {
     const oppComp = gameLineupComposition(oppTeam, oppStarters).counts;
+    const bigCredit = p => (GAME_DESIGNATION_CREDIT[p.designation] || [0, 1, 0])[2];
     let favor = null;
-    if (oppComp.b >= 3) favor = p => gamePosGroup(p.pos) === 'b';
-    else if (oppComp.g >= 3) favor = p => gamePosGroup(p.pos) !== 'b';
+    if (oppComp.b >= 2.7) favor = p => bigCredit(p) >= 0.33;
+    else if (oppComp.g >= 2.7) favor = p => bigCredit(p) < 0.33;
     if (favor) {
       rotation.forEach(r => {
         if (r.minutes > 0 && favor(r.player)) r.minutes *= 1.08;
@@ -152,10 +153,11 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
   }
 
   // Coverage: double the opponent scorer this coach believes is elevated.
+  const oppOut = new Set((gameState && gameState.oppUnavailable) || []);
   let doubleTarget = null;
   let best = null, bestScore = 0;
   oppTeam.players.forEach(p => {
-    if (p.ppg < 14 || p.initialStatus !== 'available') return;
+    if (p.ppg < 14 || p.initialStatus === 'dnp' || oppOut.has(p.name)) return;
     const belief = coachShiftBelief(oppEvidence, p.name, prof.adjust, rng);
     const score = belief * p.ppg;
     if (score > bestScore) { bestScore = score; best = { p, belief }; }
