@@ -65,6 +65,24 @@ const GAME_CONFIG = {
   // star's impact — synergy is a nudge, never a star substitute.
   synergyScale: 0.04,
   synergyCap: 0.8,
+  // Lineup composition (guards PG/SG, wings SF, bigs PF/C): balanced
+  // five ≈ 2-2-1 in some order. Off-shape fives pay on the relevant end:
+  // spacing problems tax offense, size problems tax defense. A coaching
+  // lever → passes uncompressed; countered by composition-aware AI.
+  composition: {
+    threeBigOrtg: -0.9,     // 3+ bigs: spacing collapses
+    noGuardOrtg: -0.7,      // no creator pressure
+    threeGuardDrtg: +0.7,   // 3+ guards: size gives up rim/glass (DRtg up = worse)
+    noBigDrtg: +0.9,        // no rim protection
+    noWingMixed: -0.3,      // wingless: applied to ORtg (switch targets)
+  },
+  // Playing through an injury (HURT/drag games) risks AGGRAVATION —
+  // scaled by minutes; resting the player instead still runs his
+  // recovery clock. Load management stays a genuine gamble.
+  aggravationBase: 0.05,
+  // Light night (<24 min) = extra fatigue recovery — the "give him a
+  // breather to freshen up" lever.
+  fatigueLightDecay: 0.60,
 
   // ── Player tiers + variance (measured Aug 2026, 138 player-series) ──
   // tier by season ppg; CV = game-noise coefficient of variation;
@@ -164,9 +182,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.311, SAS: 0.174, DET: 0.145, BOS: 0.14, DEN: 0.054, NYK: 0.045,
-  ATL: 0.033, CLE: 0.029, HOU: 0.021, MIN: 0.014, TOR: 0.013, LAL: 0.007,
-  PHI: 0.005, ORL: 0.003, POR: 0.003, PHX: 0.002,
+  OKC: 0.368, DET: 0.162, SAS: 0.134, BOS: 0.119, DEN: 0.062, NYK: 0.056,
+  HOU: 0.02, ATL: 0.018, CLE: 0.017, TOR: 0.014, MIN: 0.01, PHI: 0.008,
+  LAL: 0.006, POR: 0.003, ORL: 0.003, PHX: 0.002,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────

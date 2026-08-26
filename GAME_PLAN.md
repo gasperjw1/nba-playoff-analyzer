@@ -137,6 +137,18 @@ star); stopper (defensive assignment) override with interior-miscast
 penalty; post-game COACH'S REPORT (true attribution: coverage outcomes vs
 season baselines, double tradeoff results, chemistry, overload warnings,
 spike/dud notes with the duds-2x-predictive framing).
+Playtest rounds 2-3 (same day): RETURNING PLAYERS (real injuries parsed
+into return timelines — Edwards ~9 games, Doncic ~6, Lillard out-for-run;
+no more ghosted stars), physical per-minute stat caps (29-pts-in-12-min
+killed), visible fatigue (Fresh column; light nights <24 min recover
+extra; benched-player decay bug fixed), playing-hurt AGGRAVATION risk
+(resting still runs the clock — load management stays a real gamble),
+LINEUP COMPOSITION (G/W/B shape: 3-big spacing tax, 3-guard size tax,
+shown live; composition-aware AI counters — lineups are observable, so
+no evidence discount, and composition-baiting works only vs low-adjust
+coaches), per-game coverage derivation (no ghost targets).
+Known refinement queued: stopper fit assumes a perimeter (PoA) target —
+guarding a big initiator (Jokic) with an Anchor Big should be native fit.
 Remaining phases: 3.1 (in-game timeouts + halftime via steppable
 trajectory), 3.5 (boons + scouting-report depth), parallel role study.
 

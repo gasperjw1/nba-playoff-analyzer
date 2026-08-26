@@ -132,6 +132,25 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
     pool2.forEach(r => { r.minutes += freed / pool2.length; });
   }
 
+  // Composition counter: lineups are OBSERVABLE immediately (unlike form,
+  // no sample-size discount) — a capable coach answers the opponent's
+  // last-game shape. Opponent went big → feed own bigs; went small →
+  // feed guards/wings. This is also what makes composition-baiting a
+  // real strategy against low-adjust coaches (they don't counter).
+  const oppStarters = gameState && gameState.oppLastStarters;
+  if (oppStarters && (prof.adjust || 5) >= 6 && typeof gameLineupComposition === 'function') {
+    const oppComp = gameLineupComposition(oppTeam, oppStarters).counts;
+    let favor = null;
+    if (oppComp.b >= 3) favor = p => gamePosGroup(p.pos) === 'b';
+    else if (oppComp.g >= 3) favor = p => gamePosGroup(p.pos) !== 'b';
+    if (favor) {
+      rotation.forEach(r => {
+        if (r.minutes > 0 && favor(r.player)) r.minutes *= 1.08;
+      });
+      // capacity renormalizes to 240, so the tilt is relative
+    }
+  }
+
   // Coverage: double the opponent scorer this coach believes is elevated.
   let doubleTarget = null;
   let best = null, bestScore = 0;

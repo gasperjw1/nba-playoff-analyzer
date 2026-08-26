@@ -292,6 +292,66 @@ T('12c: Returning players — real injuries seed the book and expire');
   }
 }
 
+T('12d: Lineup composition — balanced free, off-shape taxed, AI counters');
+{
+  const nyk = DB.NYK;
+  const byGroup = { g: [], w: [], b: [] };
+  nyk.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0)
+    .forEach(p => byGroup[ctx.gamePosGroup(p.pos)].push(p.name));
+  if (byGroup.g.length >= 2 && byGroup.w.length >= 2 && byGroup.b.length >= 3) {
+    const balanced = [...byGroup.g.slice(0, 2), ...byGroup.w.slice(0, 2), byGroup.b[0]];
+    const cBal = ctx.gameLineupComposition(nyk, balanced);
+    assert(cBal.ortgMod === 0 && cBal.drtgMod === 0 && !cBal.notes.length,
+      '2G-2W-1B is penalty-free (' + cBal.label + ')');
+    const threeBig = [...byGroup.g.slice(0, 1), ...byGroup.w.slice(0, 1), ...byGroup.b.slice(0, 3)];
+    const cBig = ctx.gameLineupComposition(nyk, threeBig);
+    assert(cBig.ortgMod < 0, '3-big lineup pays a spacing tax (' + cBig.label + ', ' + cBig.ortgMod + ')');
+    const threeGuard = [...byGroup.g.slice(0, 3), byGroup.w[0], byGroup.b[0]];
+    const cSmall = ctx.gameLineupComposition(nyk, threeGuard);
+    assert(cSmall.drtgMod > 0, '3-guard lineup pays a size tax on defense (' + cSmall.label + ')');
+  }
+  // Composition counter: a high-adjust coach facing a 3-big five tilts
+  // minutes toward his own bigs vs his no-info plan.
+  const okc = DB.OKC;   // Daigneault adjust 9
+  const den = DB.DEN;
+  const denBigs = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && ctx.gamePosGroup(p.pos) === 'b').map(p => p.name);
+  if (denBigs.length >= 3) {
+    const bigFive = [...denBigs.slice(0, 3),
+      ...den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && ctx.gamePosGroup(p.pos) !== 'b').slice(0, 2).map(p => p.name)];
+    const rngA = ctx.gameCreateRNG(7), rngB = ctx.gameCreateRNG(7);
+    const planNoInfo = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {} }, rngA);
+    const planCounter = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {}, oppLastStarters: bigFive }, rngB);
+    const bigMin = plan => plan.rotation.filter(r => ctx.gamePosGroup(r.player.pos) === 'b').reduce((a, r) => a + r.minutes, 0);
+    assert(bigMin(planCounter) > bigMin(planNoInfo), 'high-adjust coach counters a big lineup with size (' +
+      bigMin(planNoInfo).toFixed(1) + ' -> ' + bigMin(planCounter).toFixed(1) + ' big minutes)');
+  }
+}
+
+T('12e: Playing hurt — aggravation risk; resting still recovers; light nights refresh');
+{
+  // Aggravation: a dragged player logging heavy minutes gets re-injured
+  // at ~aggravationBase * min/30 per game; a rested one never does.
+  const rng = ctx.gameCreateRNG(2024);
+  const den = DB.DEN;
+  const hurt = den.players.find(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.ppg > 10);
+  const rot = [{ player: hurt, minutes: 36 }];
+  const drags = {}; drags[hurt.name] = 0.25;
+  let aggr = 0;
+  for (let i = 0; i < 3000; i++) aggr += ctx.sampleGameInjuries(rot, {}, rng, drags).filter(e => e.type === 'aggravated').length;
+  const rate = aggr / 3000;
+  assert(rate > 0.03 && rate < 0.10, 'aggravation rate in a plausible band (' + (100 * rate).toFixed(1) + '%/game at 36min)');
+  let aggrRested = 0;
+  for (let i = 0; i < 2000; i++) aggrRested += ctx.sampleGameInjuries([{ player: hurt, minutes: 0 }], {}, rng, drags).length;
+  assert(aggrRested === 0, 'resting a hurt player carries zero aggravation risk');
+  // Light-night recovery: fatigue decays faster at 12 min than at 30.
+  const run = ctx.createGameRun(DB, { seed: 88 });
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  run.teamState.DEN.fatigue['TestGuy'] = 0.5;   // synthetic benched entry
+  ctx.playSeriesGame(run, ses, null);
+  assert(run.teamState.DEN.fatigue['TestGuy'] < 0.5 * 0.65,
+    'benched/never-played fatigue decays at the light rate (' + run.teamState.DEN.fatigue['TestGuy'].toFixed(3) + ')');
+}
+
 T('13: Series invariants — first to 4, venue alternation, shifts persist');
 {
   const s = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');

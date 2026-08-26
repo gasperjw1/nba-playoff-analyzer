@@ -240,12 +240,20 @@ function playSeriesGame(run, session, userPlan) {
     st.rusty = false;
     updateCoachEvidence(session.evidence[abbr].own, game.box[side.key], side.team);
     updateCoachEvidence(session.evidence[abbr].opp, game.box[side.key === 'home' ? 'away' : 'home'], side.opp);
-    game.box[side.key].forEach(row => {
-      const gain = Math.max(0, row.min - 32) * GAME_RUN_CONFIG.fatiguePerHeavyMin;
-      st.fatigue[row.name] = Math.min(1, (st.fatigue[row.name] || 0) * GAME_RUN_CONFIG.fatigueDecay + gain);
+    // Fatigue: EVERYONE recovers with time (a benched player must not
+    // hold stale fatigue forever); a light night (<24 min) recovers
+    // extra (the user's "breather" lever); heavy minutes add load.
+    const minsByName = {};
+    game.box[side.key].forEach(row => { minsByName[row.name] = row.min; });
+    const allNames = new Set([...Object.keys(st.fatigue), ...Object.keys(minsByName)]);
+    allNames.forEach(name => {
+      const min = minsByName[name] || 0;
+      const decay = min < 24 ? GAME_CONFIG.fatigueLightDecay : GAME_RUN_CONFIG.fatigueDecay;
+      const gain = Math.max(0, min - 32) * GAME_RUN_CONFIG.fatiguePerHeavyMin;
+      st.fatigue[name] = Math.min(1, (st.fatigue[name] || 0) * decay + gain);
     });
     advanceInjuryBook(st.injuries);
-    sampleGameInjuries(plans[abbr].rotation || [], st.fatigue, rng).forEach(ev => {
+    sampleGameInjuries(plans[abbr].rotation || [], st.fatigue, rng, states[abbr].drags).forEach(ev => {
       st.injuries[ev.name] = { gamesOut: ev.gamesOut, drag: ev.drag, dragGames: ev.dragGames };
       run.injuryLog.push({ round: session.round, series: sctx.id, game: g, team: abbr, ...ev });
     });

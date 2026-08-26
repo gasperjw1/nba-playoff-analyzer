@@ -66,6 +66,32 @@ function gameStarterNames(plan, cap) {
     .slice(0, 5).map(r => r.player.name);
 }
 
+/** Position groups: PG/SG guard, SF wing, PF/C big. */
+function gamePosGroup(pos) {
+  if (pos === 'PG' || pos === 'SG') return 'g';
+  if (pos === 'SF') return 'w';
+  return 'b';
+}
+
+/**
+ * Lineup composition of a starting five: counts, label (e.g. "2G-2W-1B"),
+ * and the ORtg/DRtg mods for off-shape fives (see GAME_CONFIG.composition).
+ */
+function gameLineupComposition(team, starterNames) {
+  const five = team.players.filter(p => starterNames.includes(p.name));
+  const c = { g: 0, w: 0, b: 0 };
+  five.forEach(p => { c[gamePosGroup(p.pos)]++; });
+  const cfg = GAME_CONFIG.composition;
+  let ortgMod = 0, drtgMod = 0;
+  const notes = [];
+  if (c.b >= 3) { ortgMod += cfg.threeBigOrtg; notes.push('3+ bigs: spacing suffers'); }
+  if (c.g === 0) { ortgMod += cfg.noGuardOrtg; notes.push('no guards: creation suffers'); }
+  if (c.g >= 3) { drtgMod += cfg.threeGuardDrtg; notes.push('3+ guards: size gives up the rim and glass'); }
+  if (c.b === 0) { drtgMod += cfg.noBigDrtg; notes.push('no bigs: no rim protection'); }
+  if (c.w === 0 && c.g > 0 && c.b > 0) { ortgMod += cfg.noWingMixed; notes.push('wingless: switch targets'); }
+  return { counts: c, label: `${c.g}G-${c.w}W-${c.b}B`, ortgMod, drtgMod, notes };
+}
+
 /**
  * Starting-five synergy vs the team's own default five (SPM chemistry,
  * reused from the analyzer). Returns {mod, score}; 0 when chemistry is
@@ -120,10 +146,14 @@ function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, away
   const covOnAway = resolveCoverage(seriesCtx.home, homePlan, derOnAway);
   let capHome = computeTeamCapacity(seriesCtx.home, { ...homePlan, suppression: covOnHome.suppression });
   let capAway = computeTeamCapacity(seriesCtx.away, { ...awayPlan, suppression: covOnAway.suppression });
-  const synHome = gameSynergyMod(seriesCtx.home, gameStarterNames(homePlan, capHome));
-  const synAway = gameSynergyMod(seriesCtx.away, gameStarterNames(awayPlan, capAway));
-  if (synHome.mod) capHome = { ...capHome, ortg: capHome.ortg + synHome.mod };
-  if (synAway.mod) capAway = { ...capAway, ortg: capAway.ortg + synAway.mod };
+  const startersHome = gameStarterNames(homePlan, capHome);
+  const startersAway = gameStarterNames(awayPlan, capAway);
+  const synHome = gameSynergyMod(seriesCtx.home, startersHome);
+  const synAway = gameSynergyMod(seriesCtx.away, startersAway);
+  const compHome = gameLineupComposition(seriesCtx.home, startersHome);
+  const compAway = gameLineupComposition(seriesCtx.away, startersAway);
+  capHome = { ...capHome, ortg: capHome.ortg + synHome.mod + compHome.ortgMod, drtg: capHome.drtg + compHome.drtgMod };
+  capAway = { ...capAway, ortg: capAway.ortg + synAway.mod + compAway.ortgMod, drtg: capAway.drtg + compAway.drtgMod };
   // Coverage plans: each side's doubleTarget reshapes the OPPONENT's
   // offense (suppressed star, elevated others, initiator-count tradeoff).
   capAway = applyDoubleCoverage(capAway, homePlan.doubleTarget, seriesCtx.away.initiators);
@@ -138,7 +168,7 @@ function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, away
   const baseAway = baseOf(seriesCtx.away, awayPlan, _assignmentSuppression(seriesCtx.defAssignments.homeOnAway));
   const exp = expectedGameScores(seriesCtx, capHome, capAway, gameNum,
     seriesScore || { home: 0, away: 0 }, baseHome, baseAway);
-  return { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway };
+  return { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway, compHome, compAway };
 }
 
 function simulateGameOnce(seriesCtx, gameNum, opts) {
@@ -148,7 +178,7 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
   const score = opts.seriesScore || { home: 0, away: 0 };
   const homePlan = opts.homePlan || {}, awayPlan = opts.awayPlan || {};
 
-  const { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway } =
+  const { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway, compHome, compAway } =
     computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
   // Team-level series edge (rolled once per series by the caller): the
   // matchup-fit residual — see GAME_CONFIG.seriesEdgeSigma.
@@ -182,14 +212,14 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
   };
   const report = {
     home: {
-      starters: homeStarters, synergy: synHome,
+      starters: homeStarters, synergy: synHome, composition: compHome,
       coverage: { ...covOnAway, targetPts: findPts('away', covOnAway.target), targetSeason: ppgOf(seriesCtx.away, covOnAway.target) },
       double: homePlan.doubleTarget
         ? { target: homePlan.doubleTarget, pts: findPts('away', homePlan.doubleTarget), season: ppgOf(seriesCtx.away, homePlan.doubleTarget) }
         : null,
     },
     away: {
-      starters: awayStarters, synergy: synAway,
+      starters: awayStarters, synergy: synAway, composition: compAway,
       coverage: { ...covOnHome, targetPts: findPts('home', covOnHome.target), targetSeason: ppgOf(seriesCtx.home, covOnHome.target) },
       double: awayPlan.doubleTarget
         ? { target: awayPlan.doubleTarget, pts: findPts('home', awayPlan.doubleTarget), season: ppgOf(seriesCtx.home, awayPlan.doubleTarget) }
@@ -234,5 +264,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, gamePosGroup, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
 }

@@ -248,7 +248,7 @@ function renderGameplan() {
       const fat = gs.fatigue[p.name] || 0;
       const seriesAvg = gameSeriesAvg(session, userIsHome ? 'home' : 'away', p.name);
       const badge = isOut ? '<span class="pr-badge pr-out">OUT</span>'
-        : drag ? '<span class="pr-badge pr-drag">HURT</span>' : '';
+        : drag ? `<span class="pr-badge pr-drag" title="Playing hurt: performance drag, and minutes played risk AGGRAVATING the injury (a few % per heavy game). Resting him still runs the recovery clock.">HURT</span>` : '';
       const fresh = Math.round((1 - fat) * 100);
       const freshCls = fresh >= 85 ? 'pr-ok' : fresh >= 60 ? 'pr-mid' : 'pr-warn';
       const freshCell = `<span class="${freshCls}" title="Freshness: fatigue reduces on-court impact and raises injury risk. Recovers between games; heavy minutes drain it.">${fresh}%</span>`;
@@ -332,12 +332,20 @@ function renderGameplan() {
 
 function gameSynergyLine() {
   if (GAME_UI.planStarters.length !== 5) return '<span class="pr-warn">Pick exactly 5 starters</span>';
-  const syn = gameSynergyMod(gameUserTeamObj(), GAME_UI.planStarters);
-  if (syn.score == null) return '<span class="pr-dim">—</span>';
-  const sign = syn.mod >= 0 ? '+' : '';
-  const cls = syn.mod > 0.05 ? 'pr-ok' : syn.mod < -0.05 ? 'pr-warn' : 'pr-dim';
-  return `SPM chemistry <strong>${syn.score}</strong> ·
-    <span class="${cls}">${sign}${syn.mod.toFixed(1)} ORtg vs your usual five</span>`;
+  const team = gameUserTeamObj();
+  const syn = gameSynergyMod(team, GAME_UI.planStarters);
+  const comp = gameLineupComposition(team, GAME_UI.planStarters);
+  const parts = [];
+  if (syn.score != null) {
+    const sign = syn.mod >= 0 ? '+' : '';
+    const cls = syn.mod > 0.05 ? 'pr-ok' : syn.mod < -0.05 ? 'pr-warn' : 'pr-dim';
+    parts.push(`SPM chemistry <strong>${syn.score}</strong>
+      <span class="${cls}">(${sign}${syn.mod.toFixed(1)} ORtg)</span>`);
+  }
+  const balanced = !comp.notes.length;
+  parts.push(`Shape <strong class="${balanced ? 'pr-ok' : 'pr-warn'}">${comp.label}</strong>` +
+    (balanced ? '' : ` <span class="pr-warn">${comp.notes.join('; ')}</span>`));
+  return parts.join(' · ');
 }
 
 function gameSeriesAvg(session, sideKey, name) {
@@ -517,6 +525,18 @@ function renderCoachReport(gm, userIsHome) {
     const s = mine.synergy;
     lines.push(`<li>Starting five chemistry <strong>${s.score}</strong>
       (${s.mod >= 0 ? '+' : ''}${s.mod.toFixed(1)} ORtg vs your usual five).</li>`);
+  }
+  if (mine.composition && theirs.composition) {
+    const mc = mine.composition, tc = theirs.composition;
+    if (mc.notes.length) {
+      lines.push(`<li>Your <strong>${mc.label}</strong> shape: <span class="pr-warn">${mc.notes.join('; ')}</span></li>`);
+    }
+    if (tc.notes.length) {
+      lines.push(`<li>They went <strong>${tc.label}</strong> — ${tc.notes.join('; ')}. A sharp
+        counter attacks the weakness.</li>`);
+    } else if (mc.notes.length === 0) {
+      lines.push(`<li class="pr-dim">Shapes: you ${mc.label}, them ${tc.label} — both balanced.</li>`);
+    }
   }
   const overloads = gm.box[mySide].filter(r => r.min >= 38 - (gm.ot ? 0 : 0) && r.min >= 38).map(r => r.name);
   if (overloads.length) {

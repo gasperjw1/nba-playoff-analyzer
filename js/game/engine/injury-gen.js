@@ -38,14 +38,26 @@ const GAME_INJURY_CONFIG = {
  * @param {Array} rotationRows  [{player, minutes}] who actually played
  * @param {Object} fatigue      { name: 0..1 }
  * @param {Function} rng
+ * @param {Object} drags        { name: drag } — players who played HURT:
+ *                              they roll AGGRAVATION instead of the base
+ *                              hazard (playing through it is a gamble;
+ *                              resting still runs the recovery clock)
  * @returns {Array} [{name, type, gamesOut, drag, dragGames}]
  */
-function sampleGameInjuries(rotationRows, fatigue, rng) {
+function sampleGameInjuries(rotationRows, fatigue, rng, drags) {
   const cfg = GAME_INJURY_CONFIG;
   const events = [];
   rotationRows.forEach(r => {
     if (r.minutes <= 0) return;
     const p = r.player;
+    if (drags && drags[p.name] != null) {
+      const aggr = (typeof GAME_CONFIG !== 'undefined' ? GAME_CONFIG.aggravationBase : 0.05)
+        * (r.minutes / 30);
+      if (rng() < aggr) {
+        events.push({ name: p.name, type: 'aggravated', gamesOut: 2 + Math.floor(rng() * 3), drag: 0.3, dragGames: 2 });
+      }
+      return;
+    }
     const hazard = cfg.basePerGame
       * (1 + (p.injuryRisk || 0))
       * (1 + (cfg.fatigueMult - 1) * (fatigue[p.name] || 0))
