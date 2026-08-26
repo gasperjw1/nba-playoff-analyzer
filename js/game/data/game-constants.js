@@ -53,6 +53,13 @@ const GAME_CONFIG = {
   usageAbsorbCap: 8,          // max pp of extra usage one player can absorb
   usageRecapture: 0.65,       // share of a missing star's scoring that
                               // teammates recapture (rest = team decline)
+  // Creation dependency: losing minutes from your primary creators
+  // degrades everyone's shot quality beyond the usage-volume penalty
+  // (the analyzer's initiator lesson). ORtg per minutes-weighted APG
+  // below the team's baseline. TEST 21's Brunson case sized this: with
+  // only usage-slope, benching an elite-offense/poor-defense engine
+  // graded near-even.
+  creationSlope: 1.4,
   // Role-fit penalty scale (ORtg/DRtg points per fit-cost unit for a
   // full-time slot). Miscasting Kennard as a PoA stopper should hurt.
   fitScaleOff: 3.0,
@@ -193,9 +200,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.322, SAS: 0.178, DET: 0.147, BOS: 0.127, DEN: 0.066, NYK: 0.045,
-  ATL: 0.029, CLE: 0.027, HOU: 0.02, TOR: 0.015, LAL: 0.008, MIN: 0.007,
-  ORL: 0.003, PHI: 0.003, POR: 0.002, PHX: 0.001,
+  OKC: 0.328, SAS: 0.186, DET: 0.129, BOS: 0.125, DEN: 0.064, NYK: 0.038,
+  CLE: 0.034, ATL: 0.03, HOU: 0.03, TOR: 0.013, MIN: 0.008, POR: 0.004,
+  LAL: 0.003, ORL: 0.003, PHI: 0.003, PHX: 0.002,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────

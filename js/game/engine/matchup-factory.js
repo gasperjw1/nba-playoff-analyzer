@@ -17,20 +17,37 @@
  * dLEBRON among perimeter roles, target by usage among the opponent's
  * top scorers).
  */
+/**
+ * The defensive JOB a target demands (user design: coverage is typed by
+ * who you're guarding, not one-size-fits-all): creators/guards demand
+ * Point of Attack, bigs demand Anchor Big, non-creating wings demand a
+ * Wing Stopper. Fixes the Gobert-on-Jokic mispricing (big-on-big is the
+ * NATIVE matchup, not a miscast).
+ */
+function gameCoverageJob(target) {
+  if (!target) return 'Point of Attack';
+  if (target.designation === 'big') return 'Anchor Big';
+  const fam = GAME_OFF_ROLE_FAMILY[target.offRole] || '';
+  if (fam === 'creator' || target.designation === 'guard') return 'Point of Attack';
+  return 'Wing Stopper';
+}
+
 function gameDeriveAssignment(defTeam, offTeam, offRotation, defRotation) {
   const rotationNames = new Set((offRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
   const candidates = offTeam.players.filter(p =>
     (rotationNames.size ? rotationNames.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0);
   if (!candidates.length) return null;
-  // Target: highest usage-weighted scorer on the floor.
+  // Target: highest usage-weighted scorer on the floor; the target's type
+  // sets the JOB, and defenders rank by dLEBRON discounted by job fit.
   const target = candidates.reduce((a, b) => (a.usg * a.ppg >= b.usg * b.ppg ? a : b));
-  const isPerimeterD = p => (GAME_DEF_ROLE_FAMILY[p.defRole] || '') !== 'interior';
+  const job = gameCoverageJob(target);
   const defNames = new Set((defRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
   const defenders = defTeam.players.filter(p =>
-    (defNames.size ? defNames.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0 && isPerimeterD(p));
+    (defNames.size ? defNames.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0);
   if (!defenders.length) return null;
-  const defender = defenders.reduce((a, b) => (a.dLebron >= b.dLebron ? a : b));
-  return { defender: defender.name, target: target.name, dLebron: defender.dLebron, targetUsg: target.usg };
+  const eff = p => p.dLebron * (1 - 0.7 * gameRoleFitCost(p.defRole, job, GAME_DEF_ROLE_FAMILY));
+  const defender = defenders.reduce((a, b) => (eff(a) >= eff(b) ? a : b));
+  return { defender: defender.name, target: target.name, dLebron: defender.dLebron, targetUsg: target.usg, job };
 }
 
 /**

@@ -76,6 +76,15 @@ function computeTeamCapacity(team, opts) {
     usagePenalty += GAME_CONFIG.usageSlope * (extraUsg[r.player.name] || 0) * (r.minutes / 240);
   });
 
+  // ── Creation dependency ─────────────────────────────────────
+  // Minutes-weighted playmaking below the team baseline degrades shot
+  // quality for EVERYONE (bench the primary creator and role players
+  // see worse looks — beyond the usage-volume penalty above).
+  let creationNow = 0;
+  rotation.forEach(r => { creationNow += (r.player.apg || 0) * r.minutes / 240; });
+  const creationPenalty = GAME_CONFIG.creationSlope *
+    Math.max(0, (team.creationBaseline || creationNow) - creationNow);
+
   // ── Impact sums + fit + fatigue ─────────────────────────────
   let impO = 0, impD = 0, fitO = 0, fitD = 0;
   rotation.forEach(r => {
@@ -91,6 +100,7 @@ function computeTeamCapacity(team, opts) {
 
   const ortg = GAME_LEAGUE.ortg + team.offsetO + impO
     - usagePenalty
+    - creationPenalty
     - fitO * GAME_CONFIG.fitScaleOff / 5
     - (opts.suppression || 0)
     + (opts.synergyMod || 0);

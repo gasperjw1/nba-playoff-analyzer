@@ -644,6 +644,61 @@ T('22b: Coverage override — stopper quality matters, miscast loses suppression
   }
 }
 
+T('22b2: Typed coverage jobs + scheme displacement');
+{
+  // Job typing: a big target demands Anchor Big (the Gobert-on-Jokic fix)
+  const jokic = DB.DEN.players.find(p => /Jokic/.test(p.name));
+  if (jokic) {
+    assert(ctx.gameCoverageJob(jokic) === 'Anchor Big', 'Jokic demands the Anchor Big job');
+    const der = ctx.gameDeriveAssignment(DB.MIN, DB.DEN, null, null);
+    assert(der && der.job === 'Anchor Big', 'derived MIN assignment on DEN carries the job (' + der.job + ')');
+    const gobert = DB.MIN.players.find(p => /Gobert/.test(p.name));
+    const cov = ctx.resolveCoverage(DB.MIN, { stopper: gobert.name }, der, DB.DEN, null, null);
+    const fullSup = Math.max(0, Math.min(2, gobert.dLebron * 0.9));
+    assert(Math.abs(cov.suppression - fullSup) < 1e-9, 'Gobert on Jokic is NATIVE — full suppression (' +
+      cov.suppression.toFixed(2) + ' = ' + fullSup.toFixed(2) + ')');
+    assert(cov.schemeCost === 0, 'big-on-big displaces nothing');
+  }
+  const brunson = DB.NYK.players.find(p => /Brunson/.test(p.name));
+  assert(ctx.gameCoverageJob(brunson) === 'Point of Attack', 'Brunson demands Point of Attack');
+  // Displacement: best perimeter defender chasing a NON-ballhandler with
+  // a thin perimeter corps behind him → real scheme cost; a deep corps
+  // (or an interior stopper) → little or none.
+  const og = DB.NYK.players.find(p => /Anunoby/.test(p.name));
+  // Target must NOT be the opponent's primary creator (Jalen Johnson IS
+  // ATL's point-forward — guarding him displaces nothing, verified below).
+  const atlBH = ctx.gamePrimaryBallHandler(DB.ATL, null);
+  const wingTarget = DB.ATL.players.filter(p => p.baseRating > 0 && p.initialStatus !== 'dnp' &&
+    p.name !== atlBH.name && p.designation !== 'big' && p.ppg >= 10)
+    .sort((a, b) => a.apg - b.apg)[0];
+  if (og && wingTarget) {
+    const der = { defender: og.name, target: wingTarget.name, dLebron: og.dLebron, job: ctx.gameCoverageJob(wingTarget) };
+    // Thin: rotation holds OG + non-perimeter bodies only
+    const thin = DB.NYK.players.filter(p => p.baseRating > 0 && p.initialStatus !== 'dnp' &&
+      (p.name === og.name || (ctx.GAME_DEF_ROLE_FAMILY[p.defRole] || '') !== 'perimeter'))
+      .slice(0, 8).map(p => ({ player: p, minutes: 30 }));
+    const covThin = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, der, DB.ATL, null, thin);
+    assert(covThin.schemeCost > 0.2, 'thin perimeter corps pays a scheme cost (' + covThin.schemeCost.toFixed(2) + ')');
+    // Deep: full roster available → next-best perimeter covers cheaply
+    const covDeep = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, der, DB.ATL, null, null);
+    assert(covDeep.schemeCost < covThin.schemeCost, 'deep corps displaces cheaper (' +
+      covDeep.schemeCost.toFixed(2) + ' < ' + covThin.schemeCost.toFixed(2) + ')');
+    // Target IS the ballhandler → no displacement question at all
+    const derBH = { defender: og.name, target: brunson.name, dLebron: og.dLebron, job: 'Point of Attack' };
+    const covBH = ctx.resolveCoverage(DB.ATL, { stopper: DB.ATL.players.find(p => /Daniels/.test(p.name)).name },
+      derBH, DB.NYK, null, null);
+    assert(covBH.schemeCost === 0, 'guarding the ballhandler himself displaces nothing');
+    // ...and guarding the point-forward who IS the creator (Johnson) also
+    // displaces nothing — the job and the assignment coincide.
+    const johnson = DB.ATL.players.find(p => /Jalen Johnson/.test(p.name));
+    if (johnson && atlBH.name === johnson.name) {
+      const derJ = { defender: og.name, target: johnson.name, dLebron: og.dLebron, job: ctx.gameCoverageJob(johnson) };
+      const covJ = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, derJ, DB.ATL, null, null);
+      assert(covJ.schemeCost === 0, 'guarding the creator-target displaces nothing');
+    }
+  }
+}
+
 T('22c: Starters + synergy — explicit five honored, default five = 0 mod');
 {
   const nyk = DB.NYK;

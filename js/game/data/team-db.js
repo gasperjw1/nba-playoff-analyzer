@@ -198,8 +198,11 @@ function _buildGameTeam(t, series) {
   // Usage baseline of the default rotation (minutes-weighted mean usage).
   // Capacity's redistribution penalty measures deficits AGAINST this, so
   // the full-strength rotation is penalty-free by construction.
-  let usgBaseline = 0;
-  rotPlayers.forEach((p, i) => { usgBaseline += p.usg * rotMinutes[i] / 240; });
+  let usgBaseline = 0, creationBaseline = 0;
+  rotPlayers.forEach((p, i) => {
+    usgBaseline += p.usg * rotMinutes[i] / 240;
+    creationBaseline += (p.apg || 0) * rotMinutes[i] / 240;
+  });
 
   // Season-role minutes proxy (players carry no season MPG): the default
   // rotation over the FULL healthy roster (season stats include players
@@ -232,6 +235,7 @@ function _buildGameTeam(t, series) {
     coach,
     players,
     usgBaseline,
+    creationBaseline,
     fullMinutes,
     synergyBase,
     offsetO: (adv.ortg || GAME_LEAGUE.ortg) - GAME_LEAGUE.ortg - impO,

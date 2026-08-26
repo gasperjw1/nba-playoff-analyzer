@@ -161,8 +161,21 @@ data, not bug: analyzer advStats have ATL +5.7 netRtg vs NYK +6.3 —
 near-even teams in 3-vs-6 clothing; sim gives NYK 65% (real series was a
 competitive 4-2). Ghost-double fix: coaches can't call coverage on
 players not dressing tonight.
-Known refinement queued: stopper fit assumes a perimeter (PoA) target —
-guarding a big initiator (Jokic) with an Anchor Big should be native fit.
+Playtest round 5 (user design): TYPED COVERAGE JOBS — the assignment's
+required role comes from the TARGET (creators/guards → Point of Attack,
+bigs → Anchor Big, non-creating wings → Wing Stopper; retires the queued
+Gobert-on-Jokic mispricing — big-on-big is now native fit) — and SCHEME
+DISPLACEMENT: a defense is a system of assignments, so spending your
+best point-of-attack defender on a non-ballhandler vacates the PoA job
+and the drop-off to your next perimeter defender is a whole-scheme DRtg
+cost (deep defensive corps displace cheaply; thin ones pay; guarding the
+creator himself displaces nothing). Fixing the resulting TEST 21
+regression surfaced a missing physics term: CREATION DEPENDENCY —
+minutes-weighted playmaking below the team baseline degrades everyone's
+shot quality beyond the usage-volume penalty (benching Brunson had
+graded near-even because the model priced his poor defense, refunded the
+opponent's coverage, and promoted a rim protector; real but incomplete).
+Jobs + displacement surface live on the plan screen and in the report.
 Remaining phases: 3.1 (in-game timeouts + halftime via steppable
 trajectory), 3.5 (boons + scouting-report depth), parallel role study.
 

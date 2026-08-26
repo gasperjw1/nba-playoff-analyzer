@@ -36,27 +36,57 @@ function _assignmentSuppression(assignment) {
 }
 
 /**
- * Resolve one side's marquee defensive assignment: the plan's chosen
- * stopper (a real lever — an interior body miscast onto the point of
- * attack loses most of the suppression) or the factory-derived default.
- * Returns {defender, target, suppression}.
+ * The offense's primary ballhandler on the floor — the man the Point of
+ * Attack job exists for, whoever the marquee target is.
  */
-function resolveCoverage(defTeam, plan, derivedAssignment) {
-  if (plan && plan.stopper && derivedAssignment) {
-    const d = defTeam.players.find(p => p.name === plan.stopper);
-    if (d) {
-      const fit = gameRoleFitCost(d.defRole, 'Point of Attack', GAME_DEF_ROLE_FAMILY);
-      return {
-        defender: d.name, target: derivedAssignment.target,
-        suppression: Math.max(0, Math.min(2.0, d.dLebron * 0.9 * (1 - 0.7 * fit))),
-      };
+function gamePrimaryBallHandler(offTeam, offRotation) {
+  const names = new Set((offRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
+  const pool = offTeam.players.filter(p =>
+    (names.size ? names.has(p.name) : p.initialStatus !== 'dnp') && p.baseRating > 0);
+  if (!pool.length) return null;
+  const cands = pool.filter(p =>
+    (GAME_OFF_ROLE_FAMILY[p.offRole] || '') === 'creator' || p.designation === 'guard' || p.apg >= 4);
+  const from = cands.length ? cands : pool;
+  const score = p => p.apg * 2 + p.usg * 0.5;
+  return from.reduce((a, b) => (score(b) > score(a) ? b : a));
+}
+
+/**
+ * Resolve one side's marquee defensive assignment. The JOB is typed by
+ * the target (gameCoverageJob); the stopper's fit for THAT job scales the
+ * suppression. SCHEME DISPLACEMENT (user design): a defense is a system —
+ * if the target is NOT the primary ballhandler and you spend your best
+ * point-of-attack defender on him, the PoA job falls to your next-best
+ * perimeter defender, and the drop-off is a DRtg cost on your whole
+ * scheme. Deep defensive rosters displace cheaply; thin ones pay.
+ * Returns {defender, target, suppression, job, schemeCost}.
+ */
+function resolveCoverage(defTeam, plan, derivedAssignment, offTeam, offRotation, defRotation) {
+  const chosenName = (plan && plan.stopper) || (derivedAssignment && derivedAssignment.defender);
+  const targetName = derivedAssignment && derivedAssignment.target;
+  const target = targetName && offTeam ? offTeam.players.find(p => p.name === targetName) : null;
+  const d = chosenName ? defTeam.players.find(p => p.name === chosenName) : null;
+  const job = (typeof gameCoverageJob === 'function') ? gameCoverageJob(target) : 'Point of Attack';
+  if (!d) {
+    return { defender: chosenName || null, target: targetName || null, job,
+      suppression: _assignmentSuppression(derivedAssignment), schemeCost: 0 };
+  }
+  const fit = gameRoleFitCost(d.defRole, job, GAME_DEF_ROLE_FAMILY);
+  const suppression = Math.max(0, Math.min(2.0, d.dLebron * 0.9 * (1 - 0.7 * fit)));
+  let schemeCost = 0;
+  const bh = offTeam ? gamePrimaryBallHandler(offTeam, offRotation) : null;
+  if (bh && target && bh.name !== target.name &&
+      (GAME_DEF_ROLE_FAMILY[d.defRole] || '') === 'perimeter') {
+    const defNames = new Set((defRotation || []).filter(r => r.minutes > 0).map(r => r.player.name));
+    const others = defTeam.players.filter(p => p.name !== d.name && p.baseRating > 0 &&
+      (defNames.size ? defNames.has(p.name) : p.initialStatus !== 'dnp') &&
+      (GAME_DEF_ROLE_FAMILY[p.defRole] || '') === 'perimeter');
+    const nextBest = others.length ? Math.max(...others.map(p => p.dLebron)) : -0.5;
+    if (d.dLebron > nextBest) {
+      schemeCost = Math.max(0, Math.min(1.2, (d.dLebron - Math.max(nextBest, 0)) * 0.4));
     }
   }
-  return {
-    defender: derivedAssignment ? derivedAssignment.defender : null,
-    target: derivedAssignment ? derivedAssignment.target : null,
-    suppression: _assignmentSuppression(derivedAssignment),
-  };
+  return { defender: d.name, target: targetName, job, suppression, schemeCost };
 }
 
 /** Starter set for a plan: explicit choice, else top-5 planned minutes. */
@@ -147,10 +177,15 @@ function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, away
     awayPlan.rotation || null, homePlan.rotation || null) || seriesCtx.defAssignments.homeOnAway;
   const derOnHome = gameDeriveAssignment(seriesCtx.away, seriesCtx.home,
     homePlan.rotation || null, awayPlan.rotation || null) || seriesCtx.defAssignments.awayOnHome;
-  const covOnHome = resolveCoverage(seriesCtx.away, awayPlan, derOnHome);
-  const covOnAway = resolveCoverage(seriesCtx.home, homePlan, derOnAway);
+  const covOnHome = resolveCoverage(seriesCtx.away, awayPlan, derOnHome,
+    seriesCtx.home, homePlan.rotation || null, awayPlan.rotation || null);
+  const covOnAway = resolveCoverage(seriesCtx.home, homePlan, derOnAway,
+    seriesCtx.away, awayPlan.rotation || null, homePlan.rotation || null);
   let capHome = computeTeamCapacity(seriesCtx.home, { ...homePlan, suppression: covOnHome.suppression });
   let capAway = computeTeamCapacity(seriesCtx.away, { ...awayPlan, suppression: covOnAway.suppression });
+  // Scheme displacement lands on the DEFENDING team's whole scheme.
+  if (covOnAway.schemeCost) capHome = { ...capHome, drtg: capHome.drtg + covOnAway.schemeCost };
+  if (covOnHome.schemeCost) capAway = { ...capAway, drtg: capAway.drtg + covOnHome.schemeCost };
   const startersHome = gameStarterNames(homePlan, capHome);
   const startersAway = gameStarterNames(awayPlan, capAway);
   const synHome = gameSynergyMod(seriesCtx.home, startersHome);
@@ -269,5 +304,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gameStarterNames, gameSynergyMod, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gamePrimaryBallHandler, gameStarterNames, gameSynergyMod, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
 }

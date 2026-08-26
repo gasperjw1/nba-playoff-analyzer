@@ -311,8 +311,10 @@ function renderGameplan() {
       </div>
       <div class="pr-panel">
         <h3>Matchups</h3>
-        <p class="pr-dim">Your primary defender on <strong>${gameEsc((myCoverage && myCoverage.target) || '?')}</strong>:</p>
-        <select class="pr-select" onchange="gameSetStopper(this.value)">${stopperOptions}</select>
+        <p class="pr-dim">Your primary defender on <strong>${gameEsc((myCoverage && myCoverage.target) || '?')}</strong>
+          <span class="pr-desig" title="The job this target demands: creators/guards demand Point of Attack, bigs demand an Anchor Big, non-creating wings a Wing Stopper. Your stopper's fit for THIS job scales the suppression.">${gameEsc((myCoverage && myCoverage.job) || '')}</span>:</p>
+        <select class="pr-select" onchange="gameSetStopper(this.value); gameUpdatePlanMeta()">${stopperOptions}</select>
+        <p id="prScheme" class="pr-dim">${gameSchemeLine(team, opp, myCoverage, myRotation, oppRotation)}</p>
         <p class="pr-dim">They'll likely send <strong>${gameEsc((theirCoverage && theirCoverage.defender) || '?')}</strong>
           at <strong>${gameEsc((theirCoverage && theirCoverage.target) || '?')}</strong>.</p>
         <h3>Coverage</h3>
@@ -330,6 +332,21 @@ function renderGameplan() {
       </div>
     </div>
   </div>`;
+}
+
+/**
+ * Live scheme-displacement readout: assigning your best point-of-attack
+ * defender to a NON-ballhandler vacates the PoA job — the whole scheme
+ * pays the drop-off to your next perimeter defender.
+ */
+function gameSchemeLine(team, opp, derived, myRotation, oppRotation) {
+  if (!derived) return '';
+  const cov = resolveCoverage(team, { stopper: GAME_UI.planStopper || null }, derived,
+    opp, oppRotation, myRotation);
+  if (!cov.schemeCost || cov.schemeCost < 0.15) return '';
+  return `<span class="pr-warn">⚠ ${gameEsc(cov.defender)} chasing ${gameEsc(cov.target)} vacates your
+    point-of-attack coverage — their ballhandler gets your next-best perimeter defender
+    (scheme cost ~${cov.schemeCost.toFixed(1)} DRtg).</span>`;
 }
 
 function gameSynergyLine() {
@@ -509,8 +526,11 @@ function renderCoachReport(gm, userIsHome) {
     if (!cov || !cov.target || cov.targetPts == null || !cov.targetSeason) return null;
     const ratio = cov.targetPts / cov.targetSeason;
     const verdict = ratio <= 0.8 ? ['held', 'pr-w'] : ratio >= 1.2 ? ['torched for', 'pr-l'] : ['allowed', 'pr-dim'];
-    return `<li>${who} <strong>${gameEsc(cov.defender || '?')}</strong> on <strong>${gameEsc(cov.target)}</strong>:
-      <span class="${verdict[1]}">${verdict[0]} ${cov.targetPts}</span> (season ${cov.targetSeason.toFixed(1)})</li>`;
+    const scheme = cov.schemeCost >= 0.2
+      ? ` <span class="pr-warn">(scheme stretched −${cov.schemeCost.toFixed(1)} DRtg — the point of attack fell to a lesser defender)</span>` : '';
+    return `<li>${who} <strong>${gameEsc(cov.defender || '?')}</strong> on <strong>${gameEsc(cov.target)}</strong>
+      <span class="pr-dim">(${gameEsc(cov.job || '')})</span>:
+      <span class="${verdict[1]}">${verdict[0]} ${cov.targetPts}</span> (season ${cov.targetSeason.toFixed(1)})${scheme}</li>`;
   };
   const l1 = covLine(mine.coverage, 'Your stopper');
   if (l1) lines.push(l1);
