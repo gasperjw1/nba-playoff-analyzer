@@ -268,23 +268,52 @@ function gameSessionAtHalftime(gs) {
 function gameSessionHalftime(gs, revisedUserPlan) {
   if (!gameSessionAtHalftime(gs)) return false;
   gs.flow.halftimePassed = true;
+
+  // Build H2 plans: the user's revision (if any) + CPU coaches' own
+  // halftime reads (trailing coaches with adjustment chops change their
+  // coverage stance — no more stand-pat asymmetry).
+  const plans = { home: gs.homePlan, away: gs.awayPlan };
+  let changed = false;
+  ['home', 'away'].forEach(side => {
+    if (side === gs.userSide) {
+      if (revisedUserPlan) {
+        plans[side] = { ...plans[side], ...revisedUserPlan,
+          unavailable: plans[side].unavailable, fatigue: plans[side].fatigue };
+        changed = true;
+      }
+      return;
+    }
+    const team = side === 'home' ? gs.seriesCtx.home : gs.seriesCtx.away;
+    const opp = side === 'home' ? gs.seriesCtx.away : gs.seriesCtx.home;
+    const marginForSide = side === 'home' ? gs.flow.margin : -gs.flow.margin;
+    const rev = (typeof cpuHalftimeRevision === 'function')
+      ? cpuHalftimeRevision(team, opp, plans[side], marginForSide) : null;
+    if (rev) { plans[side] = rev; changed = true; }
+  });
+  if (!changed) return true;
+
+  const mkH2 = (homePlan, awayPlan) => {
+    const h = computeExpectedForPlans(gs.seriesCtx, gs.gameNum, gs.seriesScore, homePlan, awayPlan);
+    h.exp.home += gs.seriesEdge / 2;
+    h.exp.away -= gs.seriesEdge / 2;
+    h.exp.margin = h.exp.home - h.exp.away;
+    return h;
+  };
+  const h2 = mkH2(plans.home, plans.away);
+  gs.h2 = h2;
+  gs.h2Plans = { homePlan: plans.home, awayPlan: plans.away };
+  gs.flow.expH2 = h2.exp;
+  drawGameForm(h2.capHome.playerShares, gs.rng, gs.shifts, gs.form.home);
+  drawGameForm(h2.capAway.playerShares, gs.rng, gs.shifts, gs.form.away);
+
+  // Halftime CVA: the user's revision vs standing pat, with the CPU
+  // side's revision held identical in both worlds.
   if (revisedUserPlan && gs.userSide) {
-    const base = gs.userSide === 'home' ? gs.homePlan : gs.awayPlan;
-    const revised = { ...base, ...revisedUserPlan,
-      unavailable: base.unavailable, fatigue: base.fatigue };
-    const homePlan = gs.userSide === 'home' ? revised : gs.homePlan;
-    const awayPlan = gs.userSide === 'away' ? revised : gs.awayPlan;
-    const h2 = computeExpectedForPlans(gs.seriesCtx, gs.gameNum, gs.seriesScore, homePlan, awayPlan);
-    h2.exp.home += gs.seriesEdge / 2;
-    h2.exp.away -= gs.seriesEdge / 2;
-    h2.exp.margin = h2.exp.home - h2.exp.away;
-    gs.h2 = h2;
-    gs.h2Plans = { homePlan, awayPlan };
-    gs.flow.expH2 = h2.exp;
-    drawGameForm(h2.capHome.playerShares, gs.rng, gs.shifts, gs.form.home);
-    drawGameForm(h2.capAway.playerShares, gs.rng, gs.shifts, gs.form.away);
+    const patPlans = { ...plans };
+    patPlans[gs.userSide] = gs.userSide === 'home' ? gs.homePlan : gs.awayPlan;
+    const h2pat = mkH2(patPlans.home, patPlans.away);
     const sign = gs.userSide === 'home' ? 1 : -1;
-    gs.cvaHalf = { delta: +(((h2.exp.margin - gs.pre.exp.margin) * sign) / 2).toFixed(2) };
+    gs.cvaHalf = { delta: +(((h2.exp.margin - h2pat.exp.margin) * sign) / 2).toFixed(2) };
   }
   return true;
 }

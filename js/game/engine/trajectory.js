@@ -126,7 +126,8 @@ function stepGameFlow(flow, rng) {
       flow.timeoutPending[side] = false;
     });
 
-    let mDelta = drift - restoreK * flow.margin + gameNormal(rng, 0, cfg.segSD);
+    const sc = exp.sigmaScale || 1;   // pace posture: noise ~ sqrt(possessions)
+    let mDelta = drift - restoreK * flow.margin + gameNormal(rng, 0, cfg.segSD * sc);
 
     // Capitulation window: entering the final two segments.
     if (flow.segIdx === S - 2 && !flow.capRolled) {
@@ -145,7 +146,7 @@ function stepGameFlow(flow, rng) {
     }
 
     const segTotal = (exp.home + exp.away) / S + flow.totalNoise / S +
-      gameNormal(rng, 0, cfg.segTotalNoise);
+      gameNormal(rng, 0, cfg.segTotalNoise * sc);
     const seg = {
       home: Math.max(4, Math.round((segTotal + mDelta) / 2)),
       away: Math.max(4, Math.round((segTotal - mDelta) / 2)),

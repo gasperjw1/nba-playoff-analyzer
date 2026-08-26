@@ -19,9 +19,6 @@ const GAME_LEAGUE = {
   ortg: 116.0,
   drtg: 111.3,
   pace: 98.4,
-  // Per-100 offensive impact assumed for a replacement body absorbing the
-  // minutes of a missing player (LEBRON-scale). Standard replacement level.
-  replacementOLebron: -2.0,
 };
 
 const GAME_CONFIG = {
@@ -229,9 +226,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.276, SAS: 0.194, DET: 0.14, BOS: 0.134, DEN: 0.07, NYK: 0.04,
-  CLE: 0.038, ATL: 0.031, HOU: 0.028, TOR: 0.017, MIN: 0.011, LAL: 0.007,
-  PHI: 0.004, POR: 0.004, ORL: 0.003, PHX: 0.003,
+  OKC: 0.278, SAS: 0.19, BOS: 0.142, DET: 0.12, DEN: 0.062, NYK: 0.043,
+  ATL: 0.038, CLE: 0.035, HOU: 0.031, MIN: 0.02, TOR: 0.017, LAL: 0.009,
+  PHI: 0.006, ORL: 0.005, POR: 0.002, PHX: 0.002,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────

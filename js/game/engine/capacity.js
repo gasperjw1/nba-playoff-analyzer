@@ -132,7 +132,12 @@ function computeTeamCapacity(team, opts) {
     ptsShare: s.pts / tot.pts, rebShare: s.reb / tot.reb, astShare: s.ast / tot.ast,
   }));
 
-  return { ortg, drtg, pace: (team.advStats.pace || GAME_LEAGUE.pace), playerShares };
+  // Pace posture (plan lever, Skinner variance logic): slowing shrinks
+  // the possession count — the talent gap scales LINEARLY with
+  // possessions while game noise scales with their square root, so the
+  // underdog slowing the game genuinely raises upset odds.
+  const paceMult = opts.pace === 'slow' ? 0.955 : opts.pace === 'fast' ? 1.045 : 1;
+  return { ortg, drtg, pace: (team.advStats.pace || GAME_LEAGUE.pace) * paceMult, playerShares };
 }
 
 function _rawScores(capHome, capAway) {
@@ -170,7 +175,11 @@ function expectedGameScores(seriesCtx, capHome, capAway, gameNum, seriesScore, b
   const sign = gameVenueIsHome(gameNum) ? 1 : -1;
   home += sign * hca / 2;
   away -= sign * hca / 2;
-  return { home, away, margin: home - away };
+  const poss = ((capHome.pace + capAway.pace) / 2) * GAME_CONFIG.playoffPaceFactor;
+  // Game noise scales with sqrt(possessions) — the trajectory layer reads
+  // sigmaScale so pace postures move variance honestly.
+  const basePoss = GAME_LEAGUE.pace * GAME_CONFIG.playoffPaceFactor;
+  return { home, away, margin: home - away, poss, sigmaScale: Math.sqrt(poss / basePoss) };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

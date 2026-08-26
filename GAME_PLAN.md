@@ -12,9 +12,9 @@
 
 You pick one of the 16 teams from the 2026 playoffs and coach it through the
 bracket. AI coaches (typed profiles derived from the real 2026 coaching data)
-run the other 15 teams. You control rotations/minutes, defensive assignments,
-star-coverage posture, pace/3PT posture, offensive hierarchy, timeouts, and a
-halftime adjustment. Every run diverges from history: seeded RNG drives game
+run the other 15 teams. You control rotations/minutes/starters, role
+assignments, defensive assignments (typed stopper jobs), star-coverage
+posture, game tempo, timeouts, and a halftime adjustment. Every run diverges from history: seeded RNG drives game
 outcomes, per-series hidden player form, and injuries. Scoring is
 expectation-relative (each team's championship equity is shown up front) plus
 **Coaching Value Added** — your decisions vs. what your CPU assistant would
@@ -239,6 +239,28 @@ you lean on). Data source: the USER'S season of watching + the coaching
 prose — hand-authored like coach-profiles.js, each field traceable.
 Not built until the data exists (no invented playbooks). May debut as a
 boon-gated scouting insight before becoming a full lever.
+
+## Review round (Aug 26, end of phase)
+
+Full plan-vs-execution audit + interactive-path fuzz (238 games with
+random timeouts/halftime revisions — zero invariant violations). Findings
+fixed: dead config removed (replacementOLebron); fullMinutes proxy
+replaced with REAL playoff average minutes mined from the box-score
+archive (Brunson 37.5, McCain 18.5 — matching his roleChanges note);
+default rotations are SHAPE-AWARE (one rating-bounded swap fixes big- or
+guard-heavy implied fives — MIN's Edwards-less five went from a flagged
+1G-1W-3B to a clean 1G-1GW-1W-2B); CPU HALFTIME REVISIONS close the v1
+stand-pat asymmetry (trailing coaches with adjust>=7 or urgency>=8 drop a
+failing double or commit one vs thin offenses — deterministic, replay-
+safe, and the halftime CVA now holds the CPU's revision fixed in both
+worlds); TEMPO lever built (plan-promised): pace posture scales
+possessions AND noise by sqrt(poss) — the underdog's Skinner play, with
+disciplined clear-underdog CPU coaches slowing on their own.
+
+Openly REMAINING (plan-promise honesty): 3PT-volume posture (needs the
+shooting-split model) and the offensive-hierarchy lever (initiator
+ordering) — both consolidated into the shooting-splits work item; boons
+(3.5); role study; Phase 4 plays.
 
 ## Parallel track (non-blocking)
 

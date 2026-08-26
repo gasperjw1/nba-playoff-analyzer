@@ -31,6 +31,7 @@ const GAME_UI = {
   planRoles: {},            // name -> {offRole, defRole} overrides (native default)
   planStopper: '',          // your defender on their initiator ('' = coach default)
   planDouble: '',           // opponent player name or ''
+  planPace: '',             // '' normal | 'slow' | 'fast'
   ticker: [],               // CPU series completed since last user screen
   eliminated: false,
 };
@@ -55,6 +56,7 @@ function gameSaveNow() {
     localStorage.setItem(GAME_SAVE_KEY + '_ui', JSON.stringify({
       planMinutes: GAME_UI.planMinutes, planStarters: GAME_UI.planStarters,
       planRoles: GAME_UI.planRoles, planStopper: GAME_UI.planStopper,
+      planPace: GAME_UI.planPace,
     }));
   } catch (_) {}
 }
@@ -76,6 +78,7 @@ function renderGameSection(el) {
         GAME_UI.planStarters = prefs.planStarters || [];
         GAME_UI.planRoles = prefs.planRoles || {};
         GAME_UI.planStopper = prefs.planStopper || '';
+        GAME_UI.planPace = prefs.planPace || '';
       } catch (_) {}
       if (restored.session) {
         gameReconcilePlan();
@@ -324,6 +327,14 @@ function renderGameplan() {
           <option value="">Straight coverage (no double)</option>
           ${oppOptions}
         </select>
+        <h3>Tempo</h3>
+        <select class="pr-select" onchange="gameSetPace(this.value)">
+          <option value="" ${GAME_UI.planPace === '' ? 'selected' : ''}>Normal tempo</option>
+          <option value="slow" ${GAME_UI.planPace === 'slow' ? 'selected' : ''}>Slow it down (fewer possessions)</option>
+          <option value="fast" ${GAME_UI.planPace === 'fast' ? 'selected' : ''}>Push the pace</option>
+        </select>
+        <p class="pr-dim">Fewer possessions shrink the talent gap faster than the noise —
+          the underdog's classic play. Favorites want more possessions, not fewer.</p>
         <p class="pr-dim">Doubling suppresses the target but frees teammates — pays vs one-initiator offenses
           (${gameEsc(opp.abbr)}: ${opp.initiators}), punished by deep ones.</p>
         <h3>Starting five</h3>
@@ -438,6 +449,7 @@ function gameSetRole(sel) {
 }
 function gameSetStopper(v) { GAME_UI.planStopper = v; }
 function gameSetDouble(v) { GAME_UI.planDouble = v; }
+function gameSetPace(v) { GAME_UI.planPace = v; }
 
 function gamePlayGame() {
   const run = GAME_UI.run, session = GAME_UI.session;
@@ -452,6 +464,7 @@ function gamePlayGame() {
     roleAssignments: GAME_UI.planRoles,
     doubleTarget: GAME_UI.planDouble || null,
     stopper: GAME_UI.planStopper || null,
+    pace: GAME_UI.planPace || undefined,
     starters: GAME_UI.planStarters.length === 5 ? GAME_UI.planStarters.slice() : null,
   };
   // Live game (Phase 3.1): open a steppable session — the game plays

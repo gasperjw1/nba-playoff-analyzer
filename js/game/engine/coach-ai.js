@@ -176,12 +176,45 @@ function makeCoachPlan(team, oppTeam, ownEvidence, oppEvidence, gameState, rng) 
     }
   }
 
+  // Pace posture (Skinner): a clear underdog with a disciplined coach
+  // shortens the game — fewer possessions shrink the talent gap faster
+  // than the noise. Favorites never volunteer to slow their own edge.
+  let pace;
+  const netGap = ((oppTeam.advStats && oppTeam.advStats.netRtg) || 0) -
+    ((team.advStats && team.advStats.netRtg) || 0);
+  if (netGap >= 4 && (prof.adjust || 5) >= 6) pace = 'slow';
+
   return {
     rotation,
     unavailable: [...out],
     fatigue: (gameState && gameState.fatigue) || {},
     doubleTarget,
+    pace,
   };
+}
+
+/**
+ * CPU halftime revision (closes the v1 stand-pat asymmetry): a coach with
+ * real adjustment chops (adjust>=7) or high urgency (>=8), trailing by 8+
+ * at the half, changes his coverage stance — drops a double that isn't
+ * winning the game, or commits one against a thin (<=2 initiator)
+ * offense. Deterministic (no rng — replay-safe).
+ */
+function cpuHalftimeRevision(team, opp, plan, marginForSide) {
+  const prof = team.coach || {};
+  if ((prof.adjust || 5) < 7 && (prof.urgency || 5) < 8) return null;
+  if (marginForSide > -8) return null;
+  if (plan.doubleTarget) return { ...plan, doubleTarget: null };
+  if ((opp.initiators || 2) <= 2) {
+    const oppOut = new Set(plan.oppUnavailable || []);
+    const cands = opp.players.filter(p =>
+      p.initialStatus !== 'dnp' && p.baseRating > 0 && p.ppg >= 14 && !oppOut.has(p.name));
+    if (cands.length) {
+      const star = cands.reduce((a, b) => (b.ppg > a.ppg ? b : a));
+      return { ...plan, doubleTarget: star.name };
+    }
+  }
+  return null;
 }
 
 /**
@@ -205,6 +238,6 @@ function applyDoubleCoverage(cap, targetName, offTeamInitiators) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     GAME_COACH_CONFIG, initCoachEvidence, updateCoachEvidence,
-    coachShiftBelief, makeCoachPlan, applyDoubleCoverage,
+    coachShiftBelief, makeCoachPlan, cpuHalftimeRevision, applyDoubleCoverage,
   };
 }

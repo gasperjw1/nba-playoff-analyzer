@@ -108,17 +108,88 @@ function gamePlayerTier(ppg) {
  * Default minutes for a set of available players: healthy bodies sorted by
  * baseline rating take the template slots down to rotationDepth, then
  * everything is normalized to exactly 240.
+ *
+ * SHAPE-AWARE (review round): a rating-only ranking can start an off-shape
+ * five (MIN's Edwards-less default was 3 bigs). If the implied starters
+ * are big- or guard-heavy, the lowest-rated offending starter swaps slots
+ * with the best bench player who fixes the shape — but never across a
+ * >12-rating gap (no benching stars for geometry; the composition tax
+ * covers those cases).
  * Returns [{player, minutes}] for ALL passed players (0 for out of rotation).
  */
 function gameDefaultRotation(players, rotationDepth) {
   const depth = Math.min(rotationDepth || GAME_CONFIG.defaultRotationDepth, players.length);
   const template = GAME_CONFIG.minutesTemplate;
   const ranked = players.slice().sort((a, b) => (b.baseRating || 0) - (a.baseRating || 0));
+
+  // One shape-fixing swap between the implied five and the bench.
+  const credit = p => GAME_DESIGNATION_CREDIT[p.designation || gameDesignation(p)] || [0, 1, 0];
+  const five = ranked.slice(0, 5);
+  if (ranked.length > 5) {
+    const g = five.reduce((a, p) => a + credit(p)[0], 0);
+    const b = five.reduce((a, p) => a + credit(p)[2], 0);
+    const heavyIdx = bIsHeavy => {
+      // lowest-rated starter of the over-represented kind
+      for (let i = 4; i >= 0; i--) {
+        if ((bIsHeavy ? credit(five[i])[2] : credit(five[i])[0]) >= 0.9) return i;
+      }
+      return -1;
+    };
+    let outIdx = -1, fixNeeds = null;
+    if (b >= 2.7) { outIdx = heavyIdx(true); fixNeeds = p => credit(p)[2] < 0.5; }
+    else if (g >= 2.7) { outIdx = heavyIdx(false); fixNeeds = p => credit(p)[0] < 0.5; }
+    if (outIdx >= 0) {
+      const sub = ranked.slice(5, depth).find(p =>
+        fixNeeds(p) && (ranked[outIdx].baseRating - p.baseRating) <= 12);
+      if (sub) {
+        const i = ranked.indexOf(sub);
+        [ranked[outIdx], ranked[i]] = [ranked[i], ranked[outIdx]];
+      }
+    }
+  }
+
   const raw = new Map();
   ranked.forEach((p, i) => raw.set(p.name, i < depth ? (template[i] || 4) : 0));
   const total = [...raw.values()].reduce((a, b) => a + b, 0);
   const scale = 240 / total;
   return players.map(p => ({ player: p, minutes: raw.get(p.name) * scale }));
+}
+
+/**
+ * REAL average minutes per player, mined from the analyzer's box-score
+ * archive (series-data embedded boxScores; short names matched by last
+ * name within the roster, ambiguous surnames skipped). Replaces the
+ * template guess as each player's season-role minutes proxy where >=3
+ * real games exist.
+ */
+function _realMinutesByPlayer(seriesData, abbr, rosterNames) {
+  const lastOf = n => (n || '').replace(/ (Jr\.|Sr\.|III|II)$/, '').split(/[\s.]/).pop().toLowerCase();
+  const byLast = {};
+  const ambiguous = new Set();
+  rosterNames.forEach(n => {
+    const l = lastOf(n);
+    if (byLast[l]) ambiguous.add(l); else byLast[l] = n;
+  });
+  const mins = {};
+  (seriesData || []).forEach(s => {
+    const side = s.homeTeam && s.homeTeam.abbr === abbr ? 'home'
+      : s.awayTeam && s.awayTeam.abbr === abbr ? 'away' : null;
+    if (!side) return;
+    (s.games || []).forEach(g => {
+      if (!g || !g.boxScores || !g.boxScores[side]) return;
+      g.boxScores[side].forEach(row => {
+        if (!row || row.min == null) return;
+        const l = lastOf(row.name);
+        if (ambiguous.has(l) || !byLast[l]) return;
+        (mins[byLast[l]] = mins[byLast[l]] || []).push(row.min);
+      });
+    });
+  });
+  const out = {};
+  Object.entries(mins).forEach(([name, arr]) => {
+    if (arr.length >= 3) out[name] = arr.reduce((a, b) => a + b, 0) / arr.length;
+  });
+  return out;
 }
 
 /**
@@ -235,13 +306,17 @@ function _buildGameTeam(t, series, latestByName) {
     creationBaseline += (p.apg || 0) * rotMinutes[i] / 240;
   });
 
-  // Season-role minutes proxy (players carry no season MPG): the default
-  // rotation over the FULL healthy roster (season stats include players
-  // who are out at playoffs start, e.g. Doncic). Used by capacity to scale
-  // ppg/rpg/apg shares when tonight's minutes differ from the season role.
+  // Season-role minutes proxy: REAL playoff average minutes from the
+  // box-score archive where available (>=3 games), else the template
+  // rotation over the full healthy roster. Used by capacity to scale
+  // ppg/rpg/apg shares when tonight's minutes differ from the role.
   const fullMinutes = {};
   gameDefaultRotation(players.filter(p => p.baseRating > 0), coach && coach.rotationDepth)
     .forEach(r => { fullMinutes[r.player.name] = r.minutes; });
+  const realMins = _realMinutesByPlayer(
+    (typeof SERIES_DATA !== 'undefined') ? SERIES_DATA : _seriesDataRef,
+    t.abbr, players.map(p => p.name));
+  Object.entries(realMins).forEach(([name, m]) => { fullMinutes[name] = m; });
 
   // Synergy baseline: SPM chemistry score of the default starting five.
   // gameSynergyMod measures the USER'S chosen five against this, so the
@@ -275,7 +350,9 @@ function _buildGameTeam(t, series, latestByName) {
 }
 
 /** Derive the 16-team DB from SERIES_DATA (R1 appearances only). */
+let _seriesDataRef = null;   // for Node loaders where SERIES_DATA isn't global here
 function buildGameTeamDb(seriesData) {
+  _seriesDataRef = seriesData;
   const db = {};
   (seriesData || []).forEach(s => {
     if (!s || (s.round || 'R1') !== 'R1') return;

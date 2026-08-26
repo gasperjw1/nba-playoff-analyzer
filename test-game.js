@@ -752,11 +752,75 @@ T('22d: Coach report — derived attribution matches the box score');
   assert(targetRow && cov.targetPts === targetRow.pts, 'coverage targetPts cross-checks with box');
   assert(typeof cov.targetSeason === 'number' && cov.targetSeason > 0, 'season baseline attached');
   assert(g.report.home.starters.length === 5, 'starters recorded');
-  // Doubling shows up in the report when planned
+  // Doubling shows up in the report when planned — and can only VANISH
+  // via a CPU halftime revision (a trailing coach dropping a failing
+  // double), never silently.
   const star = DB.PHI.players.reduce((a, b) => (b.ppg > a.ppg ? b : a));
-  const g2 = ctx.simulateGameOnce(sctx, 1, { seed: 99, homePlan: { doubleTarget: star.name } });
-  assert(g2.report.home.double && g2.report.home.double.target === star.name &&
-    typeof g2.report.home.double.pts === 'number', 'double outcome recorded');
+  let sawDouble = false, sawDrop = false;
+  for (let seed = 99; seed < 111; seed++) {
+    const g2 = ctx.simulateGameOnce(sctx, 1, { seed, homePlan: { doubleTarget: star.name } });
+    if (g2.report.home.double) {
+      sawDouble = true;
+      assert(g2.report.home.double.target === star.name &&
+        typeof g2.report.home.double.pts === 'number', 'double outcome recorded (seed ' + seed + ')');
+    } else {
+      sawDrop = true;
+      assert(g2.halftimeAdjusted === true,
+        'a vanished double must mean a halftime revision (seed ' + seed + ')');
+    }
+  }
+  assert(sawDouble, 'double persisted in at least one game');
+  if (sawDrop) console.log('  (info) CPU halftime dropped a failing double in some games — mechanic live');
+}
+
+T('22d2: Pace posture — possessions, variance scaling, CPU underdog rule');
+{
+  const sctx = ctx.makeGameSeries(DB, 'OKC', 'PHX', 'R1');
+  const capN = ctx.computeTeamCapacity(DB.PHX, {});
+  const capS = ctx.computeTeamCapacity(DB.PHX, { pace: 'slow' });
+  assert(capS.pace < capN.pace, 'slow posture reduces pace (' + capS.pace.toFixed(1) + ' < ' + capN.pace.toFixed(1) + ')');
+  const capOKC = ctx.computeTeamCapacity(DB.OKC, {});
+  const expN = ctx.expectedGameScores(sctx, capOKC, capN, 1);
+  const expS = ctx.expectedGameScores(sctx, capOKC, capS, 1);
+  assert(expS.poss < expN.poss && expS.sigmaScale < expN.sigmaScale,
+    'slowing shrinks possessions AND noise scale (' + expS.poss.toFixed(1) + ', ' + expS.sigmaScale.toFixed(3) + ')');
+  // Skinner check: |expected margin| shrinks linearly, sigma by sqrt →
+  // the underdog's z-score against the favorite improves when slowing.
+  const zN = Math.abs(expN.margin) / expN.sigmaScale;
+  const zS = Math.abs(expS.margin) / expS.sigmaScale;
+  assert(zS < zN, 'underdog slowing improves the upset z-score (' + zS.toFixed(2) + ' < ' + zN.toFixed(2) + ')');
+  // CPU rule: PHX (huge netRtg deficit vs OKC) with a capable coach slows;
+  // OKC never volunteers to slow its own edge.
+  const phxPlan = ctx.makeCoachPlan(DB.PHX, DB.OKC, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(1));
+  const okcPlan = ctx.makeCoachPlan(DB.OKC, DB.PHX, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(2));
+  assert(okcPlan.pace === undefined, 'the favorite does not slow the game');
+  // (PHX coach adjust 4 — below the discipline bar, so no slow; DEN@OKC
+  //  gap is only 3.1 — not a clear underdog. MIN @ OKC (gap 8.3, Finch
+  //  adjust 7) is the qualifying case.)
+  assert(phxPlan.pace === undefined, 'low-discipline coach does not slow even as underdog');
+  const minPlan = ctx.makeCoachPlan(DB.MIN, DB.OKC, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(3));
+  assert(minPlan.pace === 'slow', 'a disciplined clear underdog slows the game (MIN @ OKC)');
+}
+
+T('22d3: CPU halftime revision — trailing coaches change stance, deterministic');
+{
+  const bos = DB.BOS, phi = DB.PHI;
+  const plan = { doubleTarget: null, unavailable: [], fatigue: {} };
+  // Trailing by 10 with adjust 8 vs a 2-initiator offense → commit a double
+  const rev = ctx.cpuHalftimeRevision(bos, phi, plan, -10);
+  assert(rev && rev.doubleTarget, 'trailing high-adjust coach commits a double (' + (rev && rev.doubleTarget) + ')');
+  // With a failing double already on → drop it
+  const rev2 = ctx.cpuHalftimeRevision(bos, phi, { ...plan, doubleTarget: 'X' }, -10);
+  assert(rev2 && rev2.doubleTarget === null, 'trailing coach drops a failing double');
+  // Leading, or low-adjust → stand pat
+  assert(ctx.cpuHalftimeRevision(bos, phi, plan, +4) === null, 'leading coach stands pat');
+  const phx = DB.PHX;   // adjust 4, urgency 8 — urgency qualifies him
+  assert(ctx.cpuHalftimeRevision(phx, phi, plan, -10) !== null, 'high-urgency coach also reacts');
+  assert(JSON.stringify(ctx.cpuHalftimeRevision(bos, phi, plan, -10)) ===
+         JSON.stringify(ctx.cpuHalftimeRevision(bos, phi, plan, -10)), 'revision is deterministic');
 }
 
 T('22e: Segments — 8+OT structure, quarters are segment pairs');
