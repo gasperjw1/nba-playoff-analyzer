@@ -190,6 +190,56 @@ superlinear injury hazard), not by nerfing strategy. Browser wiring of
 `js/game/` into index.html deliberately deferred to Phase 3 (no dead code
 on the live site until there is a UI to use it).
 
+## Phase 3.1 (BUILT + GATED) — the in-game layer
+
+Steppable game: regulation = **8 six-minute segments** (variance re-split
+from the quarter walk; realism harness re-gated), OT = 5-min segments.
+Game becomes a SESSION (open → step → finish) mirroring the series-session
+pattern; simulateGameOnce wraps it, so headless paths and gates run the
+same core. Player box allocation moves to per-half with a PER-GAME form
+draw (noise drawn once per player per game, both halves share it — keeps
+the calibrated CVs; garbage/OT effects land in H2).
+
+- **Timeouts** (budget 4/side): mechanically a next-segment intervention —
+  damps the regime drift running against the caller + adds a restoring
+  pull. Honest mapping of the timeout-momentum study (−3.74 → −1.20 per
+  min): timeouts blunt momentum-driven runs, do little in neutral flow,
+  and damp YOUR run if called while rolling (the study's asymmetry). CPU
+  calls them on a run threshold; no CVA grading of timeouts in v1.
+- **Halftime adjustment**: user may revise H2 minutes (120-min budget),
+  coverage (stopper/double), and roles; H2 capacities + expectation
+  recomputed. Halftime CVA = expected-H2-margin delta of the revision vs
+  standing pat (half-game weight, folded into run CVA). CPU coaches stand
+  pat at half in v1 (documented asymmetry; their edge stays between-game
+  adjustment — CPU halftime revision is a 3.1 follow-up).
+
+Phase 3.1 build notes: segment walk re-tuned (segSD 5.2, restoringK
+0.035 — 8 small steps compound more restoring pullback than 4 large
+ones; realism re-gated 18/18, P(15+) dead-on 37.3%). Steppable session
+chain: openSeriesGame → gameSessionStep/Timeout/Halftime →
+commitSeriesGame; playSeriesGame + simulateGameOnce wrap the same core
+(parity-tested). Manual timeout control is interactive-only — headless
+policy runs keep CPU timeouts on both sides (a static rotation is not a
+vow of timeout abstinence; audit fairness). Timeout gain measured ~+1
+pt/segment when called on an opponent run. Mid-live-game saves are
+forbidden by design: reloading mid-game replays cleanly from the
+pre-game state. The split also caught that oppLastStarters /
+oppUnavailable were consumed by coach-ai but NEVER FED in real runs
+(composition counters + no-ghost-double were inert in brackets) — now
+wired and pinned by TEST 22h.
+
+## Phase 4 (speced, data-gated) — plays & playbooks
+
+Play families as matchup modifiers: per-team typed play-profiles
+(offensive family weights: drag/PnR, post splits, motion, iso; defensive
+VULNERABILITIES — e.g. the user's observed "double drag was NYK defense's
+kryptonite"). Effect = chosen emphasis × personnel fit (archetypes) ×
+opponent vulnerability − counter-prep decay (evidence model learns what
+you lean on). Data source: the USER'S season of watching + the coaching
+prose — hand-authored like coach-profiles.js, each field traceable.
+Not built until the data exists (no invented playbooks). May debut as a
+boon-gated scouting insight before becoming a full lever.
+
 ## Parallel track (non-blocking)
 
 Role-decomposition study (frozen git snapshots; predicts series shifts from

@@ -182,32 +182,50 @@ function _closeRunSeries(run, session) {
 }
 
 /**
- * Play ONE game of an open session. userPlan (optional) drives run.userTeam
- * if that team is in this series; availability/fatigue are enforced from
- * game state regardless (physics, not preference). Auto-closes at 4 wins.
+ * Open ONE game of a series session as a steppable GAME session (Phase
+ * 3.1). Computes both sides\' pre-game states FIRST (so each coach knows
+ * the opponent\'s scratches and last-game starting five — the composition
+ * counter and the no-ghost-double rule), then plans, then pregame CVA,
+ * then opens the segment-level game session. The interactive UI drives
+ * steps/timeouts/halftime; commitSeriesGame does the series bookkeeping.
+ * userPlan (optional) drives run.userTeam; availability/fatigue are
+ * enforced from game state regardless (physics, not preference).
  */
-function playSeriesGame(run, session, userPlan) {
+function openSeriesGame(run, session, userPlan, interactive) {
   const rng = run.rng, sctx = session.sctx;
   const g = session.games.length + 1;
   const sides = {
     [session.homeAbbr]: { team: sctx.home, opp: sctx.away, key: 'home' },
     [session.awayAbbr]: { team: sctx.away, opp: sctx.home, key: 'away' },
   };
+  const abbrs = [session.homeAbbr, session.awayAbbr];
 
-  const plans = {}, states = {};
-  [session.homeAbbr, session.awayAbbr].forEach(abbr => {
-    const gameState = getUpcomingGameState(run, session, abbr);
-    states[abbr] = gameState;
-    const isUser = userPlan && abbr === run.userTeam;
-    plans[abbr] = isUser
-      ? { ...userPlan, unavailable: gameState.unavailable, fatigue: gameState.fatigue }
-      : makeCoachPlan(sides[abbr].team, sides[abbr].opp,
-          session.evidence[abbr].own, session.evidence[abbr].opp, gameState, rng);
+  // 1. States for BOTH sides (pure), plus what each coach can observe
+  //    about the other: tonight\'s scratches and the last game\'s five.
+  const states = {};
+  abbrs.forEach(abbr => { states[abbr] = getUpcomingGameState(run, session, abbr); });
+  const prev = session.games[session.games.length - 1];
+  abbrs.forEach(abbr => {
+    const oppAbbr = abbr === session.homeAbbr ? session.awayAbbr : session.homeAbbr;
+    states[abbr].oppUnavailable = states[oppAbbr].unavailable;
+    if (prev && prev.report) {
+      states[abbr].oppLastStarters = prev.report[sides[abbr].key === 'home' ? 'away' : 'home'].starters;
+    }
   });
 
-  // Process CVA: user plan vs what the assistant would have done, same
-  // latent state and same opponent plan. Throwaway RNG (seeded from the
-  // stream position) so the main stream is untouched and it's replayable.
+  // 2. Plans (home first — deterministic rng order).
+  const plans = {};
+  abbrs.forEach(abbr => {
+    const isUser = userPlan && abbr === run.userTeam;
+    plans[abbr] = isUser
+      ? { ...userPlan, unavailable: states[abbr].unavailable, fatigue: states[abbr].fatigue }
+      : makeCoachPlan(sides[abbr].team, sides[abbr].opp,
+          session.evidence[abbr].own, session.evidence[abbr].opp, states[abbr], rng);
+  });
+
+  // 3. Pregame process CVA: user plan vs what the assistant would have
+  //    done — same latent state, same opponent plan. Throwaway RNG so the
+  //    main stream is untouched and restores replay identically.
   let cva = null;
   const userInSeries = run.userTeam && sides[run.userTeam];
   if (userPlan && userInSeries) {
@@ -222,15 +240,41 @@ function playSeriesGame(run, session, userPlan) {
     const mUser = userIsHome ? mk(plans[u]) : -mk(plans[u]);
     const mAI = userIsHome ? mk(aiPlan) : -mk(aiPlan);
     cva = { user: +mUser.toFixed(2), assistant: +mAI.toFixed(2), delta: +(mUser - mAI).toFixed(2) };
-    run.cvaTotal = +(run.cvaTotal + cva.delta).toFixed(2);
   }
 
-  const game = simulateGameOnce(sctx, g, {
+  // Manual timeout/halftime control only for INTERACTIVE play; headless
+  // policy runs (solver audit, scripted plans) still get CPU timeouts on
+  // both sides — a static rotation is not a vow of timeout abstinence.
+  const userSide = run.userTeam === session.homeAbbr ? 'home'
+    : run.userTeam === session.awayAbbr ? 'away' : null;
+  const gsGame = openGameSession(sctx, g, {
     rng, shifts: session.shifts, seriesEdge: session.seriesEdge,
     seriesScore: { home: session.score.home, away: session.score.away },
     homePlan: plans[session.homeAbbr], awayPlan: plans[session.awayAbbr],
+    userSide: (interactive && userPlan && userSide) ? userSide : null,
   });
-  if (cva) game.cva = cva;
+  gsGame._series = { cva, plans, states, sides };
+  return gsGame;
+}
+
+/**
+ * Commit a finished (or auto-finishable) game session back into the
+ * series: CVA totals, score, evidence, fatigue, injury book; closes the
+ * series at 4 wins. Returns the game record.
+ */
+function commitSeriesGame(run, session, gsGame) {
+  while (!gsGame.flow.done) gameSessionStep(gsGame);   // finish any remainder
+  const game = finishGameSession(gsGame);
+  const { cva, plans, states, sides } = gsGame._series;
+  const rng = run.rng, sctx = session.sctx;
+  const g = game.gameNum;
+
+  if (cva) {
+    game.cva = cva;
+    run.cvaTotal = +(run.cvaTotal + cva.delta).toFixed(2);
+  }
+  if (game.cvaHalf) run.cvaTotal = +(run.cvaTotal + game.cvaHalf.delta).toFixed(2);
+
   session.games.push(game);
   if (game.winner === session.homeAbbr) session.score.home++; else session.score.away++;
 
@@ -242,7 +286,7 @@ function playSeriesGame(run, session, userPlan) {
     updateCoachEvidence(session.evidence[abbr].opp, game.box[side.key === 'home' ? 'away' : 'home'], side.opp);
     // Fatigue: EVERYONE recovers with time (a benched player must not
     // hold stale fatigue forever); a light night (<24 min) recovers
-    // extra (the user's "breather" lever); heavy minutes add load.
+    // extra (the user\'s "breather" lever); heavy minutes add load.
     const minsByName = {};
     game.box[side.key].forEach(row => { minsByName[row.name] = row.min; });
     const allNames = new Set([...Object.keys(st.fatigue), ...Object.keys(minsByName)]);
@@ -261,6 +305,11 @@ function playSeriesGame(run, session, userPlan) {
 
   if (session.score.home === 4 || session.score.away === 4) _closeRunSeries(run, session);
   return game;
+}
+
+/** One game, headless: open → auto-run → commit (same core as the UI). */
+function playSeriesGame(run, session, userPlan) {
+  return commitSeriesGame(run, session, openSeriesGame(run, session, userPlan));
 }
 
 /**
@@ -342,7 +391,7 @@ function restoreRun(db, json) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     GAME_RUN_CONFIG, gameBracketR1, gameHomeCourt, gameNextSeriesPair, gameRunChampion,
-    createGameRun, openRunSeries, getUpcomingGameState, playSeriesGame, playRunSeries,
+    createGameRun, openRunSeries, getUpcomingGameState, openSeriesGame, commitSeriesGame, playSeriesGame, playRunSeries,
     runFullBracket, computeEquityTable, serializeRun, restoreRun,
   };
 }

@@ -593,12 +593,19 @@ T('21: Process CVA — assistant-identical plan ≈ 0, bench-the-star < 0');
     ctx.gameCreateRNG((run.seed * 31 + run.rng.draws + 1) >>> 0));
   const g1 = ctx.playSeriesGame(run, session, aiLike);
   assert(g1.cva && Math.abs(g1.cva.delta) < 1.0, 'assistant-identical plan CVA ~0 (' + g1.cva.delta + ')');
-  // Bench the star: NYK's best player gets 0 minutes.
+  // Bench the star: NYK's best player gets 0 minutes. The MECHANIC is
+  // tested deterministically (expected margins, no belief-noise dice);
+  // the in-run CVA keeps a looser band since it carries belief noise.
   const star = DB.NYK.players.reduce((a, b) => (b.baseRating > a.baseRating ? b : a));
-  const pool = DB.NYK.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0 && p.name !== star.name);
+  const pool = DB.NYK.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.name !== star.name);
   const badPlan = { rotation: ctx.gameDefaultRotation(pool, 9), doubleTarget: null };
+  const oppRef = ctx.makeCoachPlan(DB.ATL, DB.NYK, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(99));
+  const mAI = ctx.computeExpectedForPlans(session.sctx, 2, session.score, aiLike, oppRef).exp.margin;
+  const mBad = ctx.computeExpectedForPlans(session.sctx, 2, session.score, badPlan, oppRef).exp.margin;
+  assert(mAI - mBad > 0.75, 'benching the star is clearly worse in expectation (' + (mAI - mBad).toFixed(2) + ')');
   const g2 = ctx.playSeriesGame(run, session, badPlan);
-  assert(g2.cva && g2.cva.delta < -0.75, 'benching the star grades clearly negative (' + g2.cva.delta + ')');
+  assert(g2.cva && g2.cva.delta < -0.3, 'in-run CVA grades it negative despite belief noise (' + g2.cva.delta + ')');
   assert(run.cvaTotal === +(g1.cva.delta + g2.cva.delta).toFixed(2), 'run cvaTotal accumulates');
 }
 
@@ -747,6 +754,116 @@ T('22d: Coach report — derived attribution matches the box score');
     typeof g2.report.home.double.pts === 'number', 'double outcome recorded');
 }
 
+T('22e: Segments — 8+OT structure, quarters are segment pairs');
+{
+  const sctx = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');
+  for (let seed = 1200; seed < 1230; seed++) {
+    const g = ctx.simulateGameOnce(sctx, 1 + (seed % 7), { seed });
+    assert(g.segments.length === 8 + g.ot, '8 regulation segments + OT (' + g.segments.length + ', ot ' + g.ot + ')');
+    assert(g.quarters.length === 4 + g.ot, 'quarters = 4 + OT');
+    for (let q = 0; q < 4; q++) {
+      assert(g.quarters[q].home === g.segments[2 * q].home + g.segments[2 * q + 1].home,
+        'quarter ' + (q + 1) + ' = its segment pair (seed ' + seed + ')');
+    }
+    const segSum = g.segments.reduce((a, x) => a + x.home, 0);
+    assert(segSum === g.homeScore, 'segments sum to final');
+  }
+}
+
+T('22f: Timeouts — budget enforced, damp helps the side being run on');
+{
+  // Direct mechanic test: identical flow state, drift hard against home;
+  // with home's timeout pending the expected next-segment margin delta
+  // must improve for home (drift damped + restoring pull).
+  const mkFlow = () => ({
+    exp: { home: 105, away: 105 }, expH2: null,
+    regime: { drift: -16 },   // strong run against home
+    totalNoise: 0, segIdx: 2, margin: -10,
+    segments: [{ home: 20, away: 30 }, { home: 22, away: 22 }],
+    capitulated: 0, capRolled: false,
+    timeoutPending: { home: false, away: false },
+    budgets: { home: 4, away: 4 }, ot: 0, done: false,
+  });
+  const N = 3000;
+  let withTO = 0, withoutTO = 0;
+  for (let i = 0; i < N; i++) {
+    const a = mkFlow(); const rngA = ctx.gameCreateRNG(5000 + i);
+    ctx.stepGameFlow(a, rngA); withoutTO += a.segments[2].home - a.segments[2].away;
+    const b = mkFlow(); const rngB = ctx.gameCreateRNG(5000 + i);
+    ctx.callGameTimeout(b, 'home');
+    ctx.stepGameFlow(b, rngB); withTO += b.segments[2].home - b.segments[2].away;
+  }
+  const gain = (withTO - withoutTO) / N;
+  assert(gain > 0.8, 'timeout during an opponent run gains expected margin (' + gain.toFixed(2) + ' pts/segment)');
+  // Budget: 4 and out
+  const f = mkFlow();
+  for (let k = 0; k < 4; k++) {
+    assert(ctx.callGameTimeout(f, 'home'), 'timeout ' + (k + 1) + ' accepted');
+    f.timeoutPending.home = false;
+  }
+  assert(!ctx.callGameTimeout(f, 'home'), 'fifth timeout rejected (budget)');
+}
+
+T('22g: Halftime adjustment — H2 expectation shifts, cvaHalf graded, session==headless parity');
+{
+  // Parity: manual stepping with stand-pat halftime === playSeriesGame.
+  const runA = ctx.createGameRun(DB, { seed: 909, userTeam: 'DEN' });
+  const sesA = ctx.openRunSeries(runA, 'DEN', 'MIN', 'R1');
+  const gA = ctx.playSeriesGame(runA, sesA, null);
+  const runB = ctx.createGameRun(DB, { seed: 909, userTeam: 'DEN' });
+  const sesB = ctx.openRunSeries(runB, 'DEN', 'MIN', 'R1');
+  const gsB = ctx.openSeriesGame(runB, sesB, null);
+  let guard = 0;
+  while (!gsB.flow.done && guard++ < 30) {
+    if (ctx.gameSessionAtHalftime(gsB)) ctx.gameSessionHalftime(gsB, null);
+    else ctx.gameSessionStep(gsB);
+  }
+  const gB = ctx.commitSeriesGame(runB, sesB, gsB);
+  assert(gA.homeScore === gB.homeScore && gA.awayScore === gB.awayScore,
+    'manual stepping == headless (' + gA.homeScore + '-' + gA.awayScore + ' vs ' + gB.homeScore + '-' + gB.awayScore + ')');
+  // Halftime revision: user changes coverage at half → H2 expectation
+  // recomputes and cvaHalf grades the revision vs standing pat.
+  const runC = ctx.createGameRun(DB, { seed: 910, userTeam: 'DEN' });
+  const sesC = ctx.openRunSeries(runC, 'DEN', 'MIN', 'R1');
+  const gsDen = ctx.getUpcomingGameState(runC, sesC, 'DEN');
+  const denPlan = ctx.makeCoachPlan(DB.DEN, DB.MIN, sesC.evidence.DEN.own, sesC.evidence.DEN.opp,
+    gsDen, ctx.gameCreateRNG(3));
+  const gsC = ctx.openSeriesGame(runC, sesC, denPlan, true);   // interactive: manual halftime
+  while (!ctx.gameSessionAtHalftime(gsC)) ctx.gameSessionStep(gsC);
+  const minStar = DB.MIN.players.filter(p => p.initialStatus !== 'dnp').reduce((a, b) => (b.ppg > a.ppg ? b : a));
+  ctx.gameSessionHalftime(gsC, { doubleTarget: minStar.name });
+  assert(gsC.h2 && gsC.flow.expH2, 'H2 expectation recomputed after revision');
+  assert(gsC.h2.exp.margin !== gsC.pre.exp.margin, 'revision moves the H2 expectation');
+  const gC = ctx.commitSeriesGame(runC, sesC, gsC);
+  assert(gC.halftimeAdjusted === true && gC.cvaHalf && typeof gC.cvaHalf.delta === 'number',
+    'halftime CVA recorded (' + (gC.cvaHalf && gC.cvaHalf.delta) + ')');
+  assert(Math.abs((runC.cvaTotal) - (gC.cva.delta + gC.cvaHalf.delta)) < 0.02,
+    'run CVA totals pregame + halftime deltas');
+}
+
+T('22h: In-series observability wiring — coaches see scratches + last five');
+{
+  // The composition counter and no-ghost-double rule need oppLastStarters
+  // and oppUnavailable ACTUALLY WIRED in real runs (an earlier version
+  // consumed them in coach-ai but never fed them — caught by inspection,
+  // pinned here forever).
+  const run = ctx.createGameRun(DB, { seed: 77 });
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  const gs1 = ctx.openSeriesGame(run, ses, null);
+  assert(gs1._series.states.DEN.oppUnavailable.includes('Anthony Edwards'),
+    'G1: DEN coach sees Edwards on MIN scratch list');
+  ctx.commitSeriesGame(run, ses, gs1);
+  const gs2 = ctx.openSeriesGame(run, ses, null);
+  const g1rec = ses.games[0];
+  assert(JSON.stringify(gs2._series.states.DEN.oppLastStarters) ===
+         JSON.stringify(g1rec.report.away.starters),
+    'G2: DEN coach observes MIN\'s G1 starting five');
+  assert(JSON.stringify(gs2._series.states.MIN.oppLastStarters) ===
+         JSON.stringify(g1rec.report.home.starters),
+    'G2: MIN coach observes DEN\'s G1 starting five');
+  ctx.commitSeriesGame(run, ses, gs2);
+}
+
 T('23: UI renderers — pure strings, key content, no leaks of hidden state');
 {
   const setup = ctx.renderGameSetup();
@@ -778,6 +895,23 @@ T('23: UI renderers — pure strings, key content, no leaks of hidden state');
   let p2;
   while ((p2 = ctx.gameNextSeriesPair(DB, ctx.GAME_UI.run.series))) {
     ctx.playRunSeries(ctx.GAME_UI.run, p2.a, p2.b, p2.round);
+  }
+  // Live view (Phase 3.1): interactive session renders, halftime panel shows
+  {
+    const runL = ctx.createGameRun(DB, { seed: 4242, userTeam: 'DEN' });
+    const sesL = ctx.openRunSeries(runL, 'DEN', 'MIN', 'R1');
+    const gsD = ctx.getUpcomingGameState(runL, sesL, 'DEN');
+    const planL = ctx.makeCoachPlan(DB.DEN, DB.MIN, sesL.evidence.DEN.own, sesL.evidence.DEN.opp,
+      gsD, ctx.gameCreateRNG(9));
+    const outerRun = ctx.GAME_UI.run, outerSes = ctx.GAME_UI.session;
+    ctx.GAME_UI.run = runL; ctx.GAME_UI.session = sesL;
+    ctx.GAME_UI.liveGs = ctx.openSeriesGame(runL, sesL, planL, true);
+    const live0 = ctx.renderLiveGame();
+    assert(live0.includes('LIVE') && live0.includes('Timeout'), 'live view renders with timeout control');
+    while (!ctx.gameSessionAtHalftime(ctx.GAME_UI.liveGs)) ctx.gameSessionStep(ctx.GAME_UI.liveGs);
+    const liveHalf = ctx.renderLiveGame();
+    assert(liveHalf.includes('Halftime adjustment') && liveHalf.includes('H2 min'), 'halftime panel renders');
+    ctx.GAME_UI.liveGs = null; ctx.GAME_UI.run = outerRun; ctx.GAME_UI.session = outerSes;
   }
   const summary = ctx.renderRunSummary();
   assert(summary.includes('Coaching Value Added') && summary.includes('Champion'), 'summary renders');

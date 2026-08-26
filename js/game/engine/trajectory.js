@@ -64,56 +64,164 @@ function gameLargestRemainder(values, total) {
   return floors;
 }
 
-// ── Quarter walk ────────────────────────────────────────────────
+// ── Segment walk (steppable — Phase 3.1) ────────────────────────
 /**
+ * Open a game-flow session. The game is stepped one SEGMENT at a time
+ * (8 six-minute segments + 5-minute OT segments) so timeouts and the
+ * halftime adjustment have real intervention points. simulateGameFlow
+ * wraps this for every headless path.
+ *
  * @param {Object} exp     {home, away} expected scores (capacity layer)
  * @param {Object} regime  from sampleGameRegime
  * @param {Function} rng
- * @returns {homeScore, awayScore, quarters:[{home,away}], ot, capitulated}
  */
-function simulateGameFlow(exp, regime, rng) {
+function openGameFlow(exp, regime, rng) {
   const cfg = GAME_CONFIG.trajectory;
-  const expMargin = exp.home - exp.away;
-  const totalNoise = gameNormal(rng, 0, cfg.totalNoiseSD);  // pace/shooting environment
-  const quarters = [];
-  let margin = 0, capitulated = 0;
+  return {
+    exp, regime,
+    expH2: null,                       // set by a halftime adjustment
+    totalNoise: gameNormal(rng, 0, cfg.totalNoiseSD),
+    segIdx: 0, margin: 0,
+    segments: [],                      // {home, away, ot?, timeout?}
+    capitulated: 0, capRolled: false,
+    timeoutPending: { home: false, away: false },
+    budgets: { home: GAME_CONFIG.timeout.budget, away: GAME_CONFIG.timeout.budget },
+    ot: 0, done: false,
+  };
+}
 
-  for (let q = 1; q <= 4; q++) {
-    let mDelta = expMargin / 4 + regime.drift / 4
-      - cfg.restoringK * margin
-      + gameNormal(rng, 0, cfg.quarterSD);
-    if (q === 4 && Math.abs(margin) >= cfg.capitulationLead) {
-      if (rng() < cfg.capitulationProb) {
-        mDelta += Math.sign(margin) * Math.max(0, gameNormal(rng, cfg.capitulationDrift, 3));
-        capitulated = Math.sign(margin);
-      } else {
-        mDelta -= margin * cfg.comebackCompress;   // the trailing side makes a run
+/**
+ * Call a timeout for one side: consumes budget, damps the drift running
+ * against the caller for the NEXT segment (see GAME_CONFIG.timeout).
+ * Returns false if no budget / game over / already pending.
+ */
+function callGameTimeout(flow, side) {
+  if (flow.done || flow.budgets[side] <= 0 || flow.timeoutPending[side]) return false;
+  flow.budgets[side]--;
+  flow.timeoutPending[side] = true;
+  return true;
+}
+
+/** Play the next segment (regulation or OT). Returns the segment row. */
+function stepGameFlow(flow, rng) {
+  if (flow.done) return null;
+  const cfg = GAME_CONFIG.trajectory;
+  const S = cfg.segments;
+
+  if (flow.segIdx < S) {
+    // Second half may run on a revised expectation (halftime adjustment).
+    const exp = (flow.segIdx >= S / 2 && flow.expH2) ? flow.expH2 : flow.exp;
+    let drift = (exp.home - exp.away) / S + flow.regime.drift / S;
+    let restoreK = cfg.restoringK;
+
+    // Timeouts: damp drift running against the caller + extra restoring.
+    const toCfg = GAME_CONFIG.timeout;
+    let timeoutBy = null;
+    ['home', 'away'].forEach(side => {
+      if (!flow.timeoutPending[side]) return;
+      timeoutBy = timeoutBy ? 'both' : side;
+      const sign = side === 'home' ? 1 : -1;
+      if (drift * sign < 0) drift *= (1 - toCfg.driftDamp);
+      restoreK += toCfg.restoreBoost;
+      flow.timeoutPending[side] = false;
+    });
+
+    let mDelta = drift - restoreK * flow.margin + gameNormal(rng, 0, cfg.segSD);
+
+    // Capitulation window: entering the final two segments.
+    if (flow.segIdx === S - 2 && !flow.capRolled) {
+      flow.capRolled = true;
+      if (Math.abs(flow.margin) >= cfg.capitulationLead) {
+        flow.capitulated = (rng() < cfg.capitulationProb) ? Math.sign(flow.margin) : 0;
+        if (!flow.capitulated) flow.comeback = true;
       }
     }
-    const qTotal = (exp.home + exp.away) / 4 + totalNoise / 4 + gameNormal(rng, 0, 2.5);
-    quarters.push({
-      home: Math.max(8, Math.round((qTotal + mDelta) / 2)),
-      away: Math.max(8, Math.round((qTotal - mDelta) / 2)),
-    });
-    margin += mDelta;
-  }
+    if (flow.segIdx >= S - 2) {
+      if (flow.capitulated) {
+        mDelta += flow.capitulated * Math.max(0, gameNormal(rng, cfg.capitulationDrift / 2, 2));
+      } else if (flow.comeback) {
+        mDelta -= flow.margin * (cfg.comebackCompress / 2);
+      }
+    }
 
-  let homeScore = quarters.reduce((a, x) => a + x.home, 0);
-  let awayScore = quarters.reduce((a, x) => a + x.away, 0);
-
-  // Overtime until untied (playoff OTs beyond 2 are rare; the sampler's
-  // spread makes repeated exact ties vanishingly unlikely).
-  let ot = 0;
-  while (homeScore === awayScore) {
-    ot++;
+    const segTotal = (exp.home + exp.away) / S + flow.totalNoise / S +
+      gameNormal(rng, 0, cfg.segTotalNoise);
+    const seg = {
+      home: Math.max(4, Math.round((segTotal + mDelta) / 2)),
+      away: Math.max(4, Math.round((segTotal - mDelta) / 2)),
+    };
+    if (timeoutBy) seg.timeout = timeoutBy;
+    flow.segments.push(seg);
+    flow.margin += mDelta;
+    flow.segIdx++;
+  } else {
+    // Overtime segment (5 min) — only reached when tied.
+    flow.ot++;
     const h = Math.max(2, Math.round(gameNormal(rng, cfg.otMean, cfg.otSD)));
     let a = Math.max(2, Math.round(gameNormal(rng, cfg.otMean, cfg.otSD)));
     if (h === a) a += rng() < 0.55 ? -1 : 1;   // slight home OT edge
-    quarters.push({ home: h, away: a });
-    homeScore += h; awayScore += a;
+    flow.segments.push({ home: h, away: a, ot: flow.ot });
+    flow.segIdx++;
   }
 
-  return { homeScore, awayScore, quarters, ot, capitulated };
+  const homeScore = flow.segments.reduce((x, s) => x + s.home, 0);
+  const awayScore = flow.segments.reduce((x, s) => x + s.away, 0);
+  if (flow.segIdx >= S && homeScore !== awayScore) flow.done = true;
+  return flow.segments[flow.segments.length - 1];
+}
+
+/** True when the flow sits at the halftime boundary. */
+function atHalftime(flow) {
+  return flow.segIdx === GAME_CONFIG.trajectory.segments / 2 && !flow.expH2 && !flow.halftimePassed;
+}
+
+/** Totals + display quarters (segment pairs; OT segments stay whole). */
+function closeGameFlow(flow) {
+  const S = GAME_CONFIG.trajectory.segments;
+  const quarters = [];
+  for (let i = 0; i < S; i += 2) {
+    quarters.push({
+      home: flow.segments[i].home + flow.segments[i + 1].home,
+      away: flow.segments[i].away + flow.segments[i + 1].away,
+    });
+  }
+  flow.segments.slice(S).forEach(s => quarters.push({ home: s.home, away: s.away }));
+  const homeScore = flow.segments.reduce((x, s) => x + s.home, 0);
+  const awayScore = flow.segments.reduce((x, s) => x + s.away, 0);
+  return { homeScore, awayScore, quarters, segments: flow.segments,
+    ot: flow.ot, capitulated: flow.capitulated,
+    h1: { home: flow.segments.slice(0, S / 2).reduce((x, s) => x + s.home, 0),
+          away: flow.segments.slice(0, S / 2).reduce((x, s) => x + s.away, 0) } };
+}
+
+/**
+ * Headless game flow: steps every segment, auto-calling CPU timeouts for
+ * both sides (a side that just lost a segment by the run threshold, with
+ * the drift against it, spends one). The interactive path drives the same
+ * stepper with the user's side under manual control.
+ */
+function simulateGameFlow(exp, regime, rng) {
+  const flow = openGameFlow(exp, regime, rng);
+  while (!flow.done) {
+    if (atHalftime(flow)) flow.halftimePassed = true;   // no adjustment, play on
+    gameCpuTimeouts(flow, null);
+    stepGameFlow(flow, rng);
+  }
+  return closeGameFlow(flow);
+}
+
+/** CPU timeout heuristic for every side except `userSide` (null = both). */
+function gameCpuTimeouts(flow, userSide) {
+  if (!flow.segments.length || flow.segIdx >= GAME_CONFIG.trajectory.segments) return;
+  const last = flow.segments[flow.segments.length - 1];
+  const segMargin = last.home - last.away;
+  const th = GAME_CONFIG.timeout.cpuRunThreshold;
+  ['home', 'away'].forEach(side => {
+    if (side === userSide) return;
+    const sign = side === 'home' ? 1 : -1;
+    const driftAgainst = flow.regime.drift * sign < 0;
+    if (segMargin * sign <= -th && driftAgainst) callGameTimeout(flow, side);
+  });
 }
 
 // ── Player box allocation ───────────────────────────────────────
@@ -152,75 +260,95 @@ function gameCappedAllocate(weights, caps, total) {
 }
 
 /**
- * Allocate a team's final totals down to player lines.
- * @param {Object} cap        capacity output for this team
- * @param {number} teamScore  final points to distribute
- * @param {Object} opts       { shifts, garbage, otMinutes, starters }
+ * PER-GAME FORM: each player's multiplicative noise (times his hidden
+ * series shift) is drawn ONCE per game and shared by both halves — the
+ * "how he shoots tonight" factor. Splitting allocation into halves with
+ * independent noise would shrink the calibrated per-game CVs by √2; a
+ * shared form draw preserves them. Draws lazily (halftime lineup changes
+ * can introduce new names) in row order for determinism.
  */
-function allocateBox(cap, teamScore, rng, opts) {
+function drawGameForm(capRows, rng, shifts, form) {
+  const cfg = GAME_CONFIG;
+  capRows.forEach(r => {
+    const p = r.player;
+    if (form[p.name]) return;
+    const tier = cfg.tiers[p.tier];
+    // Usage-damped upside: low-usage players lack the shot diet to erupt.
+    const usgNoise = cfg.usgNoiseFloor + (1 - cfg.usgNoiseFloor) * Math.min(1, (p.usg || 15) / cfg.usgNoisePivot);
+    form[p.name] = {
+      pts: (shifts[p.name] || 1) * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate * usgNoise),
+      reb: gameSkewNoise(rng, cfg.rebCV),
+      ast: gameSkewNoise(rng, cfg.astCV),
+    };
+  });
+  return form;
+}
+
+/**
+ * Allocate ONE HALF of a team's totals down to player lines, from that
+ * half's capacity (halftime revisions swap the capacity) and the shared
+ * per-game form. Garbage-time and OT effects belong to the second half.
+ * Minutes stay fractional here; mergeHalfBoxes rounds the game line.
+ */
+function allocateHalfBox(cap, form, halfScore, rebHalf, astHalf, opts) {
   opts = opts || {};
-  const shifts = opts.shifts || {};
   const cfg = GAME_CONFIG;
   const rows = cap.playerShares;
   const starterCut = (opts.starters && opts.starters.length === 5)
     ? opts.starters
     : rows.slice().sort((a, b) => b.minutes - a.minutes).slice(0, 5).map(r => r.player.name);
   const isStarter = new Set(starterCut);
-
-  // Final minutes first (stat caps derive from them): garbage time trims
-  // starters and hands those minutes to the bench so the box still sums
-  // to ~240 (+25/OT); OT minutes go to the starters.
   const otMin = opts.otMinutes || 0;
-  const finalMin = rows.map(r => r.minutes);
+
+  const halfMin = rows.map(r => r.minutes / 2);
   if (opts.garbage) {
+    // Garbage time lives late: the full-game 7% starter trim = 14% of H2.
     let trimmed = 0;
     const benchIdx = [];
     rows.forEach((r, i) => {
-      if (isStarter.has(r.player.name)) { trimmed += finalMin[i] * 0.07; finalMin[i] *= 0.93; }
-      else if (finalMin[i] > 0) benchIdx.push(i);
+      if (isStarter.has(r.player.name)) { trimmed += halfMin[i] * 0.14; halfMin[i] *= 0.86; }
+      else if (halfMin[i] > 0) benchIdx.push(i);
     });
     benchIdx.forEach(i => {
-      finalMin[i] = Math.min(GAME_CONFIG.maxPlayerMinutes, finalMin[i] + trimmed / (benchIdx.length || 1));
+      halfMin[i] = Math.min(cfg.maxPlayerMinutes / 2, halfMin[i] + trimmed / (benchIdx.length || 1));
     });
   }
-  rows.forEach((r, i) => { if (isStarter.has(r.player.name)) finalMin[i] += otMin; });
+  rows.forEach((r, i) => { if (isStarter.has(r.player.name)) halfMin[i] += otMin; });
 
-  const noisy = rows.map(r => {
-    const tier = cfg.tiers[r.player.tier];
-    // Usage-damped upside: low-usage players lack the shot diet to erupt
-    // (their noise narrows); the calibrated tier CVs still govern overall.
-    const usgNoise = cfg.usgNoiseFloor + (1 - cfg.usgNoiseFloor) * Math.min(1, (r.player.usg || 15) / cfg.usgNoisePivot);
-    let w = r.ptsShare
-      * (shifts[r.player.name] || 1)
-      * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate * usgNoise);
-    // Garbage time: starters sit, bench eats (extends the box-score gap
-    // between blowout and competitive games — Phase 73o's observed pattern).
+  const fm = n => form[n] || { pts: 1, reb: 1, ast: 1 };
+  const ptsW = rows.map(r => {
+    let w = r.ptsShare * fm(r.player.name).pts;
     if (opts.garbage) w *= isStarter.has(r.player.name) ? 0.90 : 1.22;
     return w;
   });
-  // Ceiling = minutes x per-minute cap x usage factor (shot diet).
+  // Ceiling = half minutes x per-minute cap x usage (shot-diet) factor.
   const ptsCaps = rows.map((r, i) => {
     const usgF = Math.max(cfg.usgCapClamp[0], Math.min(cfg.usgCapClamp[1], (r.player.usg || 15) / cfg.usgCapPivot));
-    return Math.floor(finalMin[i] * cfg.ptsPerMinCap * usgF);
+    return Math.floor(halfMin[i] * cfg.ptsPerMinCap * usgF);
   });
-  const pts = gameCappedAllocate(noisy, ptsCaps, teamScore);
-
-  // Team rebounds/assists: plausible totals, allocated by shares.
-  const rebTotal = Math.max(28, Math.round(gameNormal(rng, 43, 4)));
-  const astTotal = Math.max(12, Math.round(teamScore * 0.25 + gameNormal(rng, 0, 2.5)));
-  const rebW = rows.map(r => r.rebShare * gameSkewNoise(rng, cfg.rebCV));
-  const astW = rows.map(r => r.astShare * gameSkewNoise(rng, cfg.astCV));
-  const reb = gameCappedAllocate(rebW, finalMin.map(m => Math.floor(m * cfg.rebPerMinCap)), rebTotal);
-  const ast = gameCappedAllocate(astW, finalMin.map(m => Math.floor(m * cfg.astPerMinCap)), astTotal);
+  const pts = gameCappedAllocate(ptsW, ptsCaps, halfScore);
+  const rebW = rows.map(r => r.rebShare * fm(r.player.name).reb);
+  const astW = rows.map(r => r.astShare * fm(r.player.name).ast);
+  const reb = gameCappedAllocate(rebW, halfMin.map(m => Math.floor(m * cfg.rebPerMinCap)), rebHalf);
+  const ast = gameCappedAllocate(astW, halfMin.map(m => Math.floor(m * cfg.astPerMinCap)), astHalf);
 
   return rows.map((r, i) => ({
-    name: r.player.name,
-    tier: r.player.tier,
-    min: Math.round(finalMin[i]),
-    pts: pts[i], reb: reb[i], ast: ast[i],
+    name: r.player.name, tier: r.player.tier,
+    min: halfMin[i], pts: pts[i], reb: reb[i], ast: ast[i],
   }));
 }
 
+/** Merge two half box arrays into game lines (union by name, minutes rounded). */
+function mergeHalfBoxes(h1, h2) {
+  const by = new Map();
+  h1.concat(h2).forEach(r => {
+    const e = by.get(r.name);
+    if (e) { e.min += r.min; e.pts += r.pts; e.reb += r.reb; e.ast += r.ast; }
+    else by.set(r.name, { ...r });
+  });
+  return [...by.values()].map(r => ({ ...r, min: Math.round(r.min) }));
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { gameCreateRNG, gameNormal, gameSkewNoise, gameLargestRemainder, simulateGameFlow, allocateBox };
+  module.exports = { gameCreateRNG, gameNormal, gameSkewNoise, gameLargestRemainder, openGameFlow, stepGameFlow, callGameTimeout, atHalftime, closeGameFlow, simulateGameFlow, gameCpuTimeouts, drawGameForm, allocateHalfBox, mergeHalfBoxes };
 }

@@ -211,37 +211,147 @@ function computeExpectedForPlans(seriesCtx, gameNum, seriesScore, homePlan, away
   return { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway, compHome, compAway };
 }
 
-function simulateGameOnce(seriesCtx, gameNum, opts) {
+/**
+ * Open a steppable game session (Phase 3.1). The interactive UI and every
+ * headless path drive the SAME session: open → [step | timeout |
+ * halftime] → finish. simulateGameOnce wraps it.
+ *
+ * opts: seed|rng, shifts, seriesEdge, seriesScore, homePlan/awayPlan,
+ *       userSide ('home'|'away'|null — whose timeouts are manual)
+ */
+function openGameSession(seriesCtx, gameNum, opts) {
   opts = opts || {};
   const rng = opts.rng || gameCreateRNG(opts.seed == null ? 1 : opts.seed);
   const shifts = opts.shifts || rollSeriesShifts(seriesCtx, rng);
   const score = opts.seriesScore || { home: 0, away: 0 };
   const homePlan = opts.homePlan || {}, awayPlan = opts.awayPlan || {};
 
-  const { exp, capHome, capAway, covOnHome, covOnAway, synHome, synAway, compHome, compAway } =
-    computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
-  // Team-level series edge (rolled once per series by the caller): the
-  // matchup-fit residual — see GAME_CONFIG.seriesEdgeSigma.
+  const pre = computeExpectedForPlans(seriesCtx, gameNum, score, homePlan, awayPlan);
+  // Team-level series edge (rolled once per series by the caller).
   const edge = opts.seriesEdge || 0;
-  exp.home += edge / 2;
-  exp.away -= edge / 2;
-  exp.margin = exp.home - exp.away;
-  const elimination = score.home === 3 || score.away === 3;
-  const regime = sampleGameRegime(rng, exp.margin, { elimination });
-  const flow = simulateGameFlow(exp, regime, rng);
+  pre.exp.home += edge / 2;
+  pre.exp.away -= edge / 2;
+  pre.exp.margin = pre.exp.home - pre.exp.away;
 
+  const elimination = score.home === 3 || score.away === 3;
+  const regime = sampleGameRegime(rng, pre.exp.margin, { elimination });
+
+  const gs = {
+    seriesCtx, gameNum, rng, shifts,
+    seriesScore: score, seriesEdge: edge,
+    homePlan, awayPlan,
+    userSide: opts.userSide || null,
+    pre, regime,
+    flow: openGameFlow(pre.exp, regime, rng),
+    form: { home: {}, away: {} },
+    h2: null,                       // set by gameSessionHalftime(revision)
+    cvaHalf: null,
+    finished: null,
+  };
+  // Per-game form for tonight's rotations (halftime additions draw later).
+  drawGameForm(pre.capHome.playerShares, rng, shifts, gs.form.home);
+  drawGameForm(pre.capAway.playerShares, rng, shifts, gs.form.away);
+  return gs;
+}
+
+/** True when the session is waiting on the halftime decision. */
+function gameSessionAtHalftime(gs) {
+  return !gs.flow.done && atHalftime(gs.flow);
+}
+
+/**
+ * Resolve halftime. revisedUserPlan (or null to stand pat) applies to
+ * gs.userSide only; H2 capacities + expectation recompute, and the
+ * halftime CVA grades the revision vs standing pat (half-game weight).
+ * CPU coaches stand pat in v1 (GAME_PLAN documents the asymmetry).
+ */
+function gameSessionHalftime(gs, revisedUserPlan) {
+  if (!gameSessionAtHalftime(gs)) return false;
+  gs.flow.halftimePassed = true;
+  if (revisedUserPlan && gs.userSide) {
+    const base = gs.userSide === 'home' ? gs.homePlan : gs.awayPlan;
+    const revised = { ...base, ...revisedUserPlan,
+      unavailable: base.unavailable, fatigue: base.fatigue };
+    const homePlan = gs.userSide === 'home' ? revised : gs.homePlan;
+    const awayPlan = gs.userSide === 'away' ? revised : gs.awayPlan;
+    const h2 = computeExpectedForPlans(gs.seriesCtx, gs.gameNum, gs.seriesScore, homePlan, awayPlan);
+    h2.exp.home += gs.seriesEdge / 2;
+    h2.exp.away -= gs.seriesEdge / 2;
+    h2.exp.margin = h2.exp.home - h2.exp.away;
+    gs.h2 = h2;
+    gs.h2Plans = { homePlan, awayPlan };
+    gs.flow.expH2 = h2.exp;
+    drawGameForm(h2.capHome.playerShares, gs.rng, gs.shifts, gs.form.home);
+    drawGameForm(h2.capAway.playerShares, gs.rng, gs.shifts, gs.form.away);
+    const sign = gs.userSide === 'home' ? 1 : -1;
+    gs.cvaHalf = { delta: +(((h2.exp.margin - gs.pre.exp.margin) * sign) / 2).toFixed(2) };
+  }
+  return true;
+}
+
+/** User timeout (their side only; CPU sides are automatic in stepping). */
+function gameSessionTimeout(gs) {
+  if (!gs.userSide || gs.flow.done || gameSessionAtHalftime(gs)) return false;
+  return callGameTimeout(gs.flow, gs.userSide);
+}
+
+/**
+ * Play the next segment. Auto-resolves a stand-pat halftime when stepped
+ * through it (headless paths); the UI checks gameSessionAtHalftime first.
+ * CPU timeouts fire for every non-user side. Returns the segment row.
+ */
+function gameSessionStep(gs) {
+  if (gs.flow.done) return null;
+  if (gameSessionAtHalftime(gs)) gameSessionHalftime(gs, null);
+  gameCpuTimeouts(gs.flow, gs.userSide);
+  return stepGameFlow(gs.flow, gs.rng);
+}
+
+/** Finish: totals, per-half box allocation, coach's report, game record. */
+function finishGameSession(gs) {
+  if (gs.finished) return gs.finished;
+  const flow = closeGameFlow(gs.flow);
+  const seriesCtx = gs.seriesCtx;
+  const h2Score = {
+    home: flow.homeScore - flow.h1.home,
+    away: flow.awayScore - flow.h1.away,
+  };
   const garbage = Math.abs(flow.homeScore - flow.awayScore) >= 18;
   const otMinutes = flow.ot * 5;
-  const homeStarters = gameStarterNames(homePlan, capHome);
-  const awayStarters = gameStarterNames(awayPlan, capAway);
-  const box = {
-    home: allocateBox(capHome, flow.homeScore, rng, { shifts, garbage, otMinutes, starters: homeStarters }),
-    away: allocateBox(capAway, flow.awayScore, rng, { shifts, garbage, otMinutes, starters: awayStarters }),
+
+  const capH1 = { home: gs.pre.capHome, away: gs.pre.capAway };
+  const capH2 = gs.h2 ? { home: gs.h2.capHome, away: gs.h2.capAway } : capH1;
+  const plansH2 = gs.h2Plans || { homePlan: gs.homePlan, awayPlan: gs.awayPlan };
+  const startersH1 = {
+    home: gameStarterNames(gs.homePlan, capH1.home),
+    away: gameStarterNames(gs.awayPlan, capH1.away),
+  };
+  const startersH2 = {
+    home: gameStarterNames(plansH2.homePlan, capH2.home),
+    away: gameStarterNames(plansH2.awayPlan, capH2.away),
   };
 
-  // Coach's report: what the sim actually did with the plans — coverage
-  // outcomes, doubles, synergy. Derived data only (design law: the report
-  // is true attribution, never flavor text).
+  // Team rebound/assist totals drawn per game, split by half playing time.
+  const rng = gs.rng;
+  const box = {};
+  ['home', 'away'].forEach(side => {
+    const teamScore = side === 'home' ? flow.homeScore : flow.awayScore;
+    const h1Pts = flow.h1[side];
+    const rebTotal = Math.max(28, Math.round(gameNormal(rng, 43, 4)));
+    const astTotal = Math.max(12, Math.round(teamScore * 0.25 + gameNormal(rng, 0, 2.5)));
+    const h1Frac = 120 / (240 + 25 * flow.ot);
+    const rebH1 = Math.round(rebTotal * h1Frac), astH1 = Math.round(astTotal * h1Frac);
+    const b1 = allocateHalfBox(capH1[side], gs.form[side], h1Pts, rebH1, astH1,
+      { starters: startersH1[side] });
+    const b2 = allocateHalfBox(capH2[side], gs.form[side], teamScore - h1Pts,
+      rebTotal - rebH1, astTotal - astH1,
+      { starters: startersH2[side], garbage, otMinutes });
+    box[side] = mergeHalfBoxes(b1, b2);
+  });
+
+  // Coach's report from the H2 (final) scheme state — coverage, doubles,
+  // synergy, composition; halftime revision noted when present.
+  const state = gs.h2 || gs.pre;
   const findPts = (side, name) => {
     const r = box[side].find(x => x.name === name);
     return r ? r.pts : null;
@@ -250,32 +360,42 @@ function simulateGameOnce(seriesCtx, gameNum, opts) {
     const p = team.players.find(x => x.name === name);
     return p ? p.ppg : null;
   };
-  const report = {
-    home: {
-      starters: homeStarters, synergy: synHome, composition: compHome,
-      coverage: { ...covOnAway, targetPts: findPts('away', covOnAway.target), targetSeason: ppgOf(seriesCtx.away, covOnAway.target) },
-      double: homePlan.doubleTarget
-        ? { target: homePlan.doubleTarget, pts: findPts('away', homePlan.doubleTarget), season: ppgOf(seriesCtx.away, homePlan.doubleTarget) }
+  const sideReport = (side) => {
+    const oppSide = side === 'home' ? 'away' : 'home';
+    const oppTeam = side === 'home' ? seriesCtx.away : seriesCtx.home;
+    const cov = side === 'home' ? state.covOnAway : state.covOnHome;
+    const syn = side === 'home' ? state.synHome : state.synAway;
+    const comp = side === 'home' ? state.compHome : state.compAway;
+    const plan = side === 'home' ? plansH2.homePlan : plansH2.awayPlan;
+    return {
+      starters: startersH2[side], synergy: syn, composition: comp,
+      coverage: { ...cov, targetPts: findPts(oppSide, cov.target), targetSeason: ppgOf(oppTeam, cov.target) },
+      double: plan.doubleTarget
+        ? { target: plan.doubleTarget, pts: findPts(oppSide, plan.doubleTarget), season: ppgOf(oppTeam, plan.doubleTarget) }
         : null,
-    },
-    away: {
-      starters: awayStarters, synergy: synAway, composition: compAway,
-      coverage: { ...covOnHome, targetPts: findPts('home', covOnHome.target), targetSeason: ppgOf(seriesCtx.home, covOnHome.target) },
-      double: awayPlan.doubleTarget
-        ? { target: awayPlan.doubleTarget, pts: findPts('home', awayPlan.doubleTarget), season: ppgOf(seriesCtx.home, awayPlan.doubleTarget) }
-        : null,
-    },
+      timeoutsUsed: GAME_CONFIG.timeout.budget - gs.flow.budgets[side],
+    };
   };
 
-  return {
-    gameNum,
+  gs.finished = {
+    gameNum: gs.gameNum,
     homeScore: flow.homeScore, awayScore: flow.awayScore,
     winner: flow.homeScore > flow.awayScore ? seriesCtx.home.abbr : seriesCtx.away.abbr,
-    quarters: flow.quarters, ot: flow.ot,
-    regime: regime.type, capitulated: flow.capitulated,
-    expected: { home: exp.home, away: exp.away },   // the center — internal, never the display
-    box, report,
+    quarters: flow.quarters, segments: flow.segments, ot: flow.ot,
+    regime: gs.regime.type, capitulated: flow.capitulated,
+    expected: { home: gs.pre.exp.home, away: gs.pre.exp.away },   // internal, never displayed
+    halftimeAdjusted: !!gs.h2,
+    box, report: { home: sideReport('home'), away: sideReport('away') },
   };
+  if (gs.cvaHalf) gs.finished.cvaHalf = gs.cvaHalf;
+  return gs.finished;
+}
+
+/** Headless single game: open → auto-step → finish (all-CPU timeouts). */
+function simulateGameOnce(seriesCtx, gameNum, opts) {
+  const gs = openGameSession(seriesCtx, gameNum, opts);
+  while (!gs.flow.done) gameSessionStep(gs);
+  return finishGameSession(gs);
 }
 
 /**
@@ -304,5 +424,5 @@ function simulateSeriesOnce(seriesCtx, opts) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gamePrimaryBallHandler, gameStarterNames, gameSynergyMod, gameLineupComposition, simulateGameOnce, simulateSeriesOnce };
+  module.exports = { rollSeriesShifts, computeExpectedForPlans, resolveCoverage, gamePrimaryBallHandler, gameStarterNames, gameSynergyMod, gameLineupComposition, openGameSession, gameSessionAtHalftime, gameSessionHalftime, gameSessionTimeout, gameSessionStep, finishGameSession, simulateGameOnce, simulateSeriesOnce };
 }

@@ -139,23 +139,42 @@ const GAME_CONFIG = {
                               // — venue helps the team facing elimination)
   },
 
-  // ── Trajectory layer (quarter walk) ───────────────────────────
+  // ── Trajectory layer (segment walk — Phase 3.1) ───────────────
   // Anti-persistent random walk with restoring force (Gabel & Redner 2012;
-  // Clauset, Kogan & Redner 2015). quarterSD sets the walk's contribution
-  // to total margin variance (target total sigma ≈ 17 incl. regime).
+  // Clauset, Kogan & Redner 2015). Regulation = 8 six-minute SEGMENTS
+  // (was 4 quarters; re-split so timeouts/halftime have intervention
+  // points). Variance re-split to preserve the calibrated totals:
+  // 8×segSD² == 4×quarterSD² (6.6/√2 ≈ 4.67); per-segment restoring is
+  // halved; per-segment total noise 2.5/√2 ≈ 1.8. Harness re-gated.
   trajectory: {
-    quarterSD: 6.6,           // per-quarter margin noise (pts)
-    restoringK: 0.10,         // fraction of current margin pulled back per quarter
+    segments: 8,              // regulation segments (6 min each)
+    segSD: 5.2,              // per-segment margin noise (pts)
+    restoringK: 0.035,         // fraction of current margin pulled back per segment
     totalNoiseSD: 5.5,        // symmetric pace/shooting noise on the TOTAL per game
-    // Capitulation: leads beyond the safety threshold trigger bench-mode
-    // drift for the leader (garbage time extends blowouts — the 30+ tail).
-    // Threshold shape from lead-safety scaling: L_safe ~ c*sqrt(t_remaining).
-    capitulationLead: 13,     // Q4-entry lead that triggers capitulation check
+    segTotalNoise: 1.8,       // per-segment total noise
+    // Capitulation: entering the final 12 minutes (segment 7) with a lead
+    // beyond the safety threshold triggers bench-mode drift for the leader
+    // (garbage time extends blowouts — the 30+ tail). Rolled once; the
+    // drift/compression spreads over the final two segments.
+    capitulationLead: 13,
     capitulationProb: 0.65,
-    capitulationDrift: 9,     // mean extra pts to the leader when it fires
-    comebackCompress: 0.22,   // else: trailing-side run compresses the lead
+    capitulationDrift: 9,     // mean extra pts to the leader when it fires (total)
+    comebackCompress: 0.22,   // else: trailing-side run compresses the lead (total)
     otMean: 11,               // expected points per team per OT (2.3/min * 5)
     otSD: 3,
+  },
+  // ── Timeouts (Phase 3.1) ──────────────────────────────────────
+  // Honest mapping of the timeout-momentum study (pre-timeout run
+  // −3.74/min → post −1.20/min): a timeout blunts the momentum component
+  // (our regime drift) running AGAINST the caller for the next segment,
+  // plus a small restoring pull toward even. Called while YOU are rolling,
+  // the damp hits your own drift — the study's asymmetry. Budget is the
+  // usable subset of real timeouts (decision weight over bookkeeping).
+  timeout: {
+    budget: 4,                // callable per side per game
+    driftDamp: 0.5,           // next-segment damp of drift against the caller
+    restoreBoost: 0.12,       // extra restoring-force pull for that segment
+    cpuRunThreshold: 8,       // CPU calls one after losing a segment by this
   },
 
   // ── Venue ─────────────────────────────────────────────────────
@@ -200,9 +219,9 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.328, SAS: 0.186, DET: 0.129, BOS: 0.125, DEN: 0.064, NYK: 0.038,
-  CLE: 0.034, ATL: 0.03, HOU: 0.03, TOR: 0.013, MIN: 0.008, POR: 0.004,
-  LAL: 0.003, ORL: 0.003, PHI: 0.003, PHX: 0.002,
+  OKC: 0.288, SAS: 0.18, DET: 0.131, BOS: 0.127, DEN: 0.069, NYK: 0.043,
+  CLE: 0.041, ATL: 0.037, HOU: 0.035, TOR: 0.02, LAL: 0.01, MIN: 0.007,
+  PHI: 0.004, POR: 0.004, ORL: 0.003, PHX: 0.003,
 };
 
 // ── Role taxonomy + fit costs ───────────────────────────────────
