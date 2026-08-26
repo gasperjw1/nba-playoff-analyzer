@@ -257,6 +257,20 @@ worlds); TEMPO lever built (plan-promised): pace posture scales
 possessions AND noise by sqrt(poss) — the underdog's Skinner play, with
 disciplined clear-underdog CPU coaches slowing on their own.
 
+Phase 3 CLOSED (second pass): SERIES HUB built — the promised scouting
+screen: series-vs-season stat tables for both rosters with honest
+confidence (n=1 flagged as noise; series-cold marked more predictive
+than series-hot per the measured duds-2x rule), the opposing coach's
+moves game by game (shape, stopper outcome, doubles, timeouts, halftime
+adjustments) and a readable bait-ability note from his adjust trait,
+plus the per-game CVA ledger. BAIT-LOOP AUDIT delivered (the solver
+audit's Phase 3 promise): three dynamic scripted policies
+(decoy-then-revert, composition-alternator, stopper-flipper) run the
+same search+confirm pipeline — composition-alternator spiked +6.5pp in
+search but confirmed +0.7pp on fresh seeds (noise), and decoy-then-
+revert genuinely COSTS (2.5% vs 6.8% adaptive): planting false evidence
+burns a real game, exactly the designed price.
+
 Openly REMAINING (plan-promise honesty): 3PT-volume posture (needs the
 shooting-split model) and the offensive-hierarchy lever (initiator
 ordering) — both consolidated into the shooting-splits work item; boons

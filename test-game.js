@@ -982,6 +982,21 @@ T('23: UI renderers — pure strings, key content, no leaks of hidden state');
     assert(liveHalf.includes('Halftime adjustment') && liveHalf.includes('H2 min'), 'halftime panel renders');
     ctx.GAME_UI.liveGs = null; ctx.GAME_UI.run = outerRun; ctx.GAME_UI.session = outerSes;
   }
+  // Series hub renders with intel tables + opponent moves after games
+  {
+    const outerRun2 = ctx.GAME_UI.run, outerSes2 = ctx.GAME_UI.session;
+    const runH = ctx.createGameRun(DB, { seed: 5150, userTeam: 'NYK' });
+    const sesH = ctx.openRunSeries(runH, 'NYK', 'ATL', 'R1');
+    ctx.playSeriesGame(runH, sesH, null);
+    ctx.playSeriesGame(runH, sesH, null);
+    ctx.GAME_UI.run = runH; ctx.GAME_UI.session = sesH;
+    const hub = ctx.renderSeriesHub();
+    assert(hub.includes('Series hub') && hub.includes('intel') && hub.includes("'s moves"),
+      'series hub renders scouting + opponent moves');
+    assert(hub.includes('series avg / season'), 'hub shows honest series-vs-season framing');
+    assert(!hub.includes('undefined'), 'hub has no undefined leaks');
+    ctx.GAME_UI.run = outerRun2; ctx.GAME_UI.session = outerSes2;
+  }
   const summary = ctx.renderRunSummary();
   assert(summary.includes('Coaching Value Added') && summary.includes('Champion'), 'summary renders');
   const bracket = ctx.renderBracketCols(ctx.GAME_UI.run);

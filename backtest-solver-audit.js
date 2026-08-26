@@ -15,10 +15,14 @@
 // audit if it exceeds the adaptive baseline's title rate by more than the
 // paired-noise threshold.
 //
-// Scope note: this audits static PLAN policies. Interactive bait-loop
-// audits (decoy lineups exploiting low-adjust coaches beyond their
-// intended cost) land with Phase 3, when user-shaped multi-game plans
-// exist to script.
+// TWO POLICY FAMILIES:
+//   1. STATIC plans (blind to evidence — the degenerate-meta search)
+//   2. DYNAMIC scripted plans (Phase 3 promise): multi-game manipulation
+//      loops — decoy-then-revert, composition alternator, stopper
+//      flipper — testing that BAIT LOOPS don't dominate adaptive play
+//      beyond their designed cost either.
+// The confirmation stage re-tests the overall winner on fresh seeds
+// (selection-bias correction).
 // ============================================================
 
 const fs = require('fs');
@@ -106,11 +110,58 @@ for (let i = 0; i < 12; i++) {
 }
 
 console.log('\nSearch phase (static policies):');
-let best = null, bestRate = -1;
+let best = null, bestRate = -1, bestFn = null;
 policies.forEach(p => {
-  const rate = titleRate(staticPlanFn(p), p.name, 50000, N);
-  if (rate > bestRate) { bestRate = rate; best = p; }
+  const fn = staticPlanFn(p);
+  const rate = titleRate(fn, p.name, 50000, N);
+  if (rate > bestRate) { bestRate = rate; best = p; bestFn = fn; }
 });
+
+// ── Dynamic scripted policies (bait loops) ─────────────────────
+// Per-series game counters via closure keyed on the series context.
+function dynamicPlanFn(mode) {
+  const counters = new Map();
+  return function (abbr, sctx, gameState) {
+    const g = (counters.get(sctx.id) || 0) + 1;
+    counters.set(sctx.id, g);
+    const team = DB[abbr];
+    const out = new Set(gameState.unavailable || []);
+    const pool = team.players.filter(p =>
+      p.baseRating > 0 && p.initialStatus !== 'dnp' && !out.has(p.name));
+    const ranked = pool.slice().sort((a, b) => b.baseRating - a.baseRating);
+    let chosen;
+    if (mode === 'decoy' && g === 1) {
+      // G1 decoy: bench-heavy look to plant false evidence, revert after.
+      chosen = ranked.slice(2, 11);
+    } else if (mode === 'comp-alt') {
+      // Alternate big-heavy / small-heavy fives to whipsaw the counter.
+      const CR = ctx.GAME_DESIGNATION_CREDIT;
+      const bigs = ranked.filter(p => (CR[p.designation] || [0, 1, 0])[2] >= 0.33);
+      const smalls = ranked.filter(p => (CR[p.designation] || [0, 1, 0])[2] < 0.33);
+      chosen = (g % 2 ? [...bigs.slice(0, 4), ...smalls.slice(0, 5)]
+                      : [...smalls.slice(0, 5), ...bigs.slice(0, 4)]).slice(0, 9);
+    } else {
+      chosen = ranked.slice(0, 9);
+    }
+    const weights = chosen.map((p, i) => Math.pow(Math.max(1, p.baseRating), 1.8));
+    const wSum = weights.reduce((a, b) => a + b, 0);
+    const rotation = chosen.map((p, i) => ({ player: p, minutes: 240 * weights[i] / wSum }));
+    // Stopper flipper: alternate the top two perimeter defenders.
+    let stopper = null;
+    if (mode === 'stopper-flip') {
+      const per = ranked.filter(p => ctx.GAME_DEF_ROLE_FAMILY[p.defRole] === 'perimeter')
+        .sort((a, b) => b.dLebron - a.dLebron);
+      if (per.length >= 2) stopper = per[g % 2].name;
+    }
+    return { rotation, unavailable: [...out], fatigue: gameState.fatigue || {}, doubleTarget: null, stopper };
+  };
+}
+console.log('\nDynamic scripted policies (bait loops):');
+[['decoy-then-revert', 'decoy'], ['composition-alternator', 'comp-alt'], ['stopper-flipper', 'stopper-flip']]
+  .forEach(([name, mode]) => {
+    const rate = titleRate(dynamicPlanFn(mode), name, 50000, N);
+    if (rate > bestRate) { bestRate = rate; best = { name, dyn: mode }; bestFn = null; }
+  });
 console.log(`\nSearch winner: ${best.name} (+${(100 * (bestRate - adaptive)).toFixed(1)}pp on search seeds)`);
 
 // ── Confirmation phase ─────────────────────────────────────────
@@ -119,7 +170,9 @@ console.log(`\nSearch winner: ${best.name} (+${(100 * (bestRate - adaptive)).toF
 // re-testing the search winner against adaptive on FRESH seeds at 2x N.
 console.log('\nConfirmation (fresh seeds, 2x sample):');
 const adaptive2 = titleRate(null, 'adaptive (confirm)', 90000, 2 * N);
-const best2 = titleRate(staticPlanFn(best), best.name + ' (confirm)', 90000, 2 * N);
+// Dynamic winners re-confirm with FRESH per-series counters.
+const confirmFn = best.dyn ? dynamicPlanFn(best.dyn) : (bestFn || staticPlanFn(best));
+const best2 = titleRate(confirmFn, best.name + ' (confirm)', 90000, 2 * N);
 const confirmedExcess = best2 - adaptive2;
 
 console.log(`\nConfirmed excess: ${confirmedExcess >= 0 ? '+' : ''}${(100 * confirmedExcess).toFixed(1)}pp (threshold +${(100 * THRESHOLD).toFixed(1)}pp)`);

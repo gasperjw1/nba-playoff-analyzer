@@ -23,7 +23,7 @@
 
 const GAME_UI = {
   run: null, session: null,
-  view: 'setup',            // 'setup' | 'plan' | 'live' | 'result' | 'bracket' | 'summary'
+  view: 'setup',            // 'setup' | 'plan' | 'live' | 'result' | 'hub' | 'bracket' | 'summary'
   liveGs: null,             // open game session while view === 'live'
   lastGame: null,
   planMinutes: {},          // name -> minutes (persists across games/series)
@@ -96,6 +96,7 @@ function gameRender(el) {
   else if (v === 'plan') el.innerHTML = renderGameplan();
   else if (v === 'live') el.innerHTML = renderLiveGame();
   else if (v === 'result') el.innerHTML = renderGameResult();
+  else if (v === 'hub') el.innerHTML = renderSeriesHub();
   else if (v === 'bracket') el.innerHTML = renderGameBracket(true);
   else if (v === 'summary') el.innerHTML = renderRunSummary();
 }
@@ -340,6 +341,7 @@ function renderGameplan() {
         <h3>Starting five</h3>
         <p id="prSyn">${gameSynergyLine()}</p>
         <button class="btn btn-primary pr-play" onclick="gamePlayGame()">Play Game ${g}</button>
+        <button class="btn btn-secondary" onclick="gameShowHub()" ${session.games.length ? '' : 'disabled'}>Series hub</button>
         <button class="btn btn-secondary" onclick="gameShowBracket()">Bracket</button>
         <p id="prGate" class="pr-dim"></p>
       </div>
@@ -817,7 +819,106 @@ function renderGameBracket(withBack) {
   </div>`;
 }
 function gameShowBracket() { GAME_UI.view = 'bracket'; gameRender(); }
+function gameShowHub() { GAME_UI.view = 'hub'; gameRender(); }
 function gameBackFromBracket() { GAME_UI.view = GAME_UI.session ? 'plan' : 'summary'; gameRender(); }
+
+// ── Screen: series hub — the scouting report across the series ──
+// Decision-level attribution with HONEST confidence: series averages vs
+// season baselines, colored only from n>=2 (our own measured rule: one
+// game is noise; duds carry ~2x the information of spikes), plus every
+// move the opposing coach has made, game by game, with its outcome.
+function renderSeriesHub() {
+  const run = GAME_UI.run, session = GAME_UI.session;
+  const sctx = session.sctx;
+  const userIsHome = sctx.home.abbr === run.userTeam;
+  const mySide = userIsHome ? 'home' : 'away';
+  const oppSide = userIsHome ? 'away' : 'home';
+  const team = gameUserTeamObj(), opp = gameOppTeamObj();
+  const n = session.games.length;
+  const myWins = userIsHome ? session.score.home : session.score.away;
+  const oppWins = userIsHome ? session.score.away : session.score.home;
+
+  const statTable = (t, side, title) => {
+    const agg = {};
+    session.games.forEach(gm => gm.box[side].forEach(r => {
+      const a = agg[r.name] = agg[r.name] || { g: 0, min: 0, pts: 0, reb: 0, ast: 0 };
+      a.g++; a.min += r.min; a.pts += r.pts; a.reb += r.reb; a.ast += r.ast;
+    }));
+    const rows = Object.entries(agg)
+      .map(([name, a]) => ({ name, ...a, p: t.players.find(x => x.name === name) }))
+      .filter(x => x.p && x.min / x.g >= 8)
+      .sort((a, b) => b.pts / b.g - a.pts / a.g)
+      .map(x => {
+        const avg = x.pts / x.g;
+        const ratio = x.p.ppg >= 5 ? avg / x.p.ppg : 1;
+        const cls = x.g < 2 ? 'pr-dim'
+          : ratio <= 0.85 ? 'pr-l' : ratio >= 1.15 ? 'pr-w' : '';
+        const note = x.g < 2 ? ' <span class="pr-dim">(n=1 — noise)</span>'
+          : ratio <= 0.85 ? ' <span class="pr-l" title="Cold across the series — duds are ~2x more predictive than hot streaks. Likely real.">▼</span>'
+          : ratio >= 1.15 ? ' <span class="pr-w" title="Hot across the series — but spikes are mostly noise; expect partial regression.">▲</span>' : '';
+        return `<tr><td>${gameEsc(x.name)}${note}</td>
+          <td>${(x.min / x.g).toFixed(0)}</td>
+          <td class="${cls}"><strong>${avg.toFixed(1)}</strong> <span class="pr-dim">/ ${x.p.ppg.toFixed(1)}</span></td>
+          <td>${(x.reb / x.g).toFixed(1)}</td><td>${(x.ast / x.g).toFixed(1)}</td></tr>`;
+      }).join('');
+    return `<h3>${title} <span class="pr-dim">(series avg / season)</span></h3>
+      <table class="pr-table"><tr><th>Player</th><th>Min</th><th>Pts</th><th>Reb</th><th>Ast</th></tr>${rows}</table>`;
+  };
+
+  const moveRows = session.games.map(gm => {
+    const rep = gm.report && gm.report[oppSide];
+    if (!rep) return '';
+    const won = gm.winner === opp.abbr;
+    const cov = rep.coverage || {};
+    const covOut = (cov.targetPts != null && cov.targetSeason)
+      ? `${gameEsc(cov.defender || '?')} on ${gameEsc(cov.target || '?')}: ` +
+        (cov.targetPts / cov.targetSeason <= 0.8
+          ? `<span class="pr-w">held ${cov.targetPts}</span>`
+          : cov.targetPts / cov.targetSeason >= 1.2
+            ? `<span class="pr-l">beaten for ${cov.targetPts}</span>` : `${cov.targetPts} pts`)
+      : '—';
+    const dbl = rep.double
+      ? `doubled ${gameEsc(rep.double.target)}${rep.double.pts != null ? ' (' + rep.double.pts + ' pts)' : ''}` : 'no double';
+    return `<tr>
+      <td>G${gm.gameNum} <span class="${won ? 'pr-l' : 'pr-w'}">${won ? 'W' : 'L'}</span></td>
+      <td>${gameEsc((rep.composition && rep.composition.label) || '—')}</td>
+      <td>${covOut}</td>
+      <td>${dbl}${gm.halftimeAdjusted ? ' <span class="pr-dim">· HT adj</span>' : ''}</td>
+      <td>${rep.timeoutsUsed || 0}⏱</td>
+    </tr>`;
+  }).join('');
+
+  const cvaChips = session.games.map(gm => {
+    if (!gm.cva) return '';
+    const d = gm.cva.delta + ((gm.cvaHalf && gm.cvaHalf.delta) || 0);
+    return `<span class="pr-log ${d >= 0 ? 'pr-w' : 'pr-l'}">G${gm.gameNum} ${d >= 0 ? '+' : ''}${d.toFixed(1)}</span>`;
+  }).join(' ');
+
+  return `
+  <div class="pr-wrap">
+    <div class="pr-header">
+      <h2>Series hub · you ${myWins} — ${oppWins} ${gameEsc(opp.abbr)} <span class="pr-dim">(${n} game${n === 1 ? '' : 's'})</span></h2>
+      <p>Coaching (pregame + halftime, exp pts vs assistant): ${cvaChips || '<span class="pr-dim">—</span>'}</p>
+    </div>
+    <div class="pr-panels">
+      <div class="pr-panel">${statTable(team, mySide, 'Your rotation')}</div>
+      <div class="pr-panel">${statTable(opp, oppSide, gameEsc(opp.abbr) + ' intel')}
+        <p class="pr-dim">Read the shifts: a series-cold opponent is probably really compromised
+          (bench him from your worries); a series-hot one is partly noise, partly real.</p>
+      </div>
+      <div class="pr-panel">
+        <h3>${gameEsc(opp.coach.coach)}'s moves <span class="pr-dim">(what they tried, how it went)</span></h3>
+        <table class="pr-table"><tr><th>Game</th><th>Shape</th><th>Their stopper</th><th>Coverage</th><th>⏱</th></tr>
+          ${moveRows}</table>
+        <p class="pr-dim">${gameEsc(opp.coach.coach)}: adjust ${opp.coach.adjust}/10 —
+          ${opp.coach.adjust >= 7 ? 'reads sustained evidence, hard to bait, revises at halftime when trailing.'
+            : opp.coach.adjust >= 5 ? 'moderately disciplined; reacts to two-game patterns.'
+            : 'reacts to single games — baitable with decoy looks.'}</p>
+      </div>
+    </div>
+    <div class="pr-actions"><button class="btn btn-primary" onclick="gameBackFromBracket()">← Back to gameplan</button></div>
+  </div>`;
+}
 
 // ── Screen: run summary ─────────────────────────────────────────
 function renderRunSummary() {
