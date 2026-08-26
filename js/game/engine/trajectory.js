@@ -275,10 +275,15 @@ function drawGameForm(capRows, rng, shifts, form) {
     const tier = cfg.tiers[p.tier];
     // Usage-damped upside: low-usage players lack the shot diet to erupt.
     const usgNoise = cfg.usgNoiseFloor + (1 - cfg.usgNoiseFloor) * Math.min(1, (p.usg || 15) / cfg.usgNoisePivot);
+    // Star ceiling games: the data's starCeiling widens the upside tail.
+    const ceiling = 1 + (p.starCeiling || 0) * cfg.ceilingCvPerPoint / Math.max(0.05, tier.noiseCV);
     form[p.name] = {
-      pts: (shifts[p.name] || 1) * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate * usgNoise),
+      pts: (shifts[p.name] || 1) * gameSkewNoise(rng, tier.noiseCV * cfg.cvInflate * usgNoise * ceiling),
       reb: gameSkewNoise(rng, cfg.rebCV),
       ast: gameSkewNoise(rng, cfg.astCV),
+      to: gameSkewNoise(rng, cfg.toCV),
+      stl: gameSkewNoise(rng, cfg.stlCV),
+      blk: gameSkewNoise(rng, cfg.blkCV),
     };
   });
   return form;
@@ -332,9 +337,29 @@ function allocateHalfBox(cap, form, halfScore, rebHalf, astHalf, opts) {
   const reb = gameCappedAllocate(rebW, halfMin.map(m => Math.floor(m * cfg.rebPerMinCap)), rebHalf);
   const ast = gameCappedAllocate(astW, halfMin.map(m => Math.floor(m * cfg.astPerMinCap)), astHalf);
 
+  // Defensive/handle lines: profile-informed shares (see game-constants).
+  const perim = p => (GAME_DEF_ROLE_FAMILY[p.defRole] || '') === 'perimeter';
+  const interior = p => (GAME_DEF_ROLE_FAMILY[p.defRole] || '') === 'interior';
+  const toW = rows.map(r => {
+    const p = r.player;
+    return (p.usg * 0.7 + (p.apg || 0) * 2) * (r.minutes / 240) * fm(p.name).to;
+  });
+  const stlW = rows.map(r => {
+    const p = r.player;
+    return Math.max(0.1, (perim(p) ? 1 : 0.35) * (1 + Math.max(0, p.dLebron))) * (r.minutes / 240) * fm(p.name).stl;
+  });
+  const blkW = rows.map(r => {
+    const p = r.player;
+    return Math.max(0.05, (interior(p) ? 1.4 : 0.15) * (1 + Math.max(0, p.dLebron))) * (r.minutes / 240) * fm(p.name).blk;
+  });
+  const to = gameCappedAllocate(toW, halfMin.map(m => Math.floor(m * cfg.toPerMinCap) + 1), opts.toHalf || 0);
+  const stl = gameCappedAllocate(stlW, halfMin.map(m => Math.floor(m * cfg.stlPerMinCap) + 1), opts.stlHalf || 0);
+  const blk = gameCappedAllocate(blkW, halfMin.map(m => Math.floor(m * cfg.blkPerMinCap) + 1), opts.blkHalf || 0);
+
   return rows.map((r, i) => ({
     name: r.player.name, tier: r.player.tier,
     min: halfMin[i], pts: pts[i], reb: reb[i], ast: ast[i],
+    to: to[i], stl: stl[i], blk: blk[i],
   }));
 }
 
@@ -343,7 +368,8 @@ function mergeHalfBoxes(h1, h2) {
   const by = new Map();
   h1.concat(h2).forEach(r => {
     const e = by.get(r.name);
-    if (e) { e.min += r.min; e.pts += r.pts; e.reb += r.reb; e.ast += r.ast; }
+    if (e) { e.min += r.min; e.pts += r.pts; e.reb += r.reb; e.ast += r.ast;
+      e.to += r.to; e.stl += r.stl; e.blk += r.blk; }
     else by.set(r.name, { ...r });
   });
   return [...by.values()].map(r => ({ ...r, min: Math.round(r.min) }));

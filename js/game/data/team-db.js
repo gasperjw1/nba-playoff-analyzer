@@ -7,9 +7,11 @@
 // baseline) appearance into what the game sim needs and layers on derived
 // fields (tier, default rotation, calibration offsets).
 //
-// Why R1 appearances: later-round rosters carry in-playoffs rating drift
-// (the analyzer hand-tuned ratings on results); R1 is the closest thing
-// to a season-baseline snapshot.
+// Sourcing rule: team identity/advStats from the R1 appearance; player
+// SKILL PROFILES from each player's LATEST appearance (the analyzer
+// corrected records as the playoffs revealed the truth — McCain's R1
+// placeholder vs his fixed CF record); initial injury STATUS parsed from
+// the R1 record (playoff-start availability). See _latestProfiles.
 //
 // CALIBRATION OFFSETS (the fidelity guarantee): team offense is modeled as
 //   ORtg = LEAGUE.ortg + offsetO + Σ oLEBRON_i × floorShare_i
@@ -145,9 +147,36 @@ function gameParseInitialInjury(src) {
   return { status: 'returning', gamesOut };
 }
 
-/** Build one game-team from its series-data appearance. */
-function _buildGameTeam(t, series) {
-  const players = (t.players || []).map(src => ({
+/**
+ * Latest-appearance skill profiles: the analyzer hand-CORRECTED player
+ * records as the playoffs revealed the truth (Jared McCain entered R1
+ * data as a 55-rated 6.6-ppg placeholder and was fixed to 68 / 14.2 ppg
+ * in the CF record — the roster-fidelity correction). R1 records were
+ * themselves live-tuned during R1, so "latest" is not less pure — it is
+ * the most-informed version of the same data. Injury/status parsing
+ * stays on the R1 record (playoff-START availability).
+ */
+function _latestProfiles(seriesData, abbr) {
+  const ROUND_ORD = { R1: 0, R2: 1, CF: 2, Finals: 3 };
+  const latest = {};
+  (seriesData || []).forEach(s => {
+    const ord = ROUND_ORD[s.round || 'R1'];
+    [s.homeTeam, s.awayTeam].forEach(t => {
+      if (!t || t.abbr !== abbr) return;
+      (t.players || []).forEach(p => {
+        if (!p || !p.name) return;
+        if (!latest[p.name] || ord >= latest[p.name]._ord) latest[p.name] = { ...p, _ord: ord };
+      });
+    });
+  });
+  return latest;
+}
+
+/** Build one game-team from its R1 appearance + latest skill profiles. */
+function _buildGameTeam(t, series, latestByName) {
+  const players = (t.players || []).map(r1src => {
+    const src = (latestByName && latestByName[r1src.name]) || r1src;
+    return ({
     name: src.name,
     pos: src.pos,
     // Healthy baseline talent. rating can be 0 (injured/out of rotation at
@@ -169,14 +198,16 @@ function _buildGameTeam(t, series) {
     playoffAscension: src.playoffAscension || 0,
     designation: null,        // filled below (needs the full object)
     naturalOffRoles: null,
-    // Real status at the 2026 playoffs' start — see gameParseInitialInjury.
+    // Real status at the 2026 playoffs' start — parsed from the R1
+    // record (see gameParseInitialInjury), NOT the latest one.
     ...(function () {
-      const st = gameParseInitialInjury(src);
+      const st = gameParseInitialInjury(r1src);
       return st
         ? { initialStatus: st.status, initialGamesOut: st.gamesOut || 0 }
         : { initialStatus: 'available', initialGamesOut: 0 };
     })(),
-  }));
+  });
+  });
 
   players.forEach(p => {
     p.designation = gameDesignation(p);
@@ -249,7 +280,9 @@ function buildGameTeamDb(seriesData) {
   (seriesData || []).forEach(s => {
     if (!s || (s.round || 'R1') !== 'R1') return;
     [s.homeTeam, s.awayTeam].forEach(t => {
-      if (t && t.abbr && !db[t.abbr]) db[t.abbr] = _buildGameTeam(t, s);
+      if (t && t.abbr && !db[t.abbr]) {
+        db[t.abbr] = _buildGameTeam(t, s, _latestProfiles(seriesData, t.abbr));
+      }
     });
   });
   return db;

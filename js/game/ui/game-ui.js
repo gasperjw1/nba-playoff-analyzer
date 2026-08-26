@@ -763,9 +763,9 @@ function renderMarginTrace(gm, userIsHome, live) {
 function renderBoxTable(gm, side, title) {
   const starters = new Set((gm.report && gm.report[side] && gm.report[side].starters) || []);
   const rows = gm.box[side].slice().sort((a, b) => b.pts - a.pts).map(r =>
-    `<tr><td>${starters.has(r.name) ? '⭐ ' : ''}${gameEsc(r.name)}</td><td>${r.min}</td><td><strong>${r.pts}</strong></td><td>${r.reb}</td><td>${r.ast}</td></tr>`).join('');
+    `<tr><td>${starters.has(r.name) ? '⭐ ' : ''}${gameEsc(r.name)}</td><td>${r.min}</td><td><strong>${r.pts}</strong></td><td>${r.reb}</td><td>${r.ast}</td><td>${r.stl != null ? r.stl : '—'}</td><td>${r.blk != null ? r.blk : '—'}</td><td>${r.to != null ? r.to : '—'}</td></tr>`).join('');
   return `<h3>${title}</h3>
-    <table class="pr-table pr-box"><tr><th>Player</th><th>Min</th><th>Pts</th><th>Reb</th><th>Ast</th></tr>${rows}</table>`;
+    <table class="pr-table pr-box"><tr><th>Player</th><th>Min</th><th>Pts</th><th>Reb</th><th>Ast</th><th>Stl</th><th>Blk</th><th>TO</th></tr>${rows}</table>`;
 }
 
 function gameNextGame() {

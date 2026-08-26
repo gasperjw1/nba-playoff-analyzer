@@ -339,13 +339,20 @@ function finishGameSession(gs) {
     const h1Pts = flow.h1[side];
     const rebTotal = Math.max(28, Math.round(gameNormal(rng, 43, 4)));
     const astTotal = Math.max(12, Math.round(teamScore * 0.25 + gameNormal(rng, 0, 2.5)));
+    // Defensive/handle team totals ~ NBA playoff norms.
+    const toTotal = Math.max(6, Math.round(gameNormal(rng, 13.5, 2.8)));
+    const stlTotal = Math.max(2, Math.round(gameNormal(rng, 7.5, 2.2)));
+    const blkTotal = Math.max(1, Math.round(gameNormal(rng, 4.8, 1.8)));
     const h1Frac = 120 / (240 + 25 * flow.ot);
     const rebH1 = Math.round(rebTotal * h1Frac), astH1 = Math.round(astTotal * h1Frac);
+    const toH1 = Math.round(toTotal * h1Frac), stlH1 = Math.round(stlTotal * h1Frac),
+      blkH1 = Math.round(blkTotal * h1Frac);
     const b1 = allocateHalfBox(capH1[side], gs.form[side], h1Pts, rebH1, astH1,
-      { starters: startersH1[side] });
+      { starters: startersH1[side], toHalf: toH1, stlHalf: stlH1, blkHalf: blkH1 });
     const b2 = allocateHalfBox(capH2[side], gs.form[side], teamScore - h1Pts,
       rebTotal - rebH1, astTotal - astH1,
-      { starters: startersH2[side], garbage, otMinutes });
+      { starters: startersH2[side], garbage, otMinutes,
+        toHalf: toTotal - toH1, stlHalf: stlTotal - stlH1, blkHalf: blkTotal - blkH1 });
     box[side] = mergeHalfBoxes(b1, b2);
   });
 

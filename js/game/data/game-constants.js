@@ -124,6 +124,16 @@ const GAME_CONFIG = {
   usgCapClamp: [0.7, 1.2],
   usgNoiseFloor: 0.75,        // noise multiplier at zero usage...
   usgNoisePivot: 20,          // ...rising to 1.0 at this usage
+  // Star ceiling games: the data's starCeiling field (elite stars produce
+  // ~1 ceiling game per series) widens a star's upside tail. Also nudges
+  // sim star CV toward its measured 0.27 target (was running ~0.23).
+  ceilingCvPerPoint: 0.035,   // extra pts noise CV per starCeiling point
+  // Defensive/handle lines (to/stl/blk) — team totals ~ NBA norms
+  // (TO ~13.5, STL ~7.5, BLK ~4.8 per playoff game), allocated by profile:
+  // turnovers follow usage x creation load, steals follow perimeter
+  // dLEBRON, blocks follow interior dLEBRON.
+  toCV: 0.40, stlCV: 0.55, blkCV: 0.60,
+  toPerMinCap: 0.22, stlPerMinCap: 0.12, blkPerMinCap: 0.15,
 
   // ── Regime layer (the 130-90 / 90-130 engine) ─────────────────
   // Game character sampled BEFORE trajectory. Calibrated against:
@@ -219,8 +229,8 @@ function gameOverloadMult(minutes) {
 // (exact command in GAME_PLAN.md). Displayed odds are honest: this is the
 // difficulty select, and run scoring is measured against it.
 const GAME_EQUITY_2026 = {
-  OKC: 0.288, SAS: 0.18, DET: 0.131, BOS: 0.127, DEN: 0.069, NYK: 0.043,
-  CLE: 0.041, ATL: 0.037, HOU: 0.035, TOR: 0.02, LAL: 0.01, MIN: 0.007,
+  OKC: 0.276, SAS: 0.194, DET: 0.14, BOS: 0.134, DEN: 0.07, NYK: 0.04,
+  CLE: 0.038, ATL: 0.031, HOU: 0.028, TOR: 0.017, MIN: 0.011, LAL: 0.007,
   PHI: 0.004, POR: 0.004, ORL: 0.003, PHX: 0.003,
 };
 
