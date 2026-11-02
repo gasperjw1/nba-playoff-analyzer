@@ -21,6 +21,7 @@ function loadCtx(withSnapshot, withUi) {
   const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
   load('js/season/data/season-constants.js');
   load('js/season/data/player-priors.js');
+  load('js/season/data/chemistry-fit.js');
   load('js/season/data/season-ledger.js');
   if (withSnapshot && fs.existsSync(path.join(__dirname, 'js/season/data/slate-snapshot.js'))) load('js/season/data/slate-snapshot.js');
   load('js/season/adapters.js');
@@ -181,7 +182,9 @@ console.log('TEST 5: game projection');
   near(p.margin, c.SEASON_HCA, 1e-6, 'equal teams → margin = HCA');
   near(p.pHome, c.marginToWinProb(c.SEASON_HCA), 1e-4, 'pHome from margin');
   assert(p.homeScore - p.awayScore === Math.round(p.margin) || Math.abs((p.homeScore - p.awayScore) - p.margin) <= 1, 'score reproduces margin');
-  near(p.total, 2 * 114.5 * 99 / 100, 0.5, 'league-average teams → league-average total');
+  // Each team's roster-fit adj moves its own scoring by offShare and the
+  // opponent's by (1 − offShare): total shifts by (2·offShare − 1)·Σ adj.
+  near(p.total, 2 * 114.5 * 99 / 100 + (2 * c.SEASON_IMPACT.offShare - 1) * (p.fit.home.adj + p.fit.away.adj), 0.1, 'league-average teams → league-average total (+ fit term)');
   assert(p.lineage.length >= 2 && p.lineage[0].step === 'strength', 'lineage recorded');
 
   slate.teams.AAA.prior.ortg = 119.5;  // +5 net home
@@ -372,6 +375,80 @@ console.log('TEST 13: season.html cache-busting matches the engine version');
   const versions = [...html.matchAll(/src="js\/season\/[^"?]+\?v=([^"]+)"/g)].map(m => m[1]);
   assert(versions.length >= 8, `code scripts carry ?v= (found ${versions.length})`);
   assert(versions.every(v => v === c.SEASON_ENGINE_VERSION), `every ?v= equals SEASON_ENGINE_VERSION (${c.SEASON_ENGINE_VERSION}); found ${[...new Set(versions)].join(', ')}`);
+}
+
+console.log('TEST 14: roster fit (continuity, rebounding overlap)');
+{
+  const c = loadCtx(false);
+  const F = c.SEASON_CHEMISTRY_FIT;
+  // The generated file: signs as fitted, magnitudes plausible, provenance kept.
+  assert(F.continuity.perUnit > 0 && F.continuity.perUnit < 6, `continuity coefficient positive and modest (${F.continuity.perUnit})`);
+  assert(F.rebounding.perPoint < 0 && F.rebounding.perPoint > -0.4, `rebounding overlap coefficient negative and modest (${F.rebounding.perPoint})`);
+  assert(F.continuity.mean > 0.5 && F.continuity.mean < 0.85, 'league continuity mean plausible');
+  assert(F.rebounding.mean > 45 && F.rebounding.mean < 55, 'on-floor TRB% sum mean ≈ 50');
+  assert(F.meta.teamSeasons >= 300 && F.meta.cvRmse.withFit < F.meta.cvRmse.playerValueOnly, 'fit improved cross-validated error on 300+ team-seasons');
+
+  // Rebound-rate prior: none → league rookie rate; long history → close to raw; seasons weighted 1.0 / 0.5.
+  const P = c.SEASON_PLAYER_PRIORS.players;
+  P.rb0 = { n: 'x', tm: {} };
+  near(c._priorReboundRate('rb0'), F.rebounding.rookieTrb, 1e-9, 'no history → rookie rebound rate');
+  P.rb1 = { n: 'x', a26: [0, 0, 0, 2400, 0, 0, 20, 0, 0, 0], a25: [0, 0, 0, 2400, 0, 0, 14, 0, 0, 0], tm: {} };
+  const raw = (20 * 2400 + 14 * 1200) / 3600, k = 3600 / (3600 + F.rebounding.regressMinutes);
+  near(c._priorReboundRate('rb1'), raw * k + F.rebounding.rookieTrb * (1 - k), 1e-9, 'season-weighted, regressed rebound rate');
+
+  const slate = makeSlate(c);
+  const A = slate.teams.AAA;
+  const hs = c.calcSeasonTeamStrength(A, slate.league);
+  const base = c.calcRosterFit(A, hs);
+  near(base.continuity, 1, 1e-9, 'everyone played for the team last season → continuity 1');
+  near(base.rebounding, 5 * F.rebounding.rookieTrb, 0.05, 'no rebound history → five rookie rates on the floor');
+  const pace = A.prior.pace;
+  near(base.parts.continuity, F.continuity.perUnit * (1 - F.continuity.mean) * pace / 100, 0.006, 'continuity part = coef × (share − mean) × pace');
+  near(base.parts.rebounding, F.rebounding.perPoint * (base.rebounding - F.rebounding.mean) * pace / 100, 0.006, 'rebounding part = coef × (sum − mean) × pace');
+  near(base.adj, base.parts.continuity + base.parts.rebounding, 0.011, 'adj = sum of parts');
+
+  // Turn the whole roster over: continuity 0, adjustment falls by exactly the continuity coefficient.
+  const moved = { ...A, players: A.players.map(p => ({ ...p })) };
+  A.players.forEach(p => { P[p.id].tm = { ZZZ: 82 }; });
+  const turned = c.calcRosterFit(moved, hs);
+  near(turned.continuity, 0, 1e-9, 'all new → continuity 0');
+  near(base.adj - turned.adj, F.continuity.perUnit * pace / 100, 0.011, 'full turnover costs perUnit × pace/100');
+  A.players.forEach(p => { P[p.id].tm = { AAA: 82 }; });
+
+  // A returning starter out → continuity drops (minutes weights follow availability).
+  const out = c.calcRosterFit({ ...A, players: A.players.map((p, i) => i === 0 ? { ...p, availability: 0 } : p) }, hs);
+  near(out.continuity, 1, 1e-9, 'a returning player out leaves only returning players → still 1');
+  P[A.players[1].id].tm = { ZZZ: 82 };
+  const oneNew = c.calcRosterFit(A, hs);
+  assert(oneNew.continuity < 1 && oneNew.continuity > 0.8, `one new rotation player → continuity just under 1 (${oneNew.continuity})`);
+  P[A.players[1].id].tm = { AAA: 82 };
+
+  // Two heavy rebounders: overlap penalty.
+  const reb = { ...A, players: A.players.map(p => ({ ...p })) };
+  [0, 1].forEach(i => { P[A.players[i].id].a26 = [0, 0, 0, 2800, 0, 0, 22, 0, 0, 0]; });
+  const glass = c.calcRosterFit(reb, hs);
+  assert(glass.rebounding > base.rebounding + 3, 'two 22% rebounders raise the on-floor rebound sum');
+  assert(glass.parts.rebounding < base.parts.rebounding, 'more rebounding overlap → lower fit');
+  [0, 1].forEach(i => { P[A.players[i].id].a26 = priorEntry(c, A.players[i], {}).a26; });
+
+  // Fades with this season's weight; cap; switch-off.
+  const half = c.calcRosterFit(A, { ...hs, currentWeight: 0.5 });
+  near(half.adj, base.adj / 2, 0.011, 'half this-season weight → half the adjustment');
+  const saved = F.continuity.perUnit;
+  F.continuity.perUnit = 100;
+  near(c.calcRosterFit(A, hs).adj, c.SEASON_IMPACT.fitCap, 1e-9, 'capped at fitCap');
+  F.continuity.perUnit = saved;
+  c.SEASON_IMPACT.fitCap = 0;
+  const off = c.projectSeasonGame(slate.games[0], slate);
+  assert(off.fit.home.adj === 0 && !off.lineage.some(l => l.step === 'fit'), 'fitCap 0 → no fit step');
+  c.SEASON_IMPACT.fitCap = 2.0;
+
+  // In the game: the fit step is the home-minus-away difference.
+  A.players.forEach(p => { P[p.id].tm = { ZZZ: 82 }; });
+  const g = c.projectSeasonGame(slate.games[0], slate);
+  const step = g.lineage.find(l => l.step === 'fit');
+  assert(step && step.delta < 0, 'home roster turned over → negative fit step for home');
+  near(step.delta, g.fit.home.adj - g.fit.away.adj, 0.011, 'fit step = home adj − away adj');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

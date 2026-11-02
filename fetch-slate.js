@@ -35,6 +35,7 @@ function loadSeasonContext() {
   const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
   load('js/season/data/season-constants.js');
   load('js/season/data/player-priors.js');
+  load('js/season/data/chemistry-fit.js');
   load('js/season/adapters.js');
   load('js/season/engine.js');
   load('js/season/props.js');

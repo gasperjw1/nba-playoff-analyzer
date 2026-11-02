@@ -83,7 +83,7 @@ function renderTonight() {
   if (!s.games.length) return `<div class="home-empty">No games on this slate.</div>`;
   const cards = s.games.map(g => renderGameCard(g)).join('');
   return `<div class="season-grid">${cards}</div>
-    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
+    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus ± roster fit: continuity and rebounding overlap, fitted on 330 team-seasons; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
 }
 
 function renderGameCard(g) {

@@ -75,7 +75,21 @@ const SEASON_IMPACT = {
   teamCap: 12.0,          // max |roster adjustment| per team, points
   minMinutesForImpact: 8, // ignore deep bench noise
   offShare: 0.70,         // share of a player's value that is his own team's scoring (totals only)
+  fitCap: 2.0,            // max |roster fit adjustment| per team, points (see below)
 };
+
+// Roster fit ("chemistry"): coefficients in js/season/data/chemistry-fit.js,
+// fitted by research-chemistry.js on 330 team-seasons (2015-16 … 2025-26)
+// as the miss of summed player BPM on actual net rating. Of seven
+// pre-registered fit features, two held up out of sample:
+//   continuity  share of minutes from players on the team last season
+//               (teams that stay together beat their summed BPM)
+//   rebounding  on-floor rebound-rate sum (rebounders overlap: the
+//               second big's boards come partly out of the first's)
+// Usage, playmaking and spacing overlap and stacked non-shooting bigs
+// were not detectable beyond what BPM already prices. The adjustment
+// fades by (1 − current-season weight): this season's results already
+// contain whatever fit the roster has.
 
 // Player baselines: two prior seasons blended with this season.
 //  - Seasons weighted 1.0 / 0.5 per minute (Basketball-Reference's
@@ -102,7 +116,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-02.bpm-roster';
+const SEASON_ENGINE_VERSION = '2026-11-02.roster-fit';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).

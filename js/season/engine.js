@@ -8,7 +8,7 @@
 // error. What survives is the part that is defensible on 1,000+
 // game samples:
 //
-//   margin = (netHome − netAway) × pace/100 + HCA + rest − absences
+//   margin = (netHome − netAway) × pace/100 + HCA + rest ± roster ± fit
 //   P(home) = Φ(margin / σ)
 //
 // Every step is logged to `lineage` so the UI can show the
@@ -202,6 +202,65 @@ function calcRosterAdjustment(team, strength) {
   };
 }
 
+// ── Roster fit ──────────────────────────────────────────────
+// Prior-season rebound rate, weighted like the BPM prior and regressed
+// toward the league rookie rate — the same inputs research-chemistry.js
+// fitted on.
+function _priorReboundRate(id) {
+  const F = SEASON_CHEMISTRY_FIT.rebounding;
+  const P = _priors();
+  const e = P && P.players[id];
+  let m = 0, s = 0;
+  if (e) Object.keys(SEASON_PLAYER_PRIOR.seasonWeights).forEach(season => {
+    const a = e['a' + season];
+    if (!a || !a[3] || a[6] == null) return;
+    const w = SEASON_PLAYER_PRIOR.seasonWeights[season] * a[3];
+    m += w; s += a[6] * w;
+  });
+  if (!m) return F.rookieTrb;
+  const k = m / (m + F.regressMinutes);
+  return (s / m) * k + F.rookieTrb * (1 - k);
+}
+
+// Positive adj = the roster fits better than its summed player values say.
+// Minutes weights are tonight's baseline minutes × availability.
+function calcRosterFit(team, strength) {
+  const F = typeof SEASON_CHEMISTRY_FIT !== 'undefined' ? SEASON_CHEMISTRY_FIT : null;
+  const none = { adj: 0, uncapped: 0, continuity: null, rebounding: null, parts: { continuity: 0, rebounding: 0 }, fade: 0, returning: [] };
+  if (!F || !SEASON_IMPACT.fitCap) return none;
+  const P = _priors();
+  const rot = (team.players || []).map(p => ({ p, min: playerProfile(p).mpg * (p.availability == null ? 1 : p.availability) })).filter(x => x.min > 0);
+  const total = rot.reduce((s, x) => s + x.min, 0);
+  if (!total) return none;
+  let continuity = 0, rebounding = 0;
+  const returning = [];
+  rot.forEach(x => {
+    const share = x.min / total;
+    const e = P && P.players[x.p.id];
+    if (e && e.tm && e.tm[team.abbr] > 0) { continuity += share; returning.push(x.p.name); }
+    rebounding += 5 * share * _priorReboundRate(x.p.id);   // on-floor sum: five players' TRB%
+  });
+  const w = strength ? strength.currentWeight : 0;
+  const pace = (team.prior && team.prior.pace) || SEASON_LEAGUE_FALLBACK.pace;
+  const scale = (1 - w) * pace / 100;
+  const cPts = F.continuity.perUnit * (continuity - F.continuity.mean) * scale;
+  const rPts = F.rebounding.perPoint * (rebounding - F.rebounding.mean) * scale;
+  const raw = cPts + rPts;
+  const adj = Math.max(-SEASON_IMPACT.fitCap, Math.min(SEASON_IMPACT.fitCap, raw));
+  return {
+    adj: +adj.toFixed(2), uncapped: +raw.toFixed(2),
+    continuity: +continuity.toFixed(3), rebounding: +rebounding.toFixed(1),
+    parts: { continuity: +cPts.toFixed(2), rebounding: +rPts.toFixed(2) },
+    fade: +(1 - w).toFixed(3), returning,
+  };
+}
+
+function _fitDetail(abbr, f) {
+  if (f.continuity == null) return `${abbr} n/a`;
+  const sgn = (x) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+  return `${abbr} ${Math.round(f.continuity * 100)}% returning ${sgn(f.parts.continuity)}, reb overlap ${f.rebounding} ${sgn(f.parts.rebounding)}`;
+}
+
 function calcRestAdjustment(rest) {
   if (!rest) return 0;
   let pts = 0;
@@ -271,6 +330,10 @@ function projectSeasonGame(game, slate, opts) {
   if (homeRoster.adj) step('homeRoster', `${home.abbr} roster vs rating`, homeRoster.adj, _rosterDetail(homeRoster));
   if (awayRoster.adj) step('awayRoster', `${away.abbr} roster vs rating`, -awayRoster.adj, _rosterDetail(awayRoster));
 
+  const homeFit = calcRosterFit(home, hs), awayFit = calcRosterFit(away, as);
+  if (homeFit.adj || awayFit.adj) step('fit', 'Roster fit (continuity, rebounding overlap)', homeFit.adj - awayFit.adj,
+    `${_fitDetail(home.abbr, homeFit)} · ${_fitDetail(away.abbr, awayFit)}${homeFit.fade < 1 ? ` · ×${homeFit.fade.toFixed(2)}/${awayFit.fade.toFixed(2)} as this season's results take over` : ''}`);
+
   const pHome = marginToWinProb(margin);
 
   // Totals: each offense against the other defense, additive around league
@@ -279,8 +342,9 @@ function projectSeasonGame(game, slate, opts) {
   const homeOff = L + (hs.ortg - L) + (as.drtg - L);
   const awayOff = L + (as.ortg - L) + (hs.drtg - L);
   const off = SEASON_IMPACT.offShare;
-  let homePts = homeOff * pace / 100 + off * homeRoster.adj - (1 - off) * awayRoster.adj;
-  let awayPts = awayOff * pace / 100 + off * awayRoster.adj - (1 - off) * homeRoster.adj;
+  const homeAdj = homeRoster.adj + homeFit.adj, awayAdj = awayRoster.adj + awayFit.adj;
+  let homePts = homeOff * pace / 100 + off * homeAdj - (1 - off) * awayAdj;
+  let awayPts = awayOff * pace / 100 + off * awayAdj - (1 - off) * homeAdj;
   const total = homePts + awayPts;
   // Rebalance so the score reproduces the margin the lineage built.
   homePts = (total + margin) / 2;
@@ -296,6 +360,7 @@ function projectSeasonGame(game, slate, opts) {
     pace: +pace.toFixed(1),
     homeStrength: hs, awayStrength: as,
     roster: { home: homeRoster, away: awayRoster },
+    fit: { home: homeFit, away: awayFit },
     availability: { home: homeRoster, away: awayRoster },   // UI/legacy alias
     rest: { home: homeRest, away: awayRest },
     lineage,
