@@ -258,10 +258,13 @@
   .page-nav-btn:hover { color:var(--text); background:rgba(255,255,255,0.03); }
   .page-nav-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
   /* Sport switcher (NBA <-> Baseball) — additive, baseball scaffold */
-  .sport-switcher { display:flex; gap:8px; padding:12px 32px 0; background:var(--bg); }
+  .sport-switcher { display:flex; flex-wrap:wrap; gap:8px; padding:12px 32px 0; background:var(--bg); }
   .sport-btn { padding:6px 16px; cursor:pointer; font-size:12px; font-weight:700; background:transparent; color:var(--text-dim); border:1px solid var(--border); border-radius:20px; transition:all 0.2s; }
   .sport-btn:hover { color:var(--text); border-color:var(--text-dim); }
   .sport-btn.active { color:var(--bg); background:var(--accent); border-color:var(--accent); }
+  a.sport-btn { text-decoration:none; display:inline-flex; align-items:center; }
+  .sport-btn.site-link { margin-left:auto; }
+  @media (max-width:768px) { .sport-btn.site-link { margin-left:0; } }
 
   /* Learnings & Definitions Pages */
   .page-content { padding:24px 32px 32px; }
