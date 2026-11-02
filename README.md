@@ -52,11 +52,11 @@ Aging: players' BPM moves predictably with age. Measured on 3,318 player-seasons
 | Variant (replay, per 100 possessions) | RMSE |
 |---|---|
 | Engine before (retention 0.80, no aging) | 3.066 |
-| Retention 0.70, no aging | 3.035 |
-| Aging on every player | no better than retention alone |
+| Retention 0.70, no aging | 3.035 (out of sample) |
+| Aging on every player | 3.056 out of sample, worse than retention alone |
 | Aging of last season's rating, retention 0.75 (adopted) | 3.010 (3.019 out of sample) |
 
-Aging arrivals made projections worse. The curve is measured on players who kept their minutes, which flatters young players, and that bias matters most when pricing a young player on a new team. On the 92 games of 2026-27 the aging step improved Brier by 0.0025 ± 0.0013 versus the same engine without it. On tonight's rosters it ranges from −0.8 (Knicks, core aged 30–31) to +0.4 (Grizzlies, 76ers and Raptors).
+Aging arrivals made projections worse. The curve is measured on players who kept their minutes, which flatters young players, and that bias matters most when pricing a young player on a new team. On the 92 games of 2026-27 the aging step improved Brier by 0.0024–0.0027 ± 0.0014 versus the same engine without it (both lineup modes; about 1.8 SE, consistent with the replay but not conclusive on its own). The same replay confirms the roster-fit step still helps under the adopted settings (3.034 without it). On tonight's rosters it ranges from −0.8 (Knicks, core aged 30–31) to +0.4 (Grizzlies, 76ers and Raptors).
  players with no NBA minutes in the last two seasons or this one (rookies, two-ways) are listed as "not valued"; team priors are last season's points for/against per possession; the feed only carries the teams playing that day, so the Matchup Lab is limited to those teams; BPM is box-score-based, so defensive specialists remain undervalued relative to on/off metrics. After an engine change, bump `SEASON_ENGINE_VERSION` (season.html's `?v=` must match — `test-season.js` checks).
 
 ---

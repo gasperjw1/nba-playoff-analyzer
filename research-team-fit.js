@@ -566,7 +566,8 @@ async function main() {
         const j = proj(p, t);
         departed.push({ bpm: j.o + j.d, mpg: pr.mp / pr.g, share: Math.min(1, pr.g / G(t - 1, T)) });
       }
-      replay.push({ t, T, y: S.rating[T].nrtgAdj, prior: Sp.rating[T].nrtgAdj, items, departed, fitRow: rowBy.get(`${t}|${T}`) });
+      replay.push({ t, T, y: S.rating[T].nrtgAdj, prior: Sp.rating[T].nrtgAdj, yRaw: S.rating[T].nrtg, priorRaw: Sp.rating[T].nrtg,
+        items, departed, fitRow: rowBy.get(`${t}|${T}`) });
     }
   }
   // Leave-one-season-out fit coefficients (same shrinkage as the engine's).
@@ -592,13 +593,14 @@ async function main() {
     roster = Math.max(-12, Math.min(12, roster));
     const fb = fitBy[x.t];
     const fit = Math.max(-2, Math.min(2, fb.c * x.fitRow.contOff + fb.r * x.fitRow.trb));
-    return o.ret * x.prior + (o.roster ? roster : 0) + aging + (o.fit ? fit : 0);
+    return o.ret * (o.raw ? x.priorRaw : x.prior) + (o.roster ? roster : 0) + aging + (o.fit ? fit : 0);
   };
+  const target = (x, o) => (o.raw ? x.yRaw : x.y);
   const evalReplay = (o) => {
-    const err = replay.map(x => x.y - project(x, o));
+    const err = replay.map(x => target(x, o) - project(x, o));
     const rmse = Math.sqrt(err.reduce((s, e) => s + e * e, 0) / err.length);
     const p = replay.map(x => project(x, o));
-    const f = ols(p.map(v => [1, v]), replay.map(x => x.y));
+    const f = ols(p.map(v => [1, v]), replay.map(x => target(x, o)));
     return { rmse, bias: -err.reduce((s, e) => s + e, 0) / err.length, slope: f.coef[1], err };
   };
   const ENGINE = { ret: SEASON_PRIOR_RETENTION_ENGINE, roster: true, fit: true, k: 0 };
@@ -611,7 +613,7 @@ async function main() {
   console.log(`\nEngine replay at opening night, ${replay.length} team-seasons (RMSE vs adjusted net rating per 100; slope = fitted y on projection, 1.0 is ideal)`);
   const show = (label, o, ref) => {
     const e = evalReplay(o);
-    console.log(`  ${label.padEnd(52)} RMSE ${e.rmse.toFixed(3)}  bias ${e.bias >= 0 ? '+' : ''}${e.bias.toFixed(2)}  slope ${e.slope.toFixed(2)}${ref ? `   ΔMSE vs engine ${pairedVs(e, ref)}` : ''}`);
+    console.log(`  ${label.padEnd(52)} RMSE ${e.rmse.toFixed(3)}  bias ${e.bias >= 0 ? '+' : ''}${e.bias.toFixed(2)}  slope ${e.slope.toFixed(2)}${ref ? `   ΔMSE vs ref ${pairedVs(e, ref)}` : ''}`);
     return e;
   };
   show('last season × 0.80 only', { ...ENGINE, roster: false, fit: false });
@@ -680,6 +682,16 @@ async function main() {
 
   // The design the engine uses (chosen out of sample above).
   const CHOSEN = { ...ENGINE, ret: 0.75, k: 1, ageRoster: false, ageAvail: true };
+  // Checks on the adopted design.
+  const chosenE = evalReplay(CHOSEN);
+  console.log('  checks on the adopted design (aging of last season\'s rating, retention 0.75):');
+  show('    adopted', CHOSEN);
+  show('    adopted without roster fit', { ...CHOSEN, fit: false }, chosenE);
+  console.log('    the live engine uses unadjusted ratings (no schedule adjustment) — retention on those:');
+  for (const ret of [0.65, 0.7, 0.75, 0.8, 0.85]) {
+    const a = evalReplay({ ...ENGINE, ret, raw: true }), b = evalReplay({ ...CHOSEN, ret, raw: true });
+    console.log(`      ${ret.toFixed(2)}   no aging RMSE ${a.rmse.toFixed(3)}   adopted aging RMSE ${b.rmse.toFixed(3)} slope ${b.slope.toFixed(2)}`);
+  }
   const full = engineAgeCurve(null);
   console.log(`  age curve (all seasons, total BPM, centred; raw mean shift ${full.shift.toFixed(2)} removed; n=${full.n}): ` +
     Array.from({ length: 17 }, (_, i) => 20 + i).map(a => `${a} ${full[a] >= 0 ? '+' : ''}${full[a].toFixed(2)}`).join(' · '));

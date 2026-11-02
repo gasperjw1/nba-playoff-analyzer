@@ -117,14 +117,14 @@ function playerProfile(player) {
     bpm = (R * C.rookieRegressMinutes + currentBpm * curMin) / (C.rookieRegressMinutes + curMin);
   } else bpm = priorBpm;
 
-  // Age: expected change from the prior BPM to this season's level
-  // (aging-fit.js). Only the prior part of the blend ages — this season's
-  // games were already played at this season's age. `bpm` itself stays
-  // unaged: valuing arrivals at aged BPM made the historical replay worse.
+  // Age: expected change from the prior BPM (last season's level) to this
+  // season's age (aging-fit.js). Used only to age last season's part of
+  // the team rating, which holds the player at his prior level however many
+  // games he has played since; calcRosterAdjustment fades it by (1 − w) as
+  // this season's results take over. `bpm` itself stays unaged: valuing
+  // arrivals at aged BPM made the historical replay worse.
   const age = entry && entry.age != null ? entry.age : null;
-  let priorWeight = 0;
-  if (priorBpm != null) priorWeight = currentBpm != null ? Math.min(bpmMin, C.bpmCurrentK) / (Math.min(bpmMin, C.bpmCurrentK) + curMin) : 1;
-  const ageShift = age != null && priorWeight ? priorWeight * seasonAgeCurve(age) : 0;
+  const ageShift = age != null && priorBpm != null ? seasonAgeCurve(age) : 0;
 
   return {
     avg, mpg, bpm, priorBpm, currentBpm, age, ageShift,
@@ -197,7 +197,9 @@ function calcRosterAdjustment(team, strength) {
     // rating and by whether he plays tonight.
     const priorShare = playerPriorShare(p, team);
     if (prof.ageShift && priorShare && p.availability > 0) {
-      const pts = (1 - w) * priorShare * p.availability * (playerImpactPts(p, pace, { ...prof, bpm: prof.bpm + prof.ageShift }) - value);
+      const atPrior = { ...prof, bpm: prof.priorBpm };
+      const pts = (1 - w) * priorShare * p.availability *
+        (playerImpactPts(p, pace, { ...atPrior, bpm: prof.priorBpm + prof.ageShift }) - playerImpactPts(p, pace, atPrior));
       if (pts) { aging += pts; agingItems.push({ id: p.id, name: p.name, age: prof.age, bpmShift: +prof.ageShift.toFixed(2), pts: +pts.toFixed(2) }); }
     }
     if (!value) {

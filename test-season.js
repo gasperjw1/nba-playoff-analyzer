@@ -473,15 +473,17 @@ console.log('TEST 15: aging');
   const curry = c.playerProfile({ id: '3975', avg: null, seasonGames: 0 });
   near(curry.ageShift, A[36], 1e-9, 'prior-only profile ages by the full curve');
 
-  // Profile: shift scales with the prior's weight once this season's games arrive.
+  // Profile: the full curve value whenever there is a prior; fading is by the
+  // team's current-season weight in calcRosterAdjustment, not per player.
   const slate = makeSlate(c);
   const T = slate.teams.AAA;
   T.players.forEach(p => { P[p.id].age = 22; });
   const p0 = T.players[0];
   const prof0 = c.playerProfile(p0);
   near(prof0.ageShift, A[22], 1e-9, 'no games this season → full shift');
-  const prof5 = c.playerProfile({ ...p0, seasonGames: 10 });
-  assert(prof5.ageShift > 0 && prof5.ageShift < A[22], 'games this season shrink the shift');
+  const prof10 = c.playerProfile({ ...p0, seasonGames: 10 });
+  near(prof10.ageShift, A[22], 1e-9, 'games this season do not shrink the shift (no double fade)');
+  near(prof10.priorBpm, prof0.priorBpm, 1e-12, 'prior BPM unaffected by this season\'s games');
   delete P[p0.id].age;
   near(c.playerProfile(p0).ageShift, 0, 0, 'no age → no shift');
   P[p0.id].age = 22;
@@ -490,11 +492,20 @@ console.log('TEST 15: aging');
   const hs = c.calcSeasonTeamStrength(T, slate.league);
   const pace = T.prior.pace;
   const r = c.calcRosterAdjustment(T, hs);
-  const expect0 = c.playerImpactPts(p0, pace, { ...prof0, bpm: prof0.bpm + prof0.ageShift }) - c.playerImpactPts(p0, pace, prof0);
+  const atPrior = { ...prof0, bpm: prof0.priorBpm };
+  const expect0 = c.playerImpactPts(p0, pace, { ...atPrior, bpm: prof0.priorBpm + prof0.ageShift }) - c.playerImpactPts(p0, pace, atPrior);
   const item0 = r.agingItems.find(i => i.id === p0.id);
   near(item0.pts, expect0, 0.006, 'player aging = value(aged) − value(prior) at full share');
   assert(r.aging > 0, 'young returning roster → positive aging');
-  near(r.adj, c.calcRosterAdjustment({ ...T, players: T.players }, hs).adj, 1e-12, 'aging is reported separately from the roster adjustment');
+  const ages = T.players.map(p => P[p.id].age);
+  T.players.forEach(p => { delete P[p.id].age; });
+  const noAge = c.calcRosterAdjustment(T, hs);
+  near(noAge.aging, 0, 0, 'no ages → no aging');
+  near(r.adj, noAge.adj, 1e-12, 'aging does not leak into the roster adjustment');
+  T.players.forEach((p, i) => { P[p.id].age = ages[i]; });
+  // A player 10 games into this season: same aging at w = 0 (the rating's prior part is unchanged).
+  const r10 = c.calcRosterAdjustment({ ...T, players: T.players.map((p, i) => i === 0 ? { ...p, seasonGames: 10 } : p) }, hs);
+  near(r10.agingItems.find(i => i.id === p0.id).pts, item0.pts, 0.02, 'aging of a player with games this season matches at w = 0');
 
   // Out tonight → no aging for him; arrival → none; fades with this season's weight.
   const out = c.calcRosterAdjustment({ ...T, players: T.players.map((p, i) => i === 0 ? { ...p, availability: 0 } : p) }, hs);

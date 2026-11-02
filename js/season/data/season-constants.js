@@ -130,7 +130,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-02.aging';
+const SEASON_ENGINE_VERSION = '2026-11-02.aging-v2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).
