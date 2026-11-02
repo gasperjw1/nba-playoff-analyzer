@@ -42,6 +42,7 @@ const SEASONS = [
   { key: '25', year: 2025, label: '2024-25' },
 ];
 const SPLIT_SEASON = SEASONS[0];
+const TARGET_YEAR = SEASONS[0].year + 1;   // the season being projected (2026-27 → 2027)
 const TEAM_GAMES = 82;
 const EXHIBITION_NOTE = /All-Star|Cup Championship/i;
 const BREF_TEAM = { BRK: 'BKN', CHO: 'CHA', GSW: 'GS', NOP: 'NO', NYK: 'NY', PHO: 'PHX', SAS: 'SA', UTA: 'UTAH', WAS: 'WSH' };
@@ -179,7 +180,7 @@ function parseBrefAdvanced(html, label) {
     }
     if (!cells.bref_id || !cells.name_display) continue;
     const team = cells.team_name_abbr;
-    const p = players.get(cells.bref_id) || { brefId: cells.bref_id, name: cells.name_display, total: null, teams: {} };
+    const p = players.get(cells.bref_id) || { brefId: cells.bref_id, name: cells.name_display, age: parseFloat(cells.age), total: null, teams: {} };
     const num = (k) => { const v = parseFloat(cells[k]); return isNaN(v) ? null : v; };
     const row = { g: num('games'), adv: ADV_FIELDS.map(num) };
     if (/^\dTM$/.test(team)) p.total = row;
@@ -388,6 +389,8 @@ async function main() {
       p['s' + s.key] = [e.g, ...e.line.map(round2)];
       const b = match[s.key].get(id);
       if (b) { p['a' + s.key] = b.total.adv.map(v => v == null ? null : round2(v)); if (!p.br) p.br = b.brefId; }
+      // Age this season (Basketball-Reference ages are as of Feb 1 of the season).
+      if (b && p.age == null && Number.isFinite(b.age)) p.age = b.age + (TARGET_YEAR - s.year);
     }
     if (p.a26 || p.a25) withAdv++;
     if (splits[id]) p.tm = splits[id];
@@ -405,6 +408,7 @@ async function main() {
       seasons: SEASONS.map(s => ({ key: s.key, label: s.label, espnPlayers: espn[s.key].size, brefMatched: match[s.key].size })),
       boxFormat: ['g', ...BOX_KEYS],
       advFormat: ADV_FIELDS,
+      age: `age on Feb 1 of the ${TARGET_YEAR - 1}-${String(TARGET_YEAR).slice(2)} season (Basketball-Reference age + seasons elapsed)`,
       teamGames: TEAM_GAMES,
       measuredReplacementBpm: round2(replBpm),
       calibration,

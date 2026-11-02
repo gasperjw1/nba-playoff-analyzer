@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 // ============================================================
-// research-chemistry.js — does roster fit explain what player value misses?
+// research-team-fit.js — what summed player value misses: aging and roster fit
 // ============================================================
-// Question: when a team's players are summed by their prior-season Box
-// Plus/Minus (the season engine's player value), is the miss on the team's
-// actual net rating related to how the pieces fit together?
+// Questions: when a team's players are summed by their prior-season Box
+// Plus/Minus (the season engine's player value), how much of the miss on
+// the team's actual net rating is (1) players a year older or younger
+// than the season their BPM came from, and (2) how the pieces fit?
+// Part 3 replays the live engine's season-start projection (last season's
+// rating × retention + roster changes + aging + fit) on every team-season
+// to check each step the way the engine actually uses it.
 //
 // Design (one row per team-season, 2015-16 … 2025-26):
 //   minutes   each player's ACTUAL minutes for that team that season
@@ -31,7 +35,8 @@
 // Scored by leave-one-season-out cross-validation: a feature counts only
 // if it lowers out-of-sample error on seasons it was not fitted on.
 //
-//   node research-chemistry.js [--first 2014] [--last 2026] [--json out.json]
+//   node research-team-fit.js [--first 2014] [--last 2026] [--json out.json] [--write]
+//   --write regenerates js/season/data/chemistry-fit.js and aging-fit.js
 //
 // Basketball-Reference pages are cached under .cache/bref/ (4 s between
 // fetches; the site allows ~20 requests per minute).
@@ -49,6 +54,7 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 const REPL = -2.0, REGRESS_MIN = 300, SEASON_W = [1.0, 0.5];
 const ROLE_REGRESS_MIN = 200;
+const SEASON_PRIOR_RETENTION_ENGINE = 0.80;   // js/season/data/season-constants.js SEASON_PRIOR_RETENTION
 
 // ── fetch + parse ───────────────────────────────────────────
 async function page(kind, year) {
@@ -125,11 +131,11 @@ async function loadSeason(year) {
   const teamMp = {};
   for (const p of players.values()) for (const [t, r] of Object.entries(p.teams)) teamMp[t] = (teamMp[t] || 0) + r.mp;
   let rating = null;
-  if (year >= FIRST + 2) {
+  if (year >= FIRST + 1) {
     rating = {};
     for (const c of tableRows(await page('ratings', year), 'ratings', `ratings ${year}`)) {
       if (!c.team_href) continue;
-      rating[c.team_href] = { nrtgAdj: num(c.net_rtg_adj), nrtg: num(c.net_rtg), mov: num(c.mov) };
+      rating[c.team_href] = { nrtgAdj: num(c.net_rtg_adj), nrtg: num(c.net_rtg), mov: num(c.mov), games: num(c.wins) + num(c.losses) };
     }
   }
   return { year, players, teamMp, rating, unmatched };
@@ -268,6 +274,48 @@ async function main() {
     if (acc) console.log(`  ${String(a).padStart(3)} ${String(acc.n).padStart(4)}   ${(acc.o / acc.w).toFixed(2).padStart(6)}  ${(acc.d / acc.w).toFixed(2).padStart(6)}   smoothed ${ageAdj[a].o.toFixed(2)} / ${ageAdj[a].d.toFixed(2)}`);
   }
   const ageOf = (p) => ageAdj[Math.max(20, Math.min(36, p.age == null ? 27 : p.age))];
+
+  // Engine age curve: change in total BPM vs the regressed prior, by age in
+  // the season being projected. Centred so the minutes-weighted change over
+  // all players with a prior is zero — a league-wide shift moves every team
+  // equally (no effect on margins) and would only inflate totals. Kept per
+  // season so the engine replay below can leave the season it scores out.
+  const ageAccBy = {}, ageMinBy = {};
+  for (let t = T0; t <= LAST; t++) {
+    ageAccBy[t] = {}; ageMinBy[t] = {};
+    for (const p of seasons[t].players.values()) {
+      if (!p.total || p.total.obpm == null || p.age == null) continue;
+      const j = proj(p, t);
+      if (j.rookie) continue;
+      const a = Math.max(20, Math.min(36, p.age));
+      ageMinBy[t][a] = (ageMinBy[t][a] || 0) + p.total.mp;
+      if (p.total.mp < 500 || j.pr.mins < 500) continue;
+      const w = Math.min(p.total.mp, j.pr.mins);
+      const acc = ageAccBy[t][a] = ageAccBy[t][a] || { r: 0, w: 0, n: 0 };
+      acc.r += (p.total.obpm + p.total.dbpm - j.o - j.d) * w; acc.w += w; acc.n++;
+    }
+  }
+  const curveCache = {};
+  const engineAgeCurve = (exclude) => {
+    if (curveCache[exclude]) return curveCache[exclude];
+    const acc = {}, mins = {};
+    for (let t = T0; t <= LAST; t++) {
+      if (t === exclude) continue;
+      for (const [a, x] of Object.entries(ageAccBy[t])) { const c = acc[a] = acc[a] || { r: 0, w: 0, n: 0 }; c.r += x.r; c.w += x.w; c.n += x.n; }
+      for (const [a, m] of Object.entries(ageMinBy[t])) mins[a] = (mins[a] || 0) + m;
+    }
+    const curve = {};
+    for (let a = 20; a <= 36; a++) {
+      const nb = [a - 1, a, a + 1].map(x => acc[x]).filter(Boolean);
+      curve[a] = nb.reduce((s, x) => s + x.r, 0) / nb.reduce((s, x) => s + x.w, 0);
+    }
+    const M = Object.values(mins).reduce((s, m) => s + m, 0);
+    const shift = Object.entries(mins).reduce((s, [a, m]) => s + curve[a] * m, 0) / M;
+    for (let a = 20; a <= 36; a++) curve[a] = +(curve[a] - shift).toFixed(3);
+    curve.shift = shift;
+    curve.n = Object.values(acc).reduce((s, x) => s + x.n, 0);
+    return (curveCache[exclude] = curve);
+  };
 
   // Roles.
   const roleOf = (p, j) => {
@@ -482,9 +530,184 @@ async function main() {
     },
   };
   console.log(`\nEngine coefficients (per 100 possessions): continuity ${out.continuity.perUnit} per unit share (league mean ${out.continuity.mean}), rebounding ${out.rebounding.perPoint} per on-floor TRB% point (league mean ${out.rebounding.mean})`);
+
+  // ── Part 3: replay the live engine's season-start projection ─────────
+  // For each team-season, the engine at opening night (no games yet):
+  //   retention × last season's net rating
+  //   + roster:  Σ value × (availability − share in last season's rating)
+  //              − departed players' value × share          (cap ±12)
+  //   + aging:   Σ share × (value at aged BPM − value at last season's BPM)
+  //   + fit:     continuity and rebounding overlap           (cap ±2)
+  // value = max(0, BPM + 2) × mpg/48 × 0.885, per 100 possessions.
+  // Hindsight inputs (each player's actual games and minutes) isolate the
+  // value logic from availability guessing. The age curve and the fit
+  // coefficients are re-estimated without the season being scored.
+  const G = (t, T) => seasons[t].rating[T].games;
+  const val = (bpm, mpg) => Math.max(0, bpm - REPL) * mpg / 48 * 0.885;
+  const replay = [];
+  const rowBy = new Map(rows.map(r => [`${r.t}|${r.team}`, r]));
+  for (let t = T0; t <= LAST; t++) {
+    const S = seasons[t], Sp = seasons[t - 1];
+    for (const T of Object.keys(S.teamMp)) {
+      const items = [], departed = [];
+      for (const p of S.players.values()) {
+        const r = p.teams[T];
+        if (!r || !r.mp || !r.g) continue;
+        const prev = Sp.players.get(p.id), pr = prev && prev.teams[T];
+        const j = proj(p, t);
+        items.push({ bpm: j.o + j.d, rookie: j.rookie, age: p.age, mpg: r.mp / r.g, avail: Math.min(1, r.g / G(t, T)),
+          share: pr && pr.g ? Math.min(1, pr.g / G(t - 1, T)) : 0 });
+      }
+      for (const p of Sp.players.values()) {
+        const pr = p.teams[T];
+        if (!pr || !pr.g || !pr.mp) continue;
+        const now = S.players.get(p.id);
+        if (now && now.teams[T] && now.teams[T].mp) continue;
+        const j = proj(p, t);
+        departed.push({ bpm: j.o + j.d, mpg: pr.mp / pr.g, share: Math.min(1, pr.g / G(t - 1, T)) });
+      }
+      replay.push({ t, T, y: S.rating[T].nrtgAdj, prior: Sp.rating[T].nrtgAdj, items, departed, fitRow: rowBy.get(`${t}|${T}`) });
+    }
+  }
+  // Leave-one-season-out fit coefficients (same shrinkage as the engine's).
+  const fitBy = {};
+  for (let t = T0; t <= LAST; t++) {
+    const tr2 = rows.filter(r => r.t !== t);
+    const f = ols(tr2.map(r => [1, ...finalCols.map(c => r[c])]), tr2.map(r => r.y));
+    const sh = (i) => { const z = f.coef[i] / f.se[i]; return Math.max(0, 1 - 1 / (z * z)); };
+    fitBy[t] = { c: f.coef[3] * sh(3), r: f.coef[4] * sh(4) };
+  }
+  const project = (x, o) => {
+    const curve = engineAgeCurve(x.t);
+    let roster = 0, aging = 0;
+    for (const it of x.items) {
+      const shift = it.rookie || it.age == null ? 0 : o.k * curve[Math.max(20, Math.min(36, it.age))];
+      const vA = val(it.bpm + shift, it.mpg), vU = val(it.bpm, it.mpg);
+      roster += (o.ageRoster === false ? vU : vA) * (it.avail - it.share);
+      // Aging of the rating's players: share of last season's rating he carried,
+      // times the share of this season's games he is available for.
+      if (o.ageRating !== false) aging += it.share * (o.ageAvail ? it.avail : 1) * (vA - vU);
+    }
+    for (const d of x.departed) roster -= val(d.bpm, d.mpg) * d.share;
+    roster = Math.max(-12, Math.min(12, roster));
+    const fb = fitBy[x.t];
+    const fit = Math.max(-2, Math.min(2, fb.c * x.fitRow.contOff + fb.r * x.fitRow.trb));
+    return o.ret * x.prior + (o.roster ? roster : 0) + aging + (o.fit ? fit : 0);
+  };
+  const evalReplay = (o) => {
+    const err = replay.map(x => x.y - project(x, o));
+    const rmse = Math.sqrt(err.reduce((s, e) => s + e * e, 0) / err.length);
+    const p = replay.map(x => project(x, o));
+    const f = ols(p.map(v => [1, v]), replay.map(x => x.y));
+    return { rmse, bias: -err.reduce((s, e) => s + e, 0) / err.length, slope: f.coef[1], err };
+  };
+  const ENGINE = { ret: SEASON_PRIOR_RETENTION_ENGINE, roster: true, fit: true, k: 0 };
+  const pairedVs = (a, b) => {
+    const d = a.err.map((e, i) => e * e - b.err[i] * b.err[i]);
+    const m = d.reduce((s, x) => s + x, 0) / d.length;
+    const sdv = Math.sqrt(d.reduce((s, x) => s + (x - m) ** 2, 0) / (d.length - 1));
+    return `${m >= 0 ? '+' : ''}${m.toFixed(3)} ± ${(sdv / Math.sqrt(d.length)).toFixed(3)}`;
+  };
+  console.log(`\nEngine replay at opening night, ${replay.length} team-seasons (RMSE vs adjusted net rating per 100; slope = fitted y on projection, 1.0 is ideal)`);
+  const show = (label, o, ref) => {
+    const e = evalReplay(o);
+    console.log(`  ${label.padEnd(52)} RMSE ${e.rmse.toFixed(3)}  bias ${e.bias >= 0 ? '+' : ''}${e.bias.toFixed(2)}  slope ${e.slope.toFixed(2)}${ref ? `   ΔMSE vs engine ${pairedVs(e, ref)}` : ''}`);
+    return e;
+  };
+  show('last season × 0.80 only', { ...ENGINE, roster: false, fit: false });
+  show('+ roster vs rating', { ...ENGINE, fit: false });
+  const eng = show('+ roster fit  (= current engine)', ENGINE);
+  show('+ aging, full curve  (proposed)', { ...ENGINE, k: 1 }, eng);
+  for (const k of [0.5, 1.5, 2]) show(`  aging × ${k}`, { ...ENGINE, k }, eng);
+  show('  proposed without roster fit', { ...ENGINE, k: 1, fit: false }, eng);
+  console.log('  retention (last season\'s rating kept), with and without aging:');
+  for (const ret of [0.6, 0.7, 0.8, 0.9, 1.0]) {
+    const a = evalReplay({ ...ENGINE, ret }), b = evalReplay({ ...ENGINE, ret, k: 1 });
+    console.log(`    ${ret.toFixed(1)}   no aging RMSE ${a.rmse.toFixed(3)} slope ${a.slope.toFixed(2)}   aging RMSE ${b.rmse.toFixed(3)} slope ${b.slope.toFixed(2)}`);
+  }
+  show('  aging on the rating\'s returning players only', { ...ENGINE, k: 1, ageRoster: false }, eng);
+  show('  aging on arrivals/absences only', { ...ENGINE, k: 1, ageRating: false }, eng);
+
+  // Honest tuning: choose (aging strength, retention) on the other seasons,
+  // score the held-out season; compare with tuning retention alone.
+  const grid = [];
+  for (const k of [0, 0.25, 0.5, 0.75, 1]) for (const ret of [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9]) {
+    grid.push({ ...ENGINE, k, ret });
+    if (k) grid.push({ ...ENGINE, k, ret, ageRoster: false });
+    if (k) grid.push({ ...ENGINE, k, ret, ageRoster: false, ageAvail: true });
+  }
+  const sqErr = grid.map(o => replay.map(x => (x.y - project(x, o)) ** 2));
+  const loso = (allowed) => {
+    const errs = [], picks = [];
+    for (let t = T0; t <= LAST; t++) {
+      let best = null, bestSe = Infinity;
+      grid.forEach((o, gi) => {
+        if (!allowed(o)) return;
+        const se = replay.reduce((s, x, i) => s + (x.t === t ? 0 : sqErr[gi][i]), 0);
+        if (se < bestSe) { bestSe = se; best = gi; }
+      });
+      picks.push(`${grid[best].k}/${grid[best].ret}`);
+      replay.forEach((x, i) => { if (x.t === t) errs.push(sqErr[best][i]); });
+    }
+    return { rmse: Math.sqrt(errs.reduce((s, e) => s + e, 0) / errs.length), errs, picks };
+  };
+  const paired = (a, b) => {
+    const dd = a.errs.map((e, i) => e - b.errs[i]);
+    const dm = dd.reduce((s, x) => s + x, 0) / dd.length, dsd = Math.sqrt(dd.reduce((s, x) => s + (x - dm) ** 2, 0) / (dd.length - 1));
+    return `${dm >= 0 ? '+' : ''}${dm.toFixed(3)} ± ${(dsd / Math.sqrt(dd.length)).toFixed(3)}`;
+  };
+  const engE = evalReplay(ENGINE);
+  const engL = { errs: engE.err.map(e => e * e) };
+  const lRet = loso(o => o.k === 0), lBoth = loso(o => o.ageRoster !== false && !o.ageAvail),
+    lRating = loso(o => o.k === 0 || (o.ageRoster === false && !o.ageAvail)), lAvail = loso(o => o.k === 0 || o.ageAvail);
+  const pk = (l) => [...new Set(l.picks)].join(', ');
+  console.log('  out-of-sample tuning (each season scored with settings chosen on the other ten; ΔMSE vs current engine):');
+  console.log(`    current engine (aging 0, retention 0.80)          RMSE ${engE.rmse.toFixed(3)}`);
+  console.log(`    retention tuned, no aging                         RMSE ${lRet.rmse.toFixed(3)}  ${paired(lRet, engL)}   picks ${pk(lRet)}`);
+  console.log(`    retention + aging everywhere tuned                RMSE ${lBoth.rmse.toFixed(3)}  ${paired(lBoth, engL)}   picks aging/ret ${pk(lBoth)}`);
+  console.log(`    retention + aging on returning players tuned      RMSE ${lRating.rmse.toFixed(3)}  ${paired(lRating, engL)}   picks aging/ret ${pk(lRating)}`);
+  console.log(`    … weighted by availability (engine form)          RMSE ${lAvail.rmse.toFixed(3)}  ${paired(lAvail, engL)}   picks aging/ret ${pk(lAvail)}`);
+  console.log(`    returning-player aging vs retention alone: ΔMSE ${paired(lRating, lRet)}; availability-weighted ${paired(lAvail, lRet)}`);
+  for (const o of [{ ...ENGINE, ret: 0.75 }, { ...ENGINE, ret: 0.75, k: 1, ageRoster: false, ageAvail: true }]) {
+    const e = evalReplay(o);
+    console.log(`    full sample ${o.k ? 'aging 1.0 avail-weighted' : 'no aging'}, retention 0.75: RMSE ${e.rmse.toFixed(3)} bias ${e.bias.toFixed(2)} slope ${e.slope.toFixed(2)}`);
+  }
+  const gridLine = (pred) => grid.map((o, gi) => [o, gi]).filter(([o]) => pred(o)).map(([, gi]) => Math.sqrt(sqErr[gi].reduce((s, e) => s + e, 0) / replay.length).toFixed(3)).join('  ');
+  console.log('  full-sample grid (RMSE):          retention → ' + [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9].join('    '));
+  for (const k of [0, 0.25, 0.5, 0.75, 1]) console.log(`    aging ${k.toFixed(2)} everywhere           ` + gridLine(o => o.k === k && o.ageRoster !== false));
+  for (const k of [0.25, 0.5, 0.75, 1]) console.log(`    aging ${k.toFixed(2)} returning only      ` + gridLine(o => o.k === k && o.ageRoster === false && !o.ageAvail));
+  for (const k of [0.25, 0.5, 0.75, 1]) console.log(`    aging ${k.toFixed(2)} ret. × available    ` + gridLine(o => o.k === k && o.ageAvail));
+
+  // The design the engine uses (chosen out of sample above).
+  const CHOSEN = { ...ENGINE, ret: 0.75, k: 1, ageRoster: false, ageAvail: true };
+  const full = engineAgeCurve(null);
+  console.log(`  age curve (all seasons, total BPM, centred; raw mean shift ${full.shift.toFixed(2)} removed; n=${full.n}): ` +
+    Array.from({ length: 17 }, (_, i) => 20 + i).map(a => `${a} ${full[a] >= 0 ? '+' : ''}${full[a].toFixed(2)}`).join(' · '));
+
   if (argv.includes('--write')) {
+    const agingFile = path.join(__dirname, 'js/season/data/aging-fit.js');
+    const agingOut = {
+      byAge: Object.fromEntries(Array.from({ length: 17 }, (_, i) => 20 + i).map(a => [a, full[a]])),
+      meta: {
+        generated: out.meta.generated, seasons: out.meta.seasons, playerSeasons: full.n,
+        definition: 'actual BPM − prior BPM (seasons 1.0/0.5, regressed to −2 over 300 min), by BRef age in the projected season; '
+          + 'minutes-weighted, 3-age smoothing, centred on the minutes-weighted mean',
+        engineUse: 'aging of last season\'s rating only: Σ (1 − w) × share in last season\'s rating × availability × value change; '
+          + 'arrivals keep their prior value (aging them made the replay worse); retention 0.80 → 0.75',
+        replay: {
+          teamSeasons: replay.length,
+          before: { retention: 0.8, rmse: +eng.rmse.toFixed(3) },
+          after: { retention: CHOSEN.ret, rmse: +evalReplay(CHOSEN).rmse.toFixed(3) },
+          outOfSample: { retentionOnly: +lRet.rmse.toFixed(3), withAging: +lAvail.rmse.toFixed(3) },
+        },
+      },
+    };
+    fs.writeFileSync(agingFile, `// Generated by research-team-fit.js --write on ${out.meta.generated}. Do not edit by hand.\n` +
+      `// Expected change in a player's BPM from his prior, by age this season (BRef age on Feb 1).\n` +
+      `const SEASON_AGING_FIT = ${JSON.stringify(agingOut, null, 2)};\n`);
+    console.log(`Wrote ${path.relative(__dirname, agingFile)}`);
     const file = path.join(__dirname, 'js/season/data/chemistry-fit.js');
-    fs.writeFileSync(file, `// Generated by research-chemistry.js --write on ${out.meta.generated}. Do not edit by hand.\n` +
+    fs.writeFileSync(file, `// Generated by research-team-fit.js --write on ${out.meta.generated}. Do not edit by hand.\n` +
       `// Roster-fit coefficients fitted on ${out.meta.teamSeasons} team-seasons (${out.meta.seasons}); see the script header.\n` +
       `const SEASON_CHEMISTRY_FIT = ${JSON.stringify(out, null, 2)};\n`);
     console.log(`Wrote ${path.relative(__dirname, file)}`);
@@ -493,4 +716,4 @@ async function main() {
   if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ rows, oRepl, dRepl, rookO, rookD, ageAdj, levels: jl, deltas: jd, ridge: jr }, null, 1));
 }
 
-main().catch(e => { console.error('research-chemistry failed:', e.message); process.exit(1); });
+main().catch(e => { console.error('research-team-fit failed:', e.message); process.exit(1); });

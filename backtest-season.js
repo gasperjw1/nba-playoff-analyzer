@@ -16,8 +16,9 @@
 //   rest           from the schedule
 //
 // Variants:
-//   ratings        current engine, roster and fit adjustments off
+//   ratings        current engine, roster, aging and fit adjustments off
 //   no fit         current engine, roster-fit (chemistry) adjustment off
+//   no aging       current engine, aging step off
 //   engine         current engine (working tree)
 //   <git ref>      the engine as of a commit, via --compare <ref>
 //
@@ -37,7 +38,7 @@ const { execSync } = require('child_process');
 const CACHE = path.join(__dirname, '.cache/espn-nba');
 const SCOREBOARD = (d) => `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=${d}`;
 const SUMMARY = (id) => `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=${id}`;
-const SEASON_FILES = ['js/season/data/season-constants.js', 'js/season/data/player-priors.js', 'js/season/data/chemistry-fit.js', 'js/season/adapters.js',
+const SEASON_FILES = ['js/season/data/season-constants.js', 'js/season/data/player-priors.js', 'js/season/data/chemistry-fit.js', 'js/season/data/aging-fit.js', 'js/season/adapters.js',
   'js/season/engine.js', 'js/season/props.js', 'js/season/ensemble.js'];
 
 const argv = process.argv.slice(2);
@@ -228,10 +229,12 @@ async function main() {
   // Variants.
   const engineCtx = makeContext(fromWorkingTree);
   const ratingsCtx = makeContext(fromWorkingTree);
-  vm.runInContext('SEASON_IMPACT.teamCap = 0; SEASON_IMPACT.fitCap = 0;', ratingsCtx);
+  vm.runInContext('SEASON_IMPACT.teamCap = 0; SEASON_IMPACT.fitCap = 0; SEASON_IMPACT.agingCap = 0;', ratingsCtx);
   const noFitCtx = makeContext(fromWorkingTree);
   vm.runInContext('SEASON_IMPACT.fitCap = 0;', noFitCtx);
-  const variants = [['ratings', ratingsCtx], ['no fit', noFitCtx], ['engine', engineCtx]];
+  const noAgingCtx = makeContext(fromWorkingTree);
+  vm.runInContext('SEASON_IMPACT.agingCap = 0;', noAgingCtx);
+  const variants = [['ratings', ratingsCtx], ['no fit', noFitCtx], ['no aging', noAgingCtx], ['engine', engineCtx]];
   if (COMPARE) variants.push([COMPARE, makeContext(fromGit(COMPARE))]);
 
   const rows = [];

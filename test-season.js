@@ -22,6 +22,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/data/season-constants.js');
   load('js/season/data/player-priors.js');
   load('js/season/data/chemistry-fit.js');
+  load('js/season/data/aging-fit.js');
   load('js/season/data/season-ledger.js');
   if (withSnapshot && fs.existsSync(path.join(__dirname, 'js/season/data/slate-snapshot.js'))) load('js/season/data/slate-snapshot.js');
   load('js/season/adapters.js');
@@ -96,12 +97,12 @@ console.log('TEST 2: team strength shrinkage');
   const league = { ortg: 114.5, pace: 99 };
   const t = makeTeam('X', 120.5, 110.5, 100, []);                // +10 last season
   const s0 = c.calcSeasonTeamStrength(t, league);
-  near(s0.net, 8, 0.01, 'no current games → prior × retention (10 × 0.8)');
+  near(s0.net, 10 * c.SEASON_PRIOR_RETENTION, 0.01, 'no current games → prior × retention');
   assert(s0.currentWeight === 0, 'weight 0 with no games');
   t.current = { ppg: 100, papg: 110, games: 20 };                 // −10 per game this season
   const s20 = c.calcSeasonTeamStrength(t, league);
   near(s20.currentWeight, 0.5, 1e-6, 'K=20 → half weight at 20 games');
-  near(s20.net, 0.5 * (-10) + 0.5 * 8, 0.05, 'blend of current and prior');
+  near(s20.net, 0.5 * (-10) + 0.5 * 10 * c.SEASON_PRIOR_RETENTION, 0.05, 'blend of current and prior');
   t.current = { ppg: 100, papg: 110, games: 82 };
   assert(c.calcSeasonTeamStrength(t, league).currentWeight > 0.8, 'full season dominates');
 }
@@ -189,7 +190,7 @@ console.log('TEST 5: game projection');
 
   slate.teams.AAA.prior.ortg = 119.5;  // +5 net home
   const p2 = c.projectSeasonGame(slate.games[0], slate);
-  near(p2.margin, c.SEASON_HCA + 5 * 0.8 * 99 / 100, 0.01, 'net rating gap × pace, prior shrunk');
+  near(p2.margin, c.SEASON_HCA + 5 * c.SEASON_PRIOR_RETENTION * 99 / 100, 0.01, 'net rating gap × pace, prior shrunk');
   assert(p2.total > p.total, 'better offense raises total');
 
   slate.teams.AAA.prior.ortg = 114.5;
@@ -449,6 +450,74 @@ console.log('TEST 14: roster fit (continuity, rebounding overlap)');
   const step = g.lineage.find(l => l.step === 'fit');
   assert(step && step.delta < 0, 'home roster turned over → negative fit step for home');
   near(step.delta, g.fit.home.adj - g.fit.away.adj, 0.011, 'fit step = home adj − away adj');
+}
+
+console.log('TEST 15: aging');
+{
+  const c = loadCtx(false);
+  const A = c.SEASON_AGING_FIT.byAge;
+  // Generated curve: young players improve, veterans decline, centred near zero.
+  assert(Object.keys(A).length === 17 && A[20] != null && A[36] != null, 'curve covers ages 20–36');
+  assert(A[21] > 0.4 && A[26] > -0.2 && A[26] < 0.2 && A[30] < -0.2 && A[35] < -0.5, `shape: +young, ~0 at 26, −veteran (21 ${A[21]}, 26 ${A[26]}, 30 ${A[30]}, 35 ${A[35]})`);
+  for (let a = 22; a <= 34; a++) assert(A[a + 1] <= A[a] + 1e-9, `non-increasing 22–35 (${a}→${a + 1})`);
+  near(c.seasonAgeCurve(42), A[36], 1e-12, 'ages past 36 use the 36 value');
+  near(c.seasonAgeCurve(18), A[20], 1e-12, 'ages under 20 use the 20 value');
+  assert(c.SEASON_AGING_FIT.meta.replay.after.rmse < c.SEASON_AGING_FIT.meta.replay.before.rmse, 'replay improved with aging + retention');
+
+  // Real priors carry 2026-27 ages (Basketball-Reference age on Feb 1, 2027).
+  const P = c.SEASON_PLAYER_PRIORS.players;
+  near(P['3975'].age, 38, 0, 'Curry 38 in 2026-27');
+  near(P['1966'].age, 42, 0, 'LeBron 42 in 2026-27');
+  const withBpm = Object.values(P).filter(e => e.a26 || e.a25);
+  assert(withBpm.every(e => e.age >= 18 && e.age <= 45), 'every player with BPM has a plausible age');
+  const curry = c.playerProfile({ id: '3975', avg: null, seasonGames: 0 });
+  near(curry.ageShift, A[36], 1e-9, 'prior-only profile ages by the full curve');
+
+  // Profile: shift scales with the prior's weight once this season's games arrive.
+  const slate = makeSlate(c);
+  const T = slate.teams.AAA;
+  T.players.forEach(p => { P[p.id].age = 22; });
+  const p0 = T.players[0];
+  const prof0 = c.playerProfile(p0);
+  near(prof0.ageShift, A[22], 1e-9, 'no games this season → full shift');
+  const prof5 = c.playerProfile({ ...p0, seasonGames: 10 });
+  assert(prof5.ageShift > 0 && prof5.ageShift < A[22], 'games this season shrink the shift');
+  delete P[p0.id].age;
+  near(c.playerProfile(p0).ageShift, 0, 0, 'no age → no shift');
+  P[p0.id].age = 22;
+
+  // Roster aging: exact for a full-share, available player.
+  const hs = c.calcSeasonTeamStrength(T, slate.league);
+  const pace = T.prior.pace;
+  const r = c.calcRosterAdjustment(T, hs);
+  const expect0 = c.playerImpactPts(p0, pace, { ...prof0, bpm: prof0.bpm + prof0.ageShift }) - c.playerImpactPts(p0, pace, prof0);
+  const item0 = r.agingItems.find(i => i.id === p0.id);
+  near(item0.pts, expect0, 0.006, 'player aging = value(aged) − value(prior) at full share');
+  assert(r.aging > 0, 'young returning roster → positive aging');
+  near(r.adj, c.calcRosterAdjustment({ ...T, players: T.players }, hs).adj, 1e-12, 'aging is reported separately from the roster adjustment');
+
+  // Out tonight → no aging for him; arrival → none; fades with this season's weight.
+  const out = c.calcRosterAdjustment({ ...T, players: T.players.map((p, i) => i === 0 ? { ...p, availability: 0 } : p) }, hs);
+  assert(!out.agingItems.some(i => i.id === p0.id), 'unavailable player contributes no aging');
+  near(out.aging, r.aging - item0.pts, 0.02, 'team aging drops by his share');
+  P[p0.id].tm = { ZZZ: 82 };
+  assert(!c.calcRosterAdjustment(T, hs).agingItems.some(i => i.id === p0.id), 'new arrival is not aged (keeps prior value)');
+  P[p0.id].tm = { AAA: 82 };
+  near(c.calcRosterAdjustment(T, { ...hs, currentWeight: 0.5 }).aging, r.aging / 2, 0.02, 'half this-season weight → half the aging');
+
+  // Cap, switch-off, lineage and totals.
+  c.SEASON_IMPACT.agingCap = 0.5;
+  near(c.calcRosterAdjustment(T, hs).aging, 0.5, 1e-9, 'capped at agingCap');
+  c.SEASON_IMPACT.agingCap = 0;
+  const off = c.projectSeasonGame(slate.games[0], slate);
+  assert(!off.lineage.some(l => l.step === 'aging'), 'agingCap 0 → no aging step');
+  c.SEASON_IMPACT.agingCap = 4;
+  slate.teams.BBB.players.forEach(p => { P[p.id].age = 34; });
+  const g = c.projectSeasonGame(slate.games[0], slate);
+  const step = g.lineage.find(l => l.step === 'aging');
+  assert(step && step.delta > 0, 'young home roster vs old away roster → positive aging step');
+  near(step.delta, g.roster.home.aging - g.roster.away.aging, 0.011, 'aging step = home − away');
+  assert(g.margin > off.margin, 'aging moves the margin toward the younger team');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

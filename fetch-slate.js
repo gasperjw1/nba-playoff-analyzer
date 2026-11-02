@@ -36,6 +36,7 @@ function loadSeasonContext() {
   load('js/season/data/season-constants.js');
   load('js/season/data/player-priors.js');
   load('js/season/data/chemistry-fit.js');
+  load('js/season/data/aging-fit.js');
   load('js/season/adapters.js');
   load('js/season/engine.js');
   load('js/season/props.js');
