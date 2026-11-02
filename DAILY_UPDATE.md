@@ -1,5 +1,27 @@
 # DAILY UPDATE — Morning Routine
 
+## 📌 2026-27 Regular Season — run these yourself
+
+```bash
+./season-daily.sh            # any time: settles yesterday; from 11 AM ET also records tonight (once per day each)
+```
+```bash
+./season-daily.sh --status   # what has run today
+```
+```bash
+node test-season.js          # must be green before committing
+```
+```bash
+node backtest-season.js --compare HEAD --lineups last-game   # after any engine change: new vs committed engine, every game so far
+```
+```bash
+node fetch-priors.js         # once per season: rebuild player priors (ESPN + Basketball-Reference)
+```
+
+Then commit `js/season/data/slate-snapshot.js` + `js/season/data/season-ledger.js`. Best cadence: once in the morning (settle) and once after ~1 PM ET (record, before the first tip). `--force` reruns a phase; `node fetch-slate.js --settle` / `--record` are the underlying commands. The playoff checklist below is the archived 2026 routine.
+
+---
+
 This is the canonical morning checklist for keeping the NBA Playoff
 Analyzer in sync with reality. Run it each morning before tip-off so
 the deployed site reflects yesterday's results, today's slate, and

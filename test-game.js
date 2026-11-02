@@ -1,0 +1,1039 @@
+// ============================================================
+// PLAYOFF RUN — GAME REGRESSION SUITE
+// ============================================================
+// Run: node test-game.js
+// Mirrors the test-projections.js vm loader. Covers the game namespace
+// only — the NBA analyzer suite (test-projections.js) is separate and
+// must stay green independently (additive-namespace rule).
+// ============================================================
+
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+
+const toVar = (c) => c.replace(/^(const|let) /gm, 'var ');
+const ctx = vm.createContext({
+  console, Math, Array, Object, Set, Map, JSON,
+  parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error,
+});
+const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx, { filename: rel });
+
+// Analyzer data the game derives from (read-only)
+load('js/data/constants.js');
+load('js/data/series-data.js');
+// Game namespace, in dependency order
+load('js/engine/chemistry.js');   // SPM chemistry (synergy reuse)
+load('js/game/data/game-constants.js');
+load('js/game/data/coach-profiles.js');
+load('js/game/data/team-db.js');
+load('js/game/engine/matchup-factory.js');
+load('js/game/engine/capacity.js');
+load('js/game/engine/regime.js');
+load('js/game/engine/trajectory.js');
+load('js/game/engine/coach-ai.js');
+load('js/game/engine/game-sim.js');
+load('js/game/engine/injury-gen.js');
+load('js/game/run-state.js');
+load('js/game/ui/game-ui.js');
+
+let passed = 0, failed = 0;
+function assert(cond, msg) {
+  if (cond) { passed++; }
+  else { failed++; console.log('  FAIL: ' + msg); }
+}
+const T = (name) => console.log('\nTEST ' + name);
+
+const DB = ctx.GAME_TEAM_DB;
+const TEAMS = Object.keys(DB);
+
+// ════════════════════════════════════════════════════════════
+T('1: TEAM_DB — 16 teams, complete schema');
+assert(TEAMS.length === 16, 'expected 16 teams, got ' + TEAMS.length);
+TEAMS.forEach(abbr => {
+  const t = DB[abbr];
+  assert(t.players.length >= 9, abbr + ' has >=9 players (' + t.players.length + ')');
+  assert(t.coach && t.coach.coach, abbr + ' has a coach profile');
+  assert(t.advStats && t.advStats.ortg > 100 && t.advStats.pace > 90, abbr + ' has advStats');
+  assert(typeof t.offsetO === 'number' && typeof t.offsetD === 'number', abbr + ' has calibration offsets');
+  assert(['West', 'East'].includes(t.conf), abbr + ' has conference');
+  assert(t.seed >= 1 && t.seed <= 8, abbr + ' has seed');
+  t.players.forEach(p => {
+    assert(typeof p.baseRating === 'number', abbr + '/' + p.name + ' baseRating');
+    assert(['star', 'mid', 'role'].includes(p.tier), abbr + '/' + p.name + ' tier');
+    assert(typeof p.oLebron === 'number' && !isNaN(p.oLebron), abbr + '/' + p.name + ' oLebron numeric');
+    assert(typeof p.dLebron === 'number' && !isNaN(p.dLebron), abbr + '/' + p.name + ' dLebron numeric');
+  });
+});
+// Memory-anchored fact: NYK coach is Mike Brown.
+assert(DB.NYK.coach.coach === 'Mike Brown', 'NYK coach is Mike Brown');
+
+// ════════════════════════════════════════════════════════════
+T('2: TEAM_DB — bracket derivable from seeds');
+['West', 'East'].forEach(conf => {
+  const seeds = TEAMS.filter(a => DB[a].conf === conf).map(a => DB[a].seed).sort((x, y) => x - y);
+  assert(JSON.stringify(seeds) === JSON.stringify([1, 2, 3, 4, 5, 6, 7, 8]),
+    conf + ' has exactly seeds 1-8 (' + seeds + ')');
+});
+
+// ════════════════════════════════════════════════════════════
+T('3: Default rotation — 240 minutes, rating-ordered, depth-respected');
+TEAMS.forEach(abbr => {
+  const t = DB[abbr];
+  const avail = t.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0);
+  const rot = ctx.gameDefaultRotation(avail, t.coach.rotationDepth);
+  const total = rot.reduce((a, r) => a + r.minutes, 0);
+  assert(Math.abs(total - 240) < 0.01, abbr + ' rotation sums to 240 (' + total.toFixed(1) + ')');
+  const withMin = rot.filter(r => r.minutes > 0);
+  assert(withMin.length <= t.coach.rotationDepth, abbr + ' respects rotationDepth');
+  const top = rot.reduce((a, b) => (b.minutes > a.minutes ? b : a));
+  const best = avail.reduce((a, b) => (b.baseRating > a.baseRating ? b : a));
+  assert(top.player.baseRating >= best.baseRating - 5, abbr + ' top minutes go to a top player');
+});
+
+// ════════════════════════════════════════════════════════════
+T('4: Role fit — native zero, families sane');
+assert(ctx.gameRoleFitCost('Shot Creator', 'Shot Creator', ctx.GAME_OFF_ROLE_FAMILY) === 0, 'native role = 0 cost');
+assert(ctx.gameRoleFitCost('Shot Creator', 'Primary Ball Handler', ctx.GAME_OFF_ROLE_FAMILY) === 0.15, 'same family = 0.15');
+assert(ctx.gameRoleFitCost('Stationary Shooter', 'Roll + Cut Big', ctx.GAME_OFF_ROLE_FAMILY) === 0.60, 'shooter->big = 0.60');
+assert(ctx.gameRoleFitCost('Point of Attack', 'Anchor Big', ctx.GAME_DEF_ROLE_FAMILY) === 0.60, 'PoA->Anchor = 0.60');
+// Every labeled role in the data maps to a family (no orphan roles).
+TEAMS.forEach(abbr => DB[abbr].players.forEach(p => {
+  if (p.offRole) assert(ctx.GAME_OFF_ROLE_FAMILY[p.offRole], 'off role mapped: ' + p.offRole);
+  if (p.defRole) assert(ctx.GAME_DEF_ROLE_FAMILY[p.defRole], 'def role mapped: ' + p.defRole);
+}));
+
+// ════════════════════════════════════════════════════════════
+T('5: Matchup factory — all 120 pairings build; assignments derived');
+let built = 0;
+for (let i = 0; i < TEAMS.length; i++) {
+  for (let j = 0; j < TEAMS.length; j++) {
+    if (i === j) continue;
+    const s = ctx.makeGameSeries(DB, TEAMS[i], TEAMS[j], 'R2');
+    if (s && s.defAssignments.homeOnAway && s.defAssignments.awayOnHome) built++;
+  }
+}
+assert(built === 240, 'all 240 ordered pairings build with assignments (' + built + ')');
+
+// ════════════════════════════════════════════════════════════
+T('6: Factory calibration — derived assignments vs hand-authored R1 defMatchups');
+// The 8 R1 series carry hand-authored defMatchups. The derived TARGET
+// (opponent's primary initiator) should agree with the hand-authored one
+// in the large majority of cases; defender agreement is looser (hand
+// choices weighed scheme fit, not just dLEBRON).
+let targetHits = 0, targetTotal = 0;
+ctx.SERIES_DATA.forEach(s => {
+  if ((s.round || 'R1') !== 'R1' || !s.defMatchups) return;
+  const g = ctx.makeGameSeries(DB, s.homeTeam.abbr, s.awayTeam.abbr, 'R1');
+  const lastName = n => (n || '').split(' ').pop();
+  [['homeDefOnAway', 'homeOnAway'], ['awayDefOnHome', 'awayOnHome']].forEach(([handKey, derivedKey]) => {
+    const hand = s.defMatchups[handKey], derived = g.defAssignments[derivedKey];
+    if (!hand || !derived) return;
+    targetTotal++;
+    if (lastName(hand.target) === lastName(derived.target)) targetHits++;
+  });
+});
+assert(targetTotal >= 12, 'calibration sample has >=12 hand-authored assignments (' + targetTotal + ')');
+assert(targetHits / targetTotal >= 0.6, 'derived target matches hand-authored >=60% (' +
+  targetHits + '/' + targetTotal + ')');
+console.log('  (info) target agreement: ' + targetHits + '/' + targetTotal);
+
+// ════════════════════════════════════════════════════════════
+T('7: Venue + HCA — 2-2-1-1-1, G7 override, fortress');
+assert([1, 2, 5, 7].every(ctx.gameVenueIsHome) && ![3, 4, 6].some(ctx.gameVenueIsHome), '2-2-1-1-1 venue map');
+const sasNyk = ctx.makeGameSeries(DB, 'SAS', 'NYK', 'Finals');
+assert(ctx.gameHcaForGame(sasNyk, 1, { home: 0, away: 0 }) === 1, 'Finals HCA base 1');
+const denMin = ctx.makeGameSeries(DB, 'DEN', 'MIN', 'R1');
+assert(ctx.gameHcaForGame(denMin, 3, { home: 2, away: 0 }) === 3 + ctx.GAME_CONFIG.fortressBonus,
+  'MIN fortress bonus applies when MIN hosts G3');
+assert(ctx.gameHcaForGame(denMin, 7, { home: 3, away: 3 }) === 2.5, 'G7 override at DEN (no fortress)');
+
+// ════════════════════════════════════════════════════════════
+// Phase 1 blocks (capacity / regime / trajectory / game-sim)
+// ════════════════════════════════════════════════════════════
+
+T('8: Capacity — full-strength fidelity (self-calibration)');
+TEAMS.forEach(abbr => {
+  const cap = ctx.computeTeamCapacity(DB[abbr], {});
+  assert(Math.abs(cap.ortg - DB[abbr].advStats.ortg) < 0.5,
+    abbr + ' full-strength ORtg reproduces advStats (' + cap.ortg.toFixed(1) + ' vs ' + DB[abbr].advStats.ortg + ')');
+  assert(Math.abs(cap.drtg - DB[abbr].advStats.drtg) < 0.5,
+    abbr + ' full-strength DRtg reproduces advStats (' + cap.drtg.toFixed(1) + ' vs ' + DB[abbr].advStats.drtg + ')');
+  assert(cap.playerShares.length > 0 && Math.abs(cap.playerShares.reduce((a, s) => a + s.ptsShare, 0) - 1) < 1e-6,
+    abbr + ' pts shares sum to 1');
+});
+
+T('9: Capacity — roster sensitivity (the LAL test)');
+{
+  const lal = DB.LAL;
+  const full = ctx.computeTeamCapacity(lal, {});
+  const gutted = ctx.computeTeamCapacity(lal, { unavailable: ['LeBron James', 'Luka Doncic', 'Austin Reaves'] });
+  assert(gutted.ortg < full.ortg - 4, 'LAL minus 3 stars loses >4 ORtg (' + full.ortg.toFixed(1) + ' -> ' + gutted.ortg.toFixed(1) + ')');
+  const okc = ctx.computeTeamCapacity(DB.OKC, {});
+  const guttedScore = ctx.expectedGameScores(ctx.makeGameSeries(DB, 'OKC', 'LAL', 'R2'), okc, gutted, 1).away;
+  assert(guttedScore < 103, 'gutted LAL projects sub-103 vs OKC (' + guttedScore.toFixed(1) + ')');
+  // Removing a bench body must hurt less than removing the best player
+  const noBench = ctx.computeTeamCapacity(lal, { unavailable: ['Bronny James'] });
+  const noStar = ctx.computeTeamCapacity(lal, { unavailable: ['LeBron James'] });
+  assert(noBench.ortg > noStar.ortg, 'losing LeBron hurts more than losing Bronny');
+}
+
+T('10: Capacity — miscast roles are penalized');
+{
+  const nyk = DB.NYK;
+  const base = ctx.computeTeamCapacity(nyk, {});
+  const roles = {};
+  nyk.players.filter(p => p.initialStatus === 'available' && p.tier !== 'star').slice(0, 3)
+    .forEach(p => { roles[p.name] = { offRole: 'Roll + Cut Big', defRole: 'Anchor Big' }; });
+  const miscast = ctx.computeTeamCapacity(nyk, { roleAssignments: roles });
+  assert(miscast.ortg < base.ortg, 'miscasting reduces ORtg (' + base.ortg.toFixed(1) + ' -> ' + miscast.ortg.toFixed(1) + ')');
+}
+
+T('10b: Minutes physics — 42-min cap + overload penalty (solver-audit fix)');
+{
+  const okc = DB.OKC;
+  const star = okc.players.reduce((a, b) => (b.baseRating > a.baseRating ? b : a));
+  const others = okc.players.filter(p => p !== star && p.initialStatus === 'available' && p.baseRating > 0).slice(0, 6);
+  const greedy = [{ player: star, minutes: 48 }, ...others.map(p => ({ player: p, minutes: 32 }))];
+  const cap = ctx.computeTeamCapacity(okc, { rotation: greedy });
+  const starRow = cap.playerShares.find(s => s.player.name === star.name);
+  assert(starRow.minutes <= ctx.GAME_CONFIG.maxPlayerMinutes + 0.01,
+    'star minutes capped at ' + ctx.GAME_CONFIG.maxPlayerMinutes + ' (' + starRow.minutes.toFixed(1) + ')');
+  assert(Math.abs(cap.playerShares.reduce((a, s) => a + s.minutes, 0) - 240) < 0.5, 'still 240 total');
+  assert(ctx.gameOverloadMult(30) === 1 && ctx.gameOverloadMult(40) < 1, 'overload penalty above threshold only');
+}
+
+T('11: Determinism — same seed, identical outcome');
+{
+  const s = ctx.makeGameSeries(DB, 'OKC', 'SAS', 'CF');
+  const g1 = ctx.simulateGameOnce(s, 1, { seed: 4417 });
+  const g2 = ctx.simulateGameOnce(s, 1, { seed: 4417 });
+  const g3 = ctx.simulateGameOnce(s, 1, { seed: 4418 });
+  assert(g1.homeScore === g2.homeScore && g1.awayScore === g2.awayScore, 'same seed → same score');
+  assert(JSON.stringify(g1.box.home) === JSON.stringify(g2.box.home), 'same seed → same box score');
+  assert(g1.homeScore !== g3.homeScore || g1.awayScore !== g3.awayScore, 'different seed → different game');
+}
+
+T('12: Game invariants — scores, quarters, box coherence');
+{
+  const s = ctx.makeGameSeries(DB, 'DET', 'ORL', 'R1');
+  for (let seed = 1; seed <= 40; seed++) {
+    const g = ctx.simulateGameOnce(s, 1 + (seed % 7), { seed });
+    assert(g.homeScore !== g.awayScore, 'no ties (seed ' + seed + ')');
+    assert(g.homeScore >= 60 && g.homeScore <= 175 && g.awayScore >= 60 && g.awayScore <= 175,
+      'scores in sane range (seed ' + seed + ': ' + g.homeScore + '-' + g.awayScore + ')');
+    const qh = g.quarters.reduce((a, q) => a + q.home, 0);
+    const qa = g.quarters.reduce((a, q) => a + q.away, 0);
+    assert(qh === g.homeScore && qa === g.awayScore, 'quarters sum to final (seed ' + seed + ')');
+    assert(g.quarters.length === 4 + (g.ot || 0), 'quarter count matches OT (seed ' + seed + ')');
+    ['home', 'away'].forEach(side => {
+      const box = g.box[side];
+      const pts = box.reduce((a, p) => a + p.pts, 0);
+      assert(pts === (side === 'home' ? g.homeScore : g.awayScore), side + ' box pts sum to team score (seed ' + seed + ')');
+      box.forEach(p => assert(p.pts >= 0 && p.reb >= 0 && p.ast >= 0 && p.min >= 0, 'non-negative lines'));
+    });
+  }
+}
+
+T('12b: Physical plausibility — per-minute caps, box minutes coherent');
+{
+  const s = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  const cfg = ctx.GAME_CONFIG;
+  for (let seed = 500; seed < 560; seed++) {
+    const g = ctx.simulateGameOnce(s, 1 + (seed % 7), { seed });
+    ['home', 'away'].forEach(side => {
+      const team = side === 'home' ? s.home : s.away;
+      let minSum = 0;
+      g.box[side].forEach(r => {
+        minSum += r.min;
+        const p = team.players.find(x => x.name === r.name);
+        const usgF = p ? Math.max(cfg.usgCapClamp[0], Math.min(cfg.usgCapClamp[1], (p.usg || 15) / cfg.usgCapPivot)) : 1;
+        assert(r.pts <= Math.floor(r.min * cfg.ptsPerMinCap * usgF) + 2,
+          'pts within usage-scaled minutes cap (' + r.name + ': ' + r.pts + ' in ' + r.min + 'min, seed ' + seed + ')');
+        assert(r.reb <= Math.floor(r.min * cfg.rebPerMinCap) + 2, 'reb within cap (' + r.name + ')');
+        assert(r.ast <= Math.floor(r.min * cfg.astPerMinCap) + 2, 'ast within cap (' + r.name + ')');
+        assert(r.to <= Math.floor(r.min * cfg.toPerMinCap) + 2 && r.stl <= Math.floor(r.min * cfg.stlPerMinCap) + 2 &&
+          r.blk <= Math.floor(r.min * cfg.blkPerMinCap) + 2, 'to/stl/blk within caps (' + r.name + ')');
+      });
+      const expected = 240 + 25 * (g.ot || 0);
+      assert(Math.abs(minSum - expected) <= 6,
+        side + ' box minutes ~' + expected + ' (' + minSum + ', ot ' + g.ot + ', seed ' + seed + ')');
+    });
+  }
+}
+
+T('12c: Returning players — real injuries seed the book and expire');
+{
+  // Edwards: OUT at playoffs start, est. return May 9 → ~9 games out.
+  const edwards = DB.MIN.players.find(p => p.name === 'Anthony Edwards');
+  assert(edwards && edwards.initialStatus === 'returning', 'Edwards is returning, not ghosted');
+  assert(edwards.initialGamesOut >= 6 && edwards.initialGamesOut <= 12,
+    'Edwards return parsed from "May 9" (' + edwards.initialGamesOut + ' games)');
+  const lillard = DB.SAS && Object.values(DB).flatMap(t => t.players).find(p => p.name === 'Damian Lillard');
+  assert(lillard && lillard.initialStatus === 'returning' && lillard.initialGamesOut === 99,
+    'Lillard (torn Achilles) out for the whole run');
+  const dfs = Object.values(DB).flatMap(t => t.players).find(p => p.name === 'Dorian Finney-Smith');
+  assert(dfs && dfs.initialStatus === 'dnp', 'Finney-Smith is a rotation DNP, not an injury');
+  // In a run: Edwards starts in the injury book and is unavailable G1...
+  const run = ctx.createGameRun(DB, { seed: 31 });
+  assert(run.teamState.MIN.injuries['Anthony Edwards'], 'Edwards seeded into MIN injury book');
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  const gs1 = ctx.getUpcomingGameState(run, ses, 'MIN');
+  assert(gs1.unavailable.includes('Anthony Edwards'), 'Edwards unavailable in G1');
+  // ...and the book counts down as games play.
+  const before = run.teamState.MIN.injuries['Anthony Edwards'].gamesOut;
+  ctx.playSeriesGame(run, ses, null);
+  ctx.playSeriesGame(run, ses, null);
+  const after = run.teamState.MIN.injuries['Anthony Edwards'].gamesOut;
+  assert(after === before - 2, 'return clock counts down (' + before + ' -> ' + after + ')');
+  // Watson (questionable) returns fast and actually PLAYS.
+  const watson = DB.DEN.players.find(p => p.name && /Watson/.test(p.name));
+  if (watson) {
+    assert(watson.initialStatus === 'returning' && watson.initialGamesOut <= 2, 'Watson back within 2 games');
+    let played = false;
+    ses.games.forEach((g, i) => { if (i >= watson.initialGamesOut) g.box.home.forEach(r => { if (r.name === watson.name && r.min > 0) played = true; }); });
+    while (!ses.done) ctx.playSeriesGame(run, ses, null);
+    ses.games.forEach((g, i) => { if (i >= watson.initialGamesOut) g.box.home.forEach(r => { if (r.name === watson.name && r.min > 0) played = true; }); });
+    assert(played, 'Watson returns and plays minutes after his clock expires');
+  }
+}
+
+T('12d: Designations + composition — stat-derived types, off-shape taxed, AI counters');
+{
+  // Designation sanity against known player types
+  const find = name => Object.values(DB).flatMap(t => t.players).find(p => p.name === name);
+  const hart = find('Josh Hart');
+  assert(hart && ['flex', 'guard-wing'].includes(hart.designation),
+    'Hart is a flex/guard-wing, not a plain guard (' + (hart && hart.designation) + ')');
+  const lebron = find('LeBron James');
+  assert(lebron && lebron.designation === 'flex', 'LeBron (point-forward) is flex (' + (lebron && lebron.designation) + ')');
+  const gobert = find('Rudy Gobert');
+  assert(gobert && gobert.designation === 'big', 'Gobert is a big');
+  const brunson = find('Jalen Brunson');
+  assert(brunson && brunson.designation === 'guard', 'Brunson is a guard');
+  // Natural secondary roles: Hart's finishing/rebounding profile makes
+  // Cutter ~free (the playtest complaint), while a pure shooter pays.
+  assert(hart.naturalOffRoles.includes('Cutter'), 'Hart has Cutter as a natural role (' + hart.naturalOffRoles.join(',') + ')');
+  const hartFit = ctx.gameRoleFitCost(hart.offRole, 'Cutter', ctx.GAME_OFF_ROLE_FAMILY, hart.naturalOffRoles);
+  assert(hartFit <= 0.05, 'Hart -> Cutter costs ~nothing (' + hartFit + ')');
+  // Composition on designation credits
+  const nyk = DB.NYK;
+  const byCredit = b => nyk.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 &&
+    (ctx.GAME_DESIGNATION_CREDIT[p.designation] || [0, 1, 0])[2] >= (b ? 0.9 : 0) &&
+    (b ? true : (ctx.GAME_DESIGNATION_CREDIT[p.designation] || [0, 1, 0])[2] < 0.1)).map(p => p.name);
+  const bigs = byCredit(true), smalls = byCredit(false);
+  if (bigs.length >= 3 && smalls.length >= 2) {
+    const cBig = ctx.gameLineupComposition(nyk, [...bigs.slice(0, 3), ...smalls.slice(0, 2)]);
+    assert(cBig.ortgMod < 0, 'big-heavy five pays a spacing tax (' + cBig.label + ')');
+  }
+  // Balanced five with a flex dodges the taxes (versatility as value)
+  const flexes = nyk.players.filter(p => p.designation === 'flex' && p.initialStatus !== 'dnp').map(p => p.name);
+  if (flexes.length >= 1 && smalls.length >= 2 && bigs.length >= 1) {
+    const wings = nyk.players.filter(p => ['wing', 'guard-wing'].includes(p.designation) && p.initialStatus !== 'dnp').map(p => p.name);
+    if (wings.length >= 1) {
+      const five = [smalls[0], smalls[1] || wings[0], wings[0], flexes[0], bigs[0]].filter((v, i, a) => a.indexOf(v) === i);
+      if (five.length === 5) {
+        const c = ctx.gameLineupComposition(nyk, five);
+        assert(c.ortgMod === 0 && c.drtgMod === 0, 'balanced five with a flex is penalty-free (' + c.label + ')');
+      }
+    }
+  }
+  // Composition counter: high-adjust coach counters a big-heavy five
+  const okc = DB.OKC, den = DB.DEN;
+  const denBigs = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.designation === 'big').map(p => p.name);
+  const denSmalls = den.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.designation !== 'big').map(p => p.name);
+  if (denBigs.length >= 3 && denSmalls.length >= 2) {
+    const bigFive = [...denBigs.slice(0, 3), ...denSmalls.slice(0, 2)];
+    const rngA = ctx.gameCreateRNG(7), rngB = ctx.gameCreateRNG(7);
+    const planNoInfo = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {} }, rngA);
+    const planCounter = ctx.makeCoachPlan(okc, den, ctx.initCoachEvidence(), ctx.initCoachEvidence(), { unavailable: [], fatigue: {}, oppLastStarters: bigFive }, rngB);
+    const bigMin = plan => plan.rotation.filter(r => (ctx.GAME_DESIGNATION_CREDIT[r.player.designation] || [0, 1, 0])[2] >= 0.33)
+      .reduce((a, r) => a + r.minutes, 0);
+    assert(bigMin(planCounter) > bigMin(planNoInfo), 'high-adjust coach counters a big lineup with size (' +
+      bigMin(planNoInfo).toFixed(1) + ' -> ' + bigMin(planCounter).toFixed(1) + ')');
+  }
+}
+
+T('12f: Usage-aware scoring depth — low-usage ceilings bind tighter');
+{
+  // Sweep many games: track the max pts per 30+ min for low-usage
+  // (usg < 15) vs high-usage (usg >= 26) players. Shot diet must bound
+  // eruptions: the low-usage max should be clearly below the high-usage
+  // max AND below the flat physical cap.
+  const s = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  let loMax = 0, hiMax = 0;
+  for (let seed = 900; seed < 1050; seed++) {
+    const g = ctx.simulateGameOnce(s, 1 + (seed % 7), { seed });
+    ['home', 'away'].forEach(side => {
+      const team = side === 'home' ? s.home : s.away;
+      g.box[side].forEach(r => {
+        const p = team.players.find(x => x.name === r.name);
+        if (!p || r.min < 15) return;
+        const cap = Math.floor(r.min * ctx.GAME_CONFIG.ptsPerMinCap *
+          Math.max(ctx.GAME_CONFIG.usgCapClamp[0], Math.min(ctx.GAME_CONFIG.usgCapClamp[1], p.usg / ctx.GAME_CONFIG.usgCapPivot)));
+        assert(r.pts <= cap + 1, 'usage-scaled ceiling holds (' + r.name + ' usg ' + p.usg + ': ' + r.pts + ' in ' + r.min + 'min)');
+        if (p.usg < 15) loMax = Math.max(loMax, r.pts);
+        if (p.usg >= 26) hiMax = Math.max(hiMax, r.pts);
+      });
+    });
+  }
+  assert(loMax < hiMax, 'low-usage eruptions stay below high-usage ones (' + loMax + ' vs ' + hiMax + ')');
+  console.log('  (info) max pts at 15+ min: low-usage ' + loMax + ', high-usage ' + hiMax);
+}
+
+T('12e: Playing hurt — aggravation risk; resting still recovers; light nights refresh');
+{
+  // Aggravation: a dragged player logging heavy minutes gets re-injured
+  // at ~aggravationBase * min/30 per game; a rested one never does.
+  const rng = ctx.gameCreateRNG(2024);
+  const den = DB.DEN;
+  const hurt = den.players.find(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.ppg > 10);
+  const rot = [{ player: hurt, minutes: 36 }];
+  const drags = {}; drags[hurt.name] = 0.25;
+  let aggr = 0;
+  for (let i = 0; i < 3000; i++) aggr += ctx.sampleGameInjuries(rot, {}, rng, drags).filter(e => e.type === 'aggravated').length;
+  const rate = aggr / 3000;
+  assert(rate > 0.03 && rate < 0.10, 'aggravation rate in a plausible band (' + (100 * rate).toFixed(1) + '%/game at 36min)');
+  let aggrRested = 0;
+  for (let i = 0; i < 2000; i++) aggrRested += ctx.sampleGameInjuries([{ player: hurt, minutes: 0 }], {}, rng, drags).length;
+  assert(aggrRested === 0, 'resting a hurt player carries zero aggravation risk');
+  // Light-night recovery: fatigue decays faster at 12 min than at 30.
+  const run = ctx.createGameRun(DB, { seed: 88 });
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  run.teamState.DEN.fatigue['TestGuy'] = 0.5;   // synthetic benched entry
+  ctx.playSeriesGame(run, ses, null);
+  assert(run.teamState.DEN.fatigue['TestGuy'] < 0.5 * 0.65,
+    'benched/never-played fatigue decays at the light rate (' + run.teamState.DEN.fatigue['TestGuy'].toFixed(3) + ')');
+}
+
+T('13: Series invariants — first to 4, venue alternation, shifts persist');
+{
+  const s = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');
+  for (let seed = 100; seed < 110; seed++) {
+    const ser = ctx.simulateSeriesOnce(s, { seed });
+    const wins = { home: 0, away: 0 };
+    ser.games.forEach(g => wins[g.winner === s.home.abbr ? 'home' : 'away']++);
+    assert(Math.max(wins.home, wins.away) === 4, 'winner has exactly 4 (seed ' + seed + ')');
+    assert(Math.min(wins.home, wins.away) <= 3, 'loser has <=3');
+    assert(ser.games.length >= 4 && ser.games.length <= 7, 'series length 4-7');
+    assert(ser.winner === (wins.home === 4 ? s.home.abbr : s.away.abbr), 'winner field consistent');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// Phase 2 blocks (injuries / coach AI / run structure)
+// ════════════════════════════════════════════════════════════
+
+T('14: Injury hazard — realistic run-level rates, book mechanics');
+{
+  // A full 4-round run ≈ 20 team-games; expect ~1-3 meaningful events.
+  const rng = ctx.gameCreateRNG(777);
+  const team = DB.OKC;
+  const rot = ctx.gameDefaultRotation(
+    team.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0),
+    team.coach.rotationDepth);
+  let events = 0;
+  const RUNS = 400, GAMES = 20;
+  for (let r = 0; r < RUNS; r++) {
+    for (let g = 0; g < GAMES; g++) events += ctx.sampleGameInjuries(rot, {}, rng).length;
+  }
+  const perRun = events / RUNS;
+  assert(perRun >= 0.8 && perRun <= 3.2, 'injuries per 20-game run in [0.8, 3.2] (' + perRun.toFixed(2) + ')');
+  // Fatigue raises hazard
+  const fat = {}; rot.forEach(r => { fat[r.player.name] = 0.8; });
+  let fatEvents = 0;
+  for (let r = 0; r < RUNS; r++) {
+    for (let g = 0; g < GAMES; g++) fatEvents += ctx.sampleGameInjuries(rot, fat, rng).length;
+  }
+  assert(fatEvents > events * 1.2, 'fatigue raises hazard (' + events + ' -> ' + fatEvents + ')');
+  // Book mechanics: peek is pure; advance moves time forward
+  const book = { X: { gamesOut: 1, drag: 0.3, dragGames: 1 } };
+  let t1 = ctx.peekInjuryBook(book);
+  assert(t1.unavailable.includes('X'), 'game 1: out');
+  assert(JSON.stringify(ctx.peekInjuryBook(book)) === JSON.stringify(t1), 'peek is pure (no mutation)');
+  ctx.advanceInjuryBook(book);
+  t1 = ctx.peekInjuryBook(book);
+  assert(!t1.unavailable.includes('X') && t1.drags.X === 0.3, 'game 2: plays with drag');
+  ctx.advanceInjuryBook(book);
+  t1 = ctx.peekInjuryBook(book);
+  assert(!t1.unavailable.includes('X') && !t1.drags.X, 'game 3: clear view');
+  ctx.advanceInjuryBook(book);
+  assert(!book.X, 'book entry removed after drag expires');
+}
+
+T('15: Coach AI — evidence asymmetry (duds > spikes), bait resistance scales with adjust');
+{
+  const nyk = DB.NYK, okc = DB.OKC;
+  const star = okc.players.reduce((a, b) => (b.ppg > a.ppg ? b : a));
+  const mkBox = ratio => [{ name: star.name, pts: Math.round(star.ppg * ratio), min: 36 }];
+  // One spike vs one dud of equal magnitude: the dud must move the
+  // asymmetric estimate FURTHER from 1 (measured: duds 2x stickier).
+  const evSpike = ctx.initCoachEvidence(), evDud = ctx.initCoachEvidence();
+  ctx.updateCoachEvidence(evSpike, mkBox(1.5), okc);
+  ctx.updateCoachEvidence(evDud, mkBox(0.5), okc);
+  const upMove = Math.abs(ctx.coachShiftBelief(evSpike, star.name, 10) - 1);
+  const downMove = Math.abs(ctx.coachShiftBelief(evDud, star.name, 10) - 1);
+  assert(downMove > upMove * 1.5, 'dud moves belief >1.5x more than equal spike (' +
+    downMove.toFixed(3) + ' vs ' + upMove.toFixed(3) + ')');
+  // Bait resistance: after spike-then-normal games, the low-adjust coach
+  // (recency-weighted) believes the spike more than the high-adjust coach.
+  const ev2 = ctx.initCoachEvidence();
+  ctx.updateCoachEvidence(ev2, mkBox(1.6), okc);
+  const naive = ctx.coachShiftBelief(ev2, star.name, 2);
+  const sharp = ctx.coachShiftBelief(ev2, star.name, 10);
+  assert(naive > sharp, 'low-adjust coach buys the one-game spike more (' +
+    naive.toFixed(3) + ' vs ' + sharp.toFixed(3) + ')');
+  // Plan validity: 240 minutes, only available players
+  const rng = ctx.gameCreateRNG(5);
+  const plan = ctx.makeCoachPlan(nyk, okc, ctx.initCoachEvidence(), ev2, { unavailable: [], fatigue: {} }, rng);
+  const tot = plan.rotation.reduce((a, r) => a + r.minutes, 0);
+  assert(Math.abs(tot - 240) < 1, 'coach plan minutes ~240 (' + tot.toFixed(1) + ')');
+}
+
+T('16: Double coverage — suppresses target, punished vs multi-initiator');
+{
+  const sctx = ctx.makeGameSeries(DB, 'DET', 'BOS', 'R2');   // DET 1 initiator, BOS 3
+  const capDET = ctx.computeTeamCapacity(DB.DET, {});
+  const capBOS = ctx.computeTeamCapacity(DB.BOS, {});
+  const detStar = capDET.playerShares.reduce((a, b) => (b.ptsShare > a.ptsShare ? b : a));
+  const doubledDET = ctx.applyDoubleCoverage(capDET, detStar.player.name, DB.DET.initiators);
+  const newStar = doubledDET.playerShares.find(s => s.player.name === detStar.player.name);
+  assert(newStar.ptsShare < detStar.ptsShare, 'doubled star share drops');
+  assert(Math.abs(doubledDET.playerShares.reduce((a, s) => a + s.ptsShare, 0) - 1) < 1e-6, 'shares renormalized');
+  assert(doubledDET.ortg < capDET.ortg, 'doubling a 1-initiator offense reduces its ORtg');
+  const bosStar = capBOS.playerShares.reduce((a, b) => (b.ptsShare > a.ptsShare ? b : a));
+  const doubledBOS = ctx.applyDoubleCoverage(capBOS, bosStar.player.name, DB.BOS.initiators);
+  assert(doubledBOS.ortg > capBOS.ortg, 'doubling a 3-initiator offense gets punished');
+}
+
+T('17: Full bracket — completes, deterministic, structurally valid');
+{
+  const res1 = ctx.runFullBracket(DB, { seed: 42 });
+  const res2 = ctx.runFullBracket(DB, { seed: 42 });
+  assert(res1.series.length === 15, 'exactly 15 series (' + res1.series.length + ')');
+  assert(TEAMS.includes(res1.champion), 'champion is a real team (' + res1.champion + ')');
+  assert(res1.champion === res2.champion &&
+    JSON.stringify(res1.series.map(s => s.winner)) === JSON.stringify(res2.series.map(s => s.winner)),
+    'same seed → identical bracket');
+  const rounds = res1.series.map(s => s.round);
+  assert(rounds.filter(r => r === 'R1').length === 8 && rounds.filter(r => r === 'R2').length === 4 &&
+    rounds.filter(r => r === 'CF').length === 2 && rounds.filter(r => r === 'Finals').length === 1,
+    'round structure 8/4/2/1');
+  // Winners advance: every R2 participant won in R1, etc.
+  const wonR1 = new Set(res1.series.filter(s => s.round === 'R1').map(s => s.winner));
+  res1.series.filter(s => s.round === 'R2').forEach(s => {
+    assert(wonR1.has(s.home) && wonR1.has(s.away), 'R2 participants won R1 (' + s.id + ')');
+  });
+  const finals = res1.series.find(s => s.round === 'Finals');
+  assert(DB[finals.home].conf !== DB[finals.away].conf, 'Finals is cross-conference');
+  assert(Array.isArray(res1.injuryLog), 'injury log present');
+}
+
+T('18: Equity table — sums to 1, seeds matter, everyone can win');
+{
+  const N = 300;
+  const eq = ctx.computeEquityTable(DB, N, 20000);
+  const sum = Object.values(eq).reduce((a, b) => a + b, 0);
+  assert(Math.abs(sum - 1) < 1e-9, 'equity sums to 1');
+  const topSeeds = TEAMS.filter(a => DB[a].seed <= 2).reduce((a, t) => a + eq[t], 0);
+  const bottomSeeds = TEAMS.filter(a => DB[a].seed >= 7).reduce((a, t) => a + eq[t], 0);
+  assert(topSeeds > bottomSeeds, 'top-2 seeds hold more equity than 7-8 seeds (' +
+    (100 * topSeeds).toFixed(0) + '% vs ' + (100 * bottomSeeds).toFixed(0) + '%)');
+  console.log('  (info) equity: ' + Object.entries(eq).sort((a, b) => b[1] - a[1])
+    .map(([t, v]) => t + ' ' + (100 * v).toFixed(0) + '%').join(', '));
+}
+
+T('19: Bracket scheduler — 15 series, valid sequencing, champion detection');
+{
+  const records = [];
+  let pair, count = 0;
+  const winners = {};
+  while ((pair = ctx.gameNextSeriesPair(DB, records)) && count < 20) {
+    count++;
+    // scheduler must never repeat a pairing
+    assert(!records.some(r => (r.home === pair.a && r.away === pair.b) || (r.home === pair.b && r.away === pair.a)),
+      'no repeated pairing (' + pair.a + '-' + pair.b + ')');
+    const [h, a] = ctx.gameHomeCourt(DB, pair.a, pair.b, pair.round);
+    const winner = DB[h].seed <= DB[a].seed ? h : a;   // scripted: better seed wins
+    records.push({ home: h, away: a, round: pair.round, winner });
+  }
+  assert(count === 15, 'scheduler yields exactly 15 series (' + count + ')');
+  // Round-major ordering: no series of a later round before ALL series of
+  // the earlier round exist (the depth-first bug the browser playtest caught).
+  const order = records.map(r => r.round);
+  const firstIdx = {}, lastIdx = {};
+  order.forEach((r, i) => { if (!(r in firstIdx)) firstIdx[r] = i; lastIdx[r] = i; });
+  assert(lastIdx.R1 < firstIdx.R2 && lastIdx.R2 < firstIdx.CF && lastIdx.CF < firstIdx.Finals,
+    'strictly round-major schedule (' + order.join(',') + ')');
+  assert(ctx.gameRunChampion(records) !== null, 'champion detected when bracket completes');
+  assert(ctx.gameNextSeriesPair(DB, records) === null, 'scheduler returns null after Finals');
+}
+
+T('20: Stepwise session — parity with headless loop semantics');
+{
+  const run = ctx.createGameRun(DB, { seed: 314 });
+  const session = ctx.openRunSeries(run, 'BOS', 'PHI', 'R1');
+  let guard = 0;
+  while (!session.done && guard++ < 8) {
+    const pre = ctx.getUpcomingGameState(run, session, 'BOS');
+    assert(pre && pre.fatigue && Array.isArray(pre.unavailable), 'pre-game state well-formed');
+    const before = JSON.stringify(pre);
+    ctx.getUpcomingGameState(run, session, 'BOS');
+    assert(JSON.stringify(ctx.getUpcomingGameState(run, session, 'BOS')) === before, 'pre-game view is pure');
+    ctx.playSeriesGame(run, session, null);
+  }
+  assert(session.done && Math.max(session.score.home, session.score.away) === 4, 'session closes at 4 wins');
+  assert(run.series.length === 1 && run.series[0].games.length === session.games.length, 'series recorded');
+  assert(run.rng.draws > 0, 'counting rng tracked draws (' + run.rng.draws + ')');
+}
+
+T('21: Process CVA — assistant-identical plan ≈ 0, bench-the-star < 0');
+{
+  const run = ctx.createGameRun(DB, { seed: 555, userTeam: 'NYK' });
+  const session = ctx.openRunSeries(run, 'NYK', 'ATL', 'R1');
+  // User plan = exactly what the assistant would do → delta ≈ 0 modulo
+  // belief noise; then a deliberately bad plan → clearly negative.
+  const gs = ctx.getUpcomingGameState(run, session, 'NYK');
+  const aiLike = ctx.makeCoachPlan(DB.NYK, DB.ATL,
+    session.evidence.NYK.own, session.evidence.NYK.opp, gs,
+    ctx.gameCreateRNG((run.seed * 31 + run.rng.draws + 1) >>> 0));
+  const g1 = ctx.playSeriesGame(run, session, aiLike);
+  assert(g1.cva && Math.abs(g1.cva.delta) < 1.0, 'assistant-identical plan CVA ~0 (' + g1.cva.delta + ')');
+  // Bench the star: NYK's best player gets 0 minutes. The MECHANIC is
+  // tested deterministically (expected margins, no belief-noise dice);
+  // the in-run CVA keeps a looser band since it carries belief noise.
+  const star = DB.NYK.players.reduce((a, b) => (b.baseRating > a.baseRating ? b : a));
+  const pool = DB.NYK.players.filter(p => p.initialStatus !== 'dnp' && p.baseRating > 0 && p.name !== star.name);
+  const badPlan = { rotation: ctx.gameDefaultRotation(pool, 9), doubleTarget: null };
+  const oppRef = ctx.makeCoachPlan(DB.ATL, DB.NYK, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(99));
+  const mAI = ctx.computeExpectedForPlans(session.sctx, 2, session.score, aiLike, oppRef).exp.margin;
+  const mBad = ctx.computeExpectedForPlans(session.sctx, 2, session.score, badPlan, oppRef).exp.margin;
+  assert(mAI - mBad > 0.75, 'benching the star is clearly worse in expectation (' + (mAI - mBad).toFixed(2) + ')');
+  const g2 = ctx.playSeriesGame(run, session, badPlan);
+  assert(g2.cva && g2.cva.delta < 0, 'in-run CVA directionally negative (belief noise; the deterministic assertion above carries the weight) (' + g2.cva.delta + ')');
+  assert(run.cvaTotal === +(g1.cva.delta + g2.cva.delta).toFixed(2), 'run cvaTotal accumulates');
+}
+
+T('22: Persistence — save/restore round-trip continues identically');
+{
+  // Copy A: play 2 games, serialize, keep playing to series end.
+  const runA = ctx.createGameRun(DB, { seed: 777, userTeam: 'DEN' });
+  const sesA = ctx.openRunSeries(runA, 'DEN', 'MIN', 'R1');
+  ctx.playSeriesGame(runA, sesA, null);
+  ctx.playSeriesGame(runA, sesA, null);
+  const saved = ctx.serializeRun(runA, sesA);
+  const contA = [];
+  while (!sesA.done) contA.push(ctx.playSeriesGame(runA, sesA, null));
+  // Copy B: restore from the snapshot and continue.
+  const { run: runB, session: sesB } = ctx.restoreRun(DB, saved);
+  assert(sesB && sesB.games.length === 2 && sesB.sctx, 'session restored mid-series');
+  const contB = [];
+  while (!sesB.done) contB.push(ctx.playSeriesGame(runB, sesB, null));
+  assert(contA.length === contB.length, 'same number of remaining games');
+  contA.forEach((g, i) => {
+    assert(g.homeScore === contB[i].homeScore && g.awayScore === contB[i].awayScore,
+      'restored game ' + (i + 1) + ' identical (' + g.homeScore + '-' + g.awayScore + ' vs ' +
+      contB[i].homeScore + '-' + contB[i].awayScore + ')');
+  });
+  assert(runA.series[0].winner === runB.series[0].winner, 'same series winner after restore');
+}
+
+T('22b: Coverage override — stopper quality matters, miscast loses suppression');
+{
+  const sctx = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  const derived = sctx.defAssignments.homeOnAway;
+  const base = ctx.resolveCoverage(DB.NYK, {}, derived);
+  assert(base.defender === derived.defender && base.suppression > 0, 'default coverage from factory');
+  // Interior big miscast onto the point of attack loses most suppression
+  const big = DB.NYK.players.filter(p => p.initialStatus === 'available' &&
+    ctx.GAME_DEF_ROLE_FAMILY[p.defRole] === 'interior' && p.dLebron > 0)
+    .sort((a, b) => b.dLebron - a.dLebron)[0];
+  if (big) {
+    const miscast = ctx.resolveCoverage(DB.NYK, { stopper: big.name }, derived);
+    const straight = Math.max(0, Math.min(2.0, big.dLebron * 0.9));
+    assert(miscast.suppression < straight, big.name + ' miscast to PoA loses suppression (' +
+      miscast.suppression.toFixed(2) + ' < ' + straight.toFixed(2) + ')');
+  }
+}
+
+T('22b2: Typed coverage jobs + scheme displacement');
+{
+  // Job typing: a big target demands Anchor Big (the Gobert-on-Jokic fix)
+  const jokic = DB.DEN.players.find(p => /Jokic/.test(p.name));
+  if (jokic) {
+    assert(ctx.gameCoverageJob(jokic) === 'Anchor Big', 'Jokic demands the Anchor Big job');
+    const der = ctx.gameDeriveAssignment(DB.MIN, DB.DEN, null, null);
+    assert(der && der.job === 'Anchor Big', 'derived MIN assignment on DEN carries the job (' + der.job + ')');
+    const gobert = DB.MIN.players.find(p => /Gobert/.test(p.name));
+    const cov = ctx.resolveCoverage(DB.MIN, { stopper: gobert.name }, der, DB.DEN, null, null);
+    const fullSup = Math.max(0, Math.min(2, gobert.dLebron * 0.9));
+    assert(Math.abs(cov.suppression - fullSup) < 1e-9, 'Gobert on Jokic is NATIVE — full suppression (' +
+      cov.suppression.toFixed(2) + ' = ' + fullSup.toFixed(2) + ')');
+    assert(cov.schemeCost === 0, 'big-on-big displaces nothing');
+  }
+  const brunson = DB.NYK.players.find(p => /Brunson/.test(p.name));
+  assert(ctx.gameCoverageJob(brunson) === 'Point of Attack', 'Brunson demands Point of Attack');
+  // Displacement: best perimeter defender chasing a NON-ballhandler with
+  // a thin perimeter corps behind him → real scheme cost; a deep corps
+  // (or an interior stopper) → little or none.
+  const og = DB.NYK.players.find(p => /Anunoby/.test(p.name));
+  // Target must NOT be the opponent's primary creator (Jalen Johnson IS
+  // ATL's point-forward — guarding him displaces nothing, verified below).
+  const atlBH = ctx.gamePrimaryBallHandler(DB.ATL, null);
+  const wingTarget = DB.ATL.players.filter(p => p.baseRating > 0 && p.initialStatus !== 'dnp' &&
+    p.name !== atlBH.name && p.designation !== 'big' && p.ppg >= 10)
+    .sort((a, b) => a.apg - b.apg)[0];
+  if (og && wingTarget) {
+    const der = { defender: og.name, target: wingTarget.name, dLebron: og.dLebron, job: ctx.gameCoverageJob(wingTarget) };
+    // Thin: rotation holds OG + non-perimeter bodies only
+    const thin = DB.NYK.players.filter(p => p.baseRating > 0 && p.initialStatus !== 'dnp' &&
+      (p.name === og.name || (ctx.GAME_DEF_ROLE_FAMILY[p.defRole] || '') !== 'perimeter'))
+      .slice(0, 8).map(p => ({ player: p, minutes: 30 }));
+    const covThin = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, der, DB.ATL, null, thin);
+    assert(covThin.schemeCost > 0.2, 'thin perimeter corps pays a scheme cost (' + covThin.schemeCost.toFixed(2) + ')');
+    // Deep: full roster available → next-best perimeter covers cheaply
+    const covDeep = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, der, DB.ATL, null, null);
+    assert(covDeep.schemeCost < covThin.schemeCost, 'deep corps displaces cheaper (' +
+      covDeep.schemeCost.toFixed(2) + ' < ' + covThin.schemeCost.toFixed(2) + ')');
+    // Target IS the ballhandler → no displacement question at all
+    const derBH = { defender: og.name, target: brunson.name, dLebron: og.dLebron, job: 'Point of Attack' };
+    const covBH = ctx.resolveCoverage(DB.ATL, { stopper: DB.ATL.players.find(p => /Daniels/.test(p.name)).name },
+      derBH, DB.NYK, null, null);
+    assert(covBH.schemeCost === 0, 'guarding the ballhandler himself displaces nothing');
+    // ...and guarding the point-forward who IS the creator (Johnson) also
+    // displaces nothing — the job and the assignment coincide.
+    const johnson = DB.ATL.players.find(p => /Jalen Johnson/.test(p.name));
+    if (johnson && atlBH.name === johnson.name) {
+      const derJ = { defender: og.name, target: johnson.name, dLebron: og.dLebron, job: ctx.gameCoverageJob(johnson) };
+      const covJ = ctx.resolveCoverage(DB.NYK, { stopper: og.name }, derJ, DB.ATL, null, null);
+      assert(covJ.schemeCost === 0, 'guarding the creator-target displaces nothing');
+    }
+  }
+}
+
+T('22c: Starters + synergy — explicit five honored, default five = 0 mod');
+{
+  const nyk = DB.NYK;
+  const cap = ctx.computeTeamCapacity(nyk, {});
+  const defaultFive = ctx.gameStarterNames({}, cap);
+  assert(defaultFive.length === 5, 'default starters = top-5 minutes');
+  const syn0 = ctx.gameSynergyMod(nyk, defaultFive);
+  assert(Math.abs(syn0.mod) < 1e-9 && syn0.score === nyk.synergyBase, 'default five → mod 0 (self-calibrated)');
+  // A scrambled five produces a different score and a bounded mod
+  const scrambled = nyk.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0)
+    .sort((a, b) => a.baseRating - b.baseRating).slice(0, 5).map(p => p.name);
+  const syn1 = ctx.gameSynergyMod(nyk, scrambled);
+  assert(syn1.score !== syn0.score, 'different five → different SPM score');
+  assert(Math.abs(syn1.mod) <= ctx.GAME_CONFIG.synergyCap + 1e-9, 'synergy mod respects cap');
+  // Explicit starters flow through the game: starters get OT minutes
+  const sctx = ctx.makeGameSeries(DB, 'NYK', 'ATL', 'R1');
+  let g = null;
+  for (let seed = 1; seed < 400 && !g; seed++) {
+    const trial = ctx.simulateGameOnce(sctx, 1, { seed, homePlan: { starters: defaultFive } });
+    if (trial.ot > 0) g = trial;
+  }
+  if (g) {
+    const starterRows = g.box.home.filter(r => defaultFive.includes(r.name));
+    const benchRows = g.box.home.filter(r => !defaultFive.includes(r.name) && r.min > 0);
+    const avgS = starterRows.reduce((a, r) => a + r.min, 0) / starterRows.length;
+    const avgB = benchRows.length ? benchRows.reduce((a, r) => a + r.min, 0) / benchRows.length : 0;
+    assert(avgS > avgB, 'OT minutes flow to the chosen starters');
+  }
+}
+
+T('22d: Coach report — derived attribution matches the box score');
+{
+  const sctx = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');
+  const g = ctx.simulateGameOnce(sctx, 1, { seed: 99 });
+  assert(g.report && g.report.home && g.report.away, 'report present');
+  const cov = g.report.home.coverage;
+  assert(cov.defender && cov.target, 'coverage identities recorded');
+  const targetRow = g.box.away.find(r => r.name === cov.target);
+  assert(targetRow && cov.targetPts === targetRow.pts, 'coverage targetPts cross-checks with box');
+  assert(typeof cov.targetSeason === 'number' && cov.targetSeason > 0, 'season baseline attached');
+  assert(g.report.home.starters.length === 5, 'starters recorded');
+  // Doubling shows up in the report when planned — and can only VANISH
+  // via a CPU halftime revision (a trailing coach dropping a failing
+  // double), never silently.
+  const star = DB.PHI.players.reduce((a, b) => (b.ppg > a.ppg ? b : a));
+  let sawDouble = false, sawDrop = false;
+  for (let seed = 99; seed < 111; seed++) {
+    const g2 = ctx.simulateGameOnce(sctx, 1, { seed, homePlan: { doubleTarget: star.name } });
+    if (g2.report.home.double) {
+      sawDouble = true;
+      assert(g2.report.home.double.target === star.name &&
+        typeof g2.report.home.double.pts === 'number', 'double outcome recorded (seed ' + seed + ')');
+    } else {
+      sawDrop = true;
+      assert(g2.halftimeAdjusted === true,
+        'a vanished double must mean a halftime revision (seed ' + seed + ')');
+    }
+  }
+  assert(sawDouble, 'double persisted in at least one game');
+  if (sawDrop) console.log('  (info) CPU halftime dropped a failing double in some games — mechanic live');
+}
+
+T('22d2: Pace posture — possessions, variance scaling, CPU underdog rule');
+{
+  const sctx = ctx.makeGameSeries(DB, 'OKC', 'PHX', 'R1');
+  const capN = ctx.computeTeamCapacity(DB.PHX, {});
+  const capS = ctx.computeTeamCapacity(DB.PHX, { pace: 'slow' });
+  assert(capS.pace < capN.pace, 'slow posture reduces pace (' + capS.pace.toFixed(1) + ' < ' + capN.pace.toFixed(1) + ')');
+  const capOKC = ctx.computeTeamCapacity(DB.OKC, {});
+  const expN = ctx.expectedGameScores(sctx, capOKC, capN, 1);
+  const expS = ctx.expectedGameScores(sctx, capOKC, capS, 1);
+  assert(expS.poss < expN.poss && expS.sigmaScale < expN.sigmaScale,
+    'slowing shrinks possessions AND noise scale (' + expS.poss.toFixed(1) + ', ' + expS.sigmaScale.toFixed(3) + ')');
+  // Skinner check: |expected margin| shrinks linearly, sigma by sqrt →
+  // the underdog's z-score against the favorite improves when slowing.
+  const zN = Math.abs(expN.margin) / expN.sigmaScale;
+  const zS = Math.abs(expS.margin) / expS.sigmaScale;
+  assert(zS < zN, 'underdog slowing improves the upset z-score (' + zS.toFixed(2) + ' < ' + zN.toFixed(2) + ')');
+  // CPU rule: PHX (huge netRtg deficit vs OKC) with a capable coach slows;
+  // OKC never volunteers to slow its own edge.
+  const phxPlan = ctx.makeCoachPlan(DB.PHX, DB.OKC, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(1));
+  const okcPlan = ctx.makeCoachPlan(DB.OKC, DB.PHX, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(2));
+  assert(okcPlan.pace === undefined, 'the favorite does not slow the game');
+  // (PHX coach adjust 4 — below the discipline bar, so no slow; DEN@OKC
+  //  gap is only 3.1 — not a clear underdog. MIN @ OKC (gap 8.3, Finch
+  //  adjust 7) is the qualifying case.)
+  assert(phxPlan.pace === undefined, 'low-discipline coach does not slow even as underdog');
+  const minPlan = ctx.makeCoachPlan(DB.MIN, DB.OKC, ctx.initCoachEvidence(), ctx.initCoachEvidence(),
+    { unavailable: [], fatigue: {} }, ctx.gameCreateRNG(3));
+  assert(minPlan.pace === 'slow', 'a disciplined clear underdog slows the game (MIN @ OKC)');
+}
+
+T('22d3: CPU halftime revision — trailing coaches change stance, deterministic');
+{
+  const bos = DB.BOS, phi = DB.PHI;
+  const plan = { doubleTarget: null, unavailable: [], fatigue: {} };
+  // Trailing by 10 with adjust 8 vs a 2-initiator offense → commit a double
+  const rev = ctx.cpuHalftimeRevision(bos, phi, plan, -10);
+  assert(rev && rev.doubleTarget, 'trailing high-adjust coach commits a double (' + (rev && rev.doubleTarget) + ')');
+  // With a failing double already on → drop it
+  const rev2 = ctx.cpuHalftimeRevision(bos, phi, { ...plan, doubleTarget: 'X' }, -10);
+  assert(rev2 && rev2.doubleTarget === null, 'trailing coach drops a failing double');
+  // Leading, or low-adjust → stand pat
+  assert(ctx.cpuHalftimeRevision(bos, phi, plan, +4) === null, 'leading coach stands pat');
+  const phx = DB.PHX;   // adjust 4, urgency 8 — urgency qualifies him
+  assert(ctx.cpuHalftimeRevision(phx, phi, plan, -10) !== null, 'high-urgency coach also reacts');
+  assert(JSON.stringify(ctx.cpuHalftimeRevision(bos, phi, plan, -10)) ===
+         JSON.stringify(ctx.cpuHalftimeRevision(bos, phi, plan, -10)), 'revision is deterministic');
+}
+
+T('22e: Segments — 8+OT structure, quarters are segment pairs');
+{
+  const sctx = ctx.makeGameSeries(DB, 'BOS', 'PHI', 'R1');
+  for (let seed = 1200; seed < 1230; seed++) {
+    const g = ctx.simulateGameOnce(sctx, 1 + (seed % 7), { seed });
+    assert(g.segments.length === 8 + g.ot, '8 regulation segments + OT (' + g.segments.length + ', ot ' + g.ot + ')');
+    assert(g.quarters.length === 4 + g.ot, 'quarters = 4 + OT');
+    for (let q = 0; q < 4; q++) {
+      assert(g.quarters[q].home === g.segments[2 * q].home + g.segments[2 * q + 1].home,
+        'quarter ' + (q + 1) + ' = its segment pair (seed ' + seed + ')');
+    }
+    const segSum = g.segments.reduce((a, x) => a + x.home, 0);
+    assert(segSum === g.homeScore, 'segments sum to final');
+  }
+}
+
+T('22f: Timeouts — budget enforced, damp helps the side being run on');
+{
+  // Direct mechanic test: identical flow state, drift hard against home;
+  // with home's timeout pending the expected next-segment margin delta
+  // must improve for home (drift damped + restoring pull).
+  const mkFlow = () => ({
+    exp: { home: 105, away: 105 }, expH2: null,
+    regime: { drift: -16 },   // strong run against home
+    totalNoise: 0, segIdx: 2, margin: -10,
+    segments: [{ home: 20, away: 30 }, { home: 22, away: 22 }],
+    capitulated: 0, capRolled: false,
+    timeoutPending: { home: false, away: false },
+    budgets: { home: 4, away: 4 }, ot: 0, done: false,
+  });
+  const N = 3000;
+  let withTO = 0, withoutTO = 0;
+  for (let i = 0; i < N; i++) {
+    const a = mkFlow(); const rngA = ctx.gameCreateRNG(5000 + i);
+    ctx.stepGameFlow(a, rngA); withoutTO += a.segments[2].home - a.segments[2].away;
+    const b = mkFlow(); const rngB = ctx.gameCreateRNG(5000 + i);
+    ctx.callGameTimeout(b, 'home');
+    ctx.stepGameFlow(b, rngB); withTO += b.segments[2].home - b.segments[2].away;
+  }
+  const gain = (withTO - withoutTO) / N;
+  assert(gain > 0.8, 'timeout during an opponent run gains expected margin (' + gain.toFixed(2) + ' pts/segment)');
+  // Budget: 4 and out
+  const f = mkFlow();
+  for (let k = 0; k < 4; k++) {
+    assert(ctx.callGameTimeout(f, 'home'), 'timeout ' + (k + 1) + ' accepted');
+    f.timeoutPending.home = false;
+  }
+  assert(!ctx.callGameTimeout(f, 'home'), 'fifth timeout rejected (budget)');
+}
+
+T('22g: Halftime adjustment — H2 expectation shifts, cvaHalf graded, session==headless parity');
+{
+  // Parity: manual stepping with stand-pat halftime === playSeriesGame.
+  const runA = ctx.createGameRun(DB, { seed: 909, userTeam: 'DEN' });
+  const sesA = ctx.openRunSeries(runA, 'DEN', 'MIN', 'R1');
+  const gA = ctx.playSeriesGame(runA, sesA, null);
+  const runB = ctx.createGameRun(DB, { seed: 909, userTeam: 'DEN' });
+  const sesB = ctx.openRunSeries(runB, 'DEN', 'MIN', 'R1');
+  const gsB = ctx.openSeriesGame(runB, sesB, null);
+  let guard = 0;
+  while (!gsB.flow.done && guard++ < 30) {
+    if (ctx.gameSessionAtHalftime(gsB)) ctx.gameSessionHalftime(gsB, null);
+    else ctx.gameSessionStep(gsB);
+  }
+  const gB = ctx.commitSeriesGame(runB, sesB, gsB);
+  assert(gA.homeScore === gB.homeScore && gA.awayScore === gB.awayScore,
+    'manual stepping == headless (' + gA.homeScore + '-' + gA.awayScore + ' vs ' + gB.homeScore + '-' + gB.awayScore + ')');
+  // Halftime revision: user changes coverage at half → H2 expectation
+  // recomputes and cvaHalf grades the revision vs standing pat.
+  const runC = ctx.createGameRun(DB, { seed: 910, userTeam: 'DEN' });
+  const sesC = ctx.openRunSeries(runC, 'DEN', 'MIN', 'R1');
+  const gsDen = ctx.getUpcomingGameState(runC, sesC, 'DEN');
+  const denPlan = ctx.makeCoachPlan(DB.DEN, DB.MIN, sesC.evidence.DEN.own, sesC.evidence.DEN.opp,
+    gsDen, ctx.gameCreateRNG(3));
+  const gsC = ctx.openSeriesGame(runC, sesC, denPlan, true);   // interactive: manual halftime
+  while (!ctx.gameSessionAtHalftime(gsC)) ctx.gameSessionStep(gsC);
+  const minStar = DB.MIN.players.filter(p => p.initialStatus !== 'dnp').reduce((a, b) => (b.ppg > a.ppg ? b : a));
+  ctx.gameSessionHalftime(gsC, { doubleTarget: minStar.name });
+  assert(gsC.h2 && gsC.flow.expH2, 'H2 expectation recomputed after revision');
+  assert(gsC.h2.exp.margin !== gsC.pre.exp.margin, 'revision moves the H2 expectation');
+  const gC = ctx.commitSeriesGame(runC, sesC, gsC);
+  assert(gC.halftimeAdjusted === true && gC.cvaHalf && typeof gC.cvaHalf.delta === 'number',
+    'halftime CVA recorded (' + (gC.cvaHalf && gC.cvaHalf.delta) + ')');
+  assert(Math.abs((runC.cvaTotal) - (gC.cva.delta + gC.cvaHalf.delta)) < 0.02,
+    'run CVA totals pregame + halftime deltas');
+}
+
+T('22h: In-series observability wiring — coaches see scratches + last five');
+{
+  // The composition counter and no-ghost-double rule need oppLastStarters
+  // and oppUnavailable ACTUALLY WIRED in real runs (an earlier version
+  // consumed them in coach-ai but never fed them — caught by inspection,
+  // pinned here forever).
+  const run = ctx.createGameRun(DB, { seed: 77 });
+  const ses = ctx.openRunSeries(run, 'DEN', 'MIN', 'R1');
+  const gs1 = ctx.openSeriesGame(run, ses, null);
+  assert(gs1._series.states.DEN.oppUnavailable.includes('Anthony Edwards'),
+    'G1: DEN coach sees Edwards on MIN scratch list');
+  ctx.commitSeriesGame(run, ses, gs1);
+  const gs2 = ctx.openSeriesGame(run, ses, null);
+  const g1rec = ses.games[0];
+  assert(JSON.stringify(gs2._series.states.DEN.oppLastStarters) ===
+         JSON.stringify(g1rec.report.away.starters),
+    'G2: DEN coach observes MIN\'s G1 starting five');
+  assert(JSON.stringify(gs2._series.states.MIN.oppLastStarters) ===
+         JSON.stringify(g1rec.report.home.starters),
+    'G2: MIN coach observes DEN\'s G1 starting five');
+  ctx.commitSeriesGame(run, ses, gs2);
+}
+
+T('23: UI renderers — pure strings, key content, no leaks of hidden state');
+{
+  const setup = ctx.renderGameSetup();
+  assert(setup.includes('Playoff Run') && setup.includes('Title equity'), 'setup renders with equity');
+  assert((setup.match(/pr-team-card/g) || []).length === 16, 'setup shows 16 team cards');
+  // drive a run far enough to render every screen
+  ctx.GAME_UI.run = ctx.createGameRun(DB, { seed: 4417, userTeam: 'DEN' });
+  ctx.GAME_UI.eliminated = false;
+  let pair;
+  while ((pair = ctx.gameNextSeriesPair(DB, ctx.GAME_UI.run.series))) {
+    if (pair.a === 'DEN' || pair.b === 'DEN') break;
+    ctx.playRunSeries(ctx.GAME_UI.run, pair.a, pair.b, pair.round);
+  }
+  ctx.GAME_UI.session = ctx.openRunSeries(ctx.GAME_UI.run, pair.a, pair.b, pair.round);
+  ctx.GAME_UI.planMinutes = {};
+  DB.DEN.players.filter(p => p.initialStatus === 'available' && p.baseRating > 0).slice(0, 9)
+    .forEach((p, i) => { ctx.GAME_UI.planMinutes[p.name] = [36,34,33,31,29,24,20,18,15][i]; });
+  ctx.GAME_UI.planDouble = '';
+  const plan = ctx.renderGameplan();
+  assert(plan.includes('Rotation') && plan.includes('Coverage') && plan.includes('Game 1'), 'gameplan renders');
+  assert(!plan.includes('expected') && !plan.includes('shift'), 'gameplan leaks no hidden sim state');
+  const byName = {}; DB.DEN.players.forEach(p => { byName[p.name] = p; });
+  const rotation = Object.entries(ctx.GAME_UI.planMinutes).map(([n, m]) => ({ player: byName[n], minutes: m }));
+  ctx.GAME_UI.lastGame = ctx.playSeriesGame(ctx.GAME_UI.run, ctx.GAME_UI.session, { rotation, doubleTarget: null });
+  const result = ctx.renderGameResult();
+  assert(result.includes('pr-trace') && result.includes('box score') && result.includes('Coaching:'), 'result renders trace + boxes + CVA');
+  while (!ctx.GAME_UI.session.done) ctx.playSeriesGame(ctx.GAME_UI.run, ctx.GAME_UI.session, null);
+  ctx.GAME_UI.session = null;
+  let p2;
+  while ((p2 = ctx.gameNextSeriesPair(DB, ctx.GAME_UI.run.series))) {
+    ctx.playRunSeries(ctx.GAME_UI.run, p2.a, p2.b, p2.round);
+  }
+  // Live view (Phase 3.1): interactive session renders, halftime panel shows
+  {
+    const runL = ctx.createGameRun(DB, { seed: 4242, userTeam: 'DEN' });
+    const sesL = ctx.openRunSeries(runL, 'DEN', 'MIN', 'R1');
+    const gsD = ctx.getUpcomingGameState(runL, sesL, 'DEN');
+    const planL = ctx.makeCoachPlan(DB.DEN, DB.MIN, sesL.evidence.DEN.own, sesL.evidence.DEN.opp,
+      gsD, ctx.gameCreateRNG(9));
+    const outerRun = ctx.GAME_UI.run, outerSes = ctx.GAME_UI.session;
+    ctx.GAME_UI.run = runL; ctx.GAME_UI.session = sesL;
+    ctx.GAME_UI.liveGs = ctx.openSeriesGame(runL, sesL, planL, true);
+    const live0 = ctx.renderLiveGame();
+    assert(live0.includes('LIVE') && live0.includes('Timeout'), 'live view renders with timeout control');
+    while (!ctx.gameSessionAtHalftime(ctx.GAME_UI.liveGs)) ctx.gameSessionStep(ctx.GAME_UI.liveGs);
+    const liveHalf = ctx.renderLiveGame();
+    assert(liveHalf.includes('Halftime adjustment') && liveHalf.includes('H2 min'), 'halftime panel renders');
+    ctx.GAME_UI.liveGs = null; ctx.GAME_UI.run = outerRun; ctx.GAME_UI.session = outerSes;
+  }
+  // Series hub renders with intel tables + opponent moves after games
+  {
+    const outerRun2 = ctx.GAME_UI.run, outerSes2 = ctx.GAME_UI.session;
+    const runH = ctx.createGameRun(DB, { seed: 5150, userTeam: 'NYK' });
+    const sesH = ctx.openRunSeries(runH, 'NYK', 'ATL', 'R1');
+    ctx.playSeriesGame(runH, sesH, null);
+    ctx.playSeriesGame(runH, sesH, null);
+    ctx.GAME_UI.run = runH; ctx.GAME_UI.session = sesH;
+    const hub = ctx.renderSeriesHub();
+    assert(hub.includes('Series hub') && hub.includes('intel') && hub.includes("'s moves"),
+      'series hub renders scouting + opponent moves');
+    assert(hub.includes('series avg / season'), 'hub shows honest series-vs-season framing');
+    assert(!hub.includes('undefined'), 'hub has no undefined leaks');
+    ctx.GAME_UI.run = outerRun2; ctx.GAME_UI.session = outerSes2;
+  }
+  const summary = ctx.renderRunSummary();
+  assert(summary.includes('Coaching Value Added') && summary.includes('Champion'), 'summary renders');
+  const bracket = ctx.renderBracketCols(ctx.GAME_UI.run);
+  assert((bracket.match(/pr-bracket-cell/g) || []).length === 15, 'bracket shows 15 series');
+  ctx.GAME_UI.run = null; ctx.GAME_UI.session = null;
+}
+
+T('23b: Plan persistence — reconcile keeps allocations, handles scratches');
+{
+  ctx.GAME_UI.run = ctx.createGameRun(DB, { seed: 12, userTeam: 'DEN' });
+  ctx.GAME_UI.session = ctx.openRunSeries(ctx.GAME_UI.run, 'DEN', 'MIN', 'R1');
+  ctx.GAME_UI.planMinutes = {}; ctx.GAME_UI.planStarters = [];
+  ctx.GAME_UI.planRoles = {}; ctx.GAME_UI.planStopper = ''; ctx.GAME_UI.planDouble = '';
+  ctx.gameReconcilePlan();
+  const t0 = Object.values(ctx.GAME_UI.planMinutes).reduce((a, b) => a + b, 0);
+  assert(t0 === 240, 'first reconcile initializes to exactly 240 (' + t0 + ')');
+  assert(ctx.GAME_UI.planStarters.length === 5, 'first reconcile picks 5 starters');
+  // User customizes; a later reconcile must NOT reset it
+  const names = Object.keys(ctx.GAME_UI.planMinutes).filter(n => ctx.GAME_UI.planMinutes[n] > 0);
+  ctx.GAME_UI.planMinutes[names[0]] = 40;
+  ctx.GAME_UI.planMinutes[names[1]] = 21;
+  const snapshot = JSON.stringify(ctx.GAME_UI.planMinutes);
+  ctx.gameReconcilePlan();
+  assert(JSON.stringify(ctx.GAME_UI.planMinutes) === snapshot, 'reconcile preserves the standing plan');
+  // A scratched starter is zeroed and replaced in the five
+  const scratched = ctx.GAME_UI.planStarters[0];
+  ctx.GAME_UI.run.teamState.DEN.injuries[scratched] = { gamesOut: 2, drag: 0.2, dragGames: 1 };
+  ctx.gameReconcilePlan();
+  assert(ctx.GAME_UI.planMinutes[scratched] === 0, 'scratched player zeroed');
+  assert(ctx.GAME_UI.planStarters.length === 5 && !ctx.GAME_UI.planStarters.includes(scratched),
+    'starters backfilled to 5 without the scratch');
+  ctx.GAME_UI.run = null; ctx.GAME_UI.session = null;
+  ctx.GAME_UI.planMinutes = {}; ctx.GAME_UI.planStarters = [];
+}
+
+// ════════════════════════════════════════════════════════════
+console.log('\n' + '='.repeat(60));
+console.log('RESULTS: ' + passed + ' passed, ' + failed + ' failed');
+console.log('='.repeat(60));
+process.exit(failed ? 1 : 0);

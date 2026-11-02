@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 NBA Playoff Analyzer — Advanced Edition</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="header">
+  <h1><span>2026</span> NBA Playoff Analyzer<span class="header-sub">Advanced Metrics Edition</span></h1>
+  <div class="header-right">
+    <div class="legend">
+      <span><span class="legend-dot" style="background:var(--green)"></span>Elite 85+</span>
+      <span><span class="legend-dot" style="background:var(--accent)"></span>High 70-84</span>
+      <span><span class="legend-dot" style="background:var(--yellow)"></span>Mid 55-69</span>
+      <span><span class="legend-dot" style="background:var(--red)"></span>Low &lt;55</span>
+      <span><span class="legend-dot" style="background:var(--purple)"></span>Game 1 Pick</span>
+    </div>
+  </div>
+</div>
+
+<div class="sport-switcher" id="sportSwitcher">
+  <button class="sport-btn active" onclick="switchSport('nba')">🏀 NBA</button>
+  <button class="sport-btn" onclick="switchSport('baseball')">⚾ Baseball</button>
+  <button class="sport-btn" onclick="switchSport('game')">🏆 Playoff Run</button>
+  <a class="sport-btn site-link" href="index.html">🏠 Home</a>
+  <a class="sport-btn" href="season.html">📅 2026-27 Season</a>
+</div>
+<div class="page-nav" id="pageNav">
+  <button class="page-nav-btn active" onclick="switchPage('home')">Home</button>
+  <button class="page-nav-btn" onclick="switchPage('series')">Series Analysis</button>
+  <button class="page-nav-btn" onclick="switchPage('learnings')">Model Learnings</button>
+  <button class="page-nav-btn" onclick="switchPage('definitions')">Definitions</button>
+  <button class="page-nav-btn" onclick="switchPage('bets')">Bets</button>
+  <button class="page-nav-btn" onclick="switchPage('chs-lab')">CHS Lab</button>
+</div>
+<div class="page-nav" id="pageNavMlb" style="display:none">
+  <button class="page-nav-btn mlb-nav-btn active" onclick="switchBaseballPage('schedule')">Schedule</button>
+  <button class="page-nav-btn mlb-nav-btn" onclick="switchBaseballPage('bets')">Bets</button>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="main" id="main"></div>
+
+<!-- Game Result Modal -->
+<div class="modal-overlay" id="gameModal">
+  <div class="modal">
+    <h2 id="modalTitle">Update Game Result</h2>
+    <label>Winning Team</label>
+    <select id="modalWinner"></select>
+    <label>Score (Winner)</label>
+    <input type="number" id="modalScoreW" placeholder="e.g. 112">
+    <label>Score (Loser)</label>
+    <input type="number" id="modalScoreL" placeholder="e.g. 104">
+    <label>Notable Performances (optional)</label>
+    <textarea id="modalNotes" placeholder="e.g. LeBron 38pts 12reb, KD struggled 14pts on 5/19 shooting"></textarea>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="saveGameResult()">Save Result</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- External Factor Modal -->
+<div class="modal-overlay" id="factorModal">
+  <div class="modal">
+    <h2>Add External Factor</h2>
+    <label>Team</label>
+    <select id="factorTeam"></select>
+    <label>Player Affected (optional)</label>
+    <input type="text" id="factorPlayer" placeholder="e.g. Kevin Durant">
+    <label>Factor Description</label>
+    <textarea id="factorDesc" placeholder="e.g. Locker room tension after social media controversy"></textarea>
+    <label>Impact on Rating</label>
+    <select id="factorImpact">
+      <option value="-10">Major Negative (-10)</option>
+      <option value="-5">Moderate Negative (-5)</option>
+      <option value="-3" selected>Minor Negative (-3)</option>
+      <option value="0">Neutral (0)</option>
+      <option value="3">Minor Positive (+3)</option>
+      <option value="5">Moderate Positive (+5)</option>
+      <option value="10">Major Positive (+10)</option>
+    </select>
+    <label>Category</label>
+    <select id="factorCategory">
+      <option value="personal">Personal / Off-Court</option>
+      <option value="injury">Injury / Health</option>
+      <option value="chemistry">Team Chemistry</option>
+      <option value="motivation">Motivation / Narrative</option>
+      <option value="role">Role Change</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="saveExternalFactor()">Add Factor</button>
+      <button class="btn btn-secondary" onclick="closeFactorModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Scripts loaded in dependency order                            -->
+<!-- ============================================================ -->
+
+<!-- Data layer (no dependencies) -->
+<script src="js/data/constants.js"></script>
+<script src="js/data/series-data.js"></script>
+<script src="js/data/boxscores.js"></script>
+<script src="js/data/historical.js"></script>
+<script src="js/data/bets-data.js"></script>
+<script src="js/data/news.js"></script>
+<script src="js/data/chs-ledger.js"></script>
+<script src="js/data/chs-lab-ledger.js"></script>
+<script src="js/data/user-bet-ledger.js"></script>
+
+<!-- Validators (Tier 1.1) — must run AFTER data files load but BEFORE UI -->
+<script src="js/validators.js"></script>
+
+<!-- Utilities & state (depends on data) -->
+<script src="js/utils.js"></script>
+<script src="js/state.js"></script>
+
+<!-- Calculation engine (depends on data + state + utils) -->
+<script src="js/engine/fatigue.js"></script>
+<script src="js/engine/chemistry.js"></script>
+<script src="js/engine/matchups.js"></script>
+<script src="js/engine/ratings.js"></script>
+<script src="js/engine/scenarios.js"></script>
+<script src="js/engine/projections.js"></script>
+<script src="js/engine/simulation.js"></script>
+<script src="js/engine/graduation.js"></script>
+<script src="js/engine/auto-resolve.js"></script>
+<script src="js/engine/projections-chs.js"></script>
+<script src="js/engine/player-tendencies.js"></script>
+<script src="js/engine/lineup-overrides.js"></script>
+<script src="js/engine/monte-carlo.js"></script>
+<script src="js/engine/parlay-builder.js"></script>
+<script src="js/engine/edge-detector.js"></script>
+<script src="js/engine/risk-controls.js"></script>
+<script src="js/engine/risk-analytics.js"></script>
+
+<!-- UI layer (depends on engine + state) -->
+<script src="js/ui/components.js"></script>
+<script src="js/ui/modals.js"></script>
+<script src="js/ui/series-renderer.js"></script>
+<script src="js/ui/learnings.js"></script>
+<script src="js/ui/definitions.js"></script>
+<script src="js/ui/bet-card.js"></script>
+<script src="js/ui/bets.js"></script>
+<script src="js/ui/home.js"></script>
+<script src="js/ui/chs-lab.js"></script>
+<script src="js/ui/navigation.js"></script>
+
+<!-- ============================================================ -->
+<!-- Baseball (MLB) — additive namespace, isolated MLB_* globals  -->
+<!-- Loads after edge-detector/risk-controls (reuse) + navigation -->
+<!-- (switchPage), before app.js. No NBA file is modified.         -->
+<!-- ============================================================ -->
+<script src="js/baseball/data/mlb-constants.js"></script>
+<script src="js/baseball/data/mlb-schedule.js"></script>
+<script src="js/baseball/data/mlb-bets.js"></script>
+<script src="js/baseball/engine/mlb-validators.js"></script>
+<script src="js/baseball/engine/mlb-projection.js"></script>
+<script src="js/baseball/engine/mlb-monte-carlo.js"></script>
+<script src="js/baseball/ui/baseball.js"></script>
+
+<!-- ============================================================ -->
+<!-- Playoff Run (coaching sim game) — additive js/game/ namespace  -->
+<!-- Derives GAME_TEAM_DB from SERIES_DATA at load; GAME_* globals  -->
+<!-- only. Entry: renderGameSection via switchSport('game').        -->
+<!-- ============================================================ -->
+<script src="js/game/data/game-constants.js"></script>
+<script src="js/game/data/coach-profiles.js"></script>
+<script src="js/game/data/team-db.js"></script>
+<script src="js/game/engine/matchup-factory.js"></script>
+<script src="js/game/engine/capacity.js"></script>
+<script src="js/game/engine/regime.js"></script>
+<script src="js/game/engine/trajectory.js"></script>
+<script src="js/game/engine/coach-ai.js"></script>
+<script src="js/game/engine/game-sim.js"></script>
+<script src="js/game/engine/injury-gen.js"></script>
+<script src="js/game/run-state.js"></script>
+<script src="js/game/ui/game-ui.js"></script>
+
+<!-- Boot -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+/* ============================================================
+   Landing page + 2026-27 regular-season page
+   Shares the design tokens in styles.css.
+   ============================================================ */
+
+.landing { max-width:1100px; margin:0 auto; padding:48px 24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; }
+.landing-card { display:block; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:28px 28px 24px; color:var(--text); text-decoration:none; transition:border-color 0.15s, transform 0.15s; }
+.landing-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.landing-eyebrow { font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-dim); }
+.landing-title { font-size:28px; font-weight:700; margin:8px 0 10px; letter-spacing:-0.5px; }
+.landing-body { font-size:14px; color:var(--text-dim); line-height:1.5; }
+.landing-link { margin-top:18px; font-size:13px; font-weight:600; color:var(--accent); }
+
+.season-nav a { color:var(--text-dim); text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; margin-left:18px; }
+.season-nav a:hover, .season-nav a.active { color:var(--accent); }
+
+.season-status { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; padding:12px 32px; font-size:12px; color:var(--text-dim); border-bottom:1px solid var(--border); }
+.season-status b { color:var(--text); font-weight:600; }
+.season-status .warn { color:var(--yellow); }
+.season-status button { margin-left:auto; }
+
+.season-page { max-width:1400px; margin:0 auto; padding:24px 24px 64px; }
+.season-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:16px; }
+
+.sg-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 20px; cursor:pointer; transition:border-color 0.15s; }
+.sg-card:hover { border-color:var(--accent); }
+.sg-card.open { border-color:var(--accent); cursor:default; }
+.sg-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.sg-matchup { font-size:17px; font-weight:700; }
+.sg-when { font-size:11px; color:var(--text-dim); }
+.sg-pick { font-size:22px; font-weight:700; margin:10px 0 2px; }
+.sg-pick small { font-size:12px; font-weight:500; color:var(--text-dim); margin-left:8px; }
+.sg-score { font-size:13px; color:var(--text-dim); margin-bottom:12px; }
+.sg-chips { display:flex; gap:8px; flex-wrap:wrap; }
+.chip { display:inline-flex; flex-direction:column; min-width:84px; padding:7px 10px; border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--border); }
+.chip-label { font-size:10px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); }
+.chip-value { font-size:15px; font-weight:700; }
+.chip-sub { font-size:10px; color:var(--text-dim); }
+.chip.blend { border-color:var(--accent); background:rgba(79,140,255,0.08); }
+.chip.market { border-color:var(--border); }
+.chip.missing .chip-value { color:var(--text-dim); }
+.sg-flags { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; font-size:11px; }
+.flag { padding:3px 9px; border-radius:12px; font-weight:700; letter-spacing:0.4px; }
+.flag-agree { background:rgba(61,214,140,0.12); color:var(--green); }
+.flag-disagree { background:rgba(255,199,58,0.14); color:var(--yellow); }
+.flag-edge { background:rgba(79,140,255,0.14); color:var(--accent); }
+.flag-none { background:rgba(255,255,255,0.05); color:var(--text-dim); }
+
+.sg-detail { margin-top:18px; border-top:1px solid var(--border); padding-top:14px; cursor:default; }
+.sg-detail h4 { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin:14px 0 8px; }
+.sg-detail h4:first-child { margin-top:0; }
+.lineage { width:100%; border-collapse:collapse; font-size:12px; }
+.lineage td { padding:5px 6px; border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:top; }
+.lineage td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.lineage td.detail { color:var(--text-dim); font-size:11px; }
+.pos { color:var(--green); } .neg { color:var(--red); }
+
+.props { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:8px; }
+.props th { text-align:right; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); padding:4px 6px; border-bottom:1px solid var(--border); }
+.props th:first-child, .props td:first-child { text-align:left; }
+.props td { padding:4px 6px; text-align:right; font-variant-numeric:tabular-nums; border-bottom:1px solid rgba(255,255,255,0.04); }
+.props td.name { font-weight:600; }
+.props td.name small { color:var(--text-dim); font-weight:400; margin-left:6px; }
+.props tr.doubt td { opacity:0.6; }
+.props td.linecell { white-space:nowrap; }
+.props input.line { width:52px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:5px; padding:3px 5px; font-size:12px; text-align:right; }
+.props .pov { display:inline-block; min-width:44px; font-weight:700; }
+
+.season-tabs { display:flex; gap:0; padding:0 32px; border-bottom:2px solid var(--border); overflow-x:auto; }
+.season-tab { padding:12px 22px; cursor:pointer; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-dim); background:transparent; border:none; border-bottom:2px solid transparent; margin-bottom:-2px; white-space:nowrap; }
+.season-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+.lab { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px; }
+.lab-col { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
+.lab-col h3 { font-size:14px; margin-bottom:10px; }
+.lab-row { display:flex; gap:10px; align-items:center; margin:6px 0; font-size:13px; flex-wrap:wrap; }
+.lab-row label { color:var(--text-dim); min-width:70px; font-size:12px; }
+.lab select, .lab input[type=number] { background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:6px 8px; font-size:13px; }
+.lab-players { margin-top:10px; max-height:360px; overflow:auto; }
+.lab-player { display:flex; align-items:center; gap:8px; font-size:12px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.lab-player .mins { color:var(--text-dim); margin-left:auto; font-variant-numeric:tabular-nums; }
+.lab-player select { padding:2px 4px; font-size:11px; }
+.lab-result { grid-column:1 / -1; }
+
+.ledger table { width:100%; border-collapse:collapse; font-size:12px; }
+.ledger th { text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); padding:6px; border-bottom:1px solid var(--border); }
+.ledger td { padding:6px; border-bottom:1px solid rgba(255,255,255,0.05); font-variant-numeric:tabular-nums; }
+.ledger input { width:46px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:5px; padding:3px 5px; font-size:12px; }
+.scorecard { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; margin:14px 0 20px; }
+.score-tile { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+.score-tile .t { font-size:10px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); }
+.score-tile .v { font-size:20px; font-weight:700; margin-top:4px; }
+.score-tile .s { font-size:11px; color:var(--text-dim); }
+
+.import-box textarea { width:100%; min-height:140px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:10px; font-family:monospace; font-size:11px; }
+.muted { color:var(--text-dim); font-size:12px; }
+.btn-sm { padding:6px 12px; font-size:12px; }
+
+@media (max-width: 820px) {
+  .lab { grid-template-columns:1fr; }
+  .season-grid { grid-template-columns:1fr; }
+  .season-status, .season-tabs, .season-page { padding-left:16px; padding-right:16px; }
+}

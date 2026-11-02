@@ -3,144 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 NBA Playoff Analyzer — Advanced Edition</title>
+<title>NBA Analyzer</title>
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/season.css">
 </head>
 <body>
 
 <div class="header">
-  <h1><span>2026</span> NBA Playoff Analyzer<span class="header-sub">Advanced Metrics Edition</span></h1>
-  <div class="header-right">
-    <div class="legend">
-      <span><span class="legend-dot" style="background:var(--green)"></span>Elite 85+</span>
-      <span><span class="legend-dot" style="background:var(--accent)"></span>High 70-84</span>
-      <span><span class="legend-dot" style="background:var(--yellow)"></span>Mid 55-69</span>
-      <span><span class="legend-dot" style="background:var(--red)"></span>Low &lt;55</span>
-      <span><span class="legend-dot" style="background:var(--purple)"></span>Game 1 Pick</span>
-    </div>
-  </div>
+  <h1><span>NBA</span> Analyzer<span class="header-sub">Playoff archive + regular-season model</span></h1>
 </div>
 
-<div class="page-nav" id="pageNav">
-  <button class="page-nav-btn active" onclick="switchPage('home')">Home</button>
-  <button class="page-nav-btn" onclick="switchPage('series')">Series Analysis</button>
-  <button class="page-nav-btn" onclick="switchPage('learnings')">Model Learnings</button>
-  <button class="page-nav-btn" onclick="switchPage('definitions')">Definitions</button>
-  <button class="page-nav-btn" onclick="switchPage('bets')">Bets</button>
-  <button class="page-nav-btn" onclick="switchPage('chs-lab')">CHS Lab</button>
+<div class="landing">
+  <a class="landing-card" href="season.html">
+    <div class="landing-eyebrow">Live · 2026-27</div>
+    <div class="landing-title">Regular Season</div>
+    <div class="landing-body">Tonight's slate with win probability, projected score, player props, and the blend of this engine with the NB.AI Monte Carlo model and the market line.</div>
+    <div class="landing-link">Open season model →</div>
+  </a>
+  <a class="landing-card" href="playoffs.html">
+    <div class="landing-eyebrow">Archive · complete</div>
+    <div class="landing-title">2026 Playoffs</div>
+    <div class="landing-body">The full playoff analyzer — series analysis, bets ledger, CHS Lab, calibration audit, and the Playoff Run coaching sim. Knicks won the title 4-1.</div>
+    <div class="landing-link">Open playoff analyzer →</div>
+  </a>
 </div>
-<div class="tabs" id="tabs"></div>
-<div class="main" id="main"></div>
-
-<!-- Game Result Modal -->
-<div class="modal-overlay" id="gameModal">
-  <div class="modal">
-    <h2 id="modalTitle">Update Game Result</h2>
-    <label>Winning Team</label>
-    <select id="modalWinner"></select>
-    <label>Score (Winner)</label>
-    <input type="number" id="modalScoreW" placeholder="e.g. 112">
-    <label>Score (Loser)</label>
-    <input type="number" id="modalScoreL" placeholder="e.g. 104">
-    <label>Notable Performances (optional)</label>
-    <textarea id="modalNotes" placeholder="e.g. LeBron 38pts 12reb, KD struggled 14pts on 5/19 shooting"></textarea>
-    <div class="modal-btns">
-      <button class="btn btn-primary" onclick="saveGameResult()">Save Result</button>
-      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- External Factor Modal -->
-<div class="modal-overlay" id="factorModal">
-  <div class="modal">
-    <h2>Add External Factor</h2>
-    <label>Team</label>
-    <select id="factorTeam"></select>
-    <label>Player Affected (optional)</label>
-    <input type="text" id="factorPlayer" placeholder="e.g. Kevin Durant">
-    <label>Factor Description</label>
-    <textarea id="factorDesc" placeholder="e.g. Locker room tension after social media controversy"></textarea>
-    <label>Impact on Rating</label>
-    <select id="factorImpact">
-      <option value="-10">Major Negative (-10)</option>
-      <option value="-5">Moderate Negative (-5)</option>
-      <option value="-3" selected>Minor Negative (-3)</option>
-      <option value="0">Neutral (0)</option>
-      <option value="3">Minor Positive (+3)</option>
-      <option value="5">Moderate Positive (+5)</option>
-      <option value="10">Major Positive (+10)</option>
-    </select>
-    <label>Category</label>
-    <select id="factorCategory">
-      <option value="personal">Personal / Off-Court</option>
-      <option value="injury">Injury / Health</option>
-      <option value="chemistry">Team Chemistry</option>
-      <option value="motivation">Motivation / Narrative</option>
-      <option value="role">Role Change</option>
-    </select>
-    <div class="modal-btns">
-      <button class="btn btn-primary" onclick="saveExternalFactor()">Add Factor</button>
-      <button class="btn btn-secondary" onclick="closeFactorModal()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================ -->
-<!-- Scripts loaded in dependency order                            -->
-<!-- ============================================================ -->
-
-<!-- Data layer (no dependencies) -->
-<script src="js/data/constants.js"></script>
-<script src="js/data/series-data.js"></script>
-<script src="js/data/boxscores.js"></script>
-<script src="js/data/historical.js"></script>
-<script src="js/data/bets-data.js"></script>
-<script src="js/data/news.js"></script>
-<script src="js/data/chs-ledger.js"></script>
-<script src="js/data/chs-lab-ledger.js"></script>
-<script src="js/data/user-bet-ledger.js"></script>
-
-<!-- Validators (Tier 1.1) — must run AFTER data files load but BEFORE UI -->
-<script src="js/validators.js"></script>
-
-<!-- Utilities & state (depends on data) -->
-<script src="js/utils.js"></script>
-<script src="js/state.js"></script>
-
-<!-- Calculation engine (depends on data + state + utils) -->
-<script src="js/engine/fatigue.js"></script>
-<script src="js/engine/chemistry.js"></script>
-<script src="js/engine/matchups.js"></script>
-<script src="js/engine/ratings.js"></script>
-<script src="js/engine/scenarios.js"></script>
-<script src="js/engine/projections.js"></script>
-<script src="js/engine/simulation.js"></script>
-<script src="js/engine/graduation.js"></script>
-<script src="js/engine/auto-resolve.js"></script>
-<script src="js/engine/projections-chs.js"></script>
-<script src="js/engine/player-tendencies.js"></script>
-<script src="js/engine/lineup-overrides.js"></script>
-<script src="js/engine/monte-carlo.js"></script>
-<script src="js/engine/parlay-builder.js"></script>
-<script src="js/engine/edge-detector.js"></script>
-<script src="js/engine/risk-controls.js"></script>
-<script src="js/engine/risk-analytics.js"></script>
-
-<!-- UI layer (depends on engine + state) -->
-<script src="js/ui/components.js"></script>
-<script src="js/ui/modals.js"></script>
-<script src="js/ui/series-renderer.js"></script>
-<script src="js/ui/learnings.js"></script>
-<script src="js/ui/definitions.js"></script>
-<script src="js/ui/bet-card.js"></script>
-<script src="js/ui/bets.js"></script>
-<script src="js/ui/home.js"></script>
-<script src="js/ui/chs-lab.js"></script>
-<script src="js/ui/navigation.js"></script>
-
-<!-- Boot -->
-<script src="js/app.js"></script>
 
 </body>
 </html>

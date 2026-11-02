@@ -9,6 +9,9 @@ to run when.
 | `test-projections.js` | **Regression suite.** All schema / engine / UI / parlay-coverage validators. | Every commit, every daily routine. ~3s runtime. |
 | `backtest-*.js` | **One-shot analyses.** Past hypothesis-testing scripts; their findings are encoded in the engine or have been documented. Kept as evidence + for periodic re-run. | On demand (audit drift, new factor proposal). NOT in CI. |
 | `test-{chs-lab-ledger-update,user-bet-log}.js` | **CLIs.** Daily-routine commands (snapshot / settle / add bets / report). The `test-` prefix is historical — these are everyday tools. | Daily / per-bet. NOT regression checks. |
+| `test-game.js` | **Game regression suite** (Playoff Run, `js/game/`). Team DB, matchup factory, three-layer sim, coach AI, bracket. | Every commit that touches `js/game/`. ~15s. |
+| `backtest-score-realism.js` | **Game sim acceptance harness.** Holds sim output distributions to 169 real playoff games (GAME_PLAN.md targets). | After any GAME_CONFIG re-tune. Exit 1 on fail. |
+| `backtest-solver-audit.js` | **Anti-solvability gate.** Static coaching policies must not beat adaptive coach-AI. Caught the 48-min-stars meta on first run. | After sim/coach-AI mechanic changes. |
 
 ---
 

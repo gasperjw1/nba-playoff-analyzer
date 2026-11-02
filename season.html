@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-27 NBA Season Model</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/season.css">
+</head>
+<body>
+
+<div class="header">
+  <h1><span>2026-27</span> NBA Season<span class="header-sub">engine × NB.AI × market</span></h1>
+  <div class="header-right season-nav">
+    <a href="index.html">Home</a>
+    <a href="playoffs.html">2026 Playoffs</a>
+    <a href="season.html" class="active">Regular Season</a>
+  </div>
+</div>
+
+<div class="season-status" id="seasonStatus"></div>
+<div class="season-tabs" id="seasonTabs"></div>
+<div class="season-page" id="seasonMain"></div>
+
+<!-- ?v= must change whenever the engine/constants change together (match
+     SEASON_ENGINE_VERSION), or a cached old file can load beside a new one. -->
+<!-- Data -->
+<script src="js/season/data/season-constants.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/data/player-priors.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/data/chemistry-fit.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/data/slate-snapshot.js"></script>
+<script src="js/season/data/season-ledger.js"></script>
+<!-- Engine -->
+<script src="js/season/adapters.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/engine.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/props.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/ensemble.js?v=2026-11-02.roster-fit"></script>
+<script src="js/season/ledger.js?v=2026-11-02.roster-fit"></script>
+<!-- UI -->
+<script src="js/season/ui.js?v=2026-11-02.roster-fit"></script>
+<script>seasonBoot();</script>
+</body>
+</html>
