@@ -5,6 +5,8 @@
 For day-to-day workflow see [DAILY_UPDATE.md](DAILY_UPDATE.md).
 For the calibration audit findings see [CALIBRATION_AUDIT.md](CALIBRATION_AUDIT.md).
 
+> **Nov 1, 2026 — 2026-27 regular season.** The app shell moved to `playoffs.html`; `index.html` is now a landing page linking it and the new `season.html`. The regular-season model lives in `js/season/` (engine, props, ensemble, ledger, NB.AI feed adapter), is fed by `node fetch-slate.js`, tested by `node test-season.js`, and documented in the README's "Regular season model" section. Everything below this note describes the playoff app, which is unchanged.
+
 ---
 
 ## What this is

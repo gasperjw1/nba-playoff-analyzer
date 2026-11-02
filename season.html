@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-27 NBA Season Model</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/season.css">
+</head>
+<body>
+
+<div class="header">
+  <h1><span>2026-27</span> NBA Season<span class="header-sub">engine × NB.AI × market</span></h1>
+  <div class="header-right season-nav">
+    <a href="index.html">Home</a>
+    <a href="playoffs.html">2026 Playoffs</a>
+    <a href="season.html" class="active">Regular Season</a>
+  </div>
+</div>
+
+<div class="season-status" id="seasonStatus"></div>
+<div class="season-tabs" id="seasonTabs"></div>
+<div class="season-page" id="seasonMain"></div>
+
+<!-- Data -->
+<script src="js/season/data/season-constants.js"></script>
+<script src="js/season/data/slate-snapshot.js"></script>
+<script src="js/season/data/season-ledger.js"></script>
+<!-- Engine -->
+<script src="js/season/adapters.js"></script>
+<script src="js/season/engine.js"></script>
+<script src="js/season/props.js"></script>
+<script src="js/season/ensemble.js"></script>
+<script src="js/season/ledger.js"></script>
+<!-- UI -->
+<script src="js/season/ui.js"></script>
+<script>seasonBoot();</script>
+</body>
+</html>

@@ -8,6 +8,10 @@ node_modules/
 # Per-machine daily-task sentinel (DAILY_UPDATE.md step 0b)
 .daily-task-dry-run
 
+# Per-machine once-per-day state for season-daily.sh
+.season-daily-state
+.season-daily-state.tmp
+
 # Per-machine Claude state — should never be committed (got captured in
 # 082a756 by accident on May 11). Lock files are runtime state; worktree
 # directories are local-only and not the project's responsibility.

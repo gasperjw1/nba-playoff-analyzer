@@ -1,4 +1,39 @@
-# 2026 NBA Playoff Analyzer — Advanced Metrics Edition
+# NBA Analyzer — 2026 Playoffs archive + 2026-27 Regular Season model
+
+`index.html` is a landing page with two entries:
+
+- **`season.html` — 2026-27 Regular Season** (live). A deliberately small game model (net rating × pace + home court + rest − absences; P = Φ(margin/12.5)) blended with the NB.AI Monte Carlo model and compared against the market line, plus player prop projections and an out-of-sample ledger that scores every source. Code in `js/season/`, tests in `test-season.js`. See [Regular season model](#regular-season-model-2026-27) below.
+- **`playoffs.html` — 2026 Playoffs** (archive, complete — Knicks 4-1). Everything described in the rest of this file.
+
+## Regular season model (2026-27)
+
+Daily routine (Node 18+, no dependencies) — one script picks the phase by time of day and runs each phase at most once per day:
+
+```bash
+./season-daily.sh
+```
+
+Any hour it settles open ledger rows from ESPN; from 11:00 ET it also snapshots the NB.AI feed and records tonight's predictions (`--record` refuses a feed that isn't today's slate, so an early run can't record stale lineups). `--status` shows what has run today, `--force` reruns. The underlying commands are `node fetch-slate.js --settle` / `--record` if you want them by hand. Best cadence: once in the morning (settle) and once after ~1 PM ET (record). The same commands are pinned at the top of `DAILY_UPDATE.md`. Run `node test-season.js` before committing, and commit `js/season/data/slate-snapshot.js` and `js/season/data/season-ledger.js` after each run. The NB.AI site (`https://nb-ai.josh2899.chatgpt.site/`) sends no CORS headers, so the page reads the committed snapshot; the Data tab also accepts a pasted `saved.json` as a browser-local fallback.
+
+How the pieces fit:
+
+| File | Role |
+|---|---|
+| `js/season/data/season-constants.js` | Every prior (HCA 2.5, σ 12.5, shrink K=20, rest, impact scale, prop sd) with its source |
+| `js/season/adapters.js` | NB.AI feed → normalized `SeasonSlate`; ESPN scoreboard → results |
+| `js/season/engine.js` | `projectSeasonGame` — margin waterfall, win prob, total, team strength blend |
+| `js/season/props.js` | Per-minute rates × projected minutes × usage redistribution × opponent D × pace; `probOver` |
+| `js/season/ensemble.js` | Log-odds pooling, no-vig market, Brier/log-loss scoring, logistic stacking |
+| `js/season/ledger.js` | Committed + browser-local prediction rows |
+| `js/season/ui.js` | Tonight / Matchup Lab / Ledger & Scoring / Data tabs |
+
+Combination rule: equal-weight log-odds average of the two models (convex scoring rules guarantee it can't do worse than the average member). The market is displayed, not blended, until the ledger has ~150 settled games with all three forecasts — at that point `stackWeightsFromLedger` fits logit P on [ours, NB.AI, market] and tells you whether either model carries information the closing line doesn't. Benchmarks to beat: no-vig closing line ≈ 67.8% winners / Brier 0.205 / margin MAE ≈ 10.
+
+Known limits: the feed's player averages are current-season only, so a player ruled out before his first game is listed as "not valued" rather than priced; team priors are last season's points for/against per possession; the feed only carries the teams playing that day, so the Matchup Lab is limited to those teams.
+
+---
+
+# 2026 NBA Playoff Analyzer — Advanced Metrics Edition (archive)
 
 A comprehensive, research-backed NBA playoff prediction and analysis tool built with vanilla HTML, CSS, and JavaScript. Tracks 2026 NBA Playoff series game-by-game with projections, real-time result tracking, Monte Carlo simulation, an interactive scenario builder, and a Compound Historical Scenarios engine that fires evidence-backed adjustments when stacked conditions match.
 
@@ -42,7 +77,9 @@ The prediction model combines multiple research-backed components:
 
 ```
 nba-playoff-analyzer/
-├── index.html                       # App shell — modals, script tags in dependency order
+├── index.html                       # Landing page → season.html / playoffs.html
+├── season.html                      # 2026-27 regular-season model (js/season/)
+├── playoffs.html                    # Playoff app shell — modals, script tags in dependency order
 ├── css/
 │   └── styles.css                   # All styling with mobile-responsive breakpoints
 ├── js/
@@ -85,7 +122,7 @@ nba-playoff-analyzer/
 
 ## Getting Started
 
-No build tools or dependencies required. Open `index.html` in any modern browser:
+No build tools or dependencies required. Open `playoffs.html` (or the `index.html` landing page) in any modern browser:
 
 ```bash
 # Clone the repo
@@ -93,7 +130,7 @@ git clone https://github.com/gasperjw1/nba-playoff-analyzer.git
 cd nba-playoff-analyzer
 
 # Open in browser
-open index.html
+open playoffs.html
 # or
 python3 -m http.server 8000   # then visit http://localhost:8000
 ```

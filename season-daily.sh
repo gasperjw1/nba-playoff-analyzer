@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# ============================================================
+# season-daily.sh — run the right fetch-slate.js phase for the
+# time of day, at most once per phase per day.
+#
+#   any hour        settle open ledger rows via ESPN (safe to repeat)
+#   from 11:00 ET   snapshot the NB.AI feed + record tonight's predictions
+#                   (the feed refreshes early afternoon; before that it is
+#                   usually yesterday's slate, which --record refuses)
+#
+# State lives in .season-daily-state (gitignored) so repeat runs in a
+# day are no-ops. Run by hand; commands are pinned at the top of
+# DAILY_UPDATE.md.
+#
+#   ./season-daily.sh            normal run
+#   ./season-daily.sh --force    ignore the once-per-day state
+#   ./season-daily.sh --hook     never exits non-zero (for any automation)
+#   ./season-daily.sh --status   show what has run today, do nothing
+# ============================================================
+set -u
+cd "$(dirname "$0")" || exit 1
+
+STATE=.season-daily-state
+RECORD_FROM_HOUR=11
+FORCE=0; HOOK=0; STATUS=0
+for a in "$@"; do
+  case "$a" in
+    --force) FORCE=1 ;;
+    --hook) HOOK=1 ;;
+    --status) STATUS=1 ;;
+  esac
+done
+
+TODAY=$(TZ=America/New_York date +%F)
+HOUR=$((10#$(TZ=America/New_York date +%H)))
+touch "$STATE"
+
+log() { echo "[season-daily] $*"; }
+done_today() { grep -q "^$1=$TODAY\$" "$STATE"; }
+mark() {
+  grep -v "^$1=" "$STATE" > "$STATE.tmp" 2>/dev/null || true
+  echo "$1=$TODAY" >> "$STATE.tmp"
+  mv "$STATE.tmp" "$STATE"
+}
+fail_exit() { [ "$HOOK" -eq 1 ] && exit 0 || exit 1; }
+
+if [ "$STATUS" -eq 1 ]; then
+  log "today (ET) $TODAY, hour $HOUR"
+  done_today settle && log "settle: done today" || log "settle: not yet today"
+  done_today record && log "record: done today" || log "record: not yet today"
+  exit 0
+fi
+
+if ! command -v node >/dev/null 2>&1; then
+  log "node not found on PATH — nothing run"
+  fail_exit
+fi
+
+# ── 1. settle yesterday's open rows ──────────────────────────
+if [ "$FORCE" -eq 1 ] || ! done_today settle; then
+  if out=$(node fetch-slate.js --settle 2>&1); then
+    mark settle
+    log "settle: $(printf '%s\n' "$out" | grep -E '^(Settled|Nothing)' | head -1)"
+    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline) ' | sed 's/^/[season-daily]   /'
+  else
+    log "settle FAILED: $(printf '%s\n' "$out" | tail -2 | tr '\n' ' ')"
+  fi
+else
+  log "settle: already ran today"
+fi
+
+# ── 2. snapshot + record tonight's slate ─────────────────────
+if [ "$HOUR" -lt "$RECORD_FROM_HOUR" ] && [ "$FORCE" -eq 0 ]; then
+  log "record: before ${RECORD_FROM_HOUR}:00 ET (now ${HOUR}:xx) — NB.AI refreshes early afternoon; run again later"
+elif [ "$FORCE" -eq 1 ] || ! done_today record; then
+  if out=$(node fetch-slate.js --record 2>&1); then
+    # Only count the day as done when the feed was today's slate; a stale
+    # feed leaves the phase open so a later run retries.
+    if printf '%s\n' "$out" | grep -q '^Ledger: +'; then mark record; fi
+    log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|record skipped)' | tr '\n' ' ')"
+    printf '%s\n' "$out" | grep -E '^  [A-Z]{2,3} @ ' | sed 's/^/[season-daily]   /'
+    if printf '%s\n' "$out" | grep -q '^Ledger: +[1-9]'; then
+      log "new rows recorded — commit js/season/data/slate-snapshot.js and season-ledger.js"
+    fi
+  else
+    log "record FAILED: $(printf '%s\n' "$out" | tail -2 | tr '\n' ' ')"
+  fi
+else
+  log "record: already ran today"
+fi
+
+exit 0
