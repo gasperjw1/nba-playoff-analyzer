@@ -45,27 +45,64 @@ const SEASON_REST = {
   longRestDays: 3,
 };
 
-// Availability impact. A player's value above replacement is
-// measured with Hollinger Game Score per 36 (box-score only —
-// the NB.AI feed carries no plus-minus metrics). Replacement
-// level ≈ 6 GmSc/36 (a typical 10th man). The scale converts
-// (GmSc/36 above replacement × minutes share) into points of
-// margin. 0.40 prices Curry/Haliburton-class absences at ~5-6 pts
-// and a solid starter at ~1.5-2, which is roughly how the line
-// moved on the Nov 1 2026 slate (0.50 ran ~1.4× the market).
-// Below replacement-level contributors (and the usage their
-// teammates absorb) are what keep this from being 1:1.
+// Player value. Box Plus/Minus (Basketball-Reference) is points per
+// 100 possessions relative to a league-average player, built so a
+// team's minutes-weighted BPM sums to its net rating. Value per game
+// above a replacement-level substitute:
 //
-// Known gap: the NB.AI feed's seasonAverage is CURRENT season only,
-// so a player who is out before his first game has no sample and
-// is reported as `unmodeled` rather than valued.
+//   (BPM − replacementBpm) × min/48 × pace/100 × bpmToPoints
+//
+// Both constants are re-measured on every `node fetch-priors.js` run:
+//   replacementBpm −2.0   VORP's definition; 2025-26 players ranked
+//                         301-450 by minutes averaged −2.2.
+//   bpmToPoints    0.885  slope of team point differential on Σ BPM ×
+//                         minutes share — 2025-26 R² 0.998, 2024-25
+//                         slope 0.892 R² 0.996.
+// For scale: SGA ≈ 8.4 pts/game, Jokić ≈ 10.4, Curry ≈ 4.2, Brunson ≈ 3.3.
+// (Replaced Game Score/36 with replacement 6.0: the measured fringe
+// level is 13.7, so role players were overvalued; GmSc also rated
+// Duren above Curry and Caruso at zero.)
+//
+// Roster adjustment: a team's rating already contains whoever played
+// the games behind it. Tonight's margin moves by
+//   Σ value × (availability tonight − share of the rating he is in)
+// over the current roster, minus departed players' share — so an
+// injury that predates the rating, or an off-season arrival, is not
+// double-counted or missed.
 const SEASON_IMPACT = {
-  replacementGmSc36: 6.0,
-  scale: 0.40,
-  teamCap: 12.0,          // max margin swing from absences
+  replacementBpm: -2.0,
+  bpmToPoints: 0.885,
+  teamCap: 12.0,          // max |roster adjustment| per team, points
   minMinutesForImpact: 8, // ignore deep bench noise
-  offShare: 0.70,         // share of a lost player's impact that reduces own scoring
+  offShare: 0.70,         // share of a player's value that is his own team's scoring (totals only)
 };
+
+// Player baselines: two prior seasons blended with this season.
+//  - Seasons weighted 1.0 / 0.5 per minute (Basketball-Reference's
+//    Simple Projection System weights the last three seasons 6/3/1).
+//  - Prior BPM is regressed toward replacement with 300 phantom
+//    minutes, so a 6-game season cannot price a player as a starter.
+//  - This season counts against at most `…CurrentK` minutes of prior:
+//    BPM 1000 (impact metrics stabilize slowly), box rates 600 (props),
+//    minutes per game 4 games (roles change fast).
+//  - Current-season BPM is estimated from the box line with the fit
+//    fetch-priors.js stores (R² 0.88 in-sample, 0.88 out-of-sample).
+//  - No NBA history: this season's estimate regressed toward
+//    replacement with 400 phantom minutes.
+// All heuristics until the backtest says otherwise.
+const SEASON_PLAYER_PRIOR = {
+  seasonWeights: { 26: 1.0, 25: 0.5 },
+  bpmRegressMinutes: 300,
+  bpmCurrentK: 1000,
+  rateCurrentK: 600,
+  minutesCurrentGames: 4,
+  rookieRegressMinutes: 400,
+  teamGames: 82,
+};
+
+// Bumped whenever the projection logic changes, and stored on every
+// ledger row so the scorecard never mixes model versions silently.
+const SEASON_ENGINE_VERSION = '2026-11-02.bpm-roster';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).

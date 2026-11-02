@@ -20,6 +20,7 @@ function loadCtx(withSnapshot, withUi) {
   });
   const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
   load('js/season/data/season-constants.js');
+  load('js/season/data/player-priors.js');
   load('js/season/data/season-ledger.js');
   if (withSnapshot && fs.existsSync(path.join(__dirname, 'js/season/data/slate-snapshot.js'))) load('js/season/data/slate-snapshot.js');
   load('js/season/adapters.js');
@@ -37,11 +38,23 @@ function loadCtx(withSnapshot, withUi) {
   return ctx;
 }
 
-// A two-team synthetic slate with controllable inputs.
+// A two-team synthetic slate with controllable inputs. Synthetic players
+// have no games this season (the teams have none either); seedPriors gives
+// each a full 2025-26 season with his team, so the team ratings "contain"
+// the whole roster the way a real team's rating does.
 function makePlayer(id, name, min, pts, reb, ast, extra) {
   return { id, name, pos: 'G', status: 'Available', availability: 1, projMin: min, starter: min >= 28, depthRank: 1,
     avg: { min, pts, reb, ast, tpm: pts * 0.08, stl: 1, blk: 0.5, to: 2, fgm: pts * 0.36, fga: pts * 0.78, ftm: pts * 0.15, fta: pts * 0.18, tpa: pts * 0.22 },
-    games: 60, h2h: null, recent: null, ...(extra || {}) };
+    seasonGames: 0, games: 60, h2h: null, recent: null, ...(extra || {}) };
+}
+function priorEntry(c, p, tm) {
+  return { n: p.name, s26: [82, ...c.NBAI_STAT_KEYS.map(k => p.avg[k])],
+    a26: [c.boxToBpm(p.avg), null, null, 82 * p.avg.min, null, null, null, null, null, null], tm };
+}
+function seedPriors(c, slate) {
+  for (const t of Object.values(slate.teams)) for (const p of t.players) c.SEASON_PLAYER_PRIORS.players[p.id] = priorEntry(c, p, { [t.abbr]: 82 });
+  c._priorsByTeamCache = null;
+  return slate;
 }
 function makeTeam(abbr, ortg, drtg, pace, players, rest) {
   return { abbr, name: abbr, city: abbr, logo: null, prior: { ortg, drtg, pace, games: 82 }, current: { ppg: null, papg: null, games: 0 },
@@ -52,11 +65,12 @@ function rotation(prefix) {
   const pts = [24, 19, 16, 13, 11, 10, 8, 6, 5, 3];
   return mins.map((m, i) => makePlayer(`${prefix}${i}`, `${prefix} Player ${i}`, m, pts[i], 5, 3));
 }
-function makeSlate() {
+function makeSlate(c) {
   const A = makeTeam('AAA', 114.5, 114.5, 99, rotation('a'));
   const B = makeTeam('BBB', 114.5, 114.5, 99, rotation('b'));
-  return { source: 'test', date: '2026-11-01', fetchedAt: null, modelVersion: 't', league: { ortg: 114.5, pace: 99, derived: false },
+  const slate = { source: 'test', date: '2026-11-01', fetchedAt: null, modelVersion: 't', league: { ortg: 114.5, pace: 99, derived: false },
     teams: { AAA: A, BBB: B }, games: [{ id: 'g1', tip: '2099-01-01T00:00Z', venue: null, home: 'AAA', away: 'BBB', market: { mlHome: -150, mlAway: 130, spreadHome: -3, total: 228, book: 'T' }, external: { nbai: { pHome: 0.62 } } }] };
+  return c ? seedPriors(c, slate) : slate;
 }
 
 console.log('TEST 1: probability math');
@@ -91,23 +105,62 @@ console.log('TEST 2: team strength shrinkage');
   assert(c.calcSeasonTeamStrength(t, league).currentWeight > 0.8, 'full season dominates');
 }
 
-console.log('TEST 3: availability impact scale');
+console.log('TEST 3: player value (BPM) and roster adjustment');
 {
   const c = loadCtx(false);
-  const mvp = makePlayer('m', 'MVP', 34, 32, 5, 6, { avg: { min: 34, pts: 32, reb: 5, ast: 6, tpm: 2, stl: 1.5, blk: 1, to: 2.5, fgm: 11, fga: 22, ftm: 8, fta: 9, tpa: 6 } });
-  const imp = c.playerImpactPts(mvp);
-  assert(imp > 6 && imp < 10, `MVP-level absence worth 6-10 pts (got ${imp.toFixed(2)})`);
-  const role = makePlayer('r', 'Role', 28, 12, 4, 2, { avg: { min: 28, pts: 12, reb: 4, ast: 2, tpm: 1.5, stl: 0.8, blk: 0.4, to: 1.2, fgm: 4.5, fga: 10, ftm: 1.6, fta: 2, tpa: 4 } });
-  const ri = c.playerImpactPts(role);
-  assert(ri > 1 && ri < 3.5, `solid starter 1-3.5 pts (got ${ri.toFixed(2)})`);
-  const bench = makePlayer('b', 'Bench', 6, 2, 1, 0.5);
-  assert(c.playerImpactPts(bench) === 0, 'sub-8-minute players ignored');
-  const team = makeTeam('T', 114, 114, 99, [{ ...mvp, availability: 0 }, { ...role, availability: 0.5 }, bench]);
-  const a = c.calcAvailabilityImpact(team);
-  near(a.loss, imp + 0.5 * ri, 0.01, 'team loss sums (1 − availability) × impact');
-  assert(a.missing[0].name === 'MVP', 'missing list sorted by loss');
-  const many = makeTeam('T', 114, 114, 99, Array.from({ length: 6 }, (_, i) => ({ ...mvp, id: 'm' + i, availability: 0 })));
-  assert(c.calcAvailabilityImpact(many).loss === c.SEASON_IMPACT.teamCap, 'team cap applies');
+  // Real 2025-26 priors (ESPN ids), valued at pace 100.
+  const val = (id) => c.playerImpactPts({ id, avg: null, seasonGames: 0 }, 100);
+  const sga = val('4278073'), jokic = val('3112335'), curry = val('3975'), caruso = val('2991350');
+  assert(sga > 7 && sga < 10, `SGA worth 7-10 pts (got ${sga.toFixed(2)})`);
+  assert(jokic > 9 && jokic < 12.5 && jokic > sga, `Jokić 9-12.5 and above SGA (got ${jokic.toFixed(2)})`);
+  assert(curry > 3 && curry < 5.5, `Curry 3-5.5 (got ${curry.toFixed(2)})`);
+  assert(caruso > 0.5 && caruso < 2.5, `Caruso's defense valued, 0.5-2.5 (got ${caruso.toFixed(2)})`);
+  assert(val('4396993') > 2, 'Haliburton valued from 2024-25 though he missed 2025-26');
+
+  // Profile blending.
+  const prior = c.playerProfile({ id: '4278073', avg: null, seasonGames: 0 });
+  assert(prior.source === 'prior' && prior.mpg > 30 && prior.mpg < 36 && prior.priorBpm > 9 && prior.priorBpm < 13, 'prior-only profile');
+  const hot = c.playerProfile({ id: '4278073', seasonGames: 10, avg: { min: 34, pts: 40, reb: 6, ast: 7, tpm: 3, stl: 2, blk: 1, to: 2, fgm: 14, fga: 24, ftm: 9, fta: 10, tpa: 7 } });
+  assert(hot.source === 'prior+current' && hot.currentBpm > prior.priorBpm && hot.bpm > prior.priorBpm && hot.bpm < hot.currentBpm, 'hot start pulls BPM partway');
+  near(hot.bpm, (prior.priorBpm * 1000 + hot.currentBpm * 340) / 1340, 1e-6, '1000 prior minutes vs 340 current');
+  const rookieAvg = { min: 30, pts: 20, reb: 5, ast: 4, tpm: 2, stl: 1, blk: 0.5, to: 2.5, fgm: 7, fga: 16, ftm: 4, fta: 5, tpa: 6 };
+  const rookie = c.playerProfile({ id: 'no-history', seasonGames: 5, avg: rookieAvg });
+  assert(rookie.source === 'current' && rookie.bpm < rookie.currentBpm && rookie.bpm > c.SEASON_IMPACT.replacementBpm, 'rookie regressed toward replacement');
+  near(rookie.avg.pts, 20, 1e-9, 'rookie rates = his sample');
+  assert(c.playerImpactPts({ id: 'deep', seasonGames: 20, avg: { ...rookieAvg, min: 6 } }) === 0, 'sub-8-minute players ignored');
+  assert(c.playerProfile({ id: 'nobody', seasonGames: 0, avg: null }).source === 'none', 'no data → none');
+  const avgLine = { min: 30, pts: 14, reb: 5, ast: 3, tpm: 1.5, stl: 0.9, blk: 0.5, to: 1.5, fgm: 5.2, fga: 11.5, ftm: 2.1, fta: 2.7, tpa: 4.2 };
+  const b = c.boxToBpm(avgLine);
+  assert(b > -2.5 && b < 2.5, `ordinary starter line → BPM near 0 (got ${b.toFixed(2)})`);
+
+  // Roster vs rating.
+  const slate = makeSlate(c);
+  const A = slate.teams.AAA, s = c.calcSeasonTeamStrength(A, slate.league), pace = A.prior.pace;
+  const adj = (team) => c.calcRosterAdjustment(team, s).adj;
+  near(adj(A), 0, 1e-9, 'healthy roster that earned the rating → 0');
+  const star = A.players[0], v = c.playerImpactPts(star, pace);
+  assert(v > 1, `synthetic star has real value (got ${v.toFixed(2)})`);
+  const swap = (pl, id, ch) => pl.map(p => p.id === id ? { ...p, ...ch } : p);
+  near(adj({ ...A, players: swap(A.players, star.id, { availability: 0 }) }), -v, 0.006, 'star out → −value');
+  near(adj({ ...A, players: swap(A.players, star.id, { availability: 0.5 }) }), -0.5 * v, 0.006, 'questionable → half');
+  const r = c.calcRosterAdjustment({ ...A, players: swap(A.players, star.id, { availability: 0 }) }, s);
+  assert(r.missing.length === 1 && r.missing[0].name === star.name, 'missing lists the absent star');
+
+  const newcomer = makePlayer('n1', 'Newcomer', 30, 18, 6, 4);
+  c.SEASON_PLAYER_PRIORS.players.n1 = priorEntry(c, newcomer, { ZZZ: 82 });
+  const vn = c.playerImpactPts(newcomer, pace);
+  near(adj({ ...A, players: [...A.players, newcomer] }), vn, 0.006, 'arrival adds his full value');
+  near(adj({ ...A, players: [...A.players, { ...newcomer, availability: 0 }] }), 0, 1e-9, 'arrival who is out costs nothing — never in the rating');
+
+  c.SEASON_PLAYER_PRIORS.players.d1 = priorEntry(c, makePlayer('d1', 'Departed', 30, 18, 6, 4), { AAA: 41 });
+  c._priorsByTeamCache = null;
+  const dep = c.calcRosterAdjustment(A, s);
+  near(dep.adj, -vn * 0.5, 0.006, 'departed player removes his share of the rating (41/82)');
+  assert(dep.items.some(i => i.kind === 'departed' && i.name === 'Departed'), 'departure itemised');
+  delete c.SEASON_PLAYER_PRIORS.players.d1; c._priorsByTeamCache = null;
+
+  const stars = Array.from({ length: 6 }, (_, i) => { const p = makePlayer('x' + i, 'X' + i, 34, 30, 8, 7); c.SEASON_PLAYER_PRIORS.players['x' + i] = priorEntry(c, p, { ZZZ: 82 }); return p; });
+  assert(adj({ ...A, players: [...A.players, ...stars] }) === c.SEASON_IMPACT.teamCap, 'team cap applies');
 }
 
 console.log('TEST 4: rest adjustment');
@@ -123,7 +176,7 @@ console.log('TEST 4: rest adjustment');
 console.log('TEST 5: game projection');
 {
   const c = loadCtx(false);
-  const slate = makeSlate();
+  const slate = makeSlate(c);
   const p = c.projectSeasonGame(slate.games[0], slate);
   near(p.margin, c.SEASON_HCA, 1e-6, 'equal teams → margin = HCA');
   near(p.pHome, c.marginToWinProb(c.SEASON_HCA), 1e-4, 'pHome from margin');
@@ -152,7 +205,7 @@ console.log('TEST 5: game projection');
 console.log('TEST 6: props');
 {
   const c = loadCtx(false);
-  const slate = makeSlate();
+  const slate = makeSlate(c);
   const A = slate.teams.AAA, B = slate.teams.BBB;
   const star = A.players[0];
   const pr = c.projectPlayerProps(star, A, B, slate);
@@ -228,12 +281,14 @@ console.log('TEST 8: scoring + stacking');
 console.log('TEST 9: ledger (stubbed localStorage)');
 {
   const c = loadCtx(false);
-  const slate = makeSlate();
+  c.SEASON_LEDGER = [];                       // isolate from the committed rows
+  const slate = makeSlate(c);
   const g = slate.games[0];
   const proj = c.projectSeasonGame(g, slate);
   const blend = c.blendGameForecast({ pOurs: proj.pHome, pFriend: 0.62, mlHome: -150, mlAway: 130 });
   const e = c.buildLedgerEntry(g, proj, blend, slate);
   assert(e.id === 'g1' && e.pFriend === 0.62 && e.spreadHome === -3 && e.result === null && e.recordedAt, 'entry built');
+  assert(e.engine === c.SEASON_ENGINE_VERSION, 'entry stamped with engine version');
   const r1 = c.recordSeasonEntries([e]); assert(r1.added === 1, 'recorded');
   const r2 = c.recordSeasonEntries([e]); assert(r2.added === 0 && r2.skipped === 1, 'duplicate skipped');
   assert(c.loadSeasonLedger().length === 1 && c.loadSeasonLedger()[0].origin === 'local', 'loaded from local');
@@ -251,10 +306,10 @@ console.log('TEST 10: NB.AI adapter on a minimal fixture');
   const saved = { data: { date: '2026-11-01', fetchedAt: 'x', modelVersion: 0.4, games: [{ id: '1', home: '19', away: '2', date: '2026-11-01T20:30Z', venue: 'V', odds: { home: 220, away: -270, provider: 'DK', total: 221.5, spread: 7.5 } }],
     teams: {
       '19': { id: '19', abbreviation: 'ORL', name: 'Magic', location: 'Orlando', ppg: 114.65, papg: 115.8, games: 82, pace: 103.2, factors: { restDays: 1, backToBack: false, threeInFour: false, schedulePoints: 0, offRating: 111.08, defRating: 112.2, recentGames: 5, recentPPG: 109.8, recentPAPG: 118.4 },
-        players: [{ id: 'p1', name: 'Paolo Banchero', pos: 'F', status: 'Out', seasonAverage: [34, 25, 7, 5, 1.5, 0.8, 0.6, 3, 9, 20, 6, 8, 5], projectedMinutes: 0.6, availability: 0, expectedStarter: false, depthRank: 6, h2h: { pts: 22.7, reb: 6.3, ast: 4.4, n: 12 }, seasonGames: 2, priorGames: 72 },
-          { id: 'p2', name: 'Desmond Bane', pos: 'G', status: 'Available', seasonAverage: [33.6, 17.2, 4, 2.8, 3.2, 0.8, 1, 2.4, 4.8, 14.2, 4.4, 5.2, 9.6], projectedMinutes: 37.3, availability: 1, expectedStarter: true, depthRank: 1 }] },
+        players: [{ id: '4432573', name: 'Paolo Banchero', pos: 'F', status: 'Out', seasonAverage: [34, 25, 7, 5, 1.5, 0.8, 0.6, 3, 9, 20, 6, 8, 5], projectedMinutes: 0.6, availability: 0, expectedStarter: false, depthRank: 6, h2h: { pts: 22.7, reb: 6.3, ast: 4.4, n: 12 }, seasonGames: 2, priorGames: 72 },
+          { id: '4066320', name: 'Desmond Bane', pos: 'G', status: 'Available', seasonAverage: [33.6, 17.2, 4, 2.8, 3.2, 0.8, 1, 2.4, 4.8, 14.2, 4.4, 5.2, 9.6], projectedMinutes: 37.3, availability: 1, expectedStarter: true, depthRank: 1, seasonGames: 5 }] },
       '2': { id: '2', abbreviation: 'BOS', name: 'Celtics', location: 'Boston', ppg: 116.2, papg: 107.6, games: 82, pace: 98.8, factors: { restDays: 2, recentGames: 5, recentPPG: 118, recentPAPG: 110 },
-        players: [{ id: 'p3', name: 'Jayson Tatum', pos: 'F', status: 'Questionable', seasonAverage: [36, 27, 8.5, 5, 3, 1, 0.5, 2.8, 9, 20, 6, 7, 9], projectedMinutes: 35, expectedStarter: true, depthRank: 1 }] } } } };
+        players: [{ id: '4065648', name: 'Jayson Tatum', pos: 'F', status: 'Questionable', seasonAverage: [36, 27, 8.5, 5, 3, 1, 0.5, 2.8, 9, 20, 6, 7, 9], projectedMinutes: 35, expectedStarter: true, depthRank: 1, seasonGames: 5 }] } } } };
   const rankings = { markets: [{ kind: 'ml', gameId: '1', side: 'away', p: 0.5628 }, { kind: 'ml', gameId: '1', side: 'home', p: 0.4372 }, { kind: 'spread', gameId: '1', side: 'home', p: 0.5 }] };
   const s = c.adaptNbaiSlate(saved, rankings);
   assert(s.games.length === 1 && s.games[0].home === 'ORL' && s.games[0].away === 'BOS', 'ids mapped to abbreviations');
@@ -264,6 +319,7 @@ console.log('TEST 10: NB.AI adapter on a minimal fixture');
   near(s.teams.BOS.prior.ortg, 116.2 / 98.8 * 100, 1e-6, 'ppg/pace fallback');
   assert(s.teams.ORL.current.games === 5 && s.teams.ORL.current.ppg === 109.8, 'current season from recent factors');
   assert(s.teams.ORL.players[0].availability === 0 && s.teams.ORL.players[0].avg.pts === 25, 'player normalized');
+  assert(s.teams.ORL.players[0].seasonGames === 2 && s.teams.ORL.players[0].games === 74, 'this-season games kept apart from the total');
   assert(s.teams.BOS.players[0].availability === 0.5, 'questionable → 50% when availability missing');
   assert(s.league.derived === false, 'fallback league averages with 2 teams');
   const proj = c.projectSeasonGame(s.games[0], s);
@@ -307,6 +363,15 @@ console.log('TEST 12: UI boots under a stub DOM');
     }
   } catch (e) { ok = false; console.error('  boot error:', e.stack); }
   assert(ok, 'season UI boots and renders every tab');
+}
+
+console.log('TEST 13: season.html cache-busting matches the engine version');
+{
+  const c = loadCtx(false);
+  const html = fs.readFileSync(path.join(__dirname, 'season.html'), 'utf8');
+  const versions = [...html.matchAll(/src="js\/season\/[^"?]+\?v=([^"]+)"/g)].map(m => m[1]);
+  assert(versions.length >= 8, `code scripts carry ?v= (found ${versions.length})`);
+  assert(versions.every(v => v === c.SEASON_ENGINE_VERSION), `every ?v= equals SEASON_ENGINE_VERSION (${c.SEASON_ENGINE_VERSION}); found ${[...new Set(versions)].join(', ')}`);
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

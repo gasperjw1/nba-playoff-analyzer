@@ -83,7 +83,7 @@ function renderTonight() {
   if (!s.games.length) return `<div class="home-empty">No games on this slate.</div>`;
   const cards = s.games.map(g => renderGameCard(g)).join('');
   return `<div class="season-grid">${cards}</div>
-    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest − absences, P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
+    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
 }
 
 function renderGameCard(g) {
@@ -151,7 +151,7 @@ function seasonUnmodeledNote(g, proj) {
   if (proj.availability.home.unmodeled.length) parts.push(`${g.home}: ${proj.availability.home.unmodeled.join(', ')}`);
   if (proj.availability.away.unmodeled.length) parts.push(`${g.away}: ${proj.availability.away.unmodeled.join(', ')}`);
   if (!parts.length) return '';
-  return `<p class="muted" style="margin-top:8px">Out but <b>not valued</b> (no current-season sample in the feed — includes deep bench and players yet to debut): ${parts.join(' · ')}</p>`;
+  return `<p class="muted" style="margin-top:8px">Out but <b>not valued</b> (no NBA minutes in 2024-25, 2025-26 or this season — rookies and two-ways): ${parts.join(' · ')}</p>`;
 }
 
 // ---------- props ----------

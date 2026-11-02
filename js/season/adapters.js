@@ -11,8 +11,9 @@
 //                 rest:{restDays,backToBack,threeInFour,schedulePoints},
 //                 players:[SeasonPlayer] }
 // SeasonPlayer= { id,name,pos,status,availability,projMin,starter,depthRank,
-//                 avg:{min,pts,reb,ast,tpm,stl,blk,to,fgm,fga,ftm,fta,tpa},
-//                 games, h2h:{pts,reb,ast,n}|null, recent:{lastPts,lastMin}|null }
+//                 avg:{min,pts,reb,ast,tpm,stl,blk,to,fgm,fga,ftm,fta,tpa} (this season),
+//                 seasonGames, games (this + last season),
+//                 h2h:{pts,reb,ast,n}|null, recent:{lastPts,lastMin}|null }
 // SeasonGame  = { id, tip, venue, home, away,
 //                 market:{mlHome,mlAway,spreadHome,total,book}|null,
 //                 external:{ nbai:{pHome, projHome, projAway} }|null }
@@ -50,7 +51,8 @@ function adaptNbaiPlayer(p) {
     projMin: typeof p.projectedMinutes === 'number' ? p.projectedMinutes * (p.workloadMinutesMultiplier || 1) : 0,
     starter: !!p.expectedStarter,
     depthRank: p.depthRank || 99,
-    avg,
+    avg,                                   // this season only, per game over seasonGames
+    seasonGames: p.seasonGames || 0,
     games: (p.seasonGames || 0) + (p.priorGames || 0),
     h2h: p.h2h && typeof p.h2h.n === 'number' ? { pts: p.h2h.pts, reb: p.h2h.reb, ast: p.h2h.ast, n: p.h2h.n } : null,
     recent: p.recentForm ? { lastPts: p.recentForm.lastPoints, lastMin: p.lastMinutes } : null,

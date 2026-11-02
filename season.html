@@ -22,18 +22,21 @@
 <div class="season-tabs" id="seasonTabs"></div>
 <div class="season-page" id="seasonMain"></div>
 
+<!-- ?v= must change whenever the engine/constants change together (match
+     SEASON_ENGINE_VERSION), or a cached old file can load beside a new one. -->
 <!-- Data -->
-<script src="js/season/data/season-constants.js"></script>
+<script src="js/season/data/season-constants.js?v=2026-11-02.bpm-roster"></script>
+<script src="js/season/data/player-priors.js?v=2026-11-02.bpm-roster"></script>
 <script src="js/season/data/slate-snapshot.js"></script>
 <script src="js/season/data/season-ledger.js"></script>
 <!-- Engine -->
-<script src="js/season/adapters.js"></script>
-<script src="js/season/engine.js"></script>
-<script src="js/season/props.js"></script>
-<script src="js/season/ensemble.js"></script>
-<script src="js/season/ledger.js"></script>
+<script src="js/season/adapters.js?v=2026-11-02.bpm-roster"></script>
+<script src="js/season/engine.js?v=2026-11-02.bpm-roster"></script>
+<script src="js/season/props.js?v=2026-11-02.bpm-roster"></script>
+<script src="js/season/ensemble.js?v=2026-11-02.bpm-roster"></script>
+<script src="js/season/ledger.js?v=2026-11-02.bpm-roster"></script>
 <!-- UI -->
-<script src="js/season/ui.js"></script>
+<script src="js/season/ui.js?v=2026-11-02.bpm-roster"></script>
 <script>seasonBoot();</script>
 </body>
 </html>

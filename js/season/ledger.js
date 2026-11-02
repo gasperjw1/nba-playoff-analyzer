@@ -28,6 +28,7 @@ function buildLedgerEntry(game, projection, blend, slate) {
     spreadHome: m.spreadHome != null ? m.spreadHome : null,
     totalMarket: m.total != null ? m.total : null,
     feedVersion: slate.modelVersion || null,
+    engine: SEASON_ENGINE_VERSION,
     recordedAt: new Date().toISOString(),
     result: null,
   };

@@ -34,10 +34,12 @@ function loadSeasonContext() {
   const ctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
   const load = (rel) => vm.runInContext(toVar(fs.readFileSync(path.join(__dirname, rel), 'utf8')), ctx);
   load('js/season/data/season-constants.js');
+  load('js/season/data/player-priors.js');
   load('js/season/adapters.js');
   load('js/season/engine.js');
   load('js/season/props.js');
   load('js/season/ensemble.js');
+  load('js/season/ledger.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   return ctx;
 }
@@ -110,15 +112,7 @@ async function main() {
     rows.forEach(({ g, proj, blend }) => {
       if (ids.has(g.id)) return;
       if (g.tip && new Date(g.tip) <= now) { late++; return; }   // never record after tip-off
-      const m = g.market || {};
-      existing.push({
-        id: g.id, date: slate.date, tip: g.tip, home: g.home, away: g.away,
-        pOurs: proj.pHome, marginOurs: proj.margin, totalOurs: proj.total,
-        pFriend: g.external && g.external.nbai ? +g.external.nbai.pHome.toFixed(4) : null,
-        pMarket: blend.pMarket, pBlend: blend.pBlend,
-        mlHome: m.mlHome ?? null, mlAway: m.mlAway ?? null, spreadHome: m.spreadHome ?? null, totalMarket: m.total ?? null,
-        feedVersion: slate.modelVersion, recordedAt: now.toISOString(), result: null,
-      });
+      existing.push(ctx.buildLedgerEntry(g, proj, blend, slate));
       added++;
     });
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,

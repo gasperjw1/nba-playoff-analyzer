@@ -11,6 +11,12 @@
 ```bash
 node test-season.js          # must be green before committing
 ```
+```bash
+node backtest-season.js --compare HEAD --lineups last-game   # after any engine change: new vs committed engine, every game so far
+```
+```bash
+node fetch-priors.js         # once per season: rebuild player priors (ESPN + Basketball-Reference)
+```
 
 Then commit `js/season/data/slate-snapshot.js` + `js/season/data/season-ledger.js`. Best cadence: once in the morning (settle) and once after ~1 PM ET (record, before the first tip). `--force` reruns a phase; `node fetch-slate.js --settle` / `--record` are the underlying commands. The playoff checklist below is the archived 2026 routine.
 

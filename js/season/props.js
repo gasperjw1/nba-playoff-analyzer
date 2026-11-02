@@ -5,7 +5,9 @@
 //            × usage redistribution (absent teammates' production)
 //            × opponent defense × pace
 // blended lightly with career head-to-head when the sample is there.
-// Distributions are normal with sd linear in the mean (SEASON_PROP.sd).
+// Rates are the player's baseline (playerProfile: two prior seasons
+// blended with this season). Distributions are normal with sd linear
+// in the mean (SEASON_PROP.sd).
 // ============================================================
 
 const PROP_STATS = ['pts', 'reb', 'ast', 'tpm', 'stl', 'blk'];
@@ -16,16 +18,21 @@ function _perMinute(avg, stat) {
 }
 
 // Share of each stat the absent players normally produce, relative to
-// what the active rotation produces — the redistribution factor.
-function calcRedistribution(team, availabilityOverride) {
+// what the active rotation produces — the redistribution factor. An
+// absent player only frees up the production his teammates' baselines
+// were earned alongside (his rating share): a player out since before
+// the season frees up nothing they were not already absorbing.
+function calcRedistribution(team, availabilityOverride, currentWeight, currentTeamGames) {
   const active = {}, missing = {};
   PROP_STATS.forEach(s => { active[s] = 0; missing[s] = 0; });
   (team.players || []).forEach(p => {
     const avail = availabilityOverride && (p.id in availabilityOverride) ? availabilityOverride[p.id] : p.availability;
-    if (!p.avg || p.avg.min < 5) return;
+    const base = playerProfile(p).avg;
+    if (!base || base.min < 5) return;
+    const share = currentWeight == null ? 1 : playerRatingShare(p, team, currentWeight, currentTeamGames);
     PROP_STATS.forEach(s => {
-      active[s] += avail * p.avg[s];
-      missing[s] += (1 - avail) * p.avg[s];
+      active[s] += avail * base[s];
+      missing[s] += (1 - avail) * share * base[s];
     });
   });
   const factor = {};
@@ -58,23 +65,28 @@ function projectPlayerProps(player, team, opp, slate, opts) {
   opts = opts || {};
   const availOv = opts.availabilityOverride || null;
   const avail = availOv && (player.id in availOv) ? availOv[player.id] : player.availability;
-  const avg = player.avg;
-  if (!avg || avg.min < 5 || avail <= 0) return null;
+  const profile = playerProfile(player);
+  const avg = profile.avg;
+  if (!avg || avg.min < 1 || avail <= 0) return null;
 
-  // Minutes conditional on playing. Fall back to season average when the
-  // feed gave an "out" allowance (sub-minute) but the lab toggled him in.
-  let minutes = player.projMin >= 5 ? player.projMin : avg.min;
+  // Minutes conditional on playing, from the feed's rotation projection.
+  // A sub-5 projection means out of the rotation tonight — unless the lab
+  // toggled the player in, in which case use his baseline minutes.
+  let minutes = player.projMin >= 5 ? player.projMin : (availOv && player.id in availOv ? avg.min : 0);
   if (opts.minutesOverride && player.id in opts.minutesOverride) minutes = opts.minutesOverride[player.id];
+  if (minutes < 5) return null;
 
   const league = slate.league;
+  const teamStrength = calcSeasonTeamStrength(team, league);
   const oppStrength = calcSeasonTeamStrength(opp, league);
   const teamPace = team.prior.pace || league.pace;
   const paceF = ((teamPace + (opp.prior.pace || league.pace)) / 2) / teamPace;
   const defF = 1 + SEASON_PROP.oppDefenseWeight * (oppStrength.drtg - league.ortg) / league.ortg;
-  const redist = calcRedistribution(team, availOv);
+  const redist = calcRedistribution(team, availOv, teamStrength.currentWeight, teamStrength.currentGames);
 
   const out = { id: player.id, name: player.name, pos: player.pos, team: team.abbr, opp: opp.abbr,
-    availability: avail, min: +minutes.toFixed(1), starter: player.starter, factors: {}, sd: {} };
+    availability: avail, min: +minutes.toFixed(1), starter: player.starter, baseline: profile.source,
+    factors: {}, sd: {} };
   PROP_STATS.forEach(s => {
     const rate = _perMinute(avg, s);
     let v = rate * minutes * redist[s] * paceF;

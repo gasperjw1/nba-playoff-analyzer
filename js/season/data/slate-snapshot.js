@@ -60,6 +60,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.428571428571429,
       "tpa": 8.857142857142858
      },
+     "seasonGames": 7,
      "games": 85,
      "h2h": {
       "pts": 9.6,
@@ -97,6 +98,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2857142857142856,
       "tpa": 1.2857142857142858
      },
+     "seasonGames": 7,
      "games": 83,
      "h2h": {
       "pts": 16.3,
@@ -134,6 +136,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 17,
      "h2h": null,
      "recent": null
@@ -163,6 +166,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.4285714285714284,
       "tpa": 4.571428571428571
      },
+     "seasonGames": 7,
      "games": 76,
      "h2h": {
       "pts": 16.1,
@@ -200,6 +204,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -229,6 +234,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 3,
      "games": 40,
      "h2h": {
       "pts": 7.2,
@@ -266,6 +272,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1.8571428571428572
      },
+     "seasonGames": 7,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -295,6 +302,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -324,6 +332,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 77,
      "h2h": null,
      "recent": null
@@ -353,6 +362,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.142857142857143,
       "tpa": 4.428571428571429
      },
+     "seasonGames": 7,
      "games": 82,
      "h2h": {
       "pts": 15.8,
@@ -390,6 +400,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 3,
      "games": 61,
      "h2h": {
       "pts": 11.8,
@@ -427,6 +438,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.7142857142857142,
       "tpa": 2.4285714285714284
      },
+     "seasonGames": 7,
      "games": 75,
      "h2h": {
       "pts": 11,
@@ -464,6 +476,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8571428571428572,
       "tpa": 5.142857142857143
      },
+     "seasonGames": 7,
      "games": 83,
      "h2h": {
       "pts": 20,
@@ -501,6 +514,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 2.6666666666666665
      },
+     "seasonGames": 3,
      "games": 46,
      "h2h": null,
      "recent": {
@@ -533,6 +547,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.7142857142857142,
       "tpa": 4.428571428571429
      },
+     "seasonGames": 7,
      "games": 81,
      "h2h": {
       "pts": 10.2,
@@ -570,6 +585,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -599,6 +615,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 6.571428571428571
      },
+     "seasonGames": 7,
      "games": 72,
      "h2h": {
       "pts": 9.4,
@@ -636,6 +653,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 54,
      "h2h": {
       "pts": 6.4,
@@ -695,6 +713,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 38,
      "h2h": null,
      "recent": null
@@ -724,6 +743,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -753,6 +773,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 55,
      "h2h": null,
      "recent": {
@@ -785,6 +806,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 1.6666666666666667
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": {
       "pts": 5.1,
@@ -822,6 +844,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 8.166666666666666
      },
+     "seasonGames": 6,
      "games": 43,
      "h2h": {
       "pts": 22.3,
@@ -859,6 +882,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.1666666666666667,
       "tpa": 1.5
      },
+     "seasonGames": 6,
      "games": 79,
      "h2h": {
       "pts": 4.5,
@@ -896,6 +920,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.5
      },
+     "seasonGames": 2,
      "games": 30,
      "h2h": {
       "pts": 6.5,
@@ -933,6 +958,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": {
       "pts": 4.1,
@@ -970,6 +996,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -999,6 +1026,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5,
       "tpa": 6.166666666666667
      },
+     "seasonGames": 6,
      "games": 85,
      "h2h": null,
      "recent": {
@@ -1031,6 +1059,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.166666666666667,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 6,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -1063,6 +1092,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 66,
      "h2h": null,
      "recent": {
@@ -1095,6 +1125,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2.3333333333333335
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": {
       "pts": 16,
@@ -1132,6 +1163,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 10.166666666666666,
       "tpa": 6.833333333333333
      },
+     "seasonGames": 6,
      "games": 22,
      "h2h": {
       "pts": 21.8,
@@ -1169,6 +1201,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": {
       "pts": 3,
@@ -1206,6 +1239,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.1666666666666667,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": null,
      "recent": {
@@ -1238,6 +1272,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 21,
      "h2h": null,
      "recent": null
@@ -1292,6 +1327,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": {
       "pts": 15.1,
@@ -1329,6 +1365,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -1358,6 +1395,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 3.8333333333333335
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -1390,6 +1428,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 48,
      "h2h": null,
      "recent": {
@@ -1422,6 +1461,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8333333333333334,
       "tpa": 2
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": {
       "pts": 11.2,
@@ -1459,6 +1499,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 14,
      "h2h": null,
      "recent": {
@@ -1491,6 +1532,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": {
       "pts": 19.4,
@@ -1528,6 +1570,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 2.2
      },
+     "seasonGames": 5,
      "games": 67,
      "h2h": null,
      "recent": {
@@ -1560,6 +1603,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 3,
      "games": 45,
      "h2h": {
       "pts": 5.3,
@@ -1597,6 +1641,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 68,
      "h2h": null,
      "recent": {
@@ -1629,6 +1674,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 5.666666666666667
      },
+     "seasonGames": 6,
      "games": 72,
      "h2h": {
       "pts": 17.1,
@@ -1666,6 +1712,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.75,
       "tpa": 3.75
      },
+     "seasonGames": 4,
      "games": 18,
      "h2h": {
       "pts": 15.2,
@@ -1703,6 +1750,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -1732,6 +1780,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5,
       "tpa": 3.5
      },
+     "seasonGames": 4,
      "games": 43,
      "h2h": null,
      "recent": {
@@ -1764,6 +1813,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 0.8333333333333334
      },
+     "seasonGames": 6,
      "games": 87,
      "h2h": {
       "pts": 10.8,
@@ -1801,6 +1851,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 14,
      "h2h": null,
      "recent": {
@@ -1833,6 +1884,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 55,
      "h2h": {
       "pts": 3.7,
@@ -1870,6 +1922,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.166666666666667,
       "tpa": 1.1666666666666667
      },
+     "seasonGames": 6,
      "games": 68,
      "h2h": {
       "pts": 21.6,
@@ -1932,6 +1985,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -1961,6 +2015,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.166666666666667,
       "tpa": 5
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": {
       "pts": 10.4,
@@ -1998,6 +2053,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 69,
      "h2h": null,
      "recent": null
@@ -2027,6 +2083,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.25
      },
+     "seasonGames": 4,
      "games": 14,
      "h2h": {
       "pts": 6.6,
@@ -2064,6 +2121,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8,
       "tpa": 1.8
      },
+     "seasonGames": 5,
      "games": 7,
      "h2h": null,
      "recent": {
@@ -2096,6 +2154,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": {
       "pts": 16.3,
@@ -2133,6 +2192,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 53,
      "h2h": {
       "pts": 11.5,
@@ -2170,6 +2230,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2.8333333333333335
      },
+     "seasonGames": 6,
      "games": 57,
      "h2h": {
       "pts": 15.1,
@@ -2207,6 +2268,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.833333333333333,
       "tpa": 0.8333333333333334
      },
+     "seasonGames": 6,
      "games": 71,
      "h2h": null,
      "recent": {
@@ -2239,6 +2301,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 4.166666666666667
      },
+     "seasonGames": 6,
      "games": 52,
      "h2h": {
       "pts": 5.7,
@@ -2276,6 +2339,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6666666666666665,
       "tpa": 2.1666666666666665
      },
+     "seasonGames": 6,
      "games": 69,
      "h2h": {
       "pts": 10.2,
@@ -2313,6 +2377,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 8.5,
       "tpa": 7.666666666666667
      },
+     "seasonGames": 6,
      "games": 66,
      "h2h": {
       "pts": 11.6,
@@ -2350,6 +2415,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -2379,6 +2445,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 5.333333333333333
      },
+     "seasonGames": 6,
      "games": 59,
      "h2h": {
       "pts": 10.1,
@@ -2416,6 +2483,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -2445,6 +2513,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 72,
      "h2h": {
       "pts": 8.1,
@@ -2479,6 +2548,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.5,
       "tpa": 7.833333333333333
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -2533,6 +2603,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.333333333333333,
       "tpa": 0.5
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": {
       "pts": 14.5,
@@ -2570,6 +2641,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 6
      },
+     "seasonGames": 1,
      "games": 61,
      "h2h": null,
      "recent": {
@@ -2602,6 +2674,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 10,
      "h2h": null,
      "recent": {
@@ -2634,6 +2707,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.333333333333333,
       "tpa": 7.166666666666667
      },
+     "seasonGames": 6,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -2666,6 +2740,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 3.3333333333333335
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -2695,6 +2770,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 58,
      "h2h": {
       "pts": 14.5,
@@ -2732,6 +2808,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 10,
      "h2h": null,
      "recent": {
@@ -2764,6 +2841,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.666666666666667,
       "tpa": 6.166666666666667
      },
+     "seasonGames": 6,
      "games": 79,
      "h2h": {
       "pts": 21.5,
@@ -2801,6 +2879,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 71,
      "h2h": {
       "pts": 17.2,
@@ -2838,6 +2917,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 68,
      "h2h": {
       "pts": 8.5,
@@ -2875,6 +2955,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.8
      },
+     "seasonGames": 5,
      "games": 55,
      "h2h": null,
      "recent": {
@@ -2907,6 +2988,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 4
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -2936,6 +3018,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 4.4
      },
+     "seasonGames": 5,
      "games": 71,
      "h2h": {
       "pts": 9.3,
@@ -2973,6 +3056,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -3002,6 +3086,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": null,
      "recent": {
@@ -3059,6 +3144,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 43,
      "h2h": {
       "pts": 10.9,
@@ -3093,6 +3179,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -3122,6 +3209,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 5.333333333333333
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": {
       "pts": 7.3,
@@ -3159,6 +3247,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 4,
      "games": 41,
      "h2h": null,
      "recent": {
@@ -3191,6 +3280,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6,
       "tpa": 1.8
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -3220,6 +3310,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.25
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -3249,6 +3340,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.8,
       "tpa": 5.2
      },
+     "seasonGames": 5,
      "games": 75,
      "h2h": {
       "pts": 21.5,
@@ -3286,6 +3378,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 0.16666666666666666
      },
+     "seasonGames": 6,
      "games": 61,
      "h2h": null,
      "recent": {
@@ -3318,6 +3411,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 57,
      "h2h": {
       "pts": 6.3,
@@ -3355,6 +3449,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6,
       "tpa": 8.2
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -3384,6 +3479,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -3413,6 +3509,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -3442,6 +3539,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -3471,6 +3569,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 4
      },
+     "seasonGames": 3,
      "games": 77,
      "h2h": {
       "pts": 10.3,
@@ -3508,6 +3607,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3.5
      },
+     "seasonGames": 2,
      "games": 60,
      "h2h": {
       "pts": 7.8,
@@ -3545,6 +3645,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": {
       "pts": 12.3,
@@ -3582,6 +3683,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 44,
      "h2h": null,
      "recent": {
@@ -3614,6 +3716,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.8333333333333335,
       "tpa": 6
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": {
       "pts": 18.9,
@@ -3676,6 +3779,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6,
       "tpa": 0.2
      },
+     "seasonGames": 5,
      "games": 65,
      "h2h": {
       "pts": 12,
@@ -3713,6 +3817,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 6
      },
+     "seasonGames": 5,
      "games": 49,
      "h2h": {
       "pts": 9.7,
@@ -3750,6 +3855,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8,
       "tpa": 3.4
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -3779,6 +3885,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.2,
       "tpa": 1.8
      },
+     "seasonGames": 5,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -3811,6 +3918,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -3840,6 +3948,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.2,
       "tpa": 4.4
      },
+     "seasonGames": 5,
      "games": 41,
      "h2h": {
       "pts": 12.4,
@@ -3877,6 +3986,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.5
      },
+     "seasonGames": 2,
      "games": 27,
      "h2h": {
       "pts": 4.5,
@@ -3914,6 +4024,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -3943,6 +4054,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.5
      },
+     "seasonGames": 2,
      "games": 56,
      "h2h": {
       "pts": 12.4,
@@ -3980,6 +4092,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.4,
       "tpa": 4.8
      },
+     "seasonGames": 5,
      "games": 71,
      "h2h": {
       "pts": 22.1,
@@ -4017,6 +4130,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 63,
      "h2h": {
       "pts": 4.3,
@@ -4051,6 +4165,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 1.2
      },
+     "seasonGames": 5,
      "games": 72,
      "h2h": null,
      "recent": {
@@ -4083,6 +4198,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.4,
       "tpa": 8.6
      },
+     "seasonGames": 5,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -4115,6 +4231,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 62,
      "h2h": null,
      "recent": {
@@ -4147,6 +4264,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 1
      },
+     "seasonGames": 1,
      "games": 53,
      "h2h": null,
      "recent": {
@@ -4179,6 +4297,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 57,
      "h2h": {
       "pts": 9.6,
@@ -4213,6 +4332,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 23,
      "h2h": {
       "pts": 12,
@@ -4275,6 +4395,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": {
       "pts": 14.3,
@@ -4312,6 +4433,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.5,
       "tpa": 6.5
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": null,
      "recent": {
@@ -4344,6 +4466,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 75,
      "h2h": {
       "pts": 12.4,
@@ -4381,6 +4504,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": {
       "pts": 5.6,
@@ -4418,6 +4542,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 27,
      "h2h": null,
      "recent": {
@@ -4450,6 +4575,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 1.8333333333333333
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": null,
      "recent": {
@@ -4482,6 +4608,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": null,
      "recent": {
@@ -4514,6 +4641,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 3.6666666666666665
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": {
       "pts": 6,
@@ -4551,6 +4679,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6666666666666665,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 3,
      "games": 74,
      "h2h": {
       "pts": 8.3,
@@ -4588,6 +4717,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 9,
      "h2h": null,
      "recent": {
@@ -4620,6 +4750,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 35,
      "h2h": null,
      "recent": {
@@ -4652,6 +4783,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -4681,6 +4813,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -4710,6 +4843,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1.5
      },
+     "seasonGames": 2,
      "games": 28,
      "h2h": {
       "pts": 10.8,
@@ -4747,6 +4881,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 1.1666666666666667
      },
+     "seasonGames": 6,
      "games": 71,
      "h2h": null,
      "recent": {
@@ -4779,6 +4914,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 8.833333333333334
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": {
       "pts": 13.2,
@@ -4816,6 +4952,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 20,
      "h2h": null,
      "recent": {
@@ -4848,6 +4985,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0.6
      },
+     "seasonGames": 5,
      "games": 78,
      "h2h": {
       "pts": 9,
@@ -4910,6 +5048,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0.2
      },
+     "seasonGames": 5,
      "games": 18,
      "h2h": null,
      "recent": {
@@ -4942,6 +5081,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 38,
      "h2h": {
       "pts": 18.9,
@@ -4976,6 +5116,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 2.25
      },
+     "seasonGames": 4,
      "games": 22,
      "h2h": null,
      "recent": {
@@ -5008,6 +5149,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 8,
       "tpa": 10
      },
+     "seasonGames": 5,
      "games": 48,
      "h2h": null,
      "recent": {
@@ -5040,6 +5182,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 1.4
      },
+     "seasonGames": 5,
      "games": 73,
      "h2h": {
       "pts": 8.8,
@@ -5077,6 +5220,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.16666666666666666,
       "tpa": 3.3333333333333335
      },
+     "seasonGames": 6,
      "games": 51,
      "h2h": {
       "pts": 14.4,
@@ -5114,6 +5258,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 0.8
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -5143,6 +5288,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.142857142857143,
       "tpa": 6.285714285714286
      },
+     "seasonGames": 7,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -5172,6 +5318,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 3,
      "games": 28,
      "h2h": null,
      "recent": {
@@ -5204,6 +5351,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8571428571428572,
       "tpa": 5.142857142857143
      },
+     "seasonGames": 7,
      "games": 56,
      "h2h": {
       "pts": 8.9,
@@ -5241,6 +5389,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 60,
      "h2h": {
       "pts": 7.7,
@@ -5275,6 +5424,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.14285714285714285,
       "tpa": 4.142857142857143
      },
+     "seasonGames": 7,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -5304,6 +5454,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 7,
      "games": 80,
      "h2h": {
       "pts": 7.2,
@@ -5341,6 +5492,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.2,
       "tpa": 6.4
      },
+     "seasonGames": 5,
      "games": 87,
      "h2h": {
       "pts": 11.8,
@@ -5378,6 +5530,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 32,
      "h2h": null,
      "recent": null
@@ -5407,6 +5560,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.42857142857142855,
       "tpa": 1.7142857142857142
      },
+     "seasonGames": 7,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -5439,6 +5593,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.3333333333333335,
       "tpa": 1.8333333333333333
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": {
       "pts": 6.3,
@@ -5476,6 +5631,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.428571428571429,
       "tpa": 2.857142857142857
      },
+     "seasonGames": 7,
      "games": 73,
      "h2h": null,
      "recent": {
@@ -5533,6 +5689,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 33,
      "h2h": {
       "pts": 7.5,
@@ -5570,6 +5727,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8571428571428571,
       "tpa": 3
      },
+     "seasonGames": 7,
      "games": 30,
      "h2h": null,
      "recent": {
@@ -5602,6 +5760,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 81,
      "h2h": null,
      "recent": {
@@ -5634,6 +5793,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -5663,6 +5823,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.6
      },
+     "seasonGames": 5,
      "games": 19,
      "h2h": null,
      "recent": {
@@ -5695,6 +5856,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 8.285714285714286,
       "tpa": 3.857142857142857
      },
+     "seasonGames": 7,
      "games": 88,
      "h2h": {
       "pts": 26.5,
@@ -5732,6 +5894,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.142857142857143,
       "tpa": 2.7142857142857144
      },
+     "seasonGames": 7,
      "games": 67,
      "h2h": {
       "pts": 8,
@@ -5769,6 +5932,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 48,
      "h2h": {
       "pts": 5.4,
@@ -5803,6 +5967,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.4,
       "tpa": 2.2
      },
+     "seasonGames": 5,
      "games": 79,
      "h2h": {
       "pts": 12.4,
@@ -5840,6 +6005,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.75,
       "tpa": 8
      },
+     "seasonGames": 4,
      "games": 86,
      "h2h": null,
      "recent": {
@@ -5872,6 +6038,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.75,
       "tpa": 4.75
      },
+     "seasonGames": 4,
      "games": 66,
      "h2h": null,
      "recent": {
@@ -5904,6 +6071,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5714285714285716,
       "tpa": 6.714285714285714
      },
+     "seasonGames": 7,
      "games": 84,
      "h2h": {
       "pts": 12.8,
@@ -5941,6 +6109,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 50,
      "h2h": {
       "pts": 4.5,
@@ -5978,6 +6147,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.142857142857143,
       "tpa": 1
      },
+     "seasonGames": 7,
      "games": 86,
      "h2h": {
       "pts": 17.2,
@@ -6015,6 +6185,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.8
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -6044,6 +6215,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 30,
      "h2h": null,
      "recent": {
@@ -6076,6 +6248,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6,
       "tpa": 7.2
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -6130,6 +6303,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 1
      },
+     "seasonGames": 3,
      "games": 63,
      "h2h": {
       "pts": 3.4,
@@ -6167,6 +6341,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 35,
      "h2h": null,
      "recent": null
@@ -6196,6 +6371,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.75,
       "tpa": 6.75
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -6225,6 +6401,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 2.8333333333333335
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -6257,6 +6434,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.142857142857143,
       "tpa": 2.5714285714285716
      },
+     "seasonGames": 7,
      "games": 56,
      "h2h": null,
      "recent": {
@@ -6289,6 +6467,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 56,
      "h2h": null,
      "recent": null
@@ -6318,6 +6497,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.7142857142857143,
       "tpa": 2.2857142857142856
      },
+     "seasonGames": 7,
      "games": 42,
      "h2h": {
       "pts": 8.5,
@@ -6355,6 +6535,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 6
      },
+     "seasonGames": 6,
      "games": 63,
      "h2h": null,
      "recent": {
@@ -6387,6 +6568,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.6666666666666665,
       "tpa": 5.5
      },
+     "seasonGames": 6,
      "games": 51,
      "h2h": {
       "pts": 10.4,
@@ -6424,6 +6606,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2857142857142856,
       "tpa": 3.857142857142857
      },
+     "seasonGames": 7,
      "games": 57,
      "h2h": {
       "pts": 13.2,
@@ -6461,6 +6644,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 66,
      "h2h": {
       "pts": 4.8,
@@ -6498,6 +6682,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.714285714285714,
       "tpa": 4
      },
+     "seasonGames": 7,
      "games": 71,
      "h2h": {
       "pts": 21.1,
@@ -6535,6 +6720,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 19,
      "h2h": null,
      "recent": {
@@ -6567,6 +6753,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -6596,6 +6783,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.8,
       "tpa": 5.4
      },
+     "seasonGames": 5,
      "games": 29,
      "h2h": {
       "pts": 9.4,
@@ -6633,6 +6821,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.4285714285714286,
       "tpa": 3.4285714285714284
      },
+     "seasonGames": 7,
      "games": 83,
      "h2h": {
       "pts": 9.1,
@@ -6670,6 +6859,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 51,
      "h2h": {
       "pts": 12.2,
@@ -6732,6 +6922,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -6761,6 +6952,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1
      },
+     "seasonGames": 4,
      "games": 58,
      "h2h": null,
      "recent": {
@@ -6793,6 +6985,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 2
      },
+     "seasonGames": 6,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -6825,6 +7018,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 2.6666666666666665
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -6857,6 +7051,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 7.333333333333333
      },
+     "seasonGames": 6,
      "games": 51,
      "h2h": null,
      "recent": {
@@ -6889,6 +7084,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.4,
       "tpa": 6.2
      },
+     "seasonGames": 5,
      "games": 73,
      "h2h": {
       "pts": 11.4,
@@ -6926,6 +7122,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 79,
      "h2h": {
       "pts": 20.5,
@@ -6960,6 +7157,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 61,
      "h2h": null,
      "recent": {
@@ -6992,6 +7190,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.166666666666667
      },
+     "seasonGames": 6,
      "games": 56,
      "h2h": null,
      "recent": {
@@ -7024,6 +7223,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 81,
      "h2h": null,
      "recent": {
@@ -7056,6 +7256,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.25,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -7085,6 +7286,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -7114,6 +7316,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 60,
      "h2h": null,
      "recent": null
@@ -7143,6 +7346,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 40,
      "h2h": null,
      "recent": null
@@ -7172,6 +7376,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 3,
      "games": 53,
      "h2h": null,
      "recent": {
@@ -7204,6 +7409,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": null,
      "recent": {
@@ -7236,6 +7442,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 12,
      "h2h": {
       "pts": 11.3,
@@ -7270,6 +7477,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 7,
       "tpa": 5.333333333333333
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -7299,6 +7507,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 33,
      "h2h": null,
      "recent": {
@@ -7356,6 +7565,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -7385,6 +7595,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 10.166666666666666,
       "tpa": 13.5
      },
+     "seasonGames": 6,
      "games": 71,
      "h2h": {
       "pts": 28.2,
@@ -7422,6 +7633,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5714285714285716,
       "tpa": 2.857142857142857
      },
+     "seasonGames": 7,
      "games": 82,
      "h2h": {
       "pts": 11.9,
@@ -7459,6 +7671,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1.75
      },
+     "seasonGames": 4,
      "games": 61,
      "h2h": {
       "pts": 5.8,
@@ -7496,6 +7709,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 3,
      "games": 45,
      "h2h": null,
      "recent": {
@@ -7528,6 +7742,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -7557,6 +7772,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5714285714285716,
       "tpa": 0
      },
+     "seasonGames": 7,
      "games": 12,
      "h2h": null,
      "recent": {
@@ -7589,6 +7805,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 2.3333333333333335
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": {
       "pts": 15,
@@ -7626,6 +7843,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0
      },
+     "seasonGames": 4,
      "games": 25,
      "h2h": null,
      "recent": {
@@ -7658,6 +7876,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -7687,6 +7906,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.7142857142857142,
       "tpa": 3
      },
+     "seasonGames": 7,
      "games": 87,
      "h2h": {
       "pts": 7.4,
@@ -7724,6 +7944,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 11,
      "h2h": null,
      "recent": {
@@ -7756,6 +7977,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -7785,6 +8007,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.857142857142857,
       "tpa": 5.714285714285714
      },
+     "seasonGames": 7,
      "games": 58,
      "h2h": null,
      "recent": {
@@ -7817,6 +8040,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.3333333333333335,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": null,
      "recent": {
@@ -7849,6 +8073,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 25,
      "h2h": null,
      "recent": null
@@ -7878,6 +8103,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.428571428571429
      },
+     "seasonGames": 7,
      "games": 37,
      "h2h": null,
      "recent": {
@@ -7910,6 +8136,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 68,
      "h2h": null,
      "recent": {
@@ -7942,6 +8169,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.75,
       "tpa": 3.75
      },
+     "seasonGames": 4,
      "games": 60,
      "h2h": null,
      "recent": {
@@ -7999,6 +8227,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 79,
      "h2h": {
       "pts": 16.3,
@@ -8036,6 +8265,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 8,
       "tpa": 2.3333333333333335
      },
+     "seasonGames": 6,
      "games": 42,
      "h2h": {
       "pts": 27.8,
@@ -8073,6 +8303,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -8102,6 +8333,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -8131,6 +8363,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.3333333333333333
      },
+     "seasonGames": 3,
      "games": 73,
      "h2h": {
       "pts": 6.9,
@@ -8168,6 +8401,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 47,
      "h2h": null,
      "recent": {
@@ -8200,6 +8434,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 9,
      "h2h": null,
      "recent": null
@@ -8229,6 +8464,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 4.166666666666667
      },
+     "seasonGames": 6,
      "games": 86,
      "h2h": {
       "pts": 15.1,
@@ -8266,6 +8502,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 32,
      "h2h": null,
      "recent": null
@@ -8295,6 +8532,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 1.2
      },
+     "seasonGames": 5,
      "games": 51,
      "h2h": {
       "pts": 9,
@@ -8332,6 +8570,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.666666666666667,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -8364,6 +8603,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 5.166666666666667
      },
+     "seasonGames": 6,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -8396,6 +8636,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8333333333333334,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": {
       "pts": 10.2,
@@ -8433,6 +8674,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 3,
      "games": 50,
      "h2h": null,
      "recent": {
@@ -8465,6 +8707,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 74,
      "h2h": null,
      "recent": {
@@ -8497,6 +8740,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.16666666666666666,
       "tpa": 8.166666666666666
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": {
       "pts": 19,
@@ -8534,6 +8778,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": {
       "pts": 19.9,
@@ -8596,6 +8841,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 2.25
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -8625,6 +8871,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.6666666666666665,
       "tpa": 2.8333333333333335
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -8654,6 +8901,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 1.4
      },
+     "seasonGames": 5,
      "games": 62,
      "h2h": null,
      "recent": {
@@ -8686,6 +8934,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": {
       "pts": 10.8,
@@ -8723,6 +8972,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5,
       "tpa": 7.833333333333333
      },
+     "seasonGames": 6,
      "games": 39,
      "h2h": {
       "pts": 19.2,
@@ -8760,6 +9010,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 2.8333333333333335
      },
+     "seasonGames": 6,
      "games": 59,
      "h2h": {
       "pts": 4,
@@ -8797,6 +9048,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.8333333333333335,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 81,
      "h2h": null,
      "recent": {
@@ -8829,6 +9081,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 37,
      "h2h": null,
      "recent": null
@@ -8858,6 +9111,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.5
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": {
       "pts": 14.5,
@@ -8895,6 +9149,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 60,
      "h2h": {
       "pts": 11.8,
@@ -8929,6 +9184,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -8958,6 +9214,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 47,
      "h2h": null,
      "recent": null
@@ -8987,6 +9244,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 5.5
      },
+     "seasonGames": 6,
      "games": 80,
      "h2h": {
       "pts": 9,
@@ -9024,6 +9282,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 11,
      "h2h": null,
      "recent": null
@@ -9053,6 +9312,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 68,
      "h2h": null,
      "recent": {
@@ -9085,6 +9345,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 2,
      "games": 67,
      "h2h": null,
      "recent": {
@@ -9117,6 +9378,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8333333333333334,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 6,
      "games": 77,
      "h2h": null,
      "recent": {
@@ -9149,6 +9411,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 3.8333333333333335
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": null,
      "recent": {
@@ -9206,6 +9469,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.142857142857143,
       "tpa": 8.285714285714286
      },
+     "seasonGames": 7,
      "games": 79,
      "h2h": null,
      "recent": {
@@ -9238,6 +9502,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 7,
      "games": 47,
      "h2h": null,
      "recent": {
@@ -9270,6 +9535,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 1.5
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": null,
      "recent": {
@@ -9302,6 +9568,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 82,
      "h2h": {
       "pts": 14.4,
@@ -9336,6 +9603,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5714285714285714,
       "tpa": 3.5714285714285716
      },
+     "seasonGames": 7,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -9368,6 +9636,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5,
       "tpa": 11.25
      },
+     "seasonGames": 4,
      "games": 68,
      "h2h": {
       "pts": 24.4,
@@ -9405,6 +9674,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -9434,6 +9704,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -9463,6 +9734,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.833333333333333,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 6,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -9495,6 +9767,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.7142857142857143,
       "tpa": 3.5714285714285716
      },
+     "seasonGames": 7,
      "games": 77,
      "h2h": null,
      "recent": {
@@ -9527,6 +9800,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.857142857142857,
       "tpa": 4.285714285714286
      },
+     "seasonGames": 7,
      "games": 43,
      "h2h": {
       "pts": 18.6,
@@ -9564,6 +9838,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5714285714285714,
       "tpa": 2.5714285714285716
      },
+     "seasonGames": 7,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -9593,6 +9868,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2857142857142858,
       "tpa": 4.142857142857143
      },
+     "seasonGames": 7,
      "games": 80,
      "h2h": {
       "pts": 7.5,
@@ -9630,6 +9906,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 7,
      "h2h": null,
      "recent": {
@@ -9662,6 +9939,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.142857142857143,
       "tpa": 4.714285714285714
      },
+     "seasonGames": 7,
      "games": 50,
      "h2h": null,
      "recent": {
@@ -9694,6 +9972,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.25
      },
+     "seasonGames": 4,
      "games": 71,
      "h2h": {
       "pts": 14,
@@ -9731,6 +10010,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -9785,6 +10065,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -9814,6 +10095,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 6
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -9843,6 +10125,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.8333333333333335,
       "tpa": 2.1666666666666665
      },
+     "seasonGames": 6,
      "games": 72,
      "h2h": {
       "pts": 10,
@@ -9880,6 +10163,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.75,
       "tpa": 5.25
      },
+     "seasonGames": 4,
      "games": 56,
      "h2h": {
       "pts": 8.3,
@@ -9917,6 +10201,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3.6666666666666665
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": {
       "pts": 5.4,
@@ -9954,6 +10239,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -9983,6 +10269,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 2.8333333333333335
      },
+     "seasonGames": 6,
      "games": 23,
      "h2h": null,
      "recent": {
@@ -10015,6 +10302,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 65,
      "h2h": {
       "pts": 6.7,
@@ -10052,6 +10340,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 3,
      "games": 52,
      "h2h": null,
      "recent": {
@@ -10084,6 +10373,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -10113,6 +10403,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 8.666666666666666
      },
+     "seasonGames": 6,
      "games": 58,
      "h2h": {
       "pts": 13.7,
@@ -10150,6 +10441,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 65,
      "h2h": null,
      "recent": {
@@ -10182,6 +10474,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 7,
       "tpa": 5.5
      },
+     "seasonGames": 6,
      "games": 85,
      "h2h": {
       "pts": 17.1,
@@ -10219,6 +10512,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 45,
      "h2h": null,
      "recent": {
@@ -10251,6 +10545,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.5,
       "tpa": 1.1666666666666667
      },
+     "seasonGames": 6,
      "games": 68,
      "h2h": {
       "pts": 6.5,
@@ -10288,6 +10583,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.8333333333333335,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": null,
      "recent": {
@@ -10320,6 +10616,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 2.3333333333333335
      },
+     "seasonGames": 6,
      "games": 42,
      "h2h": {
       "pts": 10.5,
@@ -10357,6 +10654,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 4
      },
+     "seasonGames": 2,
      "games": 59,
      "h2h": null,
      "recent": {
@@ -10414,6 +10712,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -10443,6 +10742,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 2,
      "games": 71,
      "h2h": null,
      "recent": {
@@ -10475,6 +10775,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.333333333333333,
       "tpa": 6
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": {
       "pts": 12.1,
@@ -10512,6 +10813,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": {
       "pts": 13.5,
@@ -10549,6 +10851,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 8.333333333333334,
       "tpa": 6.666666666666667
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": null,
      "recent": {
@@ -10581,6 +10884,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6,
       "tpa": 0.8
      },
+     "seasonGames": 5,
      "games": 78,
      "h2h": {
       "pts": 15.5,
@@ -10618,6 +10922,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 29,
      "h2h": {
       "pts": 1.8,
@@ -10655,6 +10960,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 69,
      "h2h": {
       "pts": 5,
@@ -10692,6 +10998,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 0.16666666666666666
      },
+     "seasonGames": 6,
      "games": 69,
      "h2h": {
       "pts": 12.6,
@@ -10729,6 +11036,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8333333333333334,
       "tpa": 5.5
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": {
       "pts": 11.5,
@@ -10766,6 +11074,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 54,
      "h2h": null,
      "recent": null
@@ -10795,6 +11104,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 2.25
      },
+     "seasonGames": 4,
      "games": 65,
      "h2h": null,
      "recent": {
@@ -10827,6 +11137,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 4.5
      },
+     "seasonGames": 6,
      "games": 47,
      "h2h": null,
      "recent": {
@@ -10859,6 +11170,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -10888,6 +11200,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 57,
      "h2h": {
       "pts": 10.4,
@@ -10925,6 +11238,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": {
       "pts": 25.6,
@@ -10962,6 +11276,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 7,
      "h2h": {
       "pts": 13.2,
@@ -11024,6 +11339,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 10,
       "tpa": 3
      },
+     "seasonGames": 2,
      "games": 74,
      "h2h": {
       "pts": 23.1,
@@ -11061,6 +11377,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.333333333333333,
       "tpa": 9.5
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -11093,6 +11410,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 69,
      "h2h": {
       "pts": 7,
@@ -11130,6 +11448,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.75,
       "tpa": 4.75
      },
+     "seasonGames": 4,
      "games": 68,
      "h2h": {
       "pts": 11.2,
@@ -11167,6 +11486,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.1666666666666667,
       "tpa": 2.6666666666666665
      },
+     "seasonGames": 6,
      "games": 43,
      "h2h": {
       "pts": 4.1,
@@ -11204,6 +11524,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3.5
      },
+     "seasonGames": 2,
      "games": 55,
      "h2h": {
       "pts": 7.7,
@@ -11241,6 +11562,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 84,
      "h2h": {
       "pts": 12.5,
@@ -11278,6 +11600,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 6,
      "h2h": null,
      "recent": {
@@ -11310,6 +11633,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 7
      },
+     "seasonGames": 6,
      "games": 83,
      "h2h": null,
      "recent": {
@@ -11342,6 +11666,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 50,
      "h2h": {
       "pts": 4.8,
@@ -11376,6 +11701,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 3,
      "games": 7,
      "h2h": null,
      "recent": {
@@ -11408,6 +11734,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -11437,6 +11764,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 58,
      "h2h": {
       "pts": 4.5,
@@ -11471,6 +11799,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": null,
      "recent": {
@@ -11503,6 +11832,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 3
      },
+     "seasonGames": 3,
      "games": 60,
      "h2h": null,
      "recent": {
@@ -11535,6 +11865,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 1.3333333333333333
      },
+     "seasonGames": 6,
      "games": 70,
      "h2h": {
       "pts": 16.1,
@@ -11572,6 +11903,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6,
       "tpa": 5.166666666666667
      },
+     "seasonGames": 6,
      "games": 40,
      "h2h": {
       "pts": 23,
@@ -11634,6 +11966,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 71,
      "h2h": {
       "pts": 6.3,
@@ -11668,6 +12001,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5714285714285714,
       "tpa": 0.42857142857142855
      },
+     "seasonGames": 7,
      "games": 78,
      "h2h": null,
      "recent": {
@@ -11700,6 +12034,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 80,
      "h2h": {
       "pts": 20.4,
@@ -11737,6 +12072,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5714285714285714,
       "tpa": 3.2857142857142856
      },
+     "seasonGames": 7,
      "games": 58,
      "h2h": {
       "pts": 10.9,
@@ -11774,6 +12110,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 5.166666666666667
      },
+     "seasonGames": 6,
      "games": 81,
      "h2h": {
       "pts": 14.7,
@@ -11811,6 +12148,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 65,
      "h2h": null,
      "recent": {
@@ -11843,6 +12181,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.8,
       "tpa": 4.2
      },
+     "seasonGames": 5,
      "games": 43,
      "h2h": {
       "pts": 29.3,
@@ -11880,6 +12219,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -11909,6 +12249,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 54,
      "h2h": null,
      "recent": null
@@ -11938,6 +12279,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.8,
       "tpa": 3.8
      },
+     "seasonGames": 5,
      "games": 68,
      "h2h": {
       "pts": 27.6,
@@ -11975,6 +12317,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 50,
      "h2h": null,
      "recent": {
@@ -12007,6 +12350,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 7.571428571428571,
       "tpa": 7.714285714285714
      },
+     "seasonGames": 7,
      "games": 80,
      "h2h": null,
      "recent": {
@@ -12039,6 +12383,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1.75
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -12068,6 +12413,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 64,
      "h2h": null,
      "recent": null
@@ -12097,6 +12443,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2857142857142858,
       "tpa": 6.857142857142857
      },
+     "seasonGames": 7,
      "games": 62,
      "h2h": null,
      "recent": {
@@ -12129,6 +12476,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 2
      },
+     "seasonGames": 5,
      "games": 64,
      "h2h": null,
      "recent": {
@@ -12161,6 +12509,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 1
      },
+     "seasonGames": 4,
      "games": 68,
      "h2h": {
       "pts": 5.1,
@@ -12223,6 +12572,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.5,
       "tpa": 4
      },
+     "seasonGames": 4,
      "games": 71,
      "h2h": null,
      "recent": {
@@ -12255,6 +12605,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 48,
      "h2h": {
       "pts": 4.3,
@@ -12292,6 +12643,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 6.75
      },
+     "seasonGames": 4,
      "games": 81,
      "h2h": {
       "pts": 15.1,
@@ -12329,6 +12681,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 5.25
      },
+     "seasonGames": 4,
      "games": 60,
      "h2h": {
       "pts": 14.3,
@@ -12366,6 +12719,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 1.5
      },
+     "seasonGames": 4,
      "games": 74,
      "h2h": {
       "pts": 7.1,
@@ -12403,6 +12757,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 2
      },
+     "seasonGames": 2,
      "games": 57,
      "h2h": null,
      "recent": {
@@ -12435,6 +12790,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 7.25
      },
+     "seasonGames": 4,
      "games": 84,
      "h2h": null,
      "recent": {
@@ -12467,6 +12823,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 5.75
      },
+     "seasonGames": 4,
      "games": 74,
      "h2h": {
       "pts": 5.9,
@@ -12504,6 +12861,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.25,
       "tpa": 3.5
      },
+     "seasonGames": 4,
      "games": 36,
      "h2h": {
       "pts": 13.1,
@@ -12541,6 +12899,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 84,
      "h2h": null,
      "recent": {
@@ -12573,6 +12932,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 4.333333333333333
      },
+     "seasonGames": 3,
      "games": 81,
      "h2h": {
       "pts": 10.1,
@@ -12610,6 +12970,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.25,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 50,
      "h2h": null,
      "recent": {
@@ -12642,6 +13003,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -12671,6 +13033,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 1.3333333333333333
      },
+     "seasonGames": 3,
      "games": 35,
      "h2h": {
       "pts": 2.6,
@@ -12708,6 +13071,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 1,
      "games": 67,
      "h2h": null,
      "recent": {
@@ -12740,6 +13104,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 26,
      "h2h": null,
      "recent": null
@@ -12769,6 +13134,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 60,
      "h2h": null,
      "recent": null
@@ -12823,6 +13189,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 9.6,
       "tpa": 4.8
      },
+     "seasonGames": 5,
      "games": 73,
      "h2h": {
       "pts": 14.6,
@@ -12860,6 +13227,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 7.8
      },
+     "seasonGames": 5,
      "games": 87,
      "h2h": {
       "pts": 13.4,
@@ -12897,6 +13265,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1
      },
+     "seasonGames": 2,
      "games": 44,
      "h2h": null,
      "recent": {
@@ -12929,6 +13298,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2,
       "tpa": 2.6
      },
+     "seasonGames": 5,
      "games": 80,
      "h2h": {
       "pts": 3,
@@ -12966,6 +13336,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2,
       "tpa": 2
      },
+     "seasonGames": 5,
      "games": 82,
      "h2h": {
       "pts": 13.9,
@@ -13003,6 +13374,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 3,
      "games": 46,
      "h2h": null,
      "recent": {
@@ -13035,6 +13407,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.4,
       "tpa": 4.2
      },
+     "seasonGames": 5,
      "games": 35,
      "h2h": null,
      "recent": {
@@ -13067,6 +13440,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.2,
       "tpa": 5.4
      },
+     "seasonGames": 5,
      "games": 58,
      "h2h": null,
      "recent": {
@@ -13099,6 +13473,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 6,
      "h2h": null,
      "recent": {
@@ -13131,6 +13506,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 2.2
      },
+     "seasonGames": 5,
      "games": 70,
      "h2h": {
       "pts": 6.4,
@@ -13168,6 +13544,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.2,
       "tpa": 9.4
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -13197,6 +13574,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 3.5
      },
+     "seasonGames": 4,
      "games": 24,
      "h2h": null,
      "recent": {
@@ -13229,6 +13607,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0.6666666666666666
      },
+     "seasonGames": 3,
      "games": 50,
      "h2h": null,
      "recent": {
@@ -13261,6 +13640,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 50,
      "h2h": {
       "pts": 14.1,
@@ -13295,6 +13675,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 6,
      "h2h": null,
      "recent": {
@@ -13327,6 +13708,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 0
      },
+     "seasonGames": 4,
      "games": 63,
      "h2h": {
       "pts": 6.5,
@@ -13364,6 +13746,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 4
      },
+     "seasonGames": 1,
      "games": 33,
      "h2h": null,
      "recent": {
@@ -13421,6 +13804,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6666666666666665,
       "tpa": 0.8333333333333334
      },
+     "seasonGames": 6,
      "games": 79,
      "h2h": {
       "pts": 11.2,
@@ -13458,6 +13842,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.833333333333333,
       "tpa": 9.833333333333334
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -13487,6 +13872,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 1,
      "games": 16,
      "h2h": null,
      "recent": {
@@ -13519,6 +13905,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 44,
      "h2h": null,
      "recent": null
@@ -13548,6 +13935,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.2
      },
+     "seasonGames": 5,
      "games": 80,
      "h2h": {
       "pts": 8,
@@ -13585,6 +13973,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 5.5
      },
+     "seasonGames": 6,
      "games": 51,
      "h2h": {
       "pts": 11.6,
@@ -13622,6 +14011,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1.25
      },
+     "seasonGames": 4,
      "games": 4,
      "h2h": null,
      "recent": null
@@ -13651,6 +14041,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.5,
       "tpa": 7.5
      },
+     "seasonGames": 6,
      "games": 45,
      "h2h": null,
      "recent": {
@@ -13683,6 +14074,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1.5
      },
+     "seasonGames": 4,
      "games": 42,
      "h2h": {
       "pts": 5.3,
@@ -13720,6 +14112,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 2
      },
+     "seasonGames": 5,
      "games": 67,
      "h2h": null,
      "recent": {
@@ -13752,6 +14145,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 3.5
      },
+     "seasonGames": 2,
      "games": 25,
      "h2h": {
       "pts": 12.6,
@@ -13789,6 +14183,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -13818,6 +14213,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.4
      },
+     "seasonGames": 5,
      "games": 37,
      "h2h": null,
      "recent": {
@@ -13850,6 +14246,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 74,
      "h2h": null,
      "recent": null
@@ -13879,6 +14276,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.8333333333333335,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 6,
      "games": 25,
      "h2h": {
       "pts": 17.1,
@@ -13916,6 +14314,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -13945,6 +14344,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -13999,6 +14399,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 1.25
      },
+     "seasonGames": 4,
      "games": 82,
      "h2h": {
       "pts": 13.4,
@@ -14036,6 +14437,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -14065,6 +14467,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 2
      },
+     "seasonGames": 6,
      "games": 77,
      "h2h": null,
      "recent": {
@@ -14097,6 +14500,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 7.166666666666667
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": null,
      "recent": {
@@ -14129,6 +14533,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 7
      },
+     "seasonGames": 6,
      "games": 89,
      "h2h": {
       "pts": 9.8,
@@ -14166,6 +14571,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 82,
      "h2h": null,
      "recent": {
@@ -14198,6 +14604,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.5
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -14227,6 +14634,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.1666666666666665,
       "tpa": 3.8333333333333335
      },
+     "seasonGames": 6,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -14259,6 +14667,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 63,
      "h2h": {
       "pts": 16.1,
@@ -14293,6 +14702,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 0.8333333333333334
      },
+     "seasonGames": 6,
      "games": 89,
      "h2h": {
       "pts": 14.8,
@@ -14330,6 +14740,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 12,
      "h2h": null,
      "recent": {
@@ -14362,6 +14773,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.1666666666666667,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": null,
      "recent": {
@@ -14394,6 +14806,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 46,
      "h2h": null,
      "recent": {
@@ -14426,6 +14839,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -14455,6 +14869,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -14484,6 +14899,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.3333333333333335,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": {
       "pts": 16.9,
@@ -14521,6 +14937,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.5,
       "tpa": 6.166666666666667
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": null,
      "recent": {
@@ -14578,6 +14995,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 0.2
      },
+     "seasonGames": 5,
      "games": 45,
      "h2h": null,
      "recent": {
@@ -14610,6 +15028,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4
      },
+     "seasonGames": 4,
      "games": 60,
      "h2h": {
       "pts": 6.4,
@@ -14647,6 +15066,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3
      },
+     "seasonGames": 3,
      "games": 3,
      "h2h": null,
      "recent": null
@@ -14676,6 +15096,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.666666666666667,
       "tpa": 6.666666666666667
      },
+     "seasonGames": 6,
      "games": 74,
      "h2h": null,
      "recent": {
@@ -14708,6 +15129,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 0.3333333333333333
      },
+     "seasonGames": 6,
      "games": 53,
      "h2h": {
       "pts": 7.2,
@@ -14745,6 +15167,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4,
       "tpa": 2
      },
+     "seasonGames": 3,
      "games": 75,
      "h2h": null,
      "recent": {
@@ -14777,6 +15200,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -14806,6 +15230,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 5.666666666666667
      },
+     "seasonGames": 6,
      "games": 73,
      "h2h": null,
      "recent": {
@@ -14838,6 +15263,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6666666666666665,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 63,
      "h2h": null,
      "recent": {
@@ -14870,6 +15296,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 63,
      "h2h": null,
      "recent": {
@@ -14902,6 +15329,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -14931,6 +15359,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -14960,6 +15389,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 10,
      "h2h": null,
      "recent": null
@@ -14989,6 +15419,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 3.3333333333333335
      },
+     "seasonGames": 3,
      "games": 80,
      "h2h": {
       "pts": 11.3,
@@ -15026,6 +15457,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.3333333333333335,
       "tpa": 3
      },
+     "seasonGames": 3,
      "games": 36,
      "h2h": {
       "pts": 16.8,
@@ -15063,6 +15495,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 71,
      "h2h": {
       "pts": 6.3,
@@ -15100,6 +15533,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": {
       "pts": 6.9,
@@ -15162,6 +15596,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 9,
      "h2h": null,
      "recent": null
@@ -15191,6 +15626,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 5.166666666666667
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": {
       "pts": 17.3,
@@ -15228,6 +15664,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 0
      },
+     "seasonGames": 3,
      "games": 7,
      "h2h": null,
      "recent": {
@@ -15260,6 +15697,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 41,
      "h2h": null,
      "recent": {
@@ -15292,6 +15730,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 16,
      "h2h": null,
      "recent": null
@@ -15321,6 +15760,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.833333333333333,
       "tpa": 1.3333333333333333
      },
+     "seasonGames": 6,
      "games": 65,
      "h2h": null,
      "recent": {
@@ -15353,6 +15793,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.25,
       "tpa": 0.75
      },
+     "seasonGames": 4,
      "games": 81,
      "h2h": {
       "pts": 8,
@@ -15390,6 +15831,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.666666666666667,
       "tpa": 6.333333333333333
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": null,
      "recent": {
@@ -15422,6 +15864,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.25,
       "tpa": 1
      },
+     "seasonGames": 4,
      "games": 62,
      "h2h": {
       "pts": 8,
@@ -15459,6 +15902,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 0.2
      },
+     "seasonGames": 5,
      "games": 71,
      "h2h": {
       "pts": 6.4,
@@ -15496,6 +15940,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -15525,6 +15970,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.25,
       "tpa": 3.5
      },
+     "seasonGames": 4,
      "games": 52,
      "h2h": null,
      "recent": {
@@ -15557,6 +16003,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.8,
       "tpa": 7.8
      },
+     "seasonGames": 5,
      "games": 47,
      "h2h": {
       "pts": 20.6,
@@ -15594,6 +16041,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.3333333333333333,
       "tpa": 3.1666666666666665
      },
+     "seasonGames": 6,
      "games": 56,
      "h2h": {
       "pts": 4.6,
@@ -15631,6 +16079,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 41,
      "h2h": {
       "pts": 13.3,
@@ -15665,6 +16114,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.2
      },
+     "seasonGames": 5,
      "games": 83,
      "h2h": {
       "pts": 5.3,
@@ -15702,6 +16152,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.6666666666666665,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -15731,6 +16182,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 3.8333333333333335
      },
+     "seasonGames": 6,
      "games": 80,
      "h2h": {
       "pts": 9.1,
@@ -15793,6 +16245,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.6666666666666666,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": {
       "pts": 16.1,
@@ -15830,6 +16283,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -15859,6 +16313,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8333333333333334,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -15891,6 +16346,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.75,
       "tpa": 1.75
      },
+     "seasonGames": 4,
      "games": 72,
      "h2h": null,
      "recent": {
@@ -15923,6 +16379,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 2.3333333333333335
      },
+     "seasonGames": 6,
      "games": 62,
      "h2h": {
       "pts": 12,
@@ -15960,6 +16417,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 6.166666666666667,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 26,
      "h2h": null,
      "recent": {
@@ -15992,6 +16450,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.5,
       "tpa": 3.5
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -16021,6 +16480,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3,
       "tpa": 4.833333333333333
      },
+     "seasonGames": 6,
      "games": 54,
      "h2h": {
       "pts": 12,
@@ -16058,6 +16518,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 55,
      "h2h": {
       "pts": 2.5,
@@ -16095,6 +16556,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 4.8
      },
+     "seasonGames": 5,
      "games": 65,
      "h2h": {
       "pts": 6.3,
@@ -16132,6 +16594,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 55,
      "h2h": {
       "pts": 9.7,
@@ -16169,6 +16632,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.2,
       "tpa": 1
      },
+     "seasonGames": 5,
      "games": 68,
      "h2h": {
       "pts": 15.8,
@@ -16206,6 +16670,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -16235,6 +16700,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0.5
      },
+     "seasonGames": 4,
      "games": 78,
      "h2h": {
       "pts": 8.3,
@@ -16272,6 +16738,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 2.6666666666666665
      },
+     "seasonGames": 6,
      "games": 54,
      "h2h": {
       "pts": 14.8,
@@ -16309,6 +16776,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 49,
      "h2h": {
       "pts": 9.4,
@@ -16343,6 +16811,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 48,
      "h2h": null,
      "recent": null
@@ -16372,6 +16841,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 9.5,
       "tpa": 7
      },
+     "seasonGames": 6,
      "games": 21,
      "h2h": null,
      "recent": {
@@ -16429,6 +16899,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 4,
      "games": 47,
      "h2h": {
       "pts": 7.3,
@@ -16466,6 +16937,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.166666666666667,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 89,
      "h2h": {
       "pts": 16.9,
@@ -16503,6 +16975,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.333333333333333,
       "tpa": 5.166666666666667
      },
+     "seasonGames": 6,
      "games": 63,
      "h2h": {
       "pts": 19.8,
@@ -16540,6 +17013,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 66,
      "h2h": null,
      "recent": {
@@ -16572,6 +17046,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -16601,6 +17076,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 5,
      "h2h": null,
      "recent": null
@@ -16630,6 +17106,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8333333333333333,
       "tpa": 1.6666666666666667
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -16659,6 +17136,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0
      },
+     "seasonGames": 6,
      "games": 58,
      "h2h": {
       "pts": 4.4,
@@ -16696,6 +17174,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 5.5,
       "tpa": 7
      },
+     "seasonGames": 2,
      "games": 70,
      "h2h": {
       "pts": 14.1,
@@ -16733,6 +17212,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 1.2
      },
+     "seasonGames": 5,
      "games": 28,
      "h2h": null,
      "recent": {
@@ -16765,6 +17245,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.6666666666666667,
       "tpa": 1.5
      },
+     "seasonGames": 6,
      "games": 63,
      "h2h": {
       "pts": 10.5,
@@ -16802,6 +17283,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8,
       "tpa": 0
      },
+     "seasonGames": 5,
      "games": 51,
      "h2h": {
       "pts": 6.9,
@@ -16839,6 +17321,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.5,
       "tpa": 8.5
      },
+     "seasonGames": 6,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -16871,6 +17354,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.1666666666666665,
       "tpa": 2
      },
+     "seasonGames": 6,
      "games": 88,
      "h2h": null,
      "recent": {
@@ -16903,6 +17387,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 15,
      "h2h": null,
      "recent": null
@@ -16932,6 +17417,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 6.833333333333333
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": null,
      "recent": {
@@ -16989,6 +17475,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.833333333333333,
       "tpa": 6.5
      },
+     "seasonGames": 6,
      "games": 6,
      "h2h": null,
      "recent": null
@@ -17018,6 +17505,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 1,
      "h2h": null,
      "recent": null
@@ -17047,6 +17535,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.4,
       "tpa": 4.2
      },
+     "seasonGames": 5,
      "games": 67,
      "h2h": {
       "pts": 13,
@@ -17084,6 +17573,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1,
       "tpa": 0.2
      },
+     "seasonGames": 5,
      "games": 16,
      "h2h": {
       "pts": 13.5,
@@ -17121,6 +17611,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.5,
       "tpa": 4
      },
+     "seasonGames": 6,
      "games": 63,
      "h2h": {
       "pts": 13.6,
@@ -17158,6 +17649,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.6666666666666667
      },
+     "seasonGames": 3,
      "games": 62,
      "h2h": null,
      "recent": {
@@ -17190,6 +17682,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.5,
       "tpa": 3
      },
+     "seasonGames": 6,
      "games": 60,
      "h2h": {
       "pts": 7.3,
@@ -17227,6 +17720,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 7.2,
       "tpa": 6.4
      },
+     "seasonGames": 5,
      "games": 20,
      "h2h": null,
      "recent": {
@@ -17259,6 +17753,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0.5
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -17288,6 +17783,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 1,
      "games": 31,
      "h2h": null,
      "recent": {
@@ -17320,6 +17816,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.6666666666666667
      },
+     "seasonGames": 3,
      "games": 60,
      "h2h": {
       "pts": 5.3,
@@ -17357,6 +17854,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 1.8
      },
+     "seasonGames": 5,
      "games": 15,
      "h2h": {
       "pts": 9.2,
@@ -17394,6 +17892,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.8,
       "tpa": 2.4
      },
+     "seasonGames": 5,
      "games": 72,
      "h2h": {
       "pts": 8.3,
@@ -17431,6 +17930,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 54,
      "h2h": {
       "pts": 3.9,
@@ -17468,6 +17968,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 4
      },
+     "seasonGames": 1,
      "games": 41,
      "h2h": null,
      "recent": {
@@ -17500,6 +18001,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.16666666666666666,
       "tpa": 3.5
      },
+     "seasonGames": 6,
      "games": 78,
      "h2h": null,
      "recent": {
@@ -17532,6 +18034,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.2,
       "tpa": 2.2
      },
+     "seasonGames": 5,
      "games": 63,
      "h2h": null,
      "recent": {
@@ -17564,6 +18067,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2,
       "tpa": 4.666666666666667
      },
+     "seasonGames": 6,
      "games": 75,
      "h2h": {
       "pts": 12.5,
@@ -17626,6 +18130,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 3.4285714285714284,
       "tpa": 7.285714285714286
      },
+     "seasonGames": 7,
      "games": 58,
      "h2h": null,
      "recent": {
@@ -17658,6 +18163,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2
      },
+     "seasonGames": 7,
      "games": 7,
      "h2h": null,
      "recent": null
@@ -17687,6 +18193,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 0,
      "h2h": null,
      "recent": null
@@ -17716,6 +18223,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.8571428571428572,
       "tpa": 0
      },
+     "seasonGames": 7,
      "games": 80,
      "h2h": null,
      "recent": {
@@ -17748,6 +18256,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 1.5
      },
+     "seasonGames": 2,
      "games": 19,
      "h2h": null,
      "recent": {
@@ -17780,6 +18289,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5714285714285714,
       "tpa": 4.714285714285714
      },
+     "seasonGames": 7,
      "games": 89,
      "h2h": {
       "pts": 4.5,
@@ -17817,6 +18327,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5714285714285714,
       "tpa": 0
      },
+     "seasonGames": 7,
      "games": 76,
      "h2h": null,
      "recent": {
@@ -17849,6 +18360,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 81,
      "h2h": {
       "pts": 16.3,
@@ -17883,6 +18395,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.3333333333333333,
       "tpa": 1
      },
+     "seasonGames": 3,
      "games": 34,
      "h2h": null,
      "recent": {
@@ -17915,6 +18428,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 4.428571428571429,
       "tpa": 11.428571428571429
      },
+     "seasonGames": 7,
      "games": 72,
      "h2h": {
       "pts": 23,
@@ -17952,6 +18466,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.42857142857142855,
       "tpa": 4.571428571428571
      },
+     "seasonGames": 7,
      "games": 85,
      "h2h": {
       "pts": 6.3,
@@ -17989,6 +18504,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 1.7142857142857142,
       "tpa": 7
      },
+     "seasonGames": 7,
      "games": 84,
      "h2h": {
       "pts": 8.8,
@@ -18026,6 +18542,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 2.5
      },
+     "seasonGames": 6,
      "games": 43,
      "h2h": {
       "pts": 6.2,
@@ -18063,6 +18580,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 2.857142857142857,
       "tpa": 4.428571428571429
      },
+     "seasonGames": 7,
      "games": 77,
      "h2h": null,
      "recent": {
@@ -18095,6 +18613,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0.5,
       "tpa": 0
      },
+     "seasonGames": 2,
      "games": 2,
      "h2h": null,
      "recent": null
@@ -18124,6 +18643,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 50,
      "h2h": {
       "pts": 11.5,
@@ -18158,6 +18678,7 @@ const SEASON_SLATE_SNAPSHOT = {
       "fta": 0,
       "tpa": 0
      },
+     "seasonGames": 0,
      "games": 36,
      "h2h": {
       "pts": 9.8,
