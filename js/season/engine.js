@@ -81,7 +81,8 @@ function calcRestAdjustment(rest) {
   if (rest.backToBack) pts += SEASON_REST.backToBack;
   else if (rest.threeInFour) pts += SEASON_REST.threeInFour;
   if (rest.restDays >= SEASON_REST.longRestDays) pts += SEASON_REST.longRestBonus;
-  pts += rest.schedulePoints || 0;
+  // rest.schedulePoints is NB.AI's own schedule heuristic for the same
+  // flags; adding it would double-count and correlate the two models.
   return pts;
 }
 

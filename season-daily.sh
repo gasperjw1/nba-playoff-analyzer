@@ -78,7 +78,7 @@ elif [ "$FORCE" -eq 1 ] || ! done_today record; then
     # feed leaves the phase open so a later run retries.
     if printf '%s\n' "$out" | grep -q '^Ledger: +'; then mark record; fi
     log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|record skipped)' | tr '\n' ' ')"
-    printf '%s\n' "$out" | grep -E '^  [A-Z]{2,3} @ ' | sed 's/^/[season-daily]   /'
+    printf '%s\n' "$out" | grep -E '^  [A-Z]{2,4} @ ' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$out" | grep -q '^Ledger: +[1-9]'; then
       log "new rows recorded — commit js/season/data/slate-snapshot.js and season-ledger.js"
     fi
