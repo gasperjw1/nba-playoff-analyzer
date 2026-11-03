@@ -25,9 +25,12 @@ const SEASON_MARGIN_SIGMA = 12.5;
 // means current form is half-weighted after 20 games.
 const SEASON_SHRINK_K = 20;
 
-// Last season's net rating is itself regressed toward league
-// average to account for roster turnover and aging.
-const SEASON_PRIOR_RETENTION = 0.80;
+// Last season's net rating is itself regressed toward league average.
+// 0.75 is the out-of-sample choice from research-team-fit.js's replay of
+// the engine on 330 team-seasons (roster changes and aging are separate
+// steps, so this covers only what they don't: luck, coaching, health).
+// Was 0.80 before aging became its own step.
+const SEASON_PRIOR_RETENTION = 0.75;
 
 // Fallback league averages (used when the feed covers too few
 // teams to derive them). Approximate 2025-26 values — ORtg equals
@@ -76,10 +79,21 @@ const SEASON_IMPACT = {
   minMinutesForImpact: 8, // ignore deep bench noise
   offShare: 0.70,         // share of a player's value that is his own team's scoring (totals only)
   fitCap: 2.0,            // max |roster fit adjustment| per team, points (see below)
+  agingCap: 4.0,          // max |aging adjustment| per team, points (see below)
 };
 
+// Aging: js/season/data/aging-fit.js holds the expected BPM change from a
+// player's prior to this season by age (+0.8 at 20-22, ~0 at 26, −0.4 at
+// 30, −0.8 at 35), measured on 3,318 player-seasons. The engine ages last
+// season's part of the rating: Σ (1 − w) × share of last season's games ×
+// availability tonight × value change. Arrivals keep their prior value —
+// in the replay, aging them made projections worse (the curve comes from
+// players who kept their minutes, which flatters young players).
+// Replay at opening night, 330 team-seasons: RMSE 3.066 → 3.010 per 100
+// with retention 0.80 → 0.75 (out of sample 3.019).
+
 // Roster fit ("chemistry"): coefficients in js/season/data/chemistry-fit.js,
-// fitted by research-chemistry.js on 330 team-seasons (2015-16 … 2025-26)
+// fitted by research-team-fit.js on 330 team-seasons (2015-16 … 2025-26)
 // as the miss of summed player BPM on actual net rating. Of seven
 // pre-registered fit features, two held up out of sample:
 //   continuity  share of minutes from players on the team last season
@@ -116,7 +130,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-02.roster-fit';
+const SEASON_ENGINE_VERSION = '2026-11-02.aging-v2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).

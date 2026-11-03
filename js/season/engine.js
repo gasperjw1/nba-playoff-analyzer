@@ -8,7 +8,7 @@
 // error. What survives is the part that is defensible on 1,000+
 // game samples:
 //
-//   margin = (netHome − netAway) × pace/100 + HCA + rest ± roster ± fit
+//   margin = (netHome − netAway) × pace/100 + HCA + rest ± roster ± aging ± fit
 //   P(home) = Φ(margin / σ)
 //
 // Every step is logged to `lineage` so the UI can show the
@@ -117,11 +117,28 @@ function playerProfile(player) {
     bpm = (R * C.rookieRegressMinutes + currentBpm * curMin) / (C.rookieRegressMinutes + curMin);
   } else bpm = priorBpm;
 
+  // Age: expected change from the prior BPM (last season's level) to this
+  // season's age (aging-fit.js). Used only to age last season's part of
+  // the team rating, which holds the player at his prior level however many
+  // games he has played since; calcRosterAdjustment fades it by (1 − w) as
+  // this season's results take over. `bpm` itself stays unaged: valuing
+  // arrivals at aged BPM made the historical replay worse.
+  const age = entry && entry.age != null ? entry.age : null;
+  const ageShift = age != null && priorBpm != null ? seasonAgeCurve(age) : 0;
+
   return {
-    avg, mpg, bpm, priorBpm, currentBpm,
+    avg, mpg, bpm, priorBpm, currentBpm, age, ageShift,
     priorMinutes: Math.round(pMin), currentGames: cg,
     source: priorBpm != null && currentBpm != null ? 'prior+current' : priorBpm != null ? 'prior' : currentBpm != null ? 'current' : 'none',
   };
+}
+
+// Expected BPM change from a player's prior to this season, by his age
+// this season (Basketball-Reference convention: age on Feb 1).
+function seasonAgeCurve(age) {
+  if (typeof SEASON_AGING_FIT === 'undefined' || age == null) return 0;
+  const a = Math.max(20, Math.min(36, Math.round(age)));
+  return SEASON_AGING_FIT.byAge[a] || 0;
 }
 
 // Points of margin per game a player is worth above a replacement-level
@@ -136,11 +153,14 @@ function playerImpactPts(player, pace, profile) {
 // Share of the team's current rating a player is "in": last season's
 // games for this team (prior part) and this season's games played
 // (current part), weighted the way calcSeasonTeamStrength weights them.
-function playerRatingShare(player, team, currentWeight, currentTeamGames) {
+function playerPriorShare(player, team) {
   const P = _priors();
   const entry = P && P.players[player.id];
   const tg = (entry && entry.tm && entry.tm[team.abbr]) || 0;
-  const priorShare = Math.min(1, tg / SEASON_PLAYER_PRIOR.teamGames);
+  return Math.min(1, tg / SEASON_PLAYER_PRIOR.teamGames);
+}
+function playerRatingShare(player, team, currentWeight, currentTeamGames) {
+  const priorShare = playerPriorShare(player, team);
   const curShare = currentTeamGames ? Math.min(1, (player.seasonGames || 0) / currentTeamGames) : 0;
   return (1 - currentWeight) * priorShare + currentWeight * curShare;
 }
@@ -164,14 +184,24 @@ function calcRosterAdjustment(team, strength) {
   const w = strength ? strength.currentWeight : 0;
   const tg = strength ? strength.currentGames : 0;
   const pace = (team.prior && team.prior.pace) || SEASON_LEAGUE_FALLBACK.pace;
-  const items = [], unmodeled = [];
+  const items = [], unmodeled = [], agingItems = [];
   const onRoster = new Set();
-  let adj = 0;
+  let adj = 0, aging = 0;
   (team.players || []).forEach(p => {
     onRoster.add(p.id);
     const prof = playerProfile(p);
     const value = playerImpactPts(p, pace, prof);
     const share = playerRatingShare(p, team, w, tg);
+    // Aging: last season's part of the rating has him at last season's
+    // level; tonight he plays a year older. Weighted by his share of that
+    // rating and by whether he plays tonight.
+    const priorShare = playerPriorShare(p, team);
+    if (prof.ageShift && priorShare && p.availability > 0) {
+      const atPrior = { ...prof, bpm: prof.priorBpm };
+      const pts = (1 - w) * priorShare * p.availability *
+        (playerImpactPts(p, pace, { ...atPrior, bpm: prof.priorBpm + prof.ageShift }) - playerImpactPts(p, pace, atPrior));
+      if (pts) { aging += pts; agingItems.push({ id: p.id, name: p.name, age: prof.age, bpmShift: +prof.ageShift.toFixed(2), pts: +pts.toFixed(2) }); }
+    }
     if (!value) {
       if (p.availability < 1 && prof.source === 'none') unmodeled.push(p.name);
       return;
@@ -193,9 +223,12 @@ function calcRosterAdjustment(team, strength) {
     items.push({ id, name: e.n, status: 'departed', availability: 0, value: +value.toFixed(2), share: +share.toFixed(2), delta: +delta.toFixed(2), kind: 'departed' });
   });
   items.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+  agingItems.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts));
   const capped = Math.max(-SEASON_IMPACT.teamCap, Math.min(SEASON_IMPACT.teamCap, adj));
+  const agingCapped = Math.max(-SEASON_IMPACT.agingCap, Math.min(SEASON_IMPACT.agingCap, aging));
   return {
     adj: +capped.toFixed(2), uncapped: +adj.toFixed(2),
+    aging: +agingCapped.toFixed(2), agingUncapped: +aging.toFixed(2), agingItems,
     items,
     missing: items.filter(i => i.kind === 'absent' && i.delta < -0.05),   // out tonight, and the rating counted on them
     unmodeled,
@@ -204,7 +237,7 @@ function calcRosterAdjustment(team, strength) {
 
 // ── Roster fit ──────────────────────────────────────────────
 // Prior-season rebound rate, weighted like the BPM prior and regressed
-// toward the league rookie rate — the same inputs research-chemistry.js
+// toward the league rookie rate — the same inputs research-team-fit.js
 // fitted on.
 function _priorReboundRate(id) {
   const F = SEASON_CHEMISTRY_FIT.rebounding;
@@ -330,6 +363,9 @@ function projectSeasonGame(game, slate, opts) {
   if (homeRoster.adj) step('homeRoster', `${home.abbr} roster vs rating`, homeRoster.adj, _rosterDetail(homeRoster));
   if (awayRoster.adj) step('awayRoster', `${away.abbr} roster vs rating`, -awayRoster.adj, _rosterDetail(awayRoster));
 
+  if (homeRoster.aging || awayRoster.aging) step('aging', 'Aging since last season', homeRoster.aging - awayRoster.aging,
+    `${_agingDetail(home.abbr, homeRoster)} · ${_agingDetail(away.abbr, awayRoster)}`);
+
   const homeFit = calcRosterFit(home, hs), awayFit = calcRosterFit(away, as);
   if (homeFit.adj || awayFit.adj) step('fit', 'Roster fit (continuity, rebounding overlap)', homeFit.adj - awayFit.adj,
     `${_fitDetail(home.abbr, homeFit)} · ${_fitDetail(away.abbr, awayFit)}${homeFit.fade < 1 ? ` · ×${homeFit.fade.toFixed(2)}/${awayFit.fade.toFixed(2)} as this season's results take over` : ''}`);
@@ -342,7 +378,7 @@ function projectSeasonGame(game, slate, opts) {
   const homeOff = L + (hs.ortg - L) + (as.drtg - L);
   const awayOff = L + (as.ortg - L) + (hs.drtg - L);
   const off = SEASON_IMPACT.offShare;
-  const homeAdj = homeRoster.adj + homeFit.adj, awayAdj = awayRoster.adj + awayFit.adj;
+  const homeAdj = homeRoster.adj + homeRoster.aging + homeFit.adj, awayAdj = awayRoster.adj + awayRoster.aging + awayFit.adj;
   let homePts = homeOff * pace / 100 + off * homeAdj - (1 - off) * awayAdj;
   let awayPts = awayOff * pace / 100 + off * awayAdj - (1 - off) * homeAdj;
   const total = homePts + awayPts;
@@ -373,6 +409,13 @@ function _rosterDetail(r) {
     .map(i => `${i.name} ${label[i.kind]}${i.kind === 'absent' ? ` ${Math.round(i.availability * 100)}%` : ''} ${i.delta > 0 ? '+' : '−'}${Math.abs(i.delta).toFixed(1)}`);
   const capNote = r.adj !== r.uncapped ? ` (capped from ${r.uncapped > 0 ? '+' : ''}${r.uncapped})` : '';
   return (shown.join(', ') || 'small changes only') + capNote;
+}
+
+function _agingDetail(abbr, r) {
+  const sgn = (x) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+  const last = (n) => n.split(' ').filter(w => !/^(Jr\.?|Sr\.?|II|III|IV|V)$/.test(w)).slice(-1)[0] || n;
+  const top = r.agingItems.filter(i => Math.abs(i.pts) >= 0.1).slice(0, 3).map(i => `${last(i.name)} (${i.age}) ${sgn(i.pts)}`);
+  return `${abbr} ${sgn(r.aging)}${top.length ? ': ' + top.join(', ') : ''}${r.aging !== r.agingUncapped ? ` (capped from ${r.agingUncapped})` : ''}`;
 }
 
 function _restLabel(rest) {
