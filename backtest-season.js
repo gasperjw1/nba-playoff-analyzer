@@ -330,26 +330,30 @@ async function main() {
   }
 
   // Totals: projected game total against the final and DraftKings' total.
-  // O/U is each model's side of the closing total; pushes are skipped.
-  const totalKeys = keys.filter(k => rows.some(r => r[k] && r[k].total != null));
-  const totalRows = rows.filter(r => totalKeys.every(k => r[k] && r[k].total != null));
-  console.log(`\nTotals (n=${totalRows.length} games with every model's total)`);
-  console.log('  variant              MAE     bias    |vs closing total|  O/U vs closing');
-  for (const k of totalKeys) {
-    const err = totalRows.map(r => r[k].total - r.total);
-    const vsClose = totalRows.map(r => Math.abs(r[k].total - r.market_.total));
+  // Scored on games with a closing total; a model missing a total on some of
+  // them shows its own n. O/U is each model's side of the closing total;
+  // pushes are skipped.
+  const totalRows = rows.filter(r => r.market_ && r.market_.total != null);
+  const totalKeys = keys.filter(k => totalRows.some(r => r[k] && r[k].total != null));
+  console.log(`\nTotals (n=${totalRows.length} games with a closing total)`);
+  if (totalRows.length) console.log('  variant              MAE     bias    |vs closing total|  O/U vs closing');
+  for (const k of totalRows.length ? totalKeys : []) {
+    const kRows = totalRows.filter(r => r[k] && r[k].total != null);
+    const err = kRows.map(r => r[k].total - r.total);
+    const vsClose = kRows.map(r => Math.abs(r[k].total - r.market_.total));
     let w = 0, l = 0;
     if (k !== 'market_' && k !== 'open_') {
-      for (const r of totalRows) {
+      for (const r of kRows) {
         const side = Math.sign(r[k].total - r.market_.total), result = Math.sign(r.total - r.market_.total);
         if (side && result) side === result ? w++ : l++;
       }
     }
-    console.log(`  ${(label[k] || k).padEnd(20)} ${avgOf(err.map(Math.abs)).toFixed(2).padStart(5)}  ${(avgOf(err) >= 0 ? '+' : '') + avgOf(err).toFixed(2)}   ${avgOf(vsClose).toFixed(2).padStart(6)}             ${w + l ? `${w}-${l} (${(w / (w + l) * 100).toFixed(1)}%)` : '—'}`);
+    console.log(`  ${(label[k] || k).padEnd(20)} ${avgOf(err.map(Math.abs)).toFixed(2).padStart(5)}  ${(avgOf(err) >= 0 ? '+' : '') + avgOf(err).toFixed(2)}   ${avgOf(vsClose).toFixed(2).padStart(6)}             ${w + l ? `${w}-${l} (${(w / (w + l) * 100).toFixed(1)}%)` : '—'}${kRows.length < totalRows.length ? `  (n=${kRows.length})` : ''}`);
   }
   console.log('\nPaired total abs error, engine − benchmark (negative = engine better)');
   for (const k of totalKeys.filter(k => k !== 'engine')) {
-    const pairs = totalRows.map(r => Math.abs(r.engine.total - r.total) - Math.abs(r[k].total - r.total));
+    const pairs = totalRows.filter(r => r[k] && r[k].total != null)
+      .map(r => Math.abs(r.engine.total - r.total) - Math.abs(r[k].total - r.total));
     if (pairs.length < 10) continue;
     const mean = avgOf(pairs);
     const se = Math.sqrt(pairs.reduce((s, d) => s + (d - mean) ** 2, 0) / (pairs.length - 1)) / Math.sqrt(pairs.length);
