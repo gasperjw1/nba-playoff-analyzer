@@ -4,7 +4,7 @@
 // ============================================================
 // For every completed game since opening night, rebuild what the model
 // would have known that morning and score its forecast against the
-// final score and DraftKings' line (ESPN pickcenter):
+// final score and DraftKings' line and total (ESPN pickcenter):
 //
 //   team ratings   last season's prior (committed slate snapshot) blended
 //                  with this season's results BEFORE the game date
@@ -113,6 +113,7 @@ function parseMarket(summary, home, away) {
     mlHome: num(pc.moneyline && pc.moneyline.home && pc.moneyline.home.open && pc.moneyline.home.open.odds),
     mlAway: num(pc.moneyline && pc.moneyline.away && pc.moneyline.away.open && pc.moneyline.away.open.odds),
     spreadHome: num(pc.pointSpread && pc.pointSpread.home && pc.pointSpread.home.open && pc.pointSpread.home.open.line),
+    total: num(pc.total && pc.total.over && pc.total.over.open && pc.total.over.open.line),
   };
   return { mlHome: mlHome ?? null, mlAway: mlAway ?? null, spreadHome, total: pc.overUnder ?? null, book: pc.provider.name, open };
 }
@@ -246,18 +247,20 @@ async function main() {
       for (const [name, ctx] of variants) {
         const slate = withLineup(slates.get(name), g, games, LINEUPS);
         const proj = ctx.projectSeasonGame({ id: g.id, home: g.home, away: g.away, market: g.market, external: null }, slate);
-        row[name] = { p: proj.pHome, margin: proj.margin };
+        row[name] = { p: proj.pHome, margin: proj.margin, total: proj.total };
       }
+      row.total = g.homeScore + g.awayScore;
       const m = g.market;
-      const marketRow = (ml1, ml2, spread) => {
+      const marketRow = (ml1, ml2, spread, total) => {
         const pMl = ml1 != null && ml2 != null ? engineCtx.noVigHomeProb(ml1, ml2) : null;
-        return { p: pMl != null ? pMl : (spread != null ? engineCtx.spreadToHomeProb(spread) : null), margin: spread != null ? -spread : null };
+        return { p: pMl != null ? pMl : (spread != null ? engineCtx.spreadToHomeProb(spread) : null), margin: spread != null ? -spread : null,
+          total: total != null ? total : null };
       };
       if (m) {
-        row.market_ = marketRow(m.mlHome, m.mlAway, m.spreadHome);
-        if (m.open) row.open_ = marketRow(m.open.mlHome, m.open.mlAway, m.open.spreadHome);
+        row.market_ = marketRow(m.mlHome, m.mlAway, m.spreadHome, m.total);
+        if (m.open) row.open_ = marketRow(m.open.mlHome, m.open.mlAway, m.open.spreadHome, m.open.total);
       }
-      row.home58 = { p: 0.58, margin: null };
+      row.home58 = { p: 0.58, margin: null, total: null };
       rows.push(row);
     }
   }
@@ -326,10 +329,38 @@ async function main() {
     console.log(`  vs ${(label[k] || k).padEnd(18)} ${mean >= 0 ? '+' : ''}${mean.toFixed(4)} ± ${se.toFixed(4)} (n=${pairs.length}, ${Math.abs(mean) > 2 * se ? 'beyond 2 SE' : 'within noise'})`);
   }
 
+  // Totals: projected game total against the final and DraftKings' total.
+  // O/U is each model's side of the closing total; pushes are skipped.
+  const totalKeys = keys.filter(k => rows.some(r => r[k] && r[k].total != null));
+  const totalRows = rows.filter(r => totalKeys.every(k => r[k] && r[k].total != null));
+  console.log(`\nTotals (n=${totalRows.length} games with every model's total)`);
+  console.log('  variant              MAE     bias    |vs closing total|  O/U vs closing');
+  for (const k of totalKeys) {
+    const err = totalRows.map(r => r[k].total - r.total);
+    const vsClose = totalRows.map(r => Math.abs(r[k].total - r.market_.total));
+    let w = 0, l = 0;
+    if (k !== 'market_' && k !== 'open_') {
+      for (const r of totalRows) {
+        const side = Math.sign(r[k].total - r.market_.total), result = Math.sign(r.total - r.market_.total);
+        if (side && result) side === result ? w++ : l++;
+      }
+    }
+    console.log(`  ${(label[k] || k).padEnd(20)} ${avgOf(err.map(Math.abs)).toFixed(2).padStart(5)}  ${(avgOf(err) >= 0 ? '+' : '') + avgOf(err).toFixed(2)}   ${avgOf(vsClose).toFixed(2).padStart(6)}             ${w + l ? `${w}-${l} (${(w / (w + l) * 100).toFixed(1)}%)` : '—'}`);
+  }
+  console.log('\nPaired total abs error, engine − benchmark (negative = engine better)');
+  for (const k of totalKeys.filter(k => k !== 'engine')) {
+    const pairs = totalRows.map(r => Math.abs(r.engine.total - r.total) - Math.abs(r[k].total - r.total));
+    if (pairs.length < 10) continue;
+    const mean = avgOf(pairs);
+    const se = Math.sqrt(pairs.reduce((s, d) => s + (d - mean) ** 2, 0) / (pairs.length - 1)) / Math.sqrt(pairs.length);
+    console.log(`  vs ${(label[k] || k).padEnd(18)} ${mean >= 0 ? '+' : ''}${mean.toFixed(2)} ± ${se.toFixed(2)} pts (n=${pairs.length}, ${Math.abs(mean) > 2 * se ? 'beyond 2 SE' : 'within noise'})`);
+  }
+
   if (SHOW_GAMES) {
-    console.log('\ngame                     final   ' + keys.map(k => (label[k] || k).slice(0, 10).padStart(11)).join(''));
+    console.log('\ngame                     final   ' + keys.map(k => (label[k] || k).slice(0, 10).padStart(11)).join('') + '   total  engine  DK close');
     for (const r of rows) console.log(`${r.date} ${r.away.padStart(4)} @ ${r.home.padEnd(4)} ${String(r.margin).padStart(5)}   ` +
-      keys.map(k => r[k] && r[k].margin != null ? r[k].margin.toFixed(1).padStart(11) : (r[k] && r[k].p != null ? (r[k].p * 100).toFixed(0).padStart(10) + '%' : '          —')).join(''));
+      keys.map(k => r[k] && r[k].margin != null ? r[k].margin.toFixed(1).padStart(11) : (r[k] && r[k].p != null ? (r[k].p * 100).toFixed(0).padStart(10) + '%' : '          —')).join('') +
+      `   ${String(r.total).padStart(5)}  ${r.engine.total.toFixed(1).padStart(6)}  ${r.market_ && r.market_.total != null ? String(r.market_.total).padStart(8) : '       —'}`);
   }
 }
 
