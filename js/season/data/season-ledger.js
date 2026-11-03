@@ -24,7 +24,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 112,
+   "awayScore": 117,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909908",
@@ -45,7 +49,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 91,
+   "awayScore": 124,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909909",
@@ -66,7 +74,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 104,
+   "awayScore": 108,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909910",
@@ -87,7 +99,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 103,
+   "awayScore": 90,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909911",
@@ -108,7 +124,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 94,
+   "awayScore": 103,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909912",
@@ -129,7 +149,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 126,
+   "awayScore": 107,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909913",
@@ -150,7 +174,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 100,
+   "awayScore": 115,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909914",
@@ -171,7 +199,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 134,
+   "awayScore": 135,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909915",
@@ -192,7 +224,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 112,
+   "awayScore": 100,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909916",
@@ -213,7 +249,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 109,
+   "awayScore": 93,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909917",
@@ -234,7 +274,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 119,
+   "awayScore": 97,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909918",
@@ -255,7 +299,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 110,
+   "awayScore": 118,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909919",
@@ -276,7 +324,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 116,
+   "awayScore": 113,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909920",
@@ -297,7 +349,11 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 118,
+   "awayScore": 125,
+   "settledAt": "2026-11-03T08:12:12.781Z"
+  }
  },
  {
   "id": "401909921",
@@ -318,6 +374,10 @@ const SEASON_LEDGER = [
   "feedVersion": "0.4",
   "engine": "2026-11-02.bpm-roster",
   "recordedAt": "2026-11-02T19:04:02.467Z",
-  "result": null
+  "result": {
+   "homeScore": 138,
+   "awayScore": 117,
+   "settledAt": "2026-11-03T08:12:12.782Z"
+  }
  }
 ];
