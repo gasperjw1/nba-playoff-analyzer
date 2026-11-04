@@ -65,96 +65,27 @@ function ymd(d) { return d.toISOString().slice(0, 10); }
 function todayEt() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
 function addDays(s, n) { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return ymd(d); }
 
-async function cachedJson(file, url) {
+// A scoreboard is cached only once every game on it is final (see fetch-slate.js).
+const allCompleted = (sb) => (sb.events || []).length > 0 && sb.events.every(e => e.status && e.status.type && e.status.type.completed);
+async function cachedJson(file, url, keep = () => true) {
   const f = path.join(CACHE, file);
   if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
   const res = await fetch(url, { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(30000) });
   if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
   const j = await res.json();
-  fs.mkdirSync(CACHE, { recursive: true });
-  fs.writeFileSync(f, JSON.stringify(j));
+  if (keep(j)) {
+    fs.mkdirSync(CACHE, { recursive: true });
+    fs.writeFileSync(f, JSON.stringify(j));
+  }
   return j;
 }
 
-// ── parse ESPN ──────────────────────────────────────────────
-const made = (s) => { const [m, a] = String(s || '0-0').split('-').map(Number); return [m || 0, a || 0]; };
-function parseBox(summary) {
-  const out = {};
-  for (const team of summary.boxscore.players || []) {
-    const abbr = team.team.abbreviation;
-    const st = team.statistics[0];
-    const idx = Object.fromEntries(st.names.map((n, i) => [n, i]));
-    out[abbr] = st.athletes.map(a => {
-      const s = a.stats || [];
-      const min = parseFloat(s[idx.MIN]) || 0;
-      const [fgm, fga] = made(s[idx.FG]), [tpm, tpa] = made(s[idx['3PT']]), [ftm, fta] = made(s[idx.FT]);
-      return {
-        id: String(a.athlete.id), name: a.athlete.displayName, starter: !!a.starter,
-        played: !a.didNotPlay && min > 0, reason: a.reason || null,
-        line: { min, pts: +s[idx.PTS] || 0, reb: +s[idx.REB] || 0, ast: +s[idx.AST] || 0, tpm, stl: +s[idx.STL] || 0,
-          blk: +s[idx.BLK] || 0, to: +s[idx.TO] || 0, fgm, fga, ftm, fta, tpa },
-      };
-    });
-  }
-  return out;
-}
-function parseMarket(summary, home, away) {
-  const pc = (summary.pickcenter || []).find(p => p.provider) || null;
-  if (!pc) return null;
-  // Top-level fields are the closing line (they equal moneyline.*.close).
-  const mlHome = pc.homeTeamOdds && pc.homeTeamOdds.moneyLine, mlAway = pc.awayTeamOdds && pc.awayTeamOdds.moneyLine;
-  // Read the spread from "ABBR -x.5" so the sign cannot be misread.
-  let spreadHome = null;
-  const m = /^([A-Z]+)\s+([-+]?\d+(?:\.\d+)?)$/.exec((pc.details || '').trim());
-  if (m) spreadHome = m[1] === home ? +m[2] : m[1] === away ? -m[2] : null;
-  else if (/^EVEN|PK/i.test(pc.details || '')) spreadHome = 0;
-  const num = (s) => { if (s == null) return null; const v = parseFloat(String(s).replace(/^[ou]/, '')); return isNaN(v) ? null : v; };
-  const open = {
-    mlHome: num(pc.moneyline && pc.moneyline.home && pc.moneyline.home.open && pc.moneyline.home.open.odds),
-    mlAway: num(pc.moneyline && pc.moneyline.away && pc.moneyline.away.open && pc.moneyline.away.open.odds),
-    spreadHome: num(pc.pointSpread && pc.pointSpread.home && pc.pointSpread.home.open && pc.pointSpread.home.open.line),
-    total: num(pc.total && pc.total.over && pc.total.over.open && pc.total.over.open.line),
-  };
-  return { mlHome: mlHome ?? null, mlAway: mlAway ?? null, spreadHome, total: pc.overUnder ?? null, book: pc.provider.name, open };
-}
-
-// ── rebuild a slate for one date ────────────────────────────
-function restFor(abbr, date, games) {
-  const prev = games.filter(g => g.date < date && (g.home === abbr || g.away === abbr)).map(g => g.date).sort();
-  const last = prev[prev.length - 1];
-  const restDays = last ? Math.round((new Date(date) - new Date(last)) / 864e5) - 1 : 3;
-  const in4 = prev.filter(d => (new Date(date) - new Date(d)) / 864e5 <= 3).length;   // games in the 3 days before → with today, N in 4
-  return { restDays, backToBack: restDays === 0, threeInFour: in4 >= 2, schedulePoints: 0 };
-}
-
-function buildSlate(ctx, snapshot, date, games) {
-  const before = games.filter(g => g.date < date);
-  const teams = {};
-  for (const [abbr, snapTeam] of Object.entries(snapshot.teams)) {
-    const tg = before.filter(g => g.home === abbr || g.away === abbr);
-    const pf = tg.reduce((s, g) => s + (g.home === abbr ? g.homeScore : g.awayScore), 0);
-    const pa = tg.reduce((s, g) => s + (g.home === abbr ? g.awayScore : g.homeScore), 0);
-    // Roster: everyone in this team's box scores up to and including today.
-    const seen = new Map();
-    for (const g of games.filter(x => x.date <= date && (x.home === abbr || x.away === abbr))) {
-      for (const p of g.box[abbr] || []) if (!seen.has(p.id)) seen.set(p.id, p.name);
-    }
-    const players = [...seen.entries()].map(([id, name]) => {
-      const rows = tg.map(g => (g.box[abbr] || []).find(p => p.id === id)).filter(p => p && p.played);
-      const n = rows.length;
-      const avg = {};
-      ctx.NBAI_STAT_KEYS.forEach(k => { avg[k] = n ? rows.reduce((s, r) => s + r.line[k], 0) / n : 0; });
-      return { id, name, pos: '', status: 'Available', injury: null, availability: 1, projMin: avg.min, starter: false,
-        depthRank: 99, avg, seasonGames: n, games: n, h2h: null, recent: null };
-    });
-    teams[abbr] = {
-      ...snapTeam,
-      current: { ppg: tg.length ? pf / tg.length : null, papg: tg.length ? pa / tg.length : null, games: tg.length },
-      rest: restFor(abbr, date, games),
-      players,
-    };
-  }
-  return { source: 'backtest', date, league: snapshot.league, teams, games: [] };
+// ── ESPN parsing and slate rebuild: js/season/adapters.js ────
+// Parsing and team building always use the working tree's adapters, so a
+// --compare ref is scored on the same slates as the current engine.
+const espn = makeContext(fromWorkingTree);
+function buildSlate(snapshot, date, games) {
+  return { source: 'backtest', date, league: snapshot.league, teams: espn.buildEspnTeams(snapshot.teams, date, games), games: [] };
 }
 
 // hindsight: available = actually played tonight.
@@ -206,7 +137,7 @@ async function main() {
   // Load games.
   const games = [];
   for (let d = FROM; d <= to; d = addDays(d, 1)) {
-    const sb = await cachedJson(`scoreboard-${d}.json`, SCOREBOARD(d.replace(/-/g, '')));
+    const sb = await cachedJson(`scoreboard-${d}.json`, SCOREBOARD(d.replace(/-/g, '')), allCompleted);
     for (const e of sb.events || []) {
       if (!e.status || !e.status.type || !e.status.type.completed) continue;
       if (e.season && e.season.type !== 2) continue;
@@ -219,8 +150,8 @@ async function main() {
   process.stdout.write(`Games ${FROM} → ${to}: ${games.length}; fetching box scores`);
   for (const g of games) {
     const s = await cachedJson(`summary-${g.id}.json`, SUMMARY(g.id));
-    g.box = parseBox(s);
-    g.market = parseMarket(s, g.home, g.away);
+    g.box = espn.adaptEspnBox(s);
+    g.market = espn.adaptEspnPickcenter(s, g.home, g.away);
     process.stdout.write('.');
   }
   console.log();
@@ -241,12 +172,12 @@ async function main() {
   const rows = [];
   const dates = [...new Set(games.map(g => g.date))].sort();
   for (const date of dates) {
-    const slates = new Map(variants.map(([name, ctx]) => [name, buildSlate(ctx, snapshot, date, games)]));
+    const slate = buildSlate(snapshot, date, games);
     for (const g of games.filter(x => x.date === date)) {
       const row = { id: g.id, date, home: g.home, away: g.away, margin: g.homeScore - g.awayScore, homeWon: g.homeScore > g.awayScore, market: g.market };
       for (const [name, ctx] of variants) {
-        const slate = withLineup(slates.get(name), g, games, LINEUPS);
-        const proj = ctx.projectSeasonGame({ id: g.id, home: g.home, away: g.away, market: g.market, external: null }, slate);
+        const lineupSlate = withLineup(slate, g, games, LINEUPS);
+        const proj = ctx.projectSeasonGame({ id: g.id, home: g.home, away: g.away, market: g.market, external: null }, lineupSlate);
         row[name] = { p: proj.pHome, margin: proj.margin, total: proj.total };
       }
       row.total = g.homeScore + g.awayScore;
@@ -292,13 +223,13 @@ async function main() {
   const propErr = Object.fromEntries(propVariants.map(([n]) => [n, { pts: [], reb: [], ast: [] }]));
   let propPairs = 0;
   for (const date of dates) {
-    const slates = new Map(propVariants.map(([name, ctx]) => [name, buildSlate(ctx, snapshot, date, games)]));
+    const daySlate = buildSlate(snapshot, date, games);
     for (const g of games.filter(x => x.date === date)) {
       for (const [teamAbbr, oppAbbr] of [[g.home, g.away], [g.away, g.home]]) {
         for (const actual of (g.box[teamAbbr] || []).filter(p => p.played && p.line.min >= 10)) {
           const proj = {};
           for (const [name, ctx] of propVariants) {
-            const slate = withLineup(slates.get(name), g, games, 'hindsight');
+            const slate = withLineup(daySlate, g, games, 'hindsight');
             const team = slate.teams[teamAbbr], opp = slate.teams[oppAbbr];
             const player = team.players.find(p => p.id === actual.id);
             proj[name] = player ? ctx.projectPlayerProps(player, team, opp, slate, { minutesOverride: { [actual.id]: actual.line.min }, availabilityOverride: { [actual.id]: 1 } }) : null;

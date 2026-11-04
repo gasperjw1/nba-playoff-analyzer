@@ -6,6 +6,9 @@
 ./season-daily.sh            # any time: settles yesterday; from 11 AM ET also records tonight (once per day each)
 ```
 ```bash
+./season-daily.sh --espn     # NB.AI stale or down? record from ESPN now (automatic from 5 PM ET); review its 'check:' lines; a later NB.AI run replaces these rows before tip-off
+```
+```bash
 ./season-daily.sh --status   # what has run today
 ```
 ```bash

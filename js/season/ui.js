@@ -54,7 +54,7 @@ function renderSeasonStatus() {
   const teams = Object.keys(s.teams).length;
   const stale = s.date && s.date !== seasonTodayIso();
   el.innerHTML = `
-    <span>Feed <b>NB.AI</b> ${s.modelVersion ? 'v' + s.modelVersion : ''} · ${seasonState.slateOrigin === 'imported' ? 'pasted import' : 'committed snapshot'}</span>
+    <span>Feed ${s.source === 'espn' ? '<b>ESPN fallback</b> <span class="warn">(NB.AI not refreshed — no NB.AI probabilities)</span>' : `<b>NB.AI</b> ${s.modelVersion ? 'v' + s.modelVersion : ''}`} · ${seasonState.slateOrigin === 'imported' ? 'pasted import' : 'committed snapshot'}</span>
     <span>Slate <b>${s.date || '?'}</b>${stale ? ' <span class="warn">(not today — re-run fetch-slate.js)</span>' : ''}</span>
     <span>Fetched <b>${s.fetchedAt ? seasonFmtTime(s.fetchedAt) : '?'}</b></span>
     <span><b>${s.games.length}</b> games · <b>${teams}</b> teams</span>
@@ -268,7 +268,7 @@ function renderLedgerTab() {
     <p class="muted">Targets: no-vig closing line runs ≈ 67.8% / Brier 0.205 / margin MAE ≈ 10 over 13k+ games. ${stack.status === 'insufficient' ? `Stacking weights need ${stack.needed} settled games with all three forecasts (have ${stack.n}).` : `Stacking (${stack.status}, n=${stack.n}): logit P = ${stack.bias} + ${stack.weights.map((w, i) => `${w}·${stack.labels[i]}`).join(' + ')}. ${stack.note}`}</p>
     <table><tr><th>Date</th><th>Game</th><th>Ours</th><th>NB.AI</th><th>Market</th><th>Blend</th><th>Line</th><th>Result</th><th></th></tr>
     ${rows.slice().reverse().map(r => `<tr>
-      <td>${r.date}</td><td>${r.away} @ ${r.home}</td>
+      <td>${r.date}${r.source === 'espn' ? ' <span class="muted" title="Recorded from the ESPN fallback slate (no NB.AI)">ESPN</span>' : ''}</td><td>${r.away} @ ${r.home}</td>
       <td>${seasonPct(r.pOurs)}<span class="muted"> ${seasonFmtMargin(r.home, r.marginOurs)}</span></td><td>${seasonPct(r.pFriend)}</td><td>${seasonPct(r.pMarket)}</td><td>${seasonPct(r.pBlend)}</td>
       <td>${r.spreadHome != null ? `${r.home} ${r.spreadHome > 0 ? '+' : ''}${r.spreadHome}` : '—'}${r.totalMarket != null ? ' / ' + r.totalMarket : ''}</td>
       <td>${r.result ? `${r.away} ${r.result.awayScore} – ${r.home} ${r.result.homeScore} ${seasonResultMark(r)}` : `<input id="aw-${r.id}" placeholder="${r.away}"> <input id="hm-${r.id}" placeholder="${r.home}">`}</td>
@@ -317,7 +317,7 @@ function seasonExportLedger() {
 function renderImportPanel(noSlate) {
   return `<div class="import-box">
     ${noSlate ? '<p class="warn" style="color:var(--yellow);margin-bottom:10px">No slate is loaded.</p>' : ''}
-    <p class="muted" style="margin-bottom:10px">Daily: <code>./season-daily.sh</code> (any time settles yesterday; from 11 AM ET also records tonight — once per day each), then commit <code>js/season/data/slate-snapshot.js</code> + <code>season-ledger.js</code>. <code>./season-daily.sh --status</code> shows what has run. Fallback: paste the NB.AI <code>saved.json</code> below, and optionally the <code>/api/rankings</code> document, then import. The import stays in this browser only.</p>
+    <p class="muted" style="margin-bottom:10px">Daily: <code>./season-daily.sh</code> (any time settles yesterday; from 11 AM ET also records tonight — once per day each), then commit <code>js/season/data/slate-snapshot.js</code> + <code>season-ledger.js</code>. <code>./season-daily.sh --status</code> shows what has run. If NB.AI has not refreshed, <code>./season-daily.sh --espn</code> (automatic from 5 PM ET) records from ESPN instead. Browser-only fallback: paste the NB.AI <code>saved.json</code> below, and optionally the <code>/api/rankings</code> document, then import. The import stays in this browser only.</p>
     <textarea id="importSaved" placeholder="saved.json contents"></textarea>
     <textarea id="importRankings" placeholder="/api/rankings contents (optional — supplies NB.AI win probabilities and lines)" style="min-height:80px;margin-top:8px"></textarea>
     <div class="lab-row" style="margin-top:10px"><button class="btn btn-primary btn-sm" onclick="seasonImport()">Import</button>
