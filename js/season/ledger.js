@@ -28,6 +28,8 @@ function buildLedgerEntry(game, projection, blend, slate) {
     spreadHome: m.spreadHome != null ? m.spreadHome : null,
     totalMarket: m.total != null ? m.total : null,
     feedVersion: slate.modelVersion || null,
+    source: slate.source || null,          // 'nb.ai', or 'espn' for the fallback slate
+
     engine: SEASON_ENGINE_VERSION,
     recordedAt: new Date().toISOString(),
     result: null,
@@ -50,16 +52,42 @@ function loadSeasonLedger() {
   const committed = (typeof SEASON_LEDGER !== 'undefined' && Array.isArray(SEASON_LEDGER)) ? SEASON_LEDGER : [];
   const byId = {};
   committed.forEach(r => { byId[r.id] = { ...r, origin: 'committed' }; });
-  _readLocalLedger().forEach(r => { byId[r.id] = { ...(byId[r.id] || {}), ...r, origin: byId[r.id] ? 'committed+local' : 'local' }; });
+  // A local row never erases a committed result (it can only add its own).
+  _readLocalLedger().forEach(r => { const c = byId[r.id]; byId[r.id] = { ...(c || {}), ...r, result: r.result || (c && c.result) || null, origin: c ? 'committed+local' : 'local' }; });
   return Object.values(byId).sort((a, b) => (a.tip || a.date || '').localeCompare(b.tip || b.date || ''));
 }
 
-// Add entries without overwriting an existing pre-tip record.
+// An ESPN-fallback row (NB.AI had not refreshed) is a stand-in: a later
+// pre-tip record replaces it. Every other recorded row is final.
+function _isReplaceableRow(row) { return !!row && row.source === 'espn' && !row.result; }
+
+// Merge tonight's entries into `rows` in place (fetch-slate.js --record).
+// Never after tip-off; an existing row is kept unless it is replaceable.
+function mergeLedgerEntries(rows, entries, now) {
+  let added = 0, replaced = 0, late = 0;
+  entries.forEach(e => {
+    const at = rows.findIndex(r => r.id === e.id);
+    if (e.tip && new Date(e.tip) <= now) { if (at < 0) late++; return; }
+    if (at < 0) { rows.push(e); added++; }
+    else if (_isReplaceableRow(rows[at])) { rows[at] = e; replaced++; }
+  });
+  return { added, replaced, late };
+}
+
+// Add entries without overwriting an existing pre-tip record. The browser
+// never replaces a committed row (fetch-slate.js --record does that); it
+// may replace its own replaceable fallback row.
 function recordSeasonEntries(entries) {
   const local = _readLocalLedger();
-  const existing = new Set(loadSeasonLedger().map(r => r.id));
+  const committed = new Set(((typeof SEASON_LEDGER !== 'undefined' && Array.isArray(SEASON_LEDGER)) ? SEASON_LEDGER : []).map(r => r.id));
   let added = 0;
-  entries.forEach(e => { if (!existing.has(e.id)) { local.push(e); existing.add(e.id); added++; } });
+  entries.forEach(e => {
+    if (committed.has(e.id)) return;
+    const at = local.findIndex(r => r.id === e.id);
+    if (at >= 0 && !_isReplaceableRow(local[at])) return;
+    if (at >= 0) local[at] = e; else local.push(e);
+    added++;
+  });
   _writeLocalLedger(local);
   return { added, skipped: entries.length - added };
 }

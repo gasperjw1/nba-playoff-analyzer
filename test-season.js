@@ -531,5 +531,125 @@ console.log('TEST 15: aging');
   assert(g.margin > off.margin, 'aging moves the margin toward the younger team');
 }
 
+// ── TEST 16: ESPN adapters + fallback slate ─────────────────
+console.log('TEST 16: ESPN adapters + fallback slate');
+{
+  const c = loadCtx(false);
+  const names = ['MIN', 'FG', '3PT', 'FT', 'REB', 'AST', 'STL', 'BLK', 'TO', 'PTS'];
+  const line = (min, pts) => [String(min), '5-10', '1-3', '2-2', '4', '3', '1', '0', '2', String(pts)];
+  const box = (abbr, players) => ({ team: { abbreviation: abbr }, statistics: [{ names, athletes: players.map(([id, name, min, pts]) =>
+    min == null ? { athlete: { id, displayName: name }, didNotPlay: true, reason: 'REST', stats: [] }
+                : { athlete: { id, displayName: name }, starter: true, stats: line(min, pts) }) }] });
+  const summary = (home, away, hp, ap) => ({ boxscore: { players: [box(away, ap), box(home, hp)] },
+    pickcenter: [{ provider: { name: 'DraftKings' }, details: `${home} -4.5`, overUnder: 221.5,
+      homeTeamOdds: { moneyLine: -190 }, awayTeamOdds: { moneyLine: 160 },
+      total: { over: { open: { line: 'o224.5' }, close: { line: 'o221.5' } } },
+      pointSpread: { home: { open: { line: '-3.5' } } }, moneyline: { home: { open: { odds: '-160' } }, away: { open: { odds: '+135' } } } }] });
+
+  const b = c.adaptEspnBox(summary('AAA', 'BBB', [['1', 'Ann', 30, 20], ['2', 'Bo', null]], [['5', 'Eve', 32, 25]]));
+  assert(b.AAA.length === 2 && b.BBB.length === 1, 'box: one list per team');
+  const ann = b.AAA.find(p => p.id === '1');
+  assert(ann.played && ann.line.min === 30 && ann.line.pts === 20 && ann.line.fgm === 5 && ann.line.fga === 10 && ann.line.tpa === 3, 'box: stat line parsed');
+  assert(!b.AAA.find(p => p.id === '2').played, 'box: DNP is not played');
+
+  const m = c.adaptEspnPickcenter(summary('AAA', 'BBB', [], []), 'AAA', 'BBB');
+  assert(m.spreadHome === -4.5 && m.total === 221.5 && m.mlHome === -190 && m.book === 'DraftKings', 'pickcenter: closing line, home favourite sign');
+  assert(m.open.total === 224.5 && m.open.spreadHome === -3.5 && m.open.mlAway === 135, 'pickcenter: opening line');
+  const mAway = c.adaptEspnPickcenter({ pickcenter: [{ provider: { name: 'DK' }, details: 'BBB -2' }] }, 'AAA', 'BBB');
+  assert(mAway.spreadHome === 2, 'pickcenter: away favourite → home spread positive');
+  assert(c.adaptEspnPickcenter({}, 'AAA', 'BBB') === null, 'pickcenter: none → null');
+
+  const inj = (id, status, note) => ({ status, shortComment: note, athlete: { displayName: 'P' + id, links: [{ href: `https://www.espn.com/nba/player/_/id/${id}/p` }] } });
+  const I = c.adaptEspnInjuries({ injuries: [{ injuries: [
+    inj('10', 'Out', 'Was questionable earlier in the week.'), inj('11', 'Day-To-Day', 'X is questionable for Wednesday.'),
+    inj('12', 'Day-To-Day', 'X is probable for Wednesday.'), inj('13', 'Day-To-Day', 'X has been ruled out for Wednesday.'),
+    inj('14', 'Day-To-Day', 'X is doubtful.'), inj('15', 'Day-To-Day', 'Day-to-day with soreness.'),
+    inj('16', 'Day-To-Day', "X has been ruled out for Monday's game against the Suns."),
+    inj('17', 'Day-To-Day', "X was upgraded from doubtful to questionable for Wednesday's game."),
+    inj('18', 'Day-To-Day', "X is questionable for Wednesday's game after being listed as doubtful Monday."),
+    inj('19', 'Day-To-Day', 'X will be rested Wednesday against the Hawks.'),
+    { status: 'Out', athlete: { displayName: 'NoLink', links: [] } }] }] }, '2026-11-04');
+  assert(I['10'].availability === 0, 'injuries: Out status wins over the note');
+  assert(I['11'].availability === 0.5 && I['12'].availability === 0.9 && I['13'].availability === 0 && I['14'].availability === 0.1, 'injuries: Day-To-Day reads tonight\'s designation');
+  assert(I['15'].availability === 0.5, 'injuries: undesignated Day-To-Day → 0.5');
+  assert(I['16'].availability === 0.5, "injuries: a note about another day's game is ignored");
+  assert(I['17'].availability === 0.5, 'injuries: "upgraded from doubtful to questionable" → questionable');
+  assert(I['18'].availability === 0.5, "injuries: tonight's designation wins over an earlier one in the note");
+  assert(I['19'].availability === 0, 'injuries: resting tonight → out');
+  assert(Object.keys(I).length === 10, 'injuries: entries without a player id are skipped');
+
+  // Fallback slate: three teams; player 7 moved from CCC to AAA.
+  const prior = (abbr) => ({ abbr, name: abbr, city: abbr, logo: null, prior: { ortg: 115, drtg: 112, pace: 100, games: 82 },
+    current: { ppg: 1, papg: 1, games: 99 }, rest: {}, players: [{ id: 'nb' }] });
+  const priorTeams = { AAA: prior('AAA'), BBB: prior('BBB'), CCC: prior('CCC') };
+  const G = (id, date, home, away, hs, as, hb, ab) => ({ id, date, home, away, homeScore: hs, awayScore: as, box: { [home]: hb, [away]: ab } });
+  const P = (id, min, pts) => ({ id, name: 'P' + id, played: min > 0, line: { min, pts, reb: 4, ast: 2, tpm: 1, stl: 1, blk: 0, to: 1, fgm: 5, fga: 10, ftm: 2, fta: 2, tpa: 3 } });
+  const games = [
+    G('g1', '2026-10-28', 'AAA', 'BBB', 110, 100, [P('1', 30, 20), P('2', 20, 10)], [P('5', 32, 25)]),
+    G('g2', '2026-10-29', 'CCC', 'BBB', 105, 108, [P('7', 28, 18)], [P('5', 30, 22)]),
+    G('g3', '2026-10-31', 'AAA', 'CCC', 120, 101, [P('1', 34, 30), P('2', 0, 0), P('7', 25, 15)], [P('8', 30, 20)]),
+  ];
+  const tonight = [{ id: 'g9', tip: '2026-11-01T23:00Z', venue: 'Arena', home: 'AAA', away: 'BBB', market: m }, { id: 'gX', home: 'AAA', away: 'ZZZ' }];
+  const s = c.adaptEspnSlate({ priorTeams, games, tonight, injuries: { '1': { availability: 0.5, status: 'Day-To-Day', note: 'Q' } }, date: '2026-11-01', fetchedAt: 'now' });
+  assert(s.source === 'espn' && s.date === '2026-11-01' && s.modelVersion === null, 'slate: source espn, date, no feed version');
+  assert(s.games.length === 1 && s.games[0].id === 'g9' && s.games[0].external === null && s.games[0].market === m, 'slate: tonight mapped, unknown team dropped, no NB.AI');
+  assert(s.teams.AAA.prior === priorTeams.AAA.prior, 'slate: priors carried from the snapshot');
+  near(s.teams.AAA.current.ppg, 115, 1e-9, 'slate: current ppg from this season\'s results');
+  assert(s.teams.AAA.current.games === 2, 'slate: current games counted');
+  const a = Object.fromEntries(s.teams.AAA.players.map(p => [p.id, p]));
+  assert(a['7'] && !s.teams.CCC.players.find(p => p.id === '7'), 'slate: moved player counts only for his latest team');
+  assert(a['1'].availability === 0.5 && a['1'].injury === 'Q', 'slate: injury report sets availability');
+  assert(a['2'].availability === 1, 'slate: unlisted player is in even after a DNP');
+  near(a['1'].avg.pts, 25, 1e-9, 'slate: season averages over games played');
+  assert(a['2'].seasonGames === 1, 'slate: DNP does not count as a game played');
+  assert(s.teams.AAA.rest.restDays === 0 && s.teams.AAA.rest.backToBack, 'slate: rest from the schedule');
+  const s2 = c.adaptEspnSlate({ priorTeams, games, tonight, injuries: {}, rosters: { AAA: [{ id: '1', name: 'P1' }] }, date: '2026-11-01' });
+  assert(s2.teams.AAA.players.map(p => p.id).join() === '1', 'slate: ESPN roster drops players no longer on the team');
+  const s3 = c.adaptEspnSlate({ priorTeams, games, tonight, date: '2026-11-01',
+    rosters: { AAA: [{ id: '1', name: 'P1' }, { id: '30', name: 'Returner' }, { id: '31', name: 'Benched' }] },
+    injuries: { '30': { availability: 0.9, status: 'Day-To-Day', note: 'probable' } } });
+  const ret = s3.teams.AAA.players.find(p => p.id === '30');
+  assert(ret && ret.availability === 0.9 && ret.seasonGames === 0 && ret.avg.min === 0 && ret.name === 'Returner', 'slate: listed roster player with no games yet is added at his designation');
+  assert(!s3.teams.AAA.players.find(p => p.id === '31'), 'slate: unlisted roster player with no games stays out');
+  const proj = c.projectSeasonGame(s.games[0], s);
+  assert(isFinite(proj.margin) && proj.pHome > 0 && proj.pHome < 1, 'slate: projects through the engine');
+
+  // Ledger: source recorded; fallback rows replaceable before tip-off only.
+  const blend = c.blendGameForecast({ pOurs: proj.pHome, mlHome: m.mlHome, mlAway: m.mlAway });
+  const espnRow = c.buildLedgerEntry(s.games[0], proj, blend, s);
+  assert(espnRow.source === 'espn' && espnRow.pFriend === null, 'ledger: fallback row marked espn, no NB.AI');
+  const nb = { ...espnRow, source: 'nb.ai', pFriend: 0.6 };
+  const before = new Date('2026-11-01T20:00Z'), after = new Date('2026-11-02T01:00Z');
+  let rows = [espnRow];
+  let r = c.mergeLedgerEntries(rows, [nb], before);
+  assert(r.replaced === 1 && rows.length === 1 && rows[0].source === 'nb.ai', 'ledger: NB.AI replaces a fallback row before tip-off');
+  r = c.mergeLedgerEntries(rows, [{ ...espnRow }], before);
+  assert(r.replaced === 0 && rows[0].source === 'nb.ai', 'ledger: an NB.AI row is never replaced');
+  rows = [{ ...espnRow }];
+  r = c.mergeLedgerEntries(rows, [nb], after);
+  assert(r.replaced === 0 && rows[0].source === 'espn', 'ledger: nothing replaced after tip-off');
+  rows = [{ ...espnRow, result: { homeScore: 1, awayScore: 0 } }];
+  r = c.mergeLedgerEntries(rows, [nb], before);
+  assert(r.replaced === 0, 'ledger: a settled row is never replaced');
+  rows = [];
+  r = c.mergeLedgerEntries(rows, [nb, { ...nb, id: 'late', tip: '2026-11-01T19:00Z' }], before);
+  assert(r.added === 1 && r.late === 1 && rows.length === 1, 'ledger: new rows added, tipped games skipped');
+
+  // Browser: never replaces a committed row; a local row never erases a committed result.
+  c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
+  const committedRow = { ...espnRow, id: 'c1' };
+  c.SEASON_LEDGER = [committedRow];
+  let br = c.recordSeasonEntries([{ ...nb, id: 'c1' }, { ...espnRow, id: 'l1' }]);
+  assert(br.added === 1 && c.loadSeasonLedger().find(x => x.id === 'c1').source === 'espn', 'browser: committed fallback row is left for fetch-slate.js');
+  br = c.recordSeasonEntries([{ ...nb, id: 'l1' }]);
+  assert(br.added === 1 && c.loadSeasonLedger().find(x => x.id === 'l1').source === 'nb.ai', 'browser: its own fallback row is replaceable');
+  br = c.recordSeasonEntries([{ ...espnRow, id: 'l1' }]);
+  assert(br.added === 0, 'browser: an NB.AI row is final');
+  c.localStorage.setItem(c.SEASON_LEDGER_STORAGE_KEY, JSON.stringify([{ ...committedRow, result: null }]));
+  c.SEASON_LEDGER = [{ ...committedRow, result: { homeScore: 100, awayScore: 90 } }];
+  assert((c.loadSeasonLedger().find(x => x.id === 'c1').result || {}).homeScore === 100, 'browser: a local null result never hides a committed result');
+  c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
