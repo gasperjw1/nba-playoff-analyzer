@@ -1,5 +1,5 @@
 // ============================================================
-// SEASON REPLAY — walk-forward predictions (replay-6)
+// SEASON REPLAY — walk-forward predictions (replay-7)
 // ============================================================
 // Written by `node replay-season.js`. Each row was predicted from data
 // published before its game (see the header of replay-season.js and each
@@ -9,11 +9,19 @@
 // ============================================================
 const SEASON_REPLAY = {
  "spec": {
-  "version": "replay-6",
+  "version": "replay-7",
   "engine": "2026-11-05.b2b2",
   "firstDay": "2026-10-20",
   "rosterSnapshotBefore": "2026-10-20T12:00:00Z",
   "reportLeadMinutes": 60,
+  "morningCutoffEt": [
+   9,
+   0
+  ],
+  "eveCutoffEt": [
+   21,
+   0
+  ],
   "preseasonCoef": 0.099,
   "preseasonWindow": [
    "2026-09-25",
@@ -22,10 +30,12 @@ const SEASON_REPLAY = {
   "variants": {
    "ours": "engine",
    "oursPre": "engine + preseason",
-   "oursAdj": "engine, this season opponent-adjusted"
+   "oursAdj": "engine, this season opponent-adjusted",
+   "oursMorning": "engine, injury report before 9 AM ET",
+   "oursEve": "engine, injury report before 9 PM ET the evening before"
   }
  },
- "generatedAt": "2026-11-05T22:18:18.539Z",
+ "generatedAt": "2026-11-05T23:10:26.593Z",
  "rows": [
   {
    "id": "401909088",
@@ -42,6 +52,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5882,
    "marginOursAdj": 2.79,
    "totalOursAdj": 223.2,
+   "pOursMorning": 0.5559,
+   "marginOursMorning": 1.76,
+   "totalOursMorning": 222.8,
+   "pOursEve": 0.5682,
+   "marginOursEve": 2.15,
+   "totalOursEve": 222.6,
+   "comps": {
+    "prior": 0.08,
+    "current": 0,
+    "absent": 0,
+    "change": -0.06,
+    "aging": 0.47,
+    "fit": 0.3,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.08,
+    "current": 0,
+    "absent": 0,
+    "change": -1.09,
+    "aging": 0.47,
+    "fit": 0.3,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.08,
+    "current": 0,
+    "absent": 0,
+    "change": -0.71,
+    "aging": 0.49,
+    "fit": 0.29,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4675,
    "mlHome": 105,
@@ -56,7 +102,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 121,
     "awayScore": 113
@@ -74,7 +120,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DET": 18,
      "BOS": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-20_08_30AM.pdf",
+    "reportMorningAt": "2026-10-20T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-19_08_30PM.pdf",
+    "reportEveAt": "2026-10-20T00:30:00.000Z"
    }
   },
   {
@@ -92,6 +142,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4744,
    "marginOursAdj": -0.8,
    "totalOursAdj": 228.9,
+   "pOursMorning": 0.4744,
+   "marginOursMorning": -0.8,
+   "totalOursMorning": 228.9,
+   "pOursEve": 0.4744,
+   "marginOursEve": -0.8,
+   "totalOursEve": 228.9,
+   "comps": {
+    "prior": 4.87,
+    "current": 0,
+    "absent": -0.41,
+    "change": -6.19,
+    "aging": -1.65,
+    "fit": 0.58,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 4.87,
+    "current": 0,
+    "absent": -0.41,
+    "change": -6.19,
+    "aging": -1.65,
+    "fit": 0.58,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 4.87,
+    "current": 0,
+    "absent": -0.41,
+    "change": -6.19,
+    "aging": -1.65,
+    "fit": 0.58,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6092,
    "mlHome": -175,
@@ -106,7 +192,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 100,
     "awayScore": 106
@@ -124,7 +210,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NY": 17,
      "PHI": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-20_08_30AM.pdf",
+    "reportMorningAt": "2026-10-20T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-19_08_30PM.pdf",
+    "reportEveAt": "2026-10-20T00:30:00.000Z"
    }
   },
   {
@@ -142,6 +232,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4408,
    "marginOursAdj": -1.86,
    "totalOursAdj": 228.4,
+   "pOursMorning": 0.4408,
+   "marginOursMorning": -1.86,
+   "totalOursMorning": 228.4,
+   "pOursEve": 0.4408,
+   "marginOursEve": -1.86,
+   "totalOursEve": 228.4,
+   "comps": {
+    "prior": -2.16,
+    "current": 0,
+    "absent": 0,
+    "change": -1.93,
+    "aging": 0.02,
+    "fit": 0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -2.16,
+    "current": 0,
+    "absent": 0,
+    "change": -1.93,
+    "aging": 0.02,
+    "fit": 0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -2.16,
+    "current": 0,
+    "absent": 0,
+    "change": -1.93,
+    "aging": 0.02,
+    "fit": 0.21,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4826,
    "mlHome": -102,
@@ -156,7 +282,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 104,
     "awayScore": 116
@@ -174,7 +300,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "OKC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-20_08_30AM.pdf",
+    "reportMorningAt": "2026-10-20T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-19_08_30PM.pdf",
+    "reportEveAt": "2026-10-20T00:30:00.000Z"
    }
   },
   {
@@ -192,6 +322,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5908,
    "marginOursAdj": 2.87,
    "totalOursAdj": 231,
+   "pOursMorning": 0.6117,
+   "marginOursMorning": 3.55,
+   "totalOursMorning": 230.7,
+   "pOursEve": 0.6117,
+   "marginOursEve": 3.55,
+   "totalOursEve": 230.7,
+   "comps": {
+    "prior": -1.36,
+    "current": 0,
+    "absent": -0.38,
+    "change": 2.88,
+    "aging": 0.01,
+    "fit": -0.28,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.36,
+    "current": 0,
+    "absent": -0.38,
+    "change": 3.61,
+    "aging": 0.01,
+    "fit": -0.33,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.36,
+    "current": 0,
+    "absent": -0.38,
+    "change": 3.61,
+    "aging": 0.01,
+    "fit": -0.33,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5514,
    "mlHome": -135,
@@ -206,7 +372,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -224,7 +390,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ORL": 18,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -242,6 +412,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5344,
    "marginOursAdj": 1.08,
    "totalOursAdj": 233.7,
+   "pOursMorning": 0.5344,
+   "marginOursMorning": 1.08,
+   "totalOursMorning": 233.7,
+   "pOursEve": 0.5344,
+   "marginOursEve": 1.08,
+   "totalOursEve": 233.7,
+   "comps": {
+    "prior": -3.96,
+    "current": 0,
+    "absent": -0.22,
+    "change": 3.01,
+    "aging": 0.45,
+    "fit": -0.2,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -3.96,
+    "current": 0,
+    "absent": -0.22,
+    "change": 3.01,
+    "aging": 0.45,
+    "fit": -0.2,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -3.96,
+    "current": 0,
+    "absent": -0.22,
+    "change": 3.01,
+    "aging": 0.45,
+    "fit": -0.2,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6092,
    "mlHome": -175,
@@ -256,7 +462,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 128,
     "awayScore": 116
@@ -274,7 +480,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "WSH": 18,
      "MIL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -292,6 +502,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5694,
    "marginOursAdj": 2.18,
    "totalOursAdj": 234.1,
+   "pOursMorning": 0.5863,
+   "marginOursMorning": 2.72,
+   "totalOursMorning": 234,
+   "pOursEve": 0.5863,
+   "marginOursEve": 2.72,
+   "totalOursEve": 234,
+   "comps": {
+    "prior": -0.84,
+    "current": 0,
+    "absent": 1.58,
+    "change": 0.32,
+    "aging": -0.28,
+    "fit": -0.6,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.84,
+    "current": 0,
+    "absent": 1.57,
+    "change": 0.92,
+    "aging": -0.28,
+    "fit": -0.65,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.84,
+    "current": 0,
+    "absent": 1.57,
+    "change": 0.92,
+    "aging": -0.28,
+    "fit": -0.65,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5174,
    "mlHome": -118,
@@ -306,7 +552,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 106,
     "awayScore": 131
@@ -324,7 +570,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIA": 17,
      "MIN": 16
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -342,6 +592,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4036,
    "marginOursAdj": -3.05,
    "totalOursAdj": 223.1,
+   "pOursMorning": 0.4036,
+   "marginOursMorning": -3.05,
+   "totalOursMorning": 223.1,
+   "pOursEve": 0.4036,
+   "marginOursEve": -3.05,
+   "totalOursEve": 223.1,
+   "comps": {
+    "prior": -11.11,
+    "current": -0.01,
+    "absent": 2.81,
+    "change": 2.31,
+    "aging": -0.08,
+    "fit": 1.03,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -11.11,
+    "current": -0.01,
+    "absent": 2.81,
+    "change": 2.31,
+    "aging": -0.08,
+    "fit": 1.03,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -11.11,
+    "current": -0.01,
+    "absent": 2.81,
+    "change": 2.31,
+    "aging": -0.08,
+    "fit": 1.03,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4783,
    "mlHome": 100,
@@ -356,7 +642,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 103,
     "awayScore": 110
@@ -374,7 +660,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BKN": 18,
      "CHA": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -392,6 +682,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7414,
    "marginOursAdj": 8.1,
    "totalOursAdj": 232,
+   "pOursMorning": 0.7225,
+   "marginOursMorning": 7.38,
+   "totalOursMorning": 231.6,
+   "pOursEve": 0.7225,
+   "marginOursEve": 7.38,
+   "totalOursEve": 231.6,
+   "comps": {
+    "prior": 6.03,
+    "current": 0,
+    "absent": 0,
+    "change": 0.52,
+    "aging": -0.07,
+    "fit": -0.38,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.03,
+    "current": 0,
+    "absent": -0.39,
+    "change": 0.24,
+    "aging": -0.07,
+    "fit": -0.43,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.03,
+    "current": 0,
+    "absent": -0.39,
+    "change": 0.24,
+    "aging": -0.07,
+    "fit": -0.43,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7914,
    "mlHome": -470,
@@ -406,7 +732,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 135,
     "awayScore": 92
@@ -424,7 +750,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "TOR": 19,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -442,6 +772,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5859,
    "marginOursAdj": 2.71,
    "totalOursAdj": 241,
+   "pOursMorning": 0.5855,
+   "marginOursMorning": 2.7,
+   "totalOursMorning": 241,
+   "pOursEve": 0.5855,
+   "marginOursEve": 2.7,
+   "totalOursEve": 241,
+   "comps": {
+    "prior": 1.76,
+    "current": 0,
+    "absent": 0.53,
+    "change": -1.49,
+    "aging": 0.09,
+    "fit": -0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.76,
+    "current": 0,
+    "absent": 0.59,
+    "change": -1.53,
+    "aging": 0.09,
+    "fit": -0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.76,
+    "current": 0,
+    "absent": 0.59,
+    "change": -1.53,
+    "aging": 0.09,
+    "fit": -0.21,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5325,
    "mlHome": -125,
@@ -456,7 +822,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 123,
     "awayScore": 103
@@ -474,7 +840,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MEM": 18,
      "UTAH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -492,6 +862,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4989,
    "marginOursAdj": -0.03,
    "totalOursAdj": 234,
+   "pOursMorning": 0.4989,
+   "marginOursMorning": -0.03,
+   "totalOursMorning": 234,
+   "pOursEve": 0.4989,
+   "marginOursEve": -0.03,
+   "totalOursEve": 234,
+   "comps": {
+    "prior": 2.56,
+    "current": 0,
+    "absent": 0.53,
+    "change": -5.84,
+    "aging": 0.83,
+    "fit": -0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.56,
+    "current": 0,
+    "absent": 0.53,
+    "change": -5.84,
+    "aging": 0.83,
+    "fit": -0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.56,
+    "current": 0,
+    "absent": 0.53,
+    "change": -5.84,
+    "aging": 0.83,
+    "fit": -0.11,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4365,
    "mlHome": 120,
@@ -506,7 +912,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 123
@@ -524,7 +930,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NO": 19,
      "IND": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -542,6 +952,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6616,
    "marginOursAdj": 5.21,
    "totalOursAdj": 225.9,
+   "pOursMorning": 0.6616,
+   "marginOursMorning": 5.21,
+   "totalOursMorning": 225.9,
+   "pOursEve": 0.6616,
+   "marginOursEve": 5.21,
+   "totalOursEve": 225.9,
+   "comps": {
+    "prior": 7.93,
+    "current": 0,
+    "absent": 0.02,
+    "change": -4.21,
+    "aging": -0.07,
+    "fit": -0.46,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 7.93,
+    "current": 0,
+    "absent": 0.02,
+    "change": -4.21,
+    "aging": -0.07,
+    "fit": -0.46,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 7.93,
+    "current": 0,
+    "absent": 0.02,
+    "change": -4.21,
+    "aging": -0.07,
+    "fit": -0.46,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7768,
    "mlHome": -425,
@@ -556,7 +1002,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 128,
     "awayScore": 110
@@ -574,7 +1020,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "HOU": 18,
      "DAL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -592,6 +1042,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6494,
    "marginOursAdj": 4.8,
    "totalOursAdj": 230,
+   "pOursMorning": 0.6576,
+   "marginOursMorning": 5.08,
+   "totalOursMorning": 229.8,
+   "pOursEve": 0.6576,
+   "marginOursEve": 5.08,
+   "totalOursEve": 229.8,
+   "comps": {
+    "prior": 1.78,
+    "current": 0,
+    "absent": 3.68,
+    "change": -1.3,
+    "aging": 0.6,
+    "fit": -1.96,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.78,
+    "current": 0,
+    "absent": 2.35,
+    "change": 0.12,
+    "aging": 0.58,
+    "fit": -1.75,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.78,
+    "current": 0,
+    "absent": 2.35,
+    "change": 0.12,
+    "aging": 0.58,
+    "fit": -1.75,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.669,
    "mlHome": -230,
@@ -606,7 +1092,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 127,
     "awayScore": 105
@@ -624,7 +1110,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAL": 19,
      "GS": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -642,6 +1132,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5816,
    "marginOursAdj": 2.58,
    "totalOursAdj": 225.6,
+   "pOursMorning": 0.5981,
+   "marginOursMorning": 3.11,
+   "totalOursMorning": 225.5,
+   "pOursEve": 0.5981,
+   "marginOursEve": 3.11,
+   "totalOursEve": 225.5,
+   "comps": {
+    "prior": -1.34,
+    "current": 0,
+    "absent": -0.02,
+    "change": 2.54,
+    "aging": 0.27,
+    "fit": -0.87,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.34,
+    "current": 0,
+    "absent": -0.45,
+    "change": 3.31,
+    "aging": 0.27,
+    "fit": -0.68,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.34,
+    "current": 0,
+    "absent": -0.45,
+    "change": 3.31,
+    "aging": 0.27,
+    "fit": -0.68,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.583,
    "mlHome": -155,
@@ -656,7 +1182,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 124,
     "awayScore": 83
@@ -674,7 +1200,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "POR": 18,
      "PHX": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -692,6 +1222,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6345,
    "marginOursAdj": 4.3,
    "totalOursAdj": 226.8,
+   "pOursMorning": 0.6315,
+   "marginOursMorning": 4.2,
+   "totalOursMorning": 226.8,
+   "pOursEve": 0.6315,
+   "marginOursEve": 4.2,
+   "totalOursEve": 226.8,
+   "comps": {
+    "prior": 8.29,
+    "current": 0.01,
+    "absent": -0.16,
+    "change": -6.62,
+    "aging": -0.42,
+    "fit": 1.2,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 8.29,
+    "current": 0.01,
+    "absent": -0.34,
+    "change": -6.42,
+    "aging": -0.38,
+    "fit": 1.04,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 8.29,
+    "current": 0.01,
+    "absent": -0.34,
+    "change": -6.42,
+    "aging": -0.38,
+    "fit": 1.04,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6225,
    "mlHome": -185,
@@ -706,7 +1272,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 121,
     "awayScore": 96
@@ -724,7 +1290,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAC": 18,
      "SAC": 16
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-21_08_30AM.pdf",
+    "reportMorningAt": "2026-10-21T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-20_08_30PM.pdf",
+    "reportEveAt": "2026-10-21T00:30:00.000Z"
    }
   },
   {
@@ -742,6 +1312,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5817,
    "marginOursAdj": 2.58,
    "totalOursAdj": 233.2,
+   "pOursMorning": 0.5761,
+   "marginOursMorning": 2.4,
+   "totalOursMorning": 233.2,
+   "pOursEve": 0.5761,
+   "marginOursEve": 2.4,
+   "totalOursEve": 233.2,
+   "comps": {
+    "prior": -3.15,
+    "current": 0.3,
+    "absent": 0.63,
+    "change": 2.44,
+    "aging": 0.89,
+    "fit": -0.21,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -3.15,
+    "current": 0.3,
+    "absent": 0.63,
+    "change": 2.44,
+    "aging": 0.89,
+    "fit": -0.21,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -3.15,
+    "current": 0.3,
+    "absent": 0.63,
+    "change": 2.44,
+    "aging": 0.89,
+    "fit": -0.21,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5514,
    "mlHome": -135,
@@ -756,7 +1362,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 106
@@ -774,7 +1380,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHI": 17,
      "CLE": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-22_08_30AM.pdf",
+    "reportMorningAt": "2026-10-22T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-21_08_30PM.pdf",
+    "reportEveAt": "2026-10-22T00:30:00.000Z"
    }
   },
   {
@@ -792,6 +1402,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7457,
    "marginOursAdj": 8.26,
    "totalOursAdj": 232.3,
+   "pOursMorning": 0.7448,
+   "marginOursMorning": 8.23,
+   "totalOursMorning": 232.1,
+   "pOursEve": 0.7448,
+   "marginOursEve": 8.23,
+   "totalOursEve": 232.1,
+   "comps": {
+    "prior": 4.05,
+    "current": 0.58,
+    "absent": 0,
+    "change": 0.68,
+    "aging": 0.87,
+    "fit": 0.16,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 4.05,
+    "current": 0.58,
+    "absent": 0,
+    "change": 1.12,
+    "aging": 0.87,
+    "fit": 0.11,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 4.05,
+    "current": 0.58,
+    "absent": 0,
+    "change": 1.12,
+    "aging": 0.87,
+    "fit": 0.11,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7409,
    "mlHome": -340,
@@ -806,7 +1452,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 96,
     "awayScore": 84
@@ -826,7 +1472,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "OKC": 17,
      "DEN": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-22_08_30AM.pdf",
+    "reportMorningAt": "2026-10-22T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-21_08_30PM.pdf",
+    "reportEveAt": "2026-10-22T00:30:00.000Z"
    }
   },
   {
@@ -844,6 +1494,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5849,
    "marginOursAdj": 2.68,
    "totalOursAdj": 232.3,
+   "pOursMorning": 0.5948,
+   "marginOursMorning": 3,
+   "totalOursMorning": 232.3,
+   "pOursEve": 0.5948,
+   "marginOursEve": 3,
+   "totalOursEve": 232.3,
+   "comps": {
+    "prior": -0.92,
+    "current": 1.4,
+    "absent": -0.03,
+    "change": 1.08,
+    "aging": -0.49,
+    "fit": 0.04,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.92,
+    "current": 1.4,
+    "absent": -0.4,
+    "change": 1.4,
+    "aging": -0.49,
+    "fit": 0.01,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.92,
+    "current": 1.4,
+    "absent": -0.4,
+    "change": 1.4,
+    "aging": -0.49,
+    "fit": 0.01,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5174,
    "mlHome": -118,
@@ -858,7 +1544,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -881,7 +1567,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIL": 18,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -899,6 +1589,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6676,
    "marginOursAdj": 5.42,
    "totalOursAdj": 223.1,
+   "pOursMorning": 0.6609,
+   "marginOursMorning": 5.19,
+   "totalOursMorning": 223.1,
+   "pOursEve": 0.6609,
+   "marginOursEve": 5.19,
+   "totalOursEve": 223.1,
+   "comps": {
+    "prior": 1.09,
+    "current": -0.1,
+    "absent": 0,
+    "change": 2.37,
+    "aging": 0.7,
+    "fit": -0.87,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.09,
+    "current": -0.1,
+    "absent": 0,
+    "change": 2.37,
+    "aging": 0.7,
+    "fit": -0.87,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.09,
+    "current": -0.1,
+    "absent": 0,
+    "change": 2.37,
+    "aging": 0.7,
+    "fit": -0.87,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5721,
    "mlHome": -148,
@@ -913,7 +1639,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 107,
     "awayScore": 103
@@ -934,7 +1660,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BOS": 17,
      "NY": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -952,6 +1682,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5347,
    "marginOursAdj": 1.09,
    "totalOursAdj": 228.7,
+   "pOursMorning": 0.5641,
+   "marginOursMorning": 2.02,
+   "totalOursMorning": 228.5,
+   "pOursEve": 0.5641,
+   "marginOursEve": 2.02,
+   "totalOursEve": 228.5,
+   "comps": {
+    "prior": 1.84,
+    "current": 0.03,
+    "absent": -2.49,
+    "change": 0.55,
+    "aging": 0.32,
+    "fit": -0.84,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.84,
+    "current": 0.03,
+    "absent": -2.49,
+    "change": 1.22,
+    "aging": 0.32,
+    "fit": -0.9,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.84,
+    "current": 0.03,
+    "absent": -2.49,
+    "change": 1.22,
+    "aging": 0.32,
+    "fit": -0.9,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4365,
    "mlHome": 120,
@@ -966,7 +1732,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 81,
     "awayScore": 128
@@ -987,7 +1753,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHA": 18,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1005,6 +1775,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6073,
    "marginOursAdj": 3.4,
    "totalOursAdj": 232.8,
+   "pOursMorning": 0.6191,
+   "marginOursMorning": 3.79,
+   "totalOursMorning": 232.8,
+   "pOursEve": 0.6191,
+   "marginOursEve": 3.79,
+   "totalOursEve": 232.8,
+   "comps": {
+    "prior": -1.88,
+    "current": 1,
+    "absent": -0.42,
+    "change": 3.52,
+    "aging": -0.66,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.88,
+    "current": 1,
+    "absent": -0.42,
+    "change": 3.66,
+    "aging": -0.66,
+    "fit": 0.09,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.88,
+    "current": 1,
+    "absent": -0.42,
+    "change": 3.66,
+    "aging": -0.66,
+    "fit": 0.09,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6958,
    "mlHome": -265,
@@ -1019,7 +1825,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 105,
     "awayScore": 121
@@ -1039,7 +1845,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "IND": 17,
      "DAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1057,6 +1867,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5475,
    "marginOursAdj": 1.49,
    "totalOursAdj": 230.9,
+   "pOursMorning": 0.5576,
+   "marginOursMorning": 1.81,
+   "totalOursMorning": 230.9,
+   "pOursEve": 0.5576,
+   "marginOursEve": 1.81,
+   "totalOursEve": 230.9,
+   "comps": {
+    "prior": -1.93,
+    "current": -1.52,
+    "absent": 0.95,
+    "change": 1.93,
+    "aging": 0.31,
+    "fit": 0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.93,
+    "current": -1.52,
+    "absent": 0.95,
+    "change": 1.93,
+    "aging": 0.31,
+    "fit": 0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.93,
+    "current": -1.52,
+    "absent": 0.95,
+    "change": 1.93,
+    "aging": 0.31,
+    "fit": 0.07,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5261,
    "mlHome": -122,
@@ -1071,7 +1917,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 93,
     "awayScore": 115
@@ -1091,7 +1937,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ORL": 18,
      "MIN": 16
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1109,6 +1959,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2338,
    "marginOursAdj": -9.08,
    "totalOursAdj": 233.6,
+   "pOursMorning": 0.2351,
+   "marginOursMorning": -9.03,
+   "totalOursMorning": 233.6,
+   "pOursEve": 0.2351,
+   "marginOursEve": -9.03,
+   "totalOursEve": 233.6,
+   "comps": {
+    "prior": -10.41,
+    "current": -1.52,
+    "absent": -0.2,
+    "change": 0.98,
+    "aging": -0.01,
+    "fit": 0.13,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -10.41,
+    "current": -1.52,
+    "absent": -0.2,
+    "change": 0.98,
+    "aging": -0.01,
+    "fit": 0.13,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -10.41,
+    "current": -1.52,
+    "absent": -0.2,
+    "change": 0.98,
+    "aging": -0.01,
+    "fit": 0.13,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2591,
    "mlHome": 270,
@@ -1123,7 +2009,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 102,
     "awayScore": 112
@@ -1145,7 +2031,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "WSH": 18,
      "TOR": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1163,6 +2053,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3922,
    "marginOursAdj": -3.42,
    "totalOursAdj": 231.2,
+   "pOursMorning": 0.3953,
+   "marginOursMorning": -3.32,
+   "totalOursMorning": 231.2,
+   "pOursEve": 0.3953,
+   "marginOursEve": -3.32,
+   "totalOursEve": 231.2,
+   "comps": {
+    "prior": -4.34,
+    "current": -1.56,
+    "absent": -0.03,
+    "change": 1.83,
+    "aging": -0.61,
+    "fit": -0.5,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.34,
+    "current": -1.56,
+    "absent": -0.03,
+    "change": 1.72,
+    "aging": -0.61,
+    "fit": -0.5,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.34,
+    "current": -1.56,
+    "absent": -0.03,
+    "change": 1.72,
+    "aging": -0.61,
+    "fit": -0.5,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4573,
    "mlHome": 110,
@@ -1177,7 +2103,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 111,
     "awayScore": 128
@@ -1198,7 +2124,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIA": 17,
      "DET": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1216,6 +2146,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7219,
    "marginOursAdj": 7.36,
    "totalOursAdj": 226.4,
+   "pOursMorning": 0.6962,
+   "marginOursMorning": 6.42,
+   "totalOursMorning": 226.6,
+   "pOursEve": 0.6962,
+   "marginOursEve": 6.42,
+   "totalOursEve": 226.6,
+   "comps": {
+    "prior": 2.03,
+    "current": -1.43,
+    "absent": 1.6,
+    "change": 1.41,
+    "aging": 0.29,
+    "fit": 0.91,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.03,
+    "current": -1.43,
+    "absent": 0,
+    "change": 2.84,
+    "aging": 0.26,
+    "fit": 0.72,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.03,
+    "current": -1.43,
+    "absent": 0,
+    "change": 2.84,
+    "aging": 0.26,
+    "fit": 0.72,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6225,
    "mlHome": -185,
@@ -1230,7 +2196,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 110,
     "awayScore": 114
@@ -1255,7 +2221,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "HOU": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1273,6 +2243,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5009,
    "marginOursAdj": 0.03,
    "totalOursAdj": 239.9,
+   "pOursMorning": 0.5008,
+   "marginOursMorning": 0.03,
+   "totalOursMorning": 240,
+   "pOursEve": 0.5008,
+   "marginOursEve": 0.03,
+   "totalOursEve": 240,
+   "comps": {
+    "prior": -2.67,
+    "current": -0.8,
+    "absent": -0.46,
+    "change": 1.91,
+    "aging": -0.14,
+    "fit": 0.04,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -2.67,
+    "current": -0.8,
+    "absent": -0.46,
+    "change": 1.99,
+    "aging": -0.14,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -2.67,
+    "current": -0.8,
+    "absent": -0.46,
+    "change": 1.99,
+    "aging": -0.14,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5043,
    "mlHome": -112,
@@ -1287,7 +2293,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 119
@@ -1307,7 +2313,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "UTAH": 17,
      "NO": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1325,6 +2335,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5962,
    "marginOursAdj": 3.04,
    "totalOursAdj": 230.6,
+   "pOursMorning": 0.5699,
+   "marginOursMorning": 2.2,
+   "totalOursMorning": 230.5,
+   "pOursEve": 0.5699,
+   "marginOursEve": 2.2,
+   "totalOursEve": 230.5,
+   "comps": {
+    "prior": 3.79,
+    "current": -2.01,
+    "absent": -2.03,
+    "change": 1.19,
+    "aging": -0.72,
+    "fit": 0.27,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.79,
+    "current": -2.01,
+    "absent": -2.3,
+    "change": 1.34,
+    "aging": -0.81,
+    "fit": 0.19,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.79,
+    "current": -2.01,
+    "absent": -2.3,
+    "change": 1.34,
+    "aging": -0.81,
+    "fit": 0.19,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5934,
    "mlHome": -162,
@@ -1339,7 +2385,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 108,
     "awayScore": 111
@@ -1360,7 +2406,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "GS": 18,
      "MEM": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1378,6 +2428,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7611,
    "marginOursAdj": 8.87,
    "totalOursAdj": 226.9,
+   "pOursMorning": 0.746,
+   "marginOursMorning": 8.27,
+   "totalOursMorning": 226.8,
+   "pOursEve": 0.746,
+   "marginOursEve": 8.27,
+   "totalOursEve": 226.8,
+   "comps": {
+    "prior": 0.42,
+    "current": -0.17,
+    "absent": -0.12,
+    "change": 7.68,
+    "aging": 0.48,
+    "fit": -1.81,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.42,
+    "current": -0.17,
+    "absent": 0.08,
+    "change": 7.16,
+    "aging": 0.5,
+    "fit": -1.72,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.42,
+    "current": -0.17,
+    "absent": 0.08,
+    "change": 7.16,
+    "aging": 0.5,
+    "fit": -1.72,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7508,
    "mlHome": -360,
@@ -1392,7 +2478,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 117
@@ -1414,7 +2500,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAL": 19,
      "LAC": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1432,6 +2522,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.181,
    "marginOursAdj": -11.39,
    "totalOursAdj": 229.5,
+   "pOursMorning": 0.1818,
+   "marginOursMorning": -11.35,
+   "totalOursMorning": 229.5,
+   "pOursEve": 0.1818,
+   "marginOursEve": -11.35,
+   "totalOursEve": 229.5,
+   "comps": {
+    "prior": -6.98,
+    "current": -3.14,
+    "absent": 0.17,
+    "change": -2.88,
+    "aging": -0.44,
+    "fit": -0.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.98,
+    "current": -3.14,
+    "absent": 0.19,
+    "change": -2.9,
+    "aging": -0.44,
+    "fit": -0.08,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.98,
+    "current": -3.14,
+    "absent": 0.19,
+    "change": -2.9,
+    "aging": -0.44,
+    "fit": -0.08,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2086,
    "mlHome": 360,
@@ -1446,7 +2572,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 128
@@ -1467,7 +2593,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SAC": 16,
      "POR": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-23_08_30AM.pdf",
+    "reportMorningAt": "2026-10-23T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-22_08_30PM.pdf",
+    "reportEveAt": "2026-10-23T00:30:00.000Z"
    }
   },
   {
@@ -1485,6 +2615,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4873,
    "marginOursAdj": -0.4,
    "totalOursAdj": 230,
+   "pOursMorning": 0.5595,
+   "marginOursMorning": 1.87,
+   "totalOursMorning": 230.8,
+   "pOursEve": 0.6241,
+   "marginOursEve": 3.95,
+   "totalOursEve": 231.6,
+   "comps": {
+    "prior": 1.91,
+    "current": -0.03,
+    "absent": -2.51,
+    "change": -2.14,
+    "aging": 0.85,
+    "fit": -0.14,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.91,
+    "current": -0.03,
+    "absent": 0.03,
+    "change": -3.57,
+    "aging": 1.25,
+    "fit": 0.28,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2,
+    "current": 1.5,
+    "absent": 0.03,
+    "change": -3.29,
+    "aging": 1.35,
+    "fit": 0.36,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3836,
    "mlHome": 150,
@@ -1499,7 +2665,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 115,
     "awayScore": 110
@@ -1520,7 +2686,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHA": 18,
      "MIA": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1538,6 +2708,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8089,
    "marginOursAdj": 10.92,
    "totalOursAdj": 227.3,
+   "pOursMorning": 0.8021,
+   "marginOursMorning": 10.62,
+   "totalOursMorning": 227.3,
+   "pOursEve": 0.8021,
+   "marginOursEve": 10.62,
+   "totalOursEve": 227.3,
+   "comps": {
+    "prior": 10.13,
+    "current": -0.03,
+    "absent": 0,
+    "change": -0.67,
+    "aging": -0.73,
+    "fit": -0.08,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 10.13,
+    "current": -0.03,
+    "absent": 0,
+    "change": -0.67,
+    "aging": -0.73,
+    "fit": -0.08,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 10.13,
+    "current": -0.03,
+    "absent": 0,
+    "change": -0.67,
+    "aging": -0.73,
+    "fit": -0.08,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8,
    "mlHome": -500,
@@ -1552,7 +2758,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 121
@@ -1575,7 +2781,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CLE": 19,
      "BKN": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1593,6 +2803,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8389,
    "marginOursAdj": 12.37,
    "totalOursAdj": 230,
+   "pOursMorning": 0.8387,
+   "marginOursMorning": 12.36,
+   "totalOursMorning": 230.3,
+   "pOursEve": 0.8399,
+   "marginOursEve": 12.42,
+   "totalOursEve": 228.8,
+   "comps": {
+    "prior": 4.23,
+    "current": 1.5,
+    "absent": -0.18,
+    "change": 1.33,
+    "aging": 0.51,
+    "fit": 0.29,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 4.23,
+    "current": 1.5,
+    "absent": 1.18,
+    "change": 0.79,
+    "aging": 0.51,
+    "fit": 0.15,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 4.43,
+    "current": 1.21,
+    "absent": 1.19,
+    "change": 0.91,
+    "aging": 0.51,
+    "fit": 0.17,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8316,
    "mlHome": -650,
@@ -1607,7 +2853,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 127,
     "awayScore": 116
@@ -1629,7 +2875,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHI": 17,
      "MIL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1647,6 +2897,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5705,
    "marginOursAdj": 2.22,
    "totalOursAdj": 238.4,
+   "pOursMorning": 0.5602,
+   "marginOursMorning": 1.89,
+   "totalOursMorning": 238.2,
+   "pOursEve": 0.5339,
+   "marginOursEve": 1.06,
+   "totalOursEve": 238.5,
+   "comps": {
+    "prior": 4.59,
+    "current": -1.72,
+    "absent": 0.2,
+    "change": -2.92,
+    "aging": 0.06,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 4.59,
+    "current": -1.72,
+    "absent": 0,
+    "change": -2.54,
+    "aging": -0.01,
+    "fit": -0.43,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 4.81,
+    "current": -2.62,
+    "absent": 0,
+    "change": -2.66,
+    "aging": 0,
+    "fit": -0.47,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5325,
    "mlHome": -125,
@@ -1661,7 +2947,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 124
@@ -1681,7 +2967,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHI": 18,
      "WSH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1699,6 +2989,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.1544,
    "marginOursAdj": -12.72,
    "totalOursAdj": 228.4,
+   "pOursMorning": 0.2894,
+   "marginOursMorning": -6.94,
+   "totalOursMorning": 230.2,
+   "pOursEve": 0.2632,
+   "marginOursEve": -7.92,
+   "totalOursEve": 230.7,
+   "comps": {
+    "prior": -9.35,
+    "current": 0.65,
+    "absent": -2.19,
+    "change": -2.36,
+    "aging": -0.51,
+    "fit": -0.75,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -9.35,
+    "current": 0.65,
+    "absent": 0,
+    "change": 0.34,
+    "aging": 0,
+    "fit": -0.58,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -9.79,
+    "current": -0.28,
+    "absent": 0,
+    "change": 0.71,
+    "aging": 0.09,
+    "fit": -0.65,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.137,
    "mlHome": 600,
@@ -1713,7 +3039,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 106,
     "awayScore": 122
@@ -1739,7 +3065,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DAL": 19,
      "SA": 20
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1757,6 +3087,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5349,
    "marginOursAdj": 1.1,
    "totalOursAdj": 227.6,
+   "pOursMorning": 0.5057,
+   "marginOursMorning": 0.18,
+   "totalOursMorning": 226.9,
+   "pOursEve": 0.4726,
+   "marginOursEve": -0.86,
+   "totalOursEve": 227.8,
+   "comps": {
+    "prior": -2.02,
+    "current": 1.36,
+    "absent": 1.07,
+    "change": -1.59,
+    "aging": -0.13,
+    "fit": 0.31,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -2.02,
+    "current": 1.36,
+    "absent": 0,
+    "change": -1.43,
+    "aging": -0.12,
+    "fit": 0.39,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -2.12,
+    "current": -0.56,
+    "absent": 0,
+    "change": -0.58,
+    "aging": -0.1,
+    "fit": 0.5,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4957,
    "mlHome": -108,
@@ -1771,7 +3137,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -1794,7 +3160,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ATL": 19,
      "HOU": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1812,6 +3182,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8607,
    "marginOursAdj": 13.54,
    "totalOursAdj": 236.1,
+   "pOursMorning": 0.8336,
+   "marginOursMorning": 12.11,
+   "totalOursMorning": 235.8,
+   "pOursEve": 0.8186,
+   "marginOursEve": 11.38,
+   "totalOursEve": 235.9,
+   "comps": {
+    "prior": 6.74,
+    "current": -0.4,
+    "absent": -0.77,
+    "change": 3.92,
+    "aging": -0.82,
+    "fit": -0.09,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.74,
+    "current": -0.4,
+    "absent": -0.88,
+    "change": 3.65,
+    "aging": -0.98,
+    "fit": -0.02,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.88,
+    "current": -0.43,
+    "absent": -0.88,
+    "change": 3.21,
+    "aging": -1,
+    "fit": -0.4,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7958,
    "mlHome": -485,
@@ -1826,7 +3232,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 141,
     "awayScore": 135
@@ -1849,7 +3255,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DEN": 19,
      "NO": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1867,6 +3277,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7683,
    "marginOursAdj": 9.17,
    "totalOursAdj": 220.9,
+   "pOursMorning": 0.5663,
+   "marginOursMorning": 2.09,
+   "totalOursMorning": 223.6,
+   "pOursEve": 0.567,
+   "marginOursEve": 2.11,
+   "totalOursEve": 224,
+   "comps": {
+    "prior": 1.46,
+    "current": -0.85,
+    "absent": 4.64,
+    "change": -0.45,
+    "aging": -0.22,
+    "fit": 0.44,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.46,
+    "current": -0.85,
+    "absent": -1.25,
+    "change": -1.73,
+    "aging": 0.32,
+    "fit": 0.14,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.48,
+    "current": -0.94,
+    "absent": -1.25,
+    "change": -1.63,
+    "aging": 0.35,
+    "fit": 0.1,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7715,
    "mlHome": -410,
@@ -1881,7 +3327,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 131,
     "awayScore": 122
@@ -1899,7 +3345,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHX": 17,
      "GS": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-24_08_30AM.pdf",
+    "reportMorningAt": "2026-10-24T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-23_08_30PM.pdf",
+    "reportEveAt": "2026-10-24T00:30:00.000Z"
    }
   },
   {
@@ -1917,6 +3367,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3055,
    "marginOursAdj": -6.36,
    "totalOursAdj": 239,
+   "pOursMorning": 0.3011,
+   "marginOursMorning": -6.52,
+   "totalOursMorning": 239,
+   "pOursEve": 0.3011,
+   "marginOursEve": -6.52,
+   "totalOursEve": 239,
+   "comps": {
+    "prior": -6.84,
+    "current": -2.24,
+    "absent": -0.44,
+    "change": -0.59,
+    "aging": 0.44,
+    "fit": 1.3,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.84,
+    "current": -2.24,
+    "absent": -0.43,
+    "change": -0.72,
+    "aging": 0.44,
+    "fit": 1.27,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.84,
+    "current": -2.24,
+    "absent": -0.43,
+    "change": -0.72,
+    "aging": 0.44,
+    "fit": 1.27,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3146,
    "mlHome": 205,
@@ -1931,7 +3417,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 123,
     "awayScore": 132
@@ -1952,7 +3438,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "UTAH": 18,
      "LAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -1970,6 +3460,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4324,
    "marginOursAdj": -2.13,
    "totalOursAdj": 228.2,
+   "pOursMorning": 0.4041,
+   "marginOursMorning": -3.04,
+   "totalOursMorning": 228.1,
+   "pOursEve": 0.4082,
+   "marginOursEve": -2.9,
+   "totalOursEve": 227.1,
+   "comps": {
+    "prior": -1.62,
+    "current": 0.06,
+    "absent": 0.36,
+    "change": -2.14,
+    "aging": 0.57,
+    "fit": 0.15,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.62,
+    "current": 0.06,
+    "absent": 0.36,
+    "change": -2.48,
+    "aging": 0.57,
+    "fit": 0.07,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.95,
+    "current": 0.24,
+    "absent": 0.36,
+    "change": -2.24,
+    "aging": 0.58,
+    "fit": 0.11,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3425,
    "mlHome": 180,
@@ -1984,7 +3510,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 109,
     "awayScore": 136
@@ -2005,7 +3531,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BKN": 18,
      "IND": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2023,6 +3553,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.657,
    "marginOursAdj": 5.05,
    "totalOursAdj": 225.2,
+   "pOursMorning": 0.6325,
+   "marginOursMorning": 4.23,
+   "totalOursMorning": 225.2,
+   "pOursEve": 0.6325,
+   "marginOursEve": 4.23,
+   "totalOursEve": 225.2,
+   "comps": {
+    "prior": 3.96,
+    "current": 0.83,
+    "absent": 2.42,
+    "change": -3.52,
+    "aging": -1.08,
+    "fit": -0.09,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.96,
+    "current": 0.83,
+    "absent": 2.54,
+    "change": -4.14,
+    "aging": -1.02,
+    "fit": 0.06,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.96,
+    "current": 0.83,
+    "absent": 2.54,
+    "change": -4.14,
+    "aging": -1.02,
+    "fit": 0.06,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7002,
    "mlHome": -270,
@@ -2037,7 +3603,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 102,
     "awayScore": 111
@@ -2057,7 +3623,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NY": 17,
      "ORL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2075,6 +3645,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5499,
    "marginOursAdj": 1.57,
    "totalOursAdj": 225.7,
+   "pOursMorning": 0.4513,
+   "marginOursMorning": -1.53,
+   "totalOursMorning": 226.6,
+   "pOursEve": 0.4513,
+   "marginOursEve": -1.53,
+   "totalOursEve": 226.6,
+   "comps": {
+    "prior": 0.27,
+    "current": -0.32,
+    "absent": -1.09,
+    "change": 0.91,
+    "aging": -0.57,
+    "fit": -0.33,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.27,
+    "current": -0.32,
+    "absent": -1.42,
+    "change": -1.42,
+    "aging": -0.57,
+    "fit": -0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.27,
+    "current": -0.32,
+    "absent": -1.42,
+    "change": -1.42,
+    "aging": -0.57,
+    "fit": -0.07,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5996,
    "mlHome": -166,
@@ -2089,7 +3695,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 117,
     "awayScore": 94
@@ -2113,7 +3719,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIN": 16,
      "TOR": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2131,6 +3741,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8989,
    "marginOursAdj": 15.94,
    "totalOursAdj": 220.7,
+   "pOursMorning": 0.8906,
+   "marginOursMorning": 15.37,
+   "totalOursMorning": 220.7,
+   "pOursEve": 0.9061,
+   "marginOursEve": 16.46,
+   "totalOursEve": 221.1,
+   "comps": {
+    "prior": 6.67,
+    "current": 0.29,
+    "absent": 0.39,
+    "change": 5.61,
+    "aging": 0.79,
+    "fit": -0.38,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.67,
+    "current": 0.29,
+    "absent": 0.39,
+    "change": 5.61,
+    "aging": 0.79,
+    "fit": -0.38,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.67,
+    "current": 0.29,
+    "absent": 0.39,
+    "change": 6.67,
+    "aging": 0.79,
+    "fit": -0.35,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8934,
    "mlHome": -1350,
@@ -2145,7 +3791,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 108,
     "awayScore": 101
@@ -2165,7 +3811,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "OKC": 17,
      "LAC": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2183,6 +3833,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5175,
    "marginOursAdj": 0.55,
    "totalOursAdj": 226.2,
+   "pOursMorning": 0.5018,
+   "marginOursMorning": 0.06,
+   "totalOursMorning": 226.6,
+   "pOursEve": 0.4892,
+   "marginOursEve": -0.34,
+   "totalOursEve": 225.9,
+   "comps": {
+    "prior": -5.62,
+    "current": -0.05,
+    "absent": 1.9,
+    "change": 4.71,
+    "aging": 0.52,
+    "fit": -0.49,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -5.62,
+    "current": -0.05,
+    "absent": 3.42,
+    "change": 2.17,
+    "aging": 0.72,
+    "fit": -0.58,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -5.62,
+    "current": -0.51,
+    "absent": 3.42,
+    "change": 2.15,
+    "aging": 0.76,
+    "fit": -0.54,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4573,
    "mlHome": 110,
@@ -2197,7 +3883,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 93,
     "awayScore": 106
@@ -2215,7 +3901,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHI": 17,
      "DET": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2233,6 +3923,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3943,
    "marginOursAdj": -3.35,
    "totalOursAdj": 232.3,
+   "pOursMorning": 0.3832,
+   "marginOursMorning": -3.71,
+   "totalOursMorning": 232.2,
+   "pOursEve": 0.3832,
+   "marginOursEve": -3.71,
+   "totalOursEve": 232.2,
+   "comps": {
+    "prior": -2.88,
+    "current": -2.54,
+    "absent": 0.77,
+    "change": 0.41,
+    "aging": -0.6,
+    "fit": -0.63,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -2.88,
+    "current": -2.54,
+    "absent": 0.77,
+    "change": 0.13,
+    "aging": -0.6,
+    "fit": -0.59,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -2.88,
+    "current": -2.54,
+    "absent": 0.77,
+    "change": 0.13,
+    "aging": -0.6,
+    "fit": -0.59,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3836,
    "mlHome": 150,
@@ -2247,7 +3973,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 112,
     "awayScore": 123
@@ -2268,7 +3994,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SAC": 17,
      "MEM": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-25_08_30AM.pdf",
+    "reportMorningAt": "2026-10-25T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-24_08_30PM.pdf",
+    "reportEveAt": "2026-10-25T00:30:00.000Z"
    }
   },
   {
@@ -2286,6 +4016,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.63,
    "marginOursAdj": 4.15,
    "totalOursAdj": 230.8,
+   "pOursMorning": 0.6369,
+   "marginOursMorning": 4.38,
+   "totalOursMorning": 230.7,
+   "pOursEve": 0.6369,
+   "marginOursEve": 4.38,
+   "totalOursEve": 230.7,
+   "comps": {
+    "prior": 10.8,
+    "current": -1.82,
+    "absent": -2.24,
+    "change": -3.86,
+    "aging": 0.01,
+    "fit": -0.68,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 10.8,
+    "current": -1.82,
+    "absent": -2.24,
+    "change": -3.69,
+    "aging": 0.01,
+    "fit": -0.68,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 10.8,
+    "current": -1.82,
+    "absent": -2.24,
+    "change": -3.69,
+    "aging": 0.01,
+    "fit": -0.68,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5635,
    "mlHome": -142,
@@ -2300,7 +4066,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 110,
     "awayScore": 103
@@ -2320,7 +4086,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHA": 18,
      "WSH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2338,6 +4108,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5797,
    "marginOursAdj": 2.51,
    "totalOursAdj": 231.1,
+   "pOursMorning": 0.5897,
+   "marginOursMorning": 2.83,
+   "totalOursMorning": 231.2,
+   "pOursEve": 0.6123,
+   "marginOursEve": 3.57,
+   "totalOursEve": 232.1,
+   "comps": {
+    "prior": 0.65,
+    "current": -3.23,
+    "absent": 1.4,
+    "change": 0.27,
+    "aging": -0.2,
+    "fit": 0.1,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.65,
+    "current": -3.23,
+    "absent": 0,
+    "change": 1.49,
+    "aging": 0.01,
+    "fit": -0.09,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.56,
+    "current": -2.33,
+    "absent": 0,
+    "change": 1.36,
+    "aging": 0.03,
+    "fit": -0.05,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.583,
    "mlHome": -155,
@@ -2352,7 +4158,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 127,
     "awayScore": 125
@@ -2374,7 +4180,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CLE": 19,
      "MIN": 16
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2392,6 +4202,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8584,
    "marginOursAdj": 13.41,
    "totalOursAdj": 230.3,
+   "pOursMorning": 0.8508,
+   "marginOursMorning": 13,
+   "totalOursMorning": 230.3,
+   "pOursEve": 0.8508,
+   "marginOursEve": 13,
+   "totalOursEve": 230.3,
+   "comps": {
+    "prior": 8.73,
+    "current": 1.48,
+    "absent": 0,
+    "change": 1.07,
+    "aging": -0.74,
+    "fit": -0.13,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 8.73,
+    "current": 1.48,
+    "absent": 0,
+    "change": 1.22,
+    "aging": -0.74,
+    "fit": -0.19,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 8.73,
+    "current": 1.48,
+    "absent": 0,
+    "change": 1.22,
+    "aging": -0.74,
+    "fit": -0.19,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8465,
    "mlHome": -750,
@@ -2406,7 +4252,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 134,
     "awayScore": 99
@@ -2428,7 +4274,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BOS": 17,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2446,6 +4296,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6554,
    "marginOursAdj": 5,
    "totalOursAdj": 233.2,
+   "pOursMorning": 0.6831,
+   "marginOursMorning": 5.95,
+   "totalOursMorning": 232.9,
+   "pOursEve": 0.6831,
+   "marginOursEve": 5.95,
+   "totalOursEve": 232.9,
+   "comps": {
+    "prior": 5.02,
+    "current": -1.24,
+    "absent": 0.86,
+    "change": -0.29,
+    "aging": -0.88,
+    "fit": -0.27,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 5.02,
+    "current": -1.24,
+    "absent": 1.48,
+    "change": -0.33,
+    "aging": -0.73,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 5.02,
+    "current": -1.24,
+    "absent": 1.48,
+    "change": -0.33,
+    "aging": -0.73,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7002,
    "mlHome": -270,
@@ -2460,7 +4346,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 109,
     "awayScore": 113
@@ -2483,7 +4369,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIA": 17,
      "DAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2501,6 +4391,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4877,
    "marginOursAdj": -0.38,
    "totalOursAdj": 234,
+   "pOursMorning": 0.4983,
+   "marginOursMorning": -0.05,
+   "totalOursMorning": 233.8,
+   "pOursEve": 0.541,
+   "marginOursEve": 1.29,
+   "totalOursEve": 233.3,
+   "comps": {
+    "prior": 0.97,
+    "current": -1.92,
+    "absent": 1.09,
+    "change": -4.08,
+    "aging": 0.16,
+    "fit": -0.31,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.97,
+    "current": -1.92,
+    "absent": -0.03,
+    "change": -2.59,
+    "aging": 0.36,
+    "fit": -0.34,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.2,
+    "current": -0.74,
+    "absent": -0.03,
+    "change": -2.7,
+    "aging": 0.38,
+    "fit": -0.32,
+    "rest": 1.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.417,
    "mlHome": 130,
@@ -2515,7 +4441,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 110,
     "awayScore": 102
@@ -2537,7 +4463,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIL": 18,
      "IND": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2555,6 +4485,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7007,
    "marginOursAdj": 6.58,
    "totalOursAdj": 218,
+   "pOursMorning": 0.8018,
+   "marginOursMorning": 10.6,
+   "totalOursMorning": 219.6,
+   "pOursEve": 0.79,
+   "marginOursEve": 10.08,
+   "totalOursEve": 220,
+   "comps": {
+    "prior": 6.17,
+    "current": 2.8,
+    "absent": -2.99,
+    "change": 0.79,
+    "aging": 0.08,
+    "fit": -0.36,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.17,
+    "current": 2.8,
+    "absent": 1.56,
+    "change": -0.03,
+    "aging": 0.36,
+    "fit": -0.26,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.5,
+    "current": 2.54,
+    "absent": 1.56,
+    "change": -0.66,
+    "aging": 0.39,
+    "fit": -0.25,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7335,
    "mlHome": -325,
@@ -2569,7 +4535,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 114
@@ -2589,7 +4555,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "OKC": 17,
      "PHX": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2607,6 +4577,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6205,
    "marginOursAdj": 3.84,
    "totalOursAdj": 228.3,
+   "pOursMorning": 0.6083,
+   "marginOursMorning": 3.44,
+   "totalOursMorning": 228,
+   "pOursEve": 0.6083,
+   "marginOursEve": 3.44,
+   "totalOursEve": 228,
+   "comps": {
+    "prior": 1.94,
+    "current": -0.69,
+    "absent": -0.05,
+    "change": 0.83,
+    "aging": 0.27,
+    "fit": -0.49,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.94,
+    "current": -0.69,
+    "absent": -0.05,
+    "change": 0.43,
+    "aging": 0.27,
+    "fit": -0.46,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.94,
+    "current": -0.69,
+    "absent": -0.05,
+    "change": 0.43,
+    "aging": 0.27,
+    "fit": -0.46,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6309,
    "mlHome": -192,
@@ -2621,7 +4627,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 110
@@ -2641,7 +4647,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "HOU": 17,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2659,6 +4669,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4659,
    "marginOursAdj": -1.07,
    "totalOursAdj": 238.8,
+   "pOursMorning": 0.4546,
+   "marginOursMorning": -1.42,
+   "totalOursMorning": 238.8,
+   "pOursEve": 0.484,
+   "marginOursEve": -0.5,
+   "totalOursEve": 238.1,
+   "comps": {
+    "prior": -1.53,
+    "current": -2.69,
+    "absent": -0.44,
+    "change": 0.98,
+    "aging": -0.07,
+    "fit": 0.43,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.53,
+    "current": -2.69,
+    "absent": 0.37,
+    "change": 0.7,
+    "aging": -0.18,
+    "fit": -0.09,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.6,
+    "current": -1.91,
+    "absent": 0.38,
+    "change": 0.89,
+    "aging": -0.2,
+    "fit": -0.06,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4957,
    "mlHome": -108,
@@ -2673,7 +4719,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 105,
     "awayScore": 110
@@ -2693,7 +4739,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "UTAH": 18,
      "MEM": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2711,6 +4761,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.757,
    "marginOursAdj": 8.71,
    "totalOursAdj": 234,
+   "pOursMorning": 0.7472,
+   "marginOursMorning": 8.32,
+   "totalOursMorning": 234,
+   "pOursEve": 0.7472,
+   "marginOursEve": 8.32,
+   "totalOursEve": 234,
+   "comps": {
+    "prior": 3.89,
+    "current": 1.19,
+    "absent": 1.5,
+    "change": -0.05,
+    "aging": -0.14,
+    "fit": -0.39,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.89,
+    "current": 1.19,
+    "absent": 0.91,
+    "change": 0.35,
+    "aging": -0.11,
+    "fit": -0.41,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.89,
+    "current": 1.19,
+    "absent": 0.91,
+    "change": 0.35,
+    "aging": -0.11,
+    "fit": -0.41,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7002,
    "mlHome": -270,
@@ -2725,7 +4811,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 134
@@ -2746,7 +4832,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DEN": 19,
      "GS": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-26_08_30AM.pdf",
+    "reportMorningAt": "2026-10-26T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-25_08_30PM.pdf",
+    "reportEveAt": "2026-10-26T00:30:00.000Z"
    }
   },
   {
@@ -2764,6 +4854,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8413,
    "marginOursAdj": 12.5,
    "totalOursAdj": 223.8,
+   "pOursMorning": 0.8257,
+   "marginOursMorning": 11.72,
+   "totalOursMorning": 223.5,
+   "pOursEve": 0.8056,
+   "marginOursEve": 10.77,
+   "totalOursEve": 223.1,
+   "comps": {
+    "prior": 11.51,
+    "current": 3,
+    "absent": -0.49,
+    "change": -1.37,
+    "aging": -0.52,
+    "fit": -0.18,
+    "rest": -1.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 11.51,
+    "current": 3,
+    "absent": 0,
+    "change": -2.53,
+    "aging": -0.55,
+    "fit": -0.21,
+    "rest": -1.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 11.73,
+    "current": 1.46,
+    "absent": 0,
+    "change": -2.12,
+    "aging": -0.61,
+    "fit": -0.19,
+    "rest": -1.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8465,
    "mlHome": -750,
@@ -2778,7 +4904,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 124
@@ -2799,7 +4925,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BOS": 17,
      "BKN": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-27_08_30AM.pdf",
+    "reportMorningAt": "2026-10-27T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-26_08_30PM.pdf",
+    "reportEveAt": "2026-10-27T00:30:00.000Z"
    }
   },
   {
@@ -2817,6 +4947,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5085,
    "marginOursAdj": 0.27,
    "totalOursAdj": 221,
+   "pOursMorning": 0.516,
+   "marginOursMorning": 0.5,
+   "totalOursMorning": 221,
+   "pOursEve": 0.516,
+   "marginOursEve": 0.5,
+   "totalOursEve": 221,
+   "comps": {
+    "prior": -1.08,
+    "current": -2.47,
+    "absent": 2.75,
+    "change": 0.08,
+    "aging": -0.78,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.08,
+    "current": -2.47,
+    "absent": 2.75,
+    "change": 0.08,
+    "aging": -0.78,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.08,
+    "current": -2.47,
+    "absent": 2.75,
+    "change": 0.08,
+    "aging": -0.78,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6092,
    "mlHome": -175,
@@ -2831,7 +4997,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 111,
     "awayScore": 97
@@ -2852,7 +5018,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NY": 17,
      "DET": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-27_08_30AM.pdf",
+    "reportMorningAt": "2026-10-27T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-26_08_30PM.pdf",
+    "reportEveAt": "2026-10-27T00:30:00.000Z"
    }
   },
   {
@@ -2870,6 +5040,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.9264,
    "marginOursAdj": 18.12,
    "totalOursAdj": 231.1,
+   "pOursMorning": 0.9205,
+   "marginOursMorning": 17.61,
+   "totalOursMorning": 231.1,
+   "pOursEve": 0.9205,
+   "marginOursEve": 17.61,
+   "totalOursEve": 231.1,
+   "comps": {
+    "prior": 11.97,
+    "current": 1.9,
+    "absent": 0.01,
+    "change": 0.33,
+    "aging": 0.65,
+    "fit": 0.75,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 11.97,
+    "current": 1.9,
+    "absent": 0.01,
+    "change": 0.33,
+    "aging": 0.65,
+    "fit": 0.75,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 11.97,
+    "current": 1.9,
+    "absent": 0.01,
+    "change": 0.33,
+    "aging": 0.65,
+    "fit": 0.75,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.9124,
    "mlHome": -1800,
@@ -2884,7 +5090,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 130,
     "awayScore": 103
@@ -2908,7 +5114,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "SAC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-27_08_30AM.pdf",
+    "reportMorningAt": "2026-10-27T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-26_08_30PM.pdf",
+    "reportEveAt": "2026-10-27T00:30:00.000Z"
    }
   },
   {
@@ -2926,6 +5136,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.496,
    "marginOursAdj": -0.12,
    "totalOursAdj": 233.3,
+   "pOursMorning": 0.496,
+   "marginOursMorning": -0.13,
+   "totalOursMorning": 233.4,
+   "pOursEve": 0.496,
+   "marginOursEve": -0.13,
+   "totalOursEve": 233.4,
+   "comps": {
+    "prior": 1.38,
+    "current": -0.5,
+    "absent": 0.17,
+    "change": -1.84,
+    "aging": -0.19,
+    "fit": -0.54,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.38,
+    "current": -0.5,
+    "absent": 0,
+    "change": -1.74,
+    "aging": -0.19,
+    "fit": -0.58,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.38,
+    "current": -0.5,
+    "absent": 0,
+    "change": -1.74,
+    "aging": -0.19,
+    "fit": -0.58,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5174,
    "mlHome": -118,
@@ -2940,7 +5186,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 129,
     "awayScore": 136
@@ -2962,7 +5208,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAL": 19,
      "POR": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-27_08_30AM.pdf",
+    "reportMorningAt": "2026-10-27T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-26_08_30PM.pdf",
+    "reportEveAt": "2026-10-27T00:30:00.000Z"
    }
   },
   {
@@ -2980,6 +5230,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6746,
    "marginOursAdj": 5.66,
    "totalOursAdj": 233.7,
+   "pOursMorning": 0.6374,
+   "marginOursMorning": 4.39,
+   "totalOursMorning": 233.5,
+   "pOursEve": 0.6374,
+   "marginOursEve": 4.39,
+   "totalOursEve": 233.5,
+   "comps": {
+    "prior": 0.13,
+    "current": 3.66,
+    "absent": 0.11,
+    "change": -1.86,
+    "aging": 0.4,
+    "fit": 0.6,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.13,
+    "current": 3.66,
+    "absent": 0.34,
+    "change": -2.87,
+    "aging": 0.41,
+    "fit": 0.72,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.13,
+    "current": 3.66,
+    "absent": 0.34,
+    "change": -2.87,
+    "aging": 0.41,
+    "fit": 0.72,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5635,
    "mlHome": -142,
@@ -2994,7 +5280,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 117,
     "awayScore": 129
@@ -3017,7 +5303,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ATL": 19,
      "MIA": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3035,6 +5325,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7649,
    "marginOursAdj": 9.03,
    "totalOursAdj": 237.2,
+   "pOursMorning": 0.7644,
+   "marginOursMorning": 9,
+   "totalOursMorning": 237.1,
+   "pOursEve": 0.7644,
+   "marginOursEve": 9,
+   "totalOursEve": 237.1,
+   "comps": {
+    "prior": 10.06,
+    "current": -0.06,
+    "absent": 0.75,
+    "change": -3.11,
+    "aging": -0.69,
+    "fit": -0.16,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 10.06,
+    "current": -0.06,
+    "absent": 0.75,
+    "change": -2.91,
+    "aging": -0.69,
+    "fit": -0.15,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 10.06,
+    "current": -0.06,
+    "absent": 0.75,
+    "change": -2.91,
+    "aging": -0.69,
+    "fit": -0.15,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7659,
    "mlHome": -395,
@@ -3049,7 +5375,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -3070,7 +5396,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CLE": 19,
      "WSH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3088,6 +5418,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6831,
    "marginOursAdj": 5.95,
    "totalOursAdj": 220,
+   "pOursMorning": 0.6903,
+   "marginOursMorning": 6.21,
+   "totalOursMorning": 220.6,
+   "pOursEve": 0.7027,
+   "marginOursEve": 6.65,
+   "totalOursEve": 221.1,
+   "comps": {
+    "prior": 1.96,
+    "current": 2.17,
+    "absent": -0.29,
+    "change": 0.38,
+    "aging": -0.46,
+    "fit": 0.98,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.96,
+    "current": 2.17,
+    "absent": 2.33,
+    "change": -0.55,
+    "aging": -0.3,
+    "fit": 0.6,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.18,
+    "current": 2.81,
+    "absent": 2.33,
+    "change": -1,
+    "aging": -0.29,
+    "fit": 0.62,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7136,
    "mlHome": -290,
@@ -3102,7 +5468,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 97,
     "awayScore": 89
@@ -3120,7 +5486,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DET": 18,
      "CHA": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3138,6 +5508,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2817,
    "marginOursAdj": -7.22,
    "totalOursAdj": 229.1,
+   "pOursMorning": 0.3399,
+   "marginOursMorning": -5.16,
+   "totalOursMorning": 229.7,
+   "pOursEve": 0.3399,
+   "marginOursEve": -5.16,
+   "totalOursEve": 229.7,
+   "comps": {
+    "prior": -4.87,
+    "current": -0.27,
+    "absent": -1.3,
+    "change": -1.77,
+    "aging": -0.61,
+    "fit": 0.65,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.87,
+    "current": -0.27,
+    "absent": 1.66,
+    "change": -3.08,
+    "aging": -0.58,
+    "fit": 0.48,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.87,
+    "current": -0.27,
+    "absent": 1.66,
+    "change": -3.08,
+    "aging": -0.58,
+    "fit": 0.48,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.295,
    "mlHome": 225,
@@ -3152,7 +5558,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 109,
     "awayScore": 114
@@ -3170,7 +5576,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "IND": 17,
      "PHI": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3188,6 +5598,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6807,
    "marginOursAdj": 5.87,
    "totalOursAdj": 224.2,
+   "pOursMorning": 0.687,
+   "marginOursMorning": 6.09,
+   "totalOursMorning": 224.2,
+   "pOursEve": 0.687,
+   "marginOursEve": 6.09,
+   "totalOursEve": 224.2,
+   "comps": {
+    "prior": 1.48,
+    "current": 2.19,
+    "absent": 3.13,
+    "change": -2.95,
+    "aging": 0.29,
+    "fit": -0.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.48,
+    "current": 2.19,
+    "absent": 3.13,
+    "change": -2.95,
+    "aging": 0.29,
+    "fit": -0.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.48,
+    "current": 2.19,
+    "absent": 3.13,
+    "change": -2.95,
+    "aging": 0.29,
+    "fit": -0.05,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6309,
    "mlHome": -192,
@@ -3202,7 +5648,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 129,
     "awayScore": 99
@@ -3225,7 +5671,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "TOR": 19,
      "ORL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3243,6 +5693,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3395,
    "marginOursAdj": -5.17,
    "totalOursAdj": 228.8,
+   "pOursMorning": 0.3536,
+   "marginOursMorning": -4.69,
+   "totalOursMorning": 228.5,
+   "pOursEve": 0.3664,
+   "marginOursEve": -4.27,
+   "totalOursEve": 229.2,
+   "comps": {
+    "prior": -7.23,
+    "current": -2.82,
+    "absent": 0.08,
+    "change": 0.36,
+    "aging": 1.39,
+    "fit": -0.6,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -7.23,
+    "current": -2.82,
+    "absent": 0.03,
+    "change": 0.58,
+    "aging": 1.41,
+    "fit": -0.66,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -7.41,
+    "current": -2.19,
+    "absent": 0.03,
+    "change": 0.63,
+    "aging": 1.35,
+    "fit": -0.68,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.295,
    "mlHome": 225,
@@ -3257,7 +5743,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 127,
     "awayScore": 133
@@ -3279,7 +5765,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHI": 18,
      "NY": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3297,6 +5787,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3071,
    "marginOursAdj": -6.3,
    "totalOursAdj": 227.8,
+   "pOursMorning": 0.3351,
+   "marginOursMorning": -5.32,
+   "totalOursMorning": 227.7,
+   "pOursEve": 0.3351,
+   "marginOursEve": -5.32,
+   "totalOursEve": 227.7,
+   "comps": {
+    "prior": -7.14,
+    "current": -2.55,
+    "absent": 3.41,
+    "change": -0.82,
+    "aging": -0.24,
+    "fit": -0.23,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -7.14,
+    "current": -2.55,
+    "absent": 3.41,
+    "change": -0.56,
+    "aging": -0.24,
+    "fit": -0.24,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -7.14,
+    "current": -2.55,
+    "absent": 3.41,
+    "change": -0.56,
+    "aging": -0.24,
+    "fit": -0.24,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2591,
    "mlHome": 270,
@@ -3311,7 +5837,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 100,
     "awayScore": 132
@@ -3334,7 +5860,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIL": 18,
      "HOU": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3352,6 +5882,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6159,
    "marginOursAdj": 3.68,
    "totalOursAdj": 228.2,
+   "pOursMorning": 0.6012,
+   "marginOursMorning": 3.21,
+   "totalOursMorning": 228.3,
+   "pOursEve": 0.6523,
+   "marginOursEve": 4.9,
+   "totalOursEve": 228.9,
+   "comps": {
+    "prior": 2.43,
+    "current": 3.4,
+    "absent": -1.75,
+    "change": -1.98,
+    "aging": 0.18,
+    "fit": -0.49,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.43,
+    "current": 3.4,
+    "absent": -2.44,
+    "change": -1.22,
+    "aging": 0.11,
+    "fit": -0.57,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.43,
+    "current": 3.4,
+    "absent": -0.58,
+    "change": -1.5,
+    "aging": 0.13,
+    "fit": -0.48,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.583,
    "mlHome": -155,
@@ -3366,7 +5932,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 119
@@ -3386,7 +5952,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIN": 17,
      "GS": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3404,6 +5974,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3775,
    "marginOursAdj": -3.9,
    "totalOursAdj": 240,
+   "pOursMorning": 0.385,
+   "marginOursMorning": -3.65,
+   "totalOursMorning": 240,
+   "pOursEve": 0.385,
+   "marginOursEve": -3.65,
+   "totalOursEve": 240,
+   "comps": {
+    "prior": -6.29,
+    "current": 0.72,
+    "absent": 0.69,
+    "change": -2.3,
+    "aging": 0.78,
+    "fit": 0.24,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.29,
+    "current": 0.72,
+    "absent": 0.64,
+    "change": -2.21,
+    "aging": 0.79,
+    "fit": 0.2,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.29,
+    "current": 0.72,
+    "absent": 0.64,
+    "change": -2.21,
+    "aging": 0.79,
+    "fit": 0.2,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3836,
    "mlHome": 150,
@@ -3418,7 +6024,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 91,
     "awayScore": 104
@@ -3440,7 +6046,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NO": 19,
      "DEN": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3458,6 +6068,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.1823,
    "marginOursAdj": -11.33,
    "totalOursAdj": 236,
+   "pOursMorning": 0.1971,
+   "marginOursMorning": -10.65,
+   "totalOursMorning": 235.8,
+   "pOursEve": 0.2179,
+   "marginOursEve": -9.74,
+   "totalOursEve": 235.7,
+   "comps": {
+    "prior": -10.43,
+    "current": -2.49,
+    "absent": -0.48,
+    "change": -1.17,
+    "aging": -0.02,
+    "fit": -0.06,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -10.43,
+    "current": -2.49,
+    "absent": -0.48,
+    "change": -0.87,
+    "aging": -0.02,
+    "fit": 0.14,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -10.66,
+    "current": -1.35,
+    "absent": -0.48,
+    "change": -0.86,
+    "aging": -0.03,
+    "fit": 0.14,
+    "rest": 1.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.1535,
    "mlHome": 525,
@@ -3472,7 +6118,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 111,
     "awayScore": 117
@@ -3497,7 +6143,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "UTAH": 18,
      "SA": 20
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3515,6 +6165,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3496,
    "marginOursAdj": -4.83,
    "totalOursAdj": 220.8,
+   "pOursMorning": 0.3656,
+   "marginOursMorning": -4.29,
+   "totalOursMorning": 220.5,
+   "pOursEve": 0.3656,
+   "marginOursEve": -4.29,
+   "totalOursEve": 220.5,
+   "comps": {
+    "prior": -10.36,
+    "current": -2.35,
+    "absent": 5.86,
+    "change": -1.35,
+    "aging": 0.43,
+    "fit": 0.02,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -10.36,
+    "current": -2.35,
+    "absent": 6.63,
+    "change": -1.32,
+    "aging": 0.41,
+    "fit": 0.2,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -10.36,
+    "current": -2.35,
+    "absent": 6.63,
+    "change": -1.32,
+    "aging": 0.41,
+    "fit": 0.2,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3691,
    "mlHome": 160,
@@ -3529,7 +6215,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 96
@@ -3550,7 +6236,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DAL": 19,
      "OKC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3568,6 +6258,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5621,
    "marginOursAdj": 1.95,
    "totalOursAdj": 228.5,
+   "pOursMorning": 0.4271,
+   "marginOursMorning": -2.3,
+   "totalOursMorning": 229.9,
+   "pOursEve": 0.4106,
+   "marginOursEve": -2.83,
+   "totalOursEve": 228.6,
+   "comps": {
+    "prior": -0.33,
+    "current": -0.89,
+    "absent": 4.87,
+    "change": -7.58,
+    "aging": -0.53,
+    "fit": 1.74,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.33,
+    "current": -0.89,
+    "absent": -0.37,
+    "change": -5.84,
+    "aging": -0.48,
+    "fit": 1.61,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.38,
+    "current": -1.25,
+    "absent": -0.37,
+    "change": -5.98,
+    "aging": -0.47,
+    "fit": 1.62,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5043,
    "mlHome": -112,
@@ -3582,7 +6308,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 87,
     "awayScore": 103
@@ -3604,7 +6330,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAC": 18,
      "LAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-28_08_30AM.pdf",
+    "reportMorningAt": "2026-10-28T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-27_08_30PM.pdf",
+    "reportEveAt": "2026-10-28T00:30:00.000Z"
    }
   },
   {
@@ -3622,6 +6352,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5084,
    "marginOursAdj": 0.26,
    "totalOursAdj": 234.4,
+   "pOursMorning": 0.5005,
+   "marginOursMorning": 0.02,
+   "totalOursMorning": 233.7,
+   "pOursEve": 0.5323,
+   "marginOursEve": 1.01,
+   "totalOursEve": 233.3,
+   "comps": {
+    "prior": -1.13,
+    "current": 0.65,
+    "absent": 0.09,
+    "change": -2.58,
+    "aging": 0.44,
+    "fit": 0.09,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.13,
+    "current": 0.65,
+    "absent": 0,
+    "change": -2.07,
+    "aging": 0.47,
+    "fit": 0.1,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.19,
+    "current": 1.62,
+    "absent": 0,
+    "change": -2.01,
+    "aging": 0.49,
+    "fit": 0.1,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5174,
    "mlHome": -118,
@@ -3636,7 +6402,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 111
@@ -3658,7 +6424,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ATL": 19,
      "CLE": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-29_08_30AM.pdf",
+    "reportMorningAt": "2026-10-29T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-28_08_30PM.pdf",
+    "reportEveAt": "2026-10-29T00:30:00.000Z"
    }
   },
   {
@@ -3676,6 +6446,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.642,
    "marginOursAdj": 4.55,
    "totalOursAdj": 234.2,
+   "pOursMorning": 0.6482,
+   "marginOursMorning": 4.76,
+   "totalOursMorning": 234.1,
+   "pOursEve": 0.6603,
+   "marginOursEve": 5.17,
+   "totalOursEve": 235.8,
+   "comps": {
+    "prior": 3.49,
+    "current": 2.02,
+    "absent": -0.49,
+    "change": -0.81,
+    "aging": 0.62,
+    "fit": 0.07,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.49,
+    "current": 2.02,
+    "absent": 0.01,
+    "change": -1.67,
+    "aging": 0.7,
+    "fit": 0.21,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.37,
+    "current": 2.54,
+    "absent": 0.01,
+    "change": -1.71,
+    "aging": 0.71,
+    "fit": 0.25,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.675,
    "mlHome": -238,
@@ -3690,7 +6496,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 132,
     "awayScore": 120
@@ -3710,7 +6516,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NO": 19,
      "SAC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-29_08_30AM.pdf",
+    "reportMorningAt": "2026-10-29T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-28_08_30PM.pdf",
+    "reportEveAt": "2026-10-29T00:30:00.000Z"
    }
   },
   {
@@ -3728,6 +6538,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7431,
    "marginOursAdj": 8.16,
    "totalOursAdj": 232,
+   "pOursMorning": 0.7443,
+   "marginOursMorning": 8.21,
+   "totalOursMorning": 232.2,
+   "pOursEve": 0.7443,
+   "marginOursEve": 8.21,
+   "totalOursEve": 232.2,
+   "comps": {
+    "prior": 3.51,
+    "current": 0.84,
+    "absent": -1.18,
+    "change": 2.64,
+    "aging": -0.19,
+    "fit": 0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.51,
+    "current": 0.84,
+    "absent": 0.08,
+    "change": 2.18,
+    "aging": -0.25,
+    "fit": -0.15,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.51,
+    "current": 0.84,
+    "absent": 0.08,
+    "change": 2.18,
+    "aging": -0.25,
+    "fit": -0.15,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7095,
    "mlHome": -285,
@@ -3742,7 +6588,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 103,
     "awayScore": 124
@@ -3762,7 +6608,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "POR": 18,
      "MEM": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-29_08_30AM.pdf",
+    "reportMorningAt": "2026-10-29T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-28_08_30PM.pdf",
+    "reportEveAt": "2026-10-29T00:30:00.000Z"
    }
   },
   {
@@ -3780,6 +6630,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4764,
    "marginOursAdj": -0.74,
    "totalOursAdj": 227.3,
+   "pOursMorning": 0.4561,
+   "marginOursMorning": -1.38,
+   "totalOursMorning": 227.3,
+   "pOursEve": 0.4561,
+   "marginOursEve": -1.38,
+   "totalOursEve": 227.3,
+   "comps": {
+    "prior": -9.93,
+    "current": 1.05,
+    "absent": 1.53,
+    "change": 3.9,
+    "aging": -0.05,
+    "fit": 0.56,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -9.93,
+    "current": 1.05,
+    "absent": 1.54,
+    "change": 3.41,
+    "aging": -0.05,
+    "fit": 0.6,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -9.93,
+    "current": 1.05,
+    "absent": 1.54,
+    "change": 3.41,
+    "aging": -0.05,
+    "fit": 0.6,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4892,
    "mlHome": -105,
@@ -3794,7 +6680,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 95,
     "awayScore": 79
@@ -3812,7 +6698,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "WSH": 18,
      "CHA": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -3830,6 +6720,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8703,
    "marginOursAdj": 14.09,
    "totalOursAdj": 232.6,
+   "pOursMorning": 0.8789,
+   "marginOursMorning": 14.62,
+   "totalOursMorning": 232.5,
+   "pOursEve": 0.8789,
+   "marginOursEve": 14.62,
+   "totalOursEve": 232.5,
+   "comps": {
+    "prior": 8.01,
+    "current": 4.51,
+    "absent": 0,
+    "change": 0.96,
+    "aging": -0.65,
+    "fit": -0.29,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 8.01,
+    "current": 4.51,
+    "absent": 0.2,
+    "change": 0.83,
+    "aging": -0.64,
+    "fit": -0.29,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 8.01,
+    "current": 4.51,
+    "absent": 0.2,
+    "change": 0.83,
+    "aging": -0.64,
+    "fit": -0.29,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8525,
    "mlHome": -800,
@@ -3844,7 +6770,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 125,
     "awayScore": 111
@@ -3866,7 +6792,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BOS": 17,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -3884,6 +6814,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2886,
    "marginOursAdj": -6.97,
    "totalOursAdj": 221.2,
+   "pOursMorning": 0.2828,
+   "marginOursMorning": -7.18,
+   "totalOursMorning": 221.5,
+   "pOursEve": 0.2828,
+   "marginOursEve": -7.18,
+   "totalOursEve": 221.5,
+   "comps": {
+    "prior": -11.15,
+    "current": -2.91,
+    "absent": 2.38,
+    "change": 2.83,
+    "aging": 0.19,
+    "fit": -0.54,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -11.15,
+    "current": -2.91,
+    "absent": 1.88,
+    "change": 2.94,
+    "aging": 0.19,
+    "fit": -0.63,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -11.15,
+    "current": -2.91,
+    "absent": 1.88,
+    "change": 2.94,
+    "aging": 0.19,
+    "fit": -0.63,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2742,
    "mlHome": 250,
@@ -3898,7 +6864,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 94,
     "awayScore": 110
@@ -3916,7 +6882,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BKN": 18,
      "DET": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -3934,6 +6904,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6145,
    "marginOursAdj": 3.64,
    "totalOursAdj": 225.2,
+   "pOursMorning": 0.6259,
+   "marginOursMorning": 4.01,
+   "totalOursMorning": 225.2,
+   "pOursEve": 0.6259,
+   "marginOursEve": 4.01,
+   "totalOursEve": 225.2,
+   "comps": {
+    "prior": -3.89,
+    "current": 0.63,
+    "absent": -0.57,
+    "change": 4.25,
+    "aging": 1.29,
+    "fit": -0.29,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -3.89,
+    "current": 0.63,
+    "absent": 0.34,
+    "change": 3.53,
+    "aging": 1.29,
+    "fit": -0.39,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -3.89,
+    "current": 0.63,
+    "absent": 0.34,
+    "change": 3.53,
+    "aging": 1.29,
+    "fit": -0.39,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.417,
    "mlHome": 130,
@@ -3948,7 +6954,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 98,
     "awayScore": 93
@@ -3970,7 +6976,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHI": 17,
      "NY": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -3988,6 +6998,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.738,
    "marginOursAdj": 7.97,
    "totalOursAdj": 224.2,
+   "pOursMorning": 0.7518,
+   "marginOursMorning": 8.5,
+   "totalOursMorning": 224.2,
+   "pOursEve": 0.7518,
+   "marginOursEve": 8.5,
+   "totalOursEve": 224.2,
+   "comps": {
+    "prior": 1.42,
+    "current": 4.59,
+    "absent": 2.94,
+    "change": -2.66,
+    "aging": 0.28,
+    "fit": -0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.42,
+    "current": 4.59,
+    "absent": 2.94,
+    "change": -2.66,
+    "aging": 0.28,
+    "fit": -0.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.42,
+    "current": 4.59,
+    "absent": 2.94,
+    "change": -2.66,
+    "aging": 0.28,
+    "fit": -0.07,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6575,
    "mlHome": -218,
@@ -4002,7 +7048,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -4025,7 +7071,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "TOR": 19,
      "ORL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4043,6 +7093,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7415,
    "marginOursAdj": 8.1,
    "totalOursAdj": 232.6,
+   "pOursMorning": 0.6948,
+   "marginOursMorning": 6.37,
+   "totalOursMorning": 233.2,
+   "pOursEve": 0.6948,
+   "marginOursEve": 6.37,
+   "totalOursEve": 233.2,
+   "comps": {
+    "prior": 6.19,
+    "current": -1.58,
+    "absent": 2.05,
+    "change": 0.13,
+    "aging": -0.23,
+    "fit": -1.03,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.19,
+    "current": -1.58,
+    "absent": 1.23,
+    "change": -0.34,
+    "aging": -0.18,
+    "fit": -0.95,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.19,
+    "current": -1.58,
+    "absent": 1.23,
+    "change": -0.34,
+    "aging": -0.18,
+    "fit": -0.95,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7335,
    "mlHome": -325,
@@ -4057,7 +7143,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 145,
     "awayScore": 125
@@ -4079,7 +7165,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIA": 17,
      "IND": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4097,6 +7187,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.429,
    "marginOursAdj": -2.24,
    "totalOursAdj": 225.5,
+   "pOursMorning": 0.383,
+   "marginOursMorning": -3.72,
+   "totalOursMorning": 226.1,
+   "pOursEve": 0.383,
+   "marginOursEve": -3.72,
+   "totalOursEve": 226.1,
+   "comps": {
+    "prior": -6.35,
+    "current": -2.54,
+    "absent": 4.83,
+    "change": -1.33,
+    "aging": 0.34,
+    "fit": 0.46,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.35,
+    "current": -2.54,
+    "absent": 2.98,
+    "change": -0.64,
+    "aging": 0.36,
+    "fit": 0.47,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.35,
+    "current": -2.54,
+    "absent": 2.98,
+    "change": -0.64,
+    "aging": 0.36,
+    "fit": 0.47,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3631,
    "mlHome": 164,
@@ -4111,7 +7237,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 116,
     "awayScore": 111
@@ -4132,7 +7258,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DAL": 19,
      "HOU": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4150,6 +7280,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7323,
    "marginOursAdj": 7.75,
    "totalOursAdj": 222.2,
+   "pOursMorning": 0.7196,
+   "marginOursMorning": 7.27,
+   "totalOursMorning": 222.3,
+   "pOursEve": 0.7139,
+   "marginOursEve": 7.06,
+   "totalOursEve": 222.4,
+   "comps": {
+    "prior": 1.21,
+    "current": 2.73,
+    "absent": -3.86,
+    "change": 5.95,
+    "aging": 0.35,
+    "fit": -0.84,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.21,
+    "current": 2.73,
+    "absent": -3.86,
+    "change": 5.73,
+    "aging": 0.35,
+    "fit": -0.89,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.21,
+    "current": 2.73,
+    "absent": -3.86,
+    "change": 5.54,
+    "aging": 0.35,
+    "fit": -0.91,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6958,
    "mlHome": -265,
@@ -4164,7 +7330,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 127,
     "awayScore": 101
@@ -4186,7 +7352,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIN": 17,
      "LAC": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4204,6 +7374,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4706,
    "marginOursAdj": -0.92,
    "totalOursAdj": 232.8,
+   "pOursMorning": 0.4605,
+   "marginOursMorning": -1.24,
+   "totalOursMorning": 232.7,
+   "pOursEve": 0.4605,
+   "marginOursEve": -1.24,
+   "totalOursEve": 232.7,
+   "comps": {
+    "prior": -1.42,
+    "current": -2.28,
+    "absent": -1.91,
+    "change": 0.38,
+    "aging": -0.22,
+    "fit": 1.16,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.42,
+    "current": -2.28,
+    "absent": -2.44,
+    "change": 1.54,
+    "aging": -0.28,
+    "fit": 1.14,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.42,
+    "current": -2.28,
+    "absent": -2.44,
+    "change": 1.54,
+    "aging": -0.28,
+    "fit": 1.14,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4279,
    "mlHome": 124,
@@ -4218,7 +7424,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 112,
     "awayScore": 95
@@ -4239,7 +7445,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "GS": 18,
      "LAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4257,6 +7467,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4694,
    "marginOursAdj": -0.96,
    "totalOursAdj": 230.3,
+   "pOursMorning": 0.4688,
+   "marginOursMorning": -0.98,
+   "totalOursMorning": 230.2,
+   "pOursEve": 0.4688,
+   "marginOursEve": -0.98,
+   "totalOursEve": 230.2,
+   "comps": {
+    "prior": -2.22,
+    "current": -1.35,
+    "absent": -0.76,
+    "change": -0.63,
+    "aging": 0.38,
+    "fit": 0.64,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -2.22,
+    "current": -1.35,
+    "absent": -1.07,
+    "change": 0.12,
+    "aging": 0.34,
+    "fit": 0.7,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -2.22,
+    "current": -1.35,
+    "absent": -1.07,
+    "change": 0.12,
+    "aging": 0.34,
+    "fit": 0.7,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3836,
    "mlHome": 150,
@@ -4271,7 +7517,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 127
@@ -4293,7 +7539,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHX": 17,
      "DEN": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-30_06_00AM.pdf",
+    "reportMorningAt": "2026-10-30T10:00:00.000Z",
+    "reportEve": "Injury-Report_2026-10-29_08_30PM.pdf",
+    "reportEveAt": "2026-10-30T00:30:00.000Z"
    }
   },
   {
@@ -4311,6 +7561,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2789,
    "marginOursAdj": -7.33,
    "totalOursAdj": 236.8,
+   "pOursMorning": 0.2797,
+   "marginOursMorning": -7.3,
+   "totalOursMorning": 236.8,
+   "pOursEve": 0.2797,
+   "marginOursEve": -7.3,
+   "totalOursEve": 236.8,
+   "comps": {
+    "prior": -4.79,
+    "current": -3.02,
+    "absent": -0.44,
+    "change": -1.83,
+    "aging": 0.21,
+    "fit": 0.45,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.79,
+    "current": -3.02,
+    "absent": -0.05,
+    "change": -1.96,
+    "aging": 0.18,
+    "fit": 0.34,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.79,
+    "current": -3.02,
+    "absent": -0.05,
+    "change": -1.96,
+    "aging": 0.18,
+    "fit": 0.34,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3092,
    "mlHome": 210,
@@ -4325,7 +7611,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 90,
     "awayScore": 112
@@ -4345,7 +7631,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "UTAH": 18,
      "POR": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4363,6 +7653,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4414,
    "marginOursAdj": -1.84,
    "totalOursAdj": 217.8,
+   "pOursMorning": 0.4459,
+   "marginOursMorning": -1.7,
+   "totalOursMorning": 219.4,
+   "pOursEve": 0.4508,
+   "marginOursEve": -1.55,
+   "totalOursEve": 222.9,
+   "comps": {
+    "prior": 2.89,
+    "current": -2.86,
+    "absent": -0.44,
+    "change": -2,
+    "aging": -0.17,
+    "fit": -0.92,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.89,
+    "current": -2.86,
+    "absent": 0,
+    "change": -3.89,
+    "aging": 0.17,
+    "fit": -0.01,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.01,
+    "current": -2.14,
+    "absent": 0,
+    "change": -4.61,
+    "aging": 0.19,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4826,
    "mlHome": -102,
@@ -4377,7 +7703,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 104,
     "awayScore": 109
@@ -4395,7 +7721,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHA": 18,
      "PHI": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4413,6 +7743,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3598,
    "marginOursAdj": -4.49,
    "totalOursAdj": 234.6,
+   "pOursMorning": 0.4028,
+   "marginOursMorning": -3.08,
+   "totalOursMorning": 234.6,
+   "pOursEve": 0.4028,
+   "marginOursEve": -3.08,
+   "totalOursEve": 234.6,
+   "comps": {
+    "prior": -4.13,
+    "current": -1.51,
+    "absent": -0.35,
+    "change": 0.64,
+    "aging": 0.31,
+    "fit": -0.3,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.13,
+    "current": -1.51,
+    "absent": -0.1,
+    "change": 0.62,
+    "aging": 0.28,
+    "fit": -0.24,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.13,
+    "current": -1.51,
+    "absent": -0.1,
+    "change": 0.62,
+    "aging": 0.28,
+    "fit": -0.24,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3631,
    "mlHome": 164,
@@ -4427,7 +7793,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 121,
     "awayScore": 99
@@ -4448,7 +7814,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NO": 19,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4466,6 +7836,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7818,
    "marginOursAdj": 9.73,
    "totalOursAdj": 232.2,
+   "pOursMorning": 0.7905,
+   "marginOursMorning": 10.1,
+   "totalOursMorning": 232.2,
+   "pOursEve": 0.7905,
+   "marginOursEve": 10.1,
+   "totalOursEve": 232.2,
+   "comps": {
+    "prior": 2.54,
+    "current": 5.72,
+    "absent": 0.15,
+    "change": -1.43,
+    "aging": 0.65,
+    "fit": 0.47,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.54,
+    "current": 5.72,
+    "absent": 0.15,
+    "change": -1.43,
+    "aging": 0.65,
+    "fit": 0.47,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.54,
+    "current": 5.72,
+    "absent": 0.15,
+    "change": -1.43,
+    "aging": 0.65,
+    "fit": 0.47,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.718,
    "mlHome": -298,
@@ -4480,7 +7886,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 136,
     "awayScore": 105
@@ -4498,7 +7904,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MEM": 18,
      "SAC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4516,6 +7926,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2988,
    "marginOursAdj": -6.6,
    "totalOursAdj": 233.9,
+   "pOursMorning": 0.2929,
+   "marginOursMorning": -6.81,
+   "totalOursMorning": 234.1,
+   "pOursEve": 0.2929,
+   "marginOursEve": -6.81,
+   "totalOursEve": 234.1,
+   "comps": {
+    "prior": -6.23,
+    "current": -2.37,
+    "absent": 0.32,
+    "change": -1.01,
+    "aging": 0.4,
+    "fit": -0.06,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.23,
+    "current": -2.37,
+    "absent": 0.39,
+    "change": -1.41,
+    "aging": 0.4,
+    "fit": -0.09,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.23,
+    "current": -2.37,
+    "absent": 0.39,
+    "change": -1.41,
+    "aging": 0.4,
+    "fit": -0.09,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2864,
    "mlHome": 235,
@@ -4530,7 +7976,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 111,
     "awayScore": 136
@@ -4555,7 +8001,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIL": 18,
      "CLE": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4573,6 +8023,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7891,
    "marginOursAdj": 10.04,
    "totalOursAdj": 227.8,
+   "pOursMorning": 0.7194,
+   "marginOursMorning": 7.26,
+   "totalOursMorning": 229.1,
+   "pOursEve": 0.74,
+   "marginOursEve": 8.04,
+   "totalOursEve": 229.2,
+   "comps": {
+    "prior": 3.09,
+    "current": -2.1,
+    "absent": 5.22,
+    "change": -0.06,
+    "aging": 0.26,
+    "fit": 0.17,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.09,
+    "current": -2.1,
+    "absent": 0,
+    "change": 1.3,
+    "aging": 0.7,
+    "fit": 0.27,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.01,
+    "current": -1.2,
+    "absent": 0,
+    "change": 1.2,
+    "aging": 0.72,
+    "fit": 0.31,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8173,
    "mlHome": -575,
@@ -4587,7 +8073,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -4613,7 +8099,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "MIN": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4631,6 +8121,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5462,
    "marginOursAdj": 1.45,
    "totalOursAdj": 219.1,
+   "pOursMorning": 0.5363,
+   "marginOursMorning": 1.14,
+   "totalOursMorning": 219.1,
+   "pOursEve": 0.5449,
+   "marginOursEve": 1.41,
+   "totalOursEve": 219,
+   "comps": {
+    "prior": -3.52,
+    "current": 1.87,
+    "absent": 3.3,
+    "change": -0.06,
+    "aging": 0.04,
+    "fit": -0.49,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -3.52,
+    "current": 1.87,
+    "absent": 5.3,
+    "change": -2.4,
+    "aging": 0.22,
+    "fit": -0.33,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -3.4,
+    "current": 2.18,
+    "absent": 5.3,
+    "change": -2.56,
+    "aging": 0.24,
+    "fit": -0.35,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5635,
    "mlHome": -142,
@@ -4645,7 +8171,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 119,
     "awayScore": 98
@@ -4665,7 +8191,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "HOU": 17,
      "OKC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-10-31_08_30AM.pdf",
+    "reportMorningAt": "2026-10-31T12:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-30_08_30PM.pdf",
+    "reportEveAt": "2026-10-31T00:30:00.000Z"
    }
   },
   {
@@ -4683,6 +8213,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3349,
    "marginOursAdj": -5.33,
    "totalOursAdj": 227.1,
+   "pOursMorning": 0.3024,
+   "marginOursMorning": -6.47,
+   "totalOursMorning": 227.1,
+   "pOursEve": 0.3024,
+   "marginOursEve": -6.47,
+   "totalOursEve": 227.1,
+   "comps": {
+    "prior": -4.38,
+    "current": -3.57,
+    "absent": -2.82,
+    "change": 1.63,
+    "aging": 0.32,
+    "fit": 0.24,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.38,
+    "current": -3.57,
+    "absent": -3.45,
+    "change": 2.12,
+    "aging": 0.32,
+    "fit": 0.49,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.38,
+    "current": -3.57,
+    "absent": -3.45,
+    "change": 2.12,
+    "aging": 0.32,
+    "fit": 0.49,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2905,
    "mlHome": 230,
@@ -4697,7 +8263,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 97,
     "awayScore": 108
@@ -4719,7 +8285,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ORL": 18,
      "BOS": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-01_08_30AM.pdf",
+    "reportMorningAt": "2026-11-01T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-31_08_30PM.pdf",
+    "reportEveAt": "2026-11-01T00:30:00.000Z"
    }
   },
   {
@@ -4737,6 +8307,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5273,
    "marginOursAdj": 0.86,
    "totalOursAdj": 228.3,
+   "pOursMorning": 0.572,
+   "marginOursMorning": 2.27,
+   "totalOursMorning": 228.6,
+   "pOursEve": 0.572,
+   "marginOursEve": 2.27,
+   "totalOursEve": 228.6,
+   "comps": {
+    "prior": 1.61,
+    "current": 1.53,
+    "absent": -1.98,
+    "change": -1.98,
+    "aging": -0.25,
+    "fit": 0.66,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.61,
+    "current": 1.53,
+    "absent": -1.25,
+    "change": -1.98,
+    "aging": -0.26,
+    "fit": 0.62,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.61,
+    "current": 1.53,
+    "absent": -1.25,
+    "change": -1.98,
+    "aging": -0.26,
+    "fit": 0.62,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.583,
    "mlHome": -155,
@@ -4751,7 +8357,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 90,
     "awayScore": 98
@@ -4769,7 +8375,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "IND": 17,
      "BKN": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-01_08_30AM.pdf",
+    "reportMorningAt": "2026-11-01T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-31_08_30PM.pdf",
+    "reportEveAt": "2026-11-01T00:30:00.000Z"
    }
   },
   {
@@ -4787,6 +8397,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6342,
    "marginOursAdj": 4.29,
    "totalOursAdj": 222.6,
+   "pOursMorning": 0.6348,
+   "marginOursMorning": 4.31,
+   "totalOursMorning": 222.6,
+   "pOursEve": 0.6348,
+   "marginOursEve": 4.31,
+   "totalOursEve": 222.6,
+   "comps": {
+    "prior": -1.04,
+    "current": 1.6,
+    "absent": -4.47,
+    "change": 6.03,
+    "aging": 0.63,
+    "fit": -0.41,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.04,
+    "current": 1.6,
+    "absent": -4.44,
+    "change": 5.97,
+    "aging": 0.63,
+    "fit": -0.41,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.04,
+    "current": 1.6,
+    "absent": -4.44,
+    "change": 5.97,
+    "aging": 0.63,
+    "fit": -0.41,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5427,
    "mlHome": -130,
@@ -4801,7 +8447,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 124,
     "awayScore": 112
@@ -4821,7 +8467,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "GS": 18,
      "LAC": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-01_08_30AM.pdf",
+    "reportMorningAt": "2026-11-01T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-31_08_30PM.pdf",
+    "reportEveAt": "2026-11-01T00:30:00.000Z"
    }
   },
   {
@@ -4839,6 +8489,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5445,
    "marginOursAdj": 1.4,
    "totalOursAdj": 228.3,
+   "pOursMorning": 0.5308,
+   "marginOursMorning": 0.97,
+   "totalOursMorning": 228.1,
+   "pOursEve": 0.5308,
+   "marginOursEve": 0.97,
+   "totalOursEve": 228.1,
+   "comps": {
+    "prior": -0.69,
+    "current": -0.92,
+    "absent": 0.26,
+    "change": 2.39,
+    "aging": -0.44,
+    "fit": -1.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.69,
+    "current": -0.92,
+    "absent": 0.36,
+    "change": 1.75,
+    "aging": -0.44,
+    "fit": -1.09,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.69,
+    "current": -0.92,
+    "absent": 0.36,
+    "change": 1.75,
+    "aging": -0.44,
+    "fit": -1.09,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6038,
    "mlHome": -170,
@@ -4853,7 +8539,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 131,
     "awayScore": 125
@@ -4878,7 +8564,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAL": 19,
      "TOR": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-01_08_30AM.pdf",
+    "reportMorningAt": "2026-11-01T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-10-31_08_30PM.pdf",
+    "reportEveAt": "2026-11-01T00:30:00.000Z"
    }
   },
   {
@@ -4896,6 +8586,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6356,
    "marginOursAdj": 4.33,
    "totalOursAdj": 225.2,
+   "pOursMorning": 0.6507,
+   "marginOursMorning": 4.84,
+   "totalOursMorning": 225.2,
+   "pOursEve": 0.6507,
+   "marginOursEve": 4.84,
+   "totalOursEve": 225.2,
+   "comps": {
+    "prior": -4.07,
+    "current": 1.25,
+    "absent": 4.62,
+    "change": 1.31,
+    "aging": -0.41,
+    "fit": 0.14,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.07,
+    "current": 1.25,
+    "absent": 4.62,
+    "change": 1.31,
+    "aging": -0.41,
+    "fit": 0.14,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.07,
+    "current": 1.25,
+    "absent": 4.62,
+    "change": 1.31,
+    "aging": -0.41,
+    "fit": 0.14,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6092,
    "mlHome": -173,
@@ -4910,7 +8636,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 112,
     "awayScore": 117
@@ -4931,7 +8657,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CLE": 19,
      "OKC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -4949,6 +8679,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.308,
    "marginOursAdj": -6.27,
    "totalOursAdj": 214.4,
+   "pOursMorning": 0.3284,
+   "marginOursMorning": -5.55,
+   "totalOursMorning": 214.3,
+   "pOursEve": 0.3284,
+   "marginOursEve": -5.55,
+   "totalOursEve": 214.3,
+   "comps": {
+    "prior": -1.91,
+    "current": -3.96,
+    "absent": 0.27,
+    "change": -1.29,
+    "aging": 0.41,
+    "fit": -0.64,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.91,
+    "current": -3.96,
+    "absent": -0.23,
+    "change": -0.74,
+    "aging": 0.41,
+    "fit": -0.62,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.91,
+    "current": -3.96,
+    "absent": -0.23,
+    "change": -0.74,
+    "aging": 0.41,
+    "fit": -0.62,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.337,
    "mlHome": 185,
@@ -4963,7 +8729,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 91,
     "awayScore": 124
@@ -4981,7 +8747,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "CHA": 18,
      "DET": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -4999,6 +8769,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2396,
    "marginOursAdj": -8.85,
    "totalOursAdj": 228.1,
+   "pOursMorning": 0.3979,
+   "marginOursMorning": -3.23,
+   "totalOursMorning": 231.1,
+   "pOursEve": 0.4216,
+   "marginOursEve": -2.47,
+   "totalOursEve": 232.4,
+   "comps": {
+    "prior": -5.79,
+    "current": -1.23,
+    "absent": -0.36,
+    "change": -0.25,
+    "aging": 0.01,
+    "fit": -0.26,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -5.79,
+    "current": -1.23,
+    "absent": 1.68,
+    "change": 2.68,
+    "aging": -0.4,
+    "fit": -0.17,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -5.96,
+    "current": -0.96,
+    "absent": 1.81,
+    "change": 3.11,
+    "aging": -0.41,
+    "fit": -0.06,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.2088,
    "mlHome": 360,
@@ -5013,7 +8819,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 104,
     "awayScore": 108
@@ -5033,7 +8839,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "IND": 17,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5051,6 +8861,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8326,
    "marginOursAdj": 12.06,
    "totalOursAdj": 220.8,
+   "pOursMorning": 0.8406,
+   "marginOursMorning": 12.46,
+   "totalOursMorning": 220.7,
+   "pOursEve": 0.8496,
+   "marginOursEve": 12.93,
+   "totalOursEve": 222.1,
+   "comps": {
+    "prior": 9.39,
+    "current": 1.65,
+    "absent": 0,
+    "change": -2.86,
+    "aging": -0.98,
+    "fit": 0.69,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 9.39,
+    "current": 1.65,
+    "absent": 0.02,
+    "change": -1.83,
+    "aging": -1.15,
+    "fit": 0.38,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 9.62,
+    "current": 2.05,
+    "absent": 0.02,
+    "change": -1.98,
+    "aging": -1.15,
+    "fit": 0.37,
+    "rest": 2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8738,
    "mlHome": -1020,
@@ -5065,7 +8911,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 103,
     "awayScore": 90
@@ -5086,7 +8932,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NY": 17,
      "BKN": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5104,6 +8954,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5629,
    "marginOursAdj": 1.98,
    "totalOursAdj": 228.3,
+   "pOursMorning": 0.6092,
+   "marginOursMorning": 3.46,
+   "totalOursMorning": 229,
+   "pOursEve": 0.6218,
+   "marginOursEve": 3.88,
+   "totalOursEve": 230,
+   "comps": {
+    "prior": 7.15,
+    "current": -2.29,
+    "absent": -2.59,
+    "change": -1.18,
+    "aging": -0.14,
+    "fit": 0.17,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 7.15,
+    "current": -2.29,
+    "absent": 0.83,
+    "change": -2.6,
+    "aging": 0.12,
+    "fit": 0.25,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 7.16,
+    "current": -1.92,
+    "absent": 0.83,
+    "change": -2.53,
+    "aging": 0.12,
+    "fit": 0.22,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5824,
    "mlHome": -154,
@@ -5118,7 +9004,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 94,
     "awayScore": 103
@@ -5138,7 +9024,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "ORL": 18,
      "WSH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5156,6 +9046,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8144,
    "marginOursAdj": 11.18,
    "totalOursAdj": 230.7,
+   "pOursMorning": 0.821,
+   "marginOursMorning": 11.49,
+   "totalOursMorning": 230.7,
+   "pOursEve": 0.821,
+   "marginOursEve": 11.49,
+   "totalOursEve": 230.7,
+   "comps": {
+    "prior": 2.91,
+    "current": 4.62,
+    "absent": -0.56,
+    "change": 3.02,
+    "aging": 0.04,
+    "fit": 0,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.91,
+    "current": 4.62,
+    "absent": -0.69,
+    "change": 3.1,
+    "aging": 0.04,
+    "fit": 0.01,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.91,
+    "current": 4.62,
+    "absent": -0.69,
+    "change": 3.1,
+    "aging": 0.04,
+    "fit": 0.01,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8055,
    "mlHome": -518,
@@ -5170,7 +9096,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 126,
     "awayScore": 107
@@ -5190,7 +9116,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHI": 17,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5208,6 +9138,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7768,
    "marginOursAdj": 9.52,
    "totalOursAdj": 230.3,
+   "pOursMorning": 0.7972,
+   "marginOursMorning": 10.39,
+   "totalOursMorning": 230.5,
+   "pOursEve": 0.7972,
+   "marginOursEve": 10.39,
+   "totalOursEve": 230.5,
+   "comps": {
+    "prior": 2.79,
+    "current": 5,
+    "absent": -0.54,
+    "change": -1.37,
+    "aging": 0.51,
+    "fit": 0.46,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.79,
+    "current": 5,
+    "absent": 1.06,
+    "change": -1.58,
+    "aging": 0.45,
+    "fit": 0.67,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.79,
+    "current": 5,
+    "absent": 1.06,
+    "change": -1.58,
+    "aging": 0.45,
+    "fit": 0.67,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7184,
    "mlHome": -297,
@@ -5222,7 +9188,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 100,
     "awayScore": 115
@@ -5242,7 +9208,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DAL": 19,
      "SAC": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5260,6 +9230,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6574,
    "marginOursAdj": 5.07,
    "totalOursAdj": 234,
+   "pOursMorning": 0.6583,
+   "marginOursMorning": 5.1,
+   "totalOursMorning": 234,
+   "pOursEve": 0.6583,
+   "marginOursEve": 5.1,
+   "totalOursEve": 234,
+   "comps": {
+    "prior": -0.81,
+    "current": 3.05,
+    "absent": 0.4,
+    "change": 0.22,
+    "aging": 0.04,
+    "fit": 0.25,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.81,
+    "current": 3.05,
+    "absent": 0.51,
+    "change": 0.1,
+    "aging": 0.07,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.81,
+    "current": 3.05,
+    "absent": 0.51,
+    "change": 0.1,
+    "aging": 0.07,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6545,
    "mlHome": -214,
@@ -5274,7 +9280,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 134,
     "awayScore": 135
@@ -5294,7 +9300,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MEM": 18,
      "NO": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5312,6 +9322,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7579,
    "marginOursAdj": 8.74,
    "totalOursAdj": 229.1,
+   "pOursMorning": 0.7708,
+   "marginOursMorning": 9.27,
+   "totalOursMorning": 229.6,
+   "pOursEve": 0.7708,
+   "marginOursEve": 9.27,
+   "totalOursEve": 229.6,
+   "comps": {
+    "prior": 5.47,
+    "current": 5.97,
+    "absent": -3.21,
+    "change": -1.46,
+    "aging": -0.14,
+    "fit": -0.17,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 5.47,
+    "current": 5.97,
+    "absent": -3.88,
+    "change": 0.38,
+    "aging": -0.14,
+    "fit": -0.03,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 5.47,
+    "current": 5.97,
+    "absent": -3.88,
+    "change": 0.38,
+    "aging": -0.14,
+    "fit": -0.03,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7998,
    "mlHome": -497,
@@ -5326,7 +9372,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 112,
     "awayScore": 100
@@ -5350,7 +9396,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MIN": 17,
      "MIL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5368,6 +9418,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6091,
    "marginOursAdj": 3.46,
    "totalOursAdj": 225.3,
+   "pOursMorning": 0.5836,
+   "marginOursMorning": 2.64,
+   "totalOursMorning": 224.8,
+   "pOursEve": 0.5818,
+   "marginOursEve": 2.58,
+   "totalOursEve": 225.6,
+   "comps": {
+    "prior": -1.59,
+    "current": 0.98,
+    "absent": -0.16,
+    "change": -1.01,
+    "aging": 0.62,
+    "fit": 0.12,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.59,
+    "current": 0.98,
+    "absent": -1.21,
+    "change": 0.42,
+    "aging": 0.46,
+    "fit": 0.08,
+    "rest": 1.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.77,
+    "current": 1.34,
+    "absent": -1.21,
+    "change": 0.16,
+    "aging": 0.46,
+    "fit": 0.1,
+    "rest": 1.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.616,
    "mlHome": -179,
@@ -5382,7 +9468,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 109,
     "awayScore": 93
@@ -5403,7 +9489,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "HOU": 17,
      "BOS": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5421,6 +9511,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.904,
    "marginOursAdj": 16.31,
    "totalOursAdj": 234.2,
+   "pOursMorning": 0.9032,
+   "marginOursMorning": 16.25,
+   "totalOursMorning": 234.3,
+   "pOursEve": 0.9032,
+   "marginOursEve": 16.25,
+   "totalOursEve": 234.3,
+   "comps": {
+    "prior": 9.62,
+    "current": 3.99,
+    "absent": 0.5,
+    "change": -0.03,
+    "aging": 0.09,
+    "fit": 0.22,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 9.62,
+    "current": 3.99,
+    "absent": 0.51,
+    "change": -0.15,
+    "aging": 0.09,
+    "fit": 0.19,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 9.62,
+    "current": 3.99,
+    "absent": 0.51,
+    "change": -0.15,
+    "aging": 0.09,
+    "fit": 0.19,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8856,
    "mlHome": -1180,
@@ -5435,7 +9561,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 119,
     "awayScore": 97
@@ -5459,7 +9585,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "UTAH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5477,6 +9607,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5393,
    "marginOursAdj": 1.23,
    "totalOursAdj": 234.1,
+   "pOursMorning": 0.526,
+   "marginOursMorning": 0.82,
+   "totalOursMorning": 234.1,
+   "pOursEve": 0.526,
+   "marginOursEve": 0.82,
+   "totalOursEve": 234.1,
+   "comps": {
+    "prior": 3.29,
+    "current": -2.5,
+    "absent": 0.35,
+    "change": -1.84,
+    "aging": -0.66,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.29,
+    "current": -2.5,
+    "absent": 0.35,
+    "change": -1.84,
+    "aging": -0.66,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.29,
+    "current": -2.5,
+    "absent": 0.35,
+    "change": -1.84,
+    "aging": -0.66,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6097,
    "mlHome": -174,
@@ -5491,7 +9657,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 110,
     "awayScore": 118
@@ -5514,7 +9680,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DEN": 19,
      "POR": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5532,6 +9702,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5567,
    "marginOursAdj": 1.78,
    "totalOursAdj": 227.7,
+   "pOursMorning": 0.6294,
+   "marginOursMorning": 4.13,
+   "totalOursMorning": 228.6,
+   "pOursEve": 0.6111,
+   "marginOursEve": 3.53,
+   "totalOursEve": 228.3,
+   "comps": {
+    "prior": -1.25,
+    "current": 2.84,
+    "absent": -1.74,
+    "change": 2.52,
+    "aging": -0.12,
+    "fit": -0.21,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.25,
+    "current": 2.84,
+    "absent": 1,
+    "change": 1.99,
+    "aging": -0.28,
+    "fit": -0.17,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.26,
+    "current": 2.41,
+    "absent": 0.96,
+    "change": 1.82,
+    "aging": -0.3,
+    "fit": -0.1,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5534,
    "mlHome": -136,
@@ -5546,7 +9752,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 116,
     "awayScore": 113
@@ -5566,7 +9772,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "GS": 18,
      "PHX": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5584,6 +9794,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3413,
    "marginOursAdj": -5.11,
    "totalOursAdj": 222,
+   "pOursMorning": 0.2384,
+   "marginOursMorning": -8.89,
+   "totalOursMorning": 223.3,
+   "pOursEve": 0.2369,
+   "marginOursEve": -8.96,
+   "totalOursEve": 221.6,
+   "comps": {
+    "prior": -0.95,
+    "current": -3.5,
+    "absent": 0.98,
+    "change": -3.42,
+    "aging": -0.8,
+    "fit": -0.13,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.95,
+    "current": -3.5,
+    "absent": 0,
+    "change": -6,
+    "aging": -0.85,
+    "fit": 0.41,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.99,
+    "current": -3.4,
+    "absent": 0,
+    "change": -6.13,
+    "aging": -0.88,
+    "fit": 0.44,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3321,
    "mlHome": 189,
@@ -5598,7 +9844,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 118,
     "awayScore": 125
@@ -5620,7 +9866,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAC": 19,
      "TOR": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5638,6 +9888,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5687,
    "marginOursAdj": 2.16,
    "totalOursAdj": 237.1,
+   "pOursMorning": 0.553,
+   "marginOursMorning": 1.67,
+   "totalOursMorning": 237.2,
+   "pOursEve": 0.545,
+   "marginOursEve": 1.41,
+   "totalOursEve": 236.2,
+   "comps": {
+    "prior": -0.27,
+    "current": 2.12,
+    "absent": 0.02,
+    "change": 0.55,
+    "aging": 0.32,
+    "fit": -0.36,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.27,
+    "current": 2.12,
+    "absent": 0,
+    "change": -0.21,
+    "aging": 0.32,
+    "fit": -0.29,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.23,
+    "current": 1.93,
+    "absent": 0,
+    "change": -0.33,
+    "aging": 0.32,
+    "fit": -0.28,
+    "rest": -2,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5427,
    "mlHome": -130,
@@ -5652,7 +9938,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 138,
     "awayScore": 117
@@ -5676,7 +9962,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAL": 19,
      "MIA": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-02_08_30AM.pdf",
+    "reportMorningAt": "2026-11-02T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-01_08_30PM.pdf",
+    "reportEveAt": "2026-11-02T01:30:00.000Z"
    }
   },
   {
@@ -5694,6 +9984,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5991,
    "marginOursAdj": 3.14,
    "totalOursAdj": 219.1,
+   "pOursMorning": 0.5721,
+   "marginOursMorning": 2.27,
+   "totalOursMorning": 219.1,
+   "pOursEve": 0.5721,
+   "marginOursEve": 2.27,
+   "totalOursEve": 219.1,
+   "comps": {
+    "prior": 4.58,
+    "current": 1.36,
+    "absent": -2.02,
+    "change": -3.42,
+    "aging": -0.44,
+    "fit": 0.44,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 4.58,
+    "current": 1.36,
+    "absent": -2.01,
+    "change": -3.65,
+    "aging": -0.44,
+    "fit": 0.43,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 4.58,
+    "current": 1.36,
+    "absent": -2.01,
+    "change": -3.65,
+    "aging": -0.44,
+    "fit": 0.43,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5635,
    "mlHome": -142,
@@ -5708,7 +10034,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 106,
     "awayScore": 112
@@ -5729,7 +10055,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DET": 18,
      "PHI": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -5747,6 +10077,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4572,
    "marginOursAdj": -1.34,
    "totalOursAdj": 228.7,
+   "pOursMorning": 0.4453,
+   "marginOursMorning": -1.72,
+   "totalOursMorning": 229,
+   "pOursEve": 0.4453,
+   "marginOursEve": -1.72,
+   "totalOursEve": 229,
+   "comps": {
+    "prior": -7.92,
+    "current": 0.17,
+    "absent": 2.41,
+    "change": 2.42,
+    "aging": 0.23,
+    "fit": -0.32,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -7.92,
+    "current": 0.17,
+    "absent": 0.92,
+    "change": 3.21,
+    "aging": 0.11,
+    "fit": -0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -7.92,
+    "current": 0.17,
+    "absent": 0.92,
+    "change": 3.21,
+    "aging": 0.11,
+    "fit": -0.21,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4634,
    "mlHome": 107,
@@ -5761,7 +10127,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 105,
     "awayScore": 120
@@ -5781,7 +10147,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "WSH": 18,
      "ATL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -5799,6 +10169,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8402,
    "marginOursAdj": 12.44,
    "totalOursAdj": 226.9,
+   "pOursMorning": 0.8514,
+   "marginOursMorning": 13.03,
+   "totalOursMorning": 227.1,
+   "pOursEve": 0.8514,
+   "marginOursEve": 13.03,
+   "totalOursEve": 227.1,
+   "comps": {
+    "prior": 7.75,
+    "current": 4.86,
+    "absent": -1.36,
+    "change": 0.22,
+    "aging": -0.18,
+    "fit": -0.1,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 7.75,
+    "current": 4.86,
+    "absent": -0.73,
+    "change": 0.03,
+    "aging": -0.13,
+    "fit": -0.25,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 7.75,
+    "current": 4.86,
+    "absent": -0.73,
+    "change": 0.03,
+    "aging": -0.13,
+    "fit": -0.25,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8167,
    "mlHome": -567,
@@ -5813,7 +10219,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 109,
     "awayScore": 102
@@ -5836,7 +10242,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BOS": 17,
      "MIL": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -5854,6 +10264,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4417,
    "marginOursAdj": -1.83,
    "totalOursAdj": 216.9,
+   "pOursMorning": 0.4275,
+   "marginOursMorning": -2.29,
+   "totalOursMorning": 216.9,
+   "pOursEve": 0.4275,
+   "marginOursEve": -2.29,
+   "totalOursEve": 216.9,
+   "comps": {
+    "prior": -8.14,
+    "current": 0.99,
+    "absent": 0.23,
+    "change": 3.76,
+    "aging": -0.58,
+    "fit": -0.19,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -8.14,
+    "current": 0.99,
+    "absent": 0.08,
+    "change": 3.99,
+    "aging": -0.54,
+    "fit": -0.17,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -8.14,
+    "current": 0.99,
+    "absent": 0.08,
+    "change": 3.99,
+    "aging": -0.54,
+    "fit": -0.17,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3953,
    "mlHome": 143,
@@ -5868,7 +10314,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 114,
     "awayScore": 104
@@ -5886,7 +10332,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "BKN": 18,
      "CHA": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -5904,6 +10354,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7942,
    "marginOursAdj": 10.26,
    "totalOursAdj": 228.3,
+   "pOursMorning": 0.8067,
+   "marginOursMorning": 10.82,
+   "totalOursMorning": 228.4,
+   "pOursEve": 0.8067,
+   "marginOursEve": 10.82,
+   "totalOursEve": 228.4,
+   "comps": {
+    "prior": 6.43,
+    "current": 4.44,
+    "absent": -1.82,
+    "change": -0.04,
+    "aging": -1.06,
+    "fit": 0.67,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 6.43,
+    "current": 4.44,
+    "absent": -1.34,
+    "change": -0.27,
+    "aging": -1.15,
+    "fit": 0.71,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 6.43,
+    "current": 4.44,
+    "absent": -1.34,
+    "change": -0.27,
+    "aging": -1.15,
+    "fit": 0.71,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8176,
    "mlHome": -570,
@@ -5918,7 +10404,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 135,
     "awayScore": 105
@@ -5942,7 +10428,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NY": 17,
      "CHI": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -5960,6 +10450,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7329,
    "marginOursAdj": 7.77,
    "totalOursAdj": 231.1,
+   "pOursMorning": 0.74,
+   "marginOursMorning": 8.04,
+   "totalOursMorning": 231.1,
+   "pOursEve": 0.74,
+   "marginOursEve": 8.04,
+   "totalOursEve": 231.1,
+   "comps": {
+    "prior": 0.96,
+    "current": 4.44,
+    "absent": -0.15,
+    "change": 0.09,
+    "aging": 0.51,
+    "fit": -0.31,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.96,
+    "current": 4.44,
+    "absent": -0.15,
+    "change": 0.09,
+    "aging": 0.51,
+    "fit": -0.31,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.96,
+    "current": 4.44,
+    "absent": -0.15,
+    "change": 0.09,
+    "aging": 0.51,
+    "fit": -0.31,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6677,
    "mlHome": -228,
@@ -5974,7 +10500,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 103,
     "awayScore": 107
@@ -5994,7 +10520,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "MEM": 18,
      "IND": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6012,6 +10542,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6472,
    "marginOursAdj": 4.72,
    "totalOursAdj": 237.6,
+   "pOursMorning": 0.6977,
+   "marginOursMorning": 6.47,
+   "totalOursMorning": 238,
+   "pOursEve": 0.6977,
+   "marginOursEve": 6.47,
+   "totalOursEve": 238,
+   "comps": {
+    "prior": 2.08,
+    "current": 3.49,
+    "absent": -1.34,
+    "change": -0.44,
+    "aging": 0.02,
+    "fit": -0.31,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.08,
+    "current": 3.49,
+    "absent": -0.06,
+    "change": -0.9,
+    "aging": 0.03,
+    "fit": -0.17,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.08,
+    "current": 3.49,
+    "absent": -0.06,
+    "change": -0.9,
+    "aging": 0.03,
+    "fit": -0.17,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6415,
    "mlHome": -201,
@@ -6026,7 +10592,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 120,
     "awayScore": 113
@@ -6046,7 +10612,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "NO": 19,
      "UTAH": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6064,6 +10634,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5005,
    "marginOursAdj": 0.02,
    "totalOursAdj": 225.9,
+   "pOursMorning": 0.4993,
+   "marginOursMorning": -0.02,
+   "totalOursMorning": 226.1,
+   "pOursEve": 0.4993,
+   "marginOursEve": -0.02,
+   "totalOursEve": 226.1,
+   "comps": {
+    "prior": 3.93,
+    "current": -0.84,
+    "absent": -4.37,
+    "change": -1.55,
+    "aging": 0.23,
+    "fit": 0.08,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 3.93,
+    "current": -0.84,
+    "absent": -3.83,
+    "change": -1.55,
+    "aging": 0.26,
+    "fit": 0.01,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 3.93,
+    "current": -0.84,
+    "absent": -3.83,
+    "change": -1.55,
+    "aging": 0.26,
+    "fit": 0.01,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.5928,
    "mlHome": -161,
@@ -6078,7 +10684,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 124,
     "awayScore": 116
@@ -6099,7 +10705,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "OKC": 17,
      "CLE": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6117,6 +10727,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7096,
    "marginOursAdj": 6.9,
    "totalOursAdj": 224.6,
+   "pOursMorning": 0.6929,
+   "marginOursMorning": 6.3,
+   "totalOursMorning": 224.5,
+   "pOursEve": 0.6929,
+   "marginOursEve": 6.3,
+   "totalOursEve": 224.5,
+   "comps": {
+    "prior": 1.11,
+    "current": 0.58,
+    "absent": 3.25,
+    "change": -1.14,
+    "aging": 0.52,
+    "fit": 0.22,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.11,
+    "current": 0.58,
+    "absent": 3.43,
+    "change": -1.34,
+    "aging": 0.47,
+    "fit": 0.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.11,
+    "current": 0.58,
+    "absent": 3.43,
+    "change": -1.34,
+    "aging": 0.47,
+    "fit": 0.05,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.7063,
    "mlHome": -278,
@@ -6131,7 +10777,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 107,
     "awayScore": 117
@@ -6151,7 +10797,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "HOU": 18,
      "MIN": 16
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6169,6 +10819,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5612,
    "marginOursAdj": 1.92,
    "totalOursAdj": 232.2,
+   "pOursMorning": 0.5528,
+   "marginOursMorning": 1.66,
+   "totalOursMorning": 232.2,
+   "pOursEve": 0.5528,
+   "marginOursEve": 1.66,
+   "totalOursEve": 232.2,
+   "comps": {
+    "prior": 1.37,
+    "current": -2.54,
+    "absent": 0.53,
+    "change": 1.12,
+    "aging": -0.9,
+    "fit": -0.42,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.37,
+    "current": -2.54,
+    "absent": 0.53,
+    "change": 1.12,
+    "aging": -0.9,
+    "fit": -0.42,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.37,
+    "current": -2.54,
+    "absent": 0.53,
+    "change": 1.12,
+    "aging": -0.9,
+    "fit": -0.42,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.6305,
    "mlHome": -191,
@@ -6183,7 +10869,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 128,
     "awayScore": 109
@@ -6209,7 +10895,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "DEN": 19,
      "TOR": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6227,6 +10917,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4111,
    "marginOursAdj": -2.81,
    "totalOursAdj": 227.9,
+   "pOursMorning": 0.3766,
+   "marginOursMorning": -3.93,
+   "totalOursMorning": 227.8,
+   "pOursEve": 0.3766,
+   "marginOursEve": -3.93,
+   "totalOursEve": 227.8,
+   "comps": {
+    "prior": 1.07,
+    "current": -4.62,
+    "absent": -1.8,
+    "change": -0.84,
+    "aging": -0.17,
+    "fit": 0.76,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.07,
+    "current": -4.62,
+    "absent": -1.21,
+    "change": -1.62,
+    "aging": -0.2,
+    "fit": 0.65,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.07,
+    "current": -4.62,
+    "absent": -1.21,
+    "change": -1.62,
+    "aging": -0.2,
+    "fit": 0.65,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.4279,
    "mlHome": 124,
@@ -6241,7 +10967,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 119,
     "awayScore": 132
@@ -6263,7 +10989,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "PHX": 17,
      "POR": 18
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6281,6 +11011,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8277,
    "marginOursAdj": 11.81,
    "totalOursAdj": 227.5,
+   "pOursMorning": 0.8353,
+   "marginOursMorning": 12.19,
+   "totalOursMorning": 227.7,
+   "pOursEve": 0.8353,
+   "marginOursEve": 12.19,
+   "totalOursEve": 227.7,
+   "comps": {
+    "prior": 7.62,
+    "current": 2.42,
+    "absent": 0.06,
+    "change": -0.33,
+    "aging": 0.23,
+    "fit": 0.57,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 7.62,
+    "current": 2.42,
+    "absent": -0.75,
+    "change": -0.01,
+    "aging": 0.23,
+    "fit": 0.68,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 7.62,
+    "current": 2.42,
+    "absent": -0.75,
+    "change": -0.01,
+    "aging": 0.23,
+    "fit": 0.68,
+    "rest": 0,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.8277,
    "mlHome": -620,
@@ -6295,7 +11061,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 112,
     "awayScore": 111
@@ -6321,7 +11087,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SA": 20,
      "DAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6339,6 +11109,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.2234,
    "marginOursAdj": -9.51,
    "totalOursAdj": 234.6,
+   "pOursMorning": 0.2131,
+   "marginOursMorning": -9.95,
+   "totalOursMorning": 234.6,
+   "pOursEve": 0.2131,
+   "marginOursEve": -9.95,
+   "totalOursEve": 234.6,
+   "comps": {
+    "prior": -6.5,
+    "current": -5.73,
+    "absent": 0,
+    "change": -0.17,
+    "aging": -0.13,
+    "fit": 0.13,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -6.5,
+    "current": -5.73,
+    "absent": -0.04,
+    "change": -0.35,
+    "aging": -0.12,
+    "fit": 0.29,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -6.5,
+    "current": -5.73,
+    "absent": -0.04,
+    "change": -0.35,
+    "aging": -0.12,
+    "fit": 0.29,
+    "rest": 0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.1684,
    "mlHome": 470,
@@ -6353,7 +11159,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 103,
     "awayScore": 116
@@ -6375,7 +11181,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "SAC": 17,
      "LAL": 19
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   },
   {
@@ -6393,6 +11203,42 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3858,
    "marginOursAdj": -3.63,
    "totalOursAdj": 230.9,
+   "pOursMorning": 0.3748,
+   "marginOursMorning": -3.99,
+   "totalOursMorning": 230.8,
+   "pOursEve": 0.3748,
+   "marginOursEve": -3.99,
+   "totalOursEve": 230.8,
+   "comps": {
+    "prior": -0.56,
+    "current": -0.52,
+    "absent": -0.3,
+    "change": -5.02,
+    "aging": -0.09,
+    "fit": 0.77,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -0.56,
+    "current": -0.52,
+    "absent": -3.46,
+    "change": -1.57,
+    "aging": -0.09,
+    "fit": 0.71,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -0.56,
+    "current": -0.52,
+    "absent": -3.46,
+    "change": -1.57,
+    "aging": -0.09,
+    "fit": 0.71,
+    "rest": -0.5,
+    "hca": 2
+   },
    "pFriend": null,
    "pMarket": 0.3432,
    "mlHome": 180,
@@ -6407,7 +11253,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-6",
+   "spec": "replay-7",
    "result": {
     "homeScore": 116,
     "awayScore": 117
@@ -6427,7 +11273,11 @@ const SEASON_REPLAY = {
     "rosterSizes": {
      "LAC": 19,
      "MIA": 17
-    }
+    },
+    "reportMorning": "Injury-Report_2026-11-04_08_30AM.pdf",
+    "reportMorningAt": "2026-11-04T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
+    "reportEveAt": "2026-11-04T01:30:00.000Z"
    }
   }
  ]
