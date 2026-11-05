@@ -1,5 +1,5 @@
 // ============================================================
-// SEASON REPLAY — walk-forward predictions (replay-1)
+// SEASON REPLAY — walk-forward predictions (replay-2)
 // ============================================================
 // Written by `node replay-season.js`. Each row was predicted from data
 // published before its game (see the header of replay-season.js and each
@@ -9,7 +9,7 @@
 // ============================================================
 const SEASON_REPLAY = {
  "spec": {
-  "version": "replay-1",
+  "version": "replay-2",
   "engine": "2026-11-02.aging-v2",
   "firstDay": "2026-10-20",
   "rosterSnapshotBefore": "2026-10-20T12:00:00Z",
@@ -24,7 +24,7 @@ const SEASON_REPLAY = {
    "oursPre": "engine + preseason"
   }
  },
- "generatedAt": "2026-11-05T17:24:02.003Z",
+ "generatedAt": "2026-11-05T18:12:29.859Z",
  "rows": [
   {
    "id": "401909088",
@@ -32,12 +32,12 @@ const SEASON_REPLAY = {
    "tip": "2026-10-20T19:00Z",
    "home": "DET",
    "away": "BOS",
-   "pOurs": 0.527,
-   "marginOurs": 0.85,
-   "totalOurs": 225.6,
-   "pOursPre": 0.4862,
-   "marginOursPre": -0.43,
-   "totalOursPre": 225.6,
+   "pOurs": 0.5448,
+   "marginOurs": 1.41,
+   "totalOurs": 225.4,
+   "pOursPre": 0.504,
+   "marginOursPre": 0.13,
+   "totalOursPre": 225.4,
    "pFriend": null,
    "pMarket": 0.4675,
    "mlHome": 105,
@@ -52,7 +52,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 121,
     "awayScore": 113
@@ -66,10 +66,10 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-20",
-    "inputsHash": "c363943c46b0d92a",
+    "inputsHash": "1f81fcad5420538a",
     "rosterSizes": {
      "DET": 18,
-     "BOS": 19
+     "BOS": 17
     }
    }
   },
@@ -79,12 +79,12 @@ const SEASON_REPLAY = {
    "tip": "2026-10-20T23:00Z",
    "home": "NY",
    "away": "PHI",
-   "pOurs": 0.496,
-   "marginOurs": -0.12,
+   "pOurs": 0.5027,
+   "marginOurs": 0.09,
    "totalOurs": 231.3,
-   "pOursPre": 0.4595,
-   "marginOursPre": -1.27,
-   "totalOursPre": 231.2,
+   "pOursPre": 0.4661,
+   "marginOursPre": -1.06,
+   "totalOursPre": 231.3,
    "pFriend": null,
    "pMarket": 0.6092,
    "mlHome": -175,
@@ -99,7 +99,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 100,
     "awayScore": 106
@@ -113,9 +113,9 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-20",
-    "inputsHash": "8cb2897157c5d800",
+    "inputsHash": "fea5da664ce08761",
     "rosterSizes": {
-     "NY": 19,
+     "NY": 17,
      "PHI": 17
     }
    }
@@ -146,7 +146,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 104,
     "awayScore": 116
@@ -160,7 +160,7 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-20",
-    "inputsHash": "22aabce51f3810af",
+    "inputsHash": "804d6038e241f42f",
     "rosterSizes": {
      "SA": 20,
      "OKC": 17
@@ -193,7 +193,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -207,7 +207,7 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-21",
-    "inputsHash": "a7223a0c118d9dc2",
+    "inputsHash": "190e00e3bf4aa2ea",
     "rosterSizes": {
      "ORL": 18,
      "ATL": 19
@@ -240,7 +240,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 128,
     "awayScore": 116
@@ -287,7 +287,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 106,
     "awayScore": 131
@@ -301,9 +301,9 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-21",
-    "inputsHash": "9b3136627933ba14",
+    "inputsHash": "b3a1c84d301cd192",
     "rosterSizes": {
-     "MIA": 19,
+     "MIA": 17,
      "MIN": 16
     }
    }
@@ -334,7 +334,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 103,
     "awayScore": 110
@@ -381,7 +381,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 135,
     "awayScore": 92
@@ -395,7 +395,7 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-21",
-    "inputsHash": "d859a20658340221",
+    "inputsHash": "8be5f13db32155ea",
     "rosterSizes": {
      "TOR": 19,
      "CHI": 18
@@ -428,7 +428,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 123,
     "awayScore": 103
@@ -455,11 +455,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-22T00:00Z",
    "home": "NO",
    "away": "IND",
-   "pOurs": 0.5483,
-   "marginOurs": 1.52,
-   "totalOurs": 236.4,
-   "pOursPre": 0.5448,
-   "marginOursPre": 1.41,
+   "pOurs": 0.5476,
+   "marginOurs": 1.5,
+   "totalOurs": 236.3,
+   "pOursPre": 0.5441,
+   "marginOursPre": 1.39,
    "totalOursPre": 236.3,
    "pFriend": null,
    "pMarket": 0.4365,
@@ -475,7 +475,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 123
@@ -489,9 +489,9 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-21",
-    "inputsHash": "8297af5a4a6bb64a",
+    "inputsHash": "9b9cf5c71d315059",
     "rosterSizes": {
-     "NO": 20,
+     "NO": 19,
      "IND": 17
     }
    }
@@ -522,7 +522,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 128,
     "awayScore": 110
@@ -569,7 +569,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 127,
     "awayScore": 105
@@ -583,9 +583,9 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [],
     "boxCutoff": "2026-10-21",
-    "inputsHash": "3d1e476016ea84d5",
+    "inputsHash": "aec20db0590d1a5d",
     "rosterSizes": {
-     "LAL": 20,
+     "LAL": 19,
      "GS": 18
     }
    }
@@ -616,7 +616,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 124,
     "awayScore": 83
@@ -663,7 +663,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 121,
     "awayScore": 96
@@ -710,7 +710,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 106
@@ -757,7 +757,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 96,
     "awayScore": 84
@@ -806,7 +806,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -858,7 +858,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 107,
     "awayScore": 103
@@ -872,15 +872,13 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "BOS Amari Williams",
-     "BOS Dillon Mitchell",
-     "NY Ochai Agbaji",
-     "NY Drew Eubanks"
+     "BOS Dillon Mitchell"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "23796d9060f55673",
+    "inputsHash": "28a497650e47b96b",
     "rosterSizes": {
      "BOS": 17,
-     "NY": 19
+     "NY": 17
     }
    }
   },
@@ -910,7 +908,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 81,
     "awayScore": 128
@@ -960,7 +958,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 105,
     "awayScore": 121
@@ -1009,7 +1007,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 93,
     "awayScore": 115
@@ -1025,7 +1023,7 @@ const SEASON_REPLAY = {
      "ORL Mike Sharavjamts"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "6a9723953f34dc4c",
+    "inputsHash": "ddca9690f27cf28e",
     "rosterSizes": {
      "ORL": 18,
      "MIN": 16
@@ -1058,7 +1056,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 102,
     "awayScore": 112
@@ -1071,12 +1069,12 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
-     "TOR Trey Jemison"
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "ec89f9fa6dec4df8",
+    "inputsHash": "a2b1d970cd88608e",
     "rosterSizes": {
      "WSH": 18,
      "TOR": 19
@@ -1109,7 +1107,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 111,
     "awayScore": 128
@@ -1123,14 +1121,12 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "MIA Keshad Johnson",
-     "MIA Tre Donaldson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Tre Donaldson"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "63b43cee6ad748af",
+    "inputsHash": "e95eaadffc97a4d3",
     "rosterSizes": {
-     "MIA": 19,
+     "MIA": 17,
      "DET": 18
     }
    }
@@ -1161,7 +1157,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 110,
     "awayScore": 114
@@ -1182,7 +1178,7 @@ const SEASON_REPLAY = {
      "HOU Quadir Copeland"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "1caf7297ff023074",
+    "inputsHash": "4e756af1cd76fd7b",
     "rosterSizes": {
      "SA": 20,
      "HOU": 18
@@ -1215,7 +1211,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 119
@@ -1228,14 +1224,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NO Christian Koloko",
-     "NO Caleb Houstan"
+     "NO Christian Koloko"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "76b18b6dfd19356d",
+    "inputsHash": "b36d24a41e6c306a",
     "rosterSizes": {
      "UTAH": 17,
-     "NO": 20
+     "NO": 19
     }
    }
   },
@@ -1265,7 +1260,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 108,
     "awayScore": 111
@@ -1315,7 +1310,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 117
@@ -1330,13 +1325,12 @@ const SEASON_REPLAY = {
     "inactive": [
      "LAL AK Okereke",
      "LAL Arthur Kaluma",
-     "LAL William Kyle III",
-     "LAL Cole Swider"
+     "LAL William Kyle III"
     ],
     "boxCutoff": "2026-10-23",
-    "inputsHash": "def4a14662f48eec",
+    "inputsHash": "455871aeb10f4e3c",
     "rosterSizes": {
-     "LAL": 20,
+     "LAL": 19,
      "LAC": 18
     }
    }
@@ -1367,7 +1361,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 128
@@ -1417,7 +1411,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 115,
     "awayScore": 110
@@ -1431,15 +1425,13 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "MIA Keshad Johnson",
-     "MIA Tre Donaldson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Tre Donaldson"
     ],
     "boxCutoff": "2026-10-24",
-    "inputsHash": "38f6f3b07e196134",
+    "inputsHash": "2b0275dd66ba1d4e",
     "rosterSizes": {
      "CHA": 18,
-     "MIA": 19
+     "MIA": 17
     }
    }
   },
@@ -1469,7 +1461,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 121
@@ -1521,7 +1513,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 127,
     "awayScore": 116
@@ -1572,7 +1564,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 124
@@ -1621,7 +1613,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 106,
     "awayScore": 122
@@ -1643,7 +1635,7 @@ const SEASON_REPLAY = {
      "SA Terry Taylor"
     ],
     "boxCutoff": "2026-10-24",
-    "inputsHash": "dc92b779ddbd64a2",
+    "inputsHash": "4f8da7cd64b5e22a",
     "rosterSizes": {
      "DAL": 19,
      "SA": 20
@@ -1676,7 +1668,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -1728,7 +1720,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 141,
     "awayScore": 135
@@ -1744,14 +1736,13 @@ const SEASON_REPLAY = {
      "DEN Cam Whitmore",
      "DEN Lonnie Walker IV",
      "DEN Steven Crowl",
-     "NO Christian Koloko",
-     "NO Caleb Houstan"
+     "NO Christian Koloko"
     ],
     "boxCutoff": "2026-10-24",
-    "inputsHash": "5dea262670844ed3",
+    "inputsHash": "29e2894d0381cd33",
     "rosterSizes": {
      "DEN": 19,
-     "NO": 20
+     "NO": 19
     }
    }
   },
@@ -1781,7 +1772,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 131,
     "awayScore": 122
@@ -1828,7 +1819,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 123,
     "awayScore": 132
@@ -1842,14 +1833,13 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "LAL Chris Manon",
-     "LAL William Kyle III",
-     "LAL Cole Swider"
+     "LAL William Kyle III"
     ],
     "boxCutoff": "2026-10-25",
-    "inputsHash": "d55b469f7f47cb96",
+    "inputsHash": "ef2cca087fae374a",
     "rosterSizes": {
      "UTAH": 18,
-     "LAL": 20
+     "LAL": 19
     }
    }
   },
@@ -1879,7 +1869,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 109,
     "awayScore": 136
@@ -1929,7 +1919,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 102,
     "awayScore": 111
@@ -1942,14 +1932,12 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NY Ochai Agbaji",
-     "NY Drew Eubanks",
      "ORL Mike Sharavjamts"
     ],
     "boxCutoff": "2026-10-25",
-    "inputsHash": "4cd07a642904417c",
+    "inputsHash": "0739eb5de83868c9",
     "rosterSizes": {
-     "NY": 19,
+     "NY": 17,
      "ORL": 18
     }
    }
@@ -1980,7 +1968,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 117,
     "awayScore": 94
@@ -1995,12 +1983,12 @@ const SEASON_REPLAY = {
     "inactive": [
      "MIN Zyon Pullin",
      "MIN Rocco Zikarsky",
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
-     "TOR Trey Jemison"
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
     ],
     "boxCutoff": "2026-10-25",
-    "inputsHash": "1aa82fc0979c9c9c",
+    "inputsHash": "91396ed1a71f10fe",
     "rosterSizes": {
      "MIN": 16,
      "TOR": 19
@@ -2033,7 +2021,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 108,
     "awayScore": 101
@@ -2082,7 +2070,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 93,
     "awayScore": 106
@@ -2129,7 +2117,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 112,
     "awayScore": 123
@@ -2179,7 +2167,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 110,
     "awayScore": 103
@@ -2228,7 +2216,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 127,
     "awayScore": 125
@@ -2279,7 +2267,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 134,
     "awayScore": 99
@@ -2330,7 +2318,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 109,
     "awayScore": 113
@@ -2346,14 +2334,12 @@ const SEASON_REPLAY = {
      "MIA Keshad Johnson",
      "MIA Vladislav Goldin",
      "MIA Tre Donaldson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones",
      "DAL Quincy Acy"
     ],
     "boxCutoff": "2026-10-26",
-    "inputsHash": "1c93d2e6caa7e185",
+    "inputsHash": "4da8517030a7cdaa",
     "rosterSizes": {
-     "MIA": 19,
+     "MIA": 17,
      "DAL": 19
     }
    }
@@ -2384,7 +2370,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 110,
     "awayScore": 102
@@ -2435,7 +2421,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 114
@@ -2484,7 +2470,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 110
@@ -2533,7 +2519,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 105,
     "awayScore": 110
@@ -2582,7 +2568,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 134
@@ -2632,7 +2618,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 124
@@ -2682,7 +2668,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 111,
     "awayScore": 97
@@ -2695,15 +2681,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NY Ochai Agbaji",
      "NY Dalton Knecht",
-     "NY Drew Eubanks",
      "NY Tyler Nickel"
     ],
     "boxCutoff": "2026-10-27",
-    "inputsHash": "8f26f08b600ccd36",
+    "inputsHash": "0bf2137379ac2fd1",
     "rosterSizes": {
-     "NY": 19,
+     "NY": 17,
      "DET": 18
     }
    }
@@ -2734,7 +2718,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 130,
     "awayScore": 103
@@ -2754,7 +2738,7 @@ const SEASON_REPLAY = {
      "SA Terry Taylor"
     ],
     "boxCutoff": "2026-10-27",
-    "inputsHash": "2a825b7bc7d21186",
+    "inputsHash": "c7e7eca67c122dd7",
     "rosterSizes": {
      "SA": 20,
      "SAC": 17
@@ -2787,7 +2771,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 129,
     "awayScore": 136
@@ -2802,13 +2786,12 @@ const SEASON_REPLAY = {
     "inactive": [
      "LAL AK Okereke",
      "LAL William Kyle III",
-     "LAL Cole Swider",
      "POR Jaylen Martin"
     ],
     "boxCutoff": "2026-10-27",
-    "inputsHash": "5e92158924fc81e8",
+    "inputsHash": "3ac37a0684d9201b",
     "rosterSizes": {
-     "LAL": 20,
+     "LAL": 19,
      "POR": 18
     }
    }
@@ -2839,7 +2822,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 117,
     "awayScore": 129
@@ -2855,15 +2838,13 @@ const SEASON_REPLAY = {
      "ATL Cameron Corhen",
      "MIA Keshad Johnson",
      "MIA Vladislav Goldin",
-     "MIA Tre Donaldson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Tre Donaldson"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "465b917065ec7722",
+    "inputsHash": "e71df5dfdd90d53c",
     "rosterSizes": {
      "ATL": 19,
-     "MIA": 19
+     "MIA": 17
     }
    }
   },
@@ -2893,7 +2874,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -2943,7 +2924,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 97,
     "awayScore": 89
@@ -2990,7 +2971,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 109,
     "awayScore": 114
@@ -3037,7 +3018,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 129,
     "awayScore": 99
@@ -3050,13 +3031,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
      "TOR Trey Jemison",
+     "TOR Chucky Hepburn",
      "ORL Mike Sharavjamts"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "2b828715f4a10c3d",
+    "inputsHash": "774cb902db8d66f5",
     "rosterSizes": {
      "TOR": 19,
      "ORL": 18
@@ -3089,7 +3070,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 127,
     "awayScore": 133
@@ -3103,16 +3084,14 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "CHI Isaiah Stevens",
-     "NY Ochai Agbaji",
      "NY Dalton Knecht",
-     "NY Drew Eubanks",
      "NY Tyler Nickel"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "ba889ad268638285",
+    "inputsHash": "f8b6e1952fd04fb7",
     "rosterSizes": {
      "CHI": 18,
-     "NY": 19
+     "NY": 17
     }
    }
   },
@@ -3142,7 +3121,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 100,
     "awayScore": 132
@@ -3194,7 +3173,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 119
@@ -3243,7 +3222,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 91,
     "awayScore": 104
@@ -3257,14 +3236,13 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "NO Christian Koloko",
-     "NO Caleb Houstan",
      "DEN Lonnie Walker IV",
      "DEN Steven Crowl"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "d2597e909162d4c1",
+    "inputsHash": "3835a33d02e887dc",
     "rosterSizes": {
-     "NO": 20,
+     "NO": 19,
      "DEN": 19
     }
    }
@@ -3295,7 +3273,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 111,
     "awayScore": 117
@@ -3316,7 +3294,7 @@ const SEASON_REPLAY = {
      "SA Terry Taylor"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "12fe4194f6b7e041",
+    "inputsHash": "c924033e0f259398",
     "rosterSizes": {
      "UTAH": 18,
      "SA": 20
@@ -3349,7 +3327,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 96
@@ -3399,7 +3377,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 87,
     "awayScore": 103
@@ -3414,14 +3392,13 @@ const SEASON_REPLAY = {
     "inactive": [
      "LAL Chris Manon",
      "LAL AK Okereke",
-     "LAL William Kyle III",
-     "LAL Cole Swider"
+     "LAL William Kyle III"
     ],
     "boxCutoff": "2026-10-28",
-    "inputsHash": "16e4531fd48296ca",
+    "inputsHash": "c47b25c31a45b181",
     "rosterSizes": {
      "LAC": 18,
-     "LAL": 20
+     "LAL": 19
     }
    }
   },
@@ -3451,7 +3428,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 111
@@ -3502,7 +3479,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 132,
     "awayScore": 120
@@ -3515,13 +3492,12 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NO Christian Koloko",
-     "NO Caleb Houstan"
+     "NO Christian Koloko"
     ],
     "boxCutoff": "2026-10-29",
-    "inputsHash": "0caed97e46d1080f",
+    "inputsHash": "f4ec518edde80db3",
     "rosterSizes": {
-     "NO": 20,
+     "NO": 19,
      "SAC": 17
     }
    }
@@ -3552,7 +3528,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 103,
     "awayScore": 124
@@ -3601,7 +3577,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 95,
     "awayScore": 79
@@ -3648,7 +3624,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 125,
     "awayScore": 111
@@ -3699,7 +3675,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 94,
     "awayScore": 110
@@ -3746,7 +3722,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 98,
     "awayScore": 93
@@ -3760,16 +3736,14 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "PHI Caleb Love",
-     "NY Ochai Agbaji",
      "NY Dalton Knecht",
-     "NY Drew Eubanks",
      "NY Tyler Nickel"
     ],
     "boxCutoff": "2026-10-30",
-    "inputsHash": "beebc5a332f4cb2b",
+    "inputsHash": "75a59aba999f328e",
     "rosterSizes": {
      "PHI": 17,
-     "NY": 19
+     "NY": 17
     }
    }
   },
@@ -3799,7 +3773,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -3812,13 +3786,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
      "TOR Trey Jemison",
+     "TOR Chucky Hepburn",
      "ORL Mike Sharavjamts"
     ],
     "boxCutoff": "2026-10-30",
-    "inputsHash": "a9d20ebf86fa78be",
+    "inputsHash": "8c26aeb613a522ef",
     "rosterSizes": {
      "TOR": 19,
      "ORL": 18
@@ -3851,7 +3825,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 145,
     "awayScore": 125
@@ -3866,14 +3840,12 @@ const SEASON_REPLAY = {
     "inactive": [
      "MIA Keshad Johnson",
      "MIA Vladislav Goldin",
-     "MIA Tre Donaldson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Tre Donaldson"
     ],
     "boxCutoff": "2026-10-30",
-    "inputsHash": "bc55acd0b2f28af0",
+    "inputsHash": "6cb1603d6f6f88ae",
     "rosterSizes": {
-     "MIA": 19,
+     "MIA": 17,
      "IND": 17
     }
    }
@@ -3904,7 +3876,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 116,
     "awayScore": 111
@@ -3954,7 +3926,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 127,
     "awayScore": 101
@@ -4005,7 +3977,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 112,
     "awayScore": 95
@@ -4019,14 +3991,13 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "LAL Arthur Kaluma",
-     "LAL William Kyle III",
-     "LAL Cole Swider"
+     "LAL William Kyle III"
     ],
     "boxCutoff": "2026-10-30",
-    "inputsHash": "2fac06181fafc928",
+    "inputsHash": "c3839cb4337b1628",
     "rosterSizes": {
      "GS": 18,
-     "LAL": 20
+     "LAL": 19
     }
    }
   },
@@ -4056,7 +4027,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 127
@@ -4107,7 +4078,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 90,
     "awayScore": 112
@@ -4156,7 +4127,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 104,
     "awayScore": 109
@@ -4203,7 +4174,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 121,
     "awayScore": 99
@@ -4217,13 +4188,12 @@ const SEASON_REPLAY = {
     "unmatchedRisk": [],
     "inactive": [
      "NO Christian Koloko",
-     "NO Caleb Houstan",
      "ATL Cameron Corhen"
     ],
     "boxCutoff": "2026-10-31",
-    "inputsHash": "5e2d0b006b45ad37",
+    "inputsHash": "cabea5ea84b86b80",
     "rosterSizes": {
-     "NO": 20,
+     "NO": 19,
      "ATL": 19
     }
    }
@@ -4254,7 +4224,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 136,
     "awayScore": 105
@@ -4301,7 +4271,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 111,
     "awayScore": 136
@@ -4355,7 +4325,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -4377,7 +4347,7 @@ const SEASON_REPLAY = {
      "MIN Enrique Freeman"
     ],
     "boxCutoff": "2026-10-31",
-    "inputsHash": "662fa60e271f58ef",
+    "inputsHash": "354a9e3ae938504b",
     "rosterSizes": {
      "SA": 20,
      "MIN": 17
@@ -4410,7 +4380,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 119,
     "awayScore": 98
@@ -4422,7 +4392,9 @@ const SEASON_REPLAY = {
     "unmatched": [],
     "notSubmitted": [],
     "unmatchedRisk": [],
-    "inactive": [],
+    "inactive": [
+     "HOU Sean Pedulla"
+    ],
     "boxCutoff": "2026-10-31",
     "inputsHash": "f412309aa6943cb2",
     "rosterSizes": {
@@ -4457,7 +4429,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 97,
     "awayScore": 108
@@ -4475,7 +4447,7 @@ const SEASON_REPLAY = {
      "BOS Dillon Mitchell"
     ],
     "boxCutoff": "2026-11-01",
-    "inputsHash": "b32b1de3c58e41c6",
+    "inputsHash": "9d4e4938f699a17e",
     "rosterSizes": {
      "ORL": 18,
      "BOS": 17
@@ -4508,7 +4480,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 90,
     "awayScore": 98
@@ -4555,7 +4527,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 124,
     "awayScore": 112
@@ -4604,7 +4576,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 131,
     "awayScore": 125
@@ -4620,15 +4592,14 @@ const SEASON_REPLAY = {
      "LAL Lawson Lovering",
      "LAL Arthur Kaluma",
      "LAL William Kyle III",
-     "LAL Cole Swider",
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
-     "TOR Trey Jemison"
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
     ],
     "boxCutoff": "2026-11-01",
-    "inputsHash": "e2e96839fc666855",
+    "inputsHash": "02d49a2fadc739a3",
     "rosterSizes": {
-     "LAL": 20,
+     "LAL": 19,
      "TOR": 19
     }
    }
@@ -4659,7 +4630,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 112,
     "awayScore": 117
@@ -4709,7 +4680,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 91,
     "awayScore": 124
@@ -4756,7 +4727,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 104,
     "awayScore": 108
@@ -4805,7 +4776,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 103,
     "awayScore": 90
@@ -4818,15 +4789,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NY Ochai Agbaji",
      "NY Dalton Knecht",
-     "NY Drew Eubanks",
      "NY Tyler Nickel"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "4848e37c3b7d9fcd",
+    "inputsHash": "01e5ce61d475e54b",
     "rosterSizes": {
-     "NY": 19,
+     "NY": 17,
      "BKN": 18
     }
    }
@@ -4857,7 +4826,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 94,
     "awayScore": 103
@@ -4873,7 +4842,7 @@ const SEASON_REPLAY = {
      "ORL Mike Sharavjamts"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "9c940d51fc2e122b",
+    "inputsHash": "9abf3d521fb11068",
     "rosterSizes": {
      "ORL": 18,
      "WSH": 18
@@ -4906,7 +4875,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 126,
     "awayScore": 107
@@ -4955,7 +4924,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 100,
     "awayScore": 115
@@ -5004,7 +4973,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 134,
     "awayScore": 135
@@ -5017,14 +4986,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NO Christian Koloko",
-     "NO Caleb Houstan"
+     "NO Christian Koloko"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "161ad3d7a9a0b2d4",
+    "inputsHash": "5c984d1a6cde44ec",
     "rosterSizes": {
      "MEM": 18,
-     "NO": 20
+     "NO": 19
     }
    }
   },
@@ -5054,7 +5022,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 112,
     "awayScore": 100
@@ -5107,7 +5075,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 109,
     "awayScore": 93
@@ -5120,6 +5088,7 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
+     "HOU Sean Pedulla",
      "BOS Dillon Mitchell"
     ],
     "boxCutoff": "2026-11-02",
@@ -5156,7 +5125,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 119,
     "awayScore": 97
@@ -5176,7 +5145,7 @@ const SEASON_REPLAY = {
      "SA Terry Taylor"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "cfc6dedbd342a6c5",
+    "inputsHash": "8e79d1dd6ad97a57",
     "rosterSizes": {
      "SA": 20,
      "UTAH": 18
@@ -5209,7 +5178,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 110,
     "awayScore": 118
@@ -5261,7 +5230,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 116,
     "awayScore": 113
@@ -5310,7 +5279,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 118,
     "awayScore": 125
@@ -5323,12 +5292,12 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
-     "TOR Trey Jemison"
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "9a98145743bd886f",
+    "inputsHash": "23104a40c7bc561d",
     "rosterSizes": {
      "LAC": 19,
      "TOR": 19
@@ -5361,7 +5330,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 138,
     "awayScore": 117
@@ -5378,16 +5347,13 @@ const SEASON_REPLAY = {
      "LAL Chris Manon",
      "LAL Arthur Kaluma",
      "LAL William Kyle III",
-     "LAL Cole Swider",
-     "MIA Keshad Johnson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Keshad Johnson"
     ],
     "boxCutoff": "2026-11-02",
-    "inputsHash": "c57ee1d9b23cadc8",
+    "inputsHash": "08760bf7a268850a",
     "rosterSizes": {
-     "LAL": 20,
-     "MIA": 19
+     "LAL": 19,
+     "MIA": 17
     }
    }
   },
@@ -5417,7 +5383,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 106,
     "awayScore": 112
@@ -5467,7 +5433,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 105,
     "awayScore": 120
@@ -5516,7 +5482,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 109,
     "awayScore": 102
@@ -5568,7 +5534,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 114,
     "awayScore": 104
@@ -5615,7 +5581,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 135,
     "awayScore": 105
@@ -5628,18 +5594,16 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NY Ochai Agbaji",
      "NY Dalton Knecht",
-     "NY Drew Eubanks",
      "NY Jaden Akins",
      "NY Tyler Nickel",
      "CHI Isaiah Stevens",
      "CHI Dailyn Swain"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "2b28d60b6f0c8622",
+    "inputsHash": "637bf32ba15cb67b",
     "rosterSizes": {
-     "NY": 19,
+     "NY": 17,
      "CHI": 18
     }
    }
@@ -5670,7 +5634,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 103,
     "awayScore": 107
@@ -5719,7 +5683,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 120,
     "awayScore": 113
@@ -5732,13 +5696,12 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "NO Christian Koloko",
-     "NO Caleb Houstan"
+     "NO Christian Koloko"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "2f88a7a11a19e23b",
+    "inputsHash": "c3772b537305d752",
     "rosterSizes": {
-     "NO": 20,
+     "NO": 19,
      "UTAH": 18
     }
    }
@@ -5769,7 +5732,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 124,
     "awayScore": 116
@@ -5819,7 +5782,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 107,
     "awayScore": 117
@@ -5835,9 +5798,9 @@ const SEASON_REPLAY = {
      "HOU Sean Pedulla"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "1008f7dd104faeb9",
+    "inputsHash": "c558de851f6b7e92",
     "rosterSizes": {
-     "HOU": 17,
+     "HOU": 18,
      "MIN": 16
     }
    }
@@ -5868,7 +5831,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 128,
     "awayScore": 109
@@ -5885,12 +5848,12 @@ const SEASON_REPLAY = {
      "DEN Cam Whitmore",
      "DEN Lonnie Walker IV",
      "DEN Steven Crowl",
-     "TOR Chucky Hepburn",
      "TOR Andre Jackson Jr.",
-     "TOR Trey Jemison"
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "aecd79b16153d15c",
+    "inputsHash": "fe7d9d5c83b53ab1",
     "rosterSizes": {
      "DEN": 19,
      "TOR": 19
@@ -5923,7 +5886,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 119,
     "awayScore": 132
@@ -5974,7 +5937,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 112,
     "awayScore": 111
@@ -5996,7 +5959,7 @@ const SEASON_REPLAY = {
      "DAL Quincy Acy"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "f04d2bb4ad77fae4",
+    "inputsHash": "c70fcc57ea1adccd",
     "rosterSizes": {
      "SA": 20,
      "DAL": 19
@@ -6029,7 +5992,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 103,
     "awayScore": 116
@@ -6044,14 +6007,13 @@ const SEASON_REPLAY = {
     "inactive": [
      "LAL Chris Manon",
      "LAL Arthur Kaluma",
-     "LAL William Kyle III",
-     "LAL Cole Swider"
+     "LAL William Kyle III"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "4c0bc2d4e6adad21",
+    "inputsHash": "c68c26b0a44c63f6",
     "rosterSizes": {
      "SAC": 17,
-     "LAL": 20
+     "LAL": 19
     }
    }
   },
@@ -6081,7 +6043,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-02.aging-v2",
-   "spec": "replay-1",
+   "spec": "replay-2",
    "result": {
     "homeScore": 116,
     "awayScore": 117
@@ -6094,15 +6056,13 @@ const SEASON_REPLAY = {
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
-     "MIA Keshad Johnson",
-     "MIA J'Vonne Hadley",
-     "MIA Lester Quinones"
+     "MIA Keshad Johnson"
     ],
     "boxCutoff": "2026-11-04",
-    "inputsHash": "d21c4cd8b94a94a9",
+    "inputsHash": "4ad4329dcf6ccff6",
     "rosterSizes": {
      "LAC": 19,
-     "MIA": 19
+     "MIA": 17
     }
    }
   }

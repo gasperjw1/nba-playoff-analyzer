@@ -44,7 +44,12 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-1',
+  version: 'replay-2',
+  // replay-2 (after an independent review of replay-1; changes are bug and leak fixes, not tuning):
+  //   events ordered by ET time of day (a roster captured in the morning precedes that day's dated
+  //   moves, and one captured before tip on game day counts for that day); a report moves a player
+  //   only for games whose cutoff is after it; player names come from data before the day; seeds are
+  //   dated at the end of 2025-26; the leak check also scrambles later reports and rebuilds names.
   engine: '2026-11-02.aging-v2',        // must equal SEASON_ENGINE_VERSION
   firstDay: '2026-10-20',
   // Opening rosters: each team's latest archived ESPN roster page captured before this instant
@@ -193,10 +198,13 @@ async function buildStore(ctx, lastDay) {
     const br = (tr.match(/data-append-csv="([\w.]+)"/) || [])[1], tm = (tr.match(/data-stat="team_name_abbr"[^>]*>(?:<a[^>]*>)?([A-Z0-9]+)/) || [])[1];
     if (br && tm && !/^\dTM$/.test(tm)) lastTeam.set(br, BREF_TO_ESPN[tm] || tm);
   }
-  for (const [br, team] of lastTeam) if (byBr.has(br)) store.appearances.push({ at: '2026-06-30', kind: 'seed', team, id: byBr.get(br), name: ctx.SEASON_PLAYER_PRIORS.players[byBr.get(br)].n });
+  for (const [br, team] of lastTeam) if (byBr.has(br)) store.appearances.push({ at: '2026-04-15', kind: 'seed', team, id: byBr.get(br), name: ctx.SEASON_PLAYER_PRIORS.players[byBr.get(br)].n });
   // Basketball-Reference transactions from July 1 (waived/released → leave, signed/claimed → join,
   // retired → off every roster), dated. Trades are not readable there (names are filled in by script);
   // a traded player moves on his first box score or injury-report listing for the new team.
+  // Identity only: names from the whole season's box scores turn a Basketball-Reference name (here)
+  // or an NBA.com roster name (below) into an ESPN id. No result, minute or date reaches a prediction
+  // this way; predictDay itself looks names up only from data before the day.
   const byName = new Map();
   for (const [id, name] of store.names) { const k = ctx.replayNormName(name); byName.set(k, (byName.get(k) || []).concat(id)); }
   const html = fs.readFileSync(path.join(BREF_CACHE, 'NBA_2027_transactions.html'), 'utf8');
@@ -305,16 +313,31 @@ async function loadReports(store) {
 // Every read of the store is filtered here; nothing below sees a game, appearance,
 // transaction or report from the day itself or later (reports: only the one chosen
 // per game, published before its cutoff).
+// Event ordering key (ET): dated moves sit at "<date>|1"; a timestamped capture sits before them
+// ("|0") in the morning and after them ("|2") from noon. A day's cutoff is "<day>|1": its own
+// dated moves are excluded (their time is unknown), a capture that morning is included.
+const eventKey = (e) => {
+  if (!/T/.test(e.at)) return e.at + '|1';
+  const t = et(e.at);
+  return `${t.date}|${t.h < 12 ? 0 : 2}`;
+};
 function predictDay(ctx, store, date, debug) {
   const regGames = store.regGames.filter(g => g.date < date).map(g => ({ id: g.id, date: g.date, home: g.home, away: g.away, homeScore: g.homeScore, awayScore: g.awayScore, box: g.box }));
-  const events = store.appearances.filter(e => e.at < date).concat(store.transactions.filter(e => e.at < date), (store.snapshots || []).filter(e => e.at < date));
-  const rosters = ctx.replayRosterAsOf(events, date);
+  const allEvents = store.appearances.concat(store.transactions, store.snapshots || []).map(e => ({ ...e, at: eventKey(e) }));
+  const asOf = (day) => allEvents.filter(e => e.at < day + '|1');
+  const events = asOf(date);
+  const morning = ctx.replayRosterAsOf(events, date + '|1');
+  // Names only from what had been seen before the day (identity, not outcomes, but kept clean).
+  const names = new Map();
+  for (const e of events) if (e.name) names.set(String(e.id), e.name);
+  for (const e of events) if (e.kind === 'snapshot') for (const [id, n] of Object.entries(e.ids)) if (!names.has(id)) names.set(id, n);
   const league = new Map();
-  for (const [id, name] of store.names) { const k = ctx.replayNormName(name); league.set(k, (league.get(k) || []).concat(id)); }
+  for (const [id, name] of names) { const k = ctx.replayNormName(name); league.set(k, (league.get(k) || []).concat(id)); }
   for (const [id, p] of Object.entries(ctx.SEASON_PLAYER_PRIORS.players)) { const k = ctx.replayNormName(p.n); if (!(league.get(k) || []).includes(id)) league.set(k, (league.get(k) || []).concat(id)); }
   const schedule = (store.schedule[date] || []).map(g => ({ id: g.id, tip: g.tip, home: g.home, away: g.away, report: g.report }));
-  const availability = {}, notes = {}, prov = {};
-  const onTeamName = (id) => store.names.get(id) || (ctx.SEASON_PLAYER_PRIORS.players[id] || {}).n || id;
+  const availability = {}, notes = {}, prov = {}, moves = [];
+  const onTeamName = (id) => names.get(id) || (ctx.SEASON_PLAYER_PRIORS.players[id] || {}).n || id;
+  const rosters = Object.fromEntries(Object.entries(morning).map(([t, m]) => [t, new Map(m)]));
   for (const g of schedule) {
     const r = store.reports[g.report];
     if (!r || r.at > new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3) throw new Error(`leak guard: ${g.id} has no report before its cutoff`);
@@ -327,7 +350,7 @@ function predictDay(ctx, store, date, debug) {
       const roster = rosters[ab] = rosters[ab] || new Map();
       const m = ctx.replayMatchReport(entries, roster, league);
       for (const id of Object.keys(m.availability)) {
-        if (!roster.has(id)) { for (const other of Object.values(rosters)) other.delete(id); roster.set(id, onTeamName(id)); }
+        if (!roster.has(id)) { roster.set(id, onTeamName(id)); moves.push({ id, to: ab, at: r.at }); }
       }
       Object.assign(availability, m.availability); Object.assign(notes, m.notes);
       p.matched += Object.keys(m.availability).length;
@@ -345,7 +368,7 @@ function predictDay(ctx, store, date, debug) {
       p.inactive = p.inactive || [];
       if (prev) {
         const dressed = new Set((prev.box[ab] || []).map(x => x.id));
-        const prevRoster = ctx.replayRosterAsOf(events.filter(e => e.at < prev.date), prev.date)[ab] || new Map();
+        const prevRoster = ctx.replayRosterAsOf(asOf(prev.date), prev.date + '|1')[ab] || new Map();
         const prevSched = (store.schedule[prev.date] || []).find(x => x.id === prev.id);
         const prevRep = prevSched && store.reports[prevSched.report];
         const prevMmdd = `${prev.date.slice(5, 7)}/${prev.date.slice(8, 10)}/${prev.date.slice(0, 4)}`;
@@ -357,6 +380,12 @@ function predictDay(ctx, store, date, debug) {
         }
       }
     }
+  }
+  // A player a report moved to another team leaves this team only if that report came out
+  // before this team's own cutoff (a later game's report cannot reach back into an earlier game).
+  for (const g of schedule) {
+    const cutoff = new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3;
+    for (const ab of [g.home, g.away]) for (const mv of moves) if (mv.to !== ab && mv.at <= cutoff) rosters[ab] && rosters[ab].delete(mv.id);
   }
   const priorTeams = ctx.SEASON_TEAM_RATINGS.teams;
   const teams = ctx.replayBuildTeams(priorTeams, date, regGames, rosters, availability, notes);
@@ -381,16 +410,18 @@ function predictDay(ctx, store, date, debug) {
 // Future-blind: the day's predictions from a store with everything on/after the day
 // removed (schedule for the day kept, results stripped) must equal the full store's.
 // Scramble: rewriting every later result and box score must change nothing.
-function truncatedStore(store, date) {
+function truncatedStore(store, date, upTo) {
   const s = { ...store };
   s.regGames = store.regGames.filter(g => g.date < date);
   s.preGames = store.preGames.slice();
   s.appearances = store.appearances.filter(e => e.at < date);
   s.transactions = store.transactions.filter(e => e.at < date);
-  s.snapshots = (store.snapshots || []).filter(e => e.at < date);
+  s.snapshots = (store.snapshots || []).filter(e => eventKey(e) < date + '|1');   // same ordering as predictDay
   s.schedule = Object.fromEntries(Object.entries(store.schedule).filter(([d]) => d <= date));
+  // Cut at one game's cutoff: the day's later games (and their reports) do not exist yet.
+  if (upTo != null) s.schedule[date] = s.schedule[date].filter(g => new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3 <= upTo);
   // Reports: everything published before the day's last cutoff (earlier games' reports included).
-  const lastCutoff = Math.max(...(store.schedule[date] || []).map(g => new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3));
+  const lastCutoff = upTo != null ? upTo : Math.max(...(store.schedule[date] || []).map(g => new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3));
   s.reports = Object.fromEntries(Object.entries(store.reports).filter(([, r]) => r.at <= lastCutoff));
   return s;
 }
@@ -402,6 +433,10 @@ function scrambledStore(store, date) {
     box: Object.fromEntries(Object.entries(g.box).map(([ab, ps]) => [ab, ps.map(p => ({ ...p, played: rnd() > 0.5, line: Object.fromEntries(Object.entries(p.line || {}).map(([k]) => [k, Math.floor(rnd() * 40)])) }))])) });
   s.appearances = store.appearances.map(e => e.at < date ? e : { ...e, team: ['ATL', 'BOS', 'MIA'][Math.floor(rnd() * 3)] });
   s.transactions = store.transactions.map(e => e.at < date ? e : { ...e, kind: e.kind === 'join' ? 'leave' : 'join' });
+  // Reports published after the day's last cutoff: flip every status.
+  const lastCutoff = Math.max(...(store.schedule[date] || []).map(g => new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3));
+  const flip = { Out: 'Available', Available: 'Out', Questionable: 'Out', Doubtful: 'Available', Probable: 'Out' };
+  s.reports = Object.fromEntries(Object.entries(store.reports).map(([n, r]) => [n, r.at <= lastCutoff ? r : { ...r, entries: r.entries.map(e => ({ ...e, status: flip[e.status] || e.status })) }]));
   return s;
 }
 
@@ -516,9 +551,18 @@ async function main() {
       const full = JSON.stringify(predictDay(ctx, store, d));
       const blind = JSON.stringify(predictDay(ctx, truncatedStore(store, d), d));
       const scr = JSON.stringify(predictDay(ctx, scrambledStore(store, d), d));
-      const pass = full === blind && full === scr;
+      // Per game: cut every report published after that game's own cutoff (a later game's
+      // report must not reach back into an earlier game the same day).
+      const fullRows = JSON.parse(full);
+      let perGame = 0;
+      for (const g of store.schedule[d]) {
+        const cut = new Date(g.tip).getTime() - SPEC.reportLeadMinutes * 60e3;
+        const row = predictDay(ctx, truncatedStore(store, d, cut), d).find(x => x.id === g.id);
+        if (JSON.stringify(row) === JSON.stringify(fullRows.find(x => x.id === g.id))) perGame++;
+      }
+      const pass = full === blind && full === scr && perGame === store.schedule[d].length;
       ok = ok && pass;
-      console.log(`  ${d}: future-blind ${full === blind ? 'identical' : 'DIFFERENT'}, scrambled future ${full === scr ? 'identical' : 'DIFFERENT'}`);
+      console.log(`  ${d}: future-blind ${full === blind ? 'identical' : 'DIFFERENT'}, scrambled future ${full === scr ? 'identical' : 'DIFFERENT'}, own-cutoff ${perGame}/${store.schedule[d].length} games identical`);
     }
     // Negative control: the scramble must be able to change something when it is not hidden.
     const control = JSON.stringify(predictDay(ctx, scrambledStore(store, dayList[0]), dayList[dayList.length - 1])) !== JSON.stringify(predictDay(ctx, store, dayList[dayList.length - 1]));

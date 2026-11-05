@@ -38,15 +38,17 @@ function replayNormName(name) {
     .replace(/\b(jr|sr|ii|iii|iv|v)\b/g, '').replace(/\s+/g, ' ').trim();
 }
 
-// Roster as of a cutoff. events: [{ at, kind, team, id, name }], `at` an ISO date or timestamp; only
-// events strictly before `cutoff` count, in date order (same-day events in the order given):
+// Roster as of a cutoff. events: [{ at, kind, team, id, name }], `at` a sortable key (replay-season.js
+// uses "<ET date>|0..2" so captures and dated moves on one day order correctly); only events strictly
+// before `cutoff` count, in key order (ties in the order given):
 //   seed        last season's team (start of the offseason)
 //   join        signed / claimed by the team
 //   leave       waived / released by the team (no-op if he is elsewhere by then)
 //   retire      off every roster
 //   snapshot    a published full roster { ids: {id: name} }: exactly these players, at that time
-//   appear      dressed for the team in a regular-season game, or listed by it on an injury report
-//               (for a team that waived him: only if he played, and has not joined another)
+//   appear      dressed for the team in a regular-season game (for a team that waived him: only
+//               if he played, and has not joined another). Report listings move a player for that
+//               day only (replay-season.js), not as lasting events.
 //   appear-pre  dressed for the team in a preseason game — moves a traded player, but cannot
 //               undo that team's own waiver (camp cuts still show up in late preseason boxes)
 // Returns { ABBR: Map(id → name) }.
