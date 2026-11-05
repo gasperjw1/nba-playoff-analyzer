@@ -47,6 +47,8 @@ function buildLedgerEntry(game, projection, blend, slate, clean, adj) {
     pOursAdj: adj ? adj.pHome : null,
     marginOursAdj: adj ? adj.margin : null,
     totalOursAdj: adj ? adj.total : null,
+    // Frozen trust rules (trust.js) on the picks engine at the price when recorded
+    trust: clean && typeof seasonTrustCheck === 'function' ? seasonTrustCheck(clean, m) : null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,
@@ -54,6 +56,7 @@ function buildLedgerEntry(game, projection, blend, slate, clean, adj) {
     mlAway: m.mlAway != null ? m.mlAway : null,
     spreadHome: m.spreadHome != null ? m.spreadHome : null,
     totalMarket: m.total != null ? m.total : null,
+    book: m.book || null,
     feedVersion: slate.modelVersion || null,
     source: slate.source || null,          // 'nb.ai', or 'espn' for the fallback slate
 
@@ -79,8 +82,9 @@ function loadSeasonLedger() {
   const committed = (typeof SEASON_LEDGER !== 'undefined' && Array.isArray(SEASON_LEDGER)) ? SEASON_LEDGER : [];
   const byId = {};
   committed.forEach(r => { byId[r.id] = { ...r, origin: 'committed' }; });
-  // A local row never erases a committed result (it can only add its own).
-  _readLocalLedger().forEach(r => { const c = byId[r.id]; byId[r.id] = { ...(c || {}), ...r, result: r.result || (c && c.result) || null, origin: c ? 'committed+local' : 'local' }; });
+  // A committed row is evidence: a browser-local row with the same id can add a result it lacks,
+  // never change its prices, predictions or trust check.
+  _readLocalLedger().forEach(r => { const c = byId[r.id]; byId[r.id] = c ? { ...c, result: c.result || r.result || null, origin: 'committed+local' } : { ...r, origin: 'local' }; });
   return Object.values(byId).sort((a, b) => (a.tip || a.date || '').localeCompare(b.tip || b.date || ''));
 }
 

@@ -247,6 +247,26 @@ async function main() {
     }
     console.log(`  chosen on the other seasons (picks: ${[...new Set(picks)].join(' / ')}): ΔMSE vs engine ${paired(rows, eng)}`);
     const brierOf = (rows) => rows.reduce((t, r) => t + (normalCdf(r.pred / 12.5) - (r.y > 0 ? 1 : 0)) ** 2, 0) / rows.length;
+    // Winners, and head-to-head where two versions pick different sides (ties at exactly 0 dropped).
+    const won = (r) => (r.pred > 0) === (r.y > 0);
+    for (const v of variants.slice(1)) {
+      const flips = v.rows.map((r, i) => [r, eng[i]]).filter(([a, b]) => a.y !== 0 && (a.pred > 0) !== (b.pred > 0));
+      const vWins = flips.filter(([a]) => won(a)).length;
+      console.log(`  winners: ${v.label.split(':')[0].padEnd(52)} ${(v.rows.filter(won).length / v.rows.length * 100).toFixed(2)}% vs engine ${(eng.filter(won).length / eng.length * 100).toFixed(2)}%;` +
+        ` picks differ in ${flips.length} games, it won ${vWins} (${(vWins / flips.length * 100).toFixed(1)}%), engine won ${flips.length - vWins}`);
+    }
+    // 1d. Which games to trust: hit rate by the engine's confidence, and when the versions agree.
+    const pOf = (r) => normalCdf(r.pred / 12.5);
+    const adjRows = variants.find(v => v.label.startsWith('K 20, opponent-adjusted')).rows, dblRows = variants[1].rows;
+    const tiers = [[0.5, 0.55], [0.55, 0.6], [0.6, 0.65], [0.65, 0.7], [0.7, 0.75], [0.75, 0.8], [0.8, 0.85], [0.85, 0.9], [0.9, 1.01]];
+    console.log('\n1d. Hit rate of the engine\'s pick by its confidence (13,209 games)');
+    for (const [a, b] of tiers) {
+      const t = eng.filter(r => { const c = Math.max(pOf(r), 1 - pOf(r)); return r.y !== 0 && c >= a && c < b; });
+      const agree = t.filter(r => { const i = eng.indexOf(r); return (adjRows[i].pred > 0) === (r.pred > 0) && (dblRows[i].pred > 0) === (r.pred > 0); });
+      const hit = (x) => x.length ? (x.filter(won).length / x.length * 100).toFixed(1) + '%' : '—';
+      const expP = t.length ? (t.reduce((u, r) => u + Math.max(pOf(r), 1 - pOf(r)), 0) / t.length * 100).toFixed(1) : '—';
+      console.log(`  ${(a * 100).toFixed(0)}-${b > 1 ? '100' : (b * 100).toFixed(0)}%  n ${String(t.length).padStart(5)}  expected ${expP}%  hit ${hit(t).padStart(6)}   all three versions agree: n ${String(agree.length).padStart(5)} hit ${hit(agree)}`);
+    }
     console.log('  Brier at σ 12.5: ' + variants.map(v => `${v.label.split(':')[0].split(',')[0]} ${brierOf(v.rows).toFixed(4)}`).join(' · '));
   }
 

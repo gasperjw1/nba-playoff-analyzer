@@ -144,6 +144,12 @@ function renderGameCard(g) {
     const n = seasonValidatedSettled();
     flags.push(`<span class="flag flag-edge">${edge > 0 ? g.home : g.away} +${(Math.abs(edge) * 100).toFixed(1)}pp vs market${n < SEASON_ENSEMBLE.stackTrustN ? ` · unproven (${n}/${SEASON_ENSEMBLE.stackTrustN} settled)` : ''}</span>`);
   }
+  const trust = clean && typeof seasonTrustCheck === 'function' ? seasonTrustCheck(clean, m) : null;
+  if (trust && trust.rule) {
+    const rule = SEASON_TRUST.rules.find(r => r.id === trust.rule), live = seasonTrustRecord(loadSeasonLedger())[trust.rule];
+    const team = trust.side === 'home' ? g.home : g.away;
+    flags.push(`<span class="flag ${rule.avoid ? 'flag-none' : 'flag-edge'}" title="${rule.why}">${rule.avoid ? 'AVOID' : rule.id} · ${team} +${(trust.edge * 100).toFixed(1)}pp over the price at ${trust.ml > 0 ? '+' : ''}${trust.ml} · driven by ${rule.label.toLowerCase()} · frozen rule, ${live.n} judged</span>`);
+  }
   const absences = [...v.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...v.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
 
   return `<div class="sg-card${open ? ' open' : ''}" onclick="seasonToggleGame('${g.id}')">
@@ -546,6 +552,7 @@ function renderLedgerTab() {
     <div class="lab-row"><button class="btn btn-primary btn-sm" onclick="seasonRecordTonight()">Record tonight's slate</button>
       <button class="btn btn-secondary btn-sm" onclick="seasonExportLedger()">Copy ledger JSON</button>
       <span class="muted">${rows.length} rows · ${settled} settled · recorded before tip-off only counts</span></div>
+    ${typeof SEASON_TRUST !== 'undefined' ? renderTrustRules(rows) : ''}
     <div class="scorecard">${tile('ours', 'Ours')}${tile('friend', 'NB.AI')}${tile('market', 'Market')}${tile('blend', 'Blend')}${tile('baseline', 'Always home')}</div>
     <p class="muted">Targets: no-vig closing line runs ≈ 67.8% / Brier 0.205 / margin MAE ≈ 10 over 13k+ games. ${stack.status === 'insufficient' ? `Stacking weights need ${stack.needed} settled games with all three forecasts (have ${stack.n}).` : `Stacking (${stack.status}, n=${stack.n}): logit P = ${stack.bias} + ${stack.weights.map((w, i) => `${w}·${stack.labels[i]}`).join(' + ')}. ${stack.note}`}</p>
     <table><tr><th>Date</th><th>Game</th><th>Ours</th><th>NB.AI</th><th>Market</th><th>Blend</th><th>Line</th><th>Result</th><th></th></tr>
@@ -567,12 +574,35 @@ function seasonResultMark(r) {
   return `<span class="muted">ours ${mark(r.pOurs)} nb.ai ${mark(r.pFriend)} mkt ${mark(r.pMarket)}</span>`;
 }
 
+// Frozen trust rules: the live record (judged from SEASON_TRUST.judgedFrom), beside the replay's
+// description of the same rules (eve variant — report from before 9 PM ET the evening before —
+// against DraftKings' opening line; a development set, shown for context, never as evidence).
+function seasonReplayTrustRows() {
+  if (typeof SEASON_REPLAY === 'undefined' || !SEASON_REPLAY) return [];
+  return SEASON_REPLAY.rows.filter(r => r.open && r.open.mlHome != null && r.open.mlAway != null && r.compsEve && r.pOursEve != null).map(r => ({
+    date: r.date, home: r.home, away: r.away, result: r.result, mlHome: r.open.mlHome, mlAway: r.open.mlAway, book: 'DraftKings',
+    close: r.mlHome != null && r.mlAway != null ? { mlHome: r.mlHome, mlAway: r.mlAway, book: 'DraftKings' } : null,
+    trust: seasonTrustCheck({ pHome: r.pOursEve, margin: r.marginOursEve }, { mlHome: r.open.mlHome, mlAway: r.open.mlAway, spreadHome: r.open.spreadHome }, r.compsEve),
+  }));
+}
+function renderTrustRules(rows) {
+  const live = seasonTrustRecord(rows), rep = seasonTrustRecord(seasonReplayTrustRows(), { from: '0000' });
+  const cell = (g) => g.n || g.clvN ? `${g.n ? `${g.won}–${g.n - g.won} · ${g.units >= 0 ? '+' : ''}${g.units}u` : '—'}${g.clvN ? ` · line moved our way ${g.toward}/${g.clvN} (avg ${g.move >= 0 ? '+' : ''}${(g.move * 100).toFixed(1)} pp)` : ''}${g.clvSkipped ? ` · ${g.clvSkipped} close from another book skipped` : ''}` : '<span class="muted">none yet</span>';
+  const line = (id, label, why, avoid) => `<tr><td><b>${id}</b></td><td>${label}${avoid ? ' <span class="muted">(fade our side)</span>' : ''}<div class="muted">${why}</div></td><td>${cell(live[id])}</td><td class="muted">${cell(rep[id])}</td></tr>`;
+  return `<h4 style="margin-top:4px">Trust rules — frozen ${SEASON_TRUST.frozen}, judged from ${SEASON_TRUST.judgedFrom}</h4>
+    <p class="muted">A rule fires when the picks engine's win probability beats the probability DraftKings' price implies by ${SEASON_TRUST.minEdge * 100}+ percentage points (pp) and one engine step drives the gap. Live: record at the price when recorded, and whether the line then moved toward our side by the close (same book only). Replay: the same rules on the eve variant — injury report from before 9 PM ET the evening before, results through that morning — against DraftKings' opening line. It is the development set the rules were drafted from (drafted on the tip-time variant, which had later news than the open), so it describes them and proves nothing; DraftKings' opening time is not recorded.</p>
+    <table><tr><th>Rule</th><th>When the gap is driven by</th><th>Live</th><th>Replay (description only)</th></tr>
+    ${line('ALL', 'Any edge', 'every game with an edge of ' + SEASON_TRUST.minEdge * 100 + '+ pp')}
+    ${SEASON_TRUST.rules.map(r => line(r.id, r.label, r.why, r.avoid)).join('')}
+    </table>`;
+}
+
 function seasonRecordTonight() {
   const s = seasonState.slate;
   const now = new Date();
   const entries = s.games.filter(g => !g.tip || new Date(g.tip) > now).map(g => {
-    const { proj, blend, clean } = seasonGameForecast(g);
-    return buildLedgerEntry(g, proj, blend, s, clean);
+    const { proj, blend, clean, adj } = seasonGameForecast(g);
+    return buildLedgerEntry(g, proj, blend, s, clean, adj);
   });
   const res = recordSeasonEntries(entries);
   const skippedTip = s.games.length - entries.length;

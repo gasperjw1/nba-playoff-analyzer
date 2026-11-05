@@ -148,6 +148,6 @@ function replayPredictDay(day) {
   return day.games.map(g => {
     const p = projectSeasonGame(g, slate);
     return { id: String(g.id), date: day.date, tip: g.tip, home: g.home, away: g.away,
-      pHome: p.pHome, margin: p.margin, total: p.total };
+      pHome: p.pHome, margin: p.margin, total: p.total, comps: seasonEdgeComponents(p) };
   });
 }

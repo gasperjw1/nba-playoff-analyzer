@@ -29,6 +29,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/engine.js');
   load('js/season/props.js');
   load('js/season/ensemble.js');
+  load('js/season/trust.js');
   load('js/season/ledger.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
@@ -952,6 +953,71 @@ console.log('TEST 22: opponent-adjusted line (tracked beside the picks engine)')
   assert(/<th>Ours · opp-adj<\/th>/.test(c.renderResultsTab()), 'Results shows the adjusted column when rows carry it');
   const R = (() => { const x = {}; vm.createContext(x); vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^const /m, 'var '), x); return x.SEASON_REPLAY; })();
   assert(R.rows.every(r => typeof r.pOursAdj === 'number'), 'every replay row carries the adjusted variant');
+}
+
+console.log('TEST 23: frozen trust rules (edge, driver, closing-line value)');
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const S = c.SEASON_SLATE_SNAPSHOT, clean = c.seasonCleanSlate(S);
+  for (const g of S.games) {
+    const p = c.projectSeasonGame(g, clean), k = c.seasonEdgeComponents(p);
+    near(Object.values(k).reduce((a, b) => a + b, 0), p.margin, 0.06, `${g.away}@${g.home}: steps add up to the margin`);
+  }
+  assert(c.SEASON_TRUST.frozen === '2026-11-05' && c.SEASON_TRUST.judgedFrom === '2026-11-06', 'rules dated: frozen Nov 5, judged from Nov 6');
+  // Edge and side: model 60% home vs an even −110/−110 price → home, edge 0.60 − 0.5238.
+  const comps = { prior: 0, current: 0, absent: 0, change: 3, aging: 0, fit: 0, rest: 0, hca: 2 };
+  const t = c.seasonTrustCheck({ pHome: 0.6, margin: 3.2 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, comps);
+  near(t.edge, 0.6 - 110 / 210, 1e-4, 'edge = model − implied (vig included)');
+  assert(t.side === 'home' && t.ml === -110 && t.driver === 'change' && t.rule === 'R2', 'roster-change gap → R2 on the home side');
+  const away = c.seasonTrustCheck({ pHome: 0.35, margin: -4 }, { mlHome: -150, mlAway: 130, spreadHome: -3 }, { ...comps, change: 0, rest: -4 });
+  assert(away.side === 'away' && away.driver === 'rest' && away.rule === 'R3', 'rest-driven gap on the away side → R3');
+  const small = c.seasonTrustCheck({ pHome: 0.53, margin: 1 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, comps);
+  assert(small.edge < c.SEASON_TRUST.minEdge && small.rule === null, 'edge under the minimum → no rule');
+  assert(c.seasonTrustCheck({ pHome: 0.6, margin: 3 }, { mlHome: null, mlAway: -110 }, comps) === null, 'no moneyline → no check');
+  // Driver = the step whose removal closes most of the gap; a step pointing the other way never drives.
+  const d = c.seasonTrustCheck({ pHome: 0.6, margin: 5 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, { prior: 6, current: -1, absent: 0, change: 0, aging: 0, fit: 0, rest: 0, hca: 0 });
+  assert(d.driver === 'prior' && d.rule === 'R1', 'driver = the step whose removal closes most of the gap');
+  // Record: units at the recorded price; closing-line value from recorded → close.
+  const row = (o) => ({ date: '2026-11-06', home: 'A', away: 'B', mlHome: -110, mlAway: -110, trust: t, ...o });
+  const rec = c.seasonTrustRecord([
+    row({ book: 'DraftKings', result: { homeScore: 100, awayScore: 90 }, close: { mlHome: -150, mlAway: 130, book: 'DraftKings' } }),
+    row({ book: 'DraftKings', result: { homeScore: 90, awayScore: 100 }, close: { mlHome: 105, mlAway: -125, book: 'draftkings' } }),
+    row({ date: '2026-11-05', result: { homeScore: 100, awayScore: 90 } }),
+    row({ trust: small, result: { homeScore: 100, awayScore: 90 } }),
+  ]);
+  assert(rec.R2.n === 2 && rec.R2.won === 1 && rec.ALL.n === 2, 'counts only judged dates and edges ≥ minimum');
+  near(rec.R2.units, 100 / 110 - 1, 0.01, 'units at the recorded price');
+  assert(rec.R2.clvN === 2 && rec.R2.toward === 1 && rec.R2.against === 1, 'line moving toward / against our side');
+  assert(rec.R1.n === 0 && rec.R1.move === null, 'empty rule stays empty');
+  const recBook = c.seasonTrustRecord([row({ book: 'DraftKings', result: { homeScore: 100, awayScore: 90 }, close: { mlHome: -150, mlAway: 130, book: 'FanDuel' } })]);
+  assert(recBook.R2.n === 1 && recBook.R2.clvN === 0 && recBook.R2.clvSkipped === 1, 'close from another book is not used for CLV');
+  const recOld = c.seasonTrustRecord([row({ trust: { ...t, minEdge: 0.01, edge: 0.02, rule: 'R9' }, result: { homeScore: 100, awayScore: 90 } })]);
+  assert(recOld.ALL.n === 1 && recOld.R9 && recOld.R9.n === 1, 'judged with the threshold and rule stored at record time');
+  // Ledger row and card carry the check from the picks engine.
+  const g = S.games[0], cp = c.projectSeasonGame(g, clean);
+  const blend = c.blendGameForecast({ pOurs: 0.5, pFriend: null, mlHome: (g.market || {}).mlHome, mlAway: (g.market || {}).mlAway });
+  const entry = c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, S, cp);
+  assert(entry.trust && JSON.stringify(entry.trust) === JSON.stringify(c.seasonTrustCheck(cp, g.market)), 'ledger row stores the trust check of the picks engine');
+  assert(c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, S).trust === null, 'no picks-engine projection → no trust check');
+  c.seasonState.slate = S;
+  const forced = { ...g, market: { ...(g.market || {}), mlHome: cp.pHome > 0.5 ? 300 : -900, mlAway: cp.pHome > 0.5 ? -900 : 300 } };
+  const tc = c.seasonTrustCheck(cp, forced.market);
+  const card = c.renderGameCard(forced);
+  assert(!tc.rule || card.includes(`${tc.rule === 'AVOID' ? 'AVOID' : tc.rule} · `), 'card flags the rule that fires');
+  const lt = c.renderLedgerTab();
+  assert(/Trust rules — frozen 2026-11-05/.test(lt) && /Replay \(description only\)/.test(lt), 'Ledger tab shows the rules, replay marked description only');
+  const R = (() => { const x = {}; vm.createContext(x); vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^const /m, 'var '), x); return x.SEASON_REPLAY; })();
+  assert(R.rows.every(r => r.compsMorning && typeof r.pOursMorning === 'number' && r.provenance.reportMorningAt < r.provenance.reportAt), 'replay rows carry the morning variant from an earlier report');
+  assert(R.rows.every(r => new Date(r.provenance.reportMorningAt).getTime() <= Date.parse(r.tip) - 6 * 36e5 + 1), 'morning reports are at least 6 hours before tip');
+  assert(R.rows.every(r => r.compsEve && typeof r.pOursEve === 'number' && r.provenance.reportEveAt < r.provenance.reportMorningAt && r.provenance.boxCutoff), 'eve variant: an earlier report still');
+  assert(R.rows.every(r => { const e = new Date(r.provenance.reportEveAt); return new Date(e.getTime() + 864e5).toISOString().slice(0, 10) >= r.date || e.toISOString().slice(0, 10) < r.date; }), 'eve reports come from before game day');
+  // Local rows cannot rewrite committed evidence.
+  c.SEASON_LEDGER = [{ id: 'k1', date: '2026-11-06', home: 'A', away: 'B', pOurs: 0.6, mlHome: -110, mlAway: -110, trust: t, result: null }];
+  c.localStorage.setItem(c.SEASON_LEDGER_STORAGE_KEY, JSON.stringify([{ id: 'k1', date: '2026-11-06', home: 'A', away: 'B', pOurs: 0.9, mlHome: 300, mlAway: -400, trust: null, result: { homeScore: 1, awayScore: 0 } }]));
+  const merged = c.loadSeasonLedger().find(r => r.id === 'k1');
+  assert(merged.pOurs === 0.6 && merged.mlHome === -110 && merged.trust === t && merged.result && merged.result.homeScore === 1, 'committed prices/trust kept; local can only add a result');
+  c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

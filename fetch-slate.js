@@ -53,6 +53,7 @@ function loadSeasonContext() {
   load('js/season/engine.js');
   load('js/season/props.js');
   load('js/season/ensemble.js');
+  load('js/season/trust.js');
   load('js/season/ledger.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   return ctx;
@@ -247,7 +248,8 @@ function loadGlobal(file, name) {
 async function settle(ctx) {
   const rows = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
   const open = rows.filter(r => !r.result);
-  if (!open.length) { console.log('Nothing to settle.'); return; }
+  const needsClose = (r) => r.result && !r.close && (r.closeTries || 0) < 3;
+  if (!open.length && !rows.some(needsClose)) { console.log('Nothing to settle.'); return; }
   const dates = [...new Set(open.map(r => (r.tip || r.date).slice(0, 10)))];
   let settled = 0;
   for (const d of dates) {
@@ -268,6 +270,22 @@ async function settle(ctx) {
       console.log(`  ${r.away} @ ${r.home}: ${hit.awayScore}-${hit.homeScore}  ours ${pct(r.pOurs)} nb.ai ${r.pFriend != null ? pct(r.pFriend) : '—'} market ${r.pMarket != null ? pct(r.pMarket) : '—'}`);
     });
   }
+  // Closing lines for closing-line value: DraftKings' price at tip, read from the
+  // game's summary once it is final (the same pickcenter the replay uses).
+  let closes = 0;
+  // Three tries per game; after that the row is left without a close (CLV skips it).
+  for (const r of rows.filter(needsClose)) {
+    r.closeTries = (r.closeTries || 0) + 1;
+    try {
+      const pc = ctx.adaptEspnPickcenter(await getJson(ESPN_SUMMARY + r.id), r.home, r.away);
+      if (pc && pc.mlHome != null && pc.mlAway != null) {
+        r.close = { mlHome: pc.mlHome, mlAway: pc.mlAway, spreadHome: pc.spreadHome, total: pc.total, book: pc.book, open: pc.open || null };
+        delete r.closeTries;
+        closes++;
+      }
+    } catch (e) { console.warn(`closing line ${r.away} @ ${r.home}: ${e.message}`); }
+  }
+  console.log(`Closing lines captured: ${closes}`);
   if (DRY) { console.log(`(dry) would settle ${settled}`); return; }
   writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', rows,
     '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
