@@ -11,6 +11,7 @@ const seasonState = {
   tab: 'tonight',
   expanded: {},
   lab: { home: null, away: null, rest: { home: {}, away: {} }, avail: {} },
+  results: { date: null, calOpen: false, calMonth: null },
   propCache: {},
 };
 
@@ -23,8 +24,10 @@ function seasonBoot() {
   if (!slate && typeof SEASON_SLATE_SNAPSHOT !== 'undefined') slate = SEASON_SLATE_SNAPSHOT;
   seasonState.slate = slate;
   seasonState.slateOrigin = origin;
-  const hashTab = typeof location !== 'undefined' ? location.hash.slice(1) : '';
+  const [hashTab, hashArg] = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
   if (SEASON_TABS.some(([id]) => id === hashTab)) seasonState.tab = hashTab;
+  if (hashTab === 'results' && /^\d{4}-\d{2}-\d{2}$/.test(hashArg || '')) seasonState.results.date = hashArg;
+  seasonBindKeys();
   if (slate && slate.games.length) {
     seasonState.lab.home = slate.games[0].home;
     seasonState.lab.away = slate.games[0].away;
@@ -48,8 +51,28 @@ function renderSeasonApp() {
 
 function seasonSetTab(tab) {
   seasonState.tab = tab;
-  if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', '#' + tab);
+  seasonWriteHash();
   renderSeasonApp();
+}
+
+// #tab, or #results/YYYY-MM-DD once a results day is chosen — linkable and bookmarkable.
+function seasonWriteHash() {
+  if (typeof history === 'undefined' || !history.replaceState) return;
+  const d = seasonState.tab === 'results' && seasonState.results.date;
+  history.replaceState(null, '', '#' + seasonState.tab + (d ? '/' + d : ''));
+}
+
+// ← / → step through results days; Esc closes the calendar. Bound once.
+function seasonBindKeys() {
+  if (seasonState.keysBound || typeof document === 'undefined' || !document.addEventListener) return;
+  seasonState.keysBound = true;
+  document.addEventListener('keydown', e => {
+    if (seasonState.tab !== 'results' || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.key === 'ArrowLeft') { seasonResultsStep(-1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { seasonResultsStep(1); e.preventDefault(); }
+    else if (e.key === 'Escape' && seasonState.results.calOpen) seasonResultsToggleCal(false);
+  });
 }
 
 // ---------- status + tabs ----------
@@ -310,15 +333,30 @@ function seasonResultsByDay(rows) {
   });
   const days = Object.values(byDate).filter(d => d.games.length).sort((a, b) => b.date.localeCompare(a.date))
     .map(d => ({ ...d, source: d.sources.size === 1 ? [...d.sources][0] : 'mixed' }));
-  return { season, days };
+  const unsettledDates = Object.values(byDate).filter(d => !d.games.length).map(d => d.date);   // recorded, nothing final yet
+  return { season, days, unsettledDates };
 }
 
 function renderResultsTab() {
-  const { season, days } = seasonResultsByDay(loadSeasonLedger());
+  const { season, days, unsettledDates } = seasonResultsByDay(loadSeasonLedger());
   if (!days.length) return `<div class="home-empty">No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).</div>`;
-  const nGames = days.reduce((s, d) => s + d.games.length, 0);
+  const d = seasonResultsSelected(days);
+  const asc = days.map(x => x.date).sort(), i = asc.indexOf(d.date);
+  const nGames = days.reduce((n, x) => n + x.games.length, 0);
+  const tag = d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  const r = seasonState.results;
   return `<div class="results">
-    <section class="res-block">
+    <div class="res-nav">
+      <button class="res-arrow" onclick="seasonResultsStep(-1)"${i > 0 ? '' : ' disabled'} aria-label="Previous day" title="Previous day (←)">‹</button>
+      <div class="res-pick">
+        <button class="res-datebtn" onclick="seasonResultsToggleCal()" aria-haspopup="dialog" aria-expanded="${r.calOpen}"><span class="res-date">${seasonFmtDay(d.date, true)}</span><span class="res-caret">▾</span></button>
+        ${r.calOpen ? seasonResultsCalendar(days, d.date, unsettledDates) : ''}
+      </div>
+      <button class="res-arrow" onclick="seasonResultsStep(1)"${i < asc.length - 1 ? '' : ' disabled'} aria-label="Next day" title="Next day (→)">›</button>
+      <span class="res-meta"><span class="muted">${d.games.length} game${d.games.length === 1 ? '' : 's'}${d.pending ? ` · ${d.pending} unsettled` : ''} · day ${i + 1} of ${asc.length}</span>${tag}</span>
+    </div>
+    ${seasonResultsDay(d)}
+    <section class="res-block res-season">
       <h3 class="res-h">Season to date <span class="muted">${nGames} games · ${days.length} day${days.length === 1 ? '' : 's'}</span></h3>
       ${seasonResultsScoreboard(season)}
       <ul class="res-legend">
@@ -328,8 +366,67 @@ function renderResultsTab() {
         <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>
       </ul>
     </section>
-    ${days.map((d, i) => seasonResultsDay(d, i === 0)).join('')}
   </div>`;
+}
+
+// The chosen day, or the latest one if none is chosen (or the chosen date has no results).
+function seasonResultsSelected(days) { return days.find(x => x.date === seasonState.results.date) || days[0]; }
+
+// dir -1 = the previous day with results, +1 = the next; no-op at either end.
+function seasonResultsStep(dir) {
+  const { days } = seasonResultsByDay(loadSeasonLedger());
+  if (!days.length) return;
+  const asc = days.map(x => x.date).sort(), j = asc.indexOf(seasonResultsSelected(days).date) + dir;
+  if (j >= 0 && j < asc.length) seasonResultsGo(asc[j]);
+}
+
+function seasonResultsGo(date) {
+  seasonState.results.date = date;
+  seasonState.results.calOpen = false;
+  seasonWriteHash();
+  renderSeasonApp();
+}
+
+function seasonResultsToggleCal(open) {
+  const r = seasonState.results;
+  r.calOpen = open == null ? !r.calOpen : !!open;
+  if (r.calOpen) { const { days } = seasonResultsByDay(loadSeasonLedger()); r.calMonth = seasonResultsSelected(days).date.slice(0, 7); }
+  renderSeasonApp();
+}
+
+function seasonResultsMonth(dir) {
+  const [y, m] = seasonState.results.calMonth.split('-').map(Number);
+  const d = new Date(Date.UTC(y, m - 1 + dir, 1));
+  seasonState.results.calMonth = d.toISOString().slice(0, 7);
+  renderSeasonApp();
+}
+
+// Month grid: days with settled games are buttons; everything else is inert.
+function seasonResultsCalendar(days, selected, unsettledDates) {
+  const month = seasonState.results.calMonth || selected.slice(0, 7);
+  const [y, m] = month.split('-').map(Number);
+  const byDate = Object.fromEntries(days.map(d => [d.date, d]));
+  const unsettled = new Set(unsettledDates || []);
+  const months = days.map(d => d.date.slice(0, 7)).sort();
+  const lead = new Date(Date.UTC(y, m - 1, 1)).getUTCDay(), len = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const cells = [];
+  for (let k = 0; k < lead; k++) cells.push('<span></span>');
+  for (let day = 1; day <= len; day++) {
+    const iso = `${month}-${String(day).padStart(2, '0')}`, d = byDate[iso];
+    if (d) cells.push(`<button class="res-cal-day has${iso === selected ? ' sel' : ''}" onclick="seasonResultsGo('${iso}')" title="${d.games.length} game${d.games.length === 1 ? '' : 's'} · Ours ${d.summary.ours.winners}/${d.summary.ours.n}">${day}</button>`);
+    else cells.push(`<span class="res-cal-day${unsettled.has(iso) ? ' wait' : ''}"${unsettled.has(iso) ? ' title="Recorded — not settled yet"' : ''}>${day}</span>`);
+  }
+  const label = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(Date.UTC(y, m - 1, 1)));
+  return `<div class="res-cal-backdrop" onclick="seasonResultsToggleCal(false)"></div>
+    <div class="res-cal" role="dialog" aria-label="Choose a day">
+      <div class="res-cal-head">
+        <button class="res-arrow sm" onclick="seasonResultsMonth(-1)"${month > months[0] ? '' : ' disabled'} aria-label="Previous month">‹</button>
+        <b>${label}</b>
+        <button class="res-arrow sm" onclick="seasonResultsMonth(1)"${month < months[months.length - 1] ? '' : ' disabled'} aria-label="Next month">›</button>
+      </div>
+      <div class="res-cal-grid">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => `<span class="res-cal-wd">${w}</span>`).join('')}${cells.join('')}</div>
+      <div class="res-cal-foot"><span class="res-cal-key has"></span> results <span class="res-cal-key wait"></span> awaiting results</div>
+    </div>`;
 }
 
 function seasonResultsScoreboard(sum) {
@@ -354,23 +451,15 @@ function seasonResultsScoreboard(sum) {
   </table>`;
 }
 
-function seasonResultsDay(d, open) {
-  const s = d.summary;
-  const cols = SEASON_RESULT_MODELS.filter(([k]) => s[k].n);   // a model with no forecasts that day gets no column
-  const tally = SEASON_RESULT_MODELS.map(([k, label]) => `<span class="res-chip"><b>${label}</b> ${s[k].n ? `${s[k].winners}/${s[k].n}` : '—'}</span>`).join('');
-  const tag = d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
-  return `<details class="res-day"${open ? ' open' : ''}>
-    <summary><span class="res-date">${seasonFmtDay(d.date)}</span>
-      <span class="muted">${d.games.length} game${d.games.length === 1 ? '' : 's'}${d.pending ? ` · ${d.pending} unsettled` : ''}</span>${tag}
-      <span class="res-tally"><span class="muted">winners</span>${tally}</span></summary>
-    <div class="res-body">
-      ${seasonResultsScoreboard(s)}
-      <div class="res-scroll"><table class="res-games">
-        <tr><th>Game</th><th>Final</th>${cols.map(([, label]) => `<th>${label}</th>`).join('')}<th>Closest</th></tr>
-        ${d.games.map(g => seasonResultsGameRow(g, cols)).join('')}
-      </table></div>
-    </div>
-  </details>`;
+function seasonResultsDay(d) {
+  const cols = SEASON_RESULT_MODELS.filter(([k]) => d.summary[k].n);   // a model with no forecasts that day gets no column
+  return `<section class="res-day">
+    ${seasonResultsScoreboard(d.summary)}
+    <div class="res-scroll"><table class="res-games">
+      <tr><th>Game</th><th>Final</th>${cols.map(([, label]) => `<th>${label}</th>`).join('')}<th>Closest</th></tr>
+      ${d.games.map(g => seasonResultsGameRow(g, cols)).join('')}
+    </table></div>
+  </section>`;
 }
 
 function seasonResultsGameRow(g, cols) {
@@ -498,8 +587,8 @@ function seasonTodayIso() {
   catch (e) { return new Date().toISOString().slice(0, 10); }
 }
 function seasonFmtMargin(home, m) { if (m == null) return ''; return m >= 0 ? `${home} by ${Math.abs(m).toFixed(1)}` : `${home} −${Math.abs(m).toFixed(1)}`; }
-function seasonFmtDay(iso) {
-  try { return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(iso + 'T12:00:00Z')); }
+function seasonFmtDay(iso, long) {
+  try { return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: long ? 'long' : 'short', month: 'short', day: 'numeric' }).format(new Date(iso + 'T12:00:00Z')); }
   catch (e) { return iso; }
 }
 function seasonPct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }
