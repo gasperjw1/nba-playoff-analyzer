@@ -118,7 +118,7 @@ async function main() {
       const rh = rating(g.home), ra = rating(g.away);
       const pred = rh - ra + o.hca + rest(H) - rest(A);
       const y = g.hs - g.as;
-      out.push({ t: S.t, y, pred, gMin: Math.min(H.g, A.g), date: g.date });
+      out.push({ t: S.t, y, pred, gMin: Math.min(H.g, A.g), date: g.date, home: g.home, away: g.away, hB2b: rest(H) !== 0 || (o.b2b === 0 && !!H.last && daysBetween(H.last, g.date) === 1), aB2b: rest(A) !== 0 || (o.b2b === 0 && !!A.last && daysBetween(A.last, g.date) === 1) });
       // Update after the game: raw margin, and margin adjusted for opponent strength and venue.
       H.sum += y; A.sum -= y;
       H.adj += y - o.hca + ra; A.adj += -y + o.hca + rh;
@@ -127,6 +127,8 @@ async function main() {
     return out;
   };
 
+  // research-season-rest.js input: every game's prediction with no rest term (engine values otherwise).
+  if (process.env.REST_OUT) fs.writeFileSync(process.env.REST_OUT, JSON.stringify(seasons.flatMap(S => walk(S, { K: 20, hca: 2.0, b2b: 0, oppAdj: false }))));
   const ENGINE = { K: 20, hca: 2.5, b2b: -1.0, oppAdj: false };
   const mse = (rows) => rows.reduce((s, r) => s + (r.y - r.pred) ** 2, 0) / rows.length;
   const run = (o) => seasons.flatMap(S => walk(S, o));

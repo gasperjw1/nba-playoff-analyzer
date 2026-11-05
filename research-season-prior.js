@@ -116,6 +116,18 @@ async function main() {
     }
   }
   const byAge = loadAging();
+  // Draft slot by player (Basketball-Reference draft pages, 2005 on; first draft wins).
+  const pickOf = new Map();
+  for (let y = 2005; y <= LAST; y++) {
+    const f = path.join(__dirname, `.cache/bref/draft_NBA_${y}.html`);
+    if (!fs.existsSync(f)) continue;
+    const html = fs.readFileSync(f, 'utf8'), i0 = html.indexOf('id="stats"');
+    for (const tr of html.slice(i0, html.indexOf('</table>', i0)).split('<tr').slice(1)) {
+      const pk = /data-stat="pick_overall"\s*csk="(\d+)"/.exec(tr), id = /href=['"]\/players\/[a-z]\/([a-z0-9]+)\.html/.exec(tr);
+      if (pk && id && !pickOf.has(id[1])) pickOf.set(id[1], { pick: +pk[1], year: y });
+    }
+  }
+  const slotOf = (id) => { const d = pickOf.get(id); if (!d) return 'undrafted'; const k = d.pick; return k <= 3 ? '1-3' : k <= 10 ? '4-10' : k <= 20 ? '11-20' : k <= 30 ? '21-30' : '31-60'; };
 
   // Player projection from the two seasons before t.
   const leagueGames = (t) => Math.max(...Object.values(seasons[t].rating).map(r => r.games));
@@ -155,7 +167,7 @@ async function main() {
         const prev = S1.players.get(p.id), pr = prev && prev.teams[T];
         const r = p.teams[T];
         roster.push({
-          id: p.id, age: p.age, rookie: !j,
+          id: p.id, age: p.age, rookie: !j, slot: j ? null : slotOf(p.id), actual: j ? null : { bpm: p.total.bpm, mp: p.total.mp, mpg: r.g ? r.mp / r.g : 0, gShare: r.g / S.rating[T].games },
           bpm: j ? j.bpm : ROOKIE_BPM, mpg: j ? j.mpg : 0, gShare: j ? j.gShare : 0.7,
           shareG: pr && pr.g ? Math.min(1, pr.g / G1) : 0,
           mLast: pr ? pr.mp / G1 : 0,                     // minutes per team game last season
@@ -226,6 +238,30 @@ async function main() {
     r.minTotalHealthy = r.roster.reduce((s, x) => s + x.mpg, 0);
   });
 
+  // Rookies by draft slot: BPM, minutes and games share learned from other
+  // seasons' rookies on opening rosters (leave-one-season-out).
+  const rookieFit = {};
+  for (let t = T0; t <= LAST; t++) {
+    const acc = {};
+    for (const r of rows) if (r.t !== t) for (const x of r.roster) if (x.rookie && x.actual && x.actual.bpm != null) {
+      const a = acc[x.slot] = acc[x.slot] || { b: 0, m: 0, mpg: 0, g: 0, n: 0 };
+      a.b += x.actual.bpm * x.actual.mp; a.m += x.actual.mp; a.mpg += x.actual.mpg; a.g += x.actual.gShare; a.n++;
+    }
+    rookieFit[t] = Object.fromEntries(Object.entries(acc).map(([k, a]) => [k, { bpm: a.m ? a.b / a.m : ROOKIE_BPM, mpg: a.mpg / a.n, gShare: a.g / a.n, n: a.n }]));
+  }
+  console.log('Rookies on opening rosters by draft slot (all seasons; BPM minutes-weighted):');
+  const allFit = {};
+  for (const r of rows) for (const x of r.roster) if (x.rookie && x.actual && x.actual.bpm != null) {
+    const a = allFit[x.slot] = allFit[x.slot] || { b: 0, m: 0, mpg: 0, g: 0, n: 0 };
+    a.b += x.actual.bpm * x.actual.mp; a.m += x.actual.mp; a.mpg += x.actual.mpg; a.g += x.actual.gShare; a.n++;
+  }
+  for (const k of ['1-3', '4-10', '11-20', '21-30', '31-60', 'undrafted']) { const a = allFit[k]; if (a) console.log(`  ${k.padEnd(10)} n ${String(a.n).padStart(4)}  BPM ${(a.b / a.m).toFixed(2).padStart(6)}  mpg ${(a.mpg / a.n).toFixed(1).padStart(5)}  games share ${(a.g / a.n).toFixed(2)}`); }
+  const withRookies = (r, useBpm) => ({ ...r, roster: r.roster.map(x => {
+    if (!x.rookie) return x;
+    const f = rookieFit[r.t][x.slot];
+    return f ? { ...x, bpm: useBpm ? f.bpm : ROOKIE_BPM, mpg: f.mpg, gShare: f.gShare } : x;
+  }) });
+  rows.forEach(r => { r.dRook = terms.delta240(withRookies(r, true), 'prop'); r.dRookMin = terms.delta240(withRookies(r, false), 'prop'); });
   const n = rows.length;
   console.log(`${n} team-seasons, ${T0 - 1}-${String(T0).slice(2)} … ${LAST - 1}-${String(LAST).slice(2)}; rookie BPM ${ROOKIE_BPM.toFixed(2)}`);
   const mt = rows.map(r => r.minTotalHealthy).sort((a, b) => a - b);
@@ -278,12 +314,21 @@ async function main() {
   const builtE = demean(base);
   console.log('  built constants (0.75, 1.0), season mean removed — the form game margins see:');
   for (const [label, k, ag] of [['raw minutes, healthy (live engine before minutes-v1)', 'eng', 1], ['minutes-delta, raw minutes', 'dRaw', 1],
-    ['minutes-delta, capped at 240 (engine minutes-v1)', 'dProp', 1], ['  … without aging', 'dProp', 0], ['  … aging × 0.5', 'dProp', 0.5]]) {
+    ['minutes-delta, capped at 240 (engine minutes-v1)', 'dProp', 1], ['  … without aging', 'dProp', 0], ['  … aging × 0.5', 'dProp', 0.5],
+    ['  + rookies take projected minutes, valued at replacement', 'dRookMin', 1], ['  + rookies take projected minutes, valued by draft slot', 'dRook', 1]]) {
     const e = demean(rows.map(r => r.y - (0.75 * r.p1 + r[k] + ag * r.age1)));
     const sd = Math.sqrt(rows.reduce((s, r) => s + r[k] * r[k], 0) / n);
     console.log(`    ${label.padEnd(54)} RMSE ${rmse(e).toFixed(3)}  ΔMSE vs live ${paired(e, builtE)}  roster term sd ${sd.toFixed(2)}`);
   }
   if (process.env.ERR_OUT) fs.writeFileSync(process.env.ERR_OUT, JSON.stringify(rows.map(r => ({ t: r.t, T: r.T, y: r.y, p: 0.75 * r.p1 + r.dProp + r.age1 }))));
+  {
+    const cap = demean(rows.map(r => r.y - (0.75 * r.p1 + r.dProp + r.age1)));
+    for (const [label, k] of [['rookies at projected minutes, replacement value', 'dRookMin'], ['rookies at projected minutes, draft-slot value', 'dRook']]) {
+      const e = demean(rows.map(r => r.y - (0.75 * r.p1 + r[k] + r.age1)));
+      const top = rows.map((r, i) => (r.roster.some(x => x.rookie && x.slot === '1-3') ? i : -1)).filter(i => i >= 0);
+      console.log(`    vs capped engine: ${label.padEnd(48)} ΔMSE ${paired(e, cap)}   teams with a top-3 rookie (n ${top.length}): ${paired(top.map(i => e[i]), top.map(i => cap[i]))}`);
+    }
+  }
   const mkt = loso(rows, r => [r.wpct], y);
   const mktE = rows.map((r, i) => r.y - mkt[i]);
   console.log(`  ${'market: preseason win total'.padEnd(56)} RMSE ${rmse(mktE).toFixed(3)}  ΔMSE vs built ${paired(mktE, base)}`);

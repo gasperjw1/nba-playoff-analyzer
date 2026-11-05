@@ -41,11 +41,15 @@ const SEASON_PRIOR_RETENTION = 0.75;
 const SEASON_LEAGUE_FALLBACK = { ortg: 114.5, pace: 99.0 };
 const SEASON_LEAGUE_MIN_TEAMS = 20;   // derive from feed only with this many teams
 
-// Rest / schedule effects in points. Back-to-back costs ~0.5-1 pt
-// (25,000-game study cited in signal-calibration.js); three-in-four
-// is smaller; 3+ days rest is a small positive.
+// Rest / schedule effects in points. Back-to-back: research-season-update.js
+// (13,209 games, 2015-16 … 2025-26) picks −2 over −1 in every held-out
+// season; research-season-rest.js (3,690 games with box scores, 2023-24 …
+// 2025-26) measures −2.65 ± 0.44 raw and −2.12 ± 0.44 once missing regulars
+// are removed — the fatigue cost alone, since the injury report already
+// prices the absences. (Was −1.0 from a 25,000-game study.) Three-in-four
+// is smaller; 3+ days rest is a small positive (both untested).
 const SEASON_REST = {
-  backToBack: -1.0,
+  backToBack: -2.0,
   threeInFour: -0.5,
   longRestBonus: 0.5,     // restDays >= 3
   longRestDays: 3,
@@ -141,7 +145,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-05.minutes-hca2';
+const SEASON_ENGINE_VERSION = '2026-11-05.b2b2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).
