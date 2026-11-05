@@ -9,7 +9,26 @@
 // `recordedAt` stamp is kept so the scoring can prove it.
 // ============================================================
 
-function buildLedgerEntry(game, projection, blend, slate) {
+// The same slate with every team's prior from last season's final ratings (team-ratings.js,
+// Basketball-Reference) instead of the feed's — NB.AI's "prior" already contains this season's
+// games, which the engine then blends in again. Recorded beside the main prediction so the two
+// can be compared on games neither has seen. Null when team-ratings.js is not loaded.
+function seasonCleanSlate(slate) {
+  if (typeof SEASON_TEAM_RATINGS === 'undefined' || !SEASON_TEAM_RATINGS || !slate) return null;
+  const R = SEASON_TEAM_RATINGS.teams, teams = {};
+  for (const [abbr, t] of Object.entries(slate.teams)) teams[abbr] = R[abbr] ? { ...t, prior: R[abbr].prior } : t;
+  return { ...slate, teams, league: deriveLeagueAverages(R) };
+}
+
+// Last season's ratings with this season's results corrected for opponents
+// (seasonOpponentAdjust). Needs slate.results, this season's finals so far.
+function seasonOppAdjSlate(slate) {
+  const clean = seasonCleanSlate(slate);
+  if (!clean || !Array.isArray(slate.results)) return null;
+  return { ...clean, teams: seasonOpponentAdjust(clean.teams, clean.league, slate.results) };
+}
+
+function buildLedgerEntry(game, projection, blend, slate, clean, adj) {
   const m = game.market || {};
   const friend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   return {
@@ -20,6 +39,16 @@ function buildLedgerEntry(game, projection, blend, slate) {
     pOurs: projection.pHome,
     marginOurs: projection.margin,
     totalOurs: projection.total,
+    // Same engine, last season's final team ratings (seasonCleanSlate)
+    pOursClean: clean ? clean.pHome : null,
+    marginOursClean: clean ? clean.margin : null,
+    totalOursClean: clean ? clean.total : null,
+    // Same, with this season's results opponent-adjusted (seasonOppAdjSlate)
+    pOursAdj: adj ? adj.pHome : null,
+    marginOursAdj: adj ? adj.margin : null,
+    totalOursAdj: adj ? adj.total : null,
+    // Frozen trust rules (trust.js) on the picks engine at the price when recorded
+    trust: clean && typeof seasonTrustCheck === 'function' ? seasonTrustCheck(clean, m) : null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,
@@ -27,6 +56,7 @@ function buildLedgerEntry(game, projection, blend, slate) {
     mlAway: m.mlAway != null ? m.mlAway : null,
     spreadHome: m.spreadHome != null ? m.spreadHome : null,
     totalMarket: m.total != null ? m.total : null,
+    book: m.book || null,
     feedVersion: slate.modelVersion || null,
     source: slate.source || null,          // 'nb.ai', or 'espn' for the fallback slate
 
@@ -52,8 +82,9 @@ function loadSeasonLedger() {
   const committed = (typeof SEASON_LEDGER !== 'undefined' && Array.isArray(SEASON_LEDGER)) ? SEASON_LEDGER : [];
   const byId = {};
   committed.forEach(r => { byId[r.id] = { ...r, origin: 'committed' }; });
-  // A local row never erases a committed result (it can only add its own).
-  _readLocalLedger().forEach(r => { const c = byId[r.id]; byId[r.id] = { ...(c || {}), ...r, result: r.result || (c && c.result) || null, origin: c ? 'committed+local' : 'local' }; });
+  // A committed row is evidence: a browser-local row with the same id can add a result it lacks,
+  // never change its prices, predictions or trust check.
+  _readLocalLedger().forEach(r => { const c = byId[r.id]; byId[r.id] = c ? { ...c, result: c.result || r.result || null, origin: 'committed+local' } : { ...r, origin: 'local' }; });
   return Object.values(byId).sort((a, b) => (a.tip || a.date || '').localeCompare(b.tip || b.date || ''));
 }
 

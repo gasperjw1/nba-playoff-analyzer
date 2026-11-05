@@ -9,10 +9,13 @@
 // games — that is the lesson of the playoff engine's 18.8%
 // catastrophic-miss rate (CALIBRATION_AUDIT.md).
 
-// Home-court advantage in points. Modern NBA HCA has declined to
-// roughly 2-3 points (Barreira & Morgado 2023 longitudinal study;
-// 2023-24 through 2025-26 seasons ran ~2.3-2.8).
-const SEASON_HCA = 2.5;
+// Home-court advantage in points. research-season-update.js walked 13,209
+// regular-season games (2015-16 … 2025-26) forward: leave-one-season-out
+// picks 2.0 in every season; the measured edge was 1.6-1.7 in 2024-25 and
+// 2025-26 and 1.0 in the 2020-21 no-crowd season. The 2026-27 closing line
+// implies ~1.9. (Was 2.5, from Barreira & Morgado 2023.) The same walk
+// confirmed SEASON_SHRINK_K = 20 and SEASON_MARGIN_SIGMA = 12.5.
+const SEASON_HCA = 2.0;
 
 // Standard deviation of (actual margin − expected margin). Closing
 // spreads miss by ~10 pts MAE / ~13 RMSE in the modern era, so a
@@ -38,11 +41,15 @@ const SEASON_PRIOR_RETENTION = 0.75;
 const SEASON_LEAGUE_FALLBACK = { ortg: 114.5, pace: 99.0 };
 const SEASON_LEAGUE_MIN_TEAMS = 20;   // derive from feed only with this many teams
 
-// Rest / schedule effects in points. Back-to-back costs ~0.5-1 pt
-// (25,000-game study cited in signal-calibration.js); three-in-four
-// is smaller; 3+ days rest is a small positive.
+// Rest / schedule effects in points. Back-to-back: research-season-update.js
+// (13,209 games, 2015-16 … 2025-26) picks −2 over −1 in every held-out
+// season; research-season-rest.js (3,690 games with box scores, 2023-24 …
+// 2025-26) measures −2.65 ± 0.44 raw and −2.12 ± 0.44 once missing regulars
+// are removed — the fatigue cost alone, since the injury report already
+// prices the absences. (Was −1.0 from a 25,000-game study.) Three-in-four
+// is smaller; 3+ days rest is a small positive (both untested).
 const SEASON_REST = {
-  backToBack: -1.0,
+  backToBack: -2.0,
   threeInFour: -0.5,
   longRestBonus: 0.5,     // restDays >= 3
   longRestDays: 3,
@@ -67,14 +74,26 @@ const SEASON_REST = {
 // Duren above Curry and Caruso at zero.)
 //
 // Roster adjustment: a team's rating already contains whoever played
-// the games behind it. Tonight's margin moves by
-//   Σ value × (availability tonight − share of the rating he is in)
-// over the current roster, minus departed players' share — so an
-// injury that predates the rating, or an off-season arrival, is not
-// double-counted or missed.
+// the minutes behind it. Tonight's margin moves by
+//   Σ value per minute × (minutes tonight − minutes in the rating)
+// over the current roster, minus departed players' minutes in the
+// rating — so an injury that predates the rating, or an off-season
+// arrival, is not double-counted or missed. Minutes tonight are each
+// available player's baseline minutes × availability, scaled down so
+// the team plays teamMinutes: a full roster at its players' old minutes
+// sums to ~310, so arrivals were valued as if they kept their old roles
+// and absences cost a star's full value with nobody taking his minutes.
+// research-season-prior.js (330 team-seasons; opening rosters approximated
+// from each player's first team that season, which adds mid-season
+// signings): opening-night RMSE 3.66 → 3.50 per 100 in this engine's form
+// (ΔMSE −1.18 ± 0.64), constants unchanged; the preseason win-total market
+// scores 3.40. Dropping players who appeared in under a quarter of the
+// team's games shrinks the gain to −0.37 ± 0.45 — the direction holds, the
+// size is uncertain. Kept because a team cannot play more than 240 minutes.
 const SEASON_IMPACT = {
   replacementBpm: -2.0,
   bpmToPoints: 0.885,
+  teamMinutes: 240,       // regulation minutes a team plays; tonight's minutes are capped at this
   teamCap: 12.0,          // max |roster adjustment| per team, points
   minMinutesForImpact: 8, // ignore deep bench noise
   offShare: 0.70,         // share of a player's value that is his own team's scoring (totals only)
@@ -130,7 +149,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-02.aging-v2';
+const SEASON_ENGINE_VERSION = '2026-11-05.b2b2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).

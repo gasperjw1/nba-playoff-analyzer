@@ -3,7 +3,7 @@
 const SEASON_SLATE_SNAPSHOT = {
  "source": "espn",
  "date": "2026-11-05",
- "fetchedAt": "2026-11-05T15:48:37.911Z",
+ "fetchedAt": "2026-11-05T18:13:44.910Z",
  "modelVersion": null,
  "league": {
   "ortg": 112.74283475464232,
@@ -1944,9 +1944,9 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "5061575",
      "name": "Kon Knueppel",
      "pos": "",
-     "status": "Out",
+     "status": "Day-To-Day",
      "injury": "Knueppel exited Wednesday's game against the Nets after experiencing soreness in his left leg and he will not return, Brett Siegel of ClutchPoints.com reports.",
-     "availability": 0,
+     "availability": 0.5,
      "projMin": 6,
      "starter": false,
      "depthRank": 99,
@@ -15051,8 +15051,8 @@ const SEASON_SLATE_SNAPSHOT = {
    "home": "PHX",
    "away": "ORL",
    "market": {
-    "mlHome": -110,
-    "mlAway": -108,
+    "mlHome": -114,
+    "mlAway": -104,
     "spreadHome": -1.5,
     "total": 222.5,
     "book": "DraftKings",

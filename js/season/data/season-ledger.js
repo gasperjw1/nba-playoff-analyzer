@@ -753,17 +753,20 @@ const SEASON_LEDGER = [
   "pOurs": 0.5802,
   "marginOurs": 2.53,
   "totalOurs": 227.4,
+  "pOursClean": 0.5848,
+  "marginOursClean": 2.68,
+  "totalOursClean": 225.7,
   "pFriend": null,
-  "pMarket": 0.5022,
+  "pMarket": 0.511,
   "pBlend": 0.5802,
-  "mlHome": -110,
-  "mlAway": -108,
+  "mlHome": -114,
+  "mlAway": -104,
   "spreadHome": -1.5,
   "totalMarket": 222.5,
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
-  "recordedAt": "2026-11-05T15:48:37.945Z",
+  "recordedAt": "2026-11-05T18:13:44.951Z",
   "result": null
  },
  {
@@ -775,6 +778,9 @@ const SEASON_LEDGER = [
   "pOurs": 0.6568,
   "marginOurs": 5.05,
   "totalOurs": 238,
+  "pOursClean": 0.6224,
+  "marginOursClean": 3.9,
+  "totalOursClean": 236.1,
   "pFriend": null,
   "pMarket": 0.7071,
   "pBlend": 0.6568,
@@ -785,7 +791,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
-  "recordedAt": "2026-11-05T15:48:37.945Z",
+  "recordedAt": "2026-11-05T18:13:44.952Z",
   "result": null
  }
 ];

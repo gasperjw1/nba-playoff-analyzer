@@ -11,7 +11,7 @@ const seasonState = {
   tab: 'tonight',
   expanded: {},
   lab: { home: null, away: null, rest: { home: {}, away: {} }, avail: {} },
-  results: { date: null, calOpen: false, calMonth: null },
+  results: { mode: 'live', date: null, calOpen: false, calMonth: null },
   propCache: {},
 };
 
@@ -24,9 +24,12 @@ function seasonBoot() {
   if (!slate && typeof SEASON_SLATE_SNAPSHOT !== 'undefined') slate = SEASON_SLATE_SNAPSHOT;
   seasonState.slate = slate;
   seasonState.slateOrigin = origin;
-  const [hashTab, hashArg] = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
-  if (SEASON_TABS.some(([id]) => id === hashTab)) seasonState.tab = hashTab;
-  if (hashTab === 'results' && /^\d{4}-\d{2}-\d{2}$/.test(hashArg || '')) seasonState.results.date = hashArg;
+  const parts = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
+  if (SEASON_TABS.some(([id]) => id === parts[0])) seasonState.tab = parts[0];
+  if (parts[0] === 'results') {
+    if (parts[1] === 'replay') { seasonState.results.mode = 'replay'; parts.splice(1, 1); }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(parts[1] || '')) seasonState.results.date = parts[1];
+  }
   seasonBindKeys();
   if (slate && slate.games.length) {
     seasonState.lab.home = slate.games[0].home;
@@ -55,11 +58,11 @@ function seasonSetTab(tab) {
   renderSeasonApp();
 }
 
-// #tab, or #results/YYYY-MM-DD once a results day is chosen — linkable and bookmarkable.
+// #tab, or #results[/replay][/YYYY-MM-DD] on the results tab — linkable and bookmarkable.
 function seasonWriteHash() {
   if (typeof history === 'undefined' || !history.replaceState) return;
-  const d = seasonState.tab === 'results' && seasonState.results.date;
-  history.replaceState(null, '', '#' + seasonState.tab + (d ? '/' + d : ''));
+  const r = seasonState.results, res = seasonState.tab === 'results';
+  history.replaceState(null, '', '#' + seasonState.tab + (res && r.mode === 'replay' ? '/replay' : '') + (res && r.date ? '/' + r.date : ''));
 }
 
 // ← / → step through results days; Esc closes the calendar. Bound once.
@@ -106,7 +109,11 @@ function seasonGameForecast(game, opts) {
   const m = game.market || {};
   const pFriend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   const blend = blendGameForecast({ pOurs: proj.pHome, pFriend, mlHome: m.mlHome, mlAway: m.mlAway, spreadHome: m.spreadHome });
-  return { proj, blend, pFriend };
+  const cleanSlate = typeof seasonCleanSlate === 'function' ? seasonCleanSlate(slate) : null;
+  const clean = cleanSlate ? projectSeasonGame(game, cleanSlate, opts) : null;
+  const adjSlate = typeof seasonOppAdjSlate === 'function' ? seasonOppAdjSlate(slate) : null;
+  const adj = adjSlate ? projectSeasonGame(game, adjSlate, opts) : null;
+  return { proj, blend, pFriend, clean, adj };
 }
 
 function renderTonight() {
@@ -114,39 +121,60 @@ function renderTonight() {
   if (!s.games.length) return `<div class="home-empty">No games on this slate.</div>`;
   const cards = s.games.map(g => renderGameCard(g)).join('');
   return `<div class="season-grid">${cards}</div>
-    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus ± aging of last season's rating ± roster fit (continuity, rebounding overlap); aging and fit measured on 330 team-seasons; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
+    <p class="muted" style="margin-top:18px">Picks come from Ours · 2025-26 — this engine on last season's ratings, the setup tested leak-free in the replay (Results by Day → Replay), where it still trails the closing line; edge flags stay "unproven" until the ledger holds ${SEASON_ENSEMBLE.stackTrustN} settled games. Ours · opp-adj = the picks engine with this season's results corrected for opponent strength (better on past seasons by a small margin; tracked side by side, not used for picks until the ledger shows it). Ours = the same engine on the feed's ratings, which already include this season (not tested). The engine = (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus ± aging of last season's rating ± roster fit (continuity, rebounding overlap); aging and fit measured on 330 team-seasons; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
 }
 
 function renderGameCard(g) {
-  const { proj, blend, pFriend } = seasonGameForecast(g);
+  const { proj, blend, pFriend, clean, adj } = seasonGameForecast(g);
   const open = !!seasonState.expanded[g.id];
-  const pickHome = (blend.pBlend != null ? blend.pBlend : proj.pHome) >= 0.5;
+  // The pick, score line, edge and waterfall come from the replay-tested setup:
+  // this engine on last season's ratings. The NB.AI-ratings engine and the
+  // blend are shown, not used — neither has been tested without leakage.
+  const v = clean || proj;
+  const pickHome = v.pHome >= 0.5;
   const pick = pickHome ? g.home : g.away;
-  const pPick = blend.pBlend != null ? (pickHome ? blend.pBlend : 1 - blend.pBlend) : (pickHome ? proj.pHome : 1 - proj.pHome);
+  const pPick = pickHome ? v.pHome : 1 - v.pHome;
   const m = g.market || {};
   const flags = [];
   if (blend.modelsAgree === true) flags.push(`<span class="flag flag-agree">MODELS AGREE</span>`);
   else if (blend.modelsAgree === false) flags.push(`<span class="flag flag-disagree">MODELS SPLIT</span>`);
   else flags.push(`<span class="flag flag-none">NB.AI N/A</span>`);
-  if (blend.flagged) flags.push(`<span class="flag flag-edge">${blend.edge > 0 ? g.home : g.away} +${(Math.abs(blend.edge) * 100).toFixed(1)}pp vs market</span>`);
-  const absences = [...proj.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...proj.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
+  const edge = blend.pMarket != null ? v.pHome - blend.pMarket : null;
+  if (edge != null && Math.abs(edge) >= SEASON_ENSEMBLE.edgeFlagPts) {
+    const n = seasonValidatedSettled();
+    flags.push(`<span class="flag flag-edge">${edge > 0 ? g.home : g.away} +${(Math.abs(edge) * 100).toFixed(1)}pp vs market${n < SEASON_ENSEMBLE.stackTrustN ? ` · unproven (${n}/${SEASON_ENSEMBLE.stackTrustN} settled)` : ''}</span>`);
+  }
+  const trust = clean && typeof seasonTrustCheck === 'function' ? seasonTrustCheck(clean, m) : null;
+  if (trust && trust.rule) {
+    const rule = SEASON_TRUST.rules.find(r => r.id === trust.rule), live = seasonTrustRecord(loadSeasonLedger())[trust.rule];
+    const team = trust.side === 'home' ? g.home : g.away;
+    flags.push(`<span class="flag ${rule.avoid ? 'flag-none' : 'flag-edge'}" title="${rule.why}">${rule.avoid ? 'AVOID' : rule.id} · ${team} +${(trust.edge * 100).toFixed(1)}pp over the price at ${trust.ml > 0 ? '+' : ''}${trust.ml} · driven by ${rule.label.toLowerCase()} · frozen rule, ${live.n} judged</span>`);
+  }
+  const absences = [...v.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...v.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
 
   return `<div class="sg-card${open ? ' open' : ''}" onclick="seasonToggleGame('${g.id}')">
     <div class="sg-head">
       <div class="sg-matchup">${g.away} @ ${g.home}</div>
       <div class="sg-when">${g.tip ? seasonFmtTime(g.tip) : ''}${g.venue ? ' · ' + g.venue : ''}</div>
     </div>
-    <div class="sg-pick">${pick} <small>${(pPick * 100).toFixed(1)}% blended</small></div>
-    <div class="sg-score">Proj ${g.home} ${proj.homeScore} – ${g.away} ${proj.awayScore} · ${seasonFmtMargin(g.home, proj.margin)} · total ${proj.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
+    <div class="sg-pick">${pick} <small>${(pPick * 100).toFixed(1)}% · ${clean ? 'replay-tested engine' : 'engine'}</small></div>
+    <div class="sg-score">Proj ${g.home} ${v.homeScore} – ${g.away} ${v.awayScore} · ${seasonFmtMargin(g.home, v.margin)} · total ${v.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
     <div class="sg-chips">
-      ${seasonChip('Ours', proj.pHome, g.home, g.away)}
+      ${clean ? seasonChip('Ours · 2025-26', clean.pHome, g.home, g.away, '', 'replay-tested · picks') : ''}
+      ${adj ? seasonChip('Ours · opp-adj', adj.pHome, g.home, g.away, '', 'tracked · not picks') : ''}
+      ${seasonChip('Ours', proj.pHome, g.home, g.away, '', clean ? 'NB.AI ratings · untested' : '')}
       ${seasonChip('NB.AI', pFriend, g.home, g.away)}
       ${seasonChip('Market', blend.pMarket, g.home, g.away, 'market', blend.pMarketSource)}
       ${seasonChip('Blend', blend.pBlend, g.home, g.away, 'blend')}
     </div>
     <div class="sg-flags">${flags.join('')}${absences.length ? `<span class="flag flag-none">OUT/Q: ${absences.slice(0, 4).join(', ')}${absences.length > 4 ? ' +' + (absences.length - 4) : ''}</span>` : ''}</div>
-    ${open ? renderGameDetail(g, proj) : ''}
+    ${open ? renderGameDetail(g, v) : ''}
   </div>`;
+}
+
+// Settled live-ledger games with a prediction from the replay-tested setup.
+function seasonValidatedSettled() {
+  return loadSeasonLedger().filter(r => r.result && r.pOursClean != null).length;
 }
 
 function seasonChip(label, pHome, homeAbbr, awayAbbr, cls, sub) {
@@ -285,7 +313,20 @@ function seasonLabRefreshResult() {
 
 // ---------- results by day ----------
 
-const SEASON_RESULT_MODELS = [['ours', 'Ours'], ['nbai', 'NB.AI'], ['market', 'Market']];
+// Live = the ledger (recorded before tip-off). Replay = replay-season.js's walk-forward rows,
+// predicted after the fact from data published before each game; never mixed with the ledger.
+const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['oursAdj', 'Ours · opp-adj'], ['nbai', 'NB.AI'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['oursAdj', 'Ours · opp-adj'], ['market', 'Market']];
+function seasonResultModels() { return seasonState.results.mode === 'replay' ? SEASON_RESULT_MODELS_REPLAY : SEASON_RESULT_MODELS_LIVE; }
+function seasonResultsRows() {
+  if (seasonState.results.mode !== 'replay') return loadSeasonLedger();
+  return typeof SEASON_REPLAY !== 'undefined' && SEASON_REPLAY && Array.isArray(SEASON_REPLAY.rows) ? SEASON_REPLAY.rows : [];
+}
+function seasonResultsMode(mode) {
+  Object.assign(seasonState.results, { mode, date: null, calOpen: false, calMonth: null });
+  seasonWriteHash();
+  renderSeasonApp();
+}
 
 // Each model's call on a ledger row: { p, margin, implied } or null.
 // Winner = the side its win probability favours (as on the Ledger tab).
@@ -296,6 +337,9 @@ function seasonModelCalls(r) {
   const call = (p, margin) => (num(p) || num(margin)) ? { p: num(p) ? p : null, margin: num(margin) ? margin : winProbToMargin(p), implied: !num(margin) } : null;
   return {
     ours: call(r.pOurs, r.marginOurs),
+    oursPre: call(r.pOursPre, r.marginOursPre),
+    oursClean: call(r.pOursClean, r.marginOursClean),
+    oursAdj: call(r.pOursAdj, r.marginOursAdj),
     nbai: call(r.pFriend, null),
     market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
   };
@@ -305,9 +349,9 @@ function seasonModelCalls(r) {
 // summary[model] = { n, winners, absErr, closest }; a game's "closest" lists every model tied for the
 // smallest margin miss (to 0.1 pt, as shown). Each model is scored only on games it forecast.
 function seasonResultsByDay(rows) {
-  const blank = () => Object.fromEntries(SEASON_RESULT_MODELS.map(([k]) => [k, { n: 0, winners: 0, absErr: 0, closest: 0 }]));
+  const blank = () => Object.fromEntries(seasonResultModels().map(([k]) => [k, { n: 0, winners: 0, absErr: 0, closest: 0 }]));
   const add = (sum, g) => {
-    SEASON_RESULT_MODELS.forEach(([k]) => {
+    seasonResultModels().forEach(([k]) => {
       const c = g.calls[k]; if (!c) return;
       const s = sum[k]; s.n++; s.winners += c.correct ? 1 : 0; s.absErr += c.err; s.closest += g.closest.includes(k) ? 1 : 0;
     });
@@ -338,14 +382,21 @@ function seasonResultsByDay(rows) {
 }
 
 function renderResultsTab() {
-  const { season, days, unsettledDates } = seasonResultsByDay(loadSeasonLedger());
-  if (!days.length) return `<div class="home-empty">No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).</div>`;
+  const { season, days, unsettledDates } = seasonResultsByDay(seasonResultsRows());
+  const replay = seasonState.results.mode === 'replay';
+  const spec = replay && typeof SEASON_REPLAY !== 'undefined' ? SEASON_REPLAY.spec : null;
+  const modeBar = `<div class="res-mode" role="tablist" aria-label="Results source">
+      <button role="tab" aria-selected="${!replay}" class="${replay ? '' : 'on'}" onclick="seasonResultsMode('live')">Live ledger</button>
+      <button role="tab" aria-selected="${replay}" class="${replay ? 'on' : ''}" onclick="seasonResultsMode('replay')">Replay from opening night</button>
+    </div>${replay ? `<p class="res-banner"><b>Replay</b> — predicted after the fact, game by game, from only what was published before each tip-off: 2025-26 team ratings, this season's earlier games, archived opening rosters and dated moves, and the official injury report ${spec ? spec.reportLeadMinutes : 60}+ minutes before tip. Engine frozen at ${spec ? spec.engine : '—'}. Kept apart from the live ledger and its scoring.</p>` : ''}`;
+  if (!days.length) return `<div class="results">${modeBar}<div class="home-empty">${replay ? 'No replay rows yet — run <code>node replay-season.js</code>.' : 'No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).'}</div></div>`;
   const d = seasonResultsSelected(days);
   const asc = days.map(x => x.date).sort(), i = asc.indexOf(d.date);
   const nGames = days.reduce((n, x) => n + x.games.length, 0);
-  const tag = d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  const tag = d.source === 'replay' ? '<span class="res-tag replay">Replay</span>' : d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
   const r = seasonState.results;
   return `<div class="results">
+    ${modeBar}
     <div class="res-nav">
       <button class="res-arrow" onclick="seasonResultsStep(-1)"${i > 0 ? '' : ' disabled'} aria-label="Previous day" title="Previous day (←)">‹</button>
       <div class="res-pick">
@@ -362,8 +413,10 @@ function renderResultsTab() {
       <ul class="res-legend">
         <li><b>Winner</b> ✓/✗: did the side the model gave over 50% win? The % is that side's win probability.</li>
         <li><b>Margin</b>: predicted winning margin; <i>off</i> = points from the final margin. <b>Closest</b> = the model(s) nearest the final; ties all count.</li>
-        <li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
-        <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>
+        ${replay ? `<li>Market = DraftKings no-vig moneyline and closing spread — the closing line moved after our report cutoff, so it is the harder benchmark.</li>
+        <li><b>Ours + preseason</b> shifts each team's prior by ${spec ? spec.preseasonCoef : 0.099} × its NBA-vs-NBA preseason margin per game (measured on 2016–2026); it fades as this season's games take over.</li>` : `<li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
+        <li><b>Ours</b> uses the feed's team ratings (NB.AI's, which already include this season's games); <b>Ours · 2025-26</b> is the same engine on last season's final ratings, recorded from Nov 5 on.</li>
+        <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>`}
       </ul>
     </section>
   </div>`;
@@ -374,7 +427,7 @@ function seasonResultsSelected(days) { return days.find(x => x.date === seasonSt
 
 // dir -1 = the previous day with results, +1 = the next; no-op at either end.
 function seasonResultsStep(dir) {
-  const { days } = seasonResultsByDay(loadSeasonLedger());
+  const { days } = seasonResultsByDay(seasonResultsRows());
   if (!days.length) return;
   const asc = days.map(x => x.date).sort(), j = asc.indexOf(seasonResultsSelected(days).date) + dir;
   if (j >= 0 && j < asc.length) seasonResultsGo(asc[j]);
@@ -390,7 +443,7 @@ function seasonResultsGo(date) {
 function seasonResultsToggleCal(open) {
   const r = seasonState.results;
   r.calOpen = open == null ? !r.calOpen : !!open;
-  if (r.calOpen) { const { days } = seasonResultsByDay(loadSeasonLedger()); r.calMonth = seasonResultsSelected(days).date.slice(0, 7); }
+  if (r.calOpen) { const { days } = seasonResultsByDay(seasonResultsRows()); r.calMonth = seasonResultsSelected(days).date.slice(0, 7); }
   renderSeasonApp();
 }
 
@@ -430,7 +483,7 @@ function seasonResultsCalendar(days, selected, unsettledDates) {
 }
 
 function seasonResultsScoreboard(sum) {
-  const present = SEASON_RESULT_MODELS.filter(([k]) => sum[k].n);
+  const present = seasonResultModels().filter(([k]) => sum[k].n);
   // Compare what is shown: whole-number win %, one-decimal margin miss, share of games closest.
   const pct = k => Math.round(sum[k].winners / sum[k].n * 100);
   const mae = k => (sum[k].absErr / sum[k].n).toFixed(1);
@@ -440,7 +493,7 @@ function seasonResultsScoreboard(sum) {
   const lead = (on, html) => present.length > 1 && on ? `<b class="res-best">${html}</b>` : html;
   return `<table class="res-score">
     <tr><th>Model</th><th>Winners picked</th><th>Avg margin miss</th><th>Closest on margin</th></tr>
-    ${SEASON_RESULT_MODELS.map(([k, label]) => {
+    ${seasonResultModels().map(([k, label]) => {
       const s = sum[k];
       if (!s.n) return `<tr class="res-none"><td>${label}</td><td colspan="3">no forecasts</td></tr>`;
       return `<tr><td>${label}</td>
@@ -452,7 +505,7 @@ function seasonResultsScoreboard(sum) {
 }
 
 function seasonResultsDay(d) {
-  const cols = SEASON_RESULT_MODELS.filter(([k]) => d.summary[k].n);   // a model with no forecasts that day gets no column
+  const cols = seasonResultModels().filter(([k]) => d.summary[k].n);   // a model with no forecasts that day gets no column
   return `<section class="res-day">
     ${seasonResultsScoreboard(d.summary)}
     <div class="res-scroll"><table class="res-games">
@@ -463,7 +516,7 @@ function seasonResultsDay(d) {
 }
 
 function seasonResultsGameRow(g, cols) {
-  cols = cols || SEASON_RESULT_MODELS;
+  cols = cols || seasonResultModels();
   const r = g.row, res = r.result;
   const winner = g.actual > 0 ? r.home : r.away;
   const cell = k => {
@@ -478,9 +531,9 @@ function seasonResultsGameRow(g, cols) {
       <span class="res-mark ${c.correct ? 'ok' : 'bad'}">${c.correct ? '✓' : '✗'}</span><b>${pick}</b>${pPick != null ? ` <span class="res-pct">${pPick}%</span>` : ''}
       <span class="res-sub">${margin} · off ${c.errShown.toFixed(1)}</span></td>`;
   };
-  const names = Object.fromEntries(SEASON_RESULT_MODELS);
+  const names = Object.fromEntries(seasonResultModels());
   return `<tr>
-    <td class="res-game">${r.away} @ ${r.home}</td>
+    <td class="res-game"${r.provenance ? ` title="Injury report ${seasonReportLabel(r.provenance.report)} · inputs ${r.provenance.inputsHash}"` : ''}>${r.away} @ ${r.home}${r.provenance ? `<span class="res-sub">report ${seasonReportLabel(r.provenance.report)}</span>` : ''}</td>
     <td class="res-final"><b>${winner} by ${Math.abs(g.actual)}</b><span class="res-sub">${r.away} ${res.awayScore} – ${r.home} ${res.homeScore}</span></td>
     ${cols.map(([k]) => cell(k)).join('')}
     <td class="res-who">${g.closest.map(k => names[k]).join(', ')}</td>
@@ -499,6 +552,7 @@ function renderLedgerTab() {
     <div class="lab-row"><button class="btn btn-primary btn-sm" onclick="seasonRecordTonight()">Record tonight's slate</button>
       <button class="btn btn-secondary btn-sm" onclick="seasonExportLedger()">Copy ledger JSON</button>
       <span class="muted">${rows.length} rows · ${settled} settled · recorded before tip-off only counts</span></div>
+    ${typeof SEASON_TRUST !== 'undefined' ? renderTrustRules(rows) : ''}
     <div class="scorecard">${tile('ours', 'Ours')}${tile('friend', 'NB.AI')}${tile('market', 'Market')}${tile('blend', 'Blend')}${tile('baseline', 'Always home')}</div>
     <p class="muted">Targets: no-vig closing line runs ≈ 67.8% / Brier 0.205 / margin MAE ≈ 10 over 13k+ games. ${stack.status === 'insufficient' ? `Stacking weights need ${stack.needed} settled games with all three forecasts (have ${stack.n}).` : `Stacking (${stack.status}, n=${stack.n}): logit P = ${stack.bias} + ${stack.weights.map((w, i) => `${w}·${stack.labels[i]}`).join(' + ')}. ${stack.note}`}</p>
     <table><tr><th>Date</th><th>Game</th><th>Ours</th><th>NB.AI</th><th>Market</th><th>Blend</th><th>Line</th><th>Result</th><th></th></tr>
@@ -520,12 +574,35 @@ function seasonResultMark(r) {
   return `<span class="muted">ours ${mark(r.pOurs)} nb.ai ${mark(r.pFriend)} mkt ${mark(r.pMarket)}</span>`;
 }
 
+// Frozen trust rules: the live record (judged from SEASON_TRUST.judgedFrom), beside the replay's
+// description of the same rules (eve variant — report from before 9 PM ET the evening before —
+// against DraftKings' opening line; a development set, shown for context, never as evidence).
+function seasonReplayTrustRows() {
+  if (typeof SEASON_REPLAY === 'undefined' || !SEASON_REPLAY) return [];
+  return SEASON_REPLAY.rows.filter(r => r.open && r.open.mlHome != null && r.open.mlAway != null && r.compsEve && r.pOursEve != null).map(r => ({
+    date: r.date, home: r.home, away: r.away, result: r.result, mlHome: r.open.mlHome, mlAway: r.open.mlAway, book: 'DraftKings',
+    close: r.mlHome != null && r.mlAway != null ? { mlHome: r.mlHome, mlAway: r.mlAway, book: 'DraftKings' } : null,
+    trust: seasonTrustCheck({ pHome: r.pOursEve, margin: r.marginOursEve }, { mlHome: r.open.mlHome, mlAway: r.open.mlAway, spreadHome: r.open.spreadHome }, r.compsEve),
+  }));
+}
+function renderTrustRules(rows) {
+  const live = seasonTrustRecord(rows), rep = seasonTrustRecord(seasonReplayTrustRows(), { from: '0000' });
+  const cell = (g) => g.n || g.clvN ? `${g.n ? `${g.won}–${g.n - g.won} · ${g.units >= 0 ? '+' : ''}${g.units}u` : '—'}${g.clvN ? ` · line moved our way ${g.toward}/${g.clvN} (avg ${g.move >= 0 ? '+' : ''}${(g.move * 100).toFixed(1)} pp)` : ''}${g.clvSkipped ? ` · ${g.clvSkipped} close from another book skipped` : ''}` : '<span class="muted">none yet</span>';
+  const line = (id, label, why, avoid) => `<tr><td><b>${id}</b></td><td>${label}${avoid ? ' <span class="muted">(fade our side)</span>' : ''}<div class="muted">${why}</div></td><td>${cell(live[id])}</td><td class="muted">${cell(rep[id])}</td></tr>`;
+  return `<h4 style="margin-top:4px">Trust rules — frozen ${SEASON_TRUST.frozen}, judged from ${SEASON_TRUST.judgedFrom}</h4>
+    <p class="muted">A rule fires when the picks engine's win probability beats the probability DraftKings' price implies by ${SEASON_TRUST.minEdge * 100}+ percentage points (pp) and one engine step drives the gap. Live: record at the price when recorded, and whether the line then moved toward our side by the close (same book only). Replay: the same rules on the eve variant — injury report from before 9 PM ET the evening before, results through that morning — against DraftKings' opening line. It is the development set the rules were drafted from (drafted on the tip-time variant, which had later news than the open), so it describes them and proves nothing; DraftKings' opening time is not recorded.</p>
+    <table><tr><th>Rule</th><th>When the gap is driven by</th><th>Live</th><th>Replay (description only)</th></tr>
+    ${line('ALL', 'Any edge', 'every game with an edge of ' + SEASON_TRUST.minEdge * 100 + '+ pp')}
+    ${SEASON_TRUST.rules.map(r => line(r.id, r.label, r.why, r.avoid)).join('')}
+    </table>`;
+}
+
 function seasonRecordTonight() {
   const s = seasonState.slate;
   const now = new Date();
   const entries = s.games.filter(g => !g.tip || new Date(g.tip) > now).map(g => {
-    const { proj, blend } = seasonGameForecast(g);
-    return buildLedgerEntry(g, proj, blend, s);
+    const { proj, blend, clean, adj } = seasonGameForecast(g);
+    return buildLedgerEntry(g, proj, blend, s, clean, adj);
   });
   const res = recordSeasonEntries(entries);
   const skippedTip = s.games.length - entries.length;
@@ -591,4 +668,6 @@ function seasonFmtDay(iso, long) {
   try { return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: long ? 'long' : 'short', month: 'short', day: 'numeric' }).format(new Date(iso + 'T12:00:00Z')); }
   catch (e) { return iso; }
 }
+// "Injury-Report_2026-10-20_05_00PM.pdf" → "5:00 PM ET".
+function seasonReportLabel(name) { const m = /_(\d{2})_(\d{2})([AP]M)\.pdf$/.exec(name || ''); return m ? `${+m[1]}:${m[2]} ${m[3]} ET` : (name || ''); }
 function seasonPct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }

@@ -29,6 +29,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/engine.js');
   load('js/season/props.js');
   load('js/season/ensemble.js');
+  load('js/season/trust.js');
   load('js/season/ledger.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
@@ -151,7 +152,14 @@ console.log('TEST 3: player value (BPM) and roster adjustment');
   const newcomer = makePlayer('n1', 'Newcomer', 30, 18, 6, 4);
   c.SEASON_PLAYER_PRIORS.players.n1 = priorEntry(c, newcomer, { ZZZ: 82 });
   const vn = c.playerImpactPts(newcomer, pace);
-  near(adj({ ...A, players: [...A.players, newcomer] }), vn, 0.006, 'arrival adds his full value');
+  // The fixture rotation plays exactly 240 minutes, so an arrival takes minutes from it.
+  const withNew = c.calcRosterAdjustment({ ...A, players: [...A.players, newcomer] }, s);
+  const sc = 240 / 270;
+  near(withNew.minutes.scale, sc, 1e-3, 'rotation scaled back to 240 minutes');
+  near(withNew.adj, vn * sc - (1 - sc) * A.players.reduce((t, p) => t + c.playerImpactPts(p, pace), 0), 0.02,
+    'arrival adds his value at capped minutes, less the minutes he takes from the rotation');
+  near(adj({ ...A, players: [...swap(A.players, star.id, { availability: 0 }), newcomer] }), vn - v, 0.006,
+    'arrival filling an injured starter\'s minutes adds his full value');
   near(adj({ ...A, players: [...A.players, { ...newcomer, availability: 0 }] }), 0, 1e-9, 'arrival who is out costs nothing — never in the rating');
 
   c.SEASON_PLAYER_PRIORS.players.d1 = priorEntry(c, makePlayer('d1', 'Departed', 30, 18, 6, 4), { AAA: 41 });
@@ -764,6 +772,252 @@ console.log('TEST 18: team priors + user bet log');
     const d = b.legs.reduce((p, l) => p * dec(l.odds), 1);
     assert(Math.abs(dec(b.americanOdds) - d) / d < 0.01, `${b.id}: parlay odds are the product of the legs`);
   });
+}
+
+// ── TEST 19: walk-forward replay core ──────────────────────
+console.log('TEST 19: replay core (point-in-time rosters, report matching, leak guards)');
+{
+  const c = loadCtx(false);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/replay-core.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  // Names: report "Last[, Jr.], First" and ESPN "First Last Jr." meet in the middle.
+  assert(c.replayNormName('Jackson Jr., Jaren') === c.replayNormName('Jaren Jackson Jr.') && c.replayNormName('Jaren Jackson Jr.') === 'jaren jackson', 'suffix and comma order normalize');
+  assert(c.replayNormName('Udeh, Jr., Ernest') === 'ernest udeh', 'suffix between commas');
+  assert(c.replayNormName('Nikola Jokić') === 'nikola jokic' && c.replayNormName('Gilgeous-Alexander, Shai') === 'shai gilgeous alexander', 'accents and hyphens');
+
+  // Rosters: every event kind, in date order, strictly before the cutoff.
+  const R = (events, cutoff) => { const r = c.replayRosterAsOf(events, cutoff); return Object.fromEntries(Object.entries(r).map(([t, m]) => [t, [...m.keys()].sort().join(',')])); };
+  const seed = [{ at: '2026-06-30', kind: 'seed', team: 'OKC', id: 'a', name: 'A' }, { at: '2026-06-30', kind: 'seed', team: 'OKC', id: 'b', name: 'B' }];
+  assert(R(seed, '2026-10-20').OKC === 'a,b', 'seed puts last season\'s players on their team');
+  let ev = seed.concat([{ at: '2026-07-10', kind: 'join', team: 'MIA', id: 'b', name: 'B' }]);
+  assert(R(ev, '2026-10-20').OKC === 'a' && R(ev, '2026-10-20').MIA === 'b', 'a signing moves a player');
+  ev = seed.concat([{ at: '2026-10-14', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-17', kind: 'appear-pre', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'b', 'a preseason box score cannot undo the team\'s own waiver');
+  ev = ev.concat([{ at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-24').OKC === 'a,b' && R(ev, '2026-10-23').OKC === 'b', 'a regular-season appearance re-adds him, from the next day only');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-21', kind: 'join', team: 'DAL', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-24').DAL === 'a' && R(ev, '2026-10-24').OKC === 'b', 'a stale box listing for the team that waived him does not pull him back once he joined another');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a', dnp: true }]);
+  assert(R(ev, '2026-10-24').OKC === 'b', 'a did-not-play listing after his waiver does not re-add him');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a', dnp: false }]);
+  assert(R(ev, '2026-10-24').OKC === 'a,b', 'actually playing after his waiver (re-signed) re-adds him');
+  ev = seed.concat([{ at: '2026-10-05', kind: 'appear-pre', team: 'MIN', id: 'b' }]);
+  assert(R(ev, '2026-10-20').MIN === 'b' && R(ev, '2026-10-20').OKC === 'a', 'a preseason appearance moves a traded player');
+  ev = seed.concat([{ at: '2026-07-07', kind: 'retire', team: '*', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'b', 'retirement removes him');
+  ev = seed.concat([{ at: '2026-10-16T09:09:08.000Z', kind: 'snapshot', team: 'OKC', ids: { b: 'B', c: 'C' } }]);
+  assert(R(ev, '2026-10-20').OKC === 'b,c' && R(ev, '2026-10-16').OKC === 'a,b', 'a roster snapshot sets the roster exactly, only after its capture time');
+  ev = seed.concat([{ at: '2026-10-20', kind: 'leave', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'a,b', 'an event on the day itself is not used');
+
+  // Report matching: team roster first, family-name order, unique league-wide fallback.
+  const roster = new Map([['1', 'Jaren Jackson Jr.'], ['2', 'Yang Hansen']]);
+  const league = new Map([['ernest udeh', ['9']], ['john smith', ['5', '6']]]);
+  const m = c.replayMatchReport([
+    { player: 'Jackson Jr., Jaren', status: 'Questionable', reason: 'Knee' },
+    { player: 'Yang, Hansen', status: 'Out', reason: '' },
+    { player: 'Udeh, Jr., Ernest', status: 'Doubtful', reason: '' },
+    { player: 'Smith, John', status: 'Out', reason: '' },
+    { player: 'Jackson Jr., Jaren', status: 'Suspended', reason: '' },
+  ], roster, league);
+  assert(m.availability['1'] === 0.5 && m.availability['2'] === 0 && m.availability['9'] === 0.1, 'report statuses map to 0.5 / 0 / 0.1 by id');
+  assert(m.unmatched.length === 2 && m.unmatched.some(e => e.player === 'Smith, John') && m.unmatched.some(e => e.status === 'Suspended'), 'ambiguous names and unknown statuses stay unmatched');
+
+  // Teams: refuses same-day or later games; roster decides who is there; availability applied.
+  const pri = c.SEASON_TEAM_RATINGS.teams;
+  const past = [{ id: 'g1', date: '2026-10-21', home: 'OKC', away: 'MIA', homeScore: 110, awayScore: 100, box: { OKC: [{ id: '10', name: 'P10', played: true, line: { min: 30, pts: 20, reb: 5, ast: 5, tpm: 1, stl: 1, blk: 0, to: 2, fgm: 8, fga: 15, ftm: 3, fta: 4, tpa: 3 } }], MIA: [] } }];
+  let threw = false;
+  try { c.replayBuildTeams(pri, '2026-10-21', past, {}, {}, {}); } catch (e) { threw = /on or after the day/.test(e.message); }
+  assert(threw, 'replayBuildTeams refuses a game from the day itself');
+  const teams = c.replayBuildTeams(pri, '2026-10-22', past, { OKC: new Map([['11', 'P11']]) }, { 11: 0.5 }, { 11: 'Questionable — Ankle' });
+  const okc = teams.OKC;
+  assert(okc.players.length === 1 && okc.players[0].id === '11' && okc.players[0].availability === 0.5 && okc.players[0].seasonGames === 0 && okc.current.games === 1 && okc.current.ppg === 110, 'roster-only player gets zero lines; dropped player is gone; this season counted');
+  // Preseason shift: after retention the net moves by exactly coef × margin per game.
+  const shifted = c.replayPreseasonShift(teams, { OKC: { n: 4, diff: 40 } }, 0.099);
+  const net = t => (t.prior.ortg - t.prior.drtg) * c.SEASON_PRIOR_RETENTION;
+  near(net(shifted.OKC) - net(teams.OKC), 0.99, 1e-9, 'preseason shift = 0.099 × 10 per game after retention');
+  assert(net(shifted.MIA) === net(teams.MIA), 'no preseason games, no shift');
+  const rows = c.replayPredictDay({ date: '2026-10-22', games: [{ id: 'x', tip: '2026-10-22T23:00Z', home: 'OKC', away: 'MIA' }], teams, league: c.deriveLeagueAverages(pri) });
+  assert(rows.length === 1 && rows[0].pHome > 0 && rows[0].pHome < 1 && !('result' in rows[0]), 'one prediction per game, no result attached');
+}
+
+// ── TEST 20: Results tab, replay mode ──────────────────────
+console.log('TEST 20: Results tab — replay mode stays apart from the ledger');
+{
+  const c = loadCtx(false, true);
+  const rr = (id, date, o) => ({ id, date, tip: date + 'T23:00Z', home: 'BOS', away: 'NY', pOurs: 0.6, marginOurs: 3, pOursPre: 0.55, marginOursPre: 2, pFriend: null,
+    pMarket: 0.5, spreadHome: -1, source: 'replay', result: { homeScore: 104, awayScore: 100 }, provenance: { report: 'Injury-Report_2026-10-20_05_30PM.pdf', inputsHash: 'abc' }, ...o });
+  c.SEASON_REPLAY = { spec: { engine: 'E', reportLeadMinutes: 60, preseasonCoef: 0.099 }, rows: [rr('r1', '2026-10-20'), rr('r2', '2026-10-21', { result: { homeScore: 90, awayScore: 99 } })] };
+  c.SEASON_LEDGER = [{ id: 'l1', date: '2026-11-02', tip: '2026-11-02T23:00Z', home: 'MIA', away: 'LAC', pOurs: 0.4, marginOurs: -2, pFriend: 0.45, pMarket: 0.5, spreadHome: 0, result: { homeScore: 100, awayScore: 99 } }];
+  let hash = null;
+  c.history = { replaceState: (a, b, u) => { hash = u; } };
+  c.seasonState.tab = 'results';
+  c.seasonResultsMode('replay');
+  let html = c.renderResultsTab();
+  assert(/res-banner/.test(html) && /<th>Ours \+ preseason<\/th>/.test(html) && !/<th>NB\.AI<\/th>/.test(html) && /Wednesday, Oct 21/.test(html) && !/MIA/.test(html), 'replay mode shows replay rows only, with the preseason column and banner');
+  assert(/report 5:30 PM ET/.test(html), 'each replay game shows the injury report it used');
+  assert(hash === '#results/replay', 'switching to replay updates the link');
+  c.seasonResultsStep(-1);
+  assert(hash === '#results/replay/2026-10-20', 'links carry the mode and the day');
+  c.seasonResultsMode('live');
+  html = c.renderResultsTab();
+  assert(/Monday, Nov 2/.test(html) && /<th>NB\.AI<\/th>/.test(html) && !/Ours \+ preseason/.test(html) && !/res-banner/.test(html), 'live mode shows the ledger only');
+  c.location = { hash: '#results/replay/2026-10-20' };
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  c.seasonBoot();
+  assert(c.seasonState.results.mode === 'replay' && c.seasonState.results.date === '2026-10-20', 'a #results/replay/<date> link opens that replay day');
+  c.seasonState.results.mode = 'replay';
+  c.SEASON_REPLAY = { spec: null, rows: [] };
+  assert(/No replay rows yet/.test(c.renderResultsTab()), 'replay mode without data says how to make it');
+  delete c.location; c.history = undefined;
+}
+
+// ── TEST 21: both ratings sets recorded side by side ──────────
+console.log('TEST 21: predictions under the feed ratings and last season\'s ratings');
+{
+  const c = loadCtx(true, true);
+  const S = c.SEASON_SLATE_SNAPSHOT;
+  assert(c.seasonCleanSlate(S) === null, 'no clean slate until team-ratings.js is loaded');
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const clean = c.seasonCleanSlate(S);
+  const ab = S.games[0].home;
+  assert(clean.teams[ab].prior === c.SEASON_TEAM_RATINGS.teams[ab].prior && clean.teams[ab].players === S.teams[ab].players && S.teams[ab].prior !== clean.teams[ab].prior, 'clean slate swaps only the priors');
+  assert(clean.league.teams === 30 && clean.league.derived, 'clean league average comes from all 30 last-season ratings');
+  const g = S.games[0];
+  const proj = c.projectSeasonGame(g, S), cp = c.projectSeasonGame(g, clean);
+  const blend = c.blendGameForecast({ pOurs: proj.pHome, pFriend: null, mlHome: (g.market || {}).mlHome, mlAway: (g.market || {}).mlAway });
+  const row = c.buildLedgerEntry(g, proj, blend, S, cp);
+  assert(row.pOursClean === cp.pHome && row.marginOursClean === cp.margin && row.pOurs === proj.pHome, 'ledger row stores both predictions');
+  assert(c.buildLedgerEntry(g, proj, blend, S).pOursClean === null, 'rows without the second prediction keep null');
+  c.seasonState.slate = S;
+  assert(c.seasonGameForecast(g).clean && Math.abs(c.seasonGameForecast(g).clean.pHome - cp.pHome) < 1e-12, 'tonight cards compute the same second prediction');
+  const res = (id, o) => ({ id, date: '2026-11-05', tip: '2026-11-05T23:00Z', home: 'GS', away: 'MIA', pOurs: 0.66, marginOurs: 5, pFriend: null, pMarket: 0.7, spreadHome: -7.5, result: { homeScore: 110, awayScore: 100 }, ...o });
+  c.SEASON_LEDGER = [res('a', { pOursClean: 0.62, marginOursClean: 3.9 })];
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  assert(/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'Results shows the 2025-26 column when rows carry it');
+  c.SEASON_LEDGER = [res('b')];
+  assert(!/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'and hides it for days recorded before it existed');
+
+  // The card's pick comes from the replay-tested setup (last season's ratings), not the blend.
+  const card = c.renderGameCard(g);
+  const vPick = cp.pHome >= 0.5 ? g.home : g.away, vP = cp.pHome >= 0.5 ? cp.pHome : 1 - cp.pHome;
+  assert(card.includes(`<div class="sg-pick">${vPick} <small>${(vP * 100).toFixed(1)}% · replay-tested engine</small>`), 'pick = engine on last season\'s ratings');
+  assert(card.includes(`Proj ${g.home} ${cp.homeScore} – ${g.away} ${cp.awayScore}`), 'score line from the same setup');
+  const strong = { ...g, market: { ...(g.market || {}), mlHome: cp.pHome > 0.5 ? 400 : -600, mlAway: cp.pHome > 0.5 ? -600 : 400 } };
+  const flagHtml = (c.renderGameCard(strong).match(/<span class="flag flag-edge">[^<]*/) || [''])[0];
+  assert(/vs market · unproven \(\d+\/150 settled\)/.test(flagHtml), `edge flag says unproven until 150 settled games (got "${flagHtml}")`);
+}
+
+console.log('TEST 22: opponent-adjusted line (tracked beside the picks engine)');
+{
+  const c = loadCtx(false);
+  const slate = makeSlate(c);
+  const T = slate.teams;
+  T.AAA.current = { ppg: 115, papg: 105, games: 1 }; T.BBB.current = { ppg: 105, papg: 115, games: 1 };
+  const results = [{ date: '2026-10-25', home: 'AAA', away: 'BBB', homeScore: 115, awayScore: 105 }];
+  const adj = c.seasonOpponentAdjust(T, slate.league, results);
+  // Equal teams: AAA's +10 at home counts as +10 − home court + BBB's rating (0).
+  near(adj.AAA.current.ppg - adj.AAA.current.papg, 10 - c.SEASON_HCA, 1e-9, 'home win adjusted for home court');
+  near(adj.BBB.current.ppg - adj.BBB.current.papg, -(10 - c.SEASON_HCA), 1e-9, 'road loss adjusted the same way');
+  near(adj.AAA.current.ppg + adj.AAA.current.papg, 220, 1e-9, 'points sum kept (totals unchanged)');
+  assert(adj.AAA.current.oppAdjusted.raw === 10 && adj.AAA.current.oppAdjusted.games === 1, 'raw and adjusted margins itemised');
+  assert(T.AAA.current.ppg === 115, 'input teams not mutated');
+  // A stronger opponent makes the same result worth more.
+  const strong = { ...T, BBB: { ...T.BBB, prior: { ...T.BBB.prior, ortg: T.BBB.prior.ortg + 6 } } };
+  const adj2 = c.seasonOpponentAdjust(strong, slate.league, results);
+  assert(adj2.AAA.current.ppg - adj2.AAA.current.papg > adj.AAA.current.ppg - adj.AAA.current.papg, 'beating a stronger team counts for more');
+  // Unknown teams and unfinished games are ignored; a team with no games is unchanged.
+  const adj3 = c.seasonOpponentAdjust(T, slate.league, [...results, { date: '2026-10-26', home: 'AAA', away: 'ZZZ', homeScore: 200, awayScore: 0 }, { date: '2026-10-27', home: 'AAA', away: 'BBB', homeScore: null, awayScore: null }]);
+  near(adj3.AAA.current.ppg - adj3.AAA.current.papg, 10 - c.SEASON_HCA, 1e-9, 'unknown opponents and unfinished games ignored');
+  const idle = c.seasonOpponentAdjust({ ...T, AAA: { ...T.AAA, current: { ppg: null, papg: null, games: 0 } } }, slate.league, results);
+  assert(idle.AAA.current.ppg === null, 'no games this season → unchanged');
+}
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const S = c.SEASON_SLATE_SNAPSHOT, g = S.games[0];
+  assert(c.seasonOppAdjSlate({ ...S, results: undefined }) === null, 'no adjusted line without this season\'s results');
+  const withRes = { ...S, results: [{ date: '2026-10-21', home: g.home, away: g.away, homeScore: 120, awayScore: 100 }] };
+  const A = c.seasonOppAdjSlate(withRes), clean = c.seasonCleanSlate(withRes);
+  assert(A.teams[g.home].prior === clean.teams[g.home].prior && A.teams[g.home].current.oppAdjusted, 'adjusted slate = last season\'s ratings + adjusted form');
+  const pa = c.projectSeasonGame(g, A);
+  const blend = c.blendGameForecast({ pOurs: 0.5, pFriend: null, mlHome: -110, mlAway: -110 });
+  const row = c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, withRes, c.projectSeasonGame(g, clean), pa);
+  assert(row.pOursAdj === pa.pHome && row.marginOursAdj === pa.margin, 'ledger row stores the adjusted line');
+  c.seasonState.slate = withRes;
+  const card = c.renderGameCard(g), cp = c.projectSeasonGame(g, clean);
+  assert(card.includes('Ours · opp-adj') && card.includes('tracked · not picks'), 'card shows the adjusted line as tracked');
+  assert(card.includes(`${cp.pHome >= 0.5 ? g.home : g.away} <small>${((cp.pHome >= 0.5 ? cp.pHome : 1 - cp.pHome) * 100).toFixed(1)}% · replay-tested engine`), 'pick still from the replay-tested engine');
+  c.SEASON_LEDGER = [{ id: 'x', date: '2026-11-05', tip: '2026-11-05T23:00Z', home: 'GS', away: 'MIA', pOurs: 0.66, marginOurs: 5, pOursAdj: 0.6, marginOursAdj: 3, pMarket: 0.7, spreadHome: -7.5, result: { homeScore: 110, awayScore: 100 } }];
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  assert(/<th>Ours · opp-adj<\/th>/.test(c.renderResultsTab()), 'Results shows the adjusted column when rows carry it');
+  const R = (() => { const x = {}; vm.createContext(x); vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^const /m, 'var '), x); return x.SEASON_REPLAY; })();
+  assert(R.rows.every(r => typeof r.pOursAdj === 'number'), 'every replay row carries the adjusted variant');
+}
+
+console.log('TEST 23: frozen trust rules (edge, driver, closing-line value)');
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const S = c.SEASON_SLATE_SNAPSHOT, clean = c.seasonCleanSlate(S);
+  for (const g of S.games) {
+    const p = c.projectSeasonGame(g, clean), k = c.seasonEdgeComponents(p);
+    near(Object.values(k).reduce((a, b) => a + b, 0), p.margin, 0.06, `${g.away}@${g.home}: steps add up to the margin`);
+  }
+  assert(c.SEASON_TRUST.frozen === '2026-11-05' && c.SEASON_TRUST.judgedFrom === '2026-11-06', 'rules dated: frozen Nov 5, judged from Nov 6');
+  // Edge and side: model 60% home vs an even −110/−110 price → home, edge 0.60 − 0.5238.
+  const comps = { prior: 0, current: 0, absent: 0, change: 3, aging: 0, fit: 0, rest: 0, hca: 2 };
+  const t = c.seasonTrustCheck({ pHome: 0.6, margin: 3.2 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, comps);
+  near(t.edge, 0.6 - 110 / 210, 1e-4, 'edge = model − implied (vig included)');
+  assert(t.side === 'home' && t.ml === -110 && t.driver === 'change' && t.rule === 'R2', 'roster-change gap → R2 on the home side');
+  const away = c.seasonTrustCheck({ pHome: 0.35, margin: -4 }, { mlHome: -150, mlAway: 130, spreadHome: -3 }, { ...comps, change: 0, rest: -4 });
+  assert(away.side === 'away' && away.driver === 'rest' && away.rule === 'R3', 'rest-driven gap on the away side → R3');
+  const small = c.seasonTrustCheck({ pHome: 0.53, margin: 1 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, comps);
+  assert(small.edge < c.SEASON_TRUST.minEdge && small.rule === null, 'edge under the minimum → no rule');
+  assert(c.seasonTrustCheck({ pHome: 0.6, margin: 3 }, { mlHome: null, mlAway: -110 }, comps) === null, 'no moneyline → no check');
+  // Driver = the step whose removal closes most of the gap; a step pointing the other way never drives.
+  const d = c.seasonTrustCheck({ pHome: 0.6, margin: 5 }, { mlHome: -110, mlAway: -110, spreadHome: 0 }, { prior: 6, current: -1, absent: 0, change: 0, aging: 0, fit: 0, rest: 0, hca: 0 });
+  assert(d.driver === 'prior' && d.rule === 'R1', 'driver = the step whose removal closes most of the gap');
+  // Record: units at the recorded price; closing-line value from recorded → close.
+  const row = (o) => ({ date: '2026-11-06', home: 'A', away: 'B', mlHome: -110, mlAway: -110, trust: t, ...o });
+  const rec = c.seasonTrustRecord([
+    row({ book: 'DraftKings', result: { homeScore: 100, awayScore: 90 }, close: { mlHome: -150, mlAway: 130, book: 'DraftKings' } }),
+    row({ book: 'DraftKings', result: { homeScore: 90, awayScore: 100 }, close: { mlHome: 105, mlAway: -125, book: 'draftkings' } }),
+    row({ date: '2026-11-05', result: { homeScore: 100, awayScore: 90 } }),
+    row({ trust: small, result: { homeScore: 100, awayScore: 90 } }),
+  ]);
+  assert(rec.R2.n === 2 && rec.R2.won === 1 && rec.ALL.n === 2, 'counts only judged dates and edges ≥ minimum');
+  near(rec.R2.units, 100 / 110 - 1, 0.01, 'units at the recorded price');
+  assert(rec.R2.clvN === 2 && rec.R2.toward === 1 && rec.R2.against === 1, 'line moving toward / against our side');
+  assert(rec.R1.n === 0 && rec.R1.move === null, 'empty rule stays empty');
+  const recBook = c.seasonTrustRecord([row({ book: 'DraftKings', result: { homeScore: 100, awayScore: 90 }, close: { mlHome: -150, mlAway: 130, book: 'FanDuel' } })]);
+  assert(recBook.R2.n === 1 && recBook.R2.clvN === 0 && recBook.R2.clvSkipped === 1, 'close from another book is not used for CLV');
+  const recOld = c.seasonTrustRecord([row({ trust: { ...t, minEdge: 0.01, edge: 0.02, rule: 'R9' }, result: { homeScore: 100, awayScore: 90 } })]);
+  assert(recOld.ALL.n === 1 && recOld.R9 && recOld.R9.n === 1, 'judged with the threshold and rule stored at record time');
+  // Ledger row and card carry the check from the picks engine.
+  const g = S.games[0], cp = c.projectSeasonGame(g, clean);
+  const blend = c.blendGameForecast({ pOurs: 0.5, pFriend: null, mlHome: (g.market || {}).mlHome, mlAway: (g.market || {}).mlAway });
+  const entry = c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, S, cp);
+  assert(entry.trust && JSON.stringify(entry.trust) === JSON.stringify(c.seasonTrustCheck(cp, g.market)), 'ledger row stores the trust check of the picks engine');
+  assert(c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, S).trust === null, 'no picks-engine projection → no trust check');
+  c.seasonState.slate = S;
+  const forced = { ...g, market: { ...(g.market || {}), mlHome: cp.pHome > 0.5 ? 300 : -900, mlAway: cp.pHome > 0.5 ? -900 : 300 } };
+  const tc = c.seasonTrustCheck(cp, forced.market);
+  const card = c.renderGameCard(forced);
+  assert(!tc.rule || card.includes(`${tc.rule === 'AVOID' ? 'AVOID' : tc.rule} · `), 'card flags the rule that fires');
+  const lt = c.renderLedgerTab();
+  assert(/Trust rules — frozen 2026-11-05/.test(lt) && /Replay \(description only\)/.test(lt), 'Ledger tab shows the rules, replay marked description only');
+  const R = (() => { const x = {}; vm.createContext(x); vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^const /m, 'var '), x); return x.SEASON_REPLAY; })();
+  assert(R.rows.every(r => r.compsMorning && typeof r.pOursMorning === 'number' && r.provenance.reportMorningAt < r.provenance.reportAt), 'replay rows carry the morning variant from an earlier report');
+  assert(R.rows.every(r => new Date(r.provenance.reportMorningAt).getTime() <= Date.parse(r.tip) - 6 * 36e5 + 1), 'morning reports are at least 6 hours before tip');
+  assert(R.rows.every(r => r.compsEve && typeof r.pOursEve === 'number' && r.provenance.reportEveAt < r.provenance.reportMorningAt && r.provenance.boxCutoff), 'eve variant: an earlier report still');
+  assert(R.rows.every(r => { const e = new Date(r.provenance.reportEveAt); return new Date(e.getTime() + 864e5).toISOString().slice(0, 10) >= r.date || e.toISOString().slice(0, 10) < r.date; }), 'eve reports come from before game day');
+  // Local rows cannot rewrite committed evidence.
+  c.SEASON_LEDGER = [{ id: 'k1', date: '2026-11-06', home: 'A', away: 'B', pOurs: 0.6, mlHome: -110, mlAway: -110, trust: t, result: null }];
+  c.localStorage.setItem(c.SEASON_LEDGER_STORAGE_KEY, JSON.stringify([{ id: 'k1', date: '2026-11-06', home: 'A', away: 'B', pOurs: 0.9, mlHome: 300, mlAway: -400, trust: null, result: { homeScore: 1, awayScore: 0 } }]));
+  const merged = c.loadSeasonLedger().find(r => r.id === 'k1');
+  assert(merged.pOurs === 0.6 && merged.mlHome === -110 && merged.trust === t && merged.result && merged.result.homeScore === 1, 'committed prices/trust kept; local can only add a result');
+  c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

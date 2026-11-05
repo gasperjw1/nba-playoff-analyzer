@@ -48,10 +48,12 @@ function loadSeasonContext() {
   load('js/season/data/player-priors.js');
   load('js/season/data/chemistry-fit.js');
   load('js/season/data/aging-fit.js');
+  load('js/season/data/team-ratings.js');
   load('js/season/adapters.js');
   load('js/season/engine.js');
   load('js/season/props.js');
   load('js/season/ensemble.js');
+  load('js/season/trust.js');
   load('js/season/ledger.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   return ctx;
@@ -81,6 +83,7 @@ async function main() {
   }
 
   const slate = args.has('--espn') ? await espnSlate(ctx) : await nbaiSlate(ctx);
+  slate.results = await seasonResults(slate.date);   // for the opponent-adjusted line
   const teamCount = Object.keys(slate.teams).length;
   console.log(`Slate ${slate.date}: ${slate.games.length} games, ${teamCount} teams, ${slate.source === 'espn' ? 'ESPN fallback (no NB.AI)' : 'feed v' + slate.modelVersion}, fetched ${slate.fetchedAt}`);
   console.log(`League avg: ORtg ${slate.league.ortg.toFixed(1)} pace ${slate.league.pace.toFixed(1)} (${slate.league.derived ? 'derived from feed' : 'fallback — feed covers ' + teamCount + ' teams'})`);
@@ -91,8 +94,11 @@ async function main() {
     const blend = ctx.blendGameForecast({ pOurs: proj.pHome, pFriend: g.external && g.external.nbai ? g.external.nbai.pHome : null, mlHome: m.mlHome, mlAway: m.mlAway, spreadHome: m.spreadHome });
     return { g, proj, blend };
   });
+  const cleanView = ctx.seasonCleanSlate(slate), adjView = ctx.seasonOppAdjSlate(slate);
   rows.forEach(({ g, proj, blend }) => {
     const fr = blend.members.find(x => x.name === 'friend');
+    if (cleanView) console.log(`  ${g.away} @ ${g.home}  picks (2025-26 ratings) ${pct(ctx.projectSeasonGame(g, cleanView).pHome)}` +
+      (adjView ? `  opponent-adjusted ${pct(ctx.projectSeasonGame(g, adjView).pHome)}` : ''));
     console.log(`  ${g.away} @ ${g.home}  ours ${pct(proj.pHome)} (${fmtMargin(g.home, proj.margin)}, total ${proj.total})` +
       `  nb.ai ${fr ? pct(fr.p) : '—'}  market ${blend.pMarket != null ? pct(blend.pMarket) : '—'}  blend ${blend.pBlend != null ? pct(blend.pBlend) : '—'}` +
       (blend.flagged ? `  ⚑ edge ${(blend.edge * 100).toFixed(1)}pp` : ''));
@@ -117,7 +123,9 @@ async function main() {
     console.log(`record skipped: feed slate is ${slate.date}, today (ET) is ${todayEt()} — NB.AI has not refreshed yet (use --force to override)`);
   } else if (args.has('--record')) {
     const existing = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
-    const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate)), new Date());
+    const cleanSlate = ctx.seasonCleanSlate(slate), adjSlate = ctx.seasonOppAdjSlate(slate);
+    const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate,
+      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);
@@ -154,6 +162,22 @@ async function cachedJson(file, url, keep = () => true) {
 }
 
 function addDays(s, n) { const d = new Date(s + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+
+// This season's regular-season finals before `date` (ET), from the cached
+// scoreboards espnSlate also reads.
+async function seasonResults(date) {
+  const out = [];
+  for (let d = SEASON_START; d < date; d = addDays(d, 1)) {
+    const sb = await cachedJson(`scoreboard-${d}.json`, ESPN_SCOREBOARD + d.replace(/-/g, ''), allCompleted);
+    for (const e of sb.events || []) {
+      if (!e.status || !e.status.type || !e.status.type.completed || (e.season && e.season.type !== 2)) continue;
+      const c = e.competitions[0];
+      const home = c.competitors.find(x => x.homeAway === 'home'), away = c.competitors.find(x => x.homeAway === 'away');
+      out.push({ id: e.id, date: d, tip: e.date, home: home.team.abbreviation, away: away.team.abbreviation, homeScore: +home.score, awayScore: +away.score });
+    }
+  }
+  return out;
+}
 
 async function espnSlate(ctx) {
   const today = todayEt();
@@ -224,7 +248,8 @@ function loadGlobal(file, name) {
 async function settle(ctx) {
   const rows = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
   const open = rows.filter(r => !r.result);
-  if (!open.length) { console.log('Nothing to settle.'); return; }
+  const needsClose = (r) => r.result && !r.close && (r.closeTries || 0) < 3;
+  if (!open.length && !rows.some(needsClose)) { console.log('Nothing to settle.'); return; }
   const dates = [...new Set(open.map(r => (r.tip || r.date).slice(0, 10)))];
   let settled = 0;
   for (const d of dates) {
@@ -245,6 +270,22 @@ async function settle(ctx) {
       console.log(`  ${r.away} @ ${r.home}: ${hit.awayScore}-${hit.homeScore}  ours ${pct(r.pOurs)} nb.ai ${r.pFriend != null ? pct(r.pFriend) : '—'} market ${r.pMarket != null ? pct(r.pMarket) : '—'}`);
     });
   }
+  // Closing lines for closing-line value: DraftKings' price at tip, read from the
+  // game's summary once it is final (the same pickcenter the replay uses).
+  let closes = 0;
+  // Three tries per game; after that the row is left without a close (CLV skips it).
+  for (const r of rows.filter(needsClose)) {
+    r.closeTries = (r.closeTries || 0) + 1;
+    try {
+      const pc = ctx.adaptEspnPickcenter(await getJson(ESPN_SUMMARY + r.id), r.home, r.away);
+      if (pc && pc.mlHome != null && pc.mlAway != null) {
+        r.close = { mlHome: pc.mlHome, mlAway: pc.mlAway, spreadHome: pc.spreadHome, total: pc.total, book: pc.book, open: pc.open || null };
+        delete r.closeTries;
+        closes++;
+      }
+    } catch (e) { console.warn(`closing line ${r.away} @ ${r.home}: ${e.message}`); }
+  }
+  console.log(`Closing lines captured: ${closes}`);
   if (DRY) { console.log(`(dry) would settle ${settled}`); return; }
   writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', rows,
     '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
