@@ -44,13 +44,17 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-2',
+  version: 'replay-3',
+  // replay-3: engine 2026-11-05.minutes-v1 — tonight's minutes capped at 240 and the roster step
+  //   valued in minutes (tonight − minutes in the rating). Chosen on 330 past team-seasons
+  //   (research-season-prior.js) before any replay game was scored with it; nothing else changes.
+  //   The engine and its constants are now spec files, so an engine edit cannot be scored unfrozen.
   // replay-2 (after an independent review of replay-1; changes are bug and leak fixes, not tuning):
   //   events ordered by ET time of day (a roster captured in the morning precedes that day's dated
   //   moves, and one captured before tip on game day counts for that day); a report moves a player
   //   only for games whose cutoff is after it; player names come from data before the day; seeds are
   //   dated at the end of 2025-26; the leak check also scrambles later reports and rebuilds names.
-  engine: '2026-11-02.aging-v2',        // must equal SEASON_ENGINE_VERSION
+  engine: '2026-11-05.minutes-v1',      // must equal SEASON_ENGINE_VERSION
   firstDay: '2026-10-20',
   // Opening rosters: each team's latest archived ESPN roster page captured before this instant
   // (8 AM ET on opening day, before any game), from the Internet Archive.
@@ -71,7 +75,8 @@ const BREF_CACHE = path.join(CACHE, 'bref');
 const PY = path.join(CACHE, 'pyenv/bin/python');
 const ARCHIVE_CACHE = path.join(CACHE, 'archive');
 const OUT = DATA('season-replay.js');
-const SPEC_FILES = ['replay-season.js', 'js/season/replay-core.js', 'js/season/data/team-ratings.js', 'parse-injury-report.py'];
+const SPEC_FILES = ['replay-season.js', 'js/season/replay-core.js', 'js/season/data/team-ratings.js', 'parse-injury-report.py',
+  'js/season/engine.js', 'js/season/data/season-constants.js'];
 
 const args = process.argv.slice(2);
 const has = (f) => args.includes(f);

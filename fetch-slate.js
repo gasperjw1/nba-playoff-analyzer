@@ -48,6 +48,7 @@ function loadSeasonContext() {
   load('js/season/data/player-priors.js');
   load('js/season/data/chemistry-fit.js');
   load('js/season/data/aging-fit.js');
+  load('js/season/data/team-ratings.js');
   load('js/season/adapters.js');
   load('js/season/engine.js');
   load('js/season/props.js');
@@ -117,7 +118,8 @@ async function main() {
     console.log(`record skipped: feed slate is ${slate.date}, today (ET) is ${todayEt()} — NB.AI has not refreshed yet (use --force to override)`);
   } else if (args.has('--record')) {
     const existing = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
-    const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate)), new Date());
+    const cleanSlate = ctx.seasonCleanSlate(slate);
+    const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate, cleanSlate && ctx.projectSeasonGame(g, cleanSlate))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);

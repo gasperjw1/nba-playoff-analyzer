@@ -728,4 +728,5 @@ async function main() {
   if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ rows, oRepl, dRepl, rookO, rookD, ageAdj, levels: jl, deltas: jd, ridge: jr }, null, 1));
 }
 
-main().catch(e => { console.error('research-team-fit failed:', e.message); process.exit(1); });
+module.exports = { page, tableRows, num, loadSeason };
+if (require.main === module) main().catch(e => { console.error('research-team-fit failed:', e.message); process.exit(1); });

@@ -109,7 +109,9 @@ function seasonGameForecast(game, opts) {
   const m = game.market || {};
   const pFriend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   const blend = blendGameForecast({ pOurs: proj.pHome, pFriend, mlHome: m.mlHome, mlAway: m.mlAway, spreadHome: m.spreadHome });
-  return { proj, blend, pFriend };
+  const cleanSlate = typeof seasonCleanSlate === 'function' ? seasonCleanSlate(slate) : null;
+  const clean = cleanSlate ? projectSeasonGame(game, cleanSlate, opts) : null;
+  return { proj, blend, pFriend, clean };
 }
 
 function renderTonight() {
@@ -121,7 +123,7 @@ function renderTonight() {
 }
 
 function renderGameCard(g) {
-  const { proj, blend, pFriend } = seasonGameForecast(g);
+  const { proj, blend, pFriend, clean } = seasonGameForecast(g);
   const open = !!seasonState.expanded[g.id];
   const pickHome = (blend.pBlend != null ? blend.pBlend : proj.pHome) >= 0.5;
   const pick = pickHome ? g.home : g.away;
@@ -143,6 +145,7 @@ function renderGameCard(g) {
     <div class="sg-score">Proj ${g.home} ${proj.homeScore} – ${g.away} ${proj.awayScore} · ${seasonFmtMargin(g.home, proj.margin)} · total ${proj.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
     <div class="sg-chips">
       ${seasonChip('Ours', proj.pHome, g.home, g.away)}
+      ${clean ? seasonChip('Ours · 2025-26', clean.pHome, g.home, g.away, '', 'last season\'s ratings') : ''}
       ${seasonChip('NB.AI', pFriend, g.home, g.away)}
       ${seasonChip('Market', blend.pMarket, g.home, g.away, 'market', blend.pMarketSource)}
       ${seasonChip('Blend', blend.pBlend, g.home, g.away, 'blend')}
@@ -290,7 +293,7 @@ function seasonLabRefreshResult() {
 
 // Live = the ledger (recorded before tip-off). Replay = replay-season.js's walk-forward rows,
 // predicted after the fact from data published before each game; never mixed with the ledger.
-const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['nbai', 'NB.AI'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['nbai', 'NB.AI'], ['market', 'Market']];
 const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['market', 'Market']];
 function seasonResultModels() { return seasonState.results.mode === 'replay' ? SEASON_RESULT_MODELS_REPLAY : SEASON_RESULT_MODELS_LIVE; }
 function seasonResultsRows() {
@@ -313,6 +316,7 @@ function seasonModelCalls(r) {
   return {
     ours: call(r.pOurs, r.marginOurs),
     oursPre: call(r.pOursPre, r.marginOursPre),
+    oursClean: call(r.pOursClean, r.marginOursClean),
     nbai: call(r.pFriend, null),
     market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
   };
@@ -388,6 +392,7 @@ function renderResultsTab() {
         <li><b>Margin</b>: predicted winning margin; <i>off</i> = points from the final margin. <b>Closest</b> = the model(s) nearest the final; ties all count.</li>
         ${replay ? `<li>Market = DraftKings no-vig moneyline and closing spread — the closing line moved after our report cutoff, so it is the harder benchmark.</li>
         <li><b>Ours + preseason</b> shifts each team's prior by ${spec ? spec.preseasonCoef : 0.099} × its NBA-vs-NBA preseason margin per game (measured on 2016–2026); it fades as this season's games take over.</li>` : `<li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
+        <li><b>Ours</b> uses the feed's team ratings (NB.AI's, which already include this season's games); <b>Ours · 2025-26</b> is the same engine on last season's final ratings, recorded from Nov 5 on.</li>
         <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>`}
       </ul>
     </section>
@@ -549,8 +554,8 @@ function seasonRecordTonight() {
   const s = seasonState.slate;
   const now = new Date();
   const entries = s.games.filter(g => !g.tip || new Date(g.tip) > now).map(g => {
-    const { proj, blend } = seasonGameForecast(g);
-    return buildLedgerEntry(g, proj, blend, s);
+    const { proj, blend, clean } = seasonGameForecast(g);
+    return buildLedgerEntry(g, proj, blend, s, clean);
   });
   const res = recordSeasonEntries(entries);
   const skippedTip = s.games.length - entries.length;

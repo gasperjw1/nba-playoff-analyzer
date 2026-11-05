@@ -67,14 +67,22 @@ const SEASON_REST = {
 // Duren above Curry and Caruso at zero.)
 //
 // Roster adjustment: a team's rating already contains whoever played
-// the games behind it. Tonight's margin moves by
-//   Σ value × (availability tonight − share of the rating he is in)
-// over the current roster, minus departed players' share — so an
-// injury that predates the rating, or an off-season arrival, is not
-// double-counted or missed.
+// the minutes behind it. Tonight's margin moves by
+//   Σ value per minute × (minutes tonight − minutes in the rating)
+// over the current roster, minus departed players' minutes in the
+// rating — so an injury that predates the rating, or an off-season
+// arrival, is not double-counted or missed. Minutes tonight are each
+// available player's baseline minutes × availability, scaled down so
+// the team plays teamMinutes: a full roster at its players' old minutes
+// sums to ~310, so arrivals were valued as if they kept their old roles
+// and absences cost a star's full value with nobody taking his minutes.
+// research-season-prior.js (330 team-seasons, point-in-time rosters):
+// opening-night RMSE 3.66 → 3.48 per 100 with the constants unchanged;
+// the preseason win-total market scores 3.40.
 const SEASON_IMPACT = {
   replacementBpm: -2.0,
   bpmToPoints: 0.885,
+  teamMinutes: 240,       // regulation minutes a team plays; tonight's minutes are capped at this
   teamCap: 12.0,          // max |roster adjustment| per team, points
   minMinutesForImpact: 8, // ignore deep bench noise
   offShare: 0.70,         // share of a player's value that is his own team's scoring (totals only)
@@ -130,7 +138,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-02.aging-v2';
+const SEASON_ENGINE_VERSION = '2026-11-05.minutes-v1';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).

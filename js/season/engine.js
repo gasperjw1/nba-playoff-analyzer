@@ -178,6 +178,20 @@ function _priorsByTeam(abbr) {
   return _priorsByTeamCache[abbr] || [];
 }
 
+// Minutes a player gave this team's rating: last season's games here ×
+// last season's minutes per game, per team game (prior part), and his
+// minutes per team game this season (current part).
+function playerRatingMinutes(player, team, currentWeight, currentTeamGames) {
+  const P = _priors();
+  const entry = P && P.players[player.id];
+  const last = 's' + Math.max(...Object.keys(SEASON_PLAYER_PRIOR.seasonWeights).map(Number));
+  const row = entry && entry[last];
+  const prior = row && row[1] ? playerPriorShare(player, team) * row[1] : 0;
+  const cur = currentTeamGames && player.avg && player.avg.min > 0
+    ? Math.min(48, player.avg.min * Math.min(player.seasonGames || 0, currentTeamGames) / currentTeamGames) : 0;
+  return (1 - currentWeight) * prior + currentWeight * cur;
+}
+
 // Tonight's roster versus the roster the rating was earned with.
 // Positive adj = team stronger tonight than its rating says.
 function calcRosterAdjustment(team, strength) {
@@ -187,11 +201,12 @@ function calcRosterAdjustment(team, strength) {
   const items = [], unmodeled = [], agingItems = [];
   const onRoster = new Set();
   let adj = 0, aging = 0;
-  (team.players || []).forEach(p => {
+  const rows = (team.players || []).map(p => ({ p, prof: playerProfile(p) }));
+  const raw = rows.reduce((s, x) => s + x.prof.mpg * (x.p.availability == null ? 1 : x.p.availability), 0);
+  const scale = raw > SEASON_IMPACT.teamMinutes ? SEASON_IMPACT.teamMinutes / raw : 1;
+  rows.forEach(({ p, prof }) => {
     onRoster.add(p.id);
-    const prof = playerProfile(p);
     const value = playerImpactPts(p, pace, prof);
-    const share = playerRatingShare(p, team, w, tg);
     // Aging: last season's part of the rating has him at last season's
     // level; tonight he plays a year older. Weighted by his share of that
     // rating and by whether he plays tonight.
@@ -206,21 +221,28 @@ function calcRosterAdjustment(team, strength) {
       if (p.availability < 1 && prof.source === 'none') unmodeled.push(p.name);
       return;
     }
-    const delta = value * (p.availability - share);
+    const tonight = prof.mpg * p.availability * scale;
+    const inRating = playerRatingMinutes(p, team, w, tg);
+    const delta = value / prof.mpg * (tonight - inRating);
+    const share = inRating / prof.mpg;
     adj += delta;
     items.push({ id: p.id, name: p.name, status: p.status, availability: p.availability, value: +value.toFixed(2),
-      share: +share.toFixed(2), delta: +delta.toFixed(2), kind: p.availability < 1 ? 'absent' : share < 0.5 ? 'new' : 'in-rating' });
+      share: +share.toFixed(2), minTonight: +tonight.toFixed(1), minRating: +inRating.toFixed(1), delta: +delta.toFixed(2),
+      kind: p.availability < 1 ? 'absent' : share < 0.5 ? 'new' : 'in-rating' });
   });
   const P = _priors();
   _priorsByTeam(team.abbr).forEach(id => {
     if (onRoster.has(id)) return;
     const e = P.players[id];
-    const share = (1 - w) * Math.min(1, e.tm[team.abbr] / SEASON_PLAYER_PRIOR.teamGames);
-    const value = playerImpactPts({ id, avg: null, seasonGames: 0 }, pace);
-    if (!value || share < 0.01) return;
-    const delta = -value * share;
+    const player = { id, avg: null, seasonGames: 0 };
+    const prof = playerProfile(player);
+    const value = playerImpactPts(player, pace, prof);
+    const inRating = playerRatingMinutes(player, team, w, 0);
+    if (!value || inRating < 0.5) return;
+    const delta = -value / prof.mpg * inRating;
     adj += delta;
-    items.push({ id, name: e.n, status: 'departed', availability: 0, value: +value.toFixed(2), share: +share.toFixed(2), delta: +delta.toFixed(2), kind: 'departed' });
+    items.push({ id, name: e.n, status: 'departed', availability: 0, value: +value.toFixed(2), share: +(inRating / prof.mpg).toFixed(2),
+      minTonight: 0, minRating: +inRating.toFixed(1), delta: +delta.toFixed(2), kind: 'departed' });
   });
   items.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
   agingItems.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts));
@@ -229,6 +251,7 @@ function calcRosterAdjustment(team, strength) {
   return {
     adj: +capped.toFixed(2), uncapped: +adj.toFixed(2),
     aging: +agingCapped.toFixed(2), agingUncapped: +aging.toFixed(2), agingItems,
+    minutes: { raw: +raw.toFixed(1), scale: +scale.toFixed(3) },
     items,
     missing: items.filter(i => i.kind === 'absent' && i.delta < -0.05),   // out tonight, and the rating counted on them
     unmodeled,

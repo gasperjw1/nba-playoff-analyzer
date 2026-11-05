@@ -151,7 +151,14 @@ console.log('TEST 3: player value (BPM) and roster adjustment');
   const newcomer = makePlayer('n1', 'Newcomer', 30, 18, 6, 4);
   c.SEASON_PLAYER_PRIORS.players.n1 = priorEntry(c, newcomer, { ZZZ: 82 });
   const vn = c.playerImpactPts(newcomer, pace);
-  near(adj({ ...A, players: [...A.players, newcomer] }), vn, 0.006, 'arrival adds his full value');
+  // The fixture rotation plays exactly 240 minutes, so an arrival takes minutes from it.
+  const withNew = c.calcRosterAdjustment({ ...A, players: [...A.players, newcomer] }, s);
+  const sc = 240 / 270;
+  near(withNew.minutes.scale, sc, 1e-3, 'rotation scaled back to 240 minutes');
+  near(withNew.adj, vn * sc - (1 - sc) * A.players.reduce((t, p) => t + c.playerImpactPts(p, pace), 0), 0.02,
+    'arrival adds his value at capped minutes, less the minutes he takes from the rotation');
+  near(adj({ ...A, players: [...swap(A.players, star.id, { availability: 0 }), newcomer] }), vn - v, 0.006,
+    'arrival filling an injured starter\'s minutes adds his full value');
   near(adj({ ...A, players: [...A.players, { ...newcomer, availability: 0 }] }), 0, 1e-9, 'arrival who is out costs nothing — never in the rating');
 
   c.SEASON_PLAYER_PRIORS.players.d1 = priorEntry(c, makePlayer('d1', 'Departed', 30, 18, 6, 4), { AAA: 41 });
@@ -862,6 +869,33 @@ console.log('TEST 20: Results tab — replay mode stays apart from the ledger');
   c.SEASON_REPLAY = { spec: null, rows: [] };
   assert(/No replay rows yet/.test(c.renderResultsTab()), 'replay mode without data says how to make it');
   delete c.location; c.history = undefined;
+}
+
+// ── TEST 21: both ratings sets recorded side by side ──────────
+console.log('TEST 21: predictions under the feed ratings and last season\'s ratings');
+{
+  const c = loadCtx(true, true);
+  const S = c.SEASON_SLATE_SNAPSHOT;
+  assert(c.seasonCleanSlate(S) === null, 'no clean slate until team-ratings.js is loaded');
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const clean = c.seasonCleanSlate(S);
+  const ab = S.games[0].home;
+  assert(clean.teams[ab].prior === c.SEASON_TEAM_RATINGS.teams[ab].prior && clean.teams[ab].players === S.teams[ab].players && S.teams[ab].prior !== clean.teams[ab].prior, 'clean slate swaps only the priors');
+  assert(clean.league.teams === 30 && clean.league.derived, 'clean league average comes from all 30 last-season ratings');
+  const g = S.games[0];
+  const proj = c.projectSeasonGame(g, S), cp = c.projectSeasonGame(g, clean);
+  const blend = c.blendGameForecast({ pOurs: proj.pHome, pFriend: null, mlHome: (g.market || {}).mlHome, mlAway: (g.market || {}).mlAway });
+  const row = c.buildLedgerEntry(g, proj, blend, S, cp);
+  assert(row.pOursClean === cp.pHome && row.marginOursClean === cp.margin && row.pOurs === proj.pHome, 'ledger row stores both predictions');
+  assert(c.buildLedgerEntry(g, proj, blend, S).pOursClean === null, 'rows without the second prediction keep null');
+  c.seasonState.slate = S;
+  assert(c.seasonGameForecast(g).clean && Math.abs(c.seasonGameForecast(g).clean.pHome - cp.pHome) < 1e-12, 'tonight cards compute the same second prediction');
+  const res = (id, o) => ({ id, date: '2026-11-05', tip: '2026-11-05T23:00Z', home: 'GS', away: 'MIA', pOurs: 0.66, marginOurs: 5, pFriend: null, pMarket: 0.7, spreadHome: -7.5, result: { homeScore: 110, awayScore: 100 }, ...o });
+  c.SEASON_LEDGER = [res('a', { pOursClean: 0.62, marginOursClean: 3.9 })];
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  assert(/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'Results shows the 2025-26 column when rows carry it');
+  c.SEASON_LEDGER = [res('b')];
+  assert(!/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'and hides it for days recorded before it existed');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

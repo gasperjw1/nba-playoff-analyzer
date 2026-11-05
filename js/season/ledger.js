@@ -9,7 +9,18 @@
 // `recordedAt` stamp is kept so the scoring can prove it.
 // ============================================================
 
-function buildLedgerEntry(game, projection, blend, slate) {
+// The same slate with every team's prior from last season's final ratings (team-ratings.js,
+// Basketball-Reference) instead of the feed's — NB.AI's "prior" already contains this season's
+// games, which the engine then blends in again. Recorded beside the main prediction so the two
+// can be compared on games neither has seen. Null when team-ratings.js is not loaded.
+function seasonCleanSlate(slate) {
+  if (typeof SEASON_TEAM_RATINGS === 'undefined' || !SEASON_TEAM_RATINGS || !slate) return null;
+  const R = SEASON_TEAM_RATINGS.teams, teams = {};
+  for (const [abbr, t] of Object.entries(slate.teams)) teams[abbr] = R[abbr] ? { ...t, prior: R[abbr].prior } : t;
+  return { ...slate, teams, league: deriveLeagueAverages(R) };
+}
+
+function buildLedgerEntry(game, projection, blend, slate, clean) {
   const m = game.market || {};
   const friend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   return {
@@ -20,6 +31,10 @@ function buildLedgerEntry(game, projection, blend, slate) {
     pOurs: projection.pHome,
     marginOurs: projection.margin,
     totalOurs: projection.total,
+    // Same engine, last season's final team ratings (seasonCleanSlate)
+    pOursClean: clean ? clean.pHome : null,
+    marginOursClean: clean ? clean.margin : null,
+    totalOursClean: clean ? clean.total : null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,
