@@ -1,16 +1,16 @@
 // ============================================================
-// SEASON REPLAY — walk-forward predictions (replay-4)
+// SEASON REPLAY — walk-forward predictions (replay-5)
 // ============================================================
 // Written by `node replay-season.js`. Each row was predicted from data
 // published before its game (see the header of replay-season.js and each
-// row's provenance), with engine 2026-11-05.minutes-hca2 frozen. These are NOT
+// row's provenance), with engine 2026-11-05.b2b2 frozen. These are NOT
 // ledger rows: they were generated after the fact and are scored apart
 // from the live ledger. Do not hand-edit.
 // ============================================================
 const SEASON_REPLAY = {
  "spec": {
-  "version": "replay-4",
-  "engine": "2026-11-05.minutes-hca2",
+  "version": "replay-5",
+  "engine": "2026-11-05.b2b2",
   "firstDay": "2026-10-20",
   "rosterSnapshotBefore": "2026-10-20T12:00:00Z",
   "reportLeadMinutes": 60,
@@ -24,7 +24,7 @@ const SEASON_REPLAY = {
    "oursPre": "engine + preseason"
   }
  },
- "generatedAt": "2026-11-05T20:55:30.385Z",
+ "generatedAt": "2026-11-05T21:24:53.607Z",
  "rows": [
   {
    "id": "401909088",
@@ -51,8 +51,8 @@ const SEASON_REPLAY = {
     "total": 224.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 121,
     "awayScore": 113
@@ -98,8 +98,8 @@ const SEASON_REPLAY = {
     "total": 229.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 100,
     "awayScore": 106
@@ -145,8 +145,8 @@ const SEASON_REPLAY = {
     "total": 228.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 104,
     "awayScore": 116
@@ -192,8 +192,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -239,8 +239,8 @@ const SEASON_REPLAY = {
     "total": 238.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 128,
     "awayScore": 116
@@ -286,8 +286,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 106,
     "awayScore": 131
@@ -333,8 +333,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 103,
     "awayScore": 110
@@ -380,8 +380,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 135,
     "awayScore": 92
@@ -427,8 +427,8 @@ const SEASON_REPLAY = {
     "total": 241.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 123,
     "awayScore": 103
@@ -474,8 +474,8 @@ const SEASON_REPLAY = {
     "total": 240.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 123
@@ -521,8 +521,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 128,
     "awayScore": 110
@@ -568,8 +568,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 127,
     "awayScore": 105
@@ -615,8 +615,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 124,
     "awayScore": 83
@@ -662,8 +662,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 121,
     "awayScore": 96
@@ -709,8 +709,8 @@ const SEASON_REPLAY = {
     "total": 233.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 106
@@ -756,8 +756,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 96,
     "awayScore": 84
@@ -805,8 +805,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -857,8 +857,8 @@ const SEASON_REPLAY = {
     "total": 223.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 107,
     "awayScore": 103
@@ -907,8 +907,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 81,
     "awayScore": 128
@@ -957,8 +957,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 105,
     "awayScore": 121
@@ -1006,8 +1006,8 @@ const SEASON_REPLAY = {
     "total": 237.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 93,
     "awayScore": 115
@@ -1055,8 +1055,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 102,
     "awayScore": 112
@@ -1106,8 +1106,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 111,
     "awayScore": 128
@@ -1156,8 +1156,8 @@ const SEASON_REPLAY = {
     "total": 225.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 110,
     "awayScore": 114
@@ -1210,8 +1210,8 @@ const SEASON_REPLAY = {
     "total": 241.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 119
@@ -1259,8 +1259,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 108,
     "awayScore": 111
@@ -1309,8 +1309,8 @@ const SEASON_REPLAY = {
     "total": 229.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 117
@@ -1360,8 +1360,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 128
@@ -1410,8 +1410,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 115,
     "awayScore": 110
@@ -1460,8 +1460,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 121
@@ -1493,11 +1493,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-24T23:30Z",
    "home": "PHI",
    "away": "MIL",
-   "pOurs": 0.8036,
-   "marginOurs": 10.68,
+   "pOurs": 0.825,
+   "marginOurs": 11.68,
    "totalOurs": 230,
-   "pOursPre": 0.8112,
-   "marginOursPre": 11.03,
+   "pOursPre": 0.832,
+   "marginOursPre": 12.03,
    "totalOursPre": 230,
    "pFriend": null,
    "pMarket": 0.8316,
@@ -1512,8 +1512,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 127,
     "awayScore": 116
@@ -1563,8 +1563,8 @@ const SEASON_REPLAY = {
     "total": 243.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 124
@@ -1612,8 +1612,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 106,
     "awayScore": 122
@@ -1667,8 +1667,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -1700,11 +1700,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-25T01:00Z",
    "home": "DEN",
    "away": "NO",
-   "pOurs": 0.8229,
-   "marginOurs": 11.58,
+   "pOurs": 0.8429,
+   "marginOurs": 12.58,
    "totalOurs": 236.1,
-   "pOursPre": 0.8253,
-   "marginOursPre": 11.7,
+   "pOursPre": 0.8451,
+   "marginOursPre": 12.7,
    "totalOursPre": 236.1,
    "pFriend": null,
    "pMarket": 0.7958,
@@ -1719,8 +1719,8 @@ const SEASON_REPLAY = {
     "total": 237.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 141,
     "awayScore": 135
@@ -1752,11 +1752,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-25T02:00Z",
    "home": "PHX",
    "away": "GS",
-   "pOurs": 0.7394,
-   "marginOurs": 8.02,
+   "pOurs": 0.7647,
+   "marginOurs": 9.02,
    "totalOurs": 220.9,
-   "pOursPre": 0.7076,
-   "marginOursPre": 6.83,
+   "pOursPre": 0.7345,
+   "marginOursPre": 7.83,
    "totalOursPre": 220.9,
    "pFriend": null,
    "pMarket": 0.7715,
@@ -1771,8 +1771,8 @@ const SEASON_REPLAY = {
     "total": 224.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 131,
     "awayScore": 122
@@ -1818,8 +1818,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 123,
     "awayScore": 132
@@ -1849,11 +1849,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-25T22:00Z",
    "home": "BKN",
    "away": "IND",
-   "pOurs": 0.4486,
-   "marginOurs": -1.62,
+   "pOurs": 0.4171,
+   "marginOurs": -2.62,
    "totalOurs": 228.2,
-   "pOursPre": 0.4678,
-   "marginOursPre": -1.01,
+   "pOursPre": 0.4361,
+   "marginOursPre": -2.01,
    "totalOursPre": 228.2,
    "pFriend": null,
    "pMarket": 0.3425,
@@ -1868,8 +1868,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 109,
     "awayScore": 136
@@ -1918,8 +1918,8 @@ const SEASON_REPLAY = {
     "total": 225.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 102,
     "awayScore": 111
@@ -1967,8 +1967,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 117,
     "awayScore": 94
@@ -2020,8 +2020,8 @@ const SEASON_REPLAY = {
     "total": 221.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 108,
     "awayScore": 101
@@ -2050,11 +2050,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-25T23:30Z",
    "home": "PHI",
    "away": "DET",
-   "pOurs": 0.5625,
-   "marginOurs": 1.97,
+   "pOurs": 0.5308,
+   "marginOurs": 0.97,
    "totalOurs": 226.2,
-   "pOursPre": 0.5295,
-   "marginOursPre": 0.92,
+   "pOursPre": 0.4976,
+   "marginOursPre": -0.08,
    "totalOursPre": 226.2,
    "pFriend": null,
    "pMarket": 0.4573,
@@ -2069,8 +2069,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 93,
     "awayScore": 106
@@ -2116,8 +2116,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 112,
     "awayScore": 123
@@ -2166,8 +2166,8 @@ const SEASON_REPLAY = {
     "total": 228.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 110,
     "awayScore": 103
@@ -2196,11 +2196,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-26T23:00Z",
    "home": "CLE",
    "away": "MIN",
-   "pOurs": 0.5634,
-   "marginOurs": 1.99,
+   "pOurs": 0.5947,
+   "marginOurs": 2.99,
    "totalOurs": 231.1,
-   "pOursPre": 0.5564,
-   "marginOursPre": 1.77,
+   "pOursPre": 0.5878,
+   "marginOursPre": 2.77,
    "totalOursPre": 231.1,
    "pFriend": null,
    "pMarket": 0.583,
@@ -2215,8 +2215,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 127,
     "awayScore": 125
@@ -2266,8 +2266,8 @@ const SEASON_REPLAY = {
     "total": 233.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 134,
     "awayScore": 99
@@ -2317,8 +2317,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 109,
     "awayScore": 113
@@ -2350,11 +2350,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-27T00:00Z",
    "home": "MIL",
    "away": "IND",
-   "pOurs": 0.4493,
-   "marginOurs": -1.59,
+   "pOurs": 0.4811,
+   "marginOurs": -0.59,
    "totalOurs": 234,
-   "pOursPre": 0.4171,
-   "marginOursPre": -2.62,
+   "pOursPre": 0.4486,
+   "marginOursPre": -1.62,
    "totalOursPre": 234,
    "pFriend": null,
    "pMarket": 0.417,
@@ -2369,8 +2369,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 110,
     "awayScore": 102
@@ -2401,11 +2401,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-27T00:00Z",
    "home": "OKC",
    "away": "PHX",
-   "pOurs": 0.7255,
-   "marginOurs": 7.49,
+   "pOurs": 0.6982,
+   "marginOurs": 6.49,
    "totalOurs": 218,
-   "pOursPre": 0.7226,
-   "marginOursPre": 7.38,
+   "pOursPre": 0.6952,
+   "marginOursPre": 6.38,
    "totalOursPre": 218,
    "pFriend": null,
    "pMarket": 0.7335,
@@ -2420,8 +2420,8 @@ const SEASON_REPLAY = {
     "total": 218.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 114
@@ -2469,8 +2469,8 @@ const SEASON_REPLAY = {
     "total": 229.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 110
@@ -2518,8 +2518,8 @@ const SEASON_REPLAY = {
     "total": 237.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 105,
     "awayScore": 110
@@ -2567,8 +2567,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 134
@@ -2598,11 +2598,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-27T23:30Z",
    "home": "BOS",
    "away": "BKN",
-   "pOurs": 0.859,
-   "marginOurs": 13.45,
+   "pOurs": 0.8403,
+   "marginOurs": 12.45,
    "totalOurs": 223.8,
-   "pOursPre": 0.874,
-   "marginOursPre": 14.32,
+   "pOursPre": 0.8567,
+   "marginOursPre": 13.32,
    "totalOursPre": 223.8,
    "pFriend": null,
    "pMarket": 0.8465,
@@ -2617,8 +2617,8 @@ const SEASON_REPLAY = {
     "total": 222.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 124
@@ -2667,8 +2667,8 @@ const SEASON_REPLAY = {
     "total": 218.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 111,
     "awayScore": 97
@@ -2717,8 +2717,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 130,
     "awayScore": 103
@@ -2770,8 +2770,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 129,
     "awayScore": 136
@@ -2821,8 +2821,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 117,
     "awayScore": 129
@@ -2873,8 +2873,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -2904,11 +2904,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-28T23:00Z",
    "home": "DET",
    "away": "CHA",
-   "pOurs": 0.6769,
-   "marginOurs": 5.74,
+   "pOurs": 0.6477,
+   "marginOurs": 4.74,
    "totalOurs": 220,
-   "pOursPre": 0.7222,
-   "marginOursPre": 7.37,
+   "pOursPre": 0.6947,
+   "marginOursPre": 6.37,
    "totalOursPre": 220,
    "pFriend": null,
    "pMarket": 0.7136,
@@ -2923,8 +2923,8 @@ const SEASON_REPLAY = {
     "total": 216.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 97,
     "awayScore": 89
@@ -2970,8 +2970,8 @@ const SEASON_REPLAY = {
     "total": 237.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 109,
     "awayScore": 114
@@ -3017,8 +3017,8 @@ const SEASON_REPLAY = {
     "total": 223.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 129,
     "awayScore": 99
@@ -3050,11 +3050,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-29T00:00Z",
    "home": "CHI",
    "away": "NY",
-   "pOurs": 0.3206,
-   "marginOurs": -5.82,
+   "pOurs": 0.3498,
+   "marginOurs": -4.82,
    "totalOurs": 228.8,
-   "pOursPre": 0.3826,
-   "marginOursPre": -3.73,
+   "pOursPre": 0.4135,
+   "marginOursPre": -2.73,
    "totalOursPre": 228.8,
    "pFriend": null,
    "pMarket": 0.295,
@@ -3069,8 +3069,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 127,
     "awayScore": 133
@@ -3120,8 +3120,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 100,
     "awayScore": 132
@@ -3172,8 +3172,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 119
@@ -3221,8 +3221,8 @@ const SEASON_REPLAY = {
     "total": 238.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 91,
     "awayScore": 104
@@ -3253,11 +3253,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-29T01:00Z",
    "home": "UTAH",
    "away": "SA",
-   "pOurs": 0.1655,
-   "marginOurs": -12.15,
+   "pOurs": 0.1862,
+   "marginOurs": -11.15,
    "totalOurs": 236,
-   "pOursPre": 0.1619,
-   "marginOursPre": -12.33,
+   "pOursPre": 0.1823,
+   "marginOursPre": -11.33,
    "totalOursPre": 236,
    "pFriend": null,
    "pMarket": 0.1535,
@@ -3272,8 +3272,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 111,
     "awayScore": 117
@@ -3326,8 +3326,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 96
@@ -3357,11 +3357,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-29T02:30Z",
    "home": "LAC",
    "away": "LAL",
-   "pOurs": 0.509,
-   "marginOurs": 0.28,
+   "pOurs": 0.5409,
+   "marginOurs": 1.28,
    "totalOurs": 228.5,
-   "pOursPre": 0.528,
-   "marginOursPre": 0.88,
+   "pOursPre": 0.5597,
+   "marginOursPre": 1.88,
    "totalOursPre": 228.5,
    "pFriend": null,
    "pMarket": 0.5043,
@@ -3376,8 +3376,8 @@ const SEASON_REPLAY = {
     "total": 228.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 87,
     "awayScore": 103
@@ -3427,8 +3427,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 111
@@ -3459,11 +3459,11 @@ const SEASON_REPLAY = {
    "tip": "2026-10-30T00:00Z",
    "home": "NO",
    "away": "SAC",
-   "pOurs": 0.6814,
-   "marginOurs": 5.9,
+   "pOurs": 0.6524,
+   "marginOurs": 4.9,
    "totalOurs": 234.2,
-   "pOursPre": 0.7162,
-   "marginOursPre": 7.14,
+   "pOursPre": 0.6884,
+   "marginOursPre": 6.14,
    "totalOursPre": 234.2,
    "pFriend": null,
    "pMarket": 0.675,
@@ -3478,8 +3478,8 @@ const SEASON_REPLAY = {
     "total": 237.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 132,
     "awayScore": 120
@@ -3527,8 +3527,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 103,
     "awayScore": 124
@@ -3576,8 +3576,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 95,
     "awayScore": 79
@@ -3623,8 +3623,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 125,
     "awayScore": 111
@@ -3674,8 +3674,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 94,
     "awayScore": 110
@@ -3721,8 +3721,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 98,
     "awayScore": 93
@@ -3772,8 +3772,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -3824,8 +3824,8 @@ const SEASON_REPLAY = {
     "total": 240.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 145,
     "awayScore": 125
@@ -3875,8 +3875,8 @@ const SEASON_REPLAY = {
     "total": 225.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 116,
     "awayScore": 111
@@ -3925,8 +3925,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 127,
     "awayScore": 101
@@ -3976,8 +3976,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 112,
     "awayScore": 95
@@ -4026,8 +4026,8 @@ const SEASON_REPLAY = {
     "total": 233.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 127
@@ -4077,8 +4077,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 90,
     "awayScore": 112
@@ -4126,8 +4126,8 @@ const SEASON_REPLAY = {
     "total": 216.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 104,
     "awayScore": 109
@@ -4173,8 +4173,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 121,
     "awayScore": 99
@@ -4223,8 +4223,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 136,
     "awayScore": 105
@@ -4270,8 +4270,8 @@ const SEASON_REPLAY = {
     "total": 236.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 111,
     "awayScore": 136
@@ -4305,11 +4305,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-01T00:00Z",
    "home": "SA",
    "away": "MIN",
-   "pOurs": 0.7783,
-   "marginOurs": 9.58,
+   "pOurs": 0.8014,
+   "marginOurs": 10.58,
    "totalOurs": 227.8,
-   "pOursPre": 0.7921,
-   "marginOursPre": 10.17,
+   "pOursPre": 0.8143,
+   "marginOursPre": 11.17,
    "totalOursPre": 227.8,
    "pFriend": null,
    "pMarket": 0.8173,
@@ -4324,8 +4324,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -4360,11 +4360,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-01T00:30Z",
    "home": "HOU",
    "away": "OKC",
-   "pOurs": 0.5679,
-   "marginOurs": 2.14,
+   "pOurs": 0.5363,
+   "marginOurs": 1.14,
    "totalOurs": 219.1,
-   "pOursPre": 0.6072,
-   "marginOursPre": 3.4,
+   "pOursPre": 0.5761,
+   "marginOursPre": 2.4,
    "totalOursPre": 219.1,
    "pFriend": null,
    "pMarket": 0.5635,
@@ -4379,8 +4379,8 @@ const SEASON_REPLAY = {
     "total": 218.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 119,
     "awayScore": 98
@@ -4428,8 +4428,8 @@ const SEASON_REPLAY = {
     "total": 222.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 97,
     "awayScore": 108
@@ -4479,8 +4479,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 90,
     "awayScore": 98
@@ -4526,8 +4526,8 @@ const SEASON_REPLAY = {
     "total": 219.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 124,
     "awayScore": 112
@@ -4575,8 +4575,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 131,
     "awayScore": 125
@@ -4629,8 +4629,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 112,
     "awayScore": 117
@@ -4679,8 +4679,8 @@ const SEASON_REPLAY = {
     "total": 208.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 91,
     "awayScore": 124
@@ -4707,11 +4707,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T00:30Z",
    "home": "IND",
    "away": "ATL",
-   "pOurs": 0.2909,
-   "marginOurs": -6.88,
+   "pOurs": 0.2641,
+   "marginOurs": -7.88,
    "totalOurs": 228.1,
-   "pOursPre": 0.2829,
-   "marginOursPre": -7.18,
+   "pOursPre": 0.2565,
+   "marginOursPre": -8.18,
    "totalOursPre": 228.2,
    "pFriend": null,
    "pMarket": 0.2088,
@@ -4726,8 +4726,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 104,
     "awayScore": 108
@@ -4756,11 +4756,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T00:30Z",
    "home": "NY",
    "away": "BKN",
-   "pOurs": 0.8082,
-   "marginOurs": 10.89,
+   "pOurs": 0.8293,
+   "marginOurs": 11.89,
    "totalOurs": 220.8,
-   "pOursPre": 0.7631,
-   "marginOursPre": 8.95,
+   "pOursPre": 0.7871,
+   "marginOursPre": 9.95,
    "totalOursPre": 220.8,
    "pFriend": null,
    "pMarket": 0.8738,
@@ -4775,8 +4775,8 @@ const SEASON_REPLAY = {
     "total": 222.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 103,
     "awayScore": 90
@@ -4806,11 +4806,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T00:30Z",
    "home": "ORL",
    "away": "WSH",
-   "pOurs": 0.5675,
-   "marginOurs": 2.12,
+   "pOurs": 0.5358,
+   "marginOurs": 1.12,
    "totalOurs": 228.2,
-   "pOursPre": 0.5848,
-   "marginOursPre": 2.68,
+   "pOursPre": 0.5534,
+   "marginOursPre": 1.68,
    "totalOursPre": 228.2,
    "pFriend": null,
    "pMarket": 0.5824,
@@ -4825,8 +4825,8 @@ const SEASON_REPLAY = {
     "total": 226.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 94,
     "awayScore": 103
@@ -4874,8 +4874,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 126,
     "awayScore": 107
@@ -4923,8 +4923,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 100,
     "awayScore": 115
@@ -4972,8 +4972,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 134,
     "awayScore": 135
@@ -5021,8 +5021,8 @@ const SEASON_REPLAY = {
     "total": 233.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 112,
     "awayScore": 100
@@ -5055,11 +5055,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T01:30Z",
    "home": "HOU",
    "away": "BOS",
-   "pOurs": 0.5465,
-   "marginOurs": 1.46,
+   "pOurs": 0.578,
+   "marginOurs": 2.46,
    "totalOurs": 225.3,
-   "pOursPre": 0.5243,
-   "marginOursPre": 0.76,
+   "pOursPre": 0.5561,
+   "marginOursPre": 1.76,
    "totalOursPre": 225.3,
    "pFriend": null,
    "pMarket": 0.616,
@@ -5074,8 +5074,8 @@ const SEASON_REPLAY = {
     "total": 218.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 109,
     "awayScore": 93
@@ -5124,8 +5124,8 @@ const SEASON_REPLAY = {
     "total": 229.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 119,
     "awayScore": 97
@@ -5177,8 +5177,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 110,
     "awayScore": 118
@@ -5210,11 +5210,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T03:00Z",
    "home": "GS",
    "away": "PHX",
-   "pOurs": 0.5961,
-   "marginOurs": 3.04,
+   "pOurs": 0.5648,
+   "marginOurs": 2.04,
    "totalOurs": 227.7,
-   "pOursPre": 0.6264,
-   "marginOursPre": 4.03,
+   "pOursPre": 0.5958,
+   "marginOursPre": 3.03,
    "totalOursPre": 227.7,
    "pFriend": null,
    "pMarket": 0.5534,
@@ -5229,8 +5229,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 116,
     "awayScore": 113
@@ -5278,8 +5278,8 @@ const SEASON_REPLAY = {
     "total": 220.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 118,
     "awayScore": 125
@@ -5310,11 +5310,11 @@ const SEASON_REPLAY = {
    "tip": "2026-11-03T03:00Z",
    "home": "LAL",
    "away": "MIA",
-   "pOurs": 0.6064,
-   "marginOurs": 3.38,
+   "pOurs": 0.5754,
+   "marginOurs": 2.38,
    "totalOurs": 237.1,
-   "pOursPre": 0.5817,
-   "marginOursPre": 2.58,
+   "pOursPre": 0.5503,
+   "marginOursPre": 1.58,
    "totalOursPre": 237.1,
    "pFriend": null,
    "pMarket": 0.5427,
@@ -5329,8 +5329,8 @@ const SEASON_REPLAY = {
     "total": 239.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 138,
     "awayScore": 117
@@ -5382,8 +5382,8 @@ const SEASON_REPLAY = {
     "total": 219.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 106,
     "awayScore": 112
@@ -5432,8 +5432,8 @@ const SEASON_REPLAY = {
     "total": 234.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 105,
     "awayScore": 120
@@ -5481,8 +5481,8 @@ const SEASON_REPLAY = {
     "total": 225.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 109,
     "awayScore": 102
@@ -5533,8 +5533,8 @@ const SEASON_REPLAY = {
     "total": 214.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 114,
     "awayScore": 104
@@ -5580,8 +5580,8 @@ const SEASON_REPLAY = {
     "total": 232.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 135,
     "awayScore": 105
@@ -5633,8 +5633,8 @@ const SEASON_REPLAY = {
     "total": 230.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 103,
     "awayScore": 107
@@ -5682,8 +5682,8 @@ const SEASON_REPLAY = {
     "total": 235.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 120,
     "awayScore": 113
@@ -5731,8 +5731,8 @@ const SEASON_REPLAY = {
     "total": 227.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 124,
     "awayScore": 116
@@ -5781,8 +5781,8 @@ const SEASON_REPLAY = {
     "total": 223.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 107,
     "awayScore": 117
@@ -5830,8 +5830,8 @@ const SEASON_REPLAY = {
     "total": 231.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 128,
     "awayScore": 109
@@ -5885,8 +5885,8 @@ const SEASON_REPLAY = {
     "total": 228.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 119,
     "awayScore": 132
@@ -5936,8 +5936,8 @@ const SEASON_REPLAY = {
     "total": 229.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 112,
     "awayScore": 111
@@ -5991,8 +5991,8 @@ const SEASON_REPLAY = {
     "total": 238.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 103,
     "awayScore": 116
@@ -6042,8 +6042,8 @@ const SEASON_REPLAY = {
     "total": 233.5
    },
    "source": "replay",
-   "engine": "2026-11-05.minutes-hca2",
-   "spec": "replay-4",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-5",
    "result": {
     "homeScore": 116,
     "awayScore": 117
