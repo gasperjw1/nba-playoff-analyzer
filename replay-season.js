@@ -44,7 +44,9 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-3',
+  version: 'replay-4',
+  // replay-4: engine 2026-11-05.minutes-hca2 — home court 2.5 → 2.0, chosen on 13,209 past games
+  //   (research-season-update.js) before any replay game was scored with it; nothing else changes.
   // replay-3: engine 2026-11-05.minutes-v1 — tonight's minutes capped at 240 and the roster step
   //   valued in minutes (tonight − minutes in the rating). Chosen on 330 past team-seasons
   //   (research-season-prior.js) before any replay game was scored with it; nothing else changes.
@@ -54,7 +56,7 @@ const SPEC = {
   //   moves, and one captured before tip on game day counts for that day); a report moves a player
   //   only for games whose cutoff is after it; player names come from data before the day; seeds are
   //   dated at the end of 2025-26; the leak check also scrambles later reports and rebuilds names.
-  engine: '2026-11-05.minutes-v1',      // must equal SEASON_ENGINE_VERSION
+  engine: '2026-11-05.minutes-hca2',    // must equal SEASON_ENGINE_VERSION
   firstDay: '2026-10-20',
   // Opening rosters: each team's latest archived ESPN roster page captured before this instant
   // (8 AM ET on opening day, before any game), from the Internet Archive.

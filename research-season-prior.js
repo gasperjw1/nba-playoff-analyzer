@@ -277,8 +277,9 @@ async function main() {
   };
   const builtE = demean(base);
   console.log('  built constants (0.75, 1.0), season mean removed — the form game margins see:');
-  for (const [label, k] of [['raw minutes, healthy (live engine today)', 'eng'], ['minutes-delta, raw minutes', 'dRaw'], ['minutes-delta, capped at 240', 'dProp']]) {
-    const e = demean(rows.map(r => r.y - (0.75 * r.p1 + r[k] + r.age1)));
+  for (const [label, k, ag] of [['raw minutes, healthy (live engine before minutes-v1)', 'eng', 1], ['minutes-delta, raw minutes', 'dRaw', 1],
+    ['minutes-delta, capped at 240 (engine minutes-v1)', 'dProp', 1], ['  … without aging', 'dProp', 0], ['  … aging × 0.5', 'dProp', 0.5]]) {
+    const e = demean(rows.map(r => r.y - (0.75 * r.p1 + r[k] + ag * r.age1)));
     const sd = Math.sqrt(rows.reduce((s, r) => s + r[k] * r[k], 0) / n);
     console.log(`    ${label.padEnd(54)} RMSE ${rmse(e).toFixed(3)}  ΔMSE vs live ${paired(e, builtE)}  roster term sd ${sd.toFixed(2)}`);
   }

@@ -9,10 +9,13 @@
 // games — that is the lesson of the playoff engine's 18.8%
 // catastrophic-miss rate (CALIBRATION_AUDIT.md).
 
-// Home-court advantage in points. Modern NBA HCA has declined to
-// roughly 2-3 points (Barreira & Morgado 2023 longitudinal study;
-// 2023-24 through 2025-26 seasons ran ~2.3-2.8).
-const SEASON_HCA = 2.5;
+// Home-court advantage in points. research-season-update.js walked 13,209
+// regular-season games (2015-16 … 2025-26) forward: leave-one-season-out
+// picks 2.0 in every season; the measured edge was 1.6-1.7 in 2024-25 and
+// 2025-26 and 1.0 in the 2020-21 no-crowd season. The 2026-27 closing line
+// implies ~1.9. (Was 2.5, from Barreira & Morgado 2023.) The same walk
+// confirmed SEASON_SHRINK_K = 20 and SEASON_MARGIN_SIGMA = 12.5.
+const SEASON_HCA = 2.0;
 
 // Standard deviation of (actual margin − expected margin). Closing
 // spreads miss by ~10 pts MAE / ~13 RMSE in the modern era, so a
@@ -138,7 +141,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-05.minutes-v1';
+const SEASON_ENGINE_VERSION = '2026-11-05.minutes-hca2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).
