@@ -111,7 +111,9 @@ function seasonGameForecast(game, opts) {
   const blend = blendGameForecast({ pOurs: proj.pHome, pFriend, mlHome: m.mlHome, mlAway: m.mlAway, spreadHome: m.spreadHome });
   const cleanSlate = typeof seasonCleanSlate === 'function' ? seasonCleanSlate(slate) : null;
   const clean = cleanSlate ? projectSeasonGame(game, cleanSlate, opts) : null;
-  return { proj, blend, pFriend, clean };
+  const adjSlate = typeof seasonOppAdjSlate === 'function' ? seasonOppAdjSlate(slate) : null;
+  const adj = adjSlate ? projectSeasonGame(game, adjSlate, opts) : null;
+  return { proj, blend, pFriend, clean, adj };
 }
 
 function renderTonight() {
@@ -119,40 +121,54 @@ function renderTonight() {
   if (!s.games.length) return `<div class="home-empty">No games on this slate.</div>`;
   const cards = s.games.map(g => renderGameCard(g)).join('');
   return `<div class="season-grid">${cards}</div>
-    <p class="muted" style="margin-top:18px">Ours = this engine (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus ± aging of last season's rating ± roster fit (continuity, rebounding overlap); aging and fit measured on 330 team-seasons; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
+    <p class="muted" style="margin-top:18px">Picks come from Ours · 2025-26 — this engine on last season's ratings, the setup tested leak-free in the replay (Results by Day → Replay), where it still trails the closing line; edge flags stay "unproven" until the ledger holds ${SEASON_ENSEMBLE.stackTrustN} settled games. Ours · opp-adj = the picks engine with this season's results corrected for opponent strength (better on past seasons by a small margin; tracked side by side, not used for picks until the ledger shows it). Ours = the same engine on the feed's ratings, which already include this season (not tested). The engine = (net rating × pace + home court + rest ± roster vs rating, players valued by Box Plus/Minus ± aging of last season's rating ± roster fit (continuity, rebounding overlap); aging and fit measured on 330 team-seasons; P = Φ(margin/${SEASON_MARGIN_SIGMA})). NB.AI = your friend's 10,000-path Monte Carlo. Market = no-vig moneyline. Blend = equal log-odds average of the two models; the market is shown for comparison, not blended, until the ledger justifies a weight.</p>`;
 }
 
 function renderGameCard(g) {
-  const { proj, blend, pFriend, clean } = seasonGameForecast(g);
+  const { proj, blend, pFriend, clean, adj } = seasonGameForecast(g);
   const open = !!seasonState.expanded[g.id];
-  const pickHome = (blend.pBlend != null ? blend.pBlend : proj.pHome) >= 0.5;
+  // The pick, score line, edge and waterfall come from the replay-tested setup:
+  // this engine on last season's ratings. The NB.AI-ratings engine and the
+  // blend are shown, not used — neither has been tested without leakage.
+  const v = clean || proj;
+  const pickHome = v.pHome >= 0.5;
   const pick = pickHome ? g.home : g.away;
-  const pPick = blend.pBlend != null ? (pickHome ? blend.pBlend : 1 - blend.pBlend) : (pickHome ? proj.pHome : 1 - proj.pHome);
+  const pPick = pickHome ? v.pHome : 1 - v.pHome;
   const m = g.market || {};
   const flags = [];
   if (blend.modelsAgree === true) flags.push(`<span class="flag flag-agree">MODELS AGREE</span>`);
   else if (blend.modelsAgree === false) flags.push(`<span class="flag flag-disagree">MODELS SPLIT</span>`);
   else flags.push(`<span class="flag flag-none">NB.AI N/A</span>`);
-  if (blend.flagged) flags.push(`<span class="flag flag-edge">${blend.edge > 0 ? g.home : g.away} +${(Math.abs(blend.edge) * 100).toFixed(1)}pp vs market</span>`);
-  const absences = [...proj.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...proj.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
+  const edge = blend.pMarket != null ? v.pHome - blend.pMarket : null;
+  if (edge != null && Math.abs(edge) >= SEASON_ENSEMBLE.edgeFlagPts) {
+    const n = seasonValidatedSettled();
+    flags.push(`<span class="flag flag-edge">${edge > 0 ? g.home : g.away} +${(Math.abs(edge) * 100).toFixed(1)}pp vs market${n < SEASON_ENSEMBLE.stackTrustN ? ` · unproven (${n}/${SEASON_ENSEMBLE.stackTrustN} settled)` : ''}</span>`);
+  }
+  const absences = [...v.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...v.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
 
   return `<div class="sg-card${open ? ' open' : ''}" onclick="seasonToggleGame('${g.id}')">
     <div class="sg-head">
       <div class="sg-matchup">${g.away} @ ${g.home}</div>
       <div class="sg-when">${g.tip ? seasonFmtTime(g.tip) : ''}${g.venue ? ' · ' + g.venue : ''}</div>
     </div>
-    <div class="sg-pick">${pick} <small>${(pPick * 100).toFixed(1)}% blended</small></div>
-    <div class="sg-score">Proj ${g.home} ${proj.homeScore} – ${g.away} ${proj.awayScore} · ${seasonFmtMargin(g.home, proj.margin)} · total ${proj.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
+    <div class="sg-pick">${pick} <small>${(pPick * 100).toFixed(1)}% · ${clean ? 'replay-tested engine' : 'engine'}</small></div>
+    <div class="sg-score">Proj ${g.home} ${v.homeScore} – ${g.away} ${v.awayScore} · ${seasonFmtMargin(g.home, v.margin)} · total ${v.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
     <div class="sg-chips">
-      ${seasonChip('Ours', proj.pHome, g.home, g.away)}
-      ${clean ? seasonChip('Ours · 2025-26', clean.pHome, g.home, g.away, '', 'last season\'s ratings') : ''}
+      ${clean ? seasonChip('Ours · 2025-26', clean.pHome, g.home, g.away, '', 'replay-tested · picks') : ''}
+      ${adj ? seasonChip('Ours · opp-adj', adj.pHome, g.home, g.away, '', 'tracked · not picks') : ''}
+      ${seasonChip('Ours', proj.pHome, g.home, g.away, '', clean ? 'NB.AI ratings · untested' : '')}
       ${seasonChip('NB.AI', pFriend, g.home, g.away)}
       ${seasonChip('Market', blend.pMarket, g.home, g.away, 'market', blend.pMarketSource)}
       ${seasonChip('Blend', blend.pBlend, g.home, g.away, 'blend')}
     </div>
     <div class="sg-flags">${flags.join('')}${absences.length ? `<span class="flag flag-none">OUT/Q: ${absences.slice(0, 4).join(', ')}${absences.length > 4 ? ' +' + (absences.length - 4) : ''}</span>` : ''}</div>
-    ${open ? renderGameDetail(g, proj) : ''}
+    ${open ? renderGameDetail(g, v) : ''}
   </div>`;
+}
+
+// Settled live-ledger games with a prediction from the replay-tested setup.
+function seasonValidatedSettled() {
+  return loadSeasonLedger().filter(r => r.result && r.pOursClean != null).length;
 }
 
 function seasonChip(label, pHome, homeAbbr, awayAbbr, cls, sub) {
@@ -293,8 +309,8 @@ function seasonLabRefreshResult() {
 
 // Live = the ledger (recorded before tip-off). Replay = replay-season.js's walk-forward rows,
 // predicted after the fact from data published before each game; never mixed with the ledger.
-const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['nbai', 'NB.AI'], ['market', 'Market']];
-const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['oursAdj', 'Ours · opp-adj'], ['nbai', 'NB.AI'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['oursAdj', 'Ours · opp-adj'], ['market', 'Market']];
 function seasonResultModels() { return seasonState.results.mode === 'replay' ? SEASON_RESULT_MODELS_REPLAY : SEASON_RESULT_MODELS_LIVE; }
 function seasonResultsRows() {
   if (seasonState.results.mode !== 'replay') return loadSeasonLedger();
@@ -317,6 +333,7 @@ function seasonModelCalls(r) {
     ours: call(r.pOurs, r.marginOurs),
     oursPre: call(r.pOursPre, r.marginOursPre),
     oursClean: call(r.pOursClean, r.marginOursClean),
+    oursAdj: call(r.pOursAdj, r.marginOursAdj),
     nbai: call(r.pFriend, null),
     market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
   };

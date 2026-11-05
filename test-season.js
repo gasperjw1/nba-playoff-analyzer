@@ -896,6 +896,62 @@ console.log('TEST 21: predictions under the feed ratings and last season\'s rati
   assert(/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'Results shows the 2025-26 column when rows carry it');
   c.SEASON_LEDGER = [res('b')];
   assert(!/<th>Ours · 2025-26<\/th>/.test(c.renderResultsTab()), 'and hides it for days recorded before it existed');
+
+  // The card's pick comes from the replay-tested setup (last season's ratings), not the blend.
+  const card = c.renderGameCard(g);
+  const vPick = cp.pHome >= 0.5 ? g.home : g.away, vP = cp.pHome >= 0.5 ? cp.pHome : 1 - cp.pHome;
+  assert(card.includes(`<div class="sg-pick">${vPick} <small>${(vP * 100).toFixed(1)}% · replay-tested engine</small>`), 'pick = engine on last season\'s ratings');
+  assert(card.includes(`Proj ${g.home} ${cp.homeScore} – ${g.away} ${cp.awayScore}`), 'score line from the same setup');
+  const strong = { ...g, market: { ...(g.market || {}), mlHome: cp.pHome > 0.5 ? 400 : -600, mlAway: cp.pHome > 0.5 ? -600 : 400 } };
+  const flagHtml = (c.renderGameCard(strong).match(/<span class="flag flag-edge">[^<]*/) || [''])[0];
+  assert(/vs market · unproven \(\d+\/150 settled\)/.test(flagHtml), `edge flag says unproven until 150 settled games (got "${flagHtml}")`);
+}
+
+console.log('TEST 22: opponent-adjusted line (tracked beside the picks engine)');
+{
+  const c = loadCtx(false);
+  const slate = makeSlate(c);
+  const T = slate.teams;
+  T.AAA.current = { ppg: 115, papg: 105, games: 1 }; T.BBB.current = { ppg: 105, papg: 115, games: 1 };
+  const results = [{ date: '2026-10-25', home: 'AAA', away: 'BBB', homeScore: 115, awayScore: 105 }];
+  const adj = c.seasonOpponentAdjust(T, slate.league, results);
+  // Equal teams: AAA's +10 at home counts as +10 − home court + BBB's rating (0).
+  near(adj.AAA.current.ppg - adj.AAA.current.papg, 10 - c.SEASON_HCA, 1e-9, 'home win adjusted for home court');
+  near(adj.BBB.current.ppg - adj.BBB.current.papg, -(10 - c.SEASON_HCA), 1e-9, 'road loss adjusted the same way');
+  near(adj.AAA.current.ppg + adj.AAA.current.papg, 220, 1e-9, 'points sum kept (totals unchanged)');
+  assert(adj.AAA.current.oppAdjusted.raw === 10 && adj.AAA.current.oppAdjusted.games === 1, 'raw and adjusted margins itemised');
+  assert(T.AAA.current.ppg === 115, 'input teams not mutated');
+  // A stronger opponent makes the same result worth more.
+  const strong = { ...T, BBB: { ...T.BBB, prior: { ...T.BBB.prior, ortg: T.BBB.prior.ortg + 6 } } };
+  const adj2 = c.seasonOpponentAdjust(strong, slate.league, results);
+  assert(adj2.AAA.current.ppg - adj2.AAA.current.papg > adj.AAA.current.ppg - adj.AAA.current.papg, 'beating a stronger team counts for more');
+  // Unknown teams and unfinished games are ignored; a team with no games is unchanged.
+  const adj3 = c.seasonOpponentAdjust(T, slate.league, [...results, { date: '2026-10-26', home: 'AAA', away: 'ZZZ', homeScore: 200, awayScore: 0 }, { date: '2026-10-27', home: 'AAA', away: 'BBB', homeScore: null, awayScore: null }]);
+  near(adj3.AAA.current.ppg - adj3.AAA.current.papg, 10 - c.SEASON_HCA, 1e-9, 'unknown opponents and unfinished games ignored');
+  const idle = c.seasonOpponentAdjust({ ...T, AAA: { ...T.AAA, current: { ppg: null, papg: null, games: 0 } } }, slate.league, results);
+  assert(idle.AAA.current.ppg === null, 'no games this season → unchanged');
+}
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const S = c.SEASON_SLATE_SNAPSHOT, g = S.games[0];
+  assert(c.seasonOppAdjSlate({ ...S, results: undefined }) === null, 'no adjusted line without this season\'s results');
+  const withRes = { ...S, results: [{ date: '2026-10-21', home: g.home, away: g.away, homeScore: 120, awayScore: 100 }] };
+  const A = c.seasonOppAdjSlate(withRes), clean = c.seasonCleanSlate(withRes);
+  assert(A.teams[g.home].prior === clean.teams[g.home].prior && A.teams[g.home].current.oppAdjusted, 'adjusted slate = last season\'s ratings + adjusted form');
+  const pa = c.projectSeasonGame(g, A);
+  const blend = c.blendGameForecast({ pOurs: 0.5, pFriend: null, mlHome: -110, mlAway: -110 });
+  const row = c.buildLedgerEntry(g, c.projectSeasonGame(g, S), blend, withRes, c.projectSeasonGame(g, clean), pa);
+  assert(row.pOursAdj === pa.pHome && row.marginOursAdj === pa.margin, 'ledger row stores the adjusted line');
+  c.seasonState.slate = withRes;
+  const card = c.renderGameCard(g), cp = c.projectSeasonGame(g, clean);
+  assert(card.includes('Ours · opp-adj') && card.includes('tracked · not picks'), 'card shows the adjusted line as tracked');
+  assert(card.includes(`${cp.pHome >= 0.5 ? g.home : g.away} <small>${((cp.pHome >= 0.5 ? cp.pHome : 1 - cp.pHome) * 100).toFixed(1)}% · replay-tested engine`), 'pick still from the replay-tested engine');
+  c.SEASON_LEDGER = [{ id: 'x', date: '2026-11-05', tip: '2026-11-05T23:00Z', home: 'GS', away: 'MIA', pOurs: 0.66, marginOurs: 5, pOursAdj: 0.6, marginOursAdj: 3, pMarket: 0.7, spreadHome: -7.5, result: { homeScore: 110, awayScore: 100 } }];
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  assert(/<th>Ours · opp-adj<\/th>/.test(c.renderResultsTab()), 'Results shows the adjusted column when rows carry it');
+  const R = (() => { const x = {}; vm.createContext(x); vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^const /m, 'var '), x); return x.SEASON_REPLAY; })();
+  assert(R.rows.every(r => typeof r.pOursAdj === 'number'), 'every replay row carries the adjusted variant');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

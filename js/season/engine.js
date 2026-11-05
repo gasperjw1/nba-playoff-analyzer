@@ -221,7 +221,7 @@ function calcRosterAdjustment(team, strength) {
       if (p.availability < 1 && prof.source === 'none') unmodeled.push(p.name);
       return;
     }
-    const tonight = prof.mpg * p.availability * scale;
+    const tonight = prof.mpg * (p.availability == null ? 1 : p.availability) * scale;
     const inRating = playerRatingMinutes(p, team, w, tg);
     const delta = value / prof.mpg * (tonight - inRating);
     const share = inRating / prof.mpg;
@@ -352,6 +352,50 @@ function calcSeasonTeamStrength(team, league) {
     priorNet: +priorNet.toFixed(2), priorNetShrunk: +(priorOff - priorDef).toFixed(2),
     currentNet: w ? +(curOff - curDef).toFixed(2) : null,
   };
+}
+
+// ── Opponent-adjusted form ──────────────────────────────────
+// This season's margins corrected for who each team played and where:
+// each game counts as margin − home court + the opponent's rating at the
+// time. An opponent's rating is its opening-night rating (last season ×
+// retention + roster changes + aging, everyone available) blended with
+// its own adjusted margins so far, walked in date order so a game only
+// uses earlier games. research-season-update.js 1c: −0.21 ± 0.12 MSE on
+// 13,209 past games (−0.10 ± 0.12 when opponents are rated by last season
+// alone). Tracked beside the engine; it does not drive picks.
+// results: [{ date, tip?, home, away, homeScore, awayScore }] before tonight.
+// Returns new teams with current.ppg/papg moved to the adjusted margin
+// (their sum, which drives totals, is kept).
+function seasonOpponentAdjust(teams, league, results) {
+  const open = {};
+  for (const [abbr, t] of Object.entries(teams)) {
+    if (!t || !t.prior) continue;
+    const base = { ...t, current: { games: 0 } };
+    const s0 = calcSeasonTeamStrength(base, league);
+    const r = calcRosterAdjustment({ ...base, players: (t.players || []).map(p => ({ ...p, availability: 1 })) }, s0);
+    open[abbr] = s0.net * s0.pace / 100 + r.adj + r.aging;
+  }
+  const abbrs = Object.keys(open);
+  if (!abbrs.length) return teams;
+  const mean = abbrs.reduce((x, a) => x + open[a], 0) / abbrs.length;
+  const st = Object.fromEntries(abbrs.map(a => [a, { g: 0, adj: 0 }]));
+  const rating = (a) => { const s = st[a], w = s.g / (s.g + SEASON_SHRINK_K); return (1 - w) * (open[a] - mean) + w * (s.g ? s.adj / s.g : 0); };
+  const ordered = (results || []).filter(g => st[g.home] && st[g.away] && g.homeScore != null && g.awayScore != null)
+    .slice().sort((a, b) => ((a.tip || a.date) < (b.tip || b.date) ? -1 : (a.tip || a.date) > (b.tip || b.date) ? 1 : 0));
+  for (const g of ordered) {
+    const y = g.homeScore - g.awayScore, rh = rating(g.home), ra = rating(g.away);
+    st[g.home].adj += y - SEASON_HCA + ra; st[g.away].adj += -y + SEASON_HCA + rh;
+    st[g.home].g++; st[g.away].g++;
+  }
+  const out = {};
+  for (const [abbr, t] of Object.entries(teams)) {
+    const s = st[abbr], cur = t && t.current;
+    if (!s || !s.g || !cur || !cur.games || cur.ppg == null || cur.papg == null) { out[abbr] = t; continue; }
+    const m = s.adj / s.g, sum = cur.ppg + cur.papg;
+    out[abbr] = { ...t, current: { ...cur, ppg: sum / 2 + m / 2, papg: sum / 2 - m / 2,
+      oppAdjusted: { raw: +(cur.ppg - cur.papg).toFixed(2), adjusted: +m.toFixed(2), games: s.g } } };
+  }
+  return out;
 }
 
 // game: SeasonGame; slate: SeasonSlate; opts: { restOverride:{home,away},

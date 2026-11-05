@@ -163,6 +163,10 @@ async function main() {
       for (const p of S.players.values()) {
         const keys = Object.keys(p.teams);
         if (!keys.length || keys[0] !== T) continue;
+        // Sensitivity: the opening roster is approximated from season-t rows (hindsight — includes
+        // mid-season signings, misses players who never appeared). ROSTER_MIN_SHARE drops players who
+        // appeared in fewer than that share of the team's games, to check results do not hinge on it.
+        if (p.teams[T].g / S.rating[T].games < +(process.env.ROSTER_MIN_SHARE || 0)) continue;
         const j = projOf(p.id, t);
         const prev = S1.players.get(p.id), pr = prev && prev.teams[T];
         const r = p.teams[T];
@@ -222,6 +226,11 @@ async function main() {
         // Best projected players keep their minutes; the cut comes off the bottom.
         let left = 240;
         [...exp].sort((a, b) => b.x.bpm - a.x.bpm).forEach(e => { e.m = Math.min(e.m, Math.max(0, left)); left -= e.m; });
+      } else if (mode === 'healthy') {
+        // The engine's per-game form on a night everyone is available: baseline minutes, capped at 240.
+        exp.forEach(e => { e.m = e.x.mpg; });
+        const t2 = exp.reduce((s, e) => s + e.m, 0);
+        if (t2 > 240) exp.forEach(e => { e.m *= 240 / t2; });
       } else if (mode !== 'raw' && total > 240) exp.forEach(e => { e.m *= 240 / total; });
       let s = 0;
       for (const e of exp) s += val(e.x.bpm, e.m) - val(e.x.bpm, e.x.mLast);
@@ -232,7 +241,7 @@ async function main() {
   const aging = (r) => r.roster.reduce((s, x) => s + x.shareG * (val(x.bpm + agingOf(x), x.mpg) - val(x.bpm, x.mpg)), 0);
   rows.forEach(r => {
     r.eng = terms.engine(r, 1); r.engExp = terms.engine(r, 'exp'); r.hind = terms.hindsight(r);
-    r.dRaw = terms.delta240(r, 'raw'); r.dProp = terms.delta240(r, 'prop'); r.dPri = terms.delta240(r, 'priority');
+    r.dRaw = terms.delta240(r, 'raw'); r.dProp = terms.delta240(r, 'prop'); r.dPri = terms.delta240(r, 'priority'); r.dHealthy = terms.delta240(r, 'healthy');
     r.age1 = aging(r);
     r.minTotal = r.roster.reduce((s, x) => s + x.mpg * x.gShare, 0);
     r.minTotalHealthy = r.roster.reduce((s, x) => s + x.mpg, 0);
@@ -314,13 +323,15 @@ async function main() {
   const builtE = demean(base);
   console.log('  built constants (0.75, 1.0), season mean removed — the form game margins see:');
   for (const [label, k, ag] of [['raw minutes, healthy (live engine before minutes-v1)', 'eng', 1], ['minutes-delta, raw minutes', 'dRaw', 1],
-    ['minutes-delta, capped at 240 (engine minutes-v1)', 'dProp', 1], ['  … without aging', 'dProp', 0], ['  … aging × 0.5', 'dProp', 0.5],
+    ['minutes-delta, capped at 240, expected games played', 'dProp', 1],
+    ['minutes-delta, capped at 240, everyone available (engine form)', 'dHealthy', 1],
+    ['  … without aging (aging curve fitted on these seasons: in-sample)', 'dProp', 0], ['  … aging × 0.5', 'dProp', 0.5],
     ['  + rookies take projected minutes, valued at replacement', 'dRookMin', 1], ['  + rookies take projected minutes, valued by draft slot', 'dRook', 1]]) {
     const e = demean(rows.map(r => r.y - (0.75 * r.p1 + r[k] + ag * r.age1)));
     const sd = Math.sqrt(rows.reduce((s, r) => s + r[k] * r[k], 0) / n);
     console.log(`    ${label.padEnd(54)} RMSE ${rmse(e).toFixed(3)}  ΔMSE vs live ${paired(e, builtE)}  roster term sd ${sd.toFixed(2)}`);
   }
-  if (process.env.ERR_OUT) fs.writeFileSync(process.env.ERR_OUT, JSON.stringify(rows.map(r => ({ t: r.t, T: r.T, y: r.y, p: 0.75 * r.p1 + r.dProp + r.age1 }))));
+  if (process.env.ERR_OUT) fs.writeFileSync(process.env.ERR_OUT, JSON.stringify(rows.map(r => ({ t: r.t, T: r.T, y: r.y, p: 0.75 * r.p1 + r.dProp + r.age1, p1: r.p1 }))));
   {
     const cap = demean(rows.map(r => r.y - (0.75 * r.p1 + r.dProp + r.age1)));
     for (const [label, k] of [['rookies at projected minutes, replacement value', 'dRookMin'], ['rookies at projected minutes, draft-slot value', 'dRook']]) {
@@ -331,6 +342,7 @@ async function main() {
   }
   const mkt = loso(rows, r => [r.wpct], y);
   const mktE = rows.map((r, i) => r.y - mkt[i]);
+  console.log(`  ${'market, season mean removed (comparable to the built-constant rows)'.padEnd(56)} RMSE ${rmse(demean(mktE)).toFixed(3)}`);
   console.log(`  ${'market: preseason win total'.padEnd(56)} RMSE ${rmse(mktE).toFixed(3)}  ΔMSE vs built ${paired(mktE, base)}`);
 
   // ── 2. by roster stability ────────────────────────────────

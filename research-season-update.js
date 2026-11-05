@@ -6,7 +6,8 @@
 //   margin = rating(home) − rating(away) + HCA + rest
 //   rating = (1 − w) × opening-night prior + w × this season's margin per game,  w = g / (g + K)
 //   P(home) = Φ(margin / σ)
-// with K = 20, HCA = 2.5, back-to-back −1.0, σ = 12.5 — all priors from the
+// with K = 20, HCA = 2.5, back-to-back −1.0, three-in-four −0.5, 3+ days off
+// +0.5, σ = 12.5 — all priors from the
 // literature, never fitted. This script walks every regular-season game of
 // ten past seasons forward in date order (each prediction sees only earlier
 // games) and asks which values the results support.
@@ -88,41 +89,60 @@ async function main() {
   for (let t = T0; t <= LAST; t++) {
     const S = await loadSeason(t);
     const teamGames = Object.fromEntries(Object.entries(S.rating).map(([T, r]) => [T, r.games]));
-    // Points of margin per game per net-rating point (≈ pace / 100).
+    // Points of margin per game per net-rating point (≈ pace / 100), from the season before (known at tip-off).
+    const Sp = await loadSeason(t - 1);
     let sxy = 0, sxx = 0;
-    for (const r of Object.values(S.rating)) { sxy += r.mov * r.nrtg; sxx += r.nrtg * r.nrtg; }
+    for (const r of Object.values(Sp.rating)) { sxy += r.mov * r.nrtg; sxx += r.nrtg * r.nrtg; }
     const scale = sxy / sxx;
     const pr = priors.filter(p => p.t === t);
     const mean = pr.reduce((s, p) => s + p.p, 0) / pr.length;
     const prior = Object.fromEntries(pr.map(p => [p.T, (p.p - mean) * scale]));
+    // Last season × retention only (no roster terms) — what the live engine can use for opponents.
+    const mean1 = pr.reduce((s, p) => s + p.p1, 0) / pr.length;
+    const priorLast = Object.fromEntries(pr.map(p => [p.T, 0.75 * (p.p1 - mean1) * scale]));
     const games = loadGames(t, teamGames);
     const expected = Object.values(teamGames).reduce((s, g) => s + g, 0) / 2;
     if (games.length !== expected) throw new Error(`${t}: ${games.length} games parsed, ${expected} expected`);
-    seasons.push({ t, games, prior, scale });
+    seasons.push({ t, games, prior, priorLast, scale });
   }
   console.log(`${seasons.reduce((s, x) => s + x.games.length, 0)} regular-season games, ${T0 - 1}-${String(T0).slice(2)} … ${LAST - 1}-${String(LAST).slice(2)}`);
 
   // Walk a season forward; returns per-game { t, y (home margin), pred, gMin (fewer games played of the two) }.
   const walk = (S, o) => {
     const st = {};
-    for (const T of Object.keys(S.prior)) st[T] = { g: 0, sum: 0, adj: 0, last: null };
+    for (const T of Object.keys(S.prior)) st[T] = { g: 0, sum: 0, adj: 0, last: null, prev: null };
     const rating = (T) => {
       const s = st[T], w = s.g / (s.g + o.K);
       const cur = s.g ? (o.oppAdj ? s.adj : s.sum) / s.g : 0;
+      // double: the engine run on NB.AI-style ratings, which already hold last season × (1 − w) +
+      // this season × w (fitted on NB.AI's Nov 2, 2026 snapshot: 0.76 / 0.21 at ~6 games); the
+      // engine then shrinks that by its retention and blends this season in again.
+      if (o.double) return (1 - w) * ((1 - w) * S.prior[T] + 0.75 * w * cur) + w * cur;
       return (1 - w) * S.prior[T] * (o.priorScale == null ? 1 : o.priorScale) + w * cur;
     };
     const out = [];
     for (const g of S.games) {
       const H = st[g.home], A = st[g.away];
-      const rest = (s) => (s.last && daysBetween(s.last, g.date) === 1 ? o.b2b : 0);
+      // Engine order: back-to-back, else three games in four nights; plus 3+ days off.
+      const rest = (s) => {
+        if (s.last && daysBetween(s.last, g.date) === 1) return o.b2b;
+        let r = 0;
+        if (o.t34 && s.prev && daysBetween(s.prev, g.date) <= 3) r += o.t34;
+        if (o.long && s.last && daysBetween(s.last, g.date) - 1 >= 3) r += o.long;
+        return r;
+      };
       const rh = rating(g.home), ra = rating(g.away);
       const pred = rh - ra + o.hca + rest(H) - rest(A);
       const y = g.hs - g.as;
       out.push({ t: S.t, y, pred, gMin: Math.min(H.g, A.g), date: g.date, home: g.home, away: g.away, hB2b: rest(H) !== 0 || (o.b2b === 0 && !!H.last && daysBetween(H.last, g.date) === 1), aB2b: rest(A) !== 0 || (o.b2b === 0 && !!A.last && daysBetween(A.last, g.date) === 1) });
       // Update after the game: raw margin, and margin adjusted for opponent strength and venue.
       H.sum += y; A.sum -= y;
-      H.adj += y - o.hca + ra; A.adj += -y + o.hca + rh;
-      H.g++; A.g++; H.last = g.date; A.last = g.date;
+      // Opponent strength for the adjustment: the full rating, or (oppLast) last season × retention
+      // blended with this season's adjusted margins — the live form.
+      const opp = (T) => { const s = st[T], w = s.g / (s.g + o.K); return (1 - w) * S.priorLast[T] + w * (s.g ? s.adj / s.g : 0); };
+      const ra2 = o.oppLast ? opp(g.away) : ra, rh2 = o.oppLast ? opp(g.home) : rh;
+      H.adj += y - o.hca + ra2; A.adj += -y + o.hca + rh2;
+      H.g++; A.g++; H.prev = H.last; A.prev = A.last; H.last = g.date; A.last = g.date;
     }
     return out;
   };
@@ -133,7 +153,7 @@ async function main() {
   const mse = (rows) => rows.reduce((s, r) => s + (r.y - r.pred) ** 2, 0) / rows.length;
   const run = (o) => seasons.flatMap(S => walk(S, o));
   const grid = [];
-  for (const K of [5, 10, 15, 20, 30, 40, 60]) for (const hca of [1.5, 2, 2.5, 3, 3.5]) for (const oppAdj of [false, true]) for (const b2b of [0, -1, -2]) grid.push({ K, hca, b2b, oppAdj });
+  for (const K of [5, 10, 15, 20, 30, 40, 60]) for (const hca of [1.5, 2, 2.5, 3, 3.5]) for (const oppAdj of [false, true]) for (const b2b of [0, -1, -2, -3]) grid.push({ K, hca, b2b, oppAdj });
   const results = grid.map(o => ({ o, rows: run(o) }));
   const msBy = (rows, t) => { const r = rows.filter(x => x.t !== t); return mse(r); };
 
@@ -182,6 +202,53 @@ async function main() {
     const rows = eng.filter(r => r.t === S.t);
     return `${S.t - 1}-${String(S.t).slice(2)} ${(rows.reduce((s, r) => s + r.y - (r.pred - 2.5), 0) / rows.length).toFixed(1)}`;
   }).join('  '));
+
+  // 1b. The engine's other rest terms (never tested before): three-in-four −0.5, 3+ days off +0.5.
+  {
+    const fixed = { K: 20, hca: 2.0, b2b: -2, oppAdj: false };
+    const cand = [];
+    for (const t34 of [0, -0.5, -1, -1.5]) for (const long of [0, 0.5, 1]) cand.push({ ...fixed, t34, long, rows: run({ ...fixed, t34, long }) });
+    const base = cand.find(x => x.t34 === 0 && x.long === 0).rows, engR = cand.find(x => x.t34 === -0.5 && x.long === 0.5).rows;
+    const picks = [], rows = [];
+    for (const S of seasons) {
+      let best = null;
+      for (const x of cand) if (!best || msBy(x.rows, S.t) < msBy(best.rows, S.t)) best = x;
+      picks.push(`${best.t34}/${best.long}`);
+      rows.push(...best.rows.filter(r => r.t === S.t));
+    }
+    console.log('\n1b. Three-in-four and long rest (home court 2.0, back-to-back −2 fixed)');
+    console.log(`  engine values (−0.5 / +0.5) vs neither: ΔMSE ${paired(engR, base)}`);
+    console.log(`  chosen on the other seasons (three-in-four/long rest picks ${[...new Set(picks)].join(', ')}): ΔMSE vs engine values ${paired(rows, engR)}`);
+    console.log('  full sample: ' + cand.map(x => `${x.t34}/${x.long} ${Math.sqrt(mse(x.rows)).toFixed(4)}`).join('  '));
+  }
+
+  // 1c. This season counted twice (the engine on NB.AI-style ratings) vs alternatives, current rest terms.
+  {
+    const R = { hca: 2.0, b2b: -2, t34: -0.5, long: 0.5, oppAdj: false };
+    const variants = [
+      ['engine (K 20, raw margins)', { ...R, K: 20 }],
+      ['recreated NB.AI ratings: this season counted twice', { ...R, K: 20, double: true }],
+      ['faster updating, K 10', { ...R, K: 10 }],
+      ['K 15', { ...R, K: 15 }],
+      ['K 15, opponent-adjusted', { ...R, K: 15, oppAdj: true }],
+      ['K 20, opponent-adjusted', { ...R, K: 20, oppAdj: true }],
+      ['K 20, opponent-adjusted, opponents by last season (live form)', { ...R, K: 20, oppAdj: true, oppLast: true }],
+    ].map(([label, o]) => ({ label, o, rows: run(o) }));
+    const eng = variants[0].rows;
+    console.log('\n1c. Counting this season twice vs alternatives (HCA 2.0, rest −2/−0.5/+0.5)');
+    for (const v of variants) console.log(`  ${v.label.padEnd(54)} RMSE ${Math.sqrt(mse(v.rows)).toFixed(4)}  ` +
+      windows.map(([w, f]) => `${w} ${Math.sqrt(mse(v.rows.filter(f))).toFixed(3)}`).join('  ') + (v.rows === eng ? '' : `  ΔMSE vs engine ${paired(v.rows, eng)}`));
+    const picks = [], rows = [];
+    for (const S of seasons) {
+      let best = null;
+      for (const v of variants) if (!best || msBy(v.rows, S.t) < msBy(best.rows, S.t)) best = v;
+      picks.push(best.label.split(':')[0]);
+      rows.push(...best.rows.filter(r => r.t === S.t));
+    }
+    console.log(`  chosen on the other seasons (picks: ${[...new Set(picks)].join(' / ')}): ΔMSE vs engine ${paired(rows, eng)}`);
+    const brierOf = (rows) => rows.reduce((t, r) => t + (normalCdf(r.pred / 12.5) - (r.y > 0 ? 1 : 0)) ** 2, 0) / rows.length;
+    console.log('  Brier at σ 12.5: ' + variants.map(v => `${v.label.split(':')[0].split(',')[0]} ${brierOf(v.rows).toFixed(4)}`).join(' · '));
+  }
 
   // 2. σ and calibration: P(home) = Φ(margin / σ), on the engine's margins and the best margins.
   const logloss = (rows, sig) => -rows.reduce((s, r) => { const p = Math.min(1 - 1e-9, Math.max(1e-9, normalCdf(r.pred / sig))); return s + (r.y > 0 ? Math.log(p) : Math.log(1 - p)); }, 0) / rows.length;

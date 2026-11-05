@@ -20,7 +20,15 @@ function seasonCleanSlate(slate) {
   return { ...slate, teams, league: deriveLeagueAverages(R) };
 }
 
-function buildLedgerEntry(game, projection, blend, slate, clean) {
+// Last season's ratings with this season's results corrected for opponents
+// (seasonOpponentAdjust). Needs slate.results, this season's finals so far.
+function seasonOppAdjSlate(slate) {
+  const clean = seasonCleanSlate(slate);
+  if (!clean || !Array.isArray(slate.results)) return null;
+  return { ...clean, teams: seasonOpponentAdjust(clean.teams, clean.league, slate.results) };
+}
+
+function buildLedgerEntry(game, projection, blend, slate, clean, adj) {
   const m = game.market || {};
   const friend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   return {
@@ -35,6 +43,10 @@ function buildLedgerEntry(game, projection, blend, slate, clean) {
     pOursClean: clean ? clean.pHome : null,
     marginOursClean: clean ? clean.margin : null,
     totalOursClean: clean ? clean.total : null,
+    // Same, with this season's results opponent-adjusted (seasonOppAdjSlate)
+    pOursAdj: adj ? adj.pHome : null,
+    marginOursAdj: adj ? adj.margin : null,
+    totalOursAdj: adj ? adj.total : null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,

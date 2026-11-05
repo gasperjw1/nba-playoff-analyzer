@@ -83,9 +83,13 @@ const SEASON_REST = {
 // the team plays teamMinutes: a full roster at its players' old minutes
 // sums to ~310, so arrivals were valued as if they kept their old roles
 // and absences cost a star's full value with nobody taking his minutes.
-// research-season-prior.js (330 team-seasons, point-in-time rosters):
-// opening-night RMSE 3.66 → 3.48 per 100 with the constants unchanged;
-// the preseason win-total market scores 3.40.
+// research-season-prior.js (330 team-seasons; opening rosters approximated
+// from each player's first team that season, which adds mid-season
+// signings): opening-night RMSE 3.66 → 3.50 per 100 in this engine's form
+// (ΔMSE −1.18 ± 0.64), constants unchanged; the preseason win-total market
+// scores 3.40. Dropping players who appeared in under a quarter of the
+// team's games shrinks the gain to −0.37 ± 0.45 — the direction holds, the
+// size is uncertain. Kept because a team cannot play more than 240 minutes.
 const SEASON_IMPACT = {
   replacementBpm: -2.0,
   bpmToPoints: 0.885,

@@ -111,7 +111,7 @@ function ols(X, y) {
 
 async function main() {
   const predFile = path.join(__dirname, '.cache/research-rest-preds.json');
-  if (!has('--fetch-only') && !fs.existsSync(predFile)) {
+  if (!has('--fetch-only')) {   // regenerated every run so it never goes stale
     require('child_process').execFileSync('node', [path.join(__dirname, 'research-season-update.js')], { env: { ...process.env, REST_OUT: predFile }, stdio: 'ignore' });
   }
   const rows = [];

@@ -44,14 +44,20 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-5',
+  version: 'replay-6',
+  // replay-6: adds the opponent-adjusted variant (seasonOpponentAdjust; chosen on 13,209 past games
+  //   in research-season-update.js 1c). The engine's own predictions are unchanged.
   // replay-5: engine 2026-11-05.b2b2 — back-to-back −1.0 → −2.0, chosen on past seasons
-  //   (research-season-update.js, research-season-rest.js) before any replay game was scored with it.
+  //   (research-season-update.js, research-season-rest.js). Not blind: chosen after looking at a Nov 2
+  //   game it flips. From replay-3 on, the 121 games are a development set, not a clean test — the
+  //   clean test is the live ledger from 2026-11-06.
   // replay-4: engine 2026-11-05.minutes-hca2 — home court 2.5 → 2.0, chosen on 13,209 past games
-  //   (research-season-update.js) before any replay game was scored with it; nothing else changes.
+  //   (research-season-update.js); nothing else changes. Not blind: replay-2's home lean (+1.6) and
+  //   the close's implied ~1.9 were seen first.
   // replay-3: engine 2026-11-05.minutes-v1 — tonight's minutes capped at 240 and the roster step
   //   valued in minutes (tonight − minutes in the rating). Chosen on 330 past team-seasons
-  //   (research-season-prior.js) before any replay game was scored with it; nothing else changes.
+  //   (research-season-prior.js); nothing else changes. Not blind: the research was prompted by
+  //   replay-1/2 results (stable-team gap, big edges losing).
   //   The engine and its constants are now spec files, so an engine edit cannot be scored unfrozen.
   // replay-2 (after an independent review of replay-1; changes are bug and leak fixes, not tuning):
   //   events ordered by ET time of day (a roster captured in the morning precedes that day's dated
@@ -66,7 +72,7 @@ const SPEC = {
   reportLeadMinutes: 60,
   preseasonCoef: 0.099,                 // 2016-2026 study; 0.0993 on a projected-minutes base
   preseasonWindow: ['2026-09-25', '2026-10-19'],
-  variants: { ours: 'engine', oursPre: 'engine + preseason' },
+  variants: { ours: 'engine', oursPre: 'engine + preseason', oursAdj: 'engine, this season opponent-adjusted' },
 };
 
 const ROOT = __dirname;
@@ -79,8 +85,10 @@ const BREF_CACHE = path.join(CACHE, 'bref');
 const PY = path.join(CACHE, 'pyenv/bin/python');
 const ARCHIVE_CACHE = path.join(CACHE, 'archive');
 const OUT = DATA('season-replay.js');
+// Every file that can change a replay prediction or its score (ALLOWED_FILES below, plus the parser).
 const SPEC_FILES = ['replay-season.js', 'js/season/replay-core.js', 'js/season/data/team-ratings.js', 'parse-injury-report.py',
-  'js/season/engine.js', 'js/season/data/season-constants.js'];
+  'js/season/engine.js', 'js/season/data/season-constants.js', 'js/season/adapters.js', 'js/season/ensemble.js',
+  'js/season/data/player-priors.js', 'js/season/data/aging-fit.js', 'js/season/data/chemistry-fit.js'];
 
 const args = process.argv.slice(2);
 const has = (f) => args.includes(f);
@@ -331,7 +339,7 @@ const eventKey = (e) => {
   return `${t.date}|${t.h < 12 ? 0 : 2}`;
 };
 function predictDay(ctx, store, date, debug) {
-  const regGames = store.regGames.filter(g => g.date < date).map(g => ({ id: g.id, date: g.date, home: g.home, away: g.away, homeScore: g.homeScore, awayScore: g.awayScore, box: g.box }));
+  const regGames = store.regGames.filter(g => g.date < date).map(g => ({ id: g.id, date: g.date, tip: g.tip, home: g.home, away: g.away, homeScore: g.homeScore, awayScore: g.awayScore, box: g.box }));
   const allEvents = store.appearances.concat(store.transactions, store.snapshots || []).map(e => ({ ...e, at: eventKey(e) }));
   const asOf = (day) => allEvents.filter(e => e.at < day + '|1');
   const events = asOf(date);
@@ -407,10 +415,11 @@ function predictDay(ctx, store, date, debug) {
   if (debug) return { teams, rosters, availability };
   const base = ctx.replayPredictDay({ date, games, teams, league: leagueAvg });
   const pre = ctx.replayPredictDay({ date, games, teams: ctx.replayPreseasonShift(teams, preseason, SPEC.preseasonCoef), league: leagueAvg });
+  const adj = ctx.replayPredictDay({ date, games, teams: ctx.seasonOpponentAdjust(teams, leagueAvg, regGames), league: leagueAvg });
   return base.map((b, i) => {
     const hashInput = JSON.stringify([b.home, b.away, [b.home, b.away].map(ab => [teams[ab].prior, teams[ab].current, teams[ab].rest,
       teams[ab].players.map(p => [p.id, p.availability, p.seasonGames, Math.round(p.avg.min * 100)])])]);
-    return { ...b, pre: pre[i], rosterSizes: { [b.home]: teams[b.home].players.length, [b.away]: teams[b.away].players.length },
+    return { ...b, pre: pre[i], adj: adj[i], rosterSizes: { [b.home]: teams[b.home].players.length, [b.away]: teams[b.away].players.length },
       provenance: { ...prov[b.id], boxCutoff: date, inputsHash: crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 16) } };
   });
 }
@@ -458,6 +467,7 @@ function rowsFor(ctx, store, preds) {
     return { id: p.id, date: p.date, tip: p.tip, home: p.home, away: p.away,
       pOurs: +p.pHome.toFixed(4), marginOurs: p.margin, totalOurs: p.total,
       pOursPre: +p.pre.pHome.toFixed(4), marginOursPre: p.pre.margin, totalOursPre: p.pre.total,
+      pOursAdj: +p.adj.pHome.toFixed(4), marginOursAdj: p.adj.margin, totalOursAdj: p.adj.total,
       pFriend: null, pMarket, mlHome: m.mlHome ?? null, mlAway: m.mlAway ?? null, spreadHome: m.spreadHome ?? null, totalMarket: m.total ?? null,
       open: m.open || null, source: 'replay', engine: SPEC.engine, spec: SPEC.version,
       result: g ? { homeScore: g.homeScore, awayScore: g.awayScore } : null,
@@ -603,6 +613,7 @@ async function main() {
     console.log(`Scored on ${settled.length} games with a DraftKings close:`);
     sc('engine', r => r.pOurs, r => r.marginOurs);
     sc('engine + preseason', r => r.pOursPre, r => r.marginOursPre);
+    sc('opponent-adjusted', r => r.pOursAdj, r => r.marginOursAdj);
     sc('DraftKings close', r => r.pMarket, r => r.spreadHome != null ? -r.spreadHome : ctx.winProbToMargin(r.pMarket));
     return;
   }
