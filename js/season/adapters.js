@@ -285,8 +285,8 @@ function espnRest(abbr, date, games) {
   return { restDays, backToBack: restDays === 0, threeInFour: in4 >= 2, schedulePoints: 0 };
 }
 
-// Teams as of the morning of `date`: priors from `priorTeams` (a committed
-// snapshot's teams), results and player lines from games before `date`.
+// Teams as of the morning of `date`: priors from `priorTeams` (SEASON_TEAM_PRIORS
+// in team-priors.js), results and player lines from games before `date`.
 // Roster = everyone in the team's box scores up to and including `date`;
 // every player starts available (callers set tonight's availability).
 function buildEspnTeams(priorTeams, date, games) {

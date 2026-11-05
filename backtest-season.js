@@ -6,7 +6,7 @@
 // would have known that morning and score its forecast against the
 // final score and DraftKings' line and total (ESPN pickcenter):
 //
-//   team ratings   last season's prior (committed slate snapshot) blended
+//   team ratings   last season's prior (js/season/data/team-priors.js) blended
 //                  with this season's results BEFORE the game date
 //   players        roster = everyone in the team's box scores so far;
 //                  season line from box scores BEFORE the game date
@@ -128,11 +128,11 @@ function score(rows, key) {
 
 async function main() {
   const to = TO || addDays(todayEt(), -1);
-  const snapCode = fromWorkingTree('js/season/data/slate-snapshot.js');
-  const snapCtx = vm.createContext({});
-  vm.runInContext(toVar(snapCode), snapCtx);
-  const snapshot = snapCtx.SEASON_SLATE_SNAPSHOT;
-  if (Object.keys(snapshot.teams).length !== 30) throw new Error(`snapshot has ${Object.keys(snapshot.teams).length} teams; the backtest needs all 30 priors`);
+  const priorCtx = vm.createContext({});
+  vm.runInContext(toVar(fromWorkingTree('js/season/data/team-priors.js')), priorCtx);
+  const priorTeams = priorCtx.SEASON_TEAM_PRIORS;
+  if (Object.keys(priorTeams).length !== 30) throw new Error(`team-priors.js has ${Object.keys(priorTeams).length} teams; the backtest needs all 30`);
+  const snapshot = { teams: priorTeams, league: espn.deriveLeagueAverages(priorTeams) };
 
   // Load games.
   const games = [];
