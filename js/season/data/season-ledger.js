@@ -400,7 +400,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 106,
+   "awayScore": 112,
+   "settledAt": "2026-11-05T15:23:06.537Z"
+  }
  },
  {
   "id": "401909923",
@@ -422,7 +426,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 105,
+   "awayScore": 120,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909924",
@@ -444,7 +452,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 109,
+   "awayScore": 102,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909925",
@@ -466,7 +478,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 114,
+   "awayScore": 104,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909926",
@@ -488,7 +504,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 135,
+   "awayScore": 105,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909927",
@@ -510,7 +530,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 103,
+   "awayScore": 107,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909928",
@@ -532,7 +556,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 120,
+   "awayScore": 113,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909929",
@@ -554,7 +582,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 124,
+   "awayScore": 116,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909930",
@@ -576,7 +608,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 107,
+   "awayScore": 117,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909931",
@@ -598,7 +634,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 128,
+   "awayScore": 109,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909932",
@@ -620,7 +660,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 119,
+   "awayScore": 132,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909933",
@@ -642,7 +686,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 112,
+   "awayScore": 111,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909934",
@@ -664,7 +712,11 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 103,
+   "awayScore": 116,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  },
  {
   "id": "401909935",
@@ -686,6 +738,10 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-02.aging-v2",
   "recordedAt": "2026-11-04T21:30:26.556Z",
-  "result": null
+  "result": {
+   "homeScore": 116,
+   "awayScore": 117,
+   "settledAt": "2026-11-05T15:23:06.538Z"
+  }
  }
 ];
