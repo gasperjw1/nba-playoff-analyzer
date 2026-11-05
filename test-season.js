@@ -359,7 +359,7 @@ console.log('TEST 12: UI boots under a stub DOM');
   let ok = true;
   try {
     c.seasonBoot();
-    ['tonight', 'lab', 'ledger', 'data'].forEach(t => c.seasonSetTab(t));
+    ['tonight', 'results', 'lab', 'ledger', 'data'].forEach(t => c.seasonSetTab(t));
     if (c.seasonState.slate && c.seasonState.slate.games.length) {
       c.seasonToggleGame(c.seasonState.slate.games[0].id);
       c.seasonSetTab('tonight');
@@ -649,6 +649,91 @@ console.log('TEST 16: ESPN adapters + fallback slate');
   c.SEASON_LEDGER = [{ ...committedRow, result: { homeScore: 100, awayScore: 90 } }];
   assert((c.loadSeasonLedger().find(x => x.id === 'c1').result || {}).homeScore === 100, 'browser: a local null result never hides a committed result');
   c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
+}
+
+// ── TEST 17: results by day ────────────────────────────────
+console.log('TEST 17: results by day');
+{
+  const c = loadCtx(false, true);
+  const row = (id, date, o) => ({ id, date, tip: date + 'T23:00Z', home: 'BOS', away: 'NY', pOurs: 0.6, marginOurs: 3, pFriend: null, pMarket: 0.55, spreadHome: -2, source: 'nb.ai', result: { homeScore: 104, awayScore: 100 }, ...o });
+  const rows = [
+    row('a', '2026-11-02', { pFriend: 0.4 }),                                                   // home by 4: ours off 1, market off 2, NB.AI wrong
+    row('b', '2026-11-02', { result: { homeScore: 98, awayScore: 102 }, marginOurs: 2, spreadHome: -2, pFriend: 0.7 }), // away by 4: ours and market tie at off 6
+    row('c', '2026-11-04', { source: 'espn', spreadHome: null, pMarket: 0.3 }),                // market margin implied from P
+    row('d', '2026-11-04', { source: 'espn', result: null }),                                  // unsettled
+  ];
+  const R = c.seasonResultsByDay(rows);
+  assert(R.days.length === 2 && R.days[0].date === '2026-11-04', 'days are newest first');
+  const nov2 = R.days[1], nov4 = R.days[0];
+  const [ga, gb] = nov2.games;
+  assert(ga.calls.ours.correct && ga.calls.market.correct && !ga.calls.nbai.correct, 'winner checks follow each model\'s probability');
+  near(ga.calls.ours.err, 1, 1e-9, 'ours margin miss');
+  near(ga.calls.market.err, 2, 1e-9, 'market margin = minus the home spread');
+  assert(ga.calls.nbai.implied && !ga.calls.ours.implied && !ga.calls.market.implied, 'only NB.AI margin is implied when a spread exists');
+  near(ga.calls.nbai.margin, c.winProbToMargin(0.4), 1e-9, 'NB.AI margin implied from its P with the engine σ');
+  assert(ga.closest.length === 1 && ga.closest[0] === 'ours', 'closest = smallest miss');
+  assert(gb.closest.join() === 'ours,market', 'ties all count as closest');
+  assert(!gb.calls.ours.correct && !gb.calls.market.correct && gb.calls.nbai.err === Math.abs(c.winProbToMargin(0.7) + 4), 'away win scored against every model');
+  const s2 = nov2.summary;
+  assert(s2.ours.n === 2 && s2.ours.winners === 1 && s2.ours.closest === 2 && s2.market.closest === 1 && s2.nbai.closest === 0, 'day summary tallies');
+  assert(nov4.games.length === 1 && nov4.pending === 1 && nov4.source === 'espn', 'unsettled rows are counted, not scored');
+  const gc = nov4.games[0];
+  assert(gc.calls.nbai === null, 'no NB.AI call on a fallback row');
+  assert(gc.calls.market.implied && gc.calls.market.margin < 0 && !gc.calls.market.correct, 'market without a spread: margin implied from P');
+  assert(R.season.ours.n === 3 && R.season.nbai.n === 2 && R.season.market.n === 3, 'season counts only games each model forecast');
+  near(R.season.ours.absErr / 3, (1 + 6 + Math.abs(3 - 4)) / 3, 1e-9, 'season margin miss');
+  assert(c.seasonResultsByDay([row('x', '2026-11-05', { result: null })]).days.length === 0, 'a day with nothing settled is not shown');
+  // Closest compares misses as displayed (0.1 pt): home won by 4; ours 8.04 (off 4.04) ties market 8 (off 4.0).
+  const t = c.seasonResultsByDay([row('t', '2026-11-06', { marginOurs: 8.04, spreadHome: -8 })]).days[0].games[0];
+  assert(t.calls.ours.errShown === 4 && t.calls.market.errShown === 4 && Math.abs(t.calls.ours.err - 4.04) < 1e-9 && t.closest.join() === 'ours,market', 'misses that display the same tie for closest');
+  // A cell names the pick from P; if the margin favours the other side, the margin line names that team.
+  const odd = c.seasonResultsByDay([row('o', '2026-11-06', { pMarket: 0.52, spreadHome: 0.5 })]).days[0].games[0];
+  const oddHtml = c.seasonResultsGameRow(odd);
+  assert(odd.calls.market.pickHome && odd.calls.market.correct, 'winner check uses the moneyline P even when the spread disagrees');
+  assert(/<b>BOS<\/b> <span class="res-pct">52%<\/span>/.test(oddHtml) && /NY by 0\.5 · off 4\.5/.test(oddHtml), 'pick and margin are labelled separately when they disagree');
+  const awayHtml = c.seasonResultsGameRow(gb);
+  const flip = c.seasonResultsByDay([row('f', '2026-11-06', { pOurs: 0.5026, marginOurs: 0.08 })]).days[0].games[0];
+  assert(/<b>BOS<\/b> <span class="res-pct">50\.3%<\/span>/.test(c.seasonResultsGameRow(flip)), 'a near coin-flip shows one decimal');
+  assert(/<b>BOS<\/b> <span class="res-pct">70%<\/span>/.test(awayHtml) && /by ≈/.test(awayHtml) && /<b>NY by 4<\/b>/.test(awayHtml) && /NY 102 – BOS 98/.test(awayHtml), 'row shows the final, each pick with its %, and NB.AI\'s implied margin');
+  // Rendering: the committed ledger agrees with the Ledger tab's scoring.
+  c.SEASON_LEDGER = rows;
+  const html = c.renderResultsTab();
+  assert(/Season to date/.test(html) && (html.match(/<details/g) || []).length === 2 && /ESPN fallback · no NB.AI/.test(html) && /1 unsettled/.test(html), 'tab renders a summary and one section per day');
+  assert((html.match(/ open>/g) || []).length === 1, 'only the newest day starts open');
+  const nov4Html = html.slice(html.indexOf('<details'), html.indexOf('</details>'));
+  assert(!/<th>NB\.AI<\/th>/.test(nov4Html) && /<th>Market<\/th>/.test(nov4Html) && /<th>NB\.AI<\/th>/.test(html.slice(html.lastIndexOf('<details'))), 'a day without NB.AI forecasts has no NB.AI column');
+  const sc = c.scoreForecasts(rows);
+  assert(Math.round(sc.ours.accuracy * sc.ours.n) === R.season.ours.winners && Math.round(sc.market.accuracy * sc.market.n) === R.season.market.winners, 'winner tallies match the Ledger tab');
+  c.SEASON_LEDGER = [];
+  assert(/No settled games yet/.test(c.renderResultsTab()), 'empty ledger shows a note');
+}
+
+// ── TEST 18: committed season data files ───────────────────
+console.log('TEST 18: team priors + user bet log');
+{
+  const c = loadCtx(false);
+  const load = (rel) => vm.runInContext(fs.readFileSync(path.join(__dirname, rel), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  load('js/season/data/team-priors.js');
+  const pri = c.SEASON_TEAM_PRIORS;
+  assert(Object.keys(pri).length === 30, 'team-priors.js has all 30 teams');
+  assert(Object.entries(pri).every(([k, t]) => t.abbr === k && t.prior.ortg > 95 && t.prior.ortg < 130 && t.prior.drtg > 95 && t.prior.drtg < 130 && t.prior.pace > 90 && t.prior.pace < 110), 'every prior is a sane rating');
+  const lg = c.deriveLeagueAverages(pri);
+  assert(lg.derived && lg.teams === 30, 'league averages derive from the priors table');
+  load('js/season/data/user-bets.js');
+  const byId = Object.fromEntries(c.SEASON_LEDGER.map(r => [r.id, r]));
+  const dec = a => a > 0 ? 1 + a / 100 : 1 + 100 / -a;
+  c.SEASON_USER_BETS.forEach(b => {
+    const legsOk = b.legs.every(l => {
+      const r = byId[l.gameId];
+      if (!r || !r.result || ![r.home, r.away].includes(l.team) || (l.side === 'home') !== (r.home === l.team)) return false;
+      const won = l.side === 'home' ? r.result.homeScore > r.result.awayScore : r.result.awayScore > r.result.homeScore;
+      return won === l.hit && Math.abs(l.pOurs - (l.side === 'home' ? r.pOurs : 1 - r.pOurs)) < 1e-3;
+    });
+    assert(legsOk, `${b.id}: every leg matches its ledger game, side, result and model P`);
+    assert((b.result.outcome === 'win') === b.legs.every(l => l.hit) && b.result.legsHit === b.legs.filter(l => l.hit).length, `${b.id}: outcome follows its legs`);
+    const d = b.legs.reduce((p, l) => p * dec(l.odds), 1);
+    assert(Math.abs(dec(b.americanOdds) - d) / d < 0.01, `${b.id}: parlay odds are the product of the legs`);
+  });
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

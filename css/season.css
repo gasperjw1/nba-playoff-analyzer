@@ -92,6 +92,50 @@
 .score-tile .v { font-size:20px; font-weight:700; margin-top:4px; }
 .score-tile .s { font-size:11px; color:var(--text-dim); }
 
+.results { max-width:1100px; margin:0 auto; }
+.res-block { margin-bottom:22px; }
+.res-h { font-size:15px; margin-bottom:10px; }
+.res-h .muted { font-weight:400; margin-left:8px; }
+.res-legend { margin:12px 0 0 18px; padding:0; max-width:900px; font-size:12px; line-height:1.55; color:var(--text-dim); }
+.res-legend li { margin:2px 0; }
+.res-legend b { color:var(--text); font-weight:600; }
+.res-pct { color:var(--text-dim); font-weight:400; margin-left:2px; }
+.res-score { width:100%; min-width:0; max-width:560px; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums; }
+.res-score th { text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); padding:6px 14px 6px 0; border-bottom:1px solid var(--border); white-space:normal; vertical-align:bottom; }
+.res-score td { padding:7px 14px 7px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.res-score td:first-child { font-weight:700; }
+.res-score tr.res-none td { color:var(--text-dim); }
+.res-best { color:var(--green); }
+.res-day { background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:12px; }
+.res-day[open] { border-color:rgba(79,140,255,0.45); }
+.res-day summary { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; padding:14px 18px; cursor:pointer; list-style:none; }
+.res-day summary::-webkit-details-marker { display:none; }
+.res-day summary::before { content:'▸'; color:var(--text-dim); font-size:12px; }
+.res-day[open] summary::before { content:'▾'; }
+.res-date { font-size:15px; font-weight:700; }
+.res-tag { font-size:10px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; color:var(--yellow); background:rgba(255,199,58,0.12); padding:3px 8px; border-radius:10px; }
+.res-tally { margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; }
+.res-chip { padding:3px 9px; border-radius:10px; background:rgba(255,255,255,0.05); font-variant-numeric:tabular-nums; }
+.res-chip b { color:var(--text-dim); font-weight:700; margin-right:4px; }
+.res-body { padding:2px 18px 16px; border-top:1px solid var(--border); }
+.res-body .res-score { margin:12px 0 16px; }
+.res-scroll { overflow-x:auto; }
+.res-games { width:100%; overflow:visible; overflow:clip; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums; min-width:720px; }
+.res-games th { text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); padding:6px 8px; border-bottom:1px solid var(--border); }
+.res-games td { padding:8px; border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:top; }
+.res-games tr:last-child td { border-bottom:none; }
+.res-game { font-weight:700; white-space:nowrap; }
+.res-games th:first-child, .res-games td:first-child { position:sticky; left:0; z-index:1; background:var(--card); box-shadow:1px 0 0 var(--border); }   /* game stays in view while the table scrolls on phones */
+.res-final b { white-space:nowrap; }
+.res-sub { display:block; font-size:11px; color:var(--text-dim); margin-top:2px; white-space:nowrap; }
+.res-cell { white-space:nowrap; border-radius:6px; }
+.res-cell.res-closest { background:rgba(61,214,140,0.09); box-shadow:inset 2px 0 0 var(--green); }
+.res-na { color:var(--text-dim); }
+.res-mark { display:inline-block; width:16px; font-weight:700; }
+.res-mark.ok { color:var(--green); }
+.res-mark.bad { color:var(--red); }
+.res-who { color:var(--green); font-weight:600; white-space:nowrap; }
+
 .import-box textarea { width:100%; min-height:140px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:10px; font-family:monospace; font-size:11px; }
 .muted { color:var(--text-dim); font-size:12px; }
 .btn-sm { padding:6px 12px; font-size:12px; }
@@ -100,4 +144,8 @@
   .lab { grid-template-columns:1fr; }
   .season-grid { grid-template-columns:1fr; }
   .season-status, .season-tabs, .season-page { padding-left:16px; padding-right:16px; }
+  .res-body { padding:2px 12px 12px; }
+  .res-day summary { padding:12px; }
+  .res-tally { margin-left:0; }
+  .res-score th, .res-score td { padding-right:8px; }
 }

@@ -23,6 +23,8 @@ function seasonBoot() {
   if (!slate && typeof SEASON_SLATE_SNAPSHOT !== 'undefined') slate = SEASON_SLATE_SNAPSHOT;
   seasonState.slate = slate;
   seasonState.slateOrigin = origin;
+  const hashTab = typeof location !== 'undefined' ? location.hash.slice(1) : '';
+  if (SEASON_TABS.some(([id]) => id === hashTab)) seasonState.tab = hashTab;
   if (slate && slate.games.length) {
     seasonState.lab.home = slate.games[0].home;
     seasonState.lab.away = slate.games[0].away;
@@ -36,6 +38,7 @@ function renderSeasonApp() {
   const main = document.getElementById('seasonMain');
   if (!seasonState.slate) { main.innerHTML = renderImportPanel(true); return; }
   switch (seasonState.tab) {
+    case 'results': main.innerHTML = renderResultsTab(); break;
     case 'lab': main.innerHTML = renderLab(); break;
     case 'ledger': main.innerHTML = renderLedgerTab(); break;
     case 'data': main.innerHTML = renderImportPanel(false); break;
@@ -43,7 +46,11 @@ function renderSeasonApp() {
   }
 }
 
-function seasonSetTab(tab) { seasonState.tab = tab; renderSeasonApp(); }
+function seasonSetTab(tab) {
+  seasonState.tab = tab;
+  if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', '#' + tab);
+  renderSeasonApp();
+}
 
 // ---------- status + tabs ----------
 
@@ -61,9 +68,10 @@ function renderSeasonStatus() {
     <span>League avg ORtg <b>${s.league.ortg.toFixed(1)}</b> pace <b>${s.league.pace.toFixed(1)}</b>${s.league.derived ? '' : ' <span class="muted">(fallback)</span>'}</span>`;
 }
 
+const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
+
 function renderSeasonTabs() {
-  const tabs = [['tonight', 'Tonight'], ['lab', 'Matchup Lab'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
-  document.getElementById('seasonTabs').innerHTML = tabs.map(([id, label]) =>
+  document.getElementById('seasonTabs').innerHTML = SEASON_TABS.map(([id, label]) =>
     `<button class="season-tab${seasonState.tab === id ? ' active' : ''}" onclick="seasonSetTab('${id}')">${label}</button>`).join('');
 }
 
@@ -252,6 +260,144 @@ function seasonLabRefreshResult() {
   if (fresh && cur) cur.innerHTML = fresh.innerHTML;
 }
 
+// ---------- results by day ----------
+
+const SEASON_RESULT_MODELS = [['ours', 'Ours'], ['nbai', 'NB.AI'], ['market', 'Market']];
+
+// Each model's call on a ledger row: { p, margin, implied } or null.
+// Winner = the side its win probability favours (as on the Ledger tab).
+// Margin: ours is the engine's; market is minus the home spread; NB.AI
+// publishes no margin, so its margin is implied from P via the engine's σ.
+function seasonModelCalls(r) {
+  const num = v => typeof v === 'number' && isFinite(v);
+  const call = (p, margin) => (num(p) || num(margin)) ? { p: num(p) ? p : null, margin: num(margin) ? margin : winProbToMargin(p), implied: !num(margin) } : null;
+  return {
+    ours: call(r.pOurs, r.marginOurs),
+    nbai: call(r.pFriend, null),
+    market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
+  };
+}
+
+// Settled ledger rows → { season, days:[{ date, games, pending, source, summary }] }, newest day first.
+// summary[model] = { n, winners, absErr, closest }; a game's "closest" lists every model tied for the
+// smallest margin miss (to 0.1 pt, as shown). Each model is scored only on games it forecast.
+function seasonResultsByDay(rows) {
+  const blank = () => Object.fromEntries(SEASON_RESULT_MODELS.map(([k]) => [k, { n: 0, winners: 0, absErr: 0, closest: 0 }]));
+  const add = (sum, g) => {
+    SEASON_RESULT_MODELS.forEach(([k]) => {
+      const c = g.calls[k]; if (!c) return;
+      const s = sum[k]; s.n++; s.winners += c.correct ? 1 : 0; s.absErr += c.err; s.closest += g.closest.includes(k) ? 1 : 0;
+    });
+  };
+  const season = blank(), byDate = {};
+  rows.forEach(r => {
+    const day = byDate[r.date] || (byDate[r.date] = { date: r.date, games: [], pending: 0, sources: new Set(), summary: blank() });
+    day.sources.add(r.source || 'nb.ai');
+    const res = r.result;
+    if (!res || typeof res.homeScore !== 'number' || typeof res.awayScore !== 'number') { day.pending++; return; }
+    const actual = res.homeScore - res.awayScore;
+    const calls = seasonModelCalls(r);
+    Object.keys(calls).forEach(k => {
+      const c = calls[k]; if (!c) return;
+      c.pickHome = c.p != null ? c.p >= 0.5 : c.margin > 0;
+      c.correct = c.pickHome === (actual > 0);
+      c.err = Math.abs(c.margin - actual);                  // exact, for averages
+      c.errShown = Math.round(c.err * 10) / 10;             // as displayed; closest compares these, so equal-looking misses tie
+    });
+    const best = Math.min(...Object.values(calls).filter(Boolean).map(c => c.errShown));
+    const g = { row: r, actual, calls, closest: Object.keys(calls).filter(k => calls[k] && calls[k].errShown === best) };
+    day.games.push(g); add(day.summary, g); add(season, g);
+  });
+  const days = Object.values(byDate).filter(d => d.games.length).sort((a, b) => b.date.localeCompare(a.date))
+    .map(d => ({ ...d, source: d.sources.size === 1 ? [...d.sources][0] : 'mixed' }));
+  return { season, days };
+}
+
+function renderResultsTab() {
+  const { season, days } = seasonResultsByDay(loadSeasonLedger());
+  if (!days.length) return `<div class="home-empty">No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).</div>`;
+  const nGames = days.reduce((s, d) => s + d.games.length, 0);
+  return `<div class="results">
+    <section class="res-block">
+      <h3 class="res-h">Season to date <span class="muted">${nGames} games · ${days.length} day${days.length === 1 ? '' : 's'}</span></h3>
+      ${seasonResultsScoreboard(season)}
+      <ul class="res-legend">
+        <li><b>Winner</b> ✓/✗: did the side the model gave over 50% win? The % is that side's win probability.</li>
+        <li><b>Margin</b>: predicted winning margin; <i>off</i> = points from the final margin. <b>Closest</b> = the model(s) nearest the final; ties all count.</li>
+        <li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
+        <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>
+      </ul>
+    </section>
+    ${days.map((d, i) => seasonResultsDay(d, i === 0)).join('')}
+  </div>`;
+}
+
+function seasonResultsScoreboard(sum) {
+  const present = SEASON_RESULT_MODELS.filter(([k]) => sum[k].n);
+  // Compare what is shown: whole-number win %, one-decimal margin miss, share of games closest.
+  const pct = k => Math.round(sum[k].winners / sum[k].n * 100);
+  const mae = k => (sum[k].absErr / sum[k].n).toFixed(1);
+  const share = k => sum[k].closest / sum[k].n;
+  const best = (f, pick) => pick(...present.map(([k]) => +f(k)));
+  const top = { pct: best(pct, Math.max), mae: best(mae, Math.min), share: best(share, Math.max) };
+  const lead = (on, html) => present.length > 1 && on ? `<b class="res-best">${html}</b>` : html;
+  return `<table class="res-score">
+    <tr><th>Model</th><th>Winners picked</th><th>Avg margin miss</th><th>Closest on margin</th></tr>
+    ${SEASON_RESULT_MODELS.map(([k, label]) => {
+      const s = sum[k];
+      if (!s.n) return `<tr class="res-none"><td>${label}</td><td colspan="3">no forecasts</td></tr>`;
+      return `<tr><td>${label}</td>
+        <td>${lead(pct(k) === top.pct, `${s.winners} of ${s.n}`)} <span class="muted">${pct(k)}%</span></td>
+        <td>${lead(+mae(k) === top.mae, `${k === 'nbai' ? '≈' : ''}${mae(k)} pts`)}</td>
+        <td>${lead(share(k) === top.share, `${s.closest} of ${s.n}`)} <span class="muted">${Math.round(share(k) * 100)}%</span></td></tr>`;
+    }).join('')}
+  </table>`;
+}
+
+function seasonResultsDay(d, open) {
+  const s = d.summary;
+  const cols = SEASON_RESULT_MODELS.filter(([k]) => s[k].n);   // a model with no forecasts that day gets no column
+  const tally = SEASON_RESULT_MODELS.map(([k, label]) => `<span class="res-chip"><b>${label}</b> ${s[k].n ? `${s[k].winners}/${s[k].n}` : '—'}</span>`).join('');
+  const tag = d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  return `<details class="res-day"${open ? ' open' : ''}>
+    <summary><span class="res-date">${seasonFmtDay(d.date)}</span>
+      <span class="muted">${d.games.length} game${d.games.length === 1 ? '' : 's'}${d.pending ? ` · ${d.pending} unsettled` : ''}</span>${tag}
+      <span class="res-tally"><span class="muted">winners</span>${tally}</span></summary>
+    <div class="res-body">
+      ${seasonResultsScoreboard(s)}
+      <div class="res-scroll"><table class="res-games">
+        <tr><th>Game</th><th>Final</th>${cols.map(([, label]) => `<th>${label}</th>`).join('')}<th>Closest</th></tr>
+        ${d.games.map(g => seasonResultsGameRow(g, cols)).join('')}
+      </table></div>
+    </div>
+  </details>`;
+}
+
+function seasonResultsGameRow(g, cols) {
+  cols = cols || SEASON_RESULT_MODELS;
+  const r = g.row, res = r.result;
+  const winner = g.actual > 0 ? r.home : r.away;
+  const cell = k => {
+    const c = g.calls[k];
+    if (!c) return `<td class="res-cell res-na" title="${k === 'nbai' && r.source === 'espn' ? 'ESPN fallback slate — no NB.AI forecast' : 'No forecast recorded'}">—</td>`;
+    const pick = c.pickHome ? r.home : r.away;
+    const pp = c.p == null ? null : (c.pickHome ? c.p : 1 - c.p) * 100;
+    const pPick = pp == null ? null : Math.round(pp) === 50 ? pp.toFixed(1) : Math.round(pp);   // a decimal near a coin flip
+    const v = Math.abs(c.margin).toFixed(1), lead = c.margin > 0 ? r.home : r.away;
+    const margin = v === '0.0' ? 'even' : `${lead === pick ? '' : lead + ' '}by ${c.implied ? '≈' : ''}${v}`;
+    return `<td class="res-cell${g.closest.includes(k) ? ' res-closest' : ''}">
+      <span class="res-mark ${c.correct ? 'ok' : 'bad'}">${c.correct ? '✓' : '✗'}</span><b>${pick}</b>${pPick != null ? ` <span class="res-pct">${pPick}%</span>` : ''}
+      <span class="res-sub">${margin} · off ${c.errShown.toFixed(1)}</span></td>`;
+  };
+  const names = Object.fromEntries(SEASON_RESULT_MODELS);
+  return `<tr>
+    <td class="res-game">${r.away} @ ${r.home}</td>
+    <td class="res-final"><b>${winner} by ${Math.abs(g.actual)}</b><span class="res-sub">${r.away} ${res.awayScore} – ${r.home} ${res.homeScore}</span></td>
+    ${cols.map(([k]) => cell(k)).join('')}
+    <td class="res-who">${g.closest.map(k => names[k]).join(', ')}</td>
+  </tr>`;
+}
+
 // ---------- ledger ----------
 
 function renderLedgerTab() {
@@ -334,8 +480,8 @@ function seasonImport() {
     const rankings = rkRaw ? JSON.parse(rkRaw) : null;
     const slate = adaptNbaiSlate(saved, rankings);
     localStorage.setItem(SEASON_SLATE_STORAGE_KEY, JSON.stringify(slate));
-    seasonState.tab = 'tonight';
     seasonBoot();
+    seasonSetTab('tonight');
   } catch (e) {
     msg.textContent = 'Import failed: ' + e.message;
   }
@@ -352,4 +498,8 @@ function seasonTodayIso() {
   catch (e) { return new Date().toISOString().slice(0, 10); }
 }
 function seasonFmtMargin(home, m) { if (m == null) return ''; return m >= 0 ? `${home} by ${Math.abs(m).toFixed(1)}` : `${home} −${Math.abs(m).toFixed(1)}`; }
+function seasonFmtDay(iso) {
+  try { return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(iso + 'T12:00:00Z')); }
+  catch (e) { return iso; }
+}
 function seasonPct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }
