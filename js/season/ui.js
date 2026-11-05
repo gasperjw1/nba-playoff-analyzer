@@ -11,7 +11,7 @@ const seasonState = {
   tab: 'tonight',
   expanded: {},
   lab: { home: null, away: null, rest: { home: {}, away: {} }, avail: {} },
-  results: { date: null, calOpen: false, calMonth: null },
+  results: { mode: 'live', date: null, calOpen: false, calMonth: null },
   propCache: {},
 };
 
@@ -24,9 +24,12 @@ function seasonBoot() {
   if (!slate && typeof SEASON_SLATE_SNAPSHOT !== 'undefined') slate = SEASON_SLATE_SNAPSHOT;
   seasonState.slate = slate;
   seasonState.slateOrigin = origin;
-  const [hashTab, hashArg] = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
-  if (SEASON_TABS.some(([id]) => id === hashTab)) seasonState.tab = hashTab;
-  if (hashTab === 'results' && /^\d{4}-\d{2}-\d{2}$/.test(hashArg || '')) seasonState.results.date = hashArg;
+  const parts = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
+  if (SEASON_TABS.some(([id]) => id === parts[0])) seasonState.tab = parts[0];
+  if (parts[0] === 'results') {
+    if (parts[1] === 'replay') { seasonState.results.mode = 'replay'; parts.splice(1, 1); }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(parts[1] || '')) seasonState.results.date = parts[1];
+  }
   seasonBindKeys();
   if (slate && slate.games.length) {
     seasonState.lab.home = slate.games[0].home;
@@ -55,11 +58,11 @@ function seasonSetTab(tab) {
   renderSeasonApp();
 }
 
-// #tab, or #results/YYYY-MM-DD once a results day is chosen — linkable and bookmarkable.
+// #tab, or #results[/replay][/YYYY-MM-DD] on the results tab — linkable and bookmarkable.
 function seasonWriteHash() {
   if (typeof history === 'undefined' || !history.replaceState) return;
-  const d = seasonState.tab === 'results' && seasonState.results.date;
-  history.replaceState(null, '', '#' + seasonState.tab + (d ? '/' + d : ''));
+  const r = seasonState.results, res = seasonState.tab === 'results';
+  history.replaceState(null, '', '#' + seasonState.tab + (res && r.mode === 'replay' ? '/replay' : '') + (res && r.date ? '/' + r.date : ''));
 }
 
 // ← / → step through results days; Esc closes the calendar. Bound once.
@@ -285,7 +288,20 @@ function seasonLabRefreshResult() {
 
 // ---------- results by day ----------
 
-const SEASON_RESULT_MODELS = [['ours', 'Ours'], ['nbai', 'NB.AI'], ['market', 'Market']];
+// Live = the ledger (recorded before tip-off). Replay = replay-season.js's walk-forward rows,
+// predicted after the fact from data published before each game; never mixed with the ledger.
+const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['nbai', 'NB.AI'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['market', 'Market']];
+function seasonResultModels() { return seasonState.results.mode === 'replay' ? SEASON_RESULT_MODELS_REPLAY : SEASON_RESULT_MODELS_LIVE; }
+function seasonResultsRows() {
+  if (seasonState.results.mode !== 'replay') return loadSeasonLedger();
+  return typeof SEASON_REPLAY !== 'undefined' && SEASON_REPLAY && Array.isArray(SEASON_REPLAY.rows) ? SEASON_REPLAY.rows : [];
+}
+function seasonResultsMode(mode) {
+  Object.assign(seasonState.results, { mode, date: null, calOpen: false, calMonth: null });
+  seasonWriteHash();
+  renderSeasonApp();
+}
 
 // Each model's call on a ledger row: { p, margin, implied } or null.
 // Winner = the side its win probability favours (as on the Ledger tab).
@@ -296,6 +312,7 @@ function seasonModelCalls(r) {
   const call = (p, margin) => (num(p) || num(margin)) ? { p: num(p) ? p : null, margin: num(margin) ? margin : winProbToMargin(p), implied: !num(margin) } : null;
   return {
     ours: call(r.pOurs, r.marginOurs),
+    oursPre: call(r.pOursPre, r.marginOursPre),
     nbai: call(r.pFriend, null),
     market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
   };
@@ -305,9 +322,9 @@ function seasonModelCalls(r) {
 // summary[model] = { n, winners, absErr, closest }; a game's "closest" lists every model tied for the
 // smallest margin miss (to 0.1 pt, as shown). Each model is scored only on games it forecast.
 function seasonResultsByDay(rows) {
-  const blank = () => Object.fromEntries(SEASON_RESULT_MODELS.map(([k]) => [k, { n: 0, winners: 0, absErr: 0, closest: 0 }]));
+  const blank = () => Object.fromEntries(seasonResultModels().map(([k]) => [k, { n: 0, winners: 0, absErr: 0, closest: 0 }]));
   const add = (sum, g) => {
-    SEASON_RESULT_MODELS.forEach(([k]) => {
+    seasonResultModels().forEach(([k]) => {
       const c = g.calls[k]; if (!c) return;
       const s = sum[k]; s.n++; s.winners += c.correct ? 1 : 0; s.absErr += c.err; s.closest += g.closest.includes(k) ? 1 : 0;
     });
@@ -338,14 +355,21 @@ function seasonResultsByDay(rows) {
 }
 
 function renderResultsTab() {
-  const { season, days, unsettledDates } = seasonResultsByDay(loadSeasonLedger());
-  if (!days.length) return `<div class="home-empty">No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).</div>`;
+  const { season, days, unsettledDates } = seasonResultsByDay(seasonResultsRows());
+  const replay = seasonState.results.mode === 'replay';
+  const spec = replay && typeof SEASON_REPLAY !== 'undefined' ? SEASON_REPLAY.spec : null;
+  const modeBar = `<div class="res-mode" role="tablist" aria-label="Results source">
+      <button role="tab" aria-selected="${!replay}" class="${replay ? '' : 'on'}" onclick="seasonResultsMode('live')">Live ledger</button>
+      <button role="tab" aria-selected="${replay}" class="${replay ? 'on' : ''}" onclick="seasonResultsMode('replay')">Replay from opening night</button>
+    </div>${replay ? `<p class="res-banner"><b>Replay</b> — predicted after the fact, game by game, from only what was published before each tip-off: 2025-26 team ratings, this season's earlier games, archived opening rosters and dated moves, and the official injury report ${spec ? spec.reportLeadMinutes : 60}+ minutes before tip. Engine frozen at ${spec ? spec.engine : '—'}. Kept apart from the live ledger and its scoring.</p>` : ''}`;
+  if (!days.length) return `<div class="results">${modeBar}<div class="home-empty">${replay ? 'No replay rows yet — run <code>node replay-season.js</code>.' : 'No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).'}</div></div>`;
   const d = seasonResultsSelected(days);
   const asc = days.map(x => x.date).sort(), i = asc.indexOf(d.date);
   const nGames = days.reduce((n, x) => n + x.games.length, 0);
-  const tag = d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  const tag = d.source === 'replay' ? '<span class="res-tag replay">Replay</span>' : d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
   const r = seasonState.results;
   return `<div class="results">
+    ${modeBar}
     <div class="res-nav">
       <button class="res-arrow" onclick="seasonResultsStep(-1)"${i > 0 ? '' : ' disabled'} aria-label="Previous day" title="Previous day (←)">‹</button>
       <div class="res-pick">
@@ -362,8 +386,9 @@ function renderResultsTab() {
       <ul class="res-legend">
         <li><b>Winner</b> ✓/✗: did the side the model gave over 50% win? The % is that side's win probability.</li>
         <li><b>Margin</b>: predicted winning margin; <i>off</i> = points from the final margin. <b>Closest</b> = the model(s) nearest the final; ties all count.</li>
-        <li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
-        <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>
+        ${replay ? `<li>Market = DraftKings no-vig moneyline and closing spread — the closing line moved after our report cutoff, so it is the harder benchmark.</li>
+        <li><b>Ours + preseason</b> shifts each team's prior by ${spec ? spec.preseasonCoef : 0.099} × its NBA-vs-NBA preseason margin per game (measured on 2016–2026); it fades as this season's games take over.</li>` : `<li>Market = DraftKings no-vig moneyline and closing spread. NB.AI publishes only win probabilities, so its margin (≈) is converted from them with the engine's σ = ${SEASON_MARGIN_SIGMA}.</li>
+        <li>Each model is scored only on games it forecast; ESPN-fallback days have no NB.AI, so those games are Ours vs Market.</li>`}
       </ul>
     </section>
   </div>`;
@@ -374,7 +399,7 @@ function seasonResultsSelected(days) { return days.find(x => x.date === seasonSt
 
 // dir -1 = the previous day with results, +1 = the next; no-op at either end.
 function seasonResultsStep(dir) {
-  const { days } = seasonResultsByDay(loadSeasonLedger());
+  const { days } = seasonResultsByDay(seasonResultsRows());
   if (!days.length) return;
   const asc = days.map(x => x.date).sort(), j = asc.indexOf(seasonResultsSelected(days).date) + dir;
   if (j >= 0 && j < asc.length) seasonResultsGo(asc[j]);
@@ -390,7 +415,7 @@ function seasonResultsGo(date) {
 function seasonResultsToggleCal(open) {
   const r = seasonState.results;
   r.calOpen = open == null ? !r.calOpen : !!open;
-  if (r.calOpen) { const { days } = seasonResultsByDay(loadSeasonLedger()); r.calMonth = seasonResultsSelected(days).date.slice(0, 7); }
+  if (r.calOpen) { const { days } = seasonResultsByDay(seasonResultsRows()); r.calMonth = seasonResultsSelected(days).date.slice(0, 7); }
   renderSeasonApp();
 }
 
@@ -430,7 +455,7 @@ function seasonResultsCalendar(days, selected, unsettledDates) {
 }
 
 function seasonResultsScoreboard(sum) {
-  const present = SEASON_RESULT_MODELS.filter(([k]) => sum[k].n);
+  const present = seasonResultModels().filter(([k]) => sum[k].n);
   // Compare what is shown: whole-number win %, one-decimal margin miss, share of games closest.
   const pct = k => Math.round(sum[k].winners / sum[k].n * 100);
   const mae = k => (sum[k].absErr / sum[k].n).toFixed(1);
@@ -440,7 +465,7 @@ function seasonResultsScoreboard(sum) {
   const lead = (on, html) => present.length > 1 && on ? `<b class="res-best">${html}</b>` : html;
   return `<table class="res-score">
     <tr><th>Model</th><th>Winners picked</th><th>Avg margin miss</th><th>Closest on margin</th></tr>
-    ${SEASON_RESULT_MODELS.map(([k, label]) => {
+    ${seasonResultModels().map(([k, label]) => {
       const s = sum[k];
       if (!s.n) return `<tr class="res-none"><td>${label}</td><td colspan="3">no forecasts</td></tr>`;
       return `<tr><td>${label}</td>
@@ -452,7 +477,7 @@ function seasonResultsScoreboard(sum) {
 }
 
 function seasonResultsDay(d) {
-  const cols = SEASON_RESULT_MODELS.filter(([k]) => d.summary[k].n);   // a model with no forecasts that day gets no column
+  const cols = seasonResultModels().filter(([k]) => d.summary[k].n);   // a model with no forecasts that day gets no column
   return `<section class="res-day">
     ${seasonResultsScoreboard(d.summary)}
     <div class="res-scroll"><table class="res-games">
@@ -463,7 +488,7 @@ function seasonResultsDay(d) {
 }
 
 function seasonResultsGameRow(g, cols) {
-  cols = cols || SEASON_RESULT_MODELS;
+  cols = cols || seasonResultModels();
   const r = g.row, res = r.result;
   const winner = g.actual > 0 ? r.home : r.away;
   const cell = k => {
@@ -478,9 +503,9 @@ function seasonResultsGameRow(g, cols) {
       <span class="res-mark ${c.correct ? 'ok' : 'bad'}">${c.correct ? '✓' : '✗'}</span><b>${pick}</b>${pPick != null ? ` <span class="res-pct">${pPick}%</span>` : ''}
       <span class="res-sub">${margin} · off ${c.errShown.toFixed(1)}</span></td>`;
   };
-  const names = Object.fromEntries(SEASON_RESULT_MODELS);
+  const names = Object.fromEntries(seasonResultModels());
   return `<tr>
-    <td class="res-game">${r.away} @ ${r.home}</td>
+    <td class="res-game"${r.provenance ? ` title="Injury report ${seasonReportLabel(r.provenance.report)} · inputs ${r.provenance.inputsHash}"` : ''}>${r.away} @ ${r.home}${r.provenance ? `<span class="res-sub">report ${seasonReportLabel(r.provenance.report)}</span>` : ''}</td>
     <td class="res-final"><b>${winner} by ${Math.abs(g.actual)}</b><span class="res-sub">${r.away} ${res.awayScore} – ${r.home} ${res.homeScore}</span></td>
     ${cols.map(([k]) => cell(k)).join('')}
     <td class="res-who">${g.closest.map(k => names[k]).join(', ')}</td>
@@ -591,4 +616,6 @@ function seasonFmtDay(iso, long) {
   try { return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: long ? 'long' : 'short', month: 'short', day: 'numeric' }).format(new Date(iso + 'T12:00:00Z')); }
   catch (e) { return iso; }
 }
+// "Injury-Report_2026-10-20_05_00PM.pdf" → "5:00 PM ET".
+function seasonReportLabel(name) { const m = /_(\d{2})_(\d{2})([AP]M)\.pdf$/.exec(name || ''); return m ? `${+m[1]}:${m[2]} ${m[3]} ET` : (name || ''); }
 function seasonPct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }

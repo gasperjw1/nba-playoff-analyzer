@@ -106,6 +106,13 @@
 .res-score td:first-child { font-weight:700; }
 .res-score tr.res-none td { color:var(--text-dim); }
 .res-best { color:var(--green); }
+.res-mode { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+.res-mode button { padding:8px 14px; background:transparent; color:var(--text-dim); border:none; font-size:12px; font-weight:700; cursor:pointer; }
+.res-mode button + button { border-left:1px solid var(--border); }
+.res-mode button.on { background:rgba(79,140,255,0.15); color:var(--accent); }
+.res-banner { font-size:12px; line-height:1.55; color:var(--text-dim); background:rgba(79,140,255,0.06); border:1px solid rgba(79,140,255,0.25); border-radius:8px; padding:10px 12px; margin:0 0 14px; max-width:900px; }
+.res-banner b { color:var(--text); }
+.res-tag.replay { color:var(--accent); background:rgba(79,140,255,0.14); }
 .res-nav { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; margin-bottom:14px; }
 .res-arrow { width:36px; height:36px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:20px; line-height:1; cursor:pointer; }
 .res-arrow:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }

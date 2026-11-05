@@ -766,5 +766,103 @@ console.log('TEST 18: team priors + user bet log');
   });
 }
 
+// ── TEST 19: walk-forward replay core ──────────────────────
+console.log('TEST 19: replay core (point-in-time rosters, report matching, leak guards)');
+{
+  const c = loadCtx(false);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/replay-core.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  // Names: report "Last[, Jr.], First" and ESPN "First Last Jr." meet in the middle.
+  assert(c.replayNormName('Jackson Jr., Jaren') === c.replayNormName('Jaren Jackson Jr.') && c.replayNormName('Jaren Jackson Jr.') === 'jaren jackson', 'suffix and comma order normalize');
+  assert(c.replayNormName('Udeh, Jr., Ernest') === 'ernest udeh', 'suffix between commas');
+  assert(c.replayNormName('Nikola Jokić') === 'nikola jokic' && c.replayNormName('Gilgeous-Alexander, Shai') === 'shai gilgeous alexander', 'accents and hyphens');
+
+  // Rosters: every event kind, in date order, strictly before the cutoff.
+  const R = (events, cutoff) => { const r = c.replayRosterAsOf(events, cutoff); return Object.fromEntries(Object.entries(r).map(([t, m]) => [t, [...m.keys()].sort().join(',')])); };
+  const seed = [{ at: '2026-06-30', kind: 'seed', team: 'OKC', id: 'a', name: 'A' }, { at: '2026-06-30', kind: 'seed', team: 'OKC', id: 'b', name: 'B' }];
+  assert(R(seed, '2026-10-20').OKC === 'a,b', 'seed puts last season\'s players on their team');
+  let ev = seed.concat([{ at: '2026-07-10', kind: 'join', team: 'MIA', id: 'b', name: 'B' }]);
+  assert(R(ev, '2026-10-20').OKC === 'a' && R(ev, '2026-10-20').MIA === 'b', 'a signing moves a player');
+  ev = seed.concat([{ at: '2026-10-14', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-17', kind: 'appear-pre', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'b', 'a preseason box score cannot undo the team\'s own waiver');
+  ev = ev.concat([{ at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-24').OKC === 'a,b' && R(ev, '2026-10-23').OKC === 'b', 'a regular-season appearance re-adds him, from the next day only');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-21', kind: 'join', team: 'DAL', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-24').DAL === 'a' && R(ev, '2026-10-24').OKC === 'b', 'a stale box listing for the team that waived him does not pull him back once he joined another');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a', dnp: true }]);
+  assert(R(ev, '2026-10-24').OKC === 'b', 'a did-not-play listing after his waiver does not re-add him');
+  ev = seed.concat([{ at: '2026-10-19', kind: 'leave', team: 'OKC', id: 'a' }, { at: '2026-10-23', kind: 'appear', team: 'OKC', id: 'a', dnp: false }]);
+  assert(R(ev, '2026-10-24').OKC === 'a,b', 'actually playing after his waiver (re-signed) re-adds him');
+  ev = seed.concat([{ at: '2026-10-05', kind: 'appear-pre', team: 'MIN', id: 'b' }]);
+  assert(R(ev, '2026-10-20').MIN === 'b' && R(ev, '2026-10-20').OKC === 'a', 'a preseason appearance moves a traded player');
+  ev = seed.concat([{ at: '2026-07-07', kind: 'retire', team: '*', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'b', 'retirement removes him');
+  ev = seed.concat([{ at: '2026-10-16T09:09:08.000Z', kind: 'snapshot', team: 'OKC', ids: { b: 'B', c: 'C' } }]);
+  assert(R(ev, '2026-10-20').OKC === 'b,c' && R(ev, '2026-10-16').OKC === 'a,b', 'a roster snapshot sets the roster exactly, only after its capture time');
+  ev = seed.concat([{ at: '2026-10-20', kind: 'leave', team: 'OKC', id: 'a' }]);
+  assert(R(ev, '2026-10-20').OKC === 'a,b', 'an event on the day itself is not used');
+
+  // Report matching: team roster first, family-name order, unique league-wide fallback.
+  const roster = new Map([['1', 'Jaren Jackson Jr.'], ['2', 'Yang Hansen']]);
+  const league = new Map([['ernest udeh', ['9']], ['john smith', ['5', '6']]]);
+  const m = c.replayMatchReport([
+    { player: 'Jackson Jr., Jaren', status: 'Questionable', reason: 'Knee' },
+    { player: 'Yang, Hansen', status: 'Out', reason: '' },
+    { player: 'Udeh, Jr., Ernest', status: 'Doubtful', reason: '' },
+    { player: 'Smith, John', status: 'Out', reason: '' },
+    { player: 'Jackson Jr., Jaren', status: 'Suspended', reason: '' },
+  ], roster, league);
+  assert(m.availability['1'] === 0.5 && m.availability['2'] === 0 && m.availability['9'] === 0.1, 'report statuses map to 0.5 / 0 / 0.1 by id');
+  assert(m.unmatched.length === 2 && m.unmatched.some(e => e.player === 'Smith, John') && m.unmatched.some(e => e.status === 'Suspended'), 'ambiguous names and unknown statuses stay unmatched');
+
+  // Teams: refuses same-day or later games; roster decides who is there; availability applied.
+  const pri = c.SEASON_TEAM_RATINGS.teams;
+  const past = [{ id: 'g1', date: '2026-10-21', home: 'OKC', away: 'MIA', homeScore: 110, awayScore: 100, box: { OKC: [{ id: '10', name: 'P10', played: true, line: { min: 30, pts: 20, reb: 5, ast: 5, tpm: 1, stl: 1, blk: 0, to: 2, fgm: 8, fga: 15, ftm: 3, fta: 4, tpa: 3 } }], MIA: [] } }];
+  let threw = false;
+  try { c.replayBuildTeams(pri, '2026-10-21', past, {}, {}, {}); } catch (e) { threw = /on or after the day/.test(e.message); }
+  assert(threw, 'replayBuildTeams refuses a game from the day itself');
+  const teams = c.replayBuildTeams(pri, '2026-10-22', past, { OKC: new Map([['11', 'P11']]) }, { 11: 0.5 }, { 11: 'Questionable — Ankle' });
+  const okc = teams.OKC;
+  assert(okc.players.length === 1 && okc.players[0].id === '11' && okc.players[0].availability === 0.5 && okc.players[0].seasonGames === 0 && okc.current.games === 1 && okc.current.ppg === 110, 'roster-only player gets zero lines; dropped player is gone; this season counted');
+  // Preseason shift: after retention the net moves by exactly coef × margin per game.
+  const shifted = c.replayPreseasonShift(teams, { OKC: { n: 4, diff: 40 } }, 0.099);
+  const net = t => (t.prior.ortg - t.prior.drtg) * c.SEASON_PRIOR_RETENTION;
+  near(net(shifted.OKC) - net(teams.OKC), 0.99, 1e-9, 'preseason shift = 0.099 × 10 per game after retention');
+  assert(net(shifted.MIA) === net(teams.MIA), 'no preseason games, no shift');
+  const rows = c.replayPredictDay({ date: '2026-10-22', games: [{ id: 'x', tip: '2026-10-22T23:00Z', home: 'OKC', away: 'MIA' }], teams, league: c.deriveLeagueAverages(pri) });
+  assert(rows.length === 1 && rows[0].pHome > 0 && rows[0].pHome < 1 && !('result' in rows[0]), 'one prediction per game, no result attached');
+}
+
+// ── TEST 20: Results tab, replay mode ──────────────────────
+console.log('TEST 20: Results tab — replay mode stays apart from the ledger');
+{
+  const c = loadCtx(false, true);
+  const rr = (id, date, o) => ({ id, date, tip: date + 'T23:00Z', home: 'BOS', away: 'NY', pOurs: 0.6, marginOurs: 3, pOursPre: 0.55, marginOursPre: 2, pFriend: null,
+    pMarket: 0.5, spreadHome: -1, source: 'replay', result: { homeScore: 104, awayScore: 100 }, provenance: { report: 'Injury-Report_2026-10-20_05_30PM.pdf', inputsHash: 'abc' }, ...o });
+  c.SEASON_REPLAY = { spec: { engine: 'E', reportLeadMinutes: 60, preseasonCoef: 0.099 }, rows: [rr('r1', '2026-10-20'), rr('r2', '2026-10-21', { result: { homeScore: 90, awayScore: 99 } })] };
+  c.SEASON_LEDGER = [{ id: 'l1', date: '2026-11-02', tip: '2026-11-02T23:00Z', home: 'MIA', away: 'LAC', pOurs: 0.4, marginOurs: -2, pFriend: 0.45, pMarket: 0.5, spreadHome: 0, result: { homeScore: 100, awayScore: 99 } }];
+  let hash = null;
+  c.history = { replaceState: (a, b, u) => { hash = u; } };
+  c.seasonState.tab = 'results';
+  c.seasonResultsMode('replay');
+  let html = c.renderResultsTab();
+  assert(/res-banner/.test(html) && /<th>Ours \+ preseason<\/th>/.test(html) && !/<th>NB\.AI<\/th>/.test(html) && /Wednesday, Oct 21/.test(html) && !/MIA/.test(html), 'replay mode shows replay rows only, with the preseason column and banner');
+  assert(/report 5:30 PM ET/.test(html), 'each replay game shows the injury report it used');
+  assert(hash === '#results/replay', 'switching to replay updates the link');
+  c.seasonResultsStep(-1);
+  assert(hash === '#results/replay/2026-10-20', 'links carry the mode and the day');
+  c.seasonResultsMode('live');
+  html = c.renderResultsTab();
+  assert(/Monday, Nov 2/.test(html) && /<th>NB\.AI<\/th>/.test(html) && !/Ours \+ preseason/.test(html) && !/res-banner/.test(html), 'live mode shows the ledger only');
+  c.location = { hash: '#results/replay/2026-10-20' };
+  c.seasonState.results = { mode: 'live', date: null, calOpen: false, calMonth: null };
+  c.seasonBoot();
+  assert(c.seasonState.results.mode === 'replay' && c.seasonState.results.date === '2026-10-20', 'a #results/replay/<date> link opens that replay day');
+  c.seasonState.results.mode = 'replay';
+  c.SEASON_REPLAY = { spec: null, rows: [] };
+  assert(/No replay rows yet/.test(c.renderResultsTab()), 'replay mode without data says how to make it');
+  delete c.location; c.history = undefined;
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
