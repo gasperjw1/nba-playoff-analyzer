@@ -124,8 +124,15 @@ async function main() {
   } else if (args.has('--record')) {
     const existing = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
     const cleanSlate = ctx.seasonCleanSlate(slate), adjSlate = ctx.seasonOppAdjSlate(slate);
+    // Late-injury-flip rule (trust.js SEASON_LATE_FLIP): the replay pipeline's evening-before and
+    // latest-report picks. Never blocks recording — a row without them just isn't judged.
+    const flips = new Map();
+    try {
+      for (const x of await require('./late-flip.js').lateFlipChecks(slate.date)) flips.set(`${x.home}|${x.away}`, x);
+      for (const x of flips.values()) console.log(`  late-flip ${x.away} @ ${x.home}: evening before ${pct(x.pEve)}, latest ${pct(x.pNow)}${x.flip ? ` — FLIP, rule takes ${x.side === 'home' ? x.home : x.away}` : ''}`);
+    } catch (e) { console.warn(`late-flip check unavailable (${e.message}); rows recorded without it`); }
     const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate,
-      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate))), new Date());
+      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);
