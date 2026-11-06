@@ -383,7 +383,8 @@ console.log('TEST 13: season.html cache-busting matches the engine version');
   const html = fs.readFileSync(path.join(__dirname, 'season.html'), 'utf8');
   const versions = [...html.matchAll(/src="js\/season\/[^"?]+\?v=([^"]+)"/g)].map(m => m[1]);
   assert(versions.length >= 8, `code scripts carry ?v= (found ${versions.length})`);
-  assert(versions.every(v => v === c.SEASON_ENGINE_VERSION), `every ?v= equals SEASON_ENGINE_VERSION (${c.SEASON_ENGINE_VERSION}); found ${[...new Set(versions)].join(', ')}`);
+  // One tag for every script: the engine version, plus -N for a later fix outside the engine.
+  assert(new Set(versions).size === 1 && new RegExp(`^${c.SEASON_ENGINE_VERSION.replace(/\./g, '\\.')}(-\\d+)?$`).test(versions[0]), `every ?v= is SEASON_ENGINE_VERSION (${c.SEASON_ENGINE_VERSION}) or it plus -N, all the same; found ${[...new Set(versions)].join(', ')}`);
 }
 
 console.log('TEST 14: roster fit (continuity, rebounding overlap)');
@@ -1019,6 +1020,37 @@ console.log('TEST 23: frozen trust rules (edge, driver, closing-line value)');
   const merged = c.loadSeasonLedger().find(r => r.id === 'k1');
   assert(merged.pOurs === 0.6 && merged.mlHome === -110 && merged.trust === t && merged.result && merged.result.homeScore === 1, 'committed prices/trust kept; local can only add a result');
   c.localStorage.removeItem(c.SEASON_LEDGER_STORAGE_KEY);
+}
+
+console.log('TEST 24: late-injury-flip rule (evening-before vs latest-report pick)');
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const L = c.SEASON_LATE_FLIP;
+  assert(L.id === 'LATE' && L.frozen === '2026-11-06' && L.judgedFrom === '2026-11-07', 'frozen with its own dates');
+  const row = (date, side, flip, homeWon, extra) => ({ date, home: 'A', away: 'B', mlHome: 150, mlAway: -170, book: 'DraftKings', late: { flip, side, pEve: side === 'home' ? 0.55 : 0.45, pNow: 0.5 }, result: homeWon == null ? null : { homeScore: homeWon ? 101 : 99, awayScore: 100 }, ...extra });
+  const rows = [row('2026-11-06', 'home', true, true), row('2026-11-07', 'home', true, true, { close: { mlHome: 120, mlAway: -140, book: 'DraftKings' } }),
+    row('2026-11-07', 'away', true, true), row('2026-11-07', 'home', false, false), row('2026-11-08', 'home', true, null), { date: '2026-11-08', home: 'C', away: 'D', late: null }];
+  const g = c.seasonLateFlipRecord(rows);
+  assert(g.checked === 4 && g.flips === 3 && g.n === 2 && g.won === 1, 'judged from Nov 7: unflipped and unsettled games counted as checked, not judged');
+  near(g.units, 1.5 - 1, 1e-9, 'units at the recorded price on the earlier side (home +150 won, away −170 lost)');
+  assert(g.clvN === 1 && g.toward === 1 && g.against === 0, 'line movement judged on the earlier side (home +150 → +120 closes toward home)');
+  const gl = c.seasonLateFlipRecord(rows, { side: 'later' });
+  assert(gl.n === 2 && gl.won === 1 && gl.toward === 0 && gl.against === 1, 'later side scored on the same flips for comparison');
+  assert(c.seasonLateFlipRecord(rows, { from: '0000' }).n === 3, 'from: earlier rows on request');
+  const S = c.SEASON_SLATE_SNAPSHOT, sg = S.games[0], cp = c.projectSeasonGame(sg, c.seasonCleanSlate(S));
+  const blend = c.blendGameForecast({ pOurs: 0.5, pFriend: null, mlHome: -110, mlAway: -110 });
+  const lf = { home: sg.home, away: sg.away, pEve: 0.56, pNow: 0.47, flip: true, side: 'home', reportEve: 'x', reportNow: 'y' };
+  assert(c.buildLedgerEntry(sg, c.projectSeasonGame(sg, S), blend, S, cp, null, lf).late === lf, 'ledger row stores the late-flip check');
+  assert(c.buildLedgerEntry(sg, c.projectSeasonGame(sg, S), blend, S, cp).late === null, 'no check → late null');
+  c.SEASON_LEDGER = [{ id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, mlHome: -110, mlAway: -110, late: lf, result: null }];
+  c.seasonState.slate = S;
+  assert(c.renderGameCard(sg).includes(`LATE · evening-before pick ${sg.home} 56.0%`), 'card flags a recorded late flip');
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const rep = c.seasonLateFlipRecord(c.seasonReplayLateRows(), { from: '0000' });
+  assert(rep.flips === 8 && rep.n === 8 && rep.won === 7, 'replay description: 8 flips, earlier side won 7');
+  const lt = c.renderLedgerTab();
+  assert(lt.includes('Late injury flip (LATE) — frozen 2026-11-06, judged from 2026-11-07') && lt.includes('8 flips in'), 'Ledger tab shows the rule with the replay description');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -120,3 +120,40 @@ function seasonTrustRecord(rows, opts) {
   for (const g of Object.values(groups)) { g.units = +g.units.toFixed(2); g.move = g.clvN ? +(g.moveSum / g.clvN).toFixed(4) : null; delete g.moveSum; }
   return groups;
 }
+
+// ============================================================
+// LATE INJURY FLIP — frozen 2026-11-06, judged from 2026-11-07
+// ============================================================
+// A separate rule: it compares two of our own picks, not our pick with the
+// price. Both come from the replay pipeline (replay-season.js — the setup
+// tested leak-free), recorded by late-flip.js when the slate is recorded:
+//   earlier  the injury report from before 9 PM ET the evening before,
+//            results through that morning (the replay's eve variant)
+//   later    the latest report at record time (at most 60 minutes before
+//            tip), results through this morning
+// When the two pick different winners, the rule takes the earlier side, at
+// the DraftKings price recorded with the row. Drafted from the replay — a
+// development set, so it describes the rule and proves nothing: 8 games
+// where the tip-time report flipped the evening-before pick; the earlier
+// pick won 7, DraftKings' favourite 5. Do not edit; add a new rule instead.
+// ============================================================
+const SEASON_LATE_FLIP = {
+  id: 'LATE', frozen: '2026-11-06', judgedFrom: '2026-11-07',
+  label: 'Late injury flip',
+  why: 'the report closer to tip flipped our evening-before pick: take the earlier side (replay, a development set: earlier pick 7 of 8, DraftKings 5 of 8)',
+};
+
+// rows: ledger-like rows with late: { flip, side } (side = the earlier pick, 'home' | 'away').
+// Judged like the trust rules (seasonTrustRecord): results and units at the recorded price,
+// line movement to the close from the same book. opts.from (default judgedFrom); opts.side
+// 'later' scores the other side of the same flips, for comparison.
+function seasonLateFlipRecord(rows, opts) {
+  const from = (opts && opts.from) || SEASON_LATE_FLIP.judgedFrom, later = opts && opts.side === 'later';
+  const all = (rows || []).filter(r => r.late && r.date >= from);
+  const flips = all.filter(r => r.late.flip && r.mlHome != null && r.mlAway != null).map(r => {
+    const side = later ? (r.late.side === 'home' ? 'away' : 'home') : r.late.side;
+    return { ...r, trust: { side, ml: side === 'home' ? r.mlHome : r.mlAway, edge: 1, minEdge: 0, rule: SEASON_LATE_FLIP.id, book: r.book || null } };
+  });
+  const g = seasonTrustRecord(flips, { from })[SEASON_LATE_FLIP.id];
+  return { ...g, checked: all.length, flips: all.filter(r => r.late.flip).length };
+}
