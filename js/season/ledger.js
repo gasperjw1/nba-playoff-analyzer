@@ -21,10 +21,13 @@ function seasonCleanSlate(slate) {
 }
 
 // Last season's ratings with this season's results corrected for opponents
-// (seasonOpponentAdjust). Needs slate.results, this season's finals so far.
+// (seasonOpponentAdjust). Needs slate.results, this season's finals so far,
+// and every team in them: an NB.AI slate carries only tonight's teams, and
+// walking just the games among those would rate form on a handful of games.
 function seasonOppAdjSlate(slate) {
   const clean = seasonCleanSlate(slate);
   if (!clean || !Array.isArray(slate.results)) return null;
+  if (slate.results.some(g => !clean.teams[g.home] || !clean.teams[g.away])) return null;
   return { ...clean, teams: seasonOpponentAdjust(clean.teams, clean.league, slate.results) };
 }
 

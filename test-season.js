@@ -937,6 +937,7 @@ console.log('TEST 22: opponent-adjusted line (tracked beside the picks engine)')
   vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
   const S = c.SEASON_SLATE_SNAPSHOT, g = S.games[0];
   assert(c.seasonOppAdjSlate({ ...S, results: undefined }) === null, 'no adjusted line without this season\'s results');
+  assert(c.seasonOppAdjSlate({ ...S, results: [{ date: '2026-10-21', home: g.home, away: 'ZZZ', homeScore: 120, awayScore: 100 }] }) === null, 'no adjusted line when the slate lacks teams in the results (NB.AI: tonight\'s teams only)');
   const withRes = { ...S, results: [{ date: '2026-10-21', home: g.home, away: g.away, homeScore: 120, awayScore: 100 }] };
   const A = c.seasonOppAdjSlate(withRes), clean = c.seasonCleanSlate(withRes);
   assert(A.teams[g.home].prior === clean.teams[g.home].prior && A.teams[g.home].current.oppAdjusted, 'adjusted slate = last season\'s ratings + adjusted form');
