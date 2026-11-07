@@ -95,7 +95,7 @@ async function lateFlipChecks(date, opts) {
   }).filter(Boolean);
 }
 
-module.exports = { lateFlipChecks };
+module.exports = { lateFlipChecks, reportBefore };
 
 if (require.main === module) {
   const date = process.argv.find(a => /^\d{4}-\d{2}-\d{2}$/.test(a)) || et(Date.now()).date;

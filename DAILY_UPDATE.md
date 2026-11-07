@@ -10,6 +10,7 @@
 ```
 ```bash
 ./season-daily.sh --status   # what has run today
+node fetch-slate.js --injuries # late news NB.AI hasn't picked up? refresh the snapshot with the latest official injury report (recorded rows stay as recorded); commit slate-snapshot.js
 ```
 ```bash
 node test-season.js          # must be green before committing

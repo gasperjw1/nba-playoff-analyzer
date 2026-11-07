@@ -90,6 +90,7 @@ function renderSeasonStatus() {
     <span>Feed ${s.source === 'espn' ? '<b>ESPN fallback</b> <span class="warn">(NB.AI not refreshed — no NB.AI probabilities)</span>' : `<b>NB.AI</b> ${s.modelVersion ? 'v' + s.modelVersion : ''}`} · ${seasonState.slateOrigin === 'imported' ? 'pasted import' : 'committed snapshot'}</span>
     <span>Slate <b>${s.date || '?'}</b>${stale ? ' <span class="warn">(not today — re-run fetch-slate.js)</span>' : ''}</span>
     <span>Fetched <b>${s.fetchedAt ? seasonFmtTime(s.fetchedAt) : '?'}</b></span>
+    ${s.injuryReport ? `<span>Injuries <b>official report ${seasonFmtTime(s.injuryReport.at)}</b> · ${s.injuryReport.changes} changes over the feed</span>` : ''}
     <span><b>${s.games.length}</b> games · <b>${teams}</b> teams</span>
     <span>League avg ORtg <b>${s.league.ortg.toFixed(1)}</b> pace <b>${s.league.pace.toFixed(1)}</b>${s.league.derived ? '' : ' <span class="muted">(fallback)</span>'}</span>`;
 }
