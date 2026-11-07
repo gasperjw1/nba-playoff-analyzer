@@ -81,6 +81,24 @@ function replayRosterAsOf(events, cutoff) {
   return out;
 }
 
+// replay-8: what a team that has not filed for the day yet ("NOT YET SUBMITTED" — typically the
+// second night of a back-to-back, until after the first night's game) last filed: its entries for
+// its previous game day `prevDay`, from the newest of `reports` that covers it. A report covers a
+// team's day if it has entries for it, or lists the day's games without the team among the
+// unfiled (filed with nobody to list → no entries, all healthy). Each report must already be
+// published before the game's cutoff (the caller filters). Returns { entries, from } or null.
+function replayCarriedEntries(reports, ab, prevDay) {
+  if (!prevDay) return null;
+  const day = `${prevDay.slice(5, 7)}/${prevDay.slice(8, 10)}/${prevDay.slice(0, 4)}`;
+  for (const r of reports.filter(Boolean).sort((a, b) => b.at - a.at)) {
+    if ((r.notSubmitted || []).some(x => x.gameDate === day && REPLAY_TEAM_BY_NAME[x.team] === ab)) continue;
+    const entries = r.entries.filter(e => e.gameDate === day && REPLAY_TEAM_BY_NAME[e.team] === ab);
+    const covers = entries.length || r.entries.some(e => e.gameDate === day) || (r.notSubmitted || []).some(x => x.gameDate === day);
+    if (covers) return { entries, from: r.name };
+  }
+  return null;
+}
+
 // Match one team's report entries to player ids. teamRoster: Map(id → name) for that team;
 // league: Map(normalized name → [ids]) of every player we know. Returns
 // { availability: {id: 0..1}, notes: {id: 'Status — reason'}, unmatched: [entry] }.
@@ -94,7 +112,14 @@ function replayMatchReport(entries, teamRoster, league) {
   for (const e of entries) {
     // Some names are written family-name first by one source and not the other ("Yang Hansen").
     const k = replayNormName(e.player), rev = k.split(' ').reverse().join(' ');
-    const ids = onTeam.get(k) || onTeam.get(rev) || [k, rev].map(x => league.get(x) || []).find(x => x.length === 1) || null;
+    let ids = onTeam.get(k) || onTeam.get(rev) || [k, rev].map(x => league.get(x) || []).find(x => x.length === 1) || null;
+    // replay-8: a shortened first name ("Christopher" in the report, "Chris" at ESPN) — same family
+    // name and first initial, on this team's roster, and only one such player.
+    if (!ids) {
+      const fam = k.split(' ').pop(), ini = k[0];
+      const hits = [...onTeam.entries()].filter(([n]) => n.split(' ').pop() === fam && n[0] === ini).flatMap(([, v]) => v);
+      if (hits.length === 1) ids = hits;
+    }
     if (!ids || ids.length !== 1 || !(e.status in REPLAY_AVAILABILITY)) { unmatched.push(e); continue; }
     availability[ids[0]] = REPLAY_AVAILABILITY[e.status];
     notes[ids[0]] = `${e.status}${e.reason ? ' — ' + e.reason : ''}`;
