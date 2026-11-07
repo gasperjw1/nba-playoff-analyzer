@@ -147,9 +147,11 @@ function renderGameCard(g) {
   }
   const trust = clean && typeof seasonTrustCheck === 'function' ? seasonTrustCheck(clean, m) : null;
   if (trust && trust.rule) {
-    const rule = SEASON_TRUST.rules.find(r => r.id === trust.rule), live = seasonTrustRecord(loadSeasonLedger())[trust.rule];
+    // Judged count on the live engine's own era (trust.js SEASON_TRUST_ENGINES).
+    const rule = SEASON_TRUST.rules.find(r => r.id === trust.rule), era = seasonTrustRecordByEngine(loadSeasonLedger())[SEASON_ENGINE_VERSION];
+    const live = era ? era[trust.rule] : null;
     const team = trust.side === 'home' ? g.home : g.away;
-    flags.push(`<span class="flag ${rule.avoid ? 'flag-none' : 'flag-edge'}" title="${rule.why}">${rule.avoid ? 'AVOID' : rule.id} · ${team} +${(trust.edge * 100).toFixed(1)}pp over the price at ${trust.ml > 0 ? '+' : ''}${trust.ml} · driven by ${rule.label.toLowerCase()} · frozen rule, ${live.n} judged</span>`);
+    flags.push(`<span class="flag ${rule.avoid ? 'flag-none' : 'flag-edge'}" title="${rule.why}">${rule.avoid ? 'AVOID' : rule.id} · ${team} +${(trust.edge * 100).toFixed(1)}pp over the price at ${trust.ml > 0 ? '+' : ''}${trust.ml} · driven by ${rule.label.toLowerCase()} · frozen rule, ${live ? `${live.n} judged on this engine` : 'this engine is not judged'}</span>`);
   }
   const lateRow = typeof SEASON_LATE_FLIP !== 'undefined' ? loadSeasonLedger().find(r => r.date === seasonState.slate.date && r.home === g.home && r.away === g.away && r.late && r.late.flip) : null;
   const lateRule = lateRow && seasonLateRuleFor(lateRow);   // LATE or LATE2, by the pipeline the row was checked on
@@ -603,12 +605,13 @@ function seasonReplayTrustRows() {
   }));
 }
 function renderTrustRules(rows) {
-  const live = seasonTrustRecord(rows), rep = seasonTrustRecord(seasonReplayTrustRows(), { from: '0000' });
+  const eras = seasonTrustRecordByEngine(rows), rep = seasonTrustRecord(seasonReplayTrustRows(), { from: '0000' });
+  const repLabel = typeof SEASON_REPLAY !== 'undefined' && SEASON_REPLAY ? `${SEASON_REPLAY.spec.version}, engine ${SEASON_REPLAY.spec.engine}` : '';
   const cell = (g) => g.n || g.clvN ? `${g.n ? `${g.won}–${g.n - g.won} · ${g.units >= 0 ? '+' : ''}${g.units}u` : '—'}${g.clvN ? ` · line moved our way ${g.toward}/${g.clvN} (avg ${g.move >= 0 ? '+' : ''}${(g.move * 100).toFixed(1)} pp)` : ''}${g.clvSkipped ? ` · ${g.clvSkipped} close from another book skipped` : ''}` : '<span class="muted">none yet</span>';
-  const line = (id, label, why, avoid) => `<tr><td><b>${id}</b></td><td>${label}${avoid ? ' <span class="muted">(fade our side)</span>' : ''}<div class="muted">${why}</div></td><td>${cell(live[id])}</td><td class="muted">${cell(rep[id])}</td></tr>`;
-  return `<h4 style="margin-top:4px">Trust rules — frozen ${SEASON_TRUST.frozen}, judged from ${SEASON_TRUST.judgedFrom}</h4>
-    <p class="muted">A rule fires when the picks engine's win probability beats the probability DraftKings' price implies by ${SEASON_TRUST.minEdge * 100}+ percentage points (pp) and one engine step drives the gap. Live: record at the price when recorded, and whether the line then moved toward our side by the close (same book only). Replay: the same rules on the eve variant — injury report from before 9 PM ET the evening before, results through that morning — against DraftKings' opening line. It is the development set the rules were drafted from (drafted on the tip-time variant, which had later news than the open), so it describes them and proves nothing; DraftKings' opening time is not recorded.</p>
-    <table><tr><th>Rule</th><th>When the gap is driven by</th><th>Live</th><th>Replay (description only)</th></tr>
+  const line = (id, label, why, avoid) => `<tr><td><b>${id}</b></td><td>${label}${avoid ? ' <span class="muted">(fade our side)</span>' : ''}<div class="muted">${why}</div></td>${SEASON_TRUST_ENGINES.map(e => `<td>${cell(eras[e.engine][id] || {})}</td>`).join('')}<td class="muted">${cell(rep[id] || {})}</td></tr>`;
+  return `<h4 style="margin-top:4px">Trust rules — frozen ${SEASON_TRUST.frozen}, judged from ${SEASON_TRUST.judgedFrom}, scored separately per engine</h4>
+    <p class="muted">A rule fires when the picks engine's win probability beats the probability DraftKings' price implies by ${SEASON_TRUST.minEdge * 100}+ percentage points (pp) and one engine step drives the gap. Live: record at the price when recorded, and whether the line then moved toward our side by the close (same book only). Replay: the same rules on the eve variant — injury report from before 9 PM ET the evening before, results through that morning — against DraftKings' opening line. It is the development set the rules were drafted from (drafted on the tip-time variant, which had later news than the open), so it describes them and proves nothing; DraftKings' opening time is not recorded. Each live row is judged only with the engine that recorded it, from that engine's start: a new engine never re-judges earlier rows. The replay column is the current replay (${repLabel}).</p>
+    <table><tr><th>Rule</th><th>When the gap is driven by</th>${SEASON_TRUST_ENGINES.map(e => `<th>Live · ${e.label}<div class="muted">${e.engine}, from ${e.judgedFrom}</div></th>`).join('')}<th>Replay (description only)</th></tr>
     ${line('ALL', 'Any edge', 'every game with an edge of ' + SEASON_TRUST.minEdge * 100 + '+ pp')}
     ${SEASON_TRUST.rules.map(r => line(r.id, r.label, r.why, r.avoid)).join('')}
     </table>

@@ -122,6 +122,23 @@ function seasonTrustRecord(rows, opts) {
 }
 
 // ============================================================
+// ENGINE ERAS — each row judged with the engine that recorded it (added 2026-11-07)
+// ============================================================
+// The rules are defined on "the picks engine". Engine 2026-11-07.rotcap (minutes capped in
+// rotation order, research-minutes-cap.js) changes what they see, so the rules are not re-judged:
+// each ledger row counts only in its own engine's era (row.engine), from that era's start. Rows
+// recorded by engines before the rules existed are never judged. A new engine must be added here,
+// with its own start date, before its rows count (test-season.js checks the live engine is listed).
+const SEASON_TRUST_ENGINES = [
+  { engine: '2026-11-05.b2b2', judgedFrom: '2026-11-06', label: 'proportional minutes cap' },
+  { engine: '2026-11-07.rotcap', judgedFrom: '2026-11-08', label: 'rotation-order minutes cap' },
+];
+// { engine: seasonTrustRecord groups } — each era's own rows, from its own start.
+function seasonTrustRecordByEngine(rows) {
+  return Object.fromEntries(SEASON_TRUST_ENGINES.map(e => [e.engine, seasonTrustRecord((rows || []).filter(r => r.engine === e.engine), { from: e.judgedFrom })]));
+}
+
+// ============================================================
 // LATE INJURY FLIP — frozen 2026-11-06, judged from 2026-11-07
 // ============================================================
 // A separate rule: it compares two of our own picks, not our pick with the
@@ -150,15 +167,19 @@ const SEASON_LATE_FLIP = {
 // that had not filed its injury report yet as fully healthy — the six teams on the second night
 // of a back-to-back, at 8:30 PM the evening before and into game day. replay-8 carries forward
 // what such a team last filed. That changes LATE's inputs, so LATE is not edited: it keeps
-// judging only rows recorded on replay-7 (Nov 7), and LATE2 judges rows recorded on replay-8.
-// Each row stores the pipeline it was checked on (late.spec). Replay-8 describes LATE2 more
-// weakly than replay-7 described LATE: 10 flips in 132 games, the earlier pick won 7, the later
-// 3, DraftKings' opening favourite 6 (on the same 121 games: 6 of 9, against LATE's 7 of 8).
+// judging only rows recorded on replay-7 (Nov 7), and LATE2 judges rows recorded on its own
+// pipeline (spec below). Each row stores the pipeline it was checked on (late.spec); a row checked
+// on any other pipeline (e.g. replay-8, live for a few hours on Nov 7) counts for neither.
+// Re-pinned the same day, before its first judged game: replay-8 → replay-9, the pipeline on
+// engine 2026-11-07.rotcap that live rows are checked on from Nov 8 (pinned to replay-8, LATE2
+// would have matched no row). On replay-8 the earlier pick won 7 of 10 flips in 132 games; on
+// replay-9 there are 6 flips and it won 3 — the later pick 3, DraftKings' opening favourite 5.
+// The replay no longer supports the rule; it stays frozen and tracked, as pre-registered.
 // ============================================================
 const SEASON_LATE_FLIP2 = {
-  id: 'LATE2', frozen: '2026-11-07', judgedFrom: '2026-11-08', spec: 'replay-8',
+  id: 'LATE2', frozen: '2026-11-07', judgedFrom: '2026-11-08', spec: 'replay-9',
   label: 'Late injury flip, unfiled reports carried',
-  why: 'LATE on the fixed pipeline: a team that has not filed its injury report keeps its previous filing (replay-8, a development set: 10 flips in 132 games, earlier pick 7 of 10, later 3, DraftKings 6 of 10)',
+  why: 'LATE on the fixed pipeline: a team that has not filed its injury report keeps its previous filing; engine with the rotation-order minutes cap (replay-9, a development set: 6 flips in 132 games, earlier pick 3 of 6, later 3, DraftKings 5 of 6 — no support)',
 };
 // The pipeline each rule judges (rows recorded before late.spec existed are replay-7).
 const SEASON_LATE_RULES = [{ ...SEASON_LATE_FLIP, spec: 'replay-7' }, SEASON_LATE_FLIP2];
