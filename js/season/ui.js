@@ -13,6 +13,7 @@ const seasonState = {
   lab: { home: null, away: null, rest: { home: {}, away: {} }, avail: {} },
   results: { mode: 'live', date: null, calOpen: false, calMonth: null },
   propCache: {},
+  parlay: null,   // { date, legs, offered, draft } — loaded from this browser by seasonParlayState()
 };
 
 function seasonBoot() {
@@ -47,6 +48,7 @@ function renderSeasonApp() {
     case 'results': main.innerHTML = renderResultsTab(); break;
     case 'lab': main.innerHTML = renderLab(); break;
     case 'ledger': main.innerHTML = renderLedgerTab(); break;
+    case 'parlay': main.innerHTML = renderParlayTab(); break;
     case 'data': main.innerHTML = renderImportPanel(false); break;
     default: main.innerHTML = renderTonight();
   }
@@ -95,7 +97,7 @@ function renderSeasonStatus() {
     <span>League avg ORtg <b>${s.league.ortg.toFixed(1)}</b> pace <b>${s.league.pace.toFixed(1)}</b>${s.league.derived ? '' : ' <span class="muted">(fallback)</span>'}</span>`;
 }
 
-const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
+const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['parlay', 'Parlay'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
 
 function renderSeasonTabs() {
   document.getElementById('seasonTabs').innerHTML = SEASON_TABS.map(([id, label]) =>
@@ -261,6 +263,101 @@ function seasonPropLine(playerId, input) {
   out.textContent = `${(pOver * 100).toFixed(0)}% o`;
   out.className = 'pov ' + (pOver >= 0.58 ? 'pos' : pOver <= 0.42 ? 'neg' : '');
   out.title = `${stat} proj ${p[stat]} ± ${p.sd[stat]}`;
+}
+
+// ---------- parlay checker (parlay.js) ----------
+// The ticket being built is a per-viewer convenience kept in this browser (it can come back empty).
+
+const SEASON_PARLAY_KEY = 'season-parlay-v1';
+function seasonParlayState() {
+  const date = seasonState.slate.date;
+  if (seasonState.parlay && seasonState.parlay.date === date) return seasonState.parlay;
+  let saved = null;
+  try { const raw = localStorage.getItem(SEASON_PARLAY_KEY); saved = raw ? JSON.parse(raw) : null; } catch (e) { saved = null; }
+  const g0 = seasonState.slate.games[0];
+  seasonState.parlay = saved && saved.date === date ? saved
+    : { date, legs: [], offered: '', draft: { game: g0 ? g0.id : '', type: 'ml', side: 'home', player: '', stat: 'pra', dir: 'over', line: '', odds: '', oddsOther: '' } };
+  return seasonState.parlay;
+}
+function _seasonParlaySave() { try { localStorage.setItem(SEASON_PARLAY_KEY, JSON.stringify(seasonState.parlay)); } catch (e) { /* storage unavailable */ } }
+function seasonParlaySet(field, value) {
+  const P = seasonParlayState();
+  P.draft[field] = value;
+  if (field === 'game' || field === 'type') { P.draft.player = ''; P.draft.odds = ''; P.draft.oddsOther = ''; }
+  _seasonParlaySave(); renderSeasonApp();
+}
+function seasonParlayAdd() {
+  const P = seasonParlayState(), d = P.draft;
+  const leg = d.type === 'ml' ? { type: 'ml', game: d.game, side: d.side, odds: d.odds === '' ? null : Number(d.odds) }
+    : { type: 'prop', game: d.game, player: d.player, stat: d.stat, dir: d.dir, line: d.line === '' ? null : Number(d.line), odds: d.odds === '' ? null : Number(d.odds), oddsOther: d.oddsOther === '' ? null : Number(d.oddsOther) };
+  const check = parlayLeg(leg, seasonState.slate);
+  if (check.error) { alert(check.error); return; }
+  P.legs.push(leg); P.draft.odds = ''; P.draft.oddsOther = ''; P.draft.line = '';
+  _seasonParlaySave(); renderSeasonApp();
+}
+function seasonParlayRemove(i) { const P = seasonParlayState(); P.legs.splice(i, 1); _seasonParlaySave(); renderSeasonApp(); }
+function seasonParlayClear() { const P = seasonParlayState(); P.legs = []; P.offered = ''; _seasonParlaySave(); renderSeasonApp(); }
+function seasonParlayOffered(v) { const P = seasonParlayState(); P.offered = v; _seasonParlaySave(); renderSeasonApp(); }
+function seasonParlayCopy() {
+  const P = seasonParlayState(), t = evaluateParlay(P.legs, seasonState.slate, P.offered === '' ? null : Number(P.offered));
+  const json = JSON.stringify({ date: P.date, engine: SEASON_ENGINE_VERSION, props: SEASON_PROP.version, offered: t.offered, price: t.ok ? t.american : null,
+    pModel: t.ok ? +t.p.toFixed(4) : null, legs: t.legs.map(l => ({ ...l, flags: (l.flags || []).map(f => f.text) })) }, null, 1);
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(json).then(() => alert('Ticket copied — paste it in chat to log it.'));
+  else prompt('Ticket JSON', json);
+}
+
+function renderParlayTab() {
+  const s = seasonState.slate, P = seasonParlayState(), d = P.draft;
+  const clean = (typeof seasonCleanSlate === 'function' && seasonCleanSlate(s)) || s;
+  const g = s.games.find(x => String(x.id) === String(d.game)) || s.games[0];
+  const pct = (x) => x == null ? '—' : `${(x * 100).toFixed(1)}%`;
+  const opt = (v, label, sel) => `<option value="${v}"${String(v) === String(sel) ? ' selected' : ''}>${label}</option>`;
+  const sel = (field, options) => `<select onchange="seasonParlaySet('${field}', this.value)">${options}</select>`;
+  const inp = (field, ph, w) => `<input type="number" step="${field === 'line' ? 0.5 : 1}" placeholder="${ph}" value="${d[field] === '' || d[field] == null ? '' : d[field]}" style="width:${w || 80}px" onchange="seasonParlaySet('${field}', this.value)">`;
+  let builder = '';
+  if (g) {
+    const m = g.market || {};
+    const players = d.type === 'prop' ? [g.away, g.home].flatMap(ab => projectTeamProps(ab, ab === g.home ? g.away : g.home, clean).filter(p => p.min >= SEASON_PROPS_MIN_MINUTES).map(p => ({ ...p, team: ab }))) : [];
+    if (d.type === 'prop' && !players.some(p => String(p.id) === String(d.player)) && players[0]) d.player = players[0].id;
+    const pl = players.find(p => String(p.id) === String(d.player));
+    builder = `<div class="lab-row">
+      ${sel('game', s.games.map(x => opt(x.id, `${x.away} @ ${x.home}`, g.id)).join(''))}
+      ${sel('type', opt('ml', 'Moneyline', d.type) + opt('prop', 'Player prop', d.type))}
+      ${d.type === 'ml'
+        ? `${sel('side', opt('away', `${g.away}${m.mlAway != null ? ' ' + parlayFmtOdds(m.mlAway) : ''}`, d.side) + opt('home', `${g.home}${m.mlHome != null ? ' ' + parlayFmtOdds(m.mlHome) : ''}`, d.side))}
+           ${inp('odds', 'odds (DK default)', 120)}`
+        : `${sel('player', players.map(p => opt(p.id, `${p.name} (${p.team})`, d.player)).join(''))}
+           ${sel('stat', Object.entries(PARLAY_STATS).map(([k, v]) => opt(k, v, d.stat)).join(''))}
+           ${sel('dir', opt('over', 'over', d.dir) + opt('under', 'under', d.dir))}
+           ${inp('line', 'line')} ${inp('odds', 'odds')} ${inp('oddsOther', 'other side', 90)}`}
+      <button class="btn btn-primary btn-sm" onclick="seasonParlayAdd()">Add leg</button>
+    </div>
+    ${pl ? `<p class="muted">${pl.name}: projected ${pl.min.toFixed(0)} min · ${PARLAY_STATS[d.stat]} ${pl[d.stat].toFixed(1)} ± ${pl.sd[d.stat].toFixed(1)}${d.line !== '' && isFinite(+d.line) ? ` · P(${d.dir} ${d.line}) ${pct(d.dir === 'over' ? probOver(pl[d.stat], pl.sd[d.stat], +d.line) : 1 - probOver(pl[d.stat], pl.sd[d.stat], +d.line))}` : ''}</p>` : ''}`;
+  }
+  const t = evaluateParlay(P.legs, s, P.offered === '' ? null : Number(P.offered));
+  const cls = { good: 'flag-agree', warn: 'flag-disagree', info: 'flag-none' };
+  const legRows = t.legs.map((l, i) => `<tr>
+      <td>${i + 1}</td><td>${l.error ? `<span class="warn">${l.error}</span>` : `<b>${l.label}</b> <span class="muted">${l.odds != null ? parlayFmtOdds(l.odds) : ''}</span><div class="muted">${l.matchup}${l.mean != null ? ` · projection ${l.mean.toFixed(1)} ± ${l.sd.toFixed(1)}, ${l.min.toFixed(0)} min` : ''}</div>`}</td>
+      <td class="num">${pct(l.p)}</td>
+      <td class="num">${l.pMarket != null ? pct(l.pMarket) + '<div class="muted">no-vig</div>' : l.pImplied != null ? pct(l.pImplied) + '<div class="muted">vig in</div>' : '—'}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="seasonParlayRemove(${i})">✕</button></td></tr>
+    ${(l.flags || []).length ? `<tr><td></td><td colspan="4" style="white-space:normal">${l.flags.map(f => `<span class="flag ${cls[f.level]}" style="white-space:normal;display:inline-block;margin:2px 0">${f.text}</span>`).join(' ')}</td></tr>` : ''}`).join('');
+  const summary = t.ok ? `<div class="scorecard">
+      <div class="score-tile"><div class="t">Model chance</div><div class="v">${pct(t.p)}</div><div class="s">fair odds ${t.fairAmerican != null ? parlayFmtOdds(t.fairAmerican) : '—'}${t.sameGame.length ? ' · same-game legs: approximate' : ''}</div></div>
+      <div class="score-tile"><div class="t">Price</div><div class="v">${parlayFmtOdds(t.american)}</div><div class="s">${t.offered != null ? 'as quoted' : 'legs multiplied'} · needs ${pct(t.pBook)} to break even</div></div>
+      <div class="score-tile"><div class="t">DraftKings, no vig</div><div class="v">${pct(t.pMarket)}</div><div class="s">${t.pMarket != null ? 'every leg priced both ways' : 'needs both sides of every leg'}</div></div>
+      <div class="score-tile"><div class="t">Expected return</div><div class="v">${t.ev >= 0 ? '+' : ''}${(t.ev * 100).toFixed(1)}%</div><div class="s">per unit, if the model is right — unproven</div></div>
+    </div>` : '';
+  return `<div class="ledger">
+    <p class="muted">Build a ticket from tonight's slate (${s.date}). Each leg shows the model's chance (picks engine ${SEASON_ENGINE_VERSION} for moneylines, props model ${SEASON_PROP.version} for props), DraftKings' price, and flags from what the ledger, the replay and the props backtests have measured. The combined chance treats legs as independent. It measures a ticket; it does not size a stake, and the model's edges are unproven.</p>
+    ${builder}
+    ${P.legs.length ? `<div style="overflow-x:auto"><table class="parlay-legs"><tr><th>#</th><th>Leg · odds</th><th class="num">Model</th><th class="num">DK</th><th></th></tr>${legRows}</table></div>
+      <div class="lab-row" style="margin-top:10px"><span>Parlay price as quoted (optional — same-game parlays are priced on their own):</span>
+        <input type="number" placeholder="${t.ok ? parlayFmtOdds(t.legsAmerican) : ''}" value="${P.offered}" style="width:90px" onchange="seasonParlayOffered(this.value)">
+        <button class="btn btn-secondary btn-sm" onclick="seasonParlayCopy()">Copy ticket</button>
+        <button class="btn btn-secondary btn-sm" onclick="seasonParlayClear()">Clear</button></div>
+      ${summary}` : '<p class="muted">No legs yet.</p>'}
+  </div>`;
 }
 
 // ---------- matchup lab ----------
