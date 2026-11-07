@@ -155,10 +155,25 @@ console.log('TEST 3: player value (BPM) and roster adjustment');
   const vn = c.playerImpactPts(newcomer, pace);
   // The fixture rotation plays exactly 240 minutes, so an arrival takes minutes from it.
   const withNew = c.calcRosterAdjustment({ ...A, players: [...A.players, newcomer] }, s);
-  const sc = 240 / 270;
-  near(withNew.minutes.scale, sc, 1e-3, 'rotation scaled back to 240 minutes');
-  near(withNew.adj, vn * sc - (1 - sc) * A.players.reduce((t, p) => t + c.playerImpactPts(p, pace), 0), 0.02,
-    'arrival adds his value at capped minutes, less the minutes he takes from the rotation');
+  assert(withNew.minutes.raw === 270 && withNew.minutes.tonight === 240 && withNew.minutes.cut === 30, 'rotation capped at 240 minutes');
+  // Rotation cap: the 30-minute arrival keeps his minutes; the cut comes off the bottom — the
+  // 16-minute player drops to 11, the 14- and 11-minute players to 0.
+  const byMin = (m) => A.players.find(p => p.avg.min === m), vOf = (p) => c.playerImpactPts(p, pace);
+  const minOf = (res, id) => res.items.find(i => i.id === id).minTonight;
+  assert(minOf(withNew, 'n1') === 30 && minOf(withNew, byMin(16).id) === 11 && minOf(withNew, byMin(14).id) === 0 && minOf(withNew, byMin(11).id) === 0, 'cut comes off the bottom of the rotation');
+  near(withNew.adj, vn - vOf(byMin(16)) * 5 / 16 - vOf(byMin(14)) - vOf(byMin(11)), 0.02,
+    'arrival adds his full value, less the bottom of the rotation he displaces');
+  // Phantom deep bench (Nov 6, 2026: two Sixers at 16.7 and 12 prior minutes who did not play): the top
+  // of the rotation keeps every minute.
+  const ghosts = [makePlayer('g1', 'Ghost One', 16.7, 6, 2, 1), makePlayer('g2', 'Ghost Two', 12, 4, 2, 1)];
+  ghosts.forEach(g => { c.SEASON_PLAYER_PRIORS.players[g.id] = priorEntry(c, g, { ZZZ: 82 }); });   // last season's minutes elsewhere
+  c._priorsByTeamCache = null;
+  const withGhosts = c.calcRosterAdjustment({ ...A, players: [...A.players, ...ghosts] }, s);
+  // Itemised players (zero-value ones are not listed): the top keeps every minute, the 28.7 extra
+  // minutes come off the bottom — the 14-minute player drops to 8.3 and the 11-minute player to 0.
+  assert([34, 33, 32].every(m => minOf(withGhosts, byMin(m).id) === m) && minOf(withGhosts, byMin(16).id) === 16, 'phantom deep-bench minutes never reach the top of the rotation');
+  near(minOf(withGhosts, byMin(14).id), 8.3, 1e-9, 'the cut reaches the 14-minute player first');
+  assert(minOf(withGhosts, byMin(11).id) === 0 && withGhosts.minutes.cut === 28.7, 'and empties the bottom');
   near(adj({ ...A, players: [...swap(A.players, star.id, { availability: 0 }), newcomer] }), vn - v, 0.006,
     'arrival filling an injured starter\'s minutes adds his full value');
   near(adj({ ...A, players: [...A.players, { ...newcomer, availability: 0 }] }), 0, 1e-9, 'arrival who is out costs nothing — never in the rating');
@@ -1061,24 +1076,25 @@ console.log('TEST 24: late-injury-flip rule (evening-before vs latest-report pic
   c.SEASON_LEDGER = [];
   assert(!c.renderGameCard(sg).includes('>Recorded<'), 'unrecorded game: no recorded chip');
   vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
-  // The replay file is now replay-8: it describes LATE2 (10 flips, earlier side 7), and none of it counts for LATE.
-  assert(c.SEASON_REPLAY.spec.version === 'replay-8', 'replay data is replay-8');
+  // The replay file is now replay-9: it describes LATE2 (6 flips, earlier side 3 — no support), and none of it counts for LATE.
+  assert(c.SEASON_REPLAY.spec.version === 'replay-9', 'replay data is replay-9');
   const rep = c.seasonLateFlipRecord(c.seasonReplayLateRows(), { rule: 'LATE2', from: '0000' });
-  assert(rep.id === 'LATE2' && rep.flips === 10 && rep.n === 10 && rep.won === 7, 'LATE2 replay description: 10 flips, earlier side won 7');
+  assert(rep.id === 'LATE2' && rep.flips === 6 && rep.n === 6 && rep.won === 3, 'LATE2 replay description: 6 flips, earlier side won 3');
   assert(c.seasonLateFlipRecord(c.seasonReplayLateRows(), { from: '0000' }).checked === 0, 'replay-8 rows never count for LATE');
   // Live rows are judged by the pipeline they were checked on.
   const L2 = c.SEASON_LATE_FLIP2;
-  assert(L2.id === 'LATE2' && L2.frozen === '2026-11-07' && L2.judgedFrom === '2026-11-08' && L2.spec === 'replay-8', 'LATE2 frozen with its own dates and pipeline');
-  const mixed = [row('2026-11-08', 'home', true, true), { ...row('2026-11-08', 'away', true, false), late: { flip: true, side: 'away', pEve: 0.45, pNow: 0.55, spec: 'replay-8' } },
-    { ...row('2026-11-07', 'home', true, false), late: { flip: true, side: 'home', pEve: 0.55, pNow: 0.45, spec: 'replay-8' } }];
+  assert(L2.id === 'LATE2' && L2.frozen === '2026-11-07' && L2.judgedFrom === '2026-11-08' && L2.spec === 'replay-9', 'LATE2 frozen with its own dates and pipeline (re-pinned to replay-9 before its first game)');
+  const mixed = [row('2026-11-08', 'home', true, true), { ...row('2026-11-08', 'away', true, false), late: { flip: true, side: 'away', pEve: 0.45, pNow: 0.55, spec: 'replay-9' } },
+    { ...row('2026-11-07', 'home', true, false), late: { flip: true, side: 'home', pEve: 0.55, pNow: 0.45, spec: 'replay-9' } },
+    { ...row('2026-11-08', 'home', true, true), late: { flip: true, side: 'home', pEve: 0.55, pNow: 0.45, spec: 'replay-8' } }];
   const r1 = c.seasonLateFlipRecord(mixed, { from: '0000' }), r2 = c.seasonLateFlipRecord(mixed, { rule: 'LATE2' });
-  assert(r1.checked === 1 && r1.n === 1 && r2.checked === 1 && r2.n === 1 && r2.won === 1, 'LATE counts replay-7 rows only; LATE2 replay-8 rows from Nov 8');
-  assert(c.seasonLateRuleFor(mixed[0]).id === 'LATE' && c.seasonLateRuleFor(mixed[1]).id === 'LATE2', 'a row picks its rule by pipeline');
-  c.SEASON_LEDGER = [{ id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, mlHome: -110, mlAway: -110, late: { ...lf, spec: 'replay-8' }, result: null }];
-  assert(c.renderGameCard(sg).includes(`LATE2 · evening-before pick ${sg.home} 56.0%`), 'card names LATE2 for a replay-8 row');
+  assert(r1.checked === 1 && r1.n === 1 && r2.checked === 1 && r2.n === 1 && r2.won === 1, 'LATE counts replay-7 rows only; LATE2 replay-9 rows from Nov 8');
+  assert(c.seasonLateRuleFor(mixed[0]).id === 'LATE' && c.seasonLateRuleFor(mixed[1]).id === 'LATE2' && c.seasonLateRuleFor(mixed[3]) === null, 'a row picks its rule by pipeline; a replay-8 row has none');
+  c.SEASON_LEDGER = [{ id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, mlHome: -110, mlAway: -110, late: { ...lf, spec: 'replay-9' }, result: null }];
+  assert(c.renderGameCard(sg).includes(`LATE2 · evening-before pick ${sg.home} 56.0%`), 'card names LATE2 for a replay-9 row');
   c.SEASON_LEDGER = [];
   const lt = c.renderLedgerTab();
-  assert(lt.includes('Late injury flip (LATE, LATE2)') && lt.includes('drafted on replay-7, since superseded') && lt.includes('10 flips in 132 checked'), 'Ledger tab: LATE with its frozen text, LATE2 with the replay-8 description');
+  assert(lt.includes('Late injury flip (LATE, LATE2)') && lt.includes('drafted on replay-7, since superseded') && lt.includes('6 flips in 132 checked'), 'Ledger tab: LATE with its frozen text, LATE2 with the replay-9 description');
 }
 
 console.log('TEST 25: official injury report over a slate (fetch-slate.js --injuries)');
@@ -1233,6 +1249,33 @@ console.log('TEST 28: unfiled injury reports carry forward the previous filing (
   assert(m.availability['1'] === 0 && m.unmatched.length === 1 && m.unmatched[0].player === 'Walker, Jordan', 'initial + family name must both match; a different family name stays unmatched');
   const two = new Map([['1', 'Jalen Williams'], ['2', 'Jaylin Williams']]);
   assert(c.replayMatchReport([e('11/06/2026', 'Oklahoma City Thunder', 'Williams, J.', 'Out')], two, new Map()).unmatched.length === 1, 'two players share family name and initial → no guess');
+}
+
+console.log('TEST 29: trust rules scored per engine era');
+{
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const E = c.SEASON_TRUST_ENGINES;
+  assert(E.some(e => e.engine === c.SEASON_ENGINE_VERSION), 'the live engine has a judged era (add one with any engine bump)');
+  assert(new Set(E.map(e => e.engine)).size === E.length && E.every((e, i) => i === 0 || e.judgedFrom > E[i - 1].judgedFrom), 'eras distinct, in date order');
+  assert(E[0].engine === '2026-11-05.b2b2' && E[0].judgedFrom === c.SEASON_TRUST.judgedFrom, 'first era is the engine the rules were frozen on, from their judged date');
+  const t = (side, rule) => ({ side, p: 0.6, ml: 150, implied: 0.4, edge: 0.08, gap: 3, driver: 'prior', rule, minEdge: 0.03, book: 'DraftKings' });
+  const row = (date, engine, homeWon) => ({ date, engine, home: 'A', away: 'B', mlHome: 150, mlAway: -170, book: 'DraftKings', trust: t('home', 'R1'), result: { homeScore: homeWon ? 101 : 99, awayScore: 100 } });
+  const rows = [row('2026-11-05', '2026-11-05.b2b2', true), row('2026-11-06', '2026-11-05.b2b2', true), row('2026-11-07', '2026-11-05.b2b2', false),
+    row('2026-11-07', '2026-11-07.rotcap', true), row('2026-11-08', '2026-11-07.rotcap', false), row('2026-11-08', '2026-11-02.aging-v2', true)];
+  const by = c.seasonTrustRecordByEngine(rows);
+  assert(by['2026-11-05.b2b2'].R1.n === 2 && by['2026-11-05.b2b2'].R1.won === 1, 'old engine: its rows from Nov 6 (Nov 5 before the start)');
+  assert(by['2026-11-07.rotcap'].R1.n === 1 && by['2026-11-07.rotcap'].R1.won === 0, 'new engine: its rows from Nov 8 only');
+  assert(!('2026-11-02.aging-v2' in by) && Object.values(by).reduce((s, g) => s + g.ALL.n, 0) === 3, 'an engine from before the rules is never judged; no row counts twice');
+  // On the real ledger every judged row so far is the old engine: its era equals the old single record.
+  const L = c.loadSeasonLedger(), eras = c.seasonTrustRecordByEngine(L);
+  assert(JSON.stringify(eras['2026-11-05.b2b2']) === JSON.stringify(c.seasonTrustRecord(L.filter(r => r.engine === '2026-11-05.b2b2'))) &&
+    eras['2026-11-05.b2b2'].ALL.n === c.seasonTrustRecord(L).ALL.n, 'real ledger: the old era reproduces the record as it stood');
+  assert(eras['2026-11-07.rotcap'].ALL.n === 0, 'no row on the new engine is judged yet');
+  const lt = c.renderLedgerTab();
+  assert(lt.includes('scored separately per engine') && E.every(e => lt.includes(`${e.engine}, from ${e.judgedFrom}`)), 'Ledger tab: one live column per engine era');
+  const sg = c.SEASON_SLATE_SNAPSHOT.games.find(g => { const cl = c.seasonCleanSlate(c.SEASON_SLATE_SNAPSHOT); const ch = c.seasonTrustCheck(c.projectSeasonGame(g, cl), g.market || {}); return ch && ch.rule && ch.rule !== 'AVOID'; });
+  if (sg) { c.seasonState.slate = c.SEASON_SLATE_SNAPSHOT; assert(c.renderGameCard(sg).includes('judged on this engine'), 'card counts the rule on the live engine only'); }
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

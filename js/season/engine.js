@@ -203,7 +203,16 @@ function calcRosterAdjustment(team, strength) {
   let adj = 0, aging = 0;
   const rows = (team.players || []).map(p => ({ p, prof: playerProfile(p) }));
   const raw = rows.reduce((s, x) => s + x.prof.mpg * (x.p.availability == null ? 1 : x.p.availability), 0);
-  const scale = raw > SEASON_IMPACT.teamMinutes ? SEASON_IMPACT.teamMinutes / raw : 1;
+  // Tonight's minutes: baseline minutes × availability, capped at teamMinutes in rotation order —
+  // the players with the most baseline minutes keep theirs and the cut comes off the bottom
+  // (research-minutes-cap.js; engine 2026-11-07.rotcap). The proportional cap it replaces shaved
+  // every player, so phantom deep-bench minutes took minutes from the stars.
+  const tonightMin = new Map();
+  let left = SEASON_IMPACT.teamMinutes;
+  [...rows].sort((a, b) => b.prof.mpg - a.prof.mpg).forEach(({ p, prof }) => {
+    const m = Math.max(0, Math.min(prof.mpg * (p.availability == null ? 1 : p.availability), left));
+    tonightMin.set(p.id, m); left -= m;
+  });
   rows.forEach(({ p, prof }) => {
     onRoster.add(p.id);
     const value = playerImpactPts(p, pace, prof);
@@ -221,7 +230,7 @@ function calcRosterAdjustment(team, strength) {
       if (p.availability < 1 && prof.source === 'none') unmodeled.push(p.name);
       return;
     }
-    const tonight = prof.mpg * (p.availability == null ? 1 : p.availability) * scale;
+    const tonight = tonightMin.get(p.id);
     const inRating = playerRatingMinutes(p, team, w, tg);
     const delta = value / prof.mpg * (tonight - inRating);
     const share = inRating / prof.mpg;
@@ -251,7 +260,7 @@ function calcRosterAdjustment(team, strength) {
   return {
     adj: +capped.toFixed(2), uncapped: +adj.toFixed(2),
     aging: +agingCapped.toFixed(2), agingUncapped: +aging.toFixed(2), agingItems,
-    minutes: { raw: +raw.toFixed(1), scale: +scale.toFixed(3) },
+    minutes: { raw: +raw.toFixed(1), tonight: +Math.min(raw, SEASON_IMPACT.teamMinutes).toFixed(1), cut: +Math.max(0, raw - SEASON_IMPACT.teamMinutes).toFixed(1) },
     items,
     missing: items.filter(i => i.kind === 'absent' && i.delta < -0.05),   // out tonight, and the rating counted on them
     unmodeled,
