@@ -171,3 +171,5 @@ button.res-cal-day:hover { border-color:var(--accent); }
   .res-meta { margin-left:0; width:100%; }
   .res-score th, .res-score td { padding-right:8px; }
 }
+/* Parlay tab: the ticket fits a phone (styles.css gives every table a 500px minimum on small screens) */
+.ledger table.parlay-legs { min-width:0; }

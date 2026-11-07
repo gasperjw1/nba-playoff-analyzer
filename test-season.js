@@ -32,6 +32,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/trust.js');
   load('js/season/ledger.js');
   load('js/season/props-ledger.js');
+  load('js/season/parlay.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1276,6 +1277,127 @@ console.log('TEST 29: trust rules scored per engine era');
   assert(lt.includes('scored separately per engine') && E.every(e => lt.includes(`${e.engine}, from ${e.judgedFrom}`)), 'Ledger tab: one live column per engine era');
   const sg = c.SEASON_SLATE_SNAPSHOT.games.find(g => { const cl = c.seasonCleanSlate(c.SEASON_SLATE_SNAPSHOT); const ch = c.seasonTrustCheck(c.projectSeasonGame(g, cl), g.market || {}); return ch && ch.rule && ch.rule !== 'AVOID'; });
   if (sg) { c.seasonState.slate = c.SEASON_SLATE_SNAPSHOT; assert(c.renderGameCard(sg).includes('judged on this engine'), 'card counts the rule on the live engine only'); }
+}
+
+console.log('TEST 30: parlay checker (parlay.js)');
+{
+  const c = loadCtx(false);
+  // Odds math
+  near(c.parlayDecimal(150), 2.5, 1e-12, '+150 → 2.5'); near(c.parlayDecimal(-200), 1.5, 1e-12, '−200 → 1.5'); near(c.parlayDecimal(-110), 1 + 100 / 110, 1e-12, '−110');
+  assert([100, 120, 450, 1007, -105, -110, -150, -1180].every(a => c.parlayAmerican(c.parlayDecimal(a)) === a || (a === 100 && c.parlayAmerican(2) === 100)), 'American ↔ decimal round trip');
+  let threw = 0; for (const bad of [50, 0, -99, 'x']) { try { c.parlayDecimal(bad); } catch (e) { threw++; } } assert(threw === 4, 'odds between −100 and +100 rejected');
+  const slate = makeSlate(c), g = slate.games[0], A = slate.teams.AAA;
+  const proj = c.projectSeasonGame(g, slate);
+  // Moneyline legs: model, DraftKings' default price, no-vig market
+  const home = c.parlayLeg({ type: 'ml', game: g.id, side: 'home' }, slate), away = c.parlayLeg({ type: 'ml', game: g.id, side: 'away' }, slate);
+  near(home.p, proj.pHome, 1e-12, 'ML home: picks engine probability'); near(away.p, 1 - proj.pHome, 1e-12, 'ML away: the complement');
+  assert(home.odds === -150 && away.odds === 130, 'ML odds default to DraftKings on the slate');
+  near(home.pMarket + away.pMarket, 1, 1e-12, 'no-vig market sums to 1'); near(home.pMarket, (150 / 250) / (150 / 250 + 100 / 230), 1e-12, 'no-vig home');
+  near(home.pImplied, 0.6, 1e-12, 'price implied (vig in)'); assert(c.parlayLeg({ type: 'ml', game: g.id, side: 'home', odds: -120 }, slate).odds === -120, 'entered odds win');
+  // Rule flags, through a controlled trust check (the real one is restored after).
+  const realTrust = c.seasonTrustCheck;
+  c.seasonTrustCheck = () => ({ rule: 'AVOID', side: 'home', edge: 0.06 });
+  assert(c.parlayLeg({ type: 'ml', game: g.id, side: 'home' }, slate).flags.some(f => f.level === 'warn' && /^AVOID/.test(f.text)), 'AVOID on the leg\'s side: warned');
+  c.seasonTrustCheck = () => ({ rule: 'R1', side: 'away', edge: 0.06 });
+  assert(c.parlayLeg({ type: 'ml', game: g.id, side: 'home' }, slate).flags.some(f => /R1 fires on the other side \(BBB\)/.test(f.text)), 'rule on the other side: warned');
+  assert(c.parlayLeg({ type: 'ml', game: g.id, side: 'away' }, slate).flags.some(f => f.level === 'info' && /R1 .* fires on this side .* unproven/.test(f.text)), 'rule on this side: noted, unproven');
+  c.seasonTrustCheck = realTrust;
+  // The recorded pick on the other side (later news moved it).
+  c.SEASON_LEDGER = [{ id: 'r', date: slate.date, home: g.home, away: g.away, pOursClean: proj.pHome >= 0.5 ? 0.4 : 0.6, result: null }];
+  const recSide = proj.pHome >= 0.5 ? 'home' : 'away';
+  assert(c.parlayLeg({ type: 'ml', game: g.id, side: recSide }, slate).flags.some(f => /recorded pick .* had the other side/.test(f.text)), 'recorded pick disagrees: warned');
+  c.SEASON_LEDGER = [];
+  // No price on the slate and none entered.
+  const bare = { ...slate, games: [{ ...g, market: {} }] };
+  assert(/no price for/.test(c.parlayLeg({ type: 'ml', game: g.id, side: 'home' }, bare).error) && c.parlayLeg({ type: 'ml', game: g.id, side: 'home', odds: -125 }, bare).odds === -125, 'no market price: entered odds required');
+  // Props
+  const star = A.players[0], pr = c.projectPlayerProps(star, A, slate.teams.BBB, slate);
+  const prop = (dir, line, extra) => c.parlayLeg({ type: 'prop', game: g.id, player: star.id, stat: 'pra', dir, line, odds: -110, ...extra }, slate);
+  const near0 = Math.round(pr.pra - 0.5) + 0.5, over = prop('over', near0), under = prop('under', near0);
+  near(over.p, c.probOver(pr.pra, pr.sd.pra, near0), 1e-12, 'prop over = probOver'); near(over.p + under.p, 1, 1e-12, 'over + under = 1 (half line)');
+  near(prop('over', 30).p + prop('under', 30).p, 1, 1e-12, 'over + under = 1 (whole line, push split)');
+  assert(prop('over', 30).flags.some(f => /whole-number line/.test(f.text)) && !prop('over', 30.5).flags.some(f => /whole-number line/.test(f.text)), 'whole-number prop line flagged (a push voids the leg); half line not');
+  assert(over.flags.some(f => f.level === 'warn' && /near the projection/.test(f.text)) && under.flags.some(f => f.level === 'info' && /unders there won/.test(f.text)), 'near the projection: over warned, under noted');
+  const deep = c.propCheckLine(pr.pra, pr.sd.pra, 'floor');
+  assert(prop('over', deep).flags.some(f => f.level === 'good' && /90% lines held/.test(f.text)), 'deep PRA line: calibrated on the replay');
+  const mid = prop('over', c.propCheckLine(pr.pra, pr.sd.pra, 'p75'));
+  assert(mid.p > 0.6 && mid.p < 0.85 && mid.flags.some(f => /mid line/.test(f.text)), 'mid PRA line flagged');
+  assert(!over.flags.some(f => /minutes/.test(f.text)) && pr.min >= 24, 'starter: no minutes flag');
+  const bench = A.players.find(p => p.avg.min < 24);
+  const bl = c.parlayLeg({ type: 'prop', game: g.id, player: bench.id, stat: 'pts', dir: 'over', line: 0.5, odds: -500 }, slate);
+  assert(bl.flags.some(f => /projected \d+ minutes/.test(f.text)), 'bench player: minutes flag');
+  const q = { ...slate, teams: { ...slate.teams, AAA: { ...A, players: A.players.map(p => p.id === star.id ? { ...p, availability: 0.5, status: 'Questionable' } : p) } } };
+  assert(c.parlayLeg({ type: 'prop', game: g.id, player: star.id, stat: 'pts', dir: 'over', line: 10.5, odds: -150 }, q).flags.some(f => /voids the leg/.test(f.text)), 'questionable: void warning');
+  near(prop('over', near0, { oddsOther: -110 }).pMarket, 0.5, 1e-12, 'both sides priced → no-vig market');
+  assert(prop('over', deep, { odds: 150 }).flags.some(f => /prop edges are unproven/.test(f.text)) && !prop('over', deep, { odds: -2000 }).flags.some(f => /prop edges are unproven/.test(f.text)), 'big prop edge over the price flagged; none when the price agrees');
+  // Ticket
+  const legs = [{ type: 'ml', game: g.id, side: 'home' }, { type: 'prop', game: g.id, player: star.id, stat: 'pra', dir: 'over', line: deep, odds: -400 }];
+  const t = c.evaluateParlay(legs, slate);
+  assert(t.ok && t.sameGame.length === 1 && t.legs.every(l => l.flags.some(f => /same game as leg/.test(f.text))), 'same-game legs flagged on both');
+  near(t.p, t.legs[0].p * t.legs[1].p, 1e-12, 'combined = product'); near(t.decimal, c.parlayDecimal(-150) * c.parlayDecimal(-400), 1e-12, 'price from the legs');
+  near(t.ev, t.p * t.decimal - 1, 1e-12, 'expected return per unit'); assert(t.fairAmerican === c.parlayAmerican(1 / t.p) && t.pMarket === null, 'fair odds; no market parlay when a leg has one side priced');
+  const t2 = c.evaluateParlay(legs, slate, 250);
+  assert(t2.offered === 250 && t2.decimal === 3.5 && t2.legsAmerican === t.american, 'quoted parlay price overrides the legs');
+  // Errors
+  const e = c.evaluateParlay([{ type: 'ml', game: 'nope', side: 'home' }, { type: 'prop', game: g.id, player: 'zz', stat: 'pra', dir: 'over', line: 5, odds: -110 },
+    { type: 'prop', game: g.id, player: star.id, stat: 'stl', dir: 'over', line: 1, odds: 100 }, { type: 'prop', game: g.id, player: star.id, stat: 'pra', dir: 'over', line: 5 }], slate);
+  assert(!e.ok && e.p === undefined && e.legs.every(l => l.error), 'unknown game, unknown player, bad stat, missing odds → errors, no ticket math');
+}
+{
+  // The Parlay tab renders a ticket from the committed slate.
+  const c = loadCtx(true, true);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/team-ratings.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const S = c.SEASON_SLATE_SNAPSHOT, g = S.games[0];
+  c.seasonState.slate = S;
+  c.seasonState.parlay = { date: S.date, legs: [], offered: '', draft: { game: g.id, type: 'prop', side: 'home', player: '', stat: 'pra', dir: 'over', line: '', odds: '', oddsOther: '' } };
+  const empty = c.renderParlayTab();
+  assert(empty.includes('No legs yet') && empty.includes('Add leg') && c.seasonState.parlay.draft.player !== '', 'empty ticket renders; prop builder picks a player');
+  const pl = c.seasonState.parlay.draft.player;
+  c.seasonState.parlay.legs = [{ type: 'ml', game: g.id, side: 'away', odds: null }, { type: 'prop', game: g.id, player: pl, stat: 'pra', dir: 'over', line: 5.5, odds: -900, oddsOther: null }];
+  const html = c.renderParlayTab();
+  assert(html.includes('Model chance') && html.includes('fair odds') && html.includes('same game as leg 2') && html.includes('legs multiplied') && !html.includes('as quoted ·'), 'ticket summary, same-game flag, price from the legs');
+  c.seasonState.parlay.offered = '300';
+  assert(c.renderParlayTab().includes('as quoted ·'), 'quoted price shown');
+  assert(c.SEASON_TABS.some(([id]) => id === 'parlay'), 'Parlay tab listed');
+  // Saved ticket: kept for the same slate date, dropped when the slate moves on.
+  c.seasonState.parlay = null;
+  c.localStorage.setItem(c.SEASON_PARLAY_KEY, JSON.stringify({ date: '2026-01-01', legs: [{ type: 'ml', game: 'old', side: 'home' }], offered: '', draft: {} }));
+  const fresh = c.seasonParlayState();
+  assert(fresh.date === S.date && fresh.legs.length === 0 && fresh.draft.game === g.id, 'a ticket from another day is not restored');
+  fresh.legs.push({ type: 'ml', game: g.id, side: 'home', odds: null }); c._seasonParlaySave(); c.seasonState.parlay = null;
+  assert(c.seasonParlayState().legs.length === 1, 'same-day ticket restored from this browser');
+  // Copy ticket: complete, parseable JSON (prompt fallback when the clipboard is unavailable).
+  let copied = null; c.prompt = (title, text) => { copied = text; };
+  c.seasonState.parlay.offered = '';
+  c.seasonParlayCopy();
+  const tk = JSON.parse(copied);
+  assert(tk.date === S.date && tk.engine === c.SEASON_ENGINE_VERSION && tk.props === c.SEASON_PROP.version && tk.legs.length === 1 && typeof tk.pModel === 'number' && Array.isArray(tk.legs[0].flags) && tk.price != null,
+    'copied ticket carries date, engine, props model, legs with flag text, model chance and price');
+  c.localStorage.removeItem(c.SEASON_PARLAY_KEY);
+}
+
+console.log('TEST 31: parlay-check.js leg parser');
+{
+  const c = loadCtx(false);
+  const { parseLeg, teamAliases } = require('./parlay-check.js');
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/replay-core.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const al = teamAliases(c.REPLAY_TEAM_BY_NAME);
+  assert(al.knicks === 'NY' && al['new york knicks'] === 'NY' && al.nyk === 'NY' && al['new york'] === 'NY' && al['76ers'] === 'PHI' && al.sixers === 'PHI' &&
+    al['trail blazers'] === 'POR' && al.blazers === 'POR' && al.gsw === 'GS' && al.warriors === 'GS' && al.uta === 'UTAH' && al.was === 'WSH', 'team names, nicknames and other abbreviations');
+  assert(!('los angeles' in al) && al.lakers === 'LAL' && al.clippers === 'LAC', 'ambiguous city left out; nicknames resolve');
+  const alFix = { ...al, aaa: 'AAA', home: 'AAA' };
+  const slate = makeSlate(c), g = slate.games[0];
+  const ml = parseLeg('AAA', slate, slate), ml2 = parseLeg('ml BBB +135', slate, slate);
+  assert(ml.type === 'ml' && ml.side === 'home' && ml.odds === null && ml2.side === 'away' && ml2.odds === 135 && ml.game === g.id, 'team → moneyline, odds optional');
+  const pr = parseLeg('a Player 0 pra o20.5 -110 -110', slate, slate);
+  assert(pr.type === 'prop' && pr.player === slate.teams.AAA.players[0].id && pr.stat === 'pra' && pr.dir === 'over' && pr.line === 20.5 && pr.odds === -110 && pr.oddsOther === -110, 'player prop parsed');
+  assert(parseLeg('ml home -140', slate, slate, alFix).side === 'home' && parseLeg('ml home -140', slate, slate, alFix).odds === -140, 'alias with odds');
+  let notPlaying = null; try { parseLeg('Knicks', slate, slate, al); } catch (e) { notPlaying = e.message; }
+  assert(/NY is not playing/.test(notPlaying), 'a real team off the slate says so');
+  assert(parseLeg('b Player 3 3pm u1.5 +120', slate, slate).stat === 'tpm' && parseLeg('b Player 3 3pm u1.5 +120', slate, slate).dir === 'under', '3pm → tpm, under');
+  const err = (t) => { try { parseLeg(t, slate, slate); return null; } catch (e) { return e.message; } };
+  assert(/2 players match/.test(err('Player 0 pra o20.5 -110')) && /odds .* missing/.test(err('a Player 0 pra o20.5')) && /o or u/.test(err('a Player 0 pra 20.5 -110')) && /expected a team/.test(err('ZZZ')),
+    'ambiguous name, missing odds, missing o/u, unknown team → errors');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
