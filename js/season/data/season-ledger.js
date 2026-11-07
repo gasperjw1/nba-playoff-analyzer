@@ -2267,7 +2267,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.142Z",
+  "recordedAt": "2026-11-07T16:13:38.707Z",
   "result": null
  },
  {
@@ -2348,12 +2348,12 @@ const SEASON_LEDGER = [
   "mlHome": -269,
   "mlAway": 221,
   "spreadHome": -6.5,
-  "totalMarket": 226.5,
+  "totalMarket": 227.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.143Z",
+  "recordedAt": "2026-11-07T16:13:38.709Z",
   "result": null
  },
  {
@@ -2439,7 +2439,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.144Z",
+  "recordedAt": "2026-11-07T16:13:38.710Z",
   "result": null
  },
  {
@@ -2525,7 +2525,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.146Z",
+  "recordedAt": "2026-11-07T16:13:38.711Z",
   "result": null
  },
  {
@@ -2611,7 +2611,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.147Z",
+  "recordedAt": "2026-11-07T16:13:38.713Z",
   "result": null
  },
  {
@@ -2697,7 +2697,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.148Z",
+  "recordedAt": "2026-11-07T16:13:38.714Z",
   "result": null
  },
  {
@@ -2783,7 +2783,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:06:00.149Z",
+  "recordedAt": "2026-11-07T16:13:38.715Z",
   "result": null
  }
 ];

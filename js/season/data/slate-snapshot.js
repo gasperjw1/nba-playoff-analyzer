@@ -3,7 +3,7 @@
 const SEASON_SLATE_SNAPSHOT = {
  "source": "espn",
  "date": "2026-11-07",
- "fetchedAt": "2026-11-07T16:05:58.108Z",
+ "fetchedAt": "2026-11-07T16:13:37.682Z",
  "modelVersion": null,
  "league": {
   "ortg": 112.74283475464232,
@@ -15465,7 +15465,7 @@ const SEASON_SLATE_SNAPSHOT = {
     "mlHome": -269,
     "mlAway": 221,
     "spreadHome": -6.5,
-    "total": 226.5,
+    "total": 227.5,
     "book": "DraftKings",
     "open": {
      "mlHome": -230,
