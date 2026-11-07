@@ -44,7 +44,15 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-7',
+  version: 'replay-8',
+  // replay-8: a team the report lists as not yet submitted (typically the second night of a
+  //   back-to-back) keeps the statuses it filed for its previous game (replay-core.js
+  //   replayCarriedEntries) instead of counting everyone healthy. Found Nov 7 (NY @ CLE: Cleveland
+  //   unfiled at 12:30 PM, so Tyson, Tomlin and Allen counted available). Affects mostly the morning
+  //   and eve variants — the tip-time report has every team filed. Also: a report name with a
+  //   shortened first name matches by family name + initial when unique on the team; and the
+  //   opponent-adjusted variant takes its form from morning rosters (it leaked a later game's
+  //   report into an earlier game on Nov 6, by 0.03 pp). Engine unchanged.
   // replay-7: adds two early variants of the same engine, for comparison with DraftKings' opening
   //   line without later news: 'morning' takes each game's latest injury report labelled strictly
   //   before 9:00 AM ET on game day (the 8:30 AM report or earlier — PDFs go up a few minutes after
@@ -388,8 +396,18 @@ function predictDay(ctx, store, date, debug, mode) {
     const mmddyyyy = `${date.slice(5, 7)}/${date.slice(8, 10)}/${date.slice(0, 4)}`;
     const p = prov[g.id] = { report: g.report, reportAt: new Date(r.at).toISOString(), matched: 0, unmatched: [], notSubmitted: [] };
     for (const ab of [g.home, g.away]) {
-      const entries = r.entries.filter(e => e.gameDate === mmddyyyy && ctx.REPLAY_TEAM_BY_NAME[e.team] === ab);
-      if (r.notSubmitted.some(x => x.gameDate === mmddyyyy && ctx.REPLAY_TEAM_BY_NAME[x.team] === ab)) p.notSubmitted.push(ab);
+      let entries = r.entries.filter(e => e.gameDate === mmddyyyy && ctx.REPLAY_TEAM_BY_NAME[e.team] === ab);
+      const unfiled = r.notSubmitted.some(x => x.gameDate === mmddyyyy && ctx.REPLAY_TEAM_BY_NAME[x.team] === ab);
+      if (unfiled) p.notSubmitted.push(ab);
+      // replay-8: not filed yet → what the team filed for its previous game (replayCarriedEntries),
+      // from this report or that game's own report, whichever is newer, both before this cutoff.
+      if (unfiled && !entries.length) {
+        const prevDay = Object.keys(store.schedule).filter(d => d < date && store.schedule[d].some(x => x.home === ab || x.away === ab)).sort().pop();
+        const cands = [r].concat(prevDay ? store.schedule[prevDay].filter(x => x.home === ab || x.away === ab).map(x => store.reports[x.report]) : [])
+          .filter(x => x && x.at <= cutoffOf(g, mode));
+        const carried = ctx.replayCarriedEntries(cands, ab, prevDay);
+        if (carried) { entries = carried.entries; (p.carried = p.carried || []).push(`${ab} from ${carried.from}`); }
+      }
       // A listed player belongs to this team tonight, wherever he was last seen.
       const roster = rosters[ab] = rosters[ab] || new Map();
       const m = ctx.replayMatchReport(entries, roster, league);
@@ -446,7 +464,14 @@ function predictDay(ctx, store, date, debug, mode) {
   if (debug) return { teams, rosters, availability };
   const base = ctx.replayPredictDay({ date, games, teams, league: leagueAvg });
   const pre = ctx.replayPredictDay({ date, games, teams: ctx.replayPreseasonShift(teams, preseason, SPEC.preseasonCoef), league: leagueAvg });
-  const adj = ctx.replayPredictDay({ date, games, teams: ctx.seasonOpponentAdjust(teams, leagueAvg, regGames), league: leagueAvg });
+  // replay-8: the opponent adjustment rates every team from its morning roster (before any of the
+  // day's reports), then lends each team its adjusted form. Built from the game-day teams it let a
+  // later game's report — which adds players to that team's roster — reach an earlier game
+  // (own-cutoff leak check, Nov 6 PHI @ CLE: 47.37% vs 47.40%).
+  const morningTeams = ctx.replayBuildTeams(priorTeams, dataDay, regGames, Object.fromEntries(Object.entries(morning).map(([t, m]) => [t, new Map(m)])), {}, {});
+  const adjForm = ctx.seasonOpponentAdjust(morningTeams, leagueAvg, regGames);
+  const adjTeams = Object.fromEntries(Object.entries(teams).map(([ab, t]) => [ab, adjForm[ab] ? { ...t, current: adjForm[ab].current } : t]));
+  const adj = ctx.replayPredictDay({ date, games, teams: adjTeams, league: leagueAvg });
   return base.map((b, i) => {
     const hashInput = JSON.stringify([b.home, b.away, [b.home, b.away].map(ab => [teams[ab].prior, teams[ab].current, teams[ab].rest,
       teams[ab].players.map(p => [p.id, p.availability, p.seasonGames, Math.round(p.avg.min * 100)])])]);

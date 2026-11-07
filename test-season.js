@@ -1061,10 +1061,24 @@ console.log('TEST 24: late-injury-flip rule (evening-before vs latest-report pic
   c.SEASON_LEDGER = [];
   assert(!c.renderGameCard(sg).includes('>Recorded<'), 'unrecorded game: no recorded chip');
   vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
-  const rep = c.seasonLateFlipRecord(c.seasonReplayLateRows(), { from: '0000' });
-  assert(rep.flips === 8 && rep.n === 8 && rep.won === 7, 'replay description: 8 flips, earlier side won 7');
+  // The replay file is now replay-8: it describes LATE2 (10 flips, earlier side 7), and none of it counts for LATE.
+  assert(c.SEASON_REPLAY.spec.version === 'replay-8', 'replay data is replay-8');
+  const rep = c.seasonLateFlipRecord(c.seasonReplayLateRows(), { rule: 'LATE2', from: '0000' });
+  assert(rep.id === 'LATE2' && rep.flips === 10 && rep.n === 10 && rep.won === 7, 'LATE2 replay description: 10 flips, earlier side won 7');
+  assert(c.seasonLateFlipRecord(c.seasonReplayLateRows(), { from: '0000' }).checked === 0, 'replay-8 rows never count for LATE');
+  // Live rows are judged by the pipeline they were checked on.
+  const L2 = c.SEASON_LATE_FLIP2;
+  assert(L2.id === 'LATE2' && L2.frozen === '2026-11-07' && L2.judgedFrom === '2026-11-08' && L2.spec === 'replay-8', 'LATE2 frozen with its own dates and pipeline');
+  const mixed = [row('2026-11-08', 'home', true, true), { ...row('2026-11-08', 'away', true, false), late: { flip: true, side: 'away', pEve: 0.45, pNow: 0.55, spec: 'replay-8' } },
+    { ...row('2026-11-07', 'home', true, false), late: { flip: true, side: 'home', pEve: 0.55, pNow: 0.45, spec: 'replay-8' } }];
+  const r1 = c.seasonLateFlipRecord(mixed, { from: '0000' }), r2 = c.seasonLateFlipRecord(mixed, { rule: 'LATE2' });
+  assert(r1.checked === 1 && r1.n === 1 && r2.checked === 1 && r2.n === 1 && r2.won === 1, 'LATE counts replay-7 rows only; LATE2 replay-8 rows from Nov 8');
+  assert(c.seasonLateRuleFor(mixed[0]).id === 'LATE' && c.seasonLateRuleFor(mixed[1]).id === 'LATE2', 'a row picks its rule by pipeline');
+  c.SEASON_LEDGER = [{ id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, mlHome: -110, mlAway: -110, late: { ...lf, spec: 'replay-8' }, result: null }];
+  assert(c.renderGameCard(sg).includes(`LATE2 · evening-before pick ${sg.home} 56.0%`), 'card names LATE2 for a replay-8 row');
+  c.SEASON_LEDGER = [];
   const lt = c.renderLedgerTab();
-  assert(lt.includes('Late injury flip (LATE) — frozen 2026-11-06, judged from 2026-11-07') && lt.includes('8 flips in'), 'Ledger tab shows the rule with the replay description');
+  assert(lt.includes('Late injury flip (LATE, LATE2)') && lt.includes('drafted on replay-7, since superseded') && lt.includes('10 flips in 132 checked'), 'Ledger tab: LATE with its frozen text, LATE2 with the replay-8 description');
 }
 
 console.log('TEST 25: official injury report over a slate (fetch-slate.js --injuries)');
@@ -1190,6 +1204,35 @@ console.log('TEST 27: prop distributions (prop-dist.js) and calibrated spreads')
   for (const s of ['pts', 'reb', 'ast', 'tpm']) near(pr.sd[s], +(raw.sd[s] * S[s]).toFixed(2), 1e-9, `${s} sd × ${S[s]}`);
   near(pr.sd.pra, +(+(0.85 * (raw.sd.pts + raw.sd.reb + raw.sd.ast)).toFixed(2) * S.pra).toFixed(2), 1e-9, 'PRA sd from the unscaled parts, then × its scale');
   assert(pr.sd.stl === raw.sd.stl && pr.pts === raw.pts, 'unscaled stats and every mean unchanged');
+}
+
+console.log('TEST 28: unfiled injury reports carry forward the previous filing (replay-8)');
+{
+  const c = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, String, Number, RegExp, Date });
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/replay-core.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const e = (day, team, player, status) => ({ gameDate: day, team, player, status, reason: 'x' });
+  const CLE = 'Cleveland Cavaliers', NYK = 'New York Knicks';
+  const early = { name: 'r-1830', at: 1830, entries: [e('11/06/2026', CLE, 'Allen, Jarrett', 'Questionable'), e('11/06/2026', CLE, 'Tyson, Jaylon', 'Out')], notSubmitted: [] };
+  const late = { name: 'r-2030', at: 2030, entries: [e('11/06/2026', CLE, 'Allen, Jarrett', 'Out'), e('11/06/2026', CLE, 'Tyson, Jaylon', 'Out'), e('11/06/2026', NYK, 'Hart, Josh', 'Out')],
+    notSubmitted: [{ gameDate: '11/07/2026', team: CLE }] };
+  let r = c.replayCarriedEntries([early, late], 'CLE', '2026-11-06');
+  assert(r.from === 'r-2030' && r.entries.length === 2 && r.entries.find(x => x.player === 'Allen, Jarrett').status === 'Out', 'newest covering report wins (Allen Questionable → Out)');
+  assert(r.entries.every(x => x.team === CLE), 'only the team\'s own entries');
+  const unfiledThen = { name: 'r-2100', at: 2100, entries: [e('11/06/2026', NYK, 'Hart, Josh', 'Out')], notSubmitted: [{ gameDate: '11/06/2026', team: CLE }] };
+  assert(c.replayCarriedEntries([early, unfiledThen], 'CLE', '2026-11-06').from === 'r-1830', 'a report where the team was unfiled for that day is skipped');
+  const healthy = { name: 'r-1900', at: 1900, entries: [e('11/06/2026', NYK, 'Hart, Josh', 'Out')], notSubmitted: [] };
+  r = c.replayCarriedEntries([early, healthy], 'CLE', '2026-11-06');
+  assert(r.from === 'r-1900' && r.entries.length === 0, 'filed with nobody to list → carried as all healthy');
+  const otherDay = { name: 'r-0900', at: 900, entries: [e('11/05/2026', CLE, 'Allen, Jarrett', 'Out')], notSubmitted: [] };
+  assert(c.replayCarriedEntries([otherDay], 'CLE', '2026-11-06') === null, 'no report covering the previous game day → null');
+  assert(c.replayCarriedEntries([early], 'CLE', null) === null && c.replayCarriedEntries([null, early], 'CLE', '2026-11-06').from === 'r-1830', 'no previous game → null; missing reports ignored');
+  // Shortened first names (replay-8): same family name + initial, unique on the team.
+  const roster = new Map([['5142621', 'Chris Cenac Jr.'], ['1', 'Jaylen Brown'], ['2', 'Josh Minott'], ['3', 'Jordan Walsh']]);
+  const m = c.replayMatchReport([e('11/06/2026', 'Boston Celtics', 'Cenac Jr., Christopher', 'Out'), e('11/06/2026', 'Boston Celtics', 'Brown, Jay', 'Out'), e('11/06/2026', 'Boston Celtics', 'Walker, Jordan', 'Out')], roster, new Map());
+  assert(m.availability['5142621'] === 0, '"Cenac Jr., Christopher" matches "Chris Cenac Jr."');
+  assert(m.availability['1'] === 0 && m.unmatched.length === 1 && m.unmatched[0].player === 'Walker, Jordan', 'initial + family name must both match; a different family name stays unmatched');
+  const two = new Map([['1', 'Jalen Williams'], ['2', 'Jaylin Williams']]);
+  assert(c.replayMatchReport([e('11/06/2026', 'Oklahoma City Thunder', 'Williams, J.', 'Out')], two, new Map()).unmatched.length === 1, 'two players share family name and initial → no guess');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
