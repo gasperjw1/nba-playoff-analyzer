@@ -156,6 +156,13 @@ function renderGameCard(g) {
     const L = lateRow.late, team = L.side === 'home' ? g.home : g.away, pE = L.side === 'home' ? L.pEve : 1 - L.pEve;
     flags.push(`<span class="flag flag-edge" title="${SEASON_LATE_FLIP.why}">${SEASON_LATE_FLIP.id} · evening-before pick ${team} ${(pE * 100).toFixed(1)}%, flipped by the later report · frozen rule, ${seasonLateFlipRecord(loadSeasonLedger()).n} judged</span>`);
   }
+  // The pre-tip prediction the ledger grades (pOursClean), beside the card's recalculation from the
+  // current slate, which may carry later injury news (fetch-slate.js --injuries).
+  const recRow = loadSeasonLedger().find(r => r.date === seasonState.slate.date && r.home === g.home && r.away === g.away && r.pOursClean != null);
+  if (recRow && clean && (recRow.pOursClean >= 0.5) !== (clean.pHome >= 0.5)) {
+    const rt = recRow.pOursClean >= 0.5 ? g.home : g.away, rp = recRow.pOursClean >= 0.5 ? recRow.pOursClean : 1 - recRow.pOursClean;
+    flags.push(`<span class="flag flag-disagree">RECORDED PICK ${rt} ${(rp * 100).toFixed(1)}% at ${seasonFmtTime(recRow.recordedAt)} · the ledger grades that one; this recalculation (${pick}) has later news</span>`);
+  }
   const absences = [...v.availability.home.missing.map(x => `${g.home}: ${x.name}`), ...v.availability.away.missing.map(x => `${g.away}: ${x.name}`)];
 
   return `<div class="sg-card${open ? ' open' : ''}" onclick="seasonToggleGame('${g.id}')">
@@ -166,7 +173,8 @@ function renderGameCard(g) {
     <div class="sg-pick">${pick} <small>${(pPick * 100).toFixed(1)}% · ${clean ? 'replay-tested engine' : 'engine'}</small></div>
     <div class="sg-score">Proj ${g.home} ${v.homeScore} – ${g.away} ${v.awayScore} · ${seasonFmtMargin(g.home, v.margin)} · total ${v.total.toFixed(0)}${m.spreadHome != null ? ` · line ${g.home} ${m.spreadHome > 0 ? '+' : ''}${m.spreadHome}${m.total != null ? ' / ' + m.total : ''}` : ''}</div>
     <div class="sg-chips">
-      ${clean ? seasonChip('Ours · 2025-26', clean.pHome, g.home, g.away, '', 'replay-tested · picks') : ''}
+      ${recRow ? seasonChip('Recorded', recRow.pOursClean, g.home, g.away, '', `graded · ${seasonFmtTime(recRow.recordedAt)}`) : ''}
+      ${clean ? seasonChip(recRow ? 'Ours · 2025-26 now' : 'Ours · 2025-26', clean.pHome, g.home, g.away, '', recRow ? 'recalculated · current slate' : 'replay-tested · picks') : ''}
       ${adj ? seasonChip('Ours · opp-adj', adj.pHome, g.home, g.away, '', 'tracked · not picks') : ''}
       ${seasonChip('Ours', proj.pHome, g.home, g.away, '', clean ? 'NB.AI ratings · untested' : '')}
       ${seasonChip('NB.AI', pFriend, g.home, g.away)}

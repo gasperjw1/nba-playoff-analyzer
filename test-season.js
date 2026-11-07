@@ -1046,6 +1046,15 @@ console.log('TEST 24: late-injury-flip rule (evening-before vs latest-report pic
   c.SEASON_LEDGER = [{ id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, mlHome: -110, mlAway: -110, late: lf, result: null }];
   c.seasonState.slate = S;
   assert(c.renderGameCard(sg).includes(`LATE · evening-before pick ${sg.home} 56.0%`), 'card flags a recorded late flip');
+  const recP = cp.pHome >= 0.5 ? 0.3 : 0.7, recRow = { id: sg.id, date: S.date, tip: sg.tip, home: sg.home, away: sg.away, pOurs: 0.5, pOursClean: recP, recordedAt: '2026-11-06T19:57:08Z', mlHome: -110, mlAway: -110, result: null };
+  c.SEASON_LEDGER = [recRow];
+  const rc = c.renderGameCard(sg);
+  assert(rc.includes('>Recorded<') && rc.includes('Ours · 2025-26 now') && rc.includes(`RECORDED PICK ${recP >= 0.5 ? sg.home : sg.away} 70.0%`), 'card shows the recorded pick beside the recalculation and flags a different side');
+  c.SEASON_LEDGER = [{ ...recRow, pOursClean: cp.pHome }];
+  const same = c.renderGameCard(sg);
+  assert(same.includes('>Recorded<') && !same.includes('RECORDED PICK'), 'same side: recorded chip, no flag');
+  c.SEASON_LEDGER = [];
+  assert(!c.renderGameCard(sg).includes('>Recorded<'), 'unrecorded game: no recorded chip');
   vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/season-replay.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
   const rep = c.seasonLateFlipRecord(c.seasonReplayLateRows(), { from: '0000' });
   assert(rep.flips === 8 && rep.n === 8 && rep.won === 7, 'replay description: 8 flips, earlier side won 7');
