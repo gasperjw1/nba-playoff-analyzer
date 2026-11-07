@@ -143,17 +143,41 @@ const SEASON_LATE_FLIP = {
   why: 'the report closer to tip flipped our evening-before pick: take the earlier side (replay, a development set: earlier pick 7 of 8, DraftKings 5 of 8)',
 };
 
-// rows: ledger-like rows with late: { flip, side } (side = the earlier pick, 'home' | 'away').
+// ============================================================
+// LATE2 — the same rule on the fixed pipeline, frozen 2026-11-07, judged from 2026-11-08
+// ============================================================
+// LATE's two picks come from the replay pipeline as it stood (replay-7), which counted a team
+// that had not filed its injury report yet as fully healthy — the six teams on the second night
+// of a back-to-back, at 8:30 PM the evening before and into game day. replay-8 carries forward
+// what such a team last filed. That changes LATE's inputs, so LATE is not edited: it keeps
+// judging only rows recorded on replay-7 (Nov 7), and LATE2 judges rows recorded on replay-8.
+// Each row stores the pipeline it was checked on (late.spec). Replay-8 describes LATE2 more
+// weakly than replay-7 described LATE: 10 flips in 132 games, the earlier pick won 7, the later
+// 3, DraftKings' opening favourite 6 (on the same 121 games: 6 of 9, against LATE's 7 of 8).
+// ============================================================
+const SEASON_LATE_FLIP2 = {
+  id: 'LATE2', frozen: '2026-11-07', judgedFrom: '2026-11-08', spec: 'replay-8',
+  label: 'Late injury flip, unfiled reports carried',
+  why: 'LATE on the fixed pipeline: a team that has not filed its injury report keeps its previous filing (replay-8, a development set: 10 flips in 132 games, earlier pick 7 of 10, later 3, DraftKings 6 of 10)',
+};
+// The pipeline each rule judges (rows recorded before late.spec existed are replay-7).
+const SEASON_LATE_RULES = [{ ...SEASON_LATE_FLIP, spec: 'replay-7' }, SEASON_LATE_FLIP2];
+const lateRowSpec = (r) => (r.late && r.late.spec) || 'replay-7';
+function seasonLateRuleFor(row) { return SEASON_LATE_RULES.find(x => x.spec === lateRowSpec(row)) || null; }
+
+// rows: ledger-like rows with late: { flip, side, spec } (side = the earlier pick, 'home' | 'away').
 // Judged like the trust rules (seasonTrustRecord): results and units at the recorded price,
-// line movement to the close from the same book. opts.from (default judgedFrom); opts.side
-// 'later' scores the other side of the same flips, for comparison.
+// line movement to the close from the same book. opts.rule: 'LATE' (default) or 'LATE2' — only
+// rows checked on that rule's pipeline count; opts.from (default the rule's judgedFrom);
+// opts.side 'later' scores the other side of the same flips, for comparison.
 function seasonLateFlipRecord(rows, opts) {
-  const from = (opts && opts.from) || SEASON_LATE_FLIP.judgedFrom, later = opts && opts.side === 'later';
-  const all = (rows || []).filter(r => r.late && r.date >= from);
+  const rule = SEASON_LATE_RULES.find(x => x.id === ((opts && opts.rule) || SEASON_LATE_FLIP.id));
+  const from = (opts && opts.from) || rule.judgedFrom, later = opts && opts.side === 'later';
+  const all = (rows || []).filter(r => r.late && r.date >= from && lateRowSpec(r) === rule.spec);
   const flips = all.filter(r => r.late.flip && r.mlHome != null && r.mlAway != null).map(r => {
     const side = later ? (r.late.side === 'home' ? 'away' : 'home') : r.late.side;
     return { ...r, trust: { side, ml: side === 'home' ? r.mlHome : r.mlAway, edge: 1, minEdge: 0, rule: SEASON_LATE_FLIP.id, book: r.book || null } };
   });
-  const g = seasonTrustRecord(flips, { from })[SEASON_LATE_FLIP.id];
-  return { ...g, checked: all.length, flips: all.filter(r => r.late.flip).length };
+  const g = seasonTrustRecord(flips, { from })[SEASON_LATE_FLIP.id];   // grouped under the shared id slot
+  return { ...g, id: rule.id, checked: all.length, flips: all.filter(r => r.late.flip).length };
 }

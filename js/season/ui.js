@@ -152,9 +152,10 @@ function renderGameCard(g) {
     flags.push(`<span class="flag ${rule.avoid ? 'flag-none' : 'flag-edge'}" title="${rule.why}">${rule.avoid ? 'AVOID' : rule.id} · ${team} +${(trust.edge * 100).toFixed(1)}pp over the price at ${trust.ml > 0 ? '+' : ''}${trust.ml} · driven by ${rule.label.toLowerCase()} · frozen rule, ${live.n} judged</span>`);
   }
   const lateRow = typeof SEASON_LATE_FLIP !== 'undefined' ? loadSeasonLedger().find(r => r.date === seasonState.slate.date && r.home === g.home && r.away === g.away && r.late && r.late.flip) : null;
-  if (lateRow) {
+  const lateRule = lateRow && seasonLateRuleFor(lateRow);   // LATE or LATE2, by the pipeline the row was checked on
+  if (lateRule) {
     const L = lateRow.late, team = L.side === 'home' ? g.home : g.away, pE = L.side === 'home' ? L.pEve : 1 - L.pEve;
-    flags.push(`<span class="flag flag-edge" title="${SEASON_LATE_FLIP.why}">${SEASON_LATE_FLIP.id} · evening-before pick ${team} ${(pE * 100).toFixed(1)}%, flipped by the later report · frozen rule, ${seasonLateFlipRecord(loadSeasonLedger()).n} judged</span>`);
+    flags.push(`<span class="flag flag-edge" title="${lateRule.why}">${lateRule.id} · evening-before pick ${team} ${(pE * 100).toFixed(1)}%, flipped by the later report · frozen rule, ${seasonLateFlipRecord(loadSeasonLedger(), { rule: lateRule.id }).n} judged</span>`);
   }
   // The pre-tip prediction the ledger grades (pOursClean), beside the card's recalculation from the
   // current slate, which may carry later injury news (fetch-slate.js --injuries).
@@ -621,7 +622,7 @@ function seasonReplayLateRows() {
   return SEASON_REPLAY.rows.filter(r => r.pOursEve != null && r.open && r.open.mlHome != null && r.open.mlAway != null).map(r => ({
     date: r.date, home: r.home, away: r.away, result: r.result, mlHome: r.open.mlHome, mlAway: r.open.mlAway, book: 'DraftKings',
     close: r.mlHome != null && r.mlAway != null ? { mlHome: r.mlHome, mlAway: r.mlAway, book: 'DraftKings' } : null,
-    late: { flip: (r.pOursEve >= 0.5) !== (r.pOurs >= 0.5), side: r.pOursEve >= 0.5 ? 'home' : 'away' },
+    late: { flip: (r.pOursEve >= 0.5) !== (r.pOurs >= 0.5), side: r.pOursEve >= 0.5 ? 'home' : 'away', spec: SEASON_REPLAY.spec.version },
   }));
 }
 // Props ledger (props-ledger.js): calibration of the recorded projections at bettable lines, no prices yet.
@@ -643,13 +644,16 @@ function renderPropsRecord(allRows) {
 }
 
 function renderLateFlipRule(rows) {
-  const L = SEASON_LATE_FLIP, rep = seasonReplayLateRows();
+  const rep = seasonReplayLateRows(), repSpec = typeof SEASON_REPLAY !== 'undefined' && SEASON_REPLAY ? SEASON_REPLAY.spec.version : null;
   const cell = (g) => `${g.flips} flip${g.flips === 1 ? '' : 's'} in ${g.checked} checked${g.n ? ` · ${g.won}–${g.n - g.won} · ${g.units >= 0 ? '+' : ''}${g.units}u` : ''}${g.clvN ? ` · line moved our way ${g.toward}/${g.clvN} (avg ${g.move >= 0 ? '+' : ''}${(g.move * 100).toFixed(1)} pp)` : ''}`;
-  const both = (src, from) => `${cell(seasonLateFlipRecord(src, { from }))}<div class="muted">later side: ${cell(seasonLateFlipRecord(src, { from, side: 'later' })).replace(/^.*? checked( · )?/, '') || '—'}</div>`;
-  return `<h4 style="margin-top:14px">${L.label} (${L.id}) — frozen ${L.frozen}, judged from ${L.judgedFrom}</h4>
-    <p class="muted">Compares two of our own picks from the replay-tested pipeline, recorded with each row: one from the injury report before 9 PM ET the evening before, one from the latest report at record time. When they pick different winners the rule takes the earlier side, at the price recorded. ${L.why}. Replay: eve variant against the tip-time variant at DraftKings' opening price — the development set the rule was drafted from.</p>
+  const both = (src, rule, from) => `${cell(seasonLateFlipRecord(src, { rule, from }))}<div class="muted">later side: ${cell(seasonLateFlipRecord(src, { rule, from, side: 'later' })).replace(/^.*? checked( · )?/, '') || '—'}</div>`;
+  // The replay column describes a rule only on its own pipeline; LATE's (replay-7) is in its frozen text.
+  const replayCell = (R) => R.spec === repSpec ? both(rep, R.id, '0000') : `drafted on ${R.spec}, since superseded — see the rule's text`;
+  return `<h4 style="margin-top:14px">Late injury flip (LATE, LATE2)</h4>
+    <p class="muted">Compares two of our own picks from the replay-tested pipeline, recorded with each row: one from the injury report before 9 PM ET the evening before, one from the latest report at record time. When they pick different winners the rule takes the earlier side, at the price recorded. LATE was frozen on the pipeline as it stood (replay-7), which counted a team that had not filed its report yet — the second night of a back-to-back — as fully healthy; LATE2 is the same rule on replay-8, which carries that team's previous filing forward. Each rule judges only rows checked on its own pipeline. Replay: eve variant against the tip-time variant at DraftKings' opening price — a development set.</p>
     <table><tr><th>Rule</th><th>Live</th><th>Replay (description only)</th></tr>
-    <tr><td><b>${L.id}</b></td><td>${both(rows, L.judgedFrom)}</td><td class="muted">${both(rep, '0000')}</td></tr></table>`;
+    ${SEASON_LATE_RULES.map(R => `<tr><td><b>${R.id}</b><div class="muted">frozen ${R.frozen}, judged from ${R.judgedFrom}, ${R.spec}</div><div class="muted">${R.why}</div></td><td>${both(rows, R.id, R.judgedFrom)}</td><td class="muted">${replayCell(R)}</td></tr>`).join('')}
+    </table>`;
 }
 
 function seasonRecordTonight() {

@@ -1,5 +1,5 @@
 // ============================================================
-// SEASON REPLAY — walk-forward predictions (replay-7)
+// SEASON REPLAY — walk-forward predictions (replay-8)
 // ============================================================
 // Written by `node replay-season.js`. Each row was predicted from data
 // published before its game (see the header of replay-season.js and each
@@ -9,7 +9,7 @@
 // ============================================================
 const SEASON_REPLAY = {
  "spec": {
-  "version": "replay-7",
+  "version": "replay-8",
   "engine": "2026-11-05.b2b2",
   "firstDay": "2026-10-20",
   "rosterSnapshotBefore": "2026-10-20T12:00:00Z",
@@ -35,7 +35,7 @@ const SEASON_REPLAY = {
    "oursEve": "engine, injury report before 9 PM ET the evening before"
   }
  },
- "generatedAt": "2026-11-05T23:10:26.593Z",
+ "generatedAt": "2026-11-07T17:59:53.852Z",
  "rows": [
   {
    "id": "401909088",
@@ -102,7 +102,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 121,
     "awayScore": 113
@@ -192,7 +192,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 100,
     "awayScore": 106
@@ -282,7 +282,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 104,
     "awayScore": 116
@@ -372,7 +372,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -462,7 +462,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 128,
     "awayScore": 116
@@ -552,7 +552,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 106,
     "awayScore": 131
@@ -642,7 +642,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 103,
     "awayScore": 110
@@ -732,7 +732,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 135,
     "awayScore": 92
@@ -822,7 +822,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 123,
     "awayScore": 103
@@ -912,7 +912,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 123
@@ -1002,7 +1002,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 128,
     "awayScore": 110
@@ -1092,7 +1092,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 127,
     "awayScore": 105
@@ -1182,7 +1182,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 124,
     "awayScore": 83
@@ -1272,7 +1272,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 121,
     "awayScore": 96
@@ -1362,7 +1362,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 106
@@ -1452,7 +1452,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 96,
     "awayScore": 84
@@ -1544,7 +1544,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 132
@@ -1639,7 +1639,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 107,
     "awayScore": 103
@@ -1732,7 +1732,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 81,
     "awayScore": 128
@@ -1825,7 +1825,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 105,
     "awayScore": 121
@@ -1917,7 +1917,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 93,
     "awayScore": 115
@@ -2009,7 +2009,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 102,
     "awayScore": 112
@@ -2103,7 +2103,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 111,
     "awayScore": 128
@@ -2196,7 +2196,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 110,
     "awayScore": 114
@@ -2293,7 +2293,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 119
@@ -2385,7 +2385,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 108,
     "awayScore": 111
@@ -2478,7 +2478,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 117
@@ -2572,7 +2572,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 128
@@ -2615,12 +2615,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4873,
    "marginOursAdj": -0.4,
    "totalOursAdj": 230,
-   "pOursMorning": 0.5595,
-   "marginOursMorning": 1.87,
-   "totalOursMorning": 230.8,
-   "pOursEve": 0.6241,
-   "marginOursEve": 3.95,
-   "totalOursEve": 231.6,
+   "pOursMorning": 0.4994,
+   "marginOursMorning": -0.02,
+   "totalOursMorning": 230,
+   "pOursEve": 0.57,
+   "marginOursEve": 2.2,
+   "totalOursEve": 230.9,
    "comps": {
     "prior": 1.91,
     "current": -0.03,
@@ -2634,20 +2634,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 1.91,
     "current": -0.03,
-    "absent": 0.03,
-    "change": -3.57,
-    "aging": 1.25,
-    "fit": 0.28,
+    "absent": -2.53,
+    "change": -2.04,
+    "aging": 0.84,
+    "fit": -0.17,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": 2,
     "current": 1.5,
-    "absent": 0.03,
-    "change": -3.29,
-    "aging": 1.35,
-    "fit": 0.36,
+    "absent": -2.64,
+    "change": -1.46,
+    "aging": 0.92,
+    "fit": -0.12,
     "rest": 0,
     "hca": 2
    },
@@ -2665,7 +2665,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 115,
     "awayScore": 110
@@ -2758,7 +2758,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 121
@@ -2853,7 +2853,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 127,
     "awayScore": 116
@@ -2897,11 +2897,11 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5705,
    "marginOursAdj": 2.22,
    "totalOursAdj": 238.4,
-   "pOursMorning": 0.5602,
-   "marginOursMorning": 1.89,
+   "pOursMorning": 0.5508,
+   "marginOursMorning": 1.59,
    "totalOursMorning": 238.2,
-   "pOursEve": 0.5339,
-   "marginOursEve": 1.06,
+   "pOursEve": 0.5249,
+   "marginOursEve": 0.78,
    "totalOursEve": 238.5,
    "comps": {
     "prior": 4.59,
@@ -2916,20 +2916,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 4.59,
     "current": -1.72,
-    "absent": 0,
-    "change": -2.54,
-    "aging": -0.01,
-    "fit": -0.43,
+    "absent": 0.2,
+    "change": -3.46,
+    "aging": 0.06,
+    "fit": -0.08,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": 4.81,
     "current": -2.62,
-    "absent": 0,
-    "change": -2.66,
-    "aging": 0,
-    "fit": -0.47,
+    "absent": 0.2,
+    "change": -3.57,
+    "aging": 0.07,
+    "fit": -0.11,
     "rest": 0,
     "hca": 2
    },
@@ -2947,7 +2947,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 124
@@ -2989,11 +2989,11 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.1544,
    "marginOursAdj": -12.72,
    "totalOursAdj": 228.4,
-   "pOursMorning": 0.2894,
-   "marginOursMorning": -6.94,
-   "totalOursMorning": 230.2,
-   "pOursEve": 0.2632,
-   "marginOursEve": -7.92,
+   "pOursMorning": 0.2653,
+   "marginOursMorning": -7.84,
+   "totalOursMorning": 230.3,
+   "pOursEve": 0.239,
+   "marginOursEve": -8.87,
    "totalOursEve": 230.7,
    "comps": {
     "prior": -9.35,
@@ -3008,20 +3008,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -9.35,
     "current": 0.65,
-    "absent": 0,
-    "change": 0.34,
-    "aging": 0,
-    "fit": -0.58,
+    "absent": -0.07,
+    "change": -0.52,
+    "aging": -0.02,
+    "fit": -0.53,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": -9.79,
     "current": -0.28,
-    "absent": 0,
-    "change": 0.71,
-    "aging": 0.09,
-    "fit": -0.65,
+    "absent": -0.08,
+    "change": -0.19,
+    "aging": 0.07,
+    "fit": -0.6,
     "rest": 0,
     "hca": 2
    },
@@ -3039,7 +3039,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 106,
     "awayScore": 122
@@ -3087,12 +3087,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5349,
    "marginOursAdj": 1.1,
    "totalOursAdj": 227.6,
-   "pOursMorning": 0.5057,
-   "marginOursMorning": 0.18,
-   "totalOursMorning": 226.9,
-   "pOursEve": 0.4726,
-   "marginOursEve": -0.86,
-   "totalOursEve": 227.8,
+   "pOursMorning": 0.5603,
+   "marginOursMorning": 1.9,
+   "totalOursMorning": 227.3,
+   "pOursEve": 0.5265,
+   "marginOursEve": 0.83,
+   "totalOursEve": 228.2,
    "comps": {
     "prior": -2.02,
     "current": 1.36,
@@ -3106,20 +3106,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -2.02,
     "current": 1.36,
-    "absent": 0,
-    "change": -1.43,
-    "aging": -0.12,
-    "fit": 0.39,
+    "absent": 1.39,
+    "change": -1.28,
+    "aging": 0.04,
+    "fit": 0.41,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": -2.12,
     "current": -0.56,
-    "absent": 0,
-    "change": -0.58,
-    "aging": -0.1,
-    "fit": 0.5,
+    "absent": 1.42,
+    "change": -0.47,
+    "aging": 0.05,
+    "fit": 0.51,
     "rest": 0,
     "hca": 2
    },
@@ -3137,7 +3137,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -3182,9 +3182,9 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8607,
    "marginOursAdj": 13.54,
    "totalOursAdj": 236.1,
-   "pOursMorning": 0.8336,
-   "marginOursMorning": 12.11,
-   "totalOursMorning": 235.8,
+   "pOursMorning": 0.8159,
+   "marginOursMorning": 11.25,
+   "totalOursMorning": 236.1,
    "pOursEve": 0.8186,
    "marginOursEve": 11.38,
    "totalOursEve": 235.9,
@@ -3202,9 +3202,9 @@ const SEASON_REPLAY = {
     "prior": 6.74,
     "current": -0.4,
     "absent": -0.88,
-    "change": 3.65,
+    "change": 3.16,
     "aging": -0.98,
-    "fit": -0.02,
+    "fit": -0.39,
     "rest": 2,
     "hca": 2
    },
@@ -3232,7 +3232,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 141,
     "awayScore": 135
@@ -3277,12 +3277,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7683,
    "marginOursAdj": 9.17,
    "totalOursAdj": 220.9,
-   "pOursMorning": 0.5663,
-   "marginOursMorning": 2.09,
-   "totalOursMorning": 223.6,
-   "pOursEve": 0.567,
-   "marginOursEve": 2.11,
-   "totalOursEve": 224,
+   "pOursMorning": 0.6366,
+   "marginOursMorning": 4.37,
+   "totalOursMorning": 222.7,
+   "pOursEve": 0.6358,
+   "marginOursEve": 4.34,
+   "totalOursEve": 223.1,
    "comps": {
     "prior": 1.46,
     "current": -0.85,
@@ -3296,20 +3296,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 1.46,
     "current": -0.85,
-    "absent": -1.25,
-    "change": -1.73,
-    "aging": 0.32,
-    "fit": 0.14,
+    "absent": 1.25,
+    "change": -1.85,
+    "aging": 0.2,
+    "fit": 0.16,
     "rest": 2,
     "hca": 2
    },
    "compsEve": {
     "prior": 1.48,
     "current": -0.94,
-    "absent": -1.25,
-    "change": -1.63,
-    "aging": 0.35,
-    "fit": 0.1,
+    "absent": 1.37,
+    "change": -1.91,
+    "aging": 0.23,
+    "fit": 0.11,
     "rest": 2,
     "hca": 2
    },
@@ -3327,7 +3327,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 131,
     "awayScore": 122
@@ -3417,7 +3417,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 123,
     "awayScore": 132
@@ -3510,7 +3510,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 109,
     "awayScore": 136
@@ -3603,7 +3603,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 102,
     "awayScore": 111
@@ -3695,7 +3695,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 117,
     "awayScore": 94
@@ -3791,7 +3791,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 108,
     "awayScore": 101
@@ -3833,12 +3833,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5175,
    "marginOursAdj": 0.55,
    "totalOursAdj": 226.2,
-   "pOursMorning": 0.5018,
-   "marginOursMorning": 0.06,
-   "totalOursMorning": 226.6,
-   "pOursEve": 0.4892,
-   "marginOursEve": -0.34,
-   "totalOursEve": 225.9,
+   "pOursMorning": 0.4907,
+   "marginOursMorning": -0.29,
+   "totalOursMorning": 226.4,
+   "pOursEve": 0.4739,
+   "marginOursEve": -0.82,
+   "totalOursEve": 225.7,
    "comps": {
     "prior": -5.62,
     "current": -0.05,
@@ -3852,20 +3852,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -5.62,
     "current": -0.05,
-    "absent": 3.42,
-    "change": 2.17,
-    "aging": 0.72,
-    "fit": -0.58,
+    "absent": 3.25,
+    "change": 1.75,
+    "aging": 0.57,
+    "fit": -0.19,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": -5.62,
     "current": -0.51,
-    "absent": 3.42,
-    "change": 2.15,
-    "aging": 0.76,
-    "fit": -0.54,
+    "absent": 2.88,
+    "change": 2,
+    "aging": 0.62,
+    "fit": -0.19,
     "rest": -2,
     "hca": 2
    },
@@ -3883,7 +3883,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 93,
     "awayScore": 106
@@ -3973,7 +3973,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 112,
     "awayScore": 123
@@ -4066,7 +4066,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 110,
     "awayScore": 103
@@ -4108,11 +4108,11 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5797,
    "marginOursAdj": 2.51,
    "totalOursAdj": 231.1,
-   "pOursMorning": 0.5897,
-   "marginOursMorning": 2.83,
-   "totalOursMorning": 231.2,
-   "pOursEve": 0.6123,
-   "marginOursEve": 3.57,
+   "pOursMorning": 0.5947,
+   "marginOursMorning": 2.99,
+   "totalOursMorning": 231.1,
+   "pOursEve": 0.6154,
+   "marginOursEve": 3.67,
    "totalOursEve": 232.1,
    "comps": {
     "prior": 0.65,
@@ -4127,20 +4127,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 0.65,
     "current": -3.23,
-    "absent": 0,
-    "change": 1.49,
-    "aging": 0.01,
-    "fit": -0.09,
+    "absent": 1.4,
+    "change": 0.27,
+    "aging": -0.2,
+    "fit": 0.1,
     "rest": 2,
     "hca": 2
    },
    "compsEve": {
     "prior": 0.56,
     "current": -2.33,
-    "absent": 0,
-    "change": 1.36,
-    "aging": 0.03,
-    "fit": -0.05,
+    "absent": 1.42,
+    "change": 0.07,
+    "aging": -0.19,
+    "fit": 0.14,
     "rest": 2,
     "hca": 2
    },
@@ -4158,7 +4158,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 127,
     "awayScore": 125
@@ -4252,7 +4252,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 134,
     "awayScore": 99
@@ -4346,7 +4346,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 109,
     "awayScore": 113
@@ -4391,12 +4391,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4877,
    "marginOursAdj": -0.38,
    "totalOursAdj": 234,
-   "pOursMorning": 0.4983,
-   "marginOursMorning": -0.05,
-   "totalOursMorning": 233.8,
-   "pOursEve": 0.541,
-   "marginOursEve": 1.29,
-   "totalOursEve": 233.3,
+   "pOursMorning": 0.4788,
+   "marginOursMorning": -0.66,
+   "totalOursMorning": 234,
+   "pOursEve": 0.5178,
+   "marginOursEve": 0.56,
+   "totalOursEve": 233.6,
    "comps": {
     "prior": 0.97,
     "current": -1.92,
@@ -4410,20 +4410,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 0.97,
     "current": -1.92,
-    "absent": -0.03,
-    "change": -2.59,
-    "aging": 0.36,
-    "fit": -0.34,
+    "absent": 0.37,
+    "change": -3.63,
+    "aging": 0.21,
+    "fit": -0.16,
     "rest": 1.5,
     "hca": 2
    },
    "compsEve": {
     "prior": 1.2,
     "current": -0.74,
-    "absent": -0.03,
-    "change": -2.7,
-    "aging": 0.38,
-    "fit": -0.32,
+    "absent": 0.64,
+    "change": -4.13,
+    "aging": 0.23,
+    "fit": -0.14,
     "rest": 1.5,
     "hca": 2
    },
@@ -4441,7 +4441,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 110,
     "awayScore": 102
@@ -4485,12 +4485,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.7007,
    "marginOursAdj": 6.58,
    "totalOursAdj": 218,
-   "pOursMorning": 0.8018,
-   "marginOursMorning": 10.6,
-   "totalOursMorning": 219.6,
-   "pOursEve": 0.79,
-   "marginOursEve": 10.08,
-   "totalOursEve": 220,
+   "pOursMorning": 0.8237,
+   "marginOursMorning": 11.62,
+   "totalOursMorning": 220,
+   "pOursEve": 0.8108,
+   "marginOursEve": 11.01,
+   "totalOursEve": 220.4,
    "comps": {
     "prior": 6.17,
     "current": 2.8,
@@ -4505,9 +4505,9 @@ const SEASON_REPLAY = {
     "prior": 6.17,
     "current": 2.8,
     "absent": 1.56,
-    "change": -0.03,
+    "change": 1.07,
     "aging": 0.36,
-    "fit": -0.26,
+    "fit": -0.34,
     "rest": -2,
     "hca": 2
    },
@@ -4515,9 +4515,9 @@ const SEASON_REPLAY = {
     "prior": 6.5,
     "current": 2.54,
     "absent": 1.56,
-    "change": -0.66,
+    "change": 0.35,
     "aging": 0.39,
-    "fit": -0.25,
+    "fit": -0.33,
     "rest": -2,
     "hca": 2
    },
@@ -4535,7 +4535,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 114
@@ -4627,7 +4627,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 110
@@ -4669,12 +4669,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.4659,
    "marginOursAdj": -1.07,
    "totalOursAdj": 238.8,
-   "pOursMorning": 0.4546,
-   "marginOursMorning": -1.42,
-   "totalOursMorning": 238.8,
-   "pOursEve": 0.484,
-   "marginOursEve": -0.5,
-   "totalOursEve": 238.1,
+   "pOursMorning": 0.4686,
+   "marginOursMorning": -0.98,
+   "totalOursMorning": 239,
+   "pOursEve": 0.4951,
+   "marginOursEve": -0.15,
+   "totalOursEve": 238.3,
    "comps": {
     "prior": -1.53,
     "current": -2.69,
@@ -4689,19 +4689,19 @@ const SEASON_REPLAY = {
     "prior": -1.53,
     "current": -2.69,
     "absent": 0.37,
-    "change": 0.7,
-    "aging": -0.18,
-    "fit": -0.09,
+    "change": 0.87,
+    "aging": 0.02,
+    "fit": -0.02,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": -1.6,
     "current": -1.91,
-    "absent": 0.38,
-    "change": 0.89,
-    "aging": -0.2,
-    "fit": -0.06,
+    "absent": 0.1,
+    "change": 1.3,
+    "aging": -0.06,
+    "fit": 0.02,
     "rest": 0,
     "hca": 2
    },
@@ -4719,7 +4719,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 105,
     "awayScore": 110
@@ -4811,7 +4811,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 134
@@ -4854,12 +4854,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8413,
    "marginOursAdj": 12.5,
    "totalOursAdj": 223.8,
-   "pOursMorning": 0.8257,
-   "marginOursMorning": 11.72,
-   "totalOursMorning": 223.5,
-   "pOursEve": 0.8056,
-   "marginOursEve": 10.77,
-   "totalOursEve": 223.1,
+   "pOursMorning": 0.8417,
+   "marginOursMorning": 12.52,
+   "totalOursMorning": 223.8,
+   "pOursEve": 0.8229,
+   "marginOursEve": 11.58,
+   "totalOursEve": 223.4,
    "comps": {
     "prior": 11.51,
     "current": 3,
@@ -4874,9 +4874,9 @@ const SEASON_REPLAY = {
     "prior": 11.51,
     "current": 3,
     "absent": 0,
-    "change": -2.53,
+    "change": -1.79,
     "aging": -0.55,
-    "fit": -0.21,
+    "fit": -0.15,
     "rest": -1.5,
     "hca": 2
    },
@@ -4884,9 +4884,9 @@ const SEASON_REPLAY = {
     "prior": 11.73,
     "current": 1.46,
     "absent": 0,
-    "change": -2.12,
+    "change": -1.37,
     "aging": -0.61,
-    "fit": -0.19,
+    "fit": -0.13,
     "rest": -1.5,
     "hca": 2
    },
@@ -4904,7 +4904,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 124
@@ -4997,7 +4997,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 111,
     "awayScore": 97
@@ -5090,7 +5090,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 130,
     "awayScore": 103
@@ -5186,7 +5186,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 129,
     "awayScore": 136
@@ -5280,7 +5280,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 117,
     "awayScore": 129
@@ -5375,7 +5375,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -5418,12 +5418,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6831,
    "marginOursAdj": 5.95,
    "totalOursAdj": 220,
-   "pOursMorning": 0.6903,
-   "marginOursMorning": 6.21,
-   "totalOursMorning": 220.6,
-   "pOursEve": 0.7027,
-   "marginOursEve": 6.65,
-   "totalOursEve": 221.1,
+   "pOursMorning": 0.6568,
+   "marginOursMorning": 5.05,
+   "totalOursMorning": 220.1,
+   "pOursEve": 0.6637,
+   "marginOursEve": 5.28,
+   "totalOursEve": 220.6,
    "comps": {
     "prior": 1.96,
     "current": 2.17,
@@ -5437,20 +5437,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 1.96,
     "current": 2.17,
-    "absent": 2.33,
-    "change": -0.55,
-    "aging": -0.3,
-    "fit": 0.6,
+    "absent": -0.34,
+    "change": 0.76,
+    "aging": -0.5,
+    "fit": 1,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": 2.18,
     "current": 2.81,
-    "absent": 2.33,
-    "change": -1,
-    "aging": -0.29,
-    "fit": 0.62,
+    "absent": -0.26,
+    "change": 0,
+    "aging": -0.45,
+    "fit": 1,
     "rest": -2,
     "hca": 2
    },
@@ -5468,7 +5468,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 97,
     "awayScore": 89
@@ -5558,7 +5558,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 109,
     "awayScore": 114
@@ -5648,7 +5648,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 129,
     "awayScore": 99
@@ -5693,12 +5693,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3395,
    "marginOursAdj": -5.17,
    "totalOursAdj": 228.8,
-   "pOursMorning": 0.3536,
-   "marginOursMorning": -4.69,
-   "totalOursMorning": 228.5,
-   "pOursEve": 0.3664,
-   "marginOursEve": -4.27,
-   "totalOursEve": 229.2,
+   "pOursMorning": 0.3424,
+   "marginOursMorning": -5.07,
+   "totalOursMorning": 228.7,
+   "pOursEve": 0.3551,
+   "marginOursEve": -4.65,
+   "totalOursEve": 229.4,
    "comps": {
     "prior": -7.23,
     "current": -2.82,
@@ -5712,20 +5712,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -7.23,
     "current": -2.82,
-    "absent": 0.03,
-    "change": 0.58,
-    "aging": 1.41,
-    "fit": -0.66,
+    "absent": 0.12,
+    "change": 0.02,
+    "aging": 1.39,
+    "fit": -0.55,
     "rest": 2,
     "hca": 2
    },
    "compsEve": {
     "prior": -7.41,
     "current": -2.19,
-    "absent": 0.03,
-    "change": 0.63,
-    "aging": 1.35,
-    "fit": -0.68,
+    "absent": 0.13,
+    "change": 0.05,
+    "aging": 1.33,
+    "fit": -0.56,
     "rest": 2,
     "hca": 2
    },
@@ -5743,7 +5743,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 127,
     "awayScore": 133
@@ -5837,7 +5837,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 100,
     "awayScore": 132
@@ -5932,7 +5932,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 119
@@ -6024,7 +6024,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 91,
     "awayScore": 104
@@ -6068,12 +6068,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.1823,
    "marginOursAdj": -11.33,
    "totalOursAdj": 236,
-   "pOursMorning": 0.1971,
-   "marginOursMorning": -10.65,
-   "totalOursMorning": 235.8,
-   "pOursEve": 0.2179,
-   "marginOursEve": -9.74,
-   "totalOursEve": 235.7,
+   "pOursMorning": 0.1862,
+   "marginOursMorning": -11.15,
+   "totalOursMorning": 236,
+   "pOursEve": 0.207,
+   "marginOursEve": -10.21,
+   "totalOursEve": 235.9,
    "comps": {
     "prior": -10.43,
     "current": -2.49,
@@ -6088,9 +6088,9 @@ const SEASON_REPLAY = {
     "prior": -10.43,
     "current": -2.49,
     "absent": -0.48,
-    "change": -0.87,
+    "change": -1.17,
     "aging": -0.02,
-    "fit": 0.14,
+    "fit": -0.06,
     "rest": 1.5,
     "hca": 2
    },
@@ -6098,9 +6098,9 @@ const SEASON_REPLAY = {
     "prior": -10.66,
     "current": -1.35,
     "absent": -0.48,
-    "change": -0.86,
+    "change": -1.11,
     "aging": -0.03,
-    "fit": 0.14,
+    "fit": -0.08,
     "rest": 1.5,
     "hca": 2
    },
@@ -6118,7 +6118,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 111,
     "awayScore": 117
@@ -6215,7 +6215,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 96
@@ -6258,12 +6258,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5621,
    "marginOursAdj": 1.95,
    "totalOursAdj": 228.5,
-   "pOursMorning": 0.4271,
-   "marginOursMorning": -2.3,
-   "totalOursMorning": 229.9,
-   "pOursEve": 0.4106,
-   "marginOursEve": -2.83,
-   "totalOursEve": 228.6,
+   "pOursMorning": 0.4196,
+   "marginOursMorning": -2.54,
+   "totalOursMorning": 230,
+   "pOursEve": 0.4034,
+   "marginOursEve": -3.06,
+   "totalOursEve": 228.7,
    "comps": {
     "prior": -0.33,
     "current": -0.89,
@@ -6278,9 +6278,9 @@ const SEASON_REPLAY = {
     "prior": -0.33,
     "current": -0.89,
     "absent": -0.37,
-    "change": -5.84,
+    "change": -6.11,
     "aging": -0.48,
-    "fit": 1.61,
+    "fit": 1.64,
     "rest": 2,
     "hca": 2
    },
@@ -6288,9 +6288,9 @@ const SEASON_REPLAY = {
     "prior": -0.38,
     "current": -1.25,
     "absent": -0.37,
-    "change": -5.98,
+    "change": -6.24,
     "aging": -0.47,
-    "fit": 1.62,
+    "fit": 1.65,
     "rest": 2,
     "hca": 2
    },
@@ -6308,7 +6308,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 87,
     "awayScore": 103
@@ -6352,12 +6352,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5084,
    "marginOursAdj": 0.26,
    "totalOursAdj": 234.4,
-   "pOursMorning": 0.5005,
-   "marginOursMorning": 0.02,
-   "totalOursMorning": 233.7,
-   "pOursEve": 0.5323,
-   "marginOursEve": 1.01,
-   "totalOursEve": 233.3,
+   "pOursMorning": 0.5263,
+   "marginOursMorning": 0.83,
+   "totalOursMorning": 234.5,
+   "pOursEve": 0.5599,
+   "marginOursEve": 1.88,
+   "totalOursEve": 234.1,
    "comps": {
     "prior": -1.13,
     "current": 0.65,
@@ -6371,20 +6371,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -1.13,
     "current": 0.65,
-    "absent": 0,
-    "change": -2.07,
-    "aging": 0.47,
-    "fit": 0.1,
+    "absent": -0.15,
+    "change": -1,
+    "aging": 0.41,
+    "fit": 0.05,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": -1.19,
     "current": 1.62,
-    "absent": 0,
-    "change": -2.01,
-    "aging": 0.49,
-    "fit": 0.1,
+    "absent": -0.15,
+    "change": -0.89,
+    "aging": 0.43,
+    "fit": 0.06,
     "rest": 0,
     "hca": 2
    },
@@ -6402,7 +6402,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 111
@@ -6446,12 +6446,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.642,
    "marginOursAdj": 4.55,
    "totalOursAdj": 234.2,
-   "pOursMorning": 0.6482,
-   "marginOursMorning": 4.76,
-   "totalOursMorning": 234.1,
-   "pOursEve": 0.6603,
-   "marginOursEve": 5.17,
-   "totalOursEve": 235.8,
+   "pOursMorning": 0.6574,
+   "marginOursMorning": 5.07,
+   "totalOursMorning": 234.3,
+   "pOursEve": 0.667,
+   "marginOursEve": 5.4,
+   "totalOursEve": 235.9,
    "comps": {
     "prior": 3.49,
     "current": 2.02,
@@ -6465,20 +6465,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 3.49,
     "current": 2.02,
-    "absent": 0.01,
-    "change": -1.67,
-    "aging": 0.7,
-    "fit": 0.21,
+    "absent": -0.09,
+    "change": -1.27,
+    "aging": 0.56,
+    "fit": 0.36,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": 3.37,
     "current": 2.54,
-    "absent": 0.01,
-    "change": -1.71,
-    "aging": 0.71,
-    "fit": 0.25,
+    "absent": -0.09,
+    "change": -1.36,
+    "aging": 0.57,
+    "fit": 0.37,
     "rest": -2,
     "hca": 2
    },
@@ -6496,7 +6496,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 132,
     "awayScore": 120
@@ -6588,7 +6588,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 103,
     "awayScore": 124
@@ -6680,7 +6680,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 95,
     "awayScore": 79
@@ -6770,7 +6770,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 125,
     "awayScore": 111
@@ -6864,7 +6864,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 94,
     "awayScore": 110
@@ -6954,7 +6954,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 98,
     "awayScore": 93
@@ -7048,7 +7048,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 121
@@ -7143,7 +7143,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 145,
     "awayScore": 125
@@ -7237,7 +7237,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 116,
     "awayScore": 111
@@ -7330,7 +7330,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 127,
     "awayScore": 101
@@ -7424,7 +7424,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 112,
     "awayScore": 95
@@ -7517,7 +7517,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 127
@@ -7558,8 +7558,8 @@ const SEASON_REPLAY = {
    "pOursPre": 0.2784,
    "marginOursPre": -7.35,
    "totalOursPre": 236.8,
-   "pOursAdj": 0.2789,
-   "marginOursAdj": -7.33,
+   "pOursAdj": 0.2786,
+   "marginOursAdj": -7.34,
    "totalOursAdj": 236.8,
    "pOursMorning": 0.2797,
    "marginOursMorning": -7.3,
@@ -7611,7 +7611,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 90,
     "awayScore": 112
@@ -7650,15 +7650,15 @@ const SEASON_REPLAY = {
    "pOursPre": 0.433,
    "marginOursPre": -2.11,
    "totalOursPre": 217.8,
-   "pOursAdj": 0.4414,
-   "marginOursAdj": -1.84,
+   "pOursAdj": 0.4411,
+   "marginOursAdj": -1.85,
    "totalOursAdj": 217.8,
-   "pOursMorning": 0.4459,
-   "marginOursMorning": -1.7,
-   "totalOursMorning": 219.4,
-   "pOursEve": 0.4508,
-   "marginOursEve": -1.55,
-   "totalOursEve": 222.9,
+   "pOursMorning": 0.3654,
+   "marginOursMorning": -4.3,
+   "totalOursMorning": 219,
+   "pOursEve": 0.3637,
+   "marginOursEve": -4.36,
+   "totalOursEve": 222.5,
    "comps": {
     "prior": 2.89,
     "current": -2.86,
@@ -7672,20 +7672,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 2.89,
     "current": -2.86,
-    "absent": 0,
-    "change": -3.89,
-    "aging": 0.17,
-    "fit": -0.01,
+    "absent": -1.52,
+    "change": -4.11,
+    "aging": -0.03,
+    "fit": -0.67,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": 3.01,
     "current": -2.14,
-    "absent": 0,
-    "change": -4.61,
-    "aging": 0.19,
-    "fit": 0,
+    "absent": -1.59,
+    "change": -4.93,
+    "aging": -0.02,
+    "fit": -0.69,
     "rest": 0,
     "hca": 2
    },
@@ -7703,7 +7703,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 104,
     "awayScore": 109
@@ -7740,8 +7740,8 @@ const SEASON_REPLAY = {
    "pOursPre": 0.3827,
    "marginOursPre": -3.73,
    "totalOursPre": 234.6,
-   "pOursAdj": 0.3598,
-   "marginOursAdj": -4.49,
+   "pOursAdj": 0.3601,
+   "marginOursAdj": -4.48,
    "totalOursAdj": 234.6,
    "pOursMorning": 0.4028,
    "marginOursMorning": -3.08,
@@ -7793,7 +7793,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 121,
     "awayScore": 99
@@ -7886,7 +7886,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 136,
     "awayScore": 105
@@ -7976,7 +7976,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 111,
     "awayScore": 136
@@ -8020,15 +8020,15 @@ const SEASON_REPLAY = {
    "pOursPre": 0.8143,
    "marginOursPre": 11.17,
    "totalOursPre": 227.8,
-   "pOursAdj": 0.7891,
-   "marginOursAdj": 10.04,
+   "pOursAdj": 0.7889,
+   "marginOursAdj": 10.03,
    "totalOursAdj": 227.8,
-   "pOursMorning": 0.7194,
-   "marginOursMorning": 7.26,
-   "totalOursMorning": 229.1,
-   "pOursEve": 0.74,
-   "marginOursEve": 8.04,
-   "totalOursEve": 229.2,
+   "pOursMorning": 0.7907,
+   "marginOursMorning": 10.11,
+   "totalOursMorning": 227.9,
+   "pOursEve": 0.8147,
+   "marginOursEve": 11.19,
+   "totalOursEve": 228,
    "comps": {
     "prior": 3.09,
     "current": -2.1,
@@ -8042,20 +8042,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 3.09,
     "current": -2.1,
-    "absent": 0,
-    "change": 1.3,
-    "aging": 0.7,
-    "fit": 0.27,
+    "absent": 4.05,
+    "change": -0.12,
+    "aging": 0.56,
+    "fit": 0.63,
     "rest": 2,
     "hca": 2
    },
    "compsEve": {
     "prior": 3.01,
     "current": -1.2,
-    "absent": 0,
-    "change": 1.2,
-    "aging": 0.72,
-    "fit": 0.31,
+    "absent": 4.22,
+    "change": -0.11,
+    "aging": 0.57,
+    "fit": 0.7,
     "rest": 2,
     "hca": 2
    },
@@ -8073,7 +8073,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 121,
     "awayScore": 111
@@ -8121,12 +8121,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5462,
    "marginOursAdj": 1.45,
    "totalOursAdj": 219.1,
-   "pOursMorning": 0.5363,
-   "marginOursMorning": 1.14,
-   "totalOursMorning": 219.1,
-   "pOursEve": 0.5449,
-   "marginOursEve": 1.41,
-   "totalOursEve": 219,
+   "pOursMorning": 0.4882,
+   "marginOursMorning": -0.37,
+   "totalOursMorning": 218.5,
+   "pOursEve": 0.4904,
+   "marginOursEve": -0.3,
+   "totalOursEve": 218.3,
    "comps": {
     "prior": -3.52,
     "current": 1.87,
@@ -8140,20 +8140,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -3.52,
     "current": 1.87,
-    "absent": 5.3,
-    "change": -2.4,
-    "aging": 0.22,
-    "fit": -0.33,
+    "absent": 0.61,
+    "change": 1.01,
+    "aging": -0.07,
+    "fit": -0.27,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": -3.4,
     "current": 2.18,
-    "absent": 5.3,
-    "change": -2.56,
-    "aging": 0.24,
-    "fit": -0.35,
+    "absent": 0.4,
+    "change": 0.82,
+    "aging": -0.06,
+    "fit": -0.24,
     "rest": -2,
     "hca": 2
    },
@@ -8171,7 +8171,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 119,
     "awayScore": 98
@@ -8263,7 +8263,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 97,
     "awayScore": 108
@@ -8357,7 +8357,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 90,
     "awayScore": 98
@@ -8447,7 +8447,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 124,
     "awayScore": 112
@@ -8539,7 +8539,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 131,
     "awayScore": 125
@@ -8636,7 +8636,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 112,
     "awayScore": 117
@@ -8729,7 +8729,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 91,
     "awayScore": 124
@@ -8766,15 +8766,15 @@ const SEASON_REPLAY = {
    "pOursPre": 0.2565,
    "marginOursPre": -8.18,
    "totalOursPre": 228.2,
-   "pOursAdj": 0.2396,
-   "marginOursAdj": -8.85,
+   "pOursAdj": 0.2398,
+   "marginOursAdj": -8.84,
    "totalOursAdj": 228.1,
-   "pOursMorning": 0.3979,
-   "marginOursMorning": -3.23,
-   "totalOursMorning": 231.1,
-   "pOursEve": 0.4216,
-   "marginOursEve": -2.47,
-   "totalOursEve": 232.4,
+   "pOursMorning": 0.2841,
+   "marginOursMorning": -7.13,
+   "totalOursMorning": 229.5,
+   "pOursEve": 0.3079,
+   "marginOursEve": -6.27,
+   "totalOursEve": 230.9,
    "comps": {
     "prior": -5.79,
     "current": -1.23,
@@ -8788,20 +8788,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -5.79,
     "current": -1.23,
-    "absent": 1.68,
-    "change": 2.68,
-    "aging": -0.4,
-    "fit": -0.17,
+    "absent": -0.23,
+    "change": 0.23,
+    "aging": -0.25,
+    "fit": 0.14,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": -5.96,
     "current": -0.96,
-    "absent": 1.81,
-    "change": 3.11,
-    "aging": -0.41,
-    "fit": -0.06,
+    "absent": -0.17,
+    "change": 0.82,
+    "aging": -0.25,
+    "fit": 0.25,
     "rest": -2,
     "hca": 2
    },
@@ -8819,7 +8819,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 104,
     "awayScore": 108
@@ -8861,12 +8861,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8326,
    "marginOursAdj": 12.06,
    "totalOursAdj": 220.8,
-   "pOursMorning": 0.8406,
-   "marginOursMorning": 12.46,
-   "totalOursMorning": 220.7,
-   "pOursEve": 0.8496,
-   "marginOursEve": 12.93,
-   "totalOursEve": 222.1,
+   "pOursMorning": 0.8215,
+   "marginOursMorning": 11.51,
+   "totalOursMorning": 221.1,
+   "pOursEve": 0.8305,
+   "marginOursEve": 11.95,
+   "totalOursEve": 222.5,
    "comps": {
     "prior": 9.39,
     "current": 1.65,
@@ -8881,9 +8881,9 @@ const SEASON_REPLAY = {
     "prior": 9.39,
     "current": 1.65,
     "absent": 0.02,
-    "change": -1.83,
-    "aging": -1.15,
-    "fit": 0.38,
+    "change": -3.16,
+    "aging": -0.97,
+    "fit": 0.58,
     "rest": 2,
     "hca": 2
    },
@@ -8891,9 +8891,9 @@ const SEASON_REPLAY = {
     "prior": 9.62,
     "current": 2.05,
     "absent": 0.02,
-    "change": -1.98,
-    "aging": -1.15,
-    "fit": 0.37,
+    "change": -3.34,
+    "aging": -0.97,
+    "fit": 0.57,
     "rest": 2,
     "hca": 2
    },
@@ -8911,7 +8911,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 103,
     "awayScore": 90
@@ -8953,13 +8953,13 @@ const SEASON_REPLAY = {
    "totalOursPre": 228.2,
    "pOursAdj": 0.5629,
    "marginOursAdj": 1.98,
-   "totalOursAdj": 228.3,
-   "pOursMorning": 0.6092,
-   "marginOursMorning": 3.46,
-   "totalOursMorning": 229,
-   "pOursEve": 0.6218,
-   "marginOursEve": 3.88,
-   "totalOursEve": 230,
+   "totalOursAdj": 228.2,
+   "pOursMorning": 0.5715,
+   "marginOursMorning": 2.25,
+   "totalOursMorning": 228.5,
+   "pOursEve": 0.587,
+   "marginOursEve": 2.75,
+   "totalOursEve": 229.5,
    "comps": {
     "prior": 7.15,
     "current": -2.29,
@@ -8973,20 +8973,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 7.15,
     "current": -2.29,
-    "absent": 0.83,
-    "change": -2.6,
-    "aging": 0.12,
-    "fit": 0.25,
+    "absent": -2.15,
+    "change": -0.73,
+    "aging": -0.1,
+    "fit": 0.37,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": 7.16,
     "current": -1.92,
-    "absent": 0.83,
-    "change": -2.53,
-    "aging": 0.12,
-    "fit": 0.22,
+    "absent": -2.28,
+    "change": -0.45,
+    "aging": -0.1,
+    "fit": 0.34,
     "rest": -2,
     "hca": 2
    },
@@ -9004,7 +9004,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 94,
     "awayScore": 103
@@ -9043,8 +9043,8 @@ const SEASON_REPLAY = {
    "pOursPre": 0.7993,
    "marginOursPre": 10.49,
    "totalOursPre": 230.7,
-   "pOursAdj": 0.8144,
-   "marginOursAdj": 11.18,
+   "pOursAdj": 0.8142,
+   "marginOursAdj": 11.17,
    "totalOursAdj": 230.7,
    "pOursMorning": 0.821,
    "marginOursMorning": 11.49,
@@ -9096,7 +9096,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 126,
     "awayScore": 107
@@ -9135,9 +9135,9 @@ const SEASON_REPLAY = {
    "pOursPre": 0.7746,
    "marginOursPre": 9.43,
    "totalOursPre": 230.3,
-   "pOursAdj": 0.7768,
-   "marginOursAdj": 9.52,
-   "totalOursAdj": 230.3,
+   "pOursAdj": 0.7766,
+   "marginOursAdj": 9.51,
+   "totalOursAdj": 230.2,
    "pOursMorning": 0.7972,
    "marginOursMorning": 10.39,
    "totalOursMorning": 230.5,
@@ -9188,7 +9188,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 100,
     "awayScore": 115
@@ -9227,8 +9227,8 @@ const SEASON_REPLAY = {
    "pOursPre": 0.6747,
    "marginOursPre": 5.66,
    "totalOursPre": 234,
-   "pOursAdj": 0.6574,
-   "marginOursAdj": 5.07,
+   "pOursAdj": 0.6571,
+   "marginOursAdj": 5.06,
    "totalOursAdj": 234,
    "pOursMorning": 0.6583,
    "marginOursMorning": 5.1,
@@ -9280,7 +9280,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 134,
     "awayScore": 135
@@ -9319,8 +9319,8 @@ const SEASON_REPLAY = {
    "pOursPre": 0.7544,
    "marginOursPre": 8.6,
    "totalOursPre": 229.1,
-   "pOursAdj": 0.7579,
-   "marginOursAdj": 8.74,
+   "pOursAdj": 0.7581,
+   "marginOursAdj": 8.75,
    "totalOursAdj": 229.1,
    "pOursMorning": 0.7708,
    "marginOursMorning": 9.27,
@@ -9372,7 +9372,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 112,
     "awayScore": 100
@@ -9418,12 +9418,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.6091,
    "marginOursAdj": 3.46,
    "totalOursAdj": 225.3,
-   "pOursMorning": 0.5836,
-   "marginOursMorning": 2.64,
-   "totalOursMorning": 224.8,
-   "pOursEve": 0.5818,
-   "marginOursEve": 2.58,
-   "totalOursEve": 225.6,
+   "pOursMorning": 0.5553,
+   "marginOursMorning": 1.74,
+   "totalOursMorning": 225.1,
+   "pOursEve": 0.55,
+   "marginOursEve": 1.57,
+   "totalOursEve": 226,
    "comps": {
     "prior": -1.59,
     "current": 0.98,
@@ -9437,20 +9437,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -1.59,
     "current": 0.98,
-    "absent": -1.21,
-    "change": 0.42,
+    "absent": -0.9,
+    "change": -0.3,
     "aging": 0.46,
-    "fit": 0.08,
+    "fit": -0.41,
     "rest": 1.5,
     "hca": 2
    },
    "compsEve": {
     "prior": -1.77,
     "current": 1.34,
-    "absent": -1.21,
-    "change": 0.16,
+    "absent": -0.92,
+    "change": -0.61,
     "aging": 0.46,
-    "fit": 0.1,
+    "fit": -0.43,
     "rest": 1.5,
     "hca": 2
    },
@@ -9468,7 +9468,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 109,
     "awayScore": 93
@@ -9561,7 +9561,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 119,
     "awayScore": 97
@@ -9657,7 +9657,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 110,
     "awayScore": 118
@@ -9699,15 +9699,15 @@ const SEASON_REPLAY = {
    "pOursPre": 0.5958,
    "marginOursPre": 3.03,
    "totalOursPre": 227.7,
-   "pOursAdj": 0.5567,
-   "marginOursAdj": 1.78,
+   "pOursAdj": 0.5571,
+   "marginOursAdj": 1.79,
    "totalOursAdj": 227.7,
-   "pOursMorning": 0.6294,
-   "marginOursMorning": 4.13,
-   "totalOursMorning": 228.6,
-   "pOursEve": 0.6111,
-   "marginOursEve": 3.53,
-   "totalOursEve": 228.3,
+   "pOursMorning": 0.4834,
+   "marginOursMorning": -0.52,
+   "totalOursMorning": 226.7,
+   "pOursEve": 0.4398,
+   "marginOursEve": -1.89,
+   "totalOursEve": 226.1,
    "comps": {
     "prior": -1.25,
     "current": 2.84,
@@ -9721,20 +9721,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -1.25,
     "current": 2.84,
-    "absent": 1,
-    "change": 1.99,
-    "aging": -0.28,
-    "fit": -0.17,
+    "absent": -3.6,
+    "change": 1.72,
+    "aging": 0.22,
+    "fit": -0.45,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": -1.26,
     "current": 2.41,
-    "absent": 0.96,
-    "change": 1.82,
-    "aging": -0.3,
-    "fit": -0.1,
+    "absent": -3.81,
+    "change": 0.92,
+    "aging": 0.22,
+    "fit": -0.37,
     "rest": -2,
     "hca": 2
    },
@@ -9752,7 +9752,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 116,
     "awayScore": 113
@@ -9794,12 +9794,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.3413,
    "marginOursAdj": -5.11,
    "totalOursAdj": 222,
-   "pOursMorning": 0.2384,
-   "marginOursMorning": -8.89,
-   "totalOursMorning": 223.3,
-   "pOursEve": 0.2369,
-   "marginOursEve": -8.96,
-   "totalOursEve": 221.6,
+   "pOursMorning": 0.2678,
+   "marginOursMorning": -7.74,
+   "totalOursMorning": 222.5,
+   "pOursEve": 0.2657,
+   "marginOursEve": -7.83,
+   "totalOursEve": 220.8,
    "comps": {
     "prior": -0.95,
     "current": -3.5,
@@ -9813,20 +9813,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -0.95,
     "current": -3.5,
-    "absent": 0,
-    "change": -6,
+    "absent": -0.04,
+    "change": -4.64,
     "aging": -0.85,
-    "fit": 0.41,
+    "fit": 0.24,
     "rest": 0,
     "hca": 2
    },
    "compsEve": {
     "prior": -0.99,
     "current": -3.4,
-    "absent": 0,
-    "change": -6.13,
+    "absent": -0.04,
+    "change": -4.79,
     "aging": -0.88,
-    "fit": 0.44,
+    "fit": 0.27,
     "rest": 0,
     "hca": 2
    },
@@ -9844,7 +9844,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 118,
     "awayScore": 125
@@ -9888,12 +9888,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.5687,
    "marginOursAdj": 2.16,
    "totalOursAdj": 237.1,
-   "pOursMorning": 0.553,
-   "marginOursMorning": 1.67,
-   "totalOursMorning": 237.2,
-   "pOursEve": 0.545,
-   "marginOursEve": 1.41,
-   "totalOursEve": 236.2,
+   "pOursMorning": 0.5944,
+   "marginOursMorning": 2.99,
+   "totalOursMorning": 237.7,
+   "pOursEve": 0.5835,
+   "marginOursEve": 2.63,
+   "totalOursEve": 236.7,
    "comps": {
     "prior": -0.27,
     "current": 2.12,
@@ -9907,20 +9907,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": -0.27,
     "current": 2.12,
-    "absent": 0,
-    "change": -0.21,
+    "absent": -0.04,
+    "change": 1.21,
     "aging": 0.32,
-    "fit": -0.29,
+    "fit": -0.35,
     "rest": -2,
     "hca": 2
    },
    "compsEve": {
     "prior": -0.23,
     "current": 1.93,
-    "absent": 0,
-    "change": -0.33,
+    "absent": -0.04,
+    "change": 1,
     "aging": 0.32,
-    "fit": -0.28,
+    "fit": -0.35,
     "rest": -2,
     "hca": 2
    },
@@ -9938,7 +9938,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 138,
     "awayScore": 117
@@ -10034,7 +10034,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 106,
     "awayScore": 112
@@ -10127,7 +10127,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 105,
     "awayScore": 120
@@ -10169,12 +10169,12 @@ const SEASON_REPLAY = {
    "pOursAdj": 0.8402,
    "marginOursAdj": 12.44,
    "totalOursAdj": 226.9,
-   "pOursMorning": 0.8514,
-   "marginOursMorning": 13.03,
-   "totalOursMorning": 227.1,
-   "pOursEve": 0.8514,
-   "marginOursEve": 13.03,
-   "totalOursEve": 227.1,
+   "pOursMorning": 0.8529,
+   "marginOursMorning": 13.11,
+   "totalOursMorning": 227.2,
+   "pOursEve": 0.8529,
+   "marginOursEve": 13.11,
+   "totalOursEve": 227.2,
    "comps": {
     "prior": 7.75,
     "current": 4.86,
@@ -10188,20 +10188,20 @@ const SEASON_REPLAY = {
    "compsMorning": {
     "prior": 7.75,
     "current": 4.86,
-    "absent": -0.73,
-    "change": 0.03,
+    "absent": -0.72,
+    "change": 0.09,
     "aging": -0.13,
-    "fit": -0.25,
+    "fit": -0.24,
     "rest": -0.5,
     "hca": 2
    },
    "compsEve": {
     "prior": 7.75,
     "current": 4.86,
-    "absent": -0.73,
-    "change": 0.03,
+    "absent": -0.72,
+    "change": 0.09,
     "aging": -0.13,
-    "fit": -0.25,
+    "fit": -0.24,
     "rest": -0.5,
     "hca": 2
    },
@@ -10219,7 +10219,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 109,
     "awayScore": 102
@@ -10227,10 +10227,8 @@ const SEASON_REPLAY = {
    "provenance": {
     "report": "Injury-Report_2026-11-04_06_30PM.pdf",
     "reportAt": "2026-11-04T23:30:00.000Z",
-    "matched": 6,
-    "unmatched": [
-     "BOS Cenac Jr., Christopher (Available)"
-    ],
+    "matched": 7,
+    "unmatched": [],
     "notSubmitted": [],
     "unmatchedRisk": [],
     "inactive": [
@@ -10314,7 +10312,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 114,
     "awayScore": 104
@@ -10404,7 +10402,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 135,
     "awayScore": 105
@@ -10500,7 +10498,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 103,
     "awayScore": 107
@@ -10592,7 +10590,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 120,
     "awayScore": 113
@@ -10684,7 +10682,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 124,
     "awayScore": 116
@@ -10777,7 +10775,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 107,
     "awayScore": 117
@@ -10869,7 +10867,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 128,
     "awayScore": 109
@@ -10967,7 +10965,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 119,
     "awayScore": 132
@@ -11061,7 +11059,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 112,
     "awayScore": 111
@@ -11159,7 +11157,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 103,
     "awayScore": 116
@@ -11253,7 +11251,7 @@ const SEASON_REPLAY = {
    },
    "source": "replay",
    "engine": "2026-11-05.b2b2",
-   "spec": "replay-7",
+   "spec": "replay-8",
    "result": {
     "homeScore": 116,
     "awayScore": 117
@@ -11278,6 +11276,1029 @@ const SEASON_REPLAY = {
     "reportMorningAt": "2026-11-04T13:30:00.000Z",
     "reportEve": "Injury-Report_2026-11-03_08_30PM.pdf",
     "reportEveAt": "2026-11-04T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909936",
+   "date": "2026-11-05",
+   "tip": "2026-11-06T02:00Z",
+   "home": "PHX",
+   "away": "ORL",
+   "pOurs": 0.4989,
+   "marginOurs": -0.03,
+   "totalOurs": 225.2,
+   "pOursPre": 0.4703,
+   "marginOursPre": -0.93,
+   "totalOursPre": 225.2,
+   "pOursAdj": 0.5021,
+   "marginOursAdj": 0.07,
+   "totalOursAdj": 225.2,
+   "pOursMorning": 0.4989,
+   "marginOursMorning": -0.03,
+   "totalOursMorning": 225.2,
+   "pOursEve": 0.5319,
+   "marginOursEve": 1,
+   "totalOursEve": 224.4,
+   "comps": {
+    "prior": 0.53,
+    "current": -0.28,
+    "absent": 0.87,
+    "change": -1.09,
+    "aging": -0.13,
+    "fit": 0.07,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 0.53,
+    "current": -0.28,
+    "absent": 0.87,
+    "change": -1.09,
+    "aging": -0.13,
+    "fit": 0.07,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 0.56,
+    "current": 0.15,
+    "absent": 0.74,
+    "change": -0.49,
+    "aging": -0.14,
+    "fit": 0.18,
+    "rest": -2,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.5252,
+   "mlHome": -121,
+   "mlAway": 102,
+   "spreadHome": -1.5,
+   "totalMarket": 222.5,
+   "open": {
+    "mlHome": -118,
+    "mlAway": 100,
+    "spreadHome": -1.5,
+    "total": 224.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 117,
+    "awayScore": 104
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-05_08_00PM.pdf",
+    "reportAt": "2026-11-06T01:00:00.000Z",
+    "matched": 9,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "ORL Mike Sharavjamts"
+    ],
+    "boxCutoff": "2026-11-05",
+    "inputsHash": "905e965992085042",
+    "rosterSizes": {
+     "PHX": 17,
+     "ORL": 18
+    },
+    "reportMorning": "Injury-Report_2026-11-05_08_30AM.pdf",
+    "reportMorningAt": "2026-11-05T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-04_08_30PM.pdf",
+    "reportEveAt": "2026-11-05T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909937",
+   "date": "2026-11-05",
+   "tip": "2026-11-06T03:00Z",
+   "home": "GS",
+   "away": "MIA",
+   "pOurs": 0.658,
+   "marginOurs": 5.09,
+   "totalOurs": 234.8,
+   "pOursPre": 0.6619,
+   "marginOursPre": 5.22,
+   "totalOursPre": 234.8,
+   "pOursAdj": 0.6601,
+   "marginOursAdj": 5.16,
+   "totalOursAdj": 234.8,
+   "pOursMorning": 0.658,
+   "marginOursMorning": 5.09,
+   "totalOursMorning": 234.8,
+   "pOursEve": 0.6706,
+   "marginOursEve": 5.52,
+   "totalOursEve": 234.9,
+   "comps": {
+    "prior": -1.52,
+    "current": 2.21,
+    "absent": -2.03,
+    "change": 1.77,
+    "aging": 0.04,
+    "fit": 0.62,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.52,
+    "current": 2.21,
+    "absent": -2.03,
+    "change": 1.77,
+    "aging": 0.04,
+    "fit": 0.62,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.56,
+    "current": 2.29,
+    "absent": -4.93,
+    "change": 5.09,
+    "aging": 0.06,
+    "fit": 0.57,
+    "rest": 2,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.6002,
+   "mlHome": -167,
+   "mlAway": 140,
+   "spreadHome": -3.5,
+   "totalMarket": 236.5,
+   "open": {
+    "mlHome": -164,
+    "mlAway": 138,
+    "spreadHome": -4.5,
+    "total": 238.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 120,
+    "awayScore": 100
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-05_09_00PM.pdf",
+    "reportAt": "2026-11-06T02:00:00.000Z",
+    "matched": 7,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "MIA Keshad Johnson"
+    ],
+    "boxCutoff": "2026-11-05",
+    "inputsHash": "0871df8212a1329c",
+    "rosterSizes": {
+     "GS": 18,
+     "MIA": 17
+    },
+    "reportMorning": "Injury-Report_2026-11-05_08_30AM.pdf",
+    "reportMorningAt": "2026-11-05T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-04_08_30PM.pdf",
+    "reportEveAt": "2026-11-05T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909287",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T00:00Z",
+   "home": "ATL",
+   "away": "WSH",
+   "pOurs": 0.7185,
+   "marginOurs": 7.23,
+   "totalOurs": 227.4,
+   "pOursPre": 0.7296,
+   "marginOursPre": 7.65,
+   "totalOursPre": 227.4,
+   "pOursAdj": 0.7283,
+   "marginOursAdj": 7.6,
+   "totalOursAdj": 227.4,
+   "pOursMorning": 0.7241,
+   "marginOursMorning": 7.44,
+   "totalOursMorning": 228.1,
+   "pOursEve": 0.7241,
+   "marginOursEve": 7.44,
+   "totalOursEve": 228.1,
+   "comps": {
+    "prior": 7.63,
+    "current": 0.89,
+    "absent": -1.46,
+    "change": -1.21,
+    "aging": -0.29,
+    "fit": -0.33,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 7.63,
+    "current": 0.89,
+    "absent": -1.38,
+    "change": -1.31,
+    "aging": -0.27,
+    "fit": -0.12,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 7.63,
+    "current": 0.89,
+    "absent": -1.38,
+    "change": -1.31,
+    "aging": -0.27,
+    "fit": -0.12,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.7339,
+   "mlHome": -324,
+   "mlAway": 261,
+   "spreadHome": -8.5,
+   "totalMarket": 228.5,
+   "open": {
+    "mlHome": -241,
+    "mlAway": 199,
+    "spreadHome": -6.5,
+    "total": 230.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 139,
+    "awayScore": 132
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_06_00PM.pdf",
+    "reportAt": "2026-11-06T23:00:00.000Z",
+    "matched": 14,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "ATL Cameron Corhen"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "87b47863bb458d01",
+    "rosterSizes": {
+     "ATL": 19,
+     "WSH": 18
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909288",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T00:00Z",
+   "home": "CHA",
+   "away": "BOS",
+   "pOurs": 0.2485,
+   "marginOurs": -8.49,
+   "totalOurs": 218.2,
+   "pOursPre": 0.1959,
+   "marginOursPre": -10.7,
+   "totalOursPre": 218.2,
+   "pOursAdj": 0.2573,
+   "marginOursAdj": -8.15,
+   "totalOursAdj": 218.2,
+   "pOursMorning": 0.2684,
+   "marginOursMorning": -7.72,
+   "totalOursMorning": 218.3,
+   "pOursEve": 0.2684,
+   "marginOursEve": -7.72,
+   "totalOursEve": 218.3,
+   "comps": {
+    "prior": -1.67,
+    "current": -5.16,
+    "absent": -2.91,
+    "change": -1.43,
+    "aging": 0.47,
+    "fit": 0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -1.67,
+    "current": -5.16,
+    "absent": -1.14,
+    "change": -2.46,
+    "aging": 0.44,
+    "fit": 0.27,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -1.67,
+    "current": -5.16,
+    "absent": -1.14,
+    "change": -2.46,
+    "aging": 0.44,
+    "fit": 0.27,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.2228,
+   "mlHome": 331,
+   "mlAway": -424,
+   "spreadHome": 10.5,
+   "totalMarket": 209.5,
+   "open": {
+    "mlHome": 276,
+    "mlAway": -344,
+    "spreadHome": 8.5,
+    "total": 210.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 80,
+    "awayScore": 119
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_06_00PM.pdf",
+    "reportAt": "2026-11-06T23:00:00.000Z",
+    "matched": 14,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "f04b2170a52e417f",
+    "rosterSizes": {
+     "CHA": 18,
+     "BOS": 17
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909289",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T00:30Z",
+   "home": "CLE",
+   "away": "PHI",
+   "pOurs": 0.4721,
+   "marginOurs": -0.87,
+   "totalOurs": 230.7,
+   "pOursPre": 0.4766,
+   "marginOursPre": -0.73,
+   "totalOursPre": 230.7,
+   "pOursAdj": 0.474,
+   "marginOursAdj": -0.81,
+   "totalOursAdj": 230.7,
+   "pOursMorning": 0.4785,
+   "marginOursMorning": -0.67,
+   "totalOursMorning": 230.7,
+   "pOursEve": 0.4785,
+   "marginOursEve": -0.67,
+   "totalOursEve": 230.7,
+   "comps": {
+    "prior": 2.25,
+    "current": -1.2,
+    "absent": -0.95,
+    "change": -2.52,
+    "aging": -0.66,
+    "fit": 0.21,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 2.25,
+    "current": -1.2,
+    "absent": -0.95,
+    "change": -2.28,
+    "aging": -0.67,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 2.25,
+    "current": -1.2,
+    "absent": -0.95,
+    "change": -2.28,
+    "aging": -0.67,
+    "fit": 0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.421,
+   "mlHome": 128,
+   "mlAway": -152,
+   "spreadHome": 2.5,
+   "totalMarket": 232.5,
+   "open": {
+    "mlHome": -125,
+    "mlAway": 105,
+    "spreadHome": 2.5,
+    "total": 233.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 119,
+    "awayScore": 95
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_06_30PM.pdf",
+    "reportAt": "2026-11-06T23:30:00.000Z",
+    "matched": 10,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "CLE Curtis Jones",
+     "CLE Kadary Richmond",
+     "PHI Caleb Love",
+     "PHI Rayan Rupert",
+     "PHI Tacko Fall"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "b84b3fd43ce9d2b9",
+    "rosterSizes": {
+     "CLE": 19,
+     "PHI": 17
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909290",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T01:00Z",
+   "home": "DAL",
+   "away": "UTAH",
+   "pOurs": 0.7221,
+   "marginOurs": 7.36,
+   "totalOurs": 231.3,
+   "pOursPre": 0.7009,
+   "marginOursPre": 6.59,
+   "totalOursPre": 231.3,
+   "pOursAdj": 0.7319,
+   "marginOursAdj": 7.73,
+   "totalOursAdj": 231.3,
+   "pOursMorning": 0.7261,
+   "marginOursMorning": 7.51,
+   "totalOursMorning": 231.3,
+   "pOursEve": 0.7261,
+   "marginOursEve": 7.51,
+   "totalOursEve": 231.3,
+   "comps": {
+    "prior": 1.59,
+    "current": 3.16,
+    "absent": 3.18,
+    "change": -2.24,
+    "aging": 0.01,
+    "fit": -0.34,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.59,
+    "current": 3.16,
+    "absent": 1.7,
+    "change": -0.61,
+    "aging": 0.01,
+    "fit": -0.34,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.59,
+    "current": 3.16,
+    "absent": 1.7,
+    "change": -0.61,
+    "aging": 0.01,
+    "fit": -0.34,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.6912,
+   "mlHome": -257,
+   "mlAway": 211,
+   "spreadHome": -6.5,
+   "totalMarket": 226.5,
+   "open": {
+    "mlHome": -252,
+    "mlAway": 208,
+    "spreadHome": -7.5,
+    "total": 223.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 112,
+    "awayScore": 100
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_07_00PM.pdf",
+    "reportAt": "2026-11-07T00:00:00.000Z",
+    "matched": 11,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "DAL Quincy Acy"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "17d7481af8f04780",
+    "rosterSizes": {
+     "DAL": 19,
+     "UTAH": 18
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909291",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T01:00Z",
+   "home": "MEM",
+   "away": "OKC",
+   "pOurs": 0.4685,
+   "marginOurs": -0.99,
+   "totalOurs": 223.6,
+   "pOursPre": 0.5001,
+   "marginOursPre": 0,
+   "totalOursPre": 223.6,
+   "pOursAdj": 0.4206,
+   "marginOursAdj": -2.5,
+   "totalOursAdj": 223.6,
+   "pOursMorning": 0.4685,
+   "marginOursMorning": -0.99,
+   "totalOursMorning": 223.6,
+   "pOursEve": 0.4685,
+   "marginOursEve": -0.99,
+   "totalOursEve": 223.6,
+   "comps": {
+    "prior": -9.18,
+    "current": 2.67,
+    "absent": 4,
+    "change": -0.95,
+    "aging": 0.45,
+    "fit": 0.02,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -9.18,
+    "current": 2.67,
+    "absent": 4,
+    "change": -0.95,
+    "aging": 0.45,
+    "fit": 0.02,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -9.18,
+    "current": 2.67,
+    "absent": 4,
+    "change": -0.95,
+    "aging": 0.45,
+    "fit": 0.02,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.3903,
+   "mlHome": 146,
+   "mlAway": -174,
+   "spreadHome": 4.5,
+   "totalMarket": 224.5,
+   "open": {
+    "mlHome": 139,
+    "mlAway": -165,
+    "spreadHome": 3.5,
+    "total": 225.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 97,
+    "awayScore": 128
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_07_00PM.pdf",
+    "reportAt": "2026-11-07T00:00:00.000Z",
+    "matched": 8,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "MEM Javon Small",
+     "MEM Carson Cooper"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "15411d2b21a630cd",
+    "rosterSizes": {
+     "MEM": 18,
+     "OKC": 18
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909292",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T01:00Z",
+   "home": "MIL",
+   "away": "TOR",
+   "pOurs": 0.4082,
+   "marginOurs": -2.9,
+   "totalOurs": 226.6,
+   "pOursPre": 0.3739,
+   "marginOursPre": -4.02,
+   "totalOursPre": 226.6,
+   "pOursAdj": 0.4185,
+   "marginOursAdj": -2.57,
+   "totalOursAdj": 226.6,
+   "pOursMorning": 0.294,
+   "marginOursMorning": -6.77,
+   "totalOursMorning": 228.2,
+   "pOursEve": 0.294,
+   "marginOursEve": -6.77,
+   "totalOursEve": 228.2,
+   "comps": {
+    "prior": -4.88,
+    "current": -4.75,
+    "absent": 5.12,
+    "change": 0.33,
+    "aging": -0.37,
+    "fit": -0.35,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.88,
+    "current": -4.75,
+    "absent": 1.6,
+    "change": 0.1,
+    "aging": -0.35,
+    "fit": -0.49,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.88,
+    "current": -4.75,
+    "absent": 1.6,
+    "change": 0.1,
+    "aging": -0.35,
+    "fit": -0.49,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.4066,
+   "mlHome": 136,
+   "mlAway": -162,
+   "spreadHome": 3.5,
+   "totalMarket": 228.5,
+   "open": {
+    "mlHome": 187,
+    "mlAway": -226,
+    "spreadHome": 7.5,
+    "total": 231.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 107,
+    "awayScore": 121
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_07_00PM.pdf",
+    "reportAt": "2026-11-07T00:00:00.000Z",
+    "matched": 12,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "TOR Andre Jackson Jr.",
+     "TOR Trey Jemison",
+     "TOR Chucky Hepburn"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "f0bac2ae57b6f794",
+    "rosterSizes": {
+     "MIL": 18,
+     "TOR": 20
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909293",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T01:00Z",
+   "home": "NO",
+   "away": "MIN",
+   "pOurs": 0.4321,
+   "marginOurs": -2.14,
+   "totalOurs": 231.7,
+   "pOursPre": 0.4365,
+   "marginOursPre": -2,
+   "totalOursPre": 231.7,
+   "pOursAdj": 0.3903,
+   "marginOursAdj": -3.48,
+   "totalOursAdj": 231.7,
+   "pOursMorning": 0.4356,
+   "marginOursMorning": -2.03,
+   "totalOursMorning": 231.7,
+   "pOursEve": 0.4356,
+   "marginOursEve": -2.03,
+   "totalOursEve": 231.7,
+   "comps": {
+    "prior": -4.13,
+    "current": -2.8,
+    "absent": 3.53,
+    "change": -1.56,
+    "aging": 0.43,
+    "fit": 0.39,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -4.13,
+    "current": -2.8,
+    "absent": 3.13,
+    "change": -0.98,
+    "aging": 0.43,
+    "fit": 0.32,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -4.13,
+    "current": -2.8,
+    "absent": 3.13,
+    "change": -0.98,
+    "aging": 0.43,
+    "fit": 0.32,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.4004,
+   "mlHome": 140,
+   "mlAway": -166,
+   "spreadHome": 3.5,
+   "totalMarket": 230.5,
+   "open": {
+    "mlHome": 157,
+    "mlAway": -188,
+    "spreadHome": 5.5,
+    "total": 229.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 109,
+    "awayScore": 115
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_07_00PM.pdf",
+    "reportAt": "2026-11-07T00:00:00.000Z",
+    "matched": 8,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "NO Christian Koloko"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "47eb7bfa9ce5d114",
+    "rosterSizes": {
+     "NO": 19,
+     "MIN": 16
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909294",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T03:00Z",
+   "home": "LAL",
+   "away": "POR",
+   "pOurs": 0.5161,
+   "marginOurs": 0.51,
+   "totalOurs": 233.5,
+   "pOursPre": 0.5,
+   "marginOursPre": 0,
+   "totalOursPre": 233.5,
+   "pOursAdj": 0.5063,
+   "marginOursAdj": 0.2,
+   "totalOursAdj": 233.5,
+   "pOursMorning": 0.5152,
+   "marginOursMorning": 0.48,
+   "totalOursMorning": 233.5,
+   "pOursEve": 0.5152,
+   "marginOursEve": 0.48,
+   "totalOursEve": 233.5,
+   "comps": {
+    "prior": 1.1,
+    "current": -0.39,
+    "absent": 0.42,
+    "change": -1.85,
+    "aging": -0.2,
+    "fit": -0.57,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": 1.1,
+    "current": -0.39,
+    "absent": 0.55,
+    "change": -2.07,
+    "aging": -0.2,
+    "fit": -0.51,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": 1.1,
+    "current": -0.39,
+    "absent": 0.55,
+    "change": -2.07,
+    "aging": -0.2,
+    "fit": -0.51,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.5824,
+   "mlHome": -154,
+   "mlAway": 130,
+   "spreadHome": -3.5,
+   "totalMarket": 231.5,
+   "open": {
+    "mlHome": -162,
+    "mlAway": 136,
+    "spreadHome": -4.5,
+    "total": 238.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 124,
+    "awayScore": 118
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_09_00PM.pdf",
+    "reportAt": "2026-11-07T02:00:00.000Z",
+    "matched": 8,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "LAL Chris Manon",
+     "LAL Arthur Kaluma",
+     "LAL William Kyle III",
+     "POR Jaylen Martin"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "e1b2110cf5cea94d",
+    "rosterSizes": {
+     "LAL": 19,
+     "POR": 18
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
+   }
+  },
+  {
+   "id": "401909295",
+   "date": "2026-11-06",
+   "tip": "2026-11-07T03:00Z",
+   "home": "SAC",
+   "away": "SA",
+   "pOurs": 0.0992,
+   "marginOurs": -16.08,
+   "totalOurs": 230.3,
+   "pOursPre": 0.0806,
+   "marginOursPre": -17.51,
+   "totalOursPre": 230.4,
+   "pOursAdj": 0.1111,
+   "marginOursAdj": -15.26,
+   "totalOursAdj": 230.3,
+   "pOursMorning": 0.0962,
+   "marginOursMorning": -16.3,
+   "totalOursMorning": 230.3,
+   "pOursEve": 0.0962,
+   "marginOursEve": -16.3,
+   "totalOursEve": 230.3,
+   "comps": {
+    "prior": -9.82,
+    "current": -6.36,
+    "absent": 0,
+    "change": -0.28,
+    "aging": -0.55,
+    "fit": -1.07,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsMorning": {
+    "prior": -9.82,
+    "current": -6.36,
+    "absent": 0,
+    "change": -0.69,
+    "aging": -0.55,
+    "fit": -0.88,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsEve": {
+    "prior": -9.82,
+    "current": -6.36,
+    "absent": 0,
+    "change": -0.69,
+    "aging": -0.55,
+    "fit": -0.88,
+    "rest": 0,
+    "hca": 2
+   },
+   "pFriend": null,
+   "pMarket": 0.1056,
+   "mlHome": 810,
+   "mlAway": -1340,
+   "spreadHome": 17.5,
+   "totalMarket": 231.5,
+   "open": {
+    "mlHome": 640,
+    "mlAway": -970,
+    "spreadHome": 15.5,
+    "total": 228.5
+   },
+   "source": "replay",
+   "engine": "2026-11-05.b2b2",
+   "spec": "replay-8",
+   "result": {
+    "homeScore": 109,
+    "awayScore": 124
+   },
+   "provenance": {
+    "report": "Injury-Report_2026-11-06_09_00PM.pdf",
+    "reportAt": "2026-11-07T02:00:00.000Z",
+    "matched": 9,
+    "unmatched": [],
+    "notSubmitted": [],
+    "unmatchedRisk": [],
+    "inactive": [
+     "SA David Jones Garcia",
+     "SA Jon Elmore",
+     "SA RJ Davis",
+     "SA Terry Taylor"
+    ],
+    "boxCutoff": "2026-11-06",
+    "inputsHash": "68bb1a2544e4bb40",
+    "rosterSizes": {
+     "SAC": 17,
+     "SA": 20
+    },
+    "reportMorning": "Injury-Report_2026-11-06_08_30AM.pdf",
+    "reportMorningAt": "2026-11-06T13:30:00.000Z",
+    "reportEve": "Injury-Report_2026-11-05_08_30PM.pdf",
+    "reportEveAt": "2026-11-06T01:30:00.000Z"
    }
   }
  ]
