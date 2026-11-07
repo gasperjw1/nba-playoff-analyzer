@@ -44,7 +44,11 @@ const { execFileSync } = require('child_process');
 
 // ── Pre-registered spec (frozen before the first scored run) ─────────
 const SPEC = {
-  version: 'replay-8',
+  version: 'replay-9',
+  // replay-9: engine 2026-11-07.rotcap — tonight's minutes capped at 240 in rotation order (the
+  //   players with the most baseline minutes keep theirs, the cut comes off the bottom) instead of
+  //   scaling every player down. Chosen on 4,324 past team-games (research-minutes-cap.js,
+  //   pre-registered). Not blind: prompted by Nov 6 PHI @ CLE, a game in this replay.
   // replay-8: a team the report lists as not yet submitted (typically the second night of a
   //   back-to-back) keeps the statuses it filed for its previous game (replay-core.js
   //   replayCarriedEntries) instead of counting everyone healthy. Found Nov 7 (NY @ CLE: Cleveland
@@ -78,7 +82,7 @@ const SPEC = {
   //   moves, and one captured before tip on game day counts for that day); a report moves a player
   //   only for games whose cutoff is after it; player names come from data before the day; seeds are
   //   dated at the end of 2025-26; the leak check also scrambles later reports and rebuilds names.
-  engine: '2026-11-05.b2b2',            // must equal SEASON_ENGINE_VERSION
+  engine: '2026-11-07.rotcap',          // must equal SEASON_ENGINE_VERSION
   firstDay: '2026-10-20',
   // Opening rosters: each team's latest archived ESPN roster page captured before this instant
   // (8 AM ET on opening day, before any game), from the Internet Archive.

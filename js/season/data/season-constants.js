@@ -90,6 +90,14 @@ const SEASON_REST = {
 // scores 3.40. Dropping players who appeared in under a quarter of the
 // team's games shrinks the gain to −0.37 ± 0.45 — the direction holds, the
 // size is uncertain. Kept because a team cannot play more than 240 minutes.
+// 2026-11-07.rotcap: the cap keeps rotation order instead of scaling everyone —
+// research-minutes-cap.js (pre-registered, 4,324 team-games of 2024-25 and
+// 2025-26 box scores): team value error where the cap binds RMSE 1.73 → 1.45
+// (ΔMSE −0.89 ± 0.20; each season alone −0.67 ± 0.26 and −1.12 ± 0.29), bias
+// −0.71 → +0.17, leave-one-season-out game margins −1.82 ± 0.69 MSE. At season
+// level (everyone available all season) it is +0.30 ± 0.48, within noise: the
+// proportional cut had loosely stood in for the season's injuries, which the
+// engine now gets night by night from the injury report.
 const SEASON_IMPACT = {
   replacementBpm: -2.0,
   bpmToPoints: 0.885,
@@ -149,7 +157,7 @@ const SEASON_PLAYER_PRIOR = {
 
 // Bumped whenever the projection logic changes, and stored on every
 // ledger row so the scorecard never mixes model versions silently.
-const SEASON_ENGINE_VERSION = '2026-11-05.b2b2';
+const SEASON_ENGINE_VERSION = '2026-11-07.rotcap';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).
