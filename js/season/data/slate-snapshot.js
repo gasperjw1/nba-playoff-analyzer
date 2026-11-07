@@ -3,7 +3,7 @@
 const SEASON_SLATE_SNAPSHOT = {
  "source": "espn",
  "date": "2026-11-07",
- "fetchedAt": "2026-11-07T16:13:37.682Z",
+ "fetchedAt": "2026-11-07T16:48:48.301Z",
  "modelVersion": null,
  "league": {
   "ortg": 112.74283475464232,
@@ -15441,10 +15441,10 @@ const SEASON_SLATE_SNAPSHOT = {
    "home": "IND",
    "away": "DEN",
    "market": {
-    "mlHome": 220,
-    "mlAway": -268,
+    "mlHome": 248,
+    "mlAway": -305,
     "spreadHome": 7.5,
-    "total": 229.5,
+    "total": 228.5,
     "book": "DraftKings",
     "open": {
      "mlHome": 199,
@@ -15464,7 +15464,7 @@ const SEASON_SLATE_SNAPSHOT = {
    "market": {
     "mlHome": -269,
     "mlAway": 221,
-    "spreadHome": -6.5,
+    "spreadHome": -7.5,
     "total": 227.5,
     "book": "DraftKings",
     "open": {
@@ -15483,10 +15483,10 @@ const SEASON_SLATE_SNAPSHOT = {
    "home": "CLE",
    "away": "NY",
    "market": {
-    "mlHome": 160,
-    "mlAway": -191,
+    "mlHome": 170,
+    "mlAway": -204,
     "spreadHome": 4.5,
-    "total": 224.5,
+    "total": 222.5,
     "book": "DraftKings",
     "open": {
      "mlHome": 137,
@@ -15504,9 +15504,9 @@ const SEASON_SLATE_SNAPSHOT = {
    "home": "OKC",
    "away": "WSH",
    "market": {
-    "mlHome": -545,
-    "mlAway": 411,
-    "spreadHome": -11.5,
+    "mlHome": -597,
+    "mlAway": 443,
+    "spreadHome": -12.5,
     "total": 222.5,
     "book": "DraftKings",
     "open": {
