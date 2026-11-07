@@ -55,11 +55,12 @@ function loadContext() {
   const ctx = R.loadContext();
   for (const f of ['js/season/props.js', 'js/season/props-ledger.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), ctx, { filename: f });
   ctx._origRedistribution = ctx.calcRedistribution;
-  ctx._origRedist = ctx.SEASON_PROP.redistribution;
   return ctx;
 }
+// props-1's values are fixed here, not read from season-constants.js, so the frozen spec still
+// reproduces after the live model switched to redistribution 0 (2026-11-07.noredist).
 function setVariant(ctx, v) {
-  ctx.SEASON_PROP.redistribution = v === 'redist40' ? 0.40 : v === 'redist0' ? 0 : ctx._origRedist;
+  ctx.SEASON_PROP.redistribution = v === 'redist40' ? 0.40 : v === 'redist0' ? 0 : 0.80;
   ctx.calcRedistribution = v === 'curShare' ? (team, ov, cw, cg) => ctx._origRedistribution(team, ov, 1, cg) : ctx._origRedistribution;
 }
 
@@ -91,7 +92,7 @@ function dayRows(ctx, store, date, variant, actualMinutes) {
     }
   }
   setVariant(ctx, 'base');
-  return rows;
+  return rows.map(r => ({ ...r, props: `${SPEC.version}:${variant}${actualMinutes ? ':actualMinutes' : ''}` }));
 }
 
 function settle(ctx, store, rows) {

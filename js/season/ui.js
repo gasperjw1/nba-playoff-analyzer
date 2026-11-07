@@ -624,14 +624,16 @@ function seasonReplayLateRows() {
   }));
 }
 // Props ledger (props-ledger.js): calibration of the recorded projections at bettable lines, no prices yet.
-function renderPropsRecord(rows) {
+function renderPropsRecord(allRows) {
+  // One props model at a time: the current version's rows; earlier models are counted, not mixed in.
+  const rows = allRows.filter(r => propRowVersion(r) === SEASON_PROP.version), older = allRows.length - rows.length;
   const all = seasonPropsRecord(rows), open = rows.filter(r => !r.result).length;
   const pc = (x) => x == null ? '—' : `${(x * 100).toFixed(0)}%`;
   const at = (c) => c && c.n ? `${pc(c.over)} <span class="muted">vs ${pc(c.expected)} · n=${c.n}</span>` : '—';
   const line = (label, st) => st && st.n ? `<tr><td>${label}</td><td class="num">${st.n}</td><td class="num">${st.mae}</td><td class="num">${st.bias >= 0 ? '+' : ''}${st.bias}</td><td class="num">${at(st.proj)}</td><td class="num">${at(st.p75)}</td><td class="num">${at(st.floor)}</td></tr>` : `<tr><td>${label}</td><td class="num">0</td><td colspan="5" class="muted">nothing settled yet</td></tr>`;
   const tier = (f) => seasonPropsRecord(rows, { filter: f }).stats.pra;
   return `<h4 style="margin-top:14px">Props ledger — pre-tip projections graded from box scores</h4>
-    <p class="muted">Every rotation player's projection (${SEASON_PROPS_MIN_MINUTES}+ projected minutes) on the picks engine's slate, recorded with the slate and graded from ESPN box scores. No prop prices yet, so this measures calibration, not edge. Each projection is checked at three half-point lines: the one nearest the projection, the highest the model gives a 75% chance of going over, and the highest it gives 90% — a floor leg's deep alternate line. Each cell is the share that went over <span class="muted">vs the model's average chance at those lines</span>; calibrated when they match. Projections assume the player plays (DraftKings voids a prop when he sits), so players who did not play are counted apart. Players in one game move together (pace, blowouts), so a night or two says little — read it over dozens of games. ${all.n} settled (${all.games} games, ${all.played} played), ${open} open.</p>
+    <p class="muted">Every rotation player's projection (${SEASON_PROPS_MIN_MINUTES}+ projected minutes) on the picks engine's slate, recorded with the slate and graded from ESPN box scores. No prop prices yet, so this measures calibration, not edge. Each projection is checked at three half-point lines: the one nearest the projection, the highest the model gives a 75% chance of going over, and the highest it gives 90% — a floor leg's deep alternate line. Each cell is the share that went over <span class="muted">vs the model's average chance at those lines</span>; calibrated when they match. Projections assume the player plays (DraftKings voids a prop when he sits), so players who did not play are counted apart. Players in one game move together (pace, blowouts), so a night or two says little — read it over dozens of games. Model ${SEASON_PROP.version}: ${all.n} settled (${all.games} games, ${all.played} played), ${open} open${older ? ` · ${older} rows from earlier props models not counted` : ''}.</p>
     <table><tr><th>Stat</th><th class="num">n</th><th class="num">MAE</th><th class="num">Bias</th><th class="num">Over the projection line</th><th class="num">Over the 75% line</th><th class="num">Over the 90% floor</th></tr>
       ${SEASON_PROPS_STATS.map(s => line(s === 'tpm' ? '3PM' : s.toUpperCase(), all.stats[s])).join('')}
       ${line('PRA · top 5 minutes', tier(r => r.rank <= 5))}${line('PRA · rest of rotation', tier(r => r.rank > 5))}
