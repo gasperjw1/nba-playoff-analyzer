@@ -2252,7 +2252,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2267,7 +2267,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.667Z",
+  "recordedAt": "2026-11-07T17:20:14.907Z",
   "result": null
  },
  {
@@ -2338,7 +2338,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2353,7 +2353,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.668Z",
+  "recordedAt": "2026-11-07T17:20:14.908Z",
   "result": null
  },
  {
@@ -2424,7 +2424,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2439,7 +2439,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.670Z",
+  "recordedAt": "2026-11-07T17:20:14.910Z",
   "result": null
  },
  {
@@ -2510,7 +2510,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2525,7 +2525,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.671Z",
+  "recordedAt": "2026-11-07T17:20:14.911Z",
   "result": null
  },
  {
@@ -2596,7 +2596,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2611,7 +2611,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.672Z",
+  "recordedAt": "2026-11-07T17:20:14.912Z",
   "result": null
  },
  {
@@ -2682,7 +2682,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2697,7 +2697,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.673Z",
+  "recordedAt": "2026-11-07T17:20:14.913Z",
   "result": null
  },
  {
@@ -2718,9 +2718,9 @@ const SEASON_LEDGER = [
   "trust": {
    "side": "home",
    "p": 0.4305,
-   "ml": 180,
-   "implied": 0.3571,
-   "edge": 0.0734,
+   "ml": 171,
+   "implied": 0.369,
+   "edge": 0.0615,
    "gap": 3.31,
    "driver": "change",
    "rule": "R2",
@@ -2768,22 +2768,22 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_12_00PM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
   "pFriend": null,
-  "pMarket": 0.3429,
+  "pMarket": 0.3544,
   "pBlend": 0.4648,
-  "mlHome": 180,
-  "mlAway": -217,
+  "mlHome": 171,
+  "mlAway": -205,
   "spreadHome": 5.5,
-  "totalMarket": 226.5,
+  "totalMarket": 225.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:48:49.674Z",
+  "recordedAt": "2026-11-07T17:20:14.914Z",
   "result": null
  }
 ];
