@@ -157,8 +157,14 @@ const SEASON_ENGINE_VERSION = '2026-11-05.b2b2';
 // or in props.js. 2026-11-07.noredist: redistribution 0.80 → 0 — on the replay (backtest-props.js,
 // spec props-1, 2,239 player-games) 0.80 ran PRA 1.9 high (top-2 minutes 3.4) and its 90% floors
 // cleared 88% vs 91%; 0 was the pre-registered primary winner (bias −0.45, floors 91% vs 91%).
+// 2026-11-07.sdscale: each stat's sd × sdScale (backtest-prop-dist.js, spec props-2: fitted on the
+// replay's Oct 20–31 games, judged on Nov 1–6) — the pre-registered winner over a gamma and a
+// minutes × gamma compound. Holdout: PTS 90% floor 85% → 90% cleared vs 91% expected, log score
+// +0.070 ± 0.016; PRA floor 91% vs 91%. Still off: lines near the projection go over ~42–45% where
+// a normal says 50% (stat lines are right-skewed); REB/AST floors run safe (96% vs 92%).
 const SEASON_PROP = {
-  version: '2026-11-07.noredist',
+  version: '2026-11-07.sdscale',
+  sdScale: { pts: 1.192, reb: 1.088, ast: 1.06, pra: 1.029, tpm: 1.085 },   // × the sd below; stl/blk unscaled
   redistribution: 0,      // share of absent teammates' production redistributed (was 0.80)
   oppDefenseWeight: 0.50, // how much opponent DRtg deviation moves scoring
   h2hWeight: 0.10,        // weight on career head-to-head averages (n >= 5)

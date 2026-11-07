@@ -1146,9 +1146,50 @@ console.log('TEST 26: props ledger (record, merge, settle, calibration)');
   const mixed = c.renderPropsRecord(ledger.concat(old));
   assert(mixed.includes(`Model ${c.SEASON_PROP.version}: ${ledger.length} settled`) && mixed.includes(`${old.length} rows from earlier props models not counted`), 'record counts the current props model only');
   assert(c.propRowVersion(old[0]) === '2026-11-05.v1' && ledger[0].props === c.SEASON_PROP.version, 'rows carry the props version; unversioned rows are the first model');
-  assert(c.SEASON_PROP.redistribution === 0 && c.SEASON_PROP.version === '2026-11-07.noredist', 'live props model: no redistribution');
+  assert(c.SEASON_PROP.redistribution === 0 && c.SEASON_PROP.version === '2026-11-07.sdscale', 'live props model: no redistribution, scaled spreads');
   const html0 = c.renderPropsRecord([]);
   assert(html0.includes('nothing settled yet'), 'empty props ledger renders');
+}
+
+console.log('TEST 27: prop distributions (prop-dist.js) and calibrated spreads');
+{
+  const c = loadCtx(false);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/prop-dist.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  near(c.lnGamma(0.5), Math.log(Math.sqrt(Math.PI)), 1e-12, 'lnΓ(½)');
+  near(c.lnGamma(10), Math.log(362880), 1e-10, 'lnΓ(10)');
+  for (const x of [0.1, 2, 25]) near(c.gammaP(1, x), 1 - Math.exp(-x), 1e-12, `P(1, ${x}) = 1 − e^−x`);
+  for (const [df, x, p] of [[1, 3.841459, 0.95], [10, 18.307038, 0.95], [30, 43.772972, 0.95], [4, 0.710723, 0.05]]) near(c.gammaP(df / 2, x / 2), p, 2e-7, `χ² df ${df} at ${x}`);
+  for (const a of [0.3, 7.5, 50]) near(c.gammaP(a, a + 1 - 1e-9), c.gammaP(a, a + 1 + 1e-9), 1e-8, `series / continued fraction meet at a + 1 (a = ${a})`);
+  assert(c.gammaP(5, 0) === 0 && c.gammaP(0, 1) === 1, 'gammaP edges');
+  // The normal family is props.js probOver at every line from 0.5, half and whole.
+  let maxd = 0;
+  for (const [m, sd] of [[0.4, 0.7], [3.2, 2.1], [12, 5.1], [37.4, 11.66]]) for (let L = 0.5; L <= 60; L += 0.5) maxd = Math.max(maxd, Math.abs(c.propDistOver({ family: 'normal', mean: m, sd }, L) - c.probOver(m, sd, L)));
+  near(maxd, 0, 1e-12, 'normal propDistOver = probOver');
+  for (const [m, sd] of [[37.4, 11.66], [4.8, 2.45], [12, 5.1]]) for (const [k, t] of [['floor', 0.9], ['p75', 0.75]]) assert(c.propDistLineAtLeast({ family: 'normal', mean: m, sd }, t) === c.propCheckLine(m, sd, k), `line search = closed form (${m}, ${k})`);
+  const nodes = [0.3, 0.8, 0.95, 1.05, 1.2, 1.7].map(x => x / 1);
+  const nm = nodes.reduce((a, b) => a + b) / nodes.length, nn = nodes.map(x => x / nm);
+  for (const d of [{ family: 'gamma', mean: 22.4, sd: 7.3 }, { family: 'compound', mean: 24, min: 30, nodes: nn, phi: 2.2, k: 13 }, { family: 'normal', mean: 1.1, sd: 1.2 }]) {
+    let sum = 0, mean = 0;
+    for (let n = 0; n < 300; n++) { const p = c.propDistPmf(d, n); sum += p; mean += n * p; }
+    near(sum, 1, 1e-9, `${d.family}: whole-number outcomes sum to 1`);
+    if (d.family !== 'normal') near(mean, d.mean, 0.03, `${d.family}: mean kept`);
+  }
+  const g = { family: 'gamma', mean: 6.2, sd: 3.1 }, L = c.propDistLineAtLeast(g, 0.9);
+  assert(L != null && c.propDistOver(g, L) >= 0.9 && c.propDistOver(g, L + 1) < 0.9, 'line search: highest half-point line at ≥ 90%');
+  assert(c.propDistLineAtLeast({ family: 'gamma', mean: 0.4, sd: 0.7 }, 0.9) === null, 'no 90% line below 0.5');
+  assert(c.propDistOver({ family: 'gamma', mean: 0, sd: 0 }, 0.5) === 0 && c.propDistPmf({ family: 'gamma', mean: 0, sd: 0 }, 0) === 1, 'zero projection: all mass on 0');
+  assert(c.propDistOver({ family: 'compound', mean: 5, min: 0, nodes: nn, phi: 1, k: 10 }, 0.5) === 0, 'compound with no minutes: 0');
+  near(c.propDistOver({ family: 'normal', mean: 10, sd: 3 }, 10), 0.5, 1e-12, 'whole line at the mean: push split evenly');
+  // Calibrated spreads (props-2): each sd × its scale, PRA formed from the unscaled parts first.
+  const slate = makeSlate(c), A = slate.teams.AAA, B = slate.teams.BBB, star = A.players[0];
+  const pr = c.projectPlayerProps(star, A, B, slate);
+  const S = c.SEASON_PROP.sdScale;
+  c.SEASON_PROP.sdScale = null;
+  const raw = c.projectPlayerProps(star, A, B, slate);
+  c.SEASON_PROP.sdScale = S;
+  for (const s of ['pts', 'reb', 'ast', 'tpm']) near(pr.sd[s], +(raw.sd[s] * S[s]).toFixed(2), 1e-9, `${s} sd × ${S[s]}`);
+  near(pr.sd.pra, +(+(0.85 * (raw.sd.pts + raw.sd.reb + raw.sd.ast)).toFixed(2) * S.pra).toFixed(2), 1e-9, 'PRA sd from the unscaled parts, then × its scale');
+  assert(pr.sd.stl === raw.sd.stl && pr.pts === raw.pts, 'unscaled stats and every mean unchanged');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
