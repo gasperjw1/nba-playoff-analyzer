@@ -1,9 +1,9 @@
-# Pitched tickets — spec `pitch-1` (DRAFT, not frozen)
+# Pitched tickets — spec `pitch-1` (frozen 2026-11-07, judged from 2026-11-08)
 
 A nightly pair of parlay tickets the site proposes from tonight's slate, recorded before tip-off and
-graded like the trust rules, so we learn whether either recipe has value. This file is a draft: it
-is frozen by committing it unchanged together with the code, before the first night it runs, and is
-never edited afterwards — a change is a new spec (`pitch-2`) with its own start date.
+graded like the trust rules, so we learn whether either recipe has value. Frozen by committing this
+file unchanged together with its code (`js/season/pitch.js`, `SEASON_PITCH_SPEC`) before the first
+night it runs, and never edited afterwards — a change is a new spec (`pitch-2`) with its own dates.
 
 It measures tickets. It never suggests a stake size, and every pitch is labelled unproven until its
 own record says otherwise.
@@ -21,6 +21,7 @@ own record says otherwise.
 | Season props calibration (live props model `2026-11-07.sdscale`) | points/PRA 90% lines clear 90–91% vs 91% shown; 75% lines 73–74% vs 77–78%; overs near the projection 42–45% vs ~50%; rebound/assist floors 96% vs 92% | `backtest-prop-dist.js` (props-2 holdout, Nov 1–6) |
 | Starters' floors in blowouts | lost by 15+: 84.5% cleared vs 90.9% shown (n 193); every other group 92–94%; **not predictable before tip** — every pre-game win-probability bucket clears 91–93% | props-1 replay rows, top-5 by projected minutes |
 | Minutes | 12% of players play under 70% of projected minutes; 5% of players counted available did not play (1% expected); top-two players average ~33 minutes, 38+ in 16% of games | props-1 replay |
+| Rest and age (checked 2026-11-07) | the "did not play" risk is the bench's: rank 6+ 8.7%, starters 0.2%, **floor-eligible players 0 of 766** (rest nights are already "out" on the injury report). Floor-eligible short minutes 6.4%; 9.9% on the 2nd night of a back-to-back vs 5.7% otherwise (n 121, ~1.5 SE). Their 90% PRA lines cleared 93.4% on back-to-backs vs 91.5% otherwise, 90.2% at age 32+ (model 90.7%) | props-1 replay, players listed fully available |
 
 What follows from it: the floor ticket is the main recipe; moneyline edges are worth something only
 at early prices; long shots are an experiment.
@@ -32,17 +33,25 @@ tracked yet):
 
 - **Players:** a team's top 5 by projected minutes, 28+ projected minutes, listed fully available
   (not questionable or doubtful), on tonight's slate before its tip.
-- **Stats:** points or PRA only (the two calibrated after props-2). No 3-pointers; rebounds and
-  assists only as a recorded alternative, not a pick (they run safe, so the model undersells them).
+- **Stats:** points or PRA only (the two calibrated after props-2). No 3-pointers, rebounds or
+  assists (rebound and assist floors run safe, so the model undersells them; 3-pointers have little
+  evidence).
 - **Line:** the model's 90% line — the highest half-point line the live props model gives at least
   90% (`propDistLineAtLeast` on the model's normal; the same line the ledger's "90% floor" checks) —
   and not below DraftKings' realistic floor (points or PRA at half the player's projection, the
   playoff builder's rule; a leg whose 90% line falls below it is dropped). Only the 90% line is used
   because it is the one the props-2 holdout validated (the 75% lines ran 4 pp low; 85% lines were
   never tested).
-- **Ticket:** 3 legs, each from a different game (same-game correlation is not modelled yet), the
-  three with the most projected minutes among the eligible legs (minutes are the floor's main risk);
-  ties broken by the higher line.
+- **No rest or age filter:** checked on the replay (evidence table) — the eligibility rules already
+  remove the did-not-play risk, and back-to-back or 32+ players' floors cleared at or above the model.
+- **In practice PRA:** the realistic-floor rule drops most points legs — since props-2 widened the
+  points spread, a points 90% line usually falls below half the projection (on the replay 71 points
+  legs qualified against 499 PRA legs). Recipe A will be almost all PRA; that is a consequence of the
+  rules, not a separate rule.
+- **Ticket:** 3 legs, each from a different game (same-game correlation is not modelled yet):
+  every eligible leg sorted by projected minutes (most first; minutes are the floor's main risk),
+  ties by the higher line, then taken in that order skipping any game already used. With fewer than
+  3 games the night records "no ticket".
 - **Shown chance per leg:** the model's own chance at that line, which the props-2 holdout found
   calibrated for points and PRA (90–91% cleared vs 91% shown). Combined chance = product.
 - **Price:** not known. The pitch shows the fair price from the combined chance; the user enters
@@ -58,6 +67,7 @@ Moneyline legs where the picks engine is above DraftKings' no-vig price:
 - **Shown chance per leg:** DraftKings' no-vig chance plus 45% of the model's gap — the share that
   showed up against the opening line on the replay. The display also states that against the close
   none of it did, so the edge depends on getting an early price.
+- **Size:** 2 or 3 legs; with fewer than 2 qualifying games the night records "no ticket".
 - **Combined chance:** product of the adjusted chances; the price is the legs' prices multiplied
   (moneylines on different games) unless a quote is entered.
 
@@ -84,8 +94,13 @@ enters, or Recipe B's moneylines).
 
 ## Not in this spec (open questions)
 
+- Calibration on NB.AI's minutes: the props-2 holdout measured the 90% lines on the replay, where
+  minutes are season averages (as on ESPN-fallback nights). On NB.AI nights the projections use
+  NB.AI's minutes (60% latest game, 20% recent, 20% depth role), which ranks some players higher on
+  minutes than the replay would. Each pitch row stores its slate's source, and the props ledger
+  records the source of every projection, so calibration can be split by source as games settle.
+
 - Same-game legs and their correlation (measure first from this season's box scores).
-- Rest-night and back-to-back risk for floor legs (5% of available players did not play).
 - Unders near the projection (they won 55–58% on the replay) — a candidate for `pitch-2`.
 - Prop prices: until there is a feed, Recipe A's value depends on prices the user enters.
 - ESPN's "open" price is occasionally wrong (Nov 4: San Antonio "opened" +503 against a −620

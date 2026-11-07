@@ -49,6 +49,7 @@ function renderSeasonApp() {
     case 'lab': main.innerHTML = renderLab(); break;
     case 'ledger': main.innerHTML = renderLedgerTab(); break;
     case 'parlay': main.innerHTML = renderParlayTab(); break;
+    case 'pitch': main.innerHTML = renderPitchTab(); break;
     case 'data': main.innerHTML = renderImportPanel(false); break;
     default: main.innerHTML = renderTonight();
   }
@@ -97,7 +98,7 @@ function renderSeasonStatus() {
     <span>League avg ORtg <b>${s.league.ortg.toFixed(1)}</b> pace <b>${s.league.pace.toFixed(1)}</b>${s.league.derived ? '' : ' <span class="muted">(fallback)</span>'}</span>`;
 }
 
-const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['parlay', 'Parlay'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
+const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['parlay', 'Parlay'], ['pitch', 'Pitch'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
 
 function renderSeasonTabs() {
   document.getElementById('seasonTabs').innerHTML = SEASON_TABS.map(([id, label]) =>
@@ -357,6 +358,40 @@ function renderParlayTab() {
         <button class="btn btn-secondary btn-sm" onclick="seasonParlayCopy()">Copy ticket</button>
         <button class="btn btn-secondary btn-sm" onclick="seasonParlayClear()">Clear</button></div>
       ${summary}` : '<p class="muted">No legs yet.</p>'}
+  </div>`;
+}
+
+// ---------- pitched tickets (pitch.js, PITCH_SPEC.md) ----------
+
+function renderPitchTab() {
+  const s = seasonState.slate, S = SEASON_PITCH_SPEC;
+  const ledger = typeof SEASON_PITCH_LEDGER !== 'undefined' && Array.isArray(SEASON_PITCH_LEDGER) ? SEASON_PITCH_LEDGER : [];
+  const recorded = ledger.find(r => r.date === s.date);
+  const night = recorded || buildPitches(s, { now: Date.now() });
+  const pct = (x) => x == null ? '—' : `${(x * 100).toFixed(1)}%`;
+  const odds = (a) => a == null ? '—' : parlayFmtOdds(a);
+  const mark = (l) => !l.result ? '' : l.result.outcome === 'hit' ? ` <span class="pos">✓${l.result.actual != null ? ' ' + l.result.actual : ''}</span>` : l.result.outcome === 'miss' ? ` <span class="neg">✗${l.result.actual != null ? ' ' + l.result.actual : ''}</span>` : ' <span class="muted">void (did not play)</span>';
+  const ticket = (t) => {
+    const title = t.recipe === 'floor' ? 'Floor ticket — main recipe' : 'Edge ticket — experiment';
+    if (t.status !== 'pitched') return `<h4 style="margin-top:14px">${title}</h4><p class="muted">No ticket tonight: ${t.reason}.</p>`;
+    const rows = t.legs.map((l, i) => `<tr><td>${i + 1}</td><td><b>${l.type === 'ml' ? `${l.team} to win` : `${l.name} over ${l.line} ${PARLAY_STATS[l.stat]}`}</b>${mark(l)}<div class="muted">${l.matchup}${l.type === 'prop' ? ` · projection ${l.mean.toFixed(1)} ± ${l.sd.toFixed(1)}, ${l.min.toFixed(0)} min (rank ${l.rank})` : ` · ${odds(l.odds)} · model ${pct(l.pModel)}, DraftKings no-vig ${pct(l.pMarket)}`}</div></td><td class="num">${pct(l.p)}</td></tr>`).join('');
+    const res = t.result ? ` · <b>${t.result.outcome === 'win' ? 'WON' : t.result.outcome === 'loss' ? 'LOST' : 'VOID'}</b> (${t.result.legsHit} hit${t.result.legsVoid ? `, ${t.result.legsVoid} void` : ''})${t.result.units != null ? ` · ${t.result.units >= 0 ? '+' : ''}${t.result.units}u` : ''}` : '';
+    const price = t.recipe === 'edge' ? `legs' prices multiplied ${odds(t.price)}` : t.quote != null ? `quoted ${odds(t.quote)}` : 'price: your DraftKings quote (send it in chat to log it)';
+    const note = t.recipe === 'edge'
+      ? `Each leg is shown at DraftKings' chance plus ${S.edge.share * 100}% of the model's gap — the share that showed up against the opening line on the replay; against the close none of it did, so this depends on an early price.`
+      : 'Each leg is the props model\'s 90% line, which the replay holdout found calibrated for points and PRA with season-average minutes; on NB.AI\'s minutes it is still being measured. Its known risk is the player\'s team getting blown out, which cannot be seen before tip.';
+    return `<h4 style="margin-top:14px">${title}</h4>
+      <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>#</th><th>Leg</th><th class="num">Shown</th></tr>${rows}</table></div>
+      <p>Combined ${pct(t.p)} · fair ${odds(t.fairAmerican)} · ${price}${res}</p><p class="muted">${note}</p>`;
+  };
+  const rec = seasonPitchRecord(ledger, typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : []);
+  const recRow = (k, label) => { const g = rec[k]; return `<tr><td><b>${label}</b></td><td class="num">${g.nights}</td><td class="num">${g.tickets}</td><td class="num">${g.settled ? `${g.won}/${g.settled}` : '—'}</td><td class="num">${g.legs ? `${pct(g.legsHit / g.legs)} <span class="muted">vs ${pct(g.legsShown / g.legs)} shown · ${g.legs}</span>` : '—'}</td><td class="num">${g.priced ? `${g.units >= 0 ? '+' : ''}${g.units}u <span class="muted">(${g.priced})</span>` : '—'}</td><td class="num">${g.clvN ? `${g.clvToward}/${g.clvN} <span class="muted">avg ${(g.clvMove * 100).toFixed(1)} pp</span>` : '—'}</td></tr>`; };
+  return `<div class="ledger">
+    <p class="muted">Two tickets a night under spec ${S.version} (frozen ${S.frozen}, judged from ${S.firstNight}): a floor ticket, the main recipe, and an edge ticket, an experiment. Your daily run records them before any leg tips and grades them the next morning, so each recipe earns its own record. Shown chances are the calibrated or evidence-adjusted ones, not the model's raw claims. Unproven; it never sizes a stake.</p>
+    <p class="muted">${recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date} (${recorded.source || 'slate'}).` : `<span class="warn">Preview from the current slate — not recorded yet; your daily run records tonight's pitch.</span>`}</p>
+    ${night.tickets.map(ticket).join('')}
+    <h4 style="margin-top:18px">Record — from ${S.firstNight}</h4>
+    <div style="overflow-x:auto"><table><tr><th>Recipe</th><th class="num">Nights</th><th class="num">Tickets</th><th class="num">Won</th><th class="num">Legs hit</th><th class="num">Units</th><th class="num" title="edge legs: did DraftKings' price move toward our side between the pitch and the close">Line moved</th></tr>${recRow('floor', 'Floor')}${recRow('edge', 'Edge')}</table></div>
   </div>`;
 }
 
