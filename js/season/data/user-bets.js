@@ -6,6 +6,9 @@
 // market's win probability for that side as recorded before tip-off,
 // so the user's picks can later be compared with both. stake is null
 // when not given; americanOdds is the parlay price from the legs' odds.
+// A ticket logged before its games are final has result null and each
+// leg's hit and final null until it is graded; pPicks is the picks
+// engine's chance when the ticket was checked (parlay checker).
 // ============================================================
 const SEASON_USER_BETS = [
  {
@@ -223,5 +226,158 @@ const SEASON_USER_BETS = [
    "legsHit": 4,
    "settledAt": "2026-11-05T15:51:25.638Z"
   }
+ },
+ {
+  "id": "season-2026-11-07-001",
+  "date": "2026-11-07",
+  "loggedAt": "2026-11-07T21:49:02.504Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 618,
+  "oddsSource": "DraftKings moneylines on the site's slate at 12:20 PM ET (ESPN pickcenter), from the Parlay tab's Copy ticket; the price actually taken may differ",
+  "checker": {
+   "engine": "2026-11-07.rotcap",
+   "props": "2026-11-07.sdscale",
+   "pModel": 0.184,
+   "note": "pPicks = picks engine on the 12:20 PM slate as the ticket was built; pOurs = the ledger's recorded Ours, as for earlier tickets"
+  },
+  "legs": [
+   {
+    "gameId": "401909938",
+    "team": "DEN",
+    "opponent": "IND",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -305,
+    "pOurs": 0.6147,
+    "pMarket": 0.7238,
+    "pPicks": 0.7262,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909939",
+    "team": "ATL",
+    "opponent": "BKN",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -269,
+    "pOurs": 0.6443,
+    "pMarket": 0.7006,
+    "pPicks": 0.6898,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909940",
+    "team": "CLE",
+    "opponent": "NY",
+    "side": "home",
+    "market": "moneyline",
+    "odds": 170,
+    "pOurs": 0.552,
+    "pMarket": 0.3556,
+    "pPicks": 0.5081,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909942",
+    "team": "GS",
+    "opponent": "ORL",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -217,
+    "pOurs": 0.7539,
+    "pMarket": 0.6571,
+    "pPicks": 0.7229,
+    "hit": null,
+    "final": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "id": "season-2026-11-07-002",
+  "date": "2026-11-07",
+  "loggedAt": "2026-11-07T21:49:50.127Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 326,
+  "oddsSource": "DraftKings moneylines on the site's slate at 12:20 PM ET (ESPN pickcenter), from the Parlay tab's Copy ticket; the price actually taken may differ",
+  "checker": {
+   "engine": "2026-11-07.rotcap",
+   "props": "2026-11-07.sdscale",
+   "pModel": 0.2099,
+   "note": "pPicks = picks engine on the 12:20 PM slate as the ticket was built; pOurs = the ledger's recorded Ours, as for earlier tickets"
+  },
+  "legs": [
+   {
+    "gameId": "401909942",
+    "team": "GS",
+    "opponent": "ORL",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -217,
+    "pOurs": 0.7539,
+    "pMarket": 0.6571,
+    "pPicks": 0.7229,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909938",
+    "team": "DEN",
+    "opponent": "IND",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -305,
+    "pOurs": 0.6147,
+    "pMarket": 0.7238,
+    "pPicks": 0.7262,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909939",
+    "team": "ATL",
+    "opponent": "BKN",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -269,
+    "pOurs": 0.6443,
+    "pMarket": 0.7006,
+    "pPicks": 0.6898,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909941",
+    "team": "OKC",
+    "opponent": "WSH",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -597,
+    "pOurs": 0.7503,
+    "pMarket": 0.823,
+    "pPicks": 0.8066,
+    "hit": null,
+    "final": null
+   },
+   {
+    "gameId": "401909943",
+    "team": "HOU",
+    "opponent": "PHX",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -269,
+    "pOurs": 0.7416,
+    "pMarket": 0.7006,
+    "pPicks": 0.7186,
+    "hit": null,
+    "final": null
+   }
+  ],
+  "result": null
  }
 ];
