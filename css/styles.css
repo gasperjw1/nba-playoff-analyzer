@@ -27,6 +27,11 @@
   .header h1 span { color: var(--accent); }
   .header-sub { font-size:11px; color:var(--text-dim); margin-left:8px; }
   .header-right { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  /* Site navigation — the same bar on every page (index, playoffs, season) */
+  .site-nav a { color:var(--text-dim); text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; margin-left:18px; }
+  .site-nav a:first-child { margin-left:0; }
+  .site-nav a:hover, .site-nav a.active { color:var(--accent); }
+  .legend-bar { padding:10px 32px 0; background:var(--bg); }
   .legend { display:flex; gap:14px; font-size:11px; color:var(--text-dim); }
   .legend-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:3px; vertical-align:middle; }
 
@@ -263,8 +268,6 @@
   .sport-btn:hover { color:var(--text); border-color:var(--text-dim); }
   .sport-btn.active { color:var(--bg); background:var(--accent); border-color:var(--accent); }
   a.sport-btn { text-decoration:none; display:inline-flex; align-items:center; }
-  .sport-btn.site-link { margin-left:auto; }
-  @media (max-width:768px) { .sport-btn.site-link { margin-left:0; } }
 
   /* Learnings & Definitions Pages */
   .page-content { padding:24px 32px 32px; }
