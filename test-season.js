@@ -1053,5 +1053,28 @@ console.log('TEST 24: late-injury-flip rule (evening-before vs latest-report pic
   assert(lt.includes('Late injury flip (LATE) — frozen 2026-11-06, judged from 2026-11-07') && lt.includes('8 flips in'), 'Ledger tab shows the rule with the replay description');
 }
 
+console.log('TEST 25: official injury report over a slate (fetch-slate.js --injuries)');
+{
+  const c = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, String, Number, RegExp, Date });
+  for (const f of ['js/season/replay-core.js', 'js/season/injury-report.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const pl = (id, name, status, availability) => ({ id, name, status, availability, injury: null });
+  const slate = { date: '2026-11-06', games: [{ home: 'CLE', away: 'PHI' }], teams: {
+    CLE: { players: [pl('1', 'Jarrett Allen', 'Questionable', 0.5), pl('2', 'Peyton Watson', 'Questionable', 0.5), pl('3', 'Evan Mobley', 'Available', 1), pl('4', 'Max Strus', 'Out', 0)] },
+    PHI: { players: [pl('5', 'Joel Embiid', 'Questionable', 0.5)] },
+    MIL: { players: [pl('6', 'Giannis Antetokounmpo', 'Questionable', 0.5)] } } };
+  const e = (team, player, status, gameDate) => ({ gameDate: gameDate || '11/06/2026', team, player, status, reason: 'Injury/Illness - Knee' });
+  const r = c.seasonApplyInjuryReport(slate, { name: 'Injury-Report_2026-11-06_07_00PM.pdf', at: Date.UTC(2026, 10, 7, 0, 0), entries: [
+    e('Cleveland Cavaliers', 'Allen, Jarrett', 'Out'), e('Cleveland Cavaliers', 'Watson, Peyton', 'Available'), e('Cleveland Cavaliers', 'Tomlin, Nae\'Qwan', 'Out'),
+    e('Philadelphia 76ers', 'Embiid, Joel', 'Out', '11/07/2026'), e('Milwaukee Bucks', 'Antetokounmpo, Giannis', 'Out')] });
+  const cle = Object.fromEntries(r.slate.teams.CLE.players.map(p => [p.name, p]));
+  assert(cle['Jarrett Allen'].status === 'Out' && cle['Jarrett Allen'].availability === 0 && cle['Jarrett Allen'].injury === 'Injury/Illness - Knee', 'listed player takes the report status');
+  assert(cle['Peyton Watson'].availability === 1 && cle['Evan Mobley'] === slate.teams.CLE.players[2], 'listed Available → 1; an available unlisted player is untouched');
+  assert(cle['Max Strus'].status === 'Available' && cle['Max Strus'].availability === 1, 'feed Out but omitted by a team the report lists → Available');
+  assert(r.slate.teams.PHI === slate.teams.PHI, 'a team listed only for another date is untouched');
+  assert(r.slate.teams.MIL === slate.teams.MIL, 'a team not playing tonight is untouched');
+  assert(r.changes.length === 3 && r.unmatched.length === 1 && r.unmatched[0].player === 'Tomlin, Nae\'Qwan', 'changes and unmatched names reported');
+  assert(r.slate.injuryReport.name === 'Injury-Report_2026-11-06_07_00PM.pdf' && r.slate.injuryReport.changes === 3 && slate.teams.CLE.players[0].status === 'Questionable', 'stamped on a copy; input slate unchanged');
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

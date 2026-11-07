@@ -16,6 +16,10 @@
 //                                  --record / --dry). No NB.AI probabilities; rows
 //                                  are marked source "espn" and a later pre-tip
 //                                  --record replaces them.
+//   node fetch-slate.js --injuries also lay the latest official NBA injury report over
+//                                  the feed's player statuses (js/season/injury-report.js)
+//                                  — for refreshing the snapshot when NB.AI lags late news.
+//                                  Combines with the others; recorded rows never change.
 //
 // Daily routine: `./season-daily.sh` picks the phase by time of day and
 // runs each at most once per day (the SessionStart hook calls it too).
@@ -55,6 +59,8 @@ function loadSeasonContext() {
   load('js/season/ensemble.js');
   load('js/season/trust.js');
   load('js/season/ledger.js');
+  load('js/season/replay-core.js');
+  load('js/season/injury-report.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   return ctx;
 }
@@ -82,7 +88,15 @@ async function main() {
     return;
   }
 
-  const slate = args.has('--espn') ? await espnSlate(ctx) : await nbaiSlate(ctx);
+  let slate = args.has('--espn') ? await espnSlate(ctx) : await nbaiSlate(ctx);
+  if (args.has('--injuries')) {
+    const report = await require('./late-flip.js').reportBefore(Date.now(), Date.now());
+    const applied = ctx.seasonApplyInjuryReport(slate, report);
+    slate = applied.slate;
+    console.log(`Official injury report ${report.name}: ${applied.changes.length} status changes over the feed`);
+    for (const c of applied.changes) console.log(`  injury ${c.team} ${c.name}: ${c.from} → ${c.to}`);
+    for (const e of applied.unmatched.filter(e => !/G League/.test(e.reason || ''))) console.log(`  injury unmatched: ${e.team} ${e.player} (${e.status})`);
+  }
   slate.results = await seasonResults(slate.date);   // for the opponent-adjusted line
   const teamCount = Object.keys(slate.teams).length;
   console.log(`Slate ${slate.date}: ${slate.games.length} games, ${teamCount} teams, ${slate.source === 'espn' ? 'ESPN fallback (no NB.AI)' : 'feed v' + slate.modelVersion}, fetched ${slate.fetchedAt}`);
