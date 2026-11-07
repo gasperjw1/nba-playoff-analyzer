@@ -36,13 +36,15 @@ the close. The spec makes the floor ticket the main recipe and the moneyline-edg
 experiment, both recorded before tip and graded.
 
 To do, in order:
-1. **Freeze and build `pitch-1`:** the pitch module, the site tab, `js/season/data/pitch-ledger.js`
-   written by `--record` and graded by `--settle`, tests. Commit the spec unchanged with the code
-   before the first night it runs.
+1. ~~Freeze and build `pitch-1`~~ — built 2026-11-07 (`js/season/pitch.js`, Pitch tab,
+   `js/season/data/pitch-ledger.js`, TEST 32); frozen by committing PITCH_SPEC.md unchanged with the
+   code; first judged night 2026-11-08. Floor quotes the user sends in chat are added to that night's
+   ticket (`quote`) so it can be scored in units.
 2. **Same-game correlation:** measure from this season's box scores (team result vs player PRA,
    two players on one team) so same-game legs can be priced, not just flagged.
-3. **Rest-night and back-to-back risk:** 5% of players counted available did not play (1% expected);
-   split by rest, back-to-back and age to see whether floor legs need a rest filter.
+3. ~~Rest-night and back-to-back risk~~ — checked 2026-11-07, no filter needed: the did-not-play
+   risk is the bench's (floor-eligible players 0 of 766), and floor-eligible 90% PRA lines cleared
+   93.4% on back-to-backs (91.5% otherwise, 90.2% at 32+; model 90.7%). Written into PITCH_SPEC.md.
 4. **Price timing:** for every ledger row and logged ticket, where the price taken sits between
    DraftKings' open and close (both already stored at settle), since moneyline edges hold only at
    early prices. Drop rows whose ESPN "open" is implausible.

@@ -33,6 +33,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/ledger.js');
   load('js/season/props-ledger.js');
   load('js/season/parlay.js');
+  load('js/season/pitch.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1402,6 +1403,91 @@ console.log('TEST 31: parlay-check.js leg parser');
   const err = (t) => { try { parseLeg(t, slate, slate); return null; } catch (e) { return e.message; } };
   assert(/2 players match/.test(err('Player 0 pra o20.5 -110')) && /odds .* missing/.test(err('a Player 0 pra o20.5')) && /o or u/.test(err('a Player 0 pra 20.5 -110')) && /expected a team/.test(err('ZZZ')),
     'ambiguous name, missing odds, missing o/u, unknown team → errors');
+}
+
+console.log('TEST 32: pitched tickets (pitch.js, spec pitch-1)');
+{
+  const c = loadCtx(false, true);
+  // Three games of the fixture's two teams, re-labelled so each game has its own teams and players.
+  const base = makeSlate(c);
+  const clone = (t, ab) => ({ ...t, abbr: ab, players: t.players.map(p => ({ ...p, id: ab + p.id, name: ab + ' ' + p.name })) });
+  const teams = {}, games = [];
+  const later = '2099-01-0', earlier = '2000-01-0';
+  [['H1', 'A1'], ['H2', 'A2'], ['H3', 'A3']].forEach(([h, a], i) => {
+    teams[h] = clone(base.teams.AAA, h); teams[a] = clone(base.teams.BBB, a);
+    games.push({ id: 'g' + (i + 1), tip: `${later}${i + 1}T00:00Z`, venue: null, home: h, away: a, market: { mlHome: -150, mlAway: 130, spreadHome: -3, total: 228, book: 'DraftKings' }, external: null });
+  });
+  for (const t of Object.values(teams)) for (const p of t.players) c.SEASON_PLAYER_PRIORS.players[p.id] = priorEntry(c, p, { [t.abbr]: 82 });
+  c._priorsByTeamCache = null;
+  const slate = { ...base, date: '2026-11-08', teams, games, source: 'nb.ai' };
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const S = c.SEASON_PITCH_SPEC;
+  assert(S.version === 'pitch-1' && S.firstNight === '2026-11-08' && S.floor.legs === 3 && S.floor.minMinutes === 28 && S.edge.minEdge === 0.08 && S.edge.share === 0.45, 'spec constants as written in PITCH_SPEC.md');
+  // Floor candidates: rules applied exactly.
+  const cands = c.pitchFloorCandidates(slate, now);
+  assert(cands.length > 0 && cands.every(l => l.rank <= 5 && l.min >= 28 && ['pra', 'pts'].includes(l.stat) && l.line === c.propCheckLine(l.mean, l.sd, 'floor') && l.line >= 0.5 * l.mean && Math.abs(l.p - c.probOver(l.mean, l.sd, l.line)) < 1e-4), 'floor legs: top-5, 28+ min, points/PRA, the 90% line, not below half the projection');
+  const fl = c.buildFloorTicket(slate, now);
+  assert(fl.status === 'pitched' && fl.legs.length === 3 && new Set(fl.legs.map(l => l.game)).size === 3, 'floor ticket: 3 legs from 3 games');
+  const sorted = cands.slice().sort((a, b) => b.min - a.min || b.line - a.line);
+  assert(fl.legs[0].player === sorted[0].player && fl.legs[0].stat === sorted[0].stat && fl.legs.every((l, i) => i === 0 || l.min <= fl.legs[i - 1].min), 'legs taken by projected minutes, then the higher line');
+  near(fl.p, fl.legs.reduce((s2, l) => s2 * l.p, 1), 1e-4, 'combined = product'); assert(fl.fairAmerican === c.parlayAmerican(1 / fl.p) && fl.price === null && fl.quote === null, 'fair odds; floor price comes from a quote');
+  // Questionable players and tipped games are out.
+  const q = { ...slate, teams: { ...teams, H1: { ...teams.H1, players: teams.H1.players.map(p => ({ ...p, availability: 0.5 })) } } };
+  assert(!c.pitchFloorCandidates(q, now).some(l => l.team === 'H1'), 'questionable players excluded');
+  const tipped = { ...slate, games: games.map((g, i) => i === 0 ? { ...g, tip: earlier + '1T00:00Z' } : g) };
+  const ft = c.buildFloorTicket(tipped, now);
+  assert(ft.status === 'no ticket' && /2 games/.test(ft.reason) && !c.pitchFloorCandidates(tipped, now).some(l => l.game === 'g1'), 'a tipped game is skipped; fewer than 3 games → no ticket');
+  // Edge ticket: DraftKings makes the away side a big favourite where the model sees a coin flip.
+  const proj = c.projectSeasonGame(games[0], slate);
+  const mk = (mlHome, mlAway) => ({ mlHome, mlAway, spreadHome: 0, total: 228, book: 'DraftKings' });
+  const edgeSlate = { ...slate, games: games.map((g, i) => ({ ...g, market: i < 2 ? mk(400, -550) : mk(-150, 130) })) };
+  const realTrust = c.seasonTrustCheck;
+  c.seasonTrustCheck = () => null;
+  const ed = c.buildEdgeTicket(edgeSlate, now);
+  assert(ed.status === 'pitched' && ed.legs.length === 2 && ed.legs.every(l => l.side === 'home' && l.pModel - l.pMarket >= 0.08), 'edge ticket: the two 8+ pp games');
+  const l0 = ed.legs[0];
+  near(l0.pMarket, c._noVigHome(400, -550), 1e-4, 'DraftKings no-vig'); near(l0.p, l0.pMarket + 0.45 * (l0.pModel - l0.pMarket), 1e-4, 'shown = DK + 45% of the gap');
+  assert(ed.price === c.parlayAmerican(c.parlayDecimal(400) ** 2), 'price = legs multiplied');
+  c.seasonTrustCheck = (() => { let k = 0; return () => (k++ === 0 ? { rule: 'AVOID' } : null); })();
+  const av = c.buildEdgeTicket(edgeSlate, now);
+  assert(av.status === 'no ticket' && /1 game/.test(av.reason), 'AVOID in a game removes it; fewer than 2 → no ticket');
+  c.seasonTrustCheck = realTrust;
+  // Merge
+  const night = c.buildPitches(slate, { engine: 'e', props: 'p', recordedAt: 't', now });
+  const espn = { ...night, source: 'espn' }, rows = [];
+  assert(c.mergePitch(rows, espn, now) === 'added' && c.mergePitch(rows, night, now) === 'replaced' && rows[0].source === 'nb.ai', 'ESPN-fallback night replaced by a later NB.AI record before tip');
+  assert(c.mergePitch(rows, { ...night, recordedAt: 't2' }, now) === 'kept' && rows[0].recordedAt === 't', 'a recorded night is final');
+  assert(c.mergePitch([], night, Date.parse('2099-02-01T00:00:00Z')) === 'late', 'never after a leg tips');
+  // Grade: leg 1 hits, leg 2 misses, leg 3 did not play.
+  const t1 = JSON.parse(JSON.stringify(rows[0])), F = t1.tickets[0];
+  const results = new Map(F.legs.map(l => [l.game, { homeScore: 100, awayScore: 90 }]));
+  const box = (l, pts, played) => ({ [l.team]: [{ id: l.player, name: l.name, played, line: { min: 30, pts, reb: 0, ast: 0, tpm: 0 } }] });
+  const boxes = new Map([[F.legs[0].game, box(F.legs[0], F.legs[0].line + 5, true)], [F.legs[1].game, box(F.legs[1], 0, true)], [F.legs[2].game, box(F.legs[2], 0, false)]]);
+  assert(c.settlePitches([t1], new Map(), boxes, 's') === 0 && !F.result, 'no final score yet → not graded');
+  const n = c.settlePitches([t1], results, boxes, 's');
+  assert(n === 1 && F.legs.map(l => l.result.outcome).join() === 'hit,miss,void' && F.result.outcome === 'loss' && F.result.legsVoid === 1 && F.result.units === null, 'hit / miss / void graded; a miss loses; no units without a price');
+  const t2 = JSON.parse(JSON.stringify(rows[0])); t2.tickets[0].quote = 600;
+  c.settlePitches([t2], results, new Map(F.legs.map(l => [l.game, box(l, l.line + 1, true)])), 's');
+  assert(t2.tickets[0].result.outcome === 'win' && t2.tickets[0].result.units === 6, 'all hit at a quote of +600 → +6 units');
+  // Record (from the first night), with line movement for edge legs from the game ledger's close.
+  const er = { id: '2026-11-09', date: '2026-11-09', spec: 'pitch-1', tickets: [{ recipe: 'floor', status: 'no ticket', reason: 'x', legs: [] },
+    { recipe: 'edge', status: 'pitched', p: 0.2, price: 500, legs: [{ type: 'ml', game: 'z1', side: 'home', odds: 120, pMarket: 0.44, pModel: 0.55, p: 0.49, result: { outcome: 'hit' } }, { type: 'ml', game: 'z2', side: 'away', odds: 150, pMarket: 0.38, pModel: 0.5, p: 0.43, result: { outcome: 'miss' } }], result: { outcome: 'loss', legsHit: 1, legsVoid: 0, units: -1 } }] };
+  const led = [{ id: 'z1', book: 'DraftKings', close: { mlHome: -110, mlAway: -110, book: 'DraftKings' } }, { id: 'z2', book: 'DraftKings', close: { mlHome: -200, mlAway: 170, book: 'DraftKings' } }];
+  const old = { ...er, id: '2026-11-07', date: '2026-11-07' };
+  const R = c.seasonPitchRecord([t2, er, old], led);
+  assert(R.floor.nights === 2 && R.floor.tickets === 1 && R.floor.noTicket === 1 && R.floor.won === 1 && R.floor.units === 6 && R.floor.legs === 3, 'floor record counts its nights, tickets and graded legs from the first night');
+  const RE = c.seasonPitchRecord([er, old], led).edge;
+  assert(RE.nights === 1 && RE.tickets === 1 && RE.won === 0 && RE.units === -1 && RE.legs === 2 && RE.legsHit === 1 && Math.abs(RE.legsShown - 0.92) < 1e-9, 'edge record; Nov 7 (before the first night) not counted');
+  assert(RE.clvN === 2 && RE.clvToward === 1, 'line movement from the pitch price to the close (z1 moved toward home, z2 away from the away side)');
+  assert(R.edge.nights === 2, 'a night counts for a recipe whether it pitched or recorded no ticket');
+  // Tab: preview vs recorded
+  c.seasonState.slate = slate;
+  c.SEASON_PITCH_LEDGER = [];
+  assert(c.renderPitchTab().includes('Preview from the current slate'), 'unrecorded night shows a labelled preview');
+  c.SEASON_PITCH_LEDGER = [rows[0]];
+  const html = c.renderPitchTab();
+  assert(html.includes('Recorded') && html.includes('Floor ticket — main recipe') && html.includes('Edge ticket — experiment') && html.includes('Record — from 2026-11-08'), 'recorded night and the record table render');
+  assert(c.SEASON_TABS.some(([id]) => id === 'pitch'), 'Pitch tab listed');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
