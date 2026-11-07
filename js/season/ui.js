@@ -567,6 +567,7 @@ function renderLedgerTab() {
       <button class="btn btn-secondary btn-sm" onclick="seasonExportLedger()">Copy ledger JSON</button>
       <span class="muted">${rows.length} rows · ${settled} settled · recorded before tip-off only counts</span></div>
     ${typeof SEASON_TRUST !== 'undefined' ? renderTrustRules(rows) : ''}
+    ${typeof SEASON_PROPS_LEDGER !== 'undefined' ? renderPropsRecord(SEASON_PROPS_LEDGER) : ''}
     <div class="scorecard">${tile('ours', 'Ours')}${tile('friend', 'NB.AI')}${tile('market', 'Market')}${tile('blend', 'Blend')}${tile('baseline', 'Always home')}</div>
     <p class="muted">Targets: no-vig closing line runs ≈ 67.8% / Brier 0.205 / margin MAE ≈ 10 over 13k+ games. ${stack.status === 'insufficient' ? `Stacking weights need ${stack.needed} settled games with all three forecasts (have ${stack.n}).` : `Stacking (${stack.status}, n=${stack.n}): logit P = ${stack.bias} + ${stack.weights.map((w, i) => `${w}·${stack.labels[i]}`).join(' + ')}. ${stack.note}`}</p>
     <table><tr><th>Date</th><th>Game</th><th>Ours</th><th>NB.AI</th><th>Market</th><th>Blend</th><th>Line</th><th>Result</th><th></th></tr>
@@ -622,6 +623,22 @@ function seasonReplayLateRows() {
     late: { flip: (r.pOursEve >= 0.5) !== (r.pOurs >= 0.5), side: r.pOursEve >= 0.5 ? 'home' : 'away' },
   }));
 }
+// Props ledger (props-ledger.js): calibration of the recorded projections at bettable lines, no prices yet.
+function renderPropsRecord(rows) {
+  const all = seasonPropsRecord(rows), open = rows.filter(r => !r.result).length;
+  const pc = (x) => x == null ? '—' : `${(x * 100).toFixed(0)}%`;
+  const at = (c) => c && c.n ? `${pc(c.over)} <span class="muted">vs ${pc(c.expected)} · n=${c.n}</span>` : '—';
+  const line = (label, st) => st && st.n ? `<tr><td>${label}</td><td class="num">${st.n}</td><td class="num">${st.mae}</td><td class="num">${st.bias >= 0 ? '+' : ''}${st.bias}</td><td class="num">${at(st.proj)}</td><td class="num">${at(st.p75)}</td><td class="num">${at(st.floor)}</td></tr>` : `<tr><td>${label}</td><td class="num">0</td><td colspan="5" class="muted">nothing settled yet</td></tr>`;
+  const tier = (f) => seasonPropsRecord(rows, { filter: f }).stats.pra;
+  return `<h4 style="margin-top:14px">Props ledger — pre-tip projections graded from box scores</h4>
+    <p class="muted">Every rotation player's projection (${SEASON_PROPS_MIN_MINUTES}+ projected minutes) on the picks engine's slate, recorded with the slate and graded from ESPN box scores. No prop prices yet, so this measures calibration, not edge. Each projection is checked at three half-point lines: the one nearest the projection, the highest the model gives a 75% chance of going over, and the highest it gives 90% — a floor leg's deep alternate line. Each cell is the share that went over <span class="muted">vs the model's average chance at those lines</span>; calibrated when they match. Projections assume the player plays (DraftKings voids a prop when he sits), so players who did not play are counted apart. Players in one game move together (pace, blowouts), so a night or two says little — read it over dozens of games. ${all.n} settled (${all.games} games, ${all.played} played), ${open} open.</p>
+    <table><tr><th>Stat</th><th class="num">n</th><th class="num">MAE</th><th class="num">Bias</th><th class="num">Over the projection line</th><th class="num">Over the 75% line</th><th class="num">Over the 90% floor</th></tr>
+      ${SEASON_PROPS_STATS.map(s => line(s === 'tpm' ? '3PM' : s.toUpperCase(), all.stats[s])).join('')}
+      ${line('PRA · top 5 minutes', tier(r => r.rank <= 5))}${line('PRA · rest of rotation', tier(r => r.rank > 5))}
+    </table>
+    <p class="muted">Minutes: MAE ${all.minutes.mae != null ? all.minutes.mae : '—'} · did not play ${pc(all.minutes.dnp)} (listed availability implied ${pc(all.minutes.dnpExpected)}) · played under 70% of projected minutes ${pc(all.minutes.short)}. Bias = actual − projection.</p>`;
+}
+
 function renderLateFlipRule(rows) {
   const L = SEASON_LATE_FLIP, rep = seasonReplayLateRows();
   const cell = (g) => `${g.flips} flip${g.flips === 1 ? '' : 's'} in ${g.checked} checked${g.n ? ` · ${g.won}–${g.n - g.won} · ${g.units >= 0 ? '+' : ''}${g.units}u` : ''}${g.clvN ? ` · line moved our way ${g.toward}/${g.clvN} (avg ${g.move >= 0 ? '+' : ''}${(g.move * 100).toFixed(1)} pp)` : ''}`;
