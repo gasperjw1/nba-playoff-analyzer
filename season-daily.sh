@@ -68,7 +68,7 @@ if [ "$FORCE" -eq 1 ] || ! done_today settle; then
   if out=$(node fetch-slate.js --settle 2>&1); then
     mark settle
     log "settle: $(printf '%s\n' "$out" | grep -E '^(Settled|Nothing)' | head -1)"
-    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline) ' | sed 's/^/[season-daily]   /'
+    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline|props) ' | sed 's/^/[season-daily]   /'
   else
     log "settle FAILED: $(printf '%s\n' "$out" | tail -2 | tr '\n' ' ')"
   fi
@@ -79,10 +79,10 @@ fi
 # ── 2. snapshot + record tonight's slate ─────────────────────
 espn_fallback() {
   if fb=$(node fetch-slate.js --espn --record 2>&1); then
-    log "ESPN fallback: $(printf '%s\n' "$fb" | grep -E '^(Slate |Ledger:)' | tr '\n' ' ')"
+    log "ESPN fallback: $(printf '%s\n' "$fb" | grep -E '^(Slate |Ledger:|Props ledger:)' | tr '\n' ' ')"
     printf '%s\n' "$fb" | grep -E '^  ([A-Z]{2,4} @ |check: )' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$fb" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
-      log "fallback rows recorded (no NB.AI) — review any 'check:' lines, commit js/season/data/slate-snapshot.js and season-ledger.js; run again if NB.AI refreshes before tip-off"
+      log "fallback rows recorded (no NB.AI) — review any 'check:' lines, commit js/season/data/slate-snapshot.js, season-ledger.js and props-ledger.js; run again if NB.AI refreshes before tip-off"
     fi
   else
     log "ESPN fallback FAILED: $(printf '%s\n' "$fb" | tail -2 | tr '\n' ' ')"
@@ -97,10 +97,10 @@ elif [ "$FORCE" -eq 1 ] || ! done_today record; then
     # Only count the day as done when the feed was today's slate; a stale
     # feed leaves the phase open so a later run retries.
     if printf '%s\n' "$out" | grep -q '^Ledger: +'; then mark record; fi
-    log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|record skipped)' | tr '\n' ' ')"
+    log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|Props ledger:|record skipped)' | tr '\n' ' ')"
     printf '%s\n' "$out" | grep -E '^  [A-Z]{2,4} @ ' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$out" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
-      log "new rows recorded — commit js/season/data/slate-snapshot.js and season-ledger.js"
+      log "new rows recorded — commit js/season/data/slate-snapshot.js, season-ledger.js and props-ledger.js"
     fi
     printf '%s\n' "$out" | grep -q '^record skipped: feed slate is' && NBAI_DOWN=1
   else

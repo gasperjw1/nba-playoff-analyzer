@@ -22,7 +22,7 @@ node backtest-season.js --compare HEAD --lineups last-game   # after any engine 
 node fetch-priors.js         # once per season: rebuild player priors (ESPN + Basketball-Reference)
 ```
 
-Then commit `js/season/data/slate-snapshot.js` + `js/season/data/season-ledger.js`. Best cadence: once in the morning (settle) and once after ~1 PM ET (record, before the first tip). `--force` reruns a phase; `node fetch-slate.js --settle` / `--record` are the underlying commands. The playoff checklist below is the archived 2026 routine.
+Then commit `js/season/data/slate-snapshot.js` + `js/season/data/season-ledger.js` + `js/season/data/props-ledger.js` (prop projections, recorded and settled with the games). Best cadence: once in the morning (settle) and once after ~1 PM ET (record, before the first tip). `--force` reruns a phase; `node fetch-slate.js --settle` / `--record` are the underlying commands. The playoff checklist below is the archived 2026 routine.
 
 ---
 

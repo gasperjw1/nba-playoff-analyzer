@@ -7,9 +7,11 @@
 // global fetch) and commits what the page needs:
 //
 //   node fetch-slate.js            download feed → js/season/data/slate-snapshot.js
-//   node fetch-slate.js --record   also append tonight's predictions to the ledger
+//   node fetch-slate.js --record   also append tonight's predictions to the ledger, and every
+//                                  rotation player's prop projection to the props ledger
 //                                  (refused when the feed is not today's slate; --force overrides)
-//   node fetch-slate.js --settle   fill results for unsettled ledger rows via ESPN
+//   node fetch-slate.js --settle   fill results for unsettled ledger rows via ESPN (and box
+//                                  scores for the props ledger)
 //   node fetch-slate.js --dry      print the normalized slate, write nothing
 //   node fetch-slate.js --espn     build tonight's slate from ESPN instead (fallback
 //                                  when NB.AI has not refreshed; combines with
@@ -39,6 +41,7 @@ const ESPN_CACHE = path.join(__dirname, '.cache/espn-nba');   // shared with bac
 const SEASON_START = '2026-10-20';
 const SNAPSHOT_PATH = path.join(__dirname, 'js/season/data/slate-snapshot.js');
 const LEDGER_PATH = path.join(__dirname, 'js/season/data/season-ledger.js');
+const PROPS_LEDGER_PATH = path.join(__dirname, 'js/season/data/props-ledger.js');
 const TEAM_PRIORS_PATH = path.join(__dirname, 'js/season/data/team-priors.js');
 
 const args = new Set(process.argv.slice(2));
@@ -61,7 +64,9 @@ function loadSeasonContext() {
   load('js/season/ledger.js');
   load('js/season/replay-core.js');
   load('js/season/injury-report.js');
+  load('js/season/props-ledger.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
+  if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   return ctx;
 }
 
@@ -73,6 +78,12 @@ async function getJson(url) {
   const res = await fetch(url, { headers: { 'accept': 'application/json' }, signal: AbortSignal.timeout(20000) });
   if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
   return res.json();
+}
+
+// One row per line: the props ledger grows by ~100 rows a night.
+function writePropsLedger(rows) {
+  fs.writeFileSync(PROPS_LEDGER_PATH, '// ============================================================\n// PROPS LEDGER — pre-tip player projections (2026-27), js/season/props-ledger.js\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit:\n// a projection is only evidence if recorded before tip-off.\n// ============================================================\n' +
+    `const SEASON_PROPS_LEDGER = [\n${rows.map(r => JSON.stringify(r)).join(',\n')}\n];\n`);
 }
 
 function writeJsGlobal(file, name, value, header) {
@@ -150,6 +161,12 @@ async function main() {
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);
+    // Props on the picks engine's slate (last season's ratings), like the picks.
+    const propRows = Array.isArray(ctx.SEASON_PROPS_LEDGER) ? ctx.SEASON_PROPS_LEDGER : [];
+    const recordedAt = new Date().toISOString(), propSlate = cleanSlate || slate;
+    const pm = ctx.mergePropRows(propRows, slate.games.flatMap(g => ctx.buildPropRows(g, propSlate, { engine: ctx.SEASON_ENGINE_VERSION, recordedAt })), new Date());
+    writePropsLedger(propRows);
+    console.log(`Props ledger: +${pm.added} recorded, ${pm.replaced} replaced (ESPN fallback games), ${pm.late} skipped (already tipped), ${propRows.length} total rows`);
   }
 }
 
@@ -270,7 +287,8 @@ async function settle(ctx) {
   const rows = Array.isArray(ctx.SEASON_LEDGER) ? ctx.SEASON_LEDGER : [];
   const open = rows.filter(r => !r.result);
   const needsClose = (r) => r.result && !r.close && (r.closeTries || 0) < 3;
-  if (!open.length && !rows.some(needsClose)) { console.log('Nothing to settle.'); return; }
+  const propRows = Array.isArray(ctx.SEASON_PROPS_LEDGER) ? ctx.SEASON_PROPS_LEDGER : [];
+  if (!open.length && !rows.some(needsClose) && !propRows.some(r => !r.result)) { console.log('Nothing to settle.'); return; }
   const dates = [...new Set(open.map(r => (r.tip || r.date).slice(0, 10)))];
   let settled = 0;
   for (const d of dates) {
@@ -307,10 +325,23 @@ async function settle(ctx) {
     } catch (e) { console.warn(`closing line ${r.away} @ ${r.home}: ${e.message}`); }
   }
   console.log(`Closing lines captured: ${closes}`);
-  if (DRY) { console.log(`(dry) would settle ${settled}`); return; }
+  // Props: box scores of games the ledger has settled (final).
+  let propsSettled = 0;
+  const finals = new Set(rows.filter(r => r.result).map(r => r.id));
+  for (const g of [...new Set(propRows.filter(r => !r.result).map(r => r.game))].filter(id => finals.has(id))) {
+    try { propsSettled += ctx.settlePropRows(propRows, g, ctx.adaptEspnBox(await cachedJson(`summary-${g}.json`, ESPN_SUMMARY + g)), new Date().toISOString()); }
+    catch (e) { console.warn(`box score ${g}: ${e.message}`); }
+  }
+  if (DRY) { console.log(`(dry) would settle ${settled}, props ${propsSettled}`); return; }
+  if (propsSettled) writePropsLedger(propRows);
   writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', rows,
     '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
   console.log(`Settled ${settled}; ${rows.filter(r => !r.result).length} still open.`);
+  if (propsSettled) {
+    const pr = ctx.seasonPropsRecord(propRows);
+    const f = pr.stats.pra.floor || {};
+    console.log(`  props    settled ${propsSettled}; ${pr.played} played of ${pr.n} recorded · PRA MAE ${pr.stats.pra.mae} · over the 90% floor ${f.n ? pct(f.over) + ' (model ' + pct(f.expected) + ')' : '—'} · minutes MAE ${pr.minutes.mae}`);
+  }
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
 }

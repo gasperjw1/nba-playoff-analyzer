@@ -31,6 +31,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/ensemble.js');
   load('js/season/trust.js');
   load('js/season/ledger.js');
+  load('js/season/props-ledger.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1083,6 +1084,62 @@ console.log('TEST 25: official injury report over a slate (fetch-slate.js --inju
   assert(r.slate.teams.MIL === slate.teams.MIL, 'a team not playing tonight is untouched');
   assert(r.changes.length === 3 && r.unmatched.length === 1 && r.unmatched[0].player === 'Tomlin, Nae\'Qwan', 'changes and unmatched names reported');
   assert(r.slate.injuryReport.name === 'Injury-Report_2026-11-06_07_00PM.pdf' && r.slate.injuryReport.changes === 3 && slate.teams.CLE.players[0].status === 'Questionable', 'stamped on a copy; input slate unchanged');
+}
+
+console.log('TEST 26: props ledger (record, merge, settle, calibration)');
+{
+  const c = loadCtx(true, true);
+  const S = c.SEASON_SLATE_SNAPSHOT, g = S.games[0];
+  const rows = c.buildPropRows(g, S, { engine: 'e', recordedAt: 't' });
+  const proj = c.projectTeamProps(g.home, g.away, S).filter(p => p.min >= c.SEASON_PROPS_MIN_MINUTES);
+  assert(rows.length > 10 && rows.filter(r => r.team === g.home).length === proj.length, 'both teams\' rotation recorded (8+ min)');
+  const r0 = rows.find(r => r.team === g.home && r.player === proj[0].id);
+  assert(r0.id === `${g.id}:${proj[0].id}` && r0.pra === proj[0].pra && r0.sd.pra === proj[0].sd.pra && r0.opp === g.away && r0.result === null, 'row keeps the projection and its spreads');
+  assert(rows.filter(r => r.team === g.home).map(r => r.rank).join() === proj.map((_, i) => i + 1).join(), 'rank by projected minutes within the team');
+  const future = new Date(Date.parse(g.tip) - 3600e3), after = new Date(Date.parse(g.tip) + 60e3);
+  const espnRows = rows.map(r => ({ ...r, source: 'espn' })), ledger = [];
+  let m = c.mergePropRows(ledger, espnRows, future);
+  assert(m.added === rows.length && ledger.length === rows.length, 'new game recorded');
+  m = c.mergePropRows(ledger, rows.map(r => ({ ...r, source: 'nb.ai', recordedAt: 't2' })), future);
+  assert(m.replaced === rows.length && ledger.length === rows.length && ledger.every(r => r.source === 'nb.ai'), 'an unsettled ESPN-fallback game is replaced whole');
+  m = c.mergePropRows(ledger, rows.map(r => ({ ...r, source: 'nb.ai', recordedAt: 't3' })), future);
+  assert(m.added === 0 && m.replaced === 0 && ledger.every(r => r.recordedAt === 't2'), 'a recorded NB.AI game is final');
+  m = c.mergePropRows([], rows, after);
+  assert(m.late === rows.length && m.added === 0, 'never after tip-off');
+  // Settle against a box: first player plays his projection +1 sd in PRA, second does not play,
+  // third is listed under another id (matched by name), the rest are absent.
+  const [a, b, d] = ledger.filter(r => r.team === g.home);
+  const box = { [g.home]: [
+    { id: a.player, name: a.name, played: true, line: { min: a.min, pts: a.pts + a.sd.pra, reb: a.reb, ast: a.ast, tpm: 1 } },
+    { id: b.player, name: b.name, played: false, reason: 'COACH\'S DECISION', line: { min: 0 } },
+    { id: 'other-id', name: d.name.toUpperCase() + ' Jr.', played: true, line: { min: 20, pts: 10, reb: 5, ast: 2, tpm: 0 } }] };
+  assert(c.settlePropRows(ledger, g.id, {}, 's0') === 0 && ledger.every(r => !r.result), 'no box score yet → left open');
+  const n = c.settlePropRows(ledger, g.id, box, 's');
+  assert(n === ledger.filter(r => r.team === g.home).length && a.result.played && !a.result.matchedBy && Math.abs(a.result.pra - (a.pra + a.sd.pra)) < 1e-9 && !b.result.played && b.result.reason === 'COACH\'S DECISION', 'played / did not play settled by id');
+  assert(d.result.played && d.result.matchedBy === 'name' && d.result.pra === 17, 'a different id is matched by name within the team');
+  assert(ledger.filter(r => r.team === g.away).every(r => !r.result), 'a team without a box score stays open');
+  c.settlePropRows(ledger, g.id, { [g.away]: [{ id: 'x', name: 'Someone Else', played: true, line: { min: 30, pts: 1, reb: 1, ast: 1, tpm: 0 } }] }, 's');
+  assert(ledger.filter(r => r.team === g.away).every(r => !r.result.played && r.result.reason === 'not in box score'), 'absent from a posted box → did not play');
+  assert(c.settlePropRows(ledger, g.id, box, 's2') === 0, 'settled rows are not settled again');
+  // Check lines: highest half-point the model gives ≥ 90% / ≥ 75%, nearest to the projection; none below 0.5.
+  assert(c.propCheckLine(37.4, 11.66, 'floor') === 21.5 && c.probOver(37.4, 11.66, 21.5) >= 0.9 && c.probOver(37.4, 11.66, 22.5) < 0.9, '90% floor = highest half-point line at ≥ 90%');
+  assert(c.propCheckLine(37.4, 11.66, 'p75') === 29.5 && c.probOver(37.4, 11.66, 30.5) < 0.75, '75% line');
+  assert(c.propCheckLine(4.8, 2.45, 'proj') === 4.5 && c.propCheckLine(1.2, 1.08, 'floor') === null, 'projection line; no floor below 0.5');
+  const rec = c.seasonPropsRecord(ledger);
+  assert(rec.n === ledger.length && rec.played === 2 && rec.games === 1 && rec.stats.pra.n === 2, 'only players who played are scored');
+  const fa = c.propCheckLine(a.pra, a.sd.pra, 'floor'), fd = c.propCheckLine(d.pra, d.sd.pra, 'floor');
+  const fl = [[a, fa], [d, fd]].filter(([, l]) => l != null);
+  assert(rec.stats.pra.floor.n === fl.length && Math.abs(rec.stats.pra.floor.over - fl.filter(([r, l]) => r.result.pra > l).length / fl.length) < 1e-3, 'floor: share over the line');
+  near(rec.stats.pra.floor.expected, fl.reduce((s, [r, l]) => s + c.probOver(r.pra, r.sd.pra, l), 0) / fl.length, 1e-3, 'floor: model expectation at the same lines');
+  near(rec.stats.pra.bias, (a.sd.pra + (17 - d.pra)) / 2, 0.01, 'PRA bias = mean actual − projection');
+  near(rec.minutes.dnp, (ledger.length - 2) / ledger.length, 1e-3, 'did-not-play share');
+  near(rec.minutes.dnpExpected, ledger.reduce((s, r) => s + 1 - r.avail, 0) / ledger.length, 1e-3, 'did-not-play implied by listed availability');
+  assert(c.seasonPropsRecord(ledger, { filter: r => r.player === b.player }).played === 0, 'filter applies');
+  c.SEASON_PROPS_LEDGER = ledger;
+  const html = c.renderLedgerTab();
+  assert(html.includes('Props ledger — pre-tip projections graded from box scores') && html.includes('PRA · top 5 minutes'), 'Ledger tab shows the props record');
+  const html0 = c.renderPropsRecord([]);
+  assert(html0.includes('nothing settled yet'), 'empty props ledger renders');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
