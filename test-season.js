@@ -783,14 +783,18 @@ console.log('TEST 18: team priors + user bet log');
   const byId = Object.fromEntries(c.SEASON_LEDGER.map(r => [r.id, r]));
   const dec = a => a > 0 ? 1 + a / 100 : 1 + 100 / -a;
   c.SEASON_USER_BETS.forEach(b => {
+    // An open ticket (result null) is checked against its games and recorded P; a graded one against results too.
     const legsOk = b.legs.every(l => {
       const r = byId[l.gameId];
-      if (!r || !r.result || ![r.home, r.away].includes(l.team) || (l.side === 'home') !== (r.home === l.team)) return false;
+      if (!r || ![r.home, r.away].includes(l.team) || (l.side === 'home') !== (r.home === l.team)) return false;
+      if (Math.abs(l.pOurs - (l.side === 'home' ? r.pOurs : 1 - r.pOurs)) >= 1e-3) return false;
+      if (!b.result) return l.hit === null && l.final === null;
+      if (!r.result) return false;
       const won = l.side === 'home' ? r.result.homeScore > r.result.awayScore : r.result.awayScore > r.result.homeScore;
-      return won === l.hit && Math.abs(l.pOurs - (l.side === 'home' ? r.pOurs : 1 - r.pOurs)) < 1e-3;
+      return won === l.hit;
     });
-    assert(legsOk, `${b.id}: every leg matches its ledger game, side, result and model P`);
-    assert((b.result.outcome === 'win') === b.legs.every(l => l.hit) && b.result.legsHit === b.legs.filter(l => l.hit).length, `${b.id}: outcome follows its legs`);
+    assert(legsOk, `${b.id}: every leg matches its ledger game, side, model P${b.result ? ' and result' : ' (open)'}`);
+    if (b.result) assert((b.result.outcome === 'win') === b.legs.every(l => l.hit) && b.result.legsHit === b.legs.filter(l => l.hit).length, `${b.id}: outcome follows its legs`);
     const d = b.legs.reduce((p, l) => p * dec(l.odds), 1);
     assert(Math.abs(dec(b.americanOdds) - d) / d < 0.01, `${b.id}: parlay odds are the product of the legs`);
   });
