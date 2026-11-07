@@ -102,6 +102,10 @@ function projectPlayerProps(player, team, opp, slate, opts) {
   // Minutes drive all three the same direction, so treat them as fully
   // correlated rather than independent (sum of sds, not root-sum-square).
   out.sd.pra = +(0.85 * (out.sd.pts + out.sd.reb + out.sd.ast)).toFixed(2);
+  // Widen each spread by its calibrated scale (SEASON_PROP.sdScale) — after PRA's sd is formed from
+  // the unscaled parts, which is the form the scale was fitted on (backtest-prop-dist.js, props-2).
+  const scale = SEASON_PROP.sdScale || {};
+  for (const s of Object.keys(out.sd)) if (scale[s]) out.sd[s] = +(out.sd[s] * scale[s]).toFixed(2);
   out.factors = {
     paceF: +paceF.toFixed(3), defF: +defF.toFixed(3),
     redistPts: +redist.pts.toFixed(3), redistReb: +redist.reb.toFixed(3), redistAst: +redist.ast.toFixed(3),

@@ -216,6 +216,7 @@ function renderGameDetail(g, proj) {
     </table>
     <h4>${g.away} props</h4>${renderPropsTable(g.away, g.home)}
     <h4>${g.home} props</h4>${renderPropsTable(g.home, g.away)}
+    <p class="muted" style="margin-top:8px">P(over) from props model ${SEASON_PROP.version}. On the replay its 75% and 90% lines held for points and PRA (floors 90–91% cleared vs 91% shown); lines near the projection went over only 42–45% where it shows about 50% — stat lines are skewed low, so an over near the projection is worse than it looks.</p>
   </div>`;
 }
 

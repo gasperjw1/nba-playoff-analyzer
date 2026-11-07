@@ -59,7 +59,9 @@ function loadContext() {
 }
 // props-1's values are fixed here, not read from season-constants.js, so the frozen spec still
 // reproduces after the live model switched to redistribution 0 (2026-11-07.noredist).
+// The same for the spreads: props-1 (and props-2, which reads its rows) predate SEASON_PROP.sdScale.
 function setVariant(ctx, v) {
+  ctx.SEASON_PROP.sdScale = null;
   ctx.SEASON_PROP.redistribution = v === 'redist40' ? 0.40 : v === 'redist0' ? 0 : 0.80;
   ctx.calcRedistribution = v === 'curShare' ? (team, ov, cw, cg) => ctx._origRedistribution(team, ov, 1, cg) : ctx._origRedistribution;
 }
