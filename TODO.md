@@ -26,6 +26,31 @@ models on the actual data (results, box scores, calibration); whether the edges 
 - **First step when resumed:** a plan sized to the plan's quota — which markets, requests per night,
   and how prices/closes sit beside each props-ledger row.
 
+## Pitched tickets (draft spec: PITCH_SPEC.md, `pitch-1`)
+
+Researched 2026-11-07 from the playoff bets data and this season's replay; the evidence table is in
+the spec. Short version: the playoffs' real edge was deep "floor" prop legs (+8.4 ± 4.9 pp over real
+DraftKings prices, 89 legs) and short-priced tickets (+5.2 units); long shots went 2 of 14; this
+season's moneyline edges show up against the opening price (45% of the gap at 8+ pp) but not against
+the close. The spec makes the floor ticket the main recipe and the moneyline-edge ticket an
+experiment, both recorded before tip and graded.
+
+To do, in order:
+1. **Freeze and build `pitch-1`:** the pitch module, the site tab, `js/season/data/pitch-ledger.js`
+   written by `--record` and graded by `--settle`, tests. Commit the spec unchanged with the code
+   before the first night it runs.
+2. **Same-game correlation:** measure from this season's box scores (team result vs player PRA,
+   two players on one team) so same-game legs can be priced, not just flagged.
+3. **Rest-night and back-to-back risk:** 5% of players counted available did not play (1% expected);
+   split by rest, back-to-back and age to see whether floor legs need a rest filter.
+4. **Price timing:** for every ledger row and logged ticket, where the price taken sits between
+   DraftKings' open and close (both already stored at settle), since moneyline edges hold only at
+   early prices. Drop rows whose ESPN "open" is implausible.
+5. **Prop prices from checked tickets:** every prop leg the user checks in the Parlay tab carries
+   DraftKings' price; logging them (user-bets.js) builds the first season data on whether floors are
+   underpriced, before any paid feed.
+6. **Unders near the projection** (55–58% won on the replay) — a candidate recipe for `pitch-2`.
+
 ## Model
 
 - **Props distribution (props-3).** The live props model (`2026-11-07.sdscale`) still overstates overs
