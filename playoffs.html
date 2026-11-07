@@ -4,20 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 NBA Playoff Analyzer — Advanced Edition</title>
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=nav-2">
 </head>
 <body>
 
 <div class="header">
   <h1><span>2026</span> NBA Playoff Analyzer<span class="header-sub">Advanced Metrics Edition</span></h1>
-  <div class="header-right">
-    <div class="legend">
-      <span><span class="legend-dot" style="background:var(--green)"></span>Elite 85+</span>
-      <span><span class="legend-dot" style="background:var(--accent)"></span>High 70-84</span>
-      <span><span class="legend-dot" style="background:var(--yellow)"></span>Mid 55-69</span>
-      <span><span class="legend-dot" style="background:var(--red)"></span>Low &lt;55</span>
-      <span><span class="legend-dot" style="background:var(--purple)"></span>Game 1 Pick</span>
-    </div>
+  <div class="header-right site-nav">
+    <a href="index.html">Home</a>
+    <a href="playoffs.html" class="active">2026 Playoffs</a>
+    <a href="season.html">Regular Season</a>
+  </div>
+</div>
+
+<div class="legend-bar">
+  <div class="legend">
+    <span><span class="legend-dot" style="background:var(--green)"></span>Elite 85+</span>
+    <span><span class="legend-dot" style="background:var(--accent)"></span>High 70-84</span>
+    <span><span class="legend-dot" style="background:var(--yellow)"></span>Mid 55-69</span>
+    <span><span class="legend-dot" style="background:var(--red)"></span>Low &lt;55</span>
+    <span><span class="legend-dot" style="background:var(--purple)"></span>Game 1 Pick</span>
   </div>
 </div>
 
@@ -25,8 +31,6 @@
   <button class="sport-btn active" onclick="switchSport('nba')">🏀 NBA</button>
   <button class="sport-btn" onclick="switchSport('baseball')">⚾ Baseball</button>
   <button class="sport-btn" onclick="switchSport('game')">🏆 Playoff Run</button>
-  <a class="sport-btn site-link" href="index.html">🏠 Home</a>
-  <a class="sport-btn" href="season.html">📅 2026-27 Season</a>
 </div>
 <div class="page-nav" id="pageNav">
   <button class="page-nav-btn active" onclick="switchPage('home')">Home</button>
