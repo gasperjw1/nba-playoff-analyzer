@@ -153,8 +153,13 @@ const SEASON_ENGINE_VERSION = '2026-11-05.b2b2';
 
 // Player prop projection shape. Standard deviations are linear in
 // the mean (playoff audit: PTS MAE 4.8 at mean 12 → sd ≈ 6).
+// version is stored on every props-ledger row (props-ledger.js); bump it with any change here
+// or in props.js. 2026-11-07.noredist: redistribution 0.80 → 0 — on the replay (backtest-props.js,
+// spec props-1, 2,239 player-games) 0.80 ran PRA 1.9 high (top-2 minutes 3.4) and its 90% floors
+// cleared 88% vs 91%; 0 was the pre-registered primary winner (bias −0.45, floors 91% vs 91%).
 const SEASON_PROP = {
-  redistribution: 0.80,   // share of absent teammates' production redistributed
+  version: '2026-11-07.noredist',
+  redistribution: 0,      // share of absent teammates' production redistributed (was 0.80)
   oppDefenseWeight: 0.50, // how much opponent DRtg deviation moves scoring
   h2hWeight: 0.10,        // weight on career head-to-head averages (n >= 5)
   h2hMinGames: 5,

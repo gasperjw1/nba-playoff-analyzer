@@ -2202,9 +2202,9 @@ const SEASON_LEDGER = [
   "trust": {
    "side": "home",
    "p": 0.3468,
-   "ml": 220,
-   "implied": 0.3125,
-   "edge": 0.0343,
+   "ml": 248,
+   "implied": 0.2874,
+   "edge": 0.0594,
    "gap": 2.57,
    "driver": "change",
    "rule": "R2",
@@ -2252,22 +2252,22 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
   "pFriend": null,
-  "pMarket": 0.3003,
+  "pMarket": 0.2762,
   "pBlend": 0.3853,
-  "mlHome": 220,
-  "mlAway": -268,
+  "mlHome": 248,
+  "mlAway": -305,
   "spreadHome": 7.5,
-  "totalMarket": 229.5,
+  "totalMarket": 228.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.707Z",
+  "recordedAt": "2026-11-07T16:48:49.667Z",
   "result": null
  },
  {
@@ -2291,8 +2291,8 @@ const SEASON_LEDGER = [
    "ml": 221,
    "implied": 0.3115,
    "edge": 0.0254,
-   "gap": -1.24,
-   "driver": "change",
+   "gap": -2.24,
+   "driver": "rest",
    "rule": null,
    "minEdge": 0.03,
    "book": "DraftKings",
@@ -2338,7 +2338,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2347,13 +2347,13 @@ const SEASON_LEDGER = [
   "pBlend": 0.6443,
   "mlHome": -269,
   "mlAway": 221,
-  "spreadHome": -6.5,
+  "spreadHome": -7.5,
   "totalMarket": 227.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.709Z",
+  "recordedAt": "2026-11-07T16:48:49.668Z",
   "result": null
  },
  {
@@ -2374,9 +2374,9 @@ const SEASON_LEDGER = [
   "trust": {
    "side": "home",
    "p": 0.5288,
-   "ml": 160,
-   "implied": 0.3846,
-   "edge": 0.1442,
+   "ml": 170,
+   "implied": 0.3704,
+   "edge": 0.1584,
    "gap": 5.4,
    "driver": "change",
    "rule": "R2",
@@ -2424,22 +2424,22 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
   "pFriend": null,
-  "pMarket": 0.3695,
+  "pMarket": 0.3556,
   "pBlend": 0.552,
-  "mlHome": 160,
-  "mlAway": -191,
+  "mlHome": 170,
+  "mlAway": -204,
   "spreadHome": 4.5,
-  "totalMarket": 224.5,
+  "totalMarket": 222.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.710Z",
+  "recordedAt": "2026-11-07T16:48:49.670Z",
   "result": null
  },
  {
@@ -2460,11 +2460,11 @@ const SEASON_LEDGER = [
   "trust": {
    "side": "away",
    "p": 0.1786,
-   "ml": 411,
-   "implied": 0.1957,
-   "edge": -0.0171,
-   "gap": 0.01,
-   "driver": null,
+   "ml": 443,
+   "implied": 0.1842,
+   "edge": -0.0056,
+   "gap": -0.99,
+   "driver": "aging",
    "rule": null,
    "minEdge": 0.03,
    "book": "DraftKings",
@@ -2510,22 +2510,22 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
   "pFriend": null,
-  "pMarket": 0.812,
+  "pMarket": 0.823,
   "pBlend": 0.7503,
-  "mlHome": -545,
-  "mlAway": 411,
-  "spreadHome": -11.5,
+  "mlHome": -597,
+  "mlAway": 443,
+  "spreadHome": -12.5,
   "totalMarket": 222.5,
   "book": "DraftKings",
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.711Z",
+  "recordedAt": "2026-11-07T16:48:49.671Z",
   "result": null
  },
  {
@@ -2596,7 +2596,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2611,7 +2611,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.713Z",
+  "recordedAt": "2026-11-07T16:48:49.672Z",
   "result": null
  },
  {
@@ -2682,7 +2682,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2697,7 +2697,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.714Z",
+  "recordedAt": "2026-11-07T16:48:49.673Z",
   "result": null
  },
  {
@@ -2768,7 +2768,7 @@ const SEASON_LEDGER = [
     "hca": 2
    },
    "reportEve": "Injury-Report_2026-11-06_08_30PM.pdf",
-   "reportNow": "Injury-Report_2026-11-07_11_00AM.pdf",
+   "reportNow": "Injury-Report_2026-11-07_11_30AM.pdf",
    "engine": "2026-11-05.b2b2",
    "spec": "replay-7"
   },
@@ -2783,7 +2783,7 @@ const SEASON_LEDGER = [
   "feedVersion": null,
   "source": "espn",
   "engine": "2026-11-05.b2b2",
-  "recordedAt": "2026-11-07T16:13:38.715Z",
+  "recordedAt": "2026-11-07T16:48:49.674Z",
   "result": null
  }
 ];

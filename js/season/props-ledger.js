@@ -13,7 +13,11 @@
 //
 // Rows: js/season/data/props-ledger.js (SEASON_PROPS_LEDGER). Like the
 // game ledger, an ESPN-fallback game is replaced by a later pre-tip record;
-// every other recorded game is final.
+// every other recorded game is final. Each row carries the props model
+// version (SEASON_PROP.version); rows from before versioning are the first
+// model (redistribution 0.80) — SEASON_PROPS_FIRST_VERSION.
+const SEASON_PROPS_FIRST_VERSION = '2026-11-05.v1';
+const propRowVersion = (r) => r.props || SEASON_PROPS_FIRST_VERSION;
 // ============================================================
 const SEASON_PROPS_STATS = ['pts', 'reb', 'ast', 'pra', 'tpm'];
 const SEASON_PROPS_MIN_MINUTES = 8;   // the rotation the Tonight tab shows
@@ -30,7 +34,7 @@ function buildPropRows(game, slate, meta) {
       SEASON_PROPS_STATS.forEach(s => { sd[s] = p.sd[s]; });
       rows.push({ id: `${game.id}:${p.id}`, game: game.id, date: slate.date, tip: game.tip, team, opp, player: p.id, name: p.name,
         starter: !!p.starter, rank: i + 1, avail: p.availability, min: p.min, pts: p.pts, reb: p.reb, ast: p.ast, pra: p.pra, tpm: p.tpm, sd,
-        source: slate.source || null, engine: meta.engine || null, recordedAt: meta.recordedAt || null, result: null });
+        source: slate.source || null, engine: meta.engine || null, props: SEASON_PROP.version, recordedAt: meta.recordedAt || null, result: null });
     }
   }
   return rows;

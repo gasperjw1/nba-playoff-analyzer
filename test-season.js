@@ -227,9 +227,13 @@ console.log('TEST 6: props');
   near(pr.pra, pr.pts + pr.reb + pr.ast, 0.11, 'PRA sums');
   assert(pr.sd.pts > 5 && pr.sd.pts < 12, 'points sd plausible');
   const teammateOut = { availabilityOverride: { [A.players[1].id]: 0 } };
+  const pr0 = c.projectPlayerProps(star, A, B, slate, teammateOut);
+  assert(pr0.pts === pr.pts && pr0.factors.redistPts === 1, 'live model (redistribution 0): a teammate out changes nothing');
+  c.SEASON_PROP.redistribution = 0.80;      // the mechanism, at the first model's setting
   const pr2 = c.projectPlayerProps(star, A, B, slate, teammateOut);
   assert(pr2.pts > pr.pts, 'teammate out → usage redistribution raises points');
   assert(pr2.factors.redistPts > 1, 'redistribution factor > 1');
+  c.SEASON_PROP.redistribution = 0;
   B.prior.drtg = 108;                       // elite defense
   const pr3 = c.projectPlayerProps(star, A, B, slate);
   assert(pr3.pts < pr.pts && pr3.reb === pr.reb, 'elite defense suppresses points, not boards');
@@ -1138,6 +1142,11 @@ console.log('TEST 26: props ledger (record, merge, settle, calibration)');
   c.SEASON_PROPS_LEDGER = ledger;
   const html = c.renderLedgerTab();
   assert(html.includes('Props ledger — pre-tip projections graded from box scores') && html.includes('PRA · top 5 minutes'), 'Ledger tab shows the props record');
+  const old = ledger.map(r => ({ ...r, id: 'old' + r.id, props: undefined }));
+  const mixed = c.renderPropsRecord(ledger.concat(old));
+  assert(mixed.includes(`Model ${c.SEASON_PROP.version}: ${ledger.length} settled`) && mixed.includes(`${old.length} rows from earlier props models not counted`), 'record counts the current props model only');
+  assert(c.propRowVersion(old[0]) === '2026-11-05.v1' && ledger[0].props === c.SEASON_PROP.version, 'rows carry the props version; unversioned rows are the first model');
+  assert(c.SEASON_PROP.redistribution === 0 && c.SEASON_PROP.version === '2026-11-07.noredist', 'live props model: no redistribution');
   const html0 = c.renderPropsRecord([]);
   assert(html0.includes('nothing settled yet'), 'empty props ledger renders');
 }
