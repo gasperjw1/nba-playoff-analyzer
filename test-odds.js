@@ -25,7 +25,7 @@ const min = 60e3;
 const game = (id, home, away, tipMin) => ({ id, date: '2026-11-09', tip: new Date(T0 + tipMin * min).toISOString(), home, away });
 
 console.log('TEST 1: spec');
-assert(S.version === 'odds-1' && S.book === 'fanduel' && S.windowMin === 60 && S.tries === 3 && S.lines.join() === 'h2h,spreads' && S.props.length === 6, 'spec constants');
+assert(S.version === 'odds-1' && S.book === 'fanduel' && S.windowMin === 60 && S.tries === 3 && S.minRemaining === 5000 && S.maxPerGame === 10 && S.lines.join() === 'h2h,spreads' && S.props.length === 6, 'spec constants');
 assert(S.props.every(k => ctx.SEASON_ODDS_STAT[k]), 'every prop market maps to a projected stat');
 
 console.log('TEST 2: which games are due');
@@ -40,6 +40,15 @@ console.log('TEST 2: which games are due');
   const all = { games: { 1: { markets: Object.fromEntries([...S.lines, ...S.props].map(k => [k, {}])), tries: {} } } };
   assert(ctx.oddsDueGames(gs, all, T0).map(d => d.game.id).join() === '4', 'a game with every market stored is not due');
   assert(ctx.oddsEstimate(due) === 2 + 12, 'estimate: the line call once (2) plus each game\'s props (6 + 6)');
+  // The 10-credit cap per game.
+  const capped = (credits, markets) => ctx.oddsDueGames([gs[0]], { games: { 1: { credits, markets: markets || {}, tries: {} } } }, T0)[0];
+  const c8 = capped(8);
+  assert(c8.lines.length === 2 && c8.props.length === 0, 'cap: 8 spent, lines (2) still fit, no props');
+  const c9 = capped(9);
+  assert(c9.lines.length === 0 && c9.props.join() === 'player_points', 'cap: 9 spent, the 2-credit line call is left out, one prop fits');
+  const c6 = capped(6, { h2h: {}, spreads: {} });
+  assert(c6.props.length === 4 && !c6.props.includes('player_points_rebounds_assists_alternate') && !c6.props.includes('player_threes'), 'cap: props trimmed in spec order, alternate PRA first');
+  assert(ctx.oddsDueGames([gs[0]], { games: { 1: { credits: 10, markets: {}, tries: {} } } }, T0).length === 0, 'cap reached: the game is no longer due');
 }
 
 console.log('TEST 3: run plan');
@@ -146,6 +155,7 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
   assert(r4.calls === 0 && urls.length === n3, 'after three tries a market FanDuel never posts stops being requested: run 4 makes no call');
   led = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
   assert(led.games['11'].tries.player_points_rebounds_assists_alternate === 3 && led.games['11'].tries.h2h === 1, 'tries recorded per market');
+  assert(Object.values(led.games).every(g => g.credits <= S.maxPerGame) && led.games['11'].credits === 7 && led.games['12'].credits === 2 + 1 + 2, 'credits charged per game, all within the cap (BOS 2 + 5, MIN 2 + 1 + 2)');
   assert(!logs.join('\n').includes(KEY) && !JSON.stringify(led).includes(KEY), 'the key is never logged or stored');
 
   // Lock held by another live process.
@@ -161,10 +171,10 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
 
   // Credit floor: with few credits left, no charged call is made.
   events.push({ id: 'eN', home_team: 'New York Knicks', away_team: 'Cleveland Cavaliers', commence_time: game('31', 'NY', 'CLE', 30).tip });
-  remaining = 505;
+  remaining = 5005;
   const before = urls.length;
   const low = await run({ games: [game('31', 'NY', 'CLE', 30)], ledgerPath: path.join(dir, 'low.json') });
-  assert(low.cost === 0 && urls.length === before + 1 && logs.some(s => /stopped: 505 credits left/.test(s)), 'below the floor: only the free events call, then stop');
+  assert(low.cost === 0 && urls.length === before + 1 && logs.some(s => /stopped: 5005 credits left/.test(s)), 'below the floor: only the free events call, then stop');
 
   // A model failure still stores the prices.
   remaining = 20000;

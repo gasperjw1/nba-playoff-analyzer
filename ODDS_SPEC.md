@@ -26,11 +26,17 @@ Code: `js/season/odds.js` (`SEASON_ODDS_SPEC`), with the IO in `odds-pull.js`. R
 2. The ledger (`.odds/odds-ledger.json`) is written after every charged reply, before the next call.
 3. Each market gets at most 3 requests. A market FanDuel never posts stops costing.
 4. A lock file (`.odds/odds.lock`) refuses a second run at the same time.
-5. No call is made that could take the remaining credits below 500.
-6. `--odds --dry` lists what's due and the most it could cost, with no API call and no key needed.
-7. Every call is logged with its cost and the credits left (from `x-requests-last`,
+5. No call is made that could take the remaining credits below 5,000. That keeps a quarter of the
+   plan in reserve and leaves 15,000 a month to spend, against about 1,900 in the busiest month.
+   The floor was raised from 500 on 2026-11-08, at the user's ask, before any real pull.
+6. **At most 10 credits per game, ever** (added 2026-11-08 at the user's ask, before any real
+   pull). A shared line call counts in full against each game in it. A request that could go past
+   the cap is trimmed: alternate PRA is dropped first, and the 2-credit line call goes in whole or not
+   at all. A full first pull is 8, so the cap only bites on retries.
+7. `--odds --dry` lists what's due and the most it could cost, with no API call and no key needed.
+8. Every call is logged with its cost and the credits left (from `x-requests-last`,
    `x-requests-remaining` and `x-requests-used`).
-8. The key lives only in `ODDS_API_KEY`. It's never logged (it's redacted from errors), stored or
+9. The key lives only in `ODDS_API_KEY`. It's never logged (it's redacted from errors), stored or
    committed.
 
 ## Cost

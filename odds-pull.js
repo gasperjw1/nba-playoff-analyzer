@@ -117,6 +117,8 @@ async function pullOdds(o) {
         const e = events.get(String(d.game.id));
         // A failed call still counts a try, so a bad market cannot loop.
         const stored = ctx.oddsRecord(ledger, d.game, e, d.lines, r ? ctx.oddsBookMarkets(byEvent.get(e.id), S.book) : {}, at, models.get(String(d.game.id)));
+        // The shared call counts in full against each game in it (a failed call: what it asked for).
+        ctx.oddsCharge(ledger, d.game.id, r ? (r.usage.cost != null ? r.usage.cost : lineKeys.length) : lineKeys.length);
         out.stored += stored.length;
         if (r) r.entry.stored = (r.entry.stored || []).concat(stored.map(k => `${d.game.id}:${k}`));
       }
@@ -131,11 +133,13 @@ async function pullOdds(o) {
       try { r = await call('props', `/sports/${S.sport}/events/${e.id}/odds?bookmakers=${S.book}&markets=${d.props.join(',')}&oddsFormat=american`, { game: String(d.game.id), markets: d.props }); }
       catch (err) {
         ctx.oddsRecord(ledger, d.game, e, d.props, {}, at, null);   // counts a try, so a bad market cannot loop
+        ctx.oddsCharge(ledger, d.game.id, d.props.length);
         saveOddsLedger(o.ledgerPath, ledger);
         log(`  ${d.game.away} @ ${d.game.home} props: ${err.message}`);
         continue;
       }
       const stored = ctx.oddsRecord(ledger, d.game, e, d.props, ctx.oddsBookMarkets(r.json, S.book), at, models.get(String(d.game.id)));
+      ctx.oddsCharge(ledger, d.game.id, r.usage.cost != null ? r.usage.cost : d.props.length);
       r.entry.stored = stored;
       out.stored += stored.length;
       saveOddsLedger(o.ledgerPath, ledger);
@@ -150,6 +154,7 @@ async function pullOdds(o) {
       const sgn = (x) => x == null ? '—' : (x > 0 ? '+' : '') + x;
       log(`  ${row.away} @ ${row.home}: ML ${row.away} ${sgn(l.mlAway)} / ${row.home} ${sgn(l.mlHome)} · spread ${row.home} ${sgn(l.spreadHome)} (${sgn(l.spreadPriceHome)})` +
         ` · props ${props.join(', ') || 'none'}${missing.length ? ` · missing ${missing.join(', ')}` : ''}` +
+        ` · ${row.credits || 0}/${S.maxPerGame} credits` +
         ` · model ${m ? `${row.home} ${(m.pHome * 100).toFixed(1)}%${m.report ? ` (${m.report.slice(14, -4)})` : ''}` : '—'}`);
     }
     log(`  ${out.cost} credits this run · ${lastRemaining() == null ? '?' : lastRemaining()} left`);
