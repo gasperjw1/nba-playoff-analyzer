@@ -52,6 +52,28 @@ To do, in order:
    DraftKings' price; logging them (user-bets.js) builds the first season data on whether floors are
    underpriced, before any paid feed.
 6. **Unders near the projection** (55–58% won on the replay) — a candidate recipe for `pitch-2`.
+7. **Safe 3-leg moneyline ticket** — researched 2026-11-08 on three past seasons (3,678 games at the
+   close; `research-favourites.js` pre-registered, `research-favourites-explore.js` after it):
+   - No situation (home/road, back-to-backs, rest, early season) passed the pre-registered rule;
+     the engine agreeing with the market added nothing at the close.
+   - Closing favourites are priced about right after the vig: the market's 3 strongest a night hit
+     257 of 459 nights (56%) against ~56% break-even (−0.6 units). A floor on every leg trades
+     nights for safety: ≥ 75% → 139/203 (68%, ~+48, 44% of nights, +2.0 u); ≥ 80% → 76/100 (76%,
+     ~+35, 22% of nights, +2.2 u). Daily and 70%+ safe cannot both hold. The ≥ 75% tickets'
+     prices said 64.7%; the 68.5% ran 1.1 SE above it, so expect ~65% and about −4% at the close
+     (the vig). The 75% floor was picked after seeing all three seasons.
+   - At the opening price (`research-favourites-open.js`, pre-registered, 3,585 games with open
+     and close from one book): worse, not better. Tickets picked at the open hit below their
+     break-even (≥ 75%: 110/176 nights, 62.5% vs ~68%; −15.2 u). On the same games, picking at
+     the close hit 138/201 (68.7%). Both sets' own prices said ~65%, so most of that gap is noise;
+     the real part is that the close is more accurate (Brier 0.197 vs 0.202) and legs kept moving
+     the way the line moved. The past-season engine's edges
+     vs the open won slightly above fair (z 1.3–1.8, same sign both splits) but lost money at the
+     opening price, and the close moved its way only ~50% of the time — none passed.
+   - So the safe ticket belongs near tip (after injury reports), at ≥ 75% by the market. Not
+     testable on past seasons: the live engine's injury step.
+   - **Built as `pitch-2`** (PITCH2_SPEC.md, frozen 2026-11-08, judged from 2026-11-09). Next:
+     after ~20 safe nights, check legs vs shown chance and the cause tags on lost vs won legs.
 
 ## Model
 

@@ -34,6 +34,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/props-ledger.js');
   load('js/season/parlay.js');
   load('js/season/pitch.js');
+  load('js/season/pitch2.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1488,6 +1489,109 @@ console.log('TEST 32: pitched tickets (pitch.js, spec pitch-1)');
   const html = c.renderPitchTab();
   assert(html.includes('Recorded') && html.includes('Floor ticket — main recipe') && html.includes('Edge ticket — experiment') && html.includes('Record — from 2026-11-08'), 'recorded night and the record table render');
   assert(c.SEASON_TABS.some(([id]) => id === 'pitch'), 'Pitch tab listed');
+}
+
+console.log('TEST 33: favourites ticket (pitch2.js, spec pitch-2)');
+{
+  const c = loadCtx(false, true);
+  const base = makeSlate(c);
+  const clone = (t, ab) => ({ ...t, abbr: ab, players: t.players.map(p => ({ ...p, id: ab + p.id, name: ab + ' ' + p.name })) });
+  const teams = {}, games = [];
+  const mk = (mlHome, mlAway, book) => ({ mlHome, mlAway, spreadHome: 0, total: 228, book: book || 'DraftKings', open: { mlHome: -150, mlAway: 130 } });
+  // g1 home −600 · g2 away −400 · g3 home −250 · g4 home −400 (FanDuel) · g5 no price · g6 tipped home −1000
+  const mkts = [mk(-600, 450), mk(320, -400), mk(-250, 205), mk(-400, 320, 'FanDuel'), { mlHome: null, mlAway: null }, mk(-1000, 650)];
+  mkts.forEach((m, i) => {
+    const h = 'H' + (i + 1), a = 'A' + (i + 1);
+    teams[h] = clone(base.teams.AAA, h); teams[a] = clone(base.teams.BBB, a);
+    games.push({ id: 'g' + (i + 1), tip: i === 5 ? '2000-01-01T00:00Z' : `2099-01-01T0${i}:00Z`, venue: null, home: h, away: a, market: m, external: null });
+  });
+  for (const t of Object.values(teams)) for (const p of t.players) c.SEASON_PLAYER_PRIORS.players[p.id] = priorEntry(c, p, { [t.abbr]: 82 });
+  c._priorsByTeamCache = null;
+  const slate = { ...base, date: '2026-11-09', teams, games, source: 'nb.ai' };
+  const now = Date.parse('2026-11-09T12:00:00Z');
+  const S = c.SEASON_PITCH2_SPEC;
+  assert(S.version === 'pitch-2' && S.frozen === '2026-11-08' && S.firstNight === '2026-11-09' && S.legs === 3 && S.safeFloor === 0.75 && S.newsDrop === 0.05 && S.closeLoss === 5 && S.topMinutes === 5, 'spec constants as written in PITCH2_SPEC.md');
+  // Power de-vig: the two sides sum to 1, and it gives the favourite more than the proportional no-vig.
+  near(c.pitchPowerFair(-400, 320) + c.pitchPowerFair(320, -400), 1, 1e-9, 'power chances sum to 1');
+  assert(c.pitchPowerFair(-400, 320) > 1 - c._noVigHome(320, -400), 'power gives the favourite more than proportional');
+  near(c.pitchPowerFair(-110, -110), 0.5, 1e-9, 'a pick\'em stays 50%');
+  const T = c.buildFavouritesTicket(slate, now);
+  assert(T.status === 'pitched' && T.legs.map(l => l.game).join() === 'g1,g2,g4' && T.gamesTipped === 1 && T.gamesPriced === 4, 'top 3 by no-vig from untipped priced games (g6 tipped, g5 unpriced)');
+  assert(T.legs[1].side === 'away' && T.legs[1].team === 'A2' && T.legs[1].odds === -400 && T.legs[1].oddsOther === 320, 'away favourite taken with its price');
+  near(T.legs[0].pNoVig, c._noVigHome(-600, 450), 1e-4, 'proportional no-vig stored'); near(T.legs[0].p, c.pitchPowerFair(-600, 450), 1e-4, 'shown = power chance');
+  assert(T.legs[2].flagBook && T.legs[2].book === 'FanDuel' && !T.legs[0].flagBook, 'a non-DraftKings price is used and flagged');
+  assert(T.label === (T.legs[2].pNoVig >= 0.75 ? 'safe' : 'lean') && T.label === 'safe', 'safe when the third leg is 75%+');
+  near(T.p, T.legs.reduce((x, l) => x * l.p, 1), 1e-4, 'ticket = product of shown'); assert(T.price === c.parlayAmerican(c.parlayDecimal(-600) * c.parlayDecimal(-400) * c.parlayDecimal(-400)) && T.fairAmerican === c.parlayAmerican(1 / T.p), 'price = legs multiplied; fair from the product');
+  assert(T.legs.every(l => l.pEngine != null && l.top.length === 5 && l.top.every(p => p.min >= 0) && l.open && l.minToTip > 0 && l.priceSource === 'slate'), 'engine chance, top 5 by minutes, open price, minutes to tip, price source recorded');
+  // Lean when the third is under 75%; ties go to the earlier tip.
+  const leanSlate = { ...slate, games: games.map((g, i) => i === 3 ? { ...g, market: mk(-200, 170) } : g) };
+  const L = c.buildFavouritesTicket(leanSlate, now);
+  assert(L.label === 'lean' && L.legs[2].game === 'g3' && L.legs[2].pNoVig < 0.75, 'lean when the third-strongest is under 75%');
+  const tie = { ...slate, games: games.map((g, i) => i === 2 ? { ...g, market: mk(-300, 245) } : i === 3 ? { ...g, market: mk(-300, 245) } : g) };
+  assert(c.buildFavouritesTicket(tie, now).legs[2].game === 'g3', 'tie broken by the earlier tip');
+  const few = { ...slate, games: games.slice(3) };
+  const N = c.buildFavouritesTicket(few, now);
+  assert(N.status === 'no ticket' && /1 untipped game/.test(N.reason) && N.legs.length === 0, 'fewer than 3 priced untipped games → no ticket');
+  // Merge: re-recordable until a leg tips.
+  const rows = [];
+  const n1 = c.buildPitch2(slate, { engine: 'e', recordedAt: 't1', now });
+  assert(c.mergePitch2(rows, n1, now) === 'added' && rows.length === 1, 'added');
+  assert(c.mergePitch2(rows, c.buildPitch2(slate, { engine: 'e', recordedAt: 't2', now }), now) === 'unchanged' && rows[0].recordedAt === 't1', 'same legs and prices → unchanged');
+  rows[0].ticket.quote = 150;
+  const moved = { ...slate, games: games.map((g, i) => i === 0 ? { ...g, market: mk(-700, 500) } : g) };
+  assert(c.mergePitch2(rows, c.buildPitch2(moved, { engine: 'e', recordedAt: 't3', now }), now) === 'replaced' && rows[0].recordedAt === 't3' && rows[0].superseded.length === 1 && rows[0].superseded[0].recordedAt === 't1' && rows[0].superseded[0].legs[0].odds === -600, 'a price change replaces it and keeps the old version');
+  assert(rows[0].ticket.quote === null && rows[0].ticket.quotePrev === 150, 'a quote for the old legs is not carried to the new ones');
+  const afterTip = Date.parse('2099-01-01T00:30:00Z');
+  assert(c.mergePitch2(rows, { ...n1, recordedAt: 't5', ticket: { ...n1.ticket, legs: n1.ticket.legs.slice(1).concat(n1.ticket.legs[0]) } }, afterTip) === 'late', 'a recording with a tipped leg is never written');
+  const other = { ...n1, ticket: L, recordedAt: 't6' };
+  assert(c.mergePitch2(rows, other, afterTip) === 'late' && c.mergePitch2([rows[0]], { ...other, ticket: { ...L, legs: L.legs.map(l => ({ ...l, tip: '2099-02-01T00:00Z' })) } }, afterTip) === 'kept', 'once a recorded leg has tipped the row is kept');
+  const p1Row = { id: '2026-11-09', date: '2026-11-09', spec: 'pitch-1', tickets: [] }, mixed = [p1Row];
+  assert(c.mergePitch2(mixed, c.buildPitch2(slate, { now }), now) === 'added' && mixed.length === 2, 'a row of another spec on the same date is not touched');
+  // Grade with tags.
+  const fresh = () => JSON.parse(JSON.stringify(c.buildPitch2(slate, { engine: 'e', recordedAt: 't1', now })));
+  const R0 = fresh(), legs = R0.ticket.legs;   // g1 H1 home, g2 A2 away, g4 H4 home
+  const res = new Map([['g1', { homeScore: 110, awayScore: 100 }], ['g2', { homeScore: 104, awayScore: 101 }]]);
+  assert(c.settlePitch2([R0], res, new Set(), new Map(), new Map(), 's') === 0 && !R0.ticket.result, 'a leg without a final → not graded');
+  res.set('g4', { homeScore: 90, awayScore: 99 });
+  legs[1].pEngine = 0.45; legs[2].trustRule = 'R2';
+  const closes = new Map([['g1', { mlHome: -600, mlAway: 450, book: 'DraftKings' }], ['g2', { mlHome: -150, mlAway: 130, book: 'DraftKings' }], ['g4', { mlHome: -400, mlAway: 320, book: 'DraftKings' }]]);
+  const boxOf = (l, satIdx) => ({ [l.team]: l.top.map((p, i) => ({ id: p.id, name: p.name, played: i !== satIdx, line: { min: i === satIdx ? 0 : 30 } })) });
+  const boxes = new Map([['g1', boxOf(legs[0], -1)], ['g2', boxOf(legs[1], 2)]]);
+  assert(c.settlePitch2([R0], res, new Set(), closes, boxes, 's') === 1, 'graded once every leg is final');
+  const [x1, x2, x3] = legs.map(l => l.result);
+  assert(x1.outcome === 'hit' && x1.tags.length === 0 && x1.margin === 10, 'hit, no tags');
+  assert(x2.outcome === 'miss' && x2.margin === -3 && ['news', 'starter-out', 'engine-against', 'close-loss'].every(k => x2.tags.includes(k)) && !x2.tags.includes('beaten') && legs[1].sat.length === 1, 'away leg lost by 3: price fell, a starter sat, engine against → tags');
+  assert(x3.outcome === 'miss' && x3.tags.includes('beaten') && x3.tags.includes('trust-flag') && !x3.tags.includes('news') && x3.unknown.includes('news') && x3.unknown.includes('starter-out'), 'FanDuel leg vs a DraftKings close: news unknown; no box: starter-out unknown; lost by 9: beaten');
+  assert(R0.ticket.result.outcome === 'loss' && R0.ticket.result.legsHit === 1 && R0.ticket.result.units === -1, 'a miss loses −1 at the legs\' price');
+  const W = fresh();
+  c.settlePitch2([W], new Map([['g1', { homeScore: 2, awayScore: 1 }], ['g2', { homeScore: 1, awayScore: 2 }], ['g4', { homeScore: 2, awayScore: 1 }]]), new Set(), new Map(), new Map(), 's');
+  near(W.ticket.result.units, c.parlayDecimal(W.ticket.price) - 1, 1e-3, 'all hit → units at the legs\' price');
+  const V = fresh();
+  c.settlePitch2([V], new Map([['g1', { homeScore: 2, awayScore: 1 }], ['g2', { homeScore: 1, awayScore: 2 }]]), new Set(['g4']), new Map(), new Map(), 's');
+  assert(V.ticket.legs[2].result.outcome === 'void' && V.ticket.result.outcome === 'win' && V.ticket.result.legsVoid === 1 && V.ticket.result.units === null, 'postponed leg is void; no units on a repriced ticket');
+  // Record by label from the first night.
+  const old = { ...JSON.parse(JSON.stringify(W)), date: '2026-11-08', id: '2026-11-08' };
+  const lean = JSON.parse(JSON.stringify(c.buildPitch2({ ...leanSlate, date: '2026-11-10' }, { now })));
+  const noT = c.buildPitch2({ ...few, date: '2026-11-11' }, { now });
+  const rec = c.seasonPitch2Record([R0, W, V, old, lean, noT, p1Row]);
+  assert(rec.safe.nights === 3 && rec.safe.settled === 2 && rec.safe.won === 1 && rec.safe.voidLeg === 1 && rec.lean.nights === 1 && rec.lean.settled === 0 && rec.noTicket === 1, 'nights per label; Nov 8 not counted; void-leg ticket kept out of the ticket counts; no-ticket night counted');
+  near(rec.safe.shown, R0.ticket.p + W.ticket.p, 1e-3, 'shown chance summed over graded tickets');
+  assert(rec.safe.legs === 8 && rec.safe.legsHit === 6 && rec.safe.units === +(-1 + W.ticket.result.units).toFixed(2) && rec.safe.priced === 2, 'legs (void excluded) and units');
+  assert(rec.safe.tags['close-loss'].miss === 1 && rec.safe.tags.beaten.miss === 1 && rec.safe.tags['engine-against'].miss === 1 && rec.safe.clvN === 2 && rec.safe.clvToward === 0 && rec.safe.clvMove < 0, 'tags counted on lost legs; line movement only where the close is the same book (FanDuel leg skipped)');
+  // Scoreboard: postponed status read.
+  const sb = c.adaptEspnScoreboard({ events: [{ id: 9, date: 'd', competitions: [{ status: { type: { name: 'STATUS_POSTPONED' } }, competitors: [{ homeAway: 'home', team: { abbreviation: 'H' }, score: '0' }, { homeAway: 'away', team: { abbreviation: 'A' }, score: '0' }] }] }] });
+  assert(sb[0].postponed === true && sb[0].final === false, 'scoreboard marks a postponed game');
+  // Tab
+  c.seasonState.slate = slate;
+  c.SEASON_PITCH_LEDGER = []; c.SEASON_PITCH2_LEDGER = [];
+  let html = c.renderPitchTab();
+  assert(html.includes('Favourites ticket — spec pitch-2') && html.includes('Preview at the slate') && html.includes('Safe ticket tonight') && html.includes('Floor and edge tickets — spec pitch-1') && html.includes('Floor ticket — main recipe'), 'preview: pitch-2 safe ticket above pitch-1');
+  c.SEASON_PITCH2_LEDGER = [R0];
+  html = c.renderPitchTab();
+  assert(html.includes('Recorded') && html.includes('LOST') && html.includes('lost by 1–5') && html.includes('Why legs lost'), 'recorded and graded night shows result and tags');
+  c.seasonState.slate = { ...leanSlate };
+  c.SEASON_PITCH2_LEDGER = [];
+  assert(c.renderPitchTab().includes('No safe ticket tonight'), 'lean night says no safe ticket');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
