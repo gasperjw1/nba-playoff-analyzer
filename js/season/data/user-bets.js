@@ -252,8 +252,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.6147,
     "pMarket": 0.7238,
     "pPicks": 0.7262,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "DEN 114 – IND 102"
    },
    {
     "gameId": "401909939",
@@ -265,8 +265,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.6443,
     "pMarket": 0.7006,
     "pPicks": 0.6898,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "BKN 121 – ATL 124"
    },
    {
     "gameId": "401909940",
@@ -278,8 +278,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.552,
     "pMarket": 0.3556,
     "pPicks": 0.5081,
-    "hit": null,
-    "final": null
+    "hit": false,
+    "final": "NY 109 – CLE 97"
    },
    {
     "gameId": "401909942",
@@ -291,11 +291,15 @@ const SEASON_USER_BETS = [
     "pOurs": 0.7539,
     "pMarket": 0.6571,
     "pPicks": 0.7229,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "ORL 119 – GS 126"
    }
   ],
-  "result": null
+  "result": {
+   "outcome": "loss",
+   "legsHit": 3,
+   "settledAt": "2026-11-08T09:01:20.943Z"
+  }
  },
  {
   "id": "season-2026-11-07-002",
@@ -322,8 +326,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.7539,
     "pMarket": 0.6571,
     "pPicks": 0.7229,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "ORL 119 – GS 126"
    },
    {
     "gameId": "401909938",
@@ -335,8 +339,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.6147,
     "pMarket": 0.7238,
     "pPicks": 0.7262,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "DEN 114 – IND 102"
    },
    {
     "gameId": "401909939",
@@ -348,8 +352,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.6443,
     "pMarket": 0.7006,
     "pPicks": 0.6898,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "BKN 121 – ATL 124"
    },
    {
     "gameId": "401909941",
@@ -361,8 +365,8 @@ const SEASON_USER_BETS = [
     "pOurs": 0.7503,
     "pMarket": 0.823,
     "pPicks": 0.8066,
-    "hit": null,
-    "final": null
+    "hit": true,
+    "final": "WSH 75 – OKC 114"
    },
    {
     "gameId": "401909943",
@@ -374,10 +378,14 @@ const SEASON_USER_BETS = [
     "pOurs": 0.7416,
     "pMarket": 0.7006,
     "pPicks": 0.7186,
-    "hit": null,
-    "final": null
+    "hit": false,
+    "final": "HOU 99 – PHX 102"
    }
   ],
-  "result": null
+  "result": {
+   "outcome": "loss",
+   "legsHit": 4,
+   "settledAt": "2026-11-08T09:01:20.943Z"
+  }
  }
 ];
