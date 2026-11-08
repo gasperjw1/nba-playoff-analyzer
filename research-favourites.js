@@ -107,9 +107,11 @@ function buildDataset() {
   const rows = [];
   let noOdds = 0, noEngine = 0;
   for (const g of games) {
-    const restOf = (t) => (last[t] ? Math.round((Date.parse(g.date) - Date.parse(last[t])) / 864e5) - 1 : null);   // days off
-    const hRest = restOf(g.home), aRest = restOf(g.away), hG = played[g.home] || 0, aG = played[g.away] || 0;
-    last[g.home] = last[g.away] = g.date; played[g.home] = hG + 1; played[g.away] = aG + 1;
+    // Counters per season (a season's opener has no rest figure and starts at 0 games).
+    const H = `${g.season}|${g.home}`, A = `${g.season}|${g.away}`;
+    const restOf = (k) => (last[k] ? Math.round((Date.parse(g.date) - Date.parse(last[k])) / 864e5) - 1 : null);   // days off
+    const hRest = restOf(H), aRest = restOf(A), hG = played[H] || 0, aG = played[A] || 0;
+    last[H] = last[A] = g.date; played[H] = hG + 1; played[A] = aG + 1;
     const f = path.join(ODDS, `odds-${g.id}.json`);
     const o = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null;
     const pv = o && (o.providers.find(p => /^draftkings$/i.test(p.name || '')) || o.providers.find(p => /^espn bet$/i.test(p.name || '')));
@@ -180,7 +182,8 @@ function main() {
   console.log('\nDecision (pre-registered): a situation is a filter if train |z| ≥ 2 and holdout has the same sign with |z| ≥ 1');
   for (const k of Object.keys(train)) {
     const t = train[k], h = hold[k], pass = t.n && h.n && Math.abs(t.z) >= 2 && Math.sign(h.z) === Math.sign(t.z) && Math.abs(h.z) >= 1;
-    console.log(`   ${k.padEnd(33)} train z ${t.z.toFixed(2).padStart(6)} · holdout z ${h.z.toFixed(2).padStart(6)} → ${pass ? 'FILTER' : 'no'}`);
+    const z = (x) => (x.n ? x.z.toFixed(2) : '—').padStart(6);
+    console.log(`   ${k.padEnd(33)} train z ${z(t)} · holdout z ${z(h)} → ${pass ? 'FILTER' : 'no'}`);
   }
 }
 
