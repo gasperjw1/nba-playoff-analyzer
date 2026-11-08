@@ -2,10 +2,14 @@
 
 Deferred work, newest first. Each item says why it waits and what done looks like.
 
-## Odds feed for player props (waiting on a cost decision)
+## Odds feed for player props (pulls built: ODDS_SPEC.md, `odds-1`)
 
-Tabled 2026-11-07 while the cost of a paid plan is discussed with NB.AI's author. Until then, judge the
-models on the actual data (results, box scores, calibration); whether the edges are profitable comes later.
+Tabled 2026-11-07; resumed 2026-11-08 on The Odds API's $30 plan (20,000 credits a month), shared with
+NB.AI's author. `node fetch-slate.js --odds` now pulls FanDuel lines and props once per game, in the hour
+before tip. Still to do: check the first real reply (alternate PRA encoding, real cost per call); then
+judge props-ledger projections and pitch-1 legs against those prices; decide whether the terms allow
+showing the prices on the public site; the injury-report lookup still steps in half-hour slots (the NBA
+now posts every 15 minutes).
 
 - **Why:** neither DraftKings nor FanDuel has a public odds API (their site endpoints are undocumented and
   scraping them is against their terms). ESPN's pickcenter gives DraftKings' moneyline, spread and total

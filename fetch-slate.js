@@ -25,6 +25,13 @@
 //                                  the feed's player statuses (js/season/injury-report.js)
 //                                  — for refreshing the snapshot when NB.AI lags late news.
 //                                  Combines with the others; recorded rows never change.
+//   node fetch-slate.js --odds     FanDuel lines and props from The Odds API for the games
+//                                  tipping within the hour, once per game and market (spec
+//                                  odds-1, js/season/odds.js, odds-pull.js), with the model's
+//                                  chance at the same moment (latest official injury report).
+//                                  Needs ODDS_API_KEY; writes .odds/odds-ledger.json (local,
+//                                  never committed). --odds --dry lists what is due, no calls;
+//                                  --odds --espn models on the ESPN slate.
 //
 // Daily routine: `./season-daily.sh` picks the phase by time of day and
 // runs each at most once per day (the SessionStart hook calls it too).
@@ -49,6 +56,8 @@ const PITCH_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch-ledger.js')
 const PITCH2_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch2-ledger.js');
 const USER_LEGS_PATH = path.join(__dirname, 'js/season/data/user-legs.js');
 const TEAM_PRIORS_PATH = path.join(__dirname, 'js/season/data/team-priors.js');
+const ODDS_LEDGER_PATH = process.env.ODDS_LEDGER || path.join(__dirname, '.odds/odds-ledger.json');
+const ODDS_LOCK_PATH = path.join(path.dirname(ODDS_LEDGER_PATH), 'odds.lock');
 
 const args = new Set(process.argv.slice(2));
 const DRY = args.has('--dry');
@@ -75,6 +84,7 @@ function loadSeasonContext() {
   load('js/season/pitch.js');
   load('js/season/pitch2.js');
   load('js/season/flat.js');
+  load('js/season/odds.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
@@ -120,6 +130,10 @@ async function main() {
 
   if (args.has('--settle')) {
     await settle(ctx);
+    return;
+  }
+  if (args.has('--odds')) {
+    await oddsRun(ctx);
     return;
   }
 
@@ -439,6 +453,40 @@ async function settle(ctx) {
   console.log(`  flat yours above −300: ${flatLine(fs1.yours.rule)}`);
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
+}
+
+// --odds: tonight's pre-tip games from ESPN's scoreboard (free); the model is built only when a
+// game is due, on the same slate --record uses, with the latest official injury report over it.
+async function oddsRun(ctx) {
+  const today = todayEt();
+  const sb = await getJson(ESPN_SCOREBOARD + today.replace(/-/g, ''));
+  const games = (sb.events || []).filter(e => (!e.season || e.season.type === 2) && e.status && e.status.type && e.status.type.state === 'pre').map(e => {
+    const c = e.competitions[0];
+    return { id: e.id, date: today, tip: e.date, home: c.competitors.find(x => x.homeAway === 'home').team.abbreviation, away: c.competitors.find(x => x.homeAway === 'away').team.abbreviation };
+  });
+  const buildModel = async (due) => {
+    let slate = args.has('--espn') ? await espnSlate(ctx) : await nbaiSlate(ctx);
+    if (slate.date !== today) { console.log(`  model: the feed's slate is ${slate.date}, not ${today} — prices stored without the model (add --espn)`); return new Map(); }
+    let report = null;
+    try {
+      const r = await require('./late-flip.js').reportBefore(Date.now(), Date.now());
+      const applied = ctx.seasonApplyInjuryReport(slate, r);
+      slate = applied.slate; report = r.name;
+      console.log(`  model: official injury report ${r.name}, ${applied.changes.length} status change${applied.changes.length === 1 ? '' : 's'} over the feed`);
+      for (const c of applied.changes) console.log(`    injury ${c.team} ${c.name}: ${c.from} → ${c.to}`);
+    } catch (e) { console.warn(`  model: injury report unavailable (${e.message}); feed statuses used`); }
+    slate.results = await seasonResults(slate.date);
+    const propSlate = ctx.seasonCleanSlate(slate) || slate;
+    const out = new Map();
+    for (const d of due) {
+      const g = slate.games.find(x => String(x.id) === String(d.id));
+      if (!g) { console.log(`  model: ${d.away} @ ${d.home} is not on the feed's slate`); continue; }
+      out.set(String(g.id), { pHome: +ctx.projectSeasonGame(g, slate).pHome.toFixed(4), report, source: slate.source || 'nb.ai',
+        engine: ctx.SEASON_ENGINE_VERSION, props: ctx.buildPropRows(g, propSlate, {}) });
+    }
+    return out;
+  };
+  await require('./odds-pull.js').pullOdds({ ctx, key: process.env.ODDS_API_KEY, games, ledgerPath: ODDS_LEDGER_PATH, lockPath: ODDS_LOCK_PATH, buildModel, dry: DRY });
 }
 
 function pct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }
