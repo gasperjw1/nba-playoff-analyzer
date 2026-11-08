@@ -19,3 +19,6 @@ node_modules/
 .claude/worktrees/
 .claude/launch.json
 .cache/
+
+# Odds API pulls (spec odds-1): local ledger + lock, never committed
+.odds/

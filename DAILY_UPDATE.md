@@ -13,7 +13,11 @@
 node fetch-slate.js --injuries # late news NB.AI hasn't picked up? refresh the snapshot with the latest official injury report (recorded rows stay as recorded); commit slate-snapshot.js
 ```
 ```bash
-node test-season.js          # must be green before committing
+node fetch-slate.js --odds --dry   # which games are due for FanDuel odds, when to run next, the most it could cost (no API call)
+node fetch-slate.js --odds         # FanDuel lines + props for games tipping within the hour, once per game (ODDS_SPEC.md); needs ODDS_API_KEY; add --espn on a stale-NB.AI day
+```
+```bash
+node test-season.js && node test-odds.js   # must be green before committing
 ```
 ```bash
 node backtest-season.js --compare HEAD --lineups last-game   # after any engine change: new vs committed engine, every game so far
