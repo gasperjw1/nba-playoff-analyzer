@@ -10,7 +10,8 @@
 //   node fetch-slate.js --record   also append tonight's predictions to the ledger, every
 //                                  rotation player's prop projection to the props ledger, and
 //                                  tonight's pitched tickets (js/season/pitch.js, PITCH_SPEC.md;
-//                                  js/season/pitch2.js, PITCH2_SPEC.md)
+//                                  js/season/pitch2.js, PITCH2_SPEC.md), and prints tonight's
+//                                  flat-$25 rule bets (js/season/flat.js, FLAT_SPEC.md)
 //                                  (refused when the feed is not today's slate; --force overrides)
 //   node fetch-slate.js --settle   fill results for unsettled ledger rows via ESPN (and box
 //                                  scores for the props ledger)
@@ -46,6 +47,7 @@ const LEDGER_PATH = path.join(__dirname, 'js/season/data/season-ledger.js');
 const PROPS_LEDGER_PATH = path.join(__dirname, 'js/season/data/props-ledger.js');
 const PITCH_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch-ledger.js');
 const PITCH2_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch2-ledger.js');
+const USER_LEGS_PATH = path.join(__dirname, 'js/season/data/user-legs.js');
 const TEAM_PRIORS_PATH = path.join(__dirname, 'js/season/data/team-priors.js');
 
 const args = new Set(process.argv.slice(2));
@@ -72,10 +74,12 @@ function loadSeasonContext() {
   load('js/season/parlay.js');
   load('js/season/pitch.js');
   load('js/season/pitch2.js');
+  load('js/season/flat.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
   if (fs.existsSync(PITCH2_LEDGER_PATH)) load('js/season/data/pitch2-ledger.js');
+  if (fs.existsSync(USER_LEGS_PATH)) load('js/season/data/user-legs.js');
   return ctx;
 }
 
@@ -209,6 +213,9 @@ async function main() {
     const ft = p2.ticket;
     console.log(`Pitch favourites: ${ft.status === 'pitched' ? `${ft.label.toUpperCase()} ${ft.legs.map(l => `${l.team} ${l.odds > 0 ? '+' : ''}${l.odds} (${pct(l.p)})${l.flagBook ? ' [' + (l.book || 'no book') + ']' : ''}`).join(' · ')} — ${pct(ft.p)}, price ${ft.price > 0 ? '+' : ''}${ft.price}` : 'no ticket — ' + ft.reason}${ft.gamesTipped ? ` · ${ft.gamesTipped} game${ft.gamesTipped === 1 ? '' : 's'} already tipped` : ''}`);
     console.log(`Pitch ledger pitch-2: ${p2res} (${p2.date}), ${p2Rows.length} nights`);
+    // flat-1 tracks every favourite from −299 to −100 at the price the ledger just recorded (the slate's).
+    const flat = ctx.flatTonight(slate);
+    console.log(`Pitch flat $${ctx.SEASON_FLAT_SPEC.stake} (favourites −299 to −100, slate price): ${flat.length ? flat.map(b => `${b.team} ${b.odds > 0 ? '+' : ''}${b.odds}`).join(' · ') : 'none'}`);
   }
 }
 
@@ -425,6 +432,11 @@ async function settle(ctx) {
     console.log(`  pitch fav ${pitch2Settled} ticket${pitch2Settled === 1 ? '' : 's'} graded this run`);
     for (const k of ['safe', 'lean']) { const g = pr[k]; console.log(`  pitch fav-${k} ${g.won}/${g.settled} tickets won (shown ${g.settled ? pct(g.shown / g.settled) : '—'}) · legs ${g.legsHit}/${g.legs} (shown ${g.legs ? pct(g.legsShown / g.legs) : '—'})${g.priced ? ` · ${g.units >= 0 ? '+' : ''}${g.units}u on ${g.priced} priced` : ''}`); }
   }
+  // flat-1: $25 straight bets — every ledger favourite −299 to −100, and the user's own FanDuel legs.
+  const fs1 = ctx.seasonFlatSummary(rows, Array.isArray(ctx.SEASON_USER_LEGS) ? ctx.SEASON_USER_LEGS : [], p2Rows);
+  const flatLine = (g) => g.n ? `${g.won}/${g.n} won (break-even ${g.beWins.toFixed(1)}) · ${g.profit >= 0 ? '+' : '−'}$${Math.abs(g.profit).toFixed(2)} on $${g.staked} (${(g.margin * 100).toFixed(1)}%)${g.open ? ` · ${g.open} open` : ''}` : `no bets yet${g.open ? ` · ${g.open} open` : ''}`;
+  console.log(`  flat favs from ${ctx.SEASON_FLAT_SPEC.firstNight}: ${flatLine(fs1.ledger.clean)}`);
+  console.log(`  flat yours above −300: ${flatLine(fs1.yours.rule)}`);
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
 }
