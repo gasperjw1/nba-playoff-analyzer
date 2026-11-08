@@ -12,6 +12,8 @@
 //     reply holds; an empty reply is free)
 //   - at most SEASON_ODDS_SPEC.tries requests per market, so a market FanDuel
 //     never posts stops costing
+//   - at most SEASON_ODDS_SPEC.maxPerGame credits per game: a request that could
+//     go past it is trimmed (alternate PRA first) or left out
 //   - the model's chance at the same moment is stored beside each price
 // A tracker of prices, not a picker. The key lives in ODDS_API_KEY only.
 //
@@ -22,7 +24,8 @@ const SEASON_ODDS_SPEC = {
   version: 'odds-1', frozen: '2026-11-08', sport: 'basketball_nba', book: 'fanduel',
   windowMin: 60,          // a game is due once its tip is at most this many minutes away
   tries: 3,               // requests per market before it is left missing
-  minRemaining: 500,      // credits never spent below this floor
+  maxPerGame: 10,         // credits one game may ever be charged (a shared line call counts in full for each game in it)
+  minRemaining: 5000,     // credits never spent below this floor (a quarter of the plan, kept in reserve)
   lines: ['h2h', 'spreads'],
   props: ['player_points', 'player_rebounds', 'player_assists', 'player_points_rebounds_assists',
     'player_threes', 'player_points_rebounds_assists_alternate'],
@@ -37,7 +40,9 @@ const _oddsMissing = (row, keys, S) => keys.filter(k => !(row && row.markets && 
 
 // games: [{id, tip, home, away}] (tonight, not yet tipped); ledger: {games: {id: row}}.
 // → [{game, lines: [missing line markets], props: [missing prop markets]}] for games
-// tipping in (now, now + windowMin] with anything still to request.
+// tipping in (now, now + windowMin] with anything still to request, within the game's credit
+// cap: each market costs at most 1, the lines (one call) go in whole or not at all, then props
+// in spec order until the cap (alternate PRA, last, is the first left out).
 function oddsDueGames(games, ledger, now, spec) {
   const S = spec || SEASON_ODDS_SPEC;
   const out = [];
@@ -45,7 +50,11 @@ function oddsDueGames(games, ledger, now, spec) {
     const t = _oddsTip(g);
     if (!(t > now && t <= now + S.windowMin * 60e3)) continue;
     const row = ledger && ledger.games ? ledger.games[String(g.id)] : null;
-    const lines = _oddsMissing(row, S.lines, S), props = _oddsMissing(row, S.props, S);
+    let budget = S.maxPerGame - ((row && row.credits) || 0);
+    let lines = _oddsMissing(row, S.lines, S);
+    if (lines.length > budget) lines = [];
+    budget -= lines.length;
+    const props = _oddsMissing(row, S.props, S).slice(0, Math.max(0, budget));
     if (lines.length || props.length) out.push({ game: g, lines, props });
   }
   return out;
@@ -135,6 +144,12 @@ function oddsRecord(ledger, g, event, requested, markets, at, model) {
     stored.push(k);
   }
   return stored;
+}
+
+// Credits charged to a game (row.credits); a call without a cost header counts what it asked for.
+function oddsCharge(ledger, gameId, credits) {
+  const row = ledger.games && ledger.games[String(gameId)];
+  if (row) row.credits = (row.credits || 0) + (credits || 0);
 }
 
 // Usage headers → {cost, used, remaining} (numbers, or null when absent).
