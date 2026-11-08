@@ -75,6 +75,12 @@ To do, in order:
    - **Built as `pitch-2`** (PITCH2_SPEC.md, frozen 2026-11-08, judged from 2026-11-09). Next:
      after ~20 safe nights, check legs vs shown chance and the cause tags on lost vs won legs.
 
+8. **Flat $25 moneylines (`flat-1`, FLAT_SPEC.md)** — built 2026-11-08 on the user's ask: $25
+   straight on every moneyline above −300, tracked for every ledger favourite from −299 to −100
+   (clean from 2026-11-09), for the user's own FanDuel legs, and for pitch-2's legs. Past seasons
+   at the close: −3.8% over 2,259 favourites, so this tests whether the prices taken beat the
+   close. No group is called profitable under 100 settled bets or with |z| < 2.
+
 ## Model
 
 - **Props distribution (props-3).** The live props model (`2026-11-07.sdscale`) still overstates overs

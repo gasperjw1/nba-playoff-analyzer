@@ -403,6 +403,47 @@ function renderPitch2Section() {
     <hr style="margin:20px 0">`;
 }
 
+function renderFlatSection() {
+  if (typeof SEASON_FLAT_SPEC === 'undefined') return '';
+  const S = SEASON_FLAT_SPEC;
+  const legs = typeof SEASON_USER_LEGS !== 'undefined' && Array.isArray(SEASON_USER_LEGS) ? SEASON_USER_LEGS : [];
+  const p2 = typeof SEASON_PITCH2_LEDGER !== 'undefined' && Array.isArray(SEASON_PITCH2_LEDGER) ? SEASON_PITCH2_LEDGER : [];
+  const sum = seasonFlatSummary(typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : [], legs, p2);
+  const usd = (x) => `${x < 0 ? '−' : '+'}$${Math.abs(x).toFixed(2)}`;
+  const row = (label, g, note) => `<tr><td><b>${label}</b>${note ? `<div class="muted">${note}</div>` : ''}</td><td class="num">${g.n ? `${g.won}/${g.n}` : '—'}${g.open ? ` <span class="muted">+${g.open} open</span>` : ''}</td><td class="num">${g.n ? g.beWins.toFixed(1) : '—'}</td><td class="num">${g.n ? `$${g.staked}` : '—'}</td><td class="num">${g.n ? `<span class="${g.profit >= 0 ? 'pos' : 'neg'}">${usd(g.profit)}</span>` : '—'}</td><td class="num">${g.margin != null ? `${(g.margin * 100).toFixed(1)}%` : '—'}</td><td class="num">${g.z != null ? g.z.toFixed(2) : '—'}</td></tr>`;
+  const head = '<tr><th>Bets</th><th class="num">Won</th><th class="num" title="wins the prices need to break even (their implied chances, vig included)">Break-even wins</th><th class="num">Staked</th><th class="num">Profit</th><th class="num">Margin</th><th class="num" title="(won − break-even) ÷ its standard deviation; inside ±2 is within luck">z</th></tr>';
+  const L = sum.ledger, Y = sum.yours, P = sum.pitch2;
+  const tonight = flatTonight(seasonState.slate);
+  const tn = tonight.length ? tonight.map(b => `${b.team} ${parlayFmtOdds(b.odds)}`).join(' · ') : 'none on the slate';
+  return `<h3 style="margin-top:4px">Flat $${S.stake} moneylines above ${parlayFmtOdds(S.above)} — spec ${S.version}</h3>
+    <p class="muted">What $${S.stake} on every moneyline priced above ${parlayFmtOdds(S.above)} would have made, as straight bets (frozen ${S.frozen}; the ledger line counts from ${S.firstNight}). A tracker, not a pick: on three past seasons every closing favourite from −299 to −100 lost −3.0%, −3.6% and −4.9% a season (2,259 bets, about the vig), so expect a small loss unless the prices you get beat the close. Unproven; $${S.stake} is your own unit, never a suggestion.</p>
+    <p>Rule bets for ${seasonState.slate && seasonState.slate.date ? seasonState.slate.date : 'tonight'} (every game's favourite at −299 to −100, slate price): <b>${tn}</b></p>
+    <h4 style="margin-top:12px">Every game's favourite, −299 to −100 (DraftKings)</h4>
+    <div style="overflow-x:auto"><table>${head}
+      ${row(`From ${S.firstNight}`, L.clean, 'at the price recorded before tip')}
+      ${row(`From ${S.firstNight}, at the close`, L.cleanClose)}
+      ${row(`All recorded games (from ${L.first || '—'})`, L.all, 'includes the nights the rule was chosen on')}
+      ${row('… at the close', L.allClose)}
+      ${row(`Favourites −300 or heavier, from ${S.firstNight}`, L.heavyClean, 'for comparison')}
+      ${row('… all recorded games', L.heavyAll)}
+    </table></div>
+    <h4 style="margin-top:12px">Your legs (FanDuel, the price you took)</h4>
+    <div style="overflow-x:auto"><table>${head}
+      ${row(`Above ${parlayFmtOdds(S.above)}`, Y.rule, 'the rule, underdogs included')}
+      ${row('… favourites only (−299 to −100)', Y.favs)}
+      ${row('… underdogs only', Y.dogs)}
+      ${row('−300 or heavier', Y.heavy)}
+      ${row('Every leg', Y.all)}
+    </table></div>
+    <p class="muted">A team on two tickets the same night is one leg. Graded from the ledger, so a leg stays open until your settle records its game. Send your FanDuel price with each bet to log it.</p>
+    <h4 style="margin-top:12px">Favourites-ticket legs as straight bets (spec pitch-2, from its first night)</h4>
+    <div style="overflow-x:auto"><table>${head}
+      ${row(`Above ${parlayFmtOdds(S.above)}`, P.rule)}
+      ${row('Every leg', P.all, 'mostly −300 or heavier: its safe legs are 75%+ favourites')}
+    </table></div>
+    <hr style="margin:20px 0">`;
+}
+
 function renderPitchTab() {
   const s = seasonState.slate, S = SEASON_PITCH_SPEC;
   const ledger = typeof SEASON_PITCH_LEDGER !== 'undefined' && Array.isArray(SEASON_PITCH_LEDGER) ? SEASON_PITCH_LEDGER : [];
@@ -428,6 +469,7 @@ function renderPitchTab() {
   const recRow = (k, label) => { const g = rec[k]; return `<tr><td><b>${label}</b></td><td class="num">${g.nights}</td><td class="num">${g.tickets}</td><td class="num">${g.settled ? `${g.won}/${g.settled}` : '—'}</td><td class="num">${g.legs ? `${pct(g.legsHit / g.legs)} <span class="muted">vs ${pct(g.legsShown / g.legs)} shown · ${g.legs}</span>` : '—'}</td><td class="num">${g.priced ? `${g.units >= 0 ? '+' : ''}${g.units}u <span class="muted">(${g.priced})</span>` : '—'}</td><td class="num">${g.clvN ? `${g.clvToward}/${g.clvN} <span class="muted">avg ${(g.clvMove * 100).toFixed(1)} pp</span>` : '—'}</td></tr>`; };
   return `<div class="ledger">
     ${renderPitch2Section()}
+    ${renderFlatSection()}
     <h3>Floor and edge tickets — spec ${S.version}</h3>
     <p class="muted">Two tickets a night under spec ${S.version} (frozen ${S.frozen}, judged from ${S.firstNight}): a floor ticket, the main recipe, and an edge ticket, an experiment. Your daily run records them before any leg tips and grades them the next morning, so each recipe earns its own record. Shown chances are the calibrated or evidence-adjusted ones, not the model's raw claims. Unproven; it never sizes a stake.</p>
     <p class="muted">${recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date} (${recorded.source || 'slate'}).` : `<span class="warn">Preview from the current slate — not recorded yet; your daily run records tonight's pitch.</span>`}</p>

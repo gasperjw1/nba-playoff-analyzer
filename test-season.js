@@ -35,6 +35,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/parlay.js');
   load('js/season/pitch.js');
   load('js/season/pitch2.js');
+  load('js/season/flat.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1592,6 +1593,80 @@ console.log('TEST 33: favourites ticket (pitch2.js, spec pitch-2)');
   c.seasonState.slate = { ...leanSlate };
   c.SEASON_PITCH2_LEDGER = [];
   assert(c.renderPitchTab().includes('No safe ticket tonight'), 'lean night says no safe ticket');
+}
+
+console.log('TEST 34: flat $25 moneylines (flat.js, spec flat-1)');
+{
+  const c = loadCtx(false, true);
+  const S = c.SEASON_FLAT_SPEC;
+  assert(S.version === 'flat-1' && S.stake === 25 && S.above === -300 && S.firstNight === '2026-11-09', 'spec constants');
+  near(c.flatProfit(118, true), 29.5, 1e-9, 'plus-money win pays odds/100 × stake');
+  near(c.flatProfit(-438, true), 2500 / 438, 1e-9, 'favourite win pays 100/|odds| × stake');
+  assert(c.flatProfit(-438, false) === -25 && c.flatProfit(150, false, 10) === -10, 'a miss loses the stake');
+  assert(!c.flatInRule(-300) && c.flatInRule(-299) && c.flatInRule(150) && !c.flatInRule(-1400) && !c.flatInRule(50) && !c.flatInRule(null), 'rule: above −300, a real price');
+  assert(c.flatFavInRule(-299) && c.flatFavInRule(-100) && c.flatFavInRule(100) && !c.flatFavInRule(120) && !c.flatFavInRule(-300), 'ledger rule: favourites −299 to −100');
+  const r = c.flatRecord([{ odds: -200, hit: true }, { odds: 150, hit: false }, { odds: -150, hit: null }, { odds: null, hit: true }]);
+  assert(r.n === 2 && r.won === 1 && r.open === 1 && r.staked === 50 && r.profit === -12.5 && r.margin === -0.25, 'record: open and unpriced bets left out of the totals');
+  near(r.beWins, 2 / 3 + 0.4, 0.01, 'break-even wins = sum of implied chances');
+  assert(c.flatRecord([]).z === null && c.flatRecord([]).margin === null, 'empty record');
+  // Ledger: one bet per game on the favourite, at the recorded price, with the same side's close.
+  const res = (h, a) => ({ homeScore: h, awayScore: a });
+  const rows = [
+    { id: 'a', date: '2026-11-08', home: 'H1', away: 'A1', mlHome: -250, mlAway: 200, result: res(100, 90), close: { mlHome: -280, mlAway: 230 } },
+    { id: 'b', date: '2026-11-09', home: 'H2', away: 'A2', mlHome: 130, mlAway: -150, result: res(100, 90), close: { mlHome: 120, mlAway: -140 } },
+    { id: 'c', date: '2026-11-09', home: 'H3', away: 'A3', mlHome: -400, mlAway: 320, result: res(110, 90) },
+    { id: 'd', date: '2026-11-10', home: 'H4', away: 'A4', mlHome: -110, mlAway: -110, result: res(90, 100) },
+    { id: 'e', date: '2026-11-10', home: 'H5', away: 'A5', mlHome: null, mlAway: -150, result: res(90, 100) },
+    { id: 'f', date: '2026-11-10', home: 'H6', away: 'A6', mlHome: -200, mlAway: 170, result: null },
+  ];
+  const lb = c.flatLedgerBets(rows);
+  assert(lb.length === 5 && lb[0].team === 'H1' && lb[0].hit === true && lb[0].close === -280 && lb[1].team === 'A2' && lb[1].hit === false && lb[1].close === -140, 'favourite, its result and its close');
+  assert(lb[3].side === 'home' && lb[3].hit === false && lb[3].close === null && lb[4].hit === null, "pick'em counts the home side; no close → null; unsettled → open; missing price skipped");
+  const legs = [
+    { date: '2026-11-09', gameId: 'b', team: 'H2', side: 'home', odds: 140, book: 'FanDuel' },
+    { date: '2026-11-09', gameId: 'c', team: 'H3', side: 'home', odds: -380, book: 'FanDuel' },
+    { date: '2026-11-08', gameId: 'a', team: 'H1', side: 'home', odds: -240, book: 'FanDuel' },
+    { date: '2026-11-11', gameId: 'zz', team: 'X', side: 'home', odds: -120, book: 'FanDuel' },
+  ];
+  const mkP2 = (date, spec, legsP2) => ({ date, spec, ticket: { status: 'pitched', legs: legsP2 } });
+  const p2 = [
+    mkP2('2026-11-08', 'pitch-2', [{ team: 'Q', odds: -200, result: { outcome: 'hit' } }]),
+    mkP2('2026-11-09', 'pitch-2', [{ team: 'R', odds: -350, result: { outcome: 'hit' } }, { team: 'T', odds: -250, result: { outcome: 'miss' } }, { team: 'U', odds: -320, result: { outcome: 'void' } }]),
+    mkP2('2026-11-10', 'pitch-3', [{ team: 'V', odds: -200, result: { outcome: 'hit' } }]),
+    mkP2('2026-11-10', 'pitch-2', [{ team: 'W', odds: -310, result: null }]),
+  ];
+  const sum = c.seasonFlatSummary(rows, legs, p2);
+  assert(sum.ledger.clean.n === 2 && sum.ledger.clean.won === 0 && sum.ledger.clean.open === 1 && sum.ledger.all.n === 3 && sum.ledger.all.won === 1, 'ledger rule: clean from the first night (b, d; f open) vs all recorded games (a too)');
+  assert(sum.ledger.heavyClean.n === 1 && sum.ledger.heavyClean.won === 1 && sum.ledger.first === '2026-11-08', '−300 or heavier kept apart');
+  assert(sum.ledger.cleanClose.n === 1 && sum.ledger.cleanClose.profit === -25 && sum.ledger.allClose.n === 2, 'at the close only where the row has one');
+  near(sum.ledger.all.profit, 25 * 100 / 250 - 25 - 25, 0.006, 'ledger profit at recorded prices (cents)');
+  assert(sum.yours.rule.n === 2 && sum.yours.rule.won === 2 && sum.yours.rule.open === 1 && sum.yours.dogs.n === 1 && sum.yours.dogs.won === 1 && sum.yours.heavy.n === 1 && sum.yours.heavy.won === 1 && sum.yours.all.n === 3, 'your legs graded by game id (your underdog won where the ledger favourite lost); unknown game stays open');
+  near(sum.yours.favs.profit, 25 * 100 / 240, 0.006, 'your favourites at your price (cents)');
+  assert(sum.pitch2.all.n === 2 && sum.pitch2.all.open === 1 && sum.pitch2.all.won === 1 && sum.pitch2.rule.n === 1 && sum.pitch2.rule.won === 0, 'pitch-2 legs from its first night, own spec only, void skipped');
+  // Tonight's list from a slate.
+  const tn = c.flatTonight({ games: [
+    { id: 1, home: 'H', away: 'A', market: { mlHome: -180, mlAway: 150 } },
+    { id: 2, home: 'H', away: 'A', market: { mlHome: 300, mlAway: -380 } },
+    { id: 3, home: 'H', away: 'A', market: { mlHome: 105, mlAway: -125 } },
+    { id: 4, home: 'H', away: 'A', market: { mlHome: null, mlAway: -125 } },
+  ] });
+  assert(tn.length === 2 && tn[0].team === 'H' && tn[0].odds === -180 && tn[1].team === 'A' && tn[1].odds === -125, "tonight: favourites −299 to −100 only");
+  // The committed legs: each is a real ledger game, on the right side, at a real price, once a night.
+  vm.runInContext(fs.readFileSync(path.join(__dirname, 'js/season/data/user-legs.js'), 'utf8').replace(/^(const|let) /gm, 'var '), c);
+  const byId = Object.fromEntries(c.SEASON_LEDGER.map(x => [x.id, x]));
+  const seen = new Set();
+  const ok = c.SEASON_USER_LEGS.every(l => {
+    const g = byId[l.gameId], k = l.date + '|' + l.team;
+    if (!g || g.date !== l.date || (l.side === 'home' ? g.home : g.away) !== l.team || (l.side === 'home' ? g.away : g.home) !== l.opponent) return false;
+    if (seen.has(k) || l.book !== 'FanDuel' || !(Math.abs(l.odds) >= 100)) return false;
+    seen.add(k); return true;
+  });
+  assert(c.SEASON_USER_LEGS.length >= 29 && ok, 'user-legs.js: every leg matches its ledger game and side, FanDuel, one per team a night');
+  // Pitch tab section
+  c.seasonState.slate = { ...makeSlate(c), date: '2026-11-09' };
+  c.SEASON_PITCH_LEDGER = []; c.SEASON_PITCH2_LEDGER = [];
+  const html = c.renderPitchTab();
+  assert(html.includes('Flat $25 moneylines above -300 — spec flat-1') && html.includes('Rule bets for 2026-11-09') && html.includes('AAA -150') && html.includes('Your legs (FanDuel') && html.indexOf('spec pitch-2') < html.indexOf('spec flat-1') && html.indexOf('spec flat-1') < html.indexOf('spec pitch-1'), 'section between pitch-2 and pitch-1, with tonight\'s bets');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

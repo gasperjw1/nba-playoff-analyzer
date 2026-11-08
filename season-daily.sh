@@ -68,7 +68,7 @@ if [ "$FORCE" -eq 1 ] || ! done_today settle; then
   if out=$(node fetch-slate.js --settle 2>&1); then
     mark settle
     log "settle: $(printf '%s\n' "$out" | grep -E '^(Settled|Nothing)' | head -1)"
-    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline|props|pitch) ' | sed 's/^/[season-daily]   /'
+    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline|props|pitch|flat) ' | sed 's/^/[season-daily]   /'
   else
     log "settle FAILED: $(printf '%s\n' "$out" | tail -2 | tr '\n' ' ')"
   fi
