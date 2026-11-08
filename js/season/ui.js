@@ -361,7 +361,47 @@ function renderParlayTab() {
   </div>`;
 }
 
-// ---------- pitched tickets (pitch.js, PITCH_SPEC.md) ----------
+// ---------- pitched tickets (pitch2.js, PITCH2_SPEC.md; pitch.js, PITCH_SPEC.md) ----------
+
+const PITCH2_TAG_NAMES = { news: 'price fell 5+ pp after the pitch', 'starter-out': 'a top-5 minutes player sat', 'engine-against': 'engine had it below 50%',
+  'trust-flag': 'a trust rule fired', 'close-loss': 'lost by 1–5', beaten: 'lost by 6+' };
+
+function renderPitch2Section() {
+  if (typeof SEASON_PITCH2_SPEC === 'undefined') return '';
+  const s = seasonState.slate, S = SEASON_PITCH2_SPEC;
+  const ledger = typeof SEASON_PITCH2_LEDGER !== 'undefined' && Array.isArray(SEASON_PITCH2_LEDGER) ? SEASON_PITCH2_LEDGER : [];
+  const recorded = ledger.find(r => r.date === s.date && r.spec === S.version);
+  const night = recorded || buildPitch2(s, { now: Date.now() });
+  const t = night.ticket;
+  const pct = (x) => x == null ? '—' : `${(x * 100).toFixed(1)}%`;
+  const odds = (a) => a == null ? '—' : parlayFmtOdds(a);
+  const when = recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date}${recorded.superseded && recorded.superseded.length ? ` (re-priced ${recorded.superseded.length}×; the last recording before the first leg's tip counts)` : ''}.`
+    : '<span class="warn">Preview at the slate\'s prices — not recorded yet; your daily run records it at DraftKings\' current prices.</span>';
+  let body;
+  if (t.status !== 'pitched') body = `<p class="muted">No ticket tonight: ${t.reason}.</p>`;
+  else {
+    const mark = (l) => !l.result ? '' : l.result.outcome === 'hit' ? ' <span class="pos">✓</span>' : l.result.outcome === 'miss' ? ' <span class="neg">✗</span>' : ' <span class="muted">void (postponed)</span>';
+    const tags = (l) => l.result && l.result.tags && l.result.tags.length ? `<div class="muted">tags: ${l.result.tags.map(k => PITCH2_TAG_NAMES[k] || k).join(' · ')}${l.sat ? ` (${l.sat.join(', ')})` : ''}</div>` : '';
+    const rows = t.legs.map((l, i) => `<tr><td>${i + 1}</td><td><b>${l.team} to win</b>${mark(l)}<div class="muted">${l.matchup} · ${odds(l.odds)}${l.flagBook ? ` <span class="warn">(${l.book || 'no book'})</span>` : ''} · no-vig ${pct(l.pNoVig)} · engine ${pct(l.pEngine)}${l.trustRule ? ` · <span class="warn">${l.trustRule}</span>` : ''}</div>${tags(l)}</td><td class="num">${pct(l.p)}</td></tr>`).join('');
+    const res = t.result ? ` · <b>${t.result.outcome === 'win' ? 'WON' : t.result.outcome === 'loss' ? 'LOST' : 'VOID'}</b> (${t.result.legsHit} hit${t.result.legsVoid ? `, ${t.result.legsVoid} void` : ''})${t.result.units != null ? ` · ${t.result.units >= 0 ? '+' : ''}${t.result.units}u` : ''}` : '';
+    const head = t.label === 'safe' ? '<p><b class="pos">Safe ticket tonight</b> — all three legs are 75%+ favourites.</p>'
+      : `<p><b class="warn">No safe ticket tonight</b> — the third-strongest favourite is ${pct(t.legs[2].pNoVig)} (safe needs 75%+). Shown as a lean ticket.</p>`;
+    body = `${head}<div style="overflow-x:auto"><table class="parlay-legs"><tr><th>#</th><th>Leg</th><th class="num">Shown</th></tr>${rows}</table></div>
+      <p>Combined ${pct(t.p)} · fair ${odds(t.fairAmerican)} · legs' prices multiplied ${odds(t.price)}${t.quote != null ? ` · quoted ${odds(t.quote)}` : ''}${res}</p>`;
+  }
+  const rec = seasonPitch2Record(ledger);
+  const recRow = (k, label) => { const g = rec[k]; return `<tr><td><b>${label}</b></td><td class="num">${g.nights}</td><td class="num">${g.settled ? `${g.won}/${g.settled} <span class="muted">vs ${pct(g.shown / g.settled)} shown</span>` : '—'}</td><td class="num">${g.legs ? `${pct(g.legsHit / g.legs)} <span class="muted">vs ${pct(g.legsShown / g.legs)} · ${g.legs}</span>` : '—'}</td><td class="num">${g.priced ? `${g.units >= 0 ? '+' : ''}${g.units}u <span class="muted">(${g.priced})</span>` : '—'}</td><td class="num">${g.clvN ? `${g.clvToward}/${g.clvN} <span class="muted">avg ${(g.clvMove * 100).toFixed(1)} pp</span>` : '—'}</td></tr>`; };
+  const tagRows = S.tags.map(k => { const a = rec.safe.tags[k], b = rec.lean.tags[k], hit = a.hit + b.hit, miss = a.miss + b.miss; return hit + miss ? `<tr><td>${PITCH2_TAG_NAMES[k]}</td><td class="num">${miss}</td><td class="num">${hit}</td></tr>` : ''; }).join('');
+  return `<h3 style="margin-top:4px">Favourites ticket — spec ${S.version}</h3>
+    <p class="muted">The market's three strongest favourites tonight, one per game, labelled safe when all three are ${S.safeFloor * 100}%+ on DraftKings' no-vig price (frozen ${S.frozen}, judged from ${S.firstNight}). Shown chances are DraftKings' own with the vig removed by the power method; the engine is shown, not used to pick. On three past seasons a safe ticket existed on 44% of nights and its prices said about 65% — expect one in three to lose, and about −4% at the close after the vig. Re-run the record after the late injury report to re-price it; the last recording before the first leg tips counts. Unproven; it never sizes a stake.</p>
+    <p class="muted">${when}</p>
+    ${body}
+    <h4 style="margin-top:14px">Record — from ${S.firstNight}</h4>
+    <div style="overflow-x:auto"><table><tr><th>Label</th><th class="num">Nights</th><th class="num">Tickets won</th><th class="num">Legs hit</th><th class="num">Units</th><th class="num" title="did DraftKings' price move toward the leg between the pitch and the close">Line moved</th></tr>${recRow('safe', 'Safe')}${recRow('lean', 'Lean')}</table></div>
+    <p class="muted">${rec.noTicket} no-ticket night${rec.noTicket === 1 ? '' : 's'}${rec.safe.voidLeg + rec.lean.voidLeg ? ` · ${rec.safe.voidLeg + rec.lean.voidLeg} ticket(s) with a postponed leg, left out of the ticket counts` : ''}.</p>
+    ${tagRows ? `<h4 style="margin-top:14px">Why legs lost — tags on lost vs won legs</h4><div style="overflow-x:auto"><table><tr><th>Tag</th><th class="num">Lost legs</th><th class="num">Won legs</th></tr>${tagRows}</table></div><p class="muted">A tag becomes a filter only through a new spec, once it is measured against won legs.</p>` : ''}
+    <hr style="margin:20px 0">`;
+}
 
 function renderPitchTab() {
   const s = seasonState.slate, S = SEASON_PITCH_SPEC;
@@ -387,6 +427,8 @@ function renderPitchTab() {
   const rec = seasonPitchRecord(ledger, typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : []);
   const recRow = (k, label) => { const g = rec[k]; return `<tr><td><b>${label}</b></td><td class="num">${g.nights}</td><td class="num">${g.tickets}</td><td class="num">${g.settled ? `${g.won}/${g.settled}` : '—'}</td><td class="num">${g.legs ? `${pct(g.legsHit / g.legs)} <span class="muted">vs ${pct(g.legsShown / g.legs)} shown · ${g.legs}</span>` : '—'}</td><td class="num">${g.priced ? `${g.units >= 0 ? '+' : ''}${g.units}u <span class="muted">(${g.priced})</span>` : '—'}</td><td class="num">${g.clvN ? `${g.clvToward}/${g.clvN} <span class="muted">avg ${(g.clvMove * 100).toFixed(1)} pp</span>` : '—'}</td></tr>`; };
   return `<div class="ledger">
+    ${renderPitch2Section()}
+    <h3>Floor and edge tickets — spec ${S.version}</h3>
     <p class="muted">Two tickets a night under spec ${S.version} (frozen ${S.frozen}, judged from ${S.firstNight}): a floor ticket, the main recipe, and an edge ticket, an experiment. Your daily run records them before any leg tips and grades them the next morning, so each recipe earns its own record. Shown chances are the calibrated or evidence-adjusted ones, not the model's raw claims. Unproven; it never sizes a stake.</p>
     <p class="muted">${recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date} (${recorded.source || 'slate'}).` : `<span class="warn">Preview from the current slate — not recorded yet; your daily run records tonight's pitch.</span>`}</p>
     ${night.tickets.map(ticket).join('')}

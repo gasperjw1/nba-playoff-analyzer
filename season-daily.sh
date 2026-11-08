@@ -82,7 +82,7 @@ espn_fallback() {
     log "ESPN fallback: $(printf '%s\n' "$fb" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch )' | tr '\n' ' ')"
     printf '%s\n' "$fb" | grep -E '^  ([A-Z]{2,4} @ |check: )' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$fb" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
-      log "fallback rows recorded (no NB.AI) — review any 'check:' lines, commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js and pitch-ledger.js; run again if NB.AI refreshes before tip-off"
+      log "fallback rows recorded (no NB.AI) — review any 'check:' lines, commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js, pitch-ledger.js and pitch2-ledger.js; run again if NB.AI refreshes before tip-off"
     fi
   else
     log "ESPN fallback FAILED: $(printf '%s\n' "$fb" | tail -2 | tr '\n' ' ')"
@@ -100,7 +100,7 @@ elif [ "$FORCE" -eq 1 ] || ! done_today record; then
     log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch |record skipped)' | tr '\n' ' ')"
     printf '%s\n' "$out" | grep -E '^  [A-Z]{2,4} @ ' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$out" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
-      log "new rows recorded — commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js and pitch-ledger.js"
+      log "new rows recorded — commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js, pitch-ledger.js and pitch2-ledger.js"
     fi
     printf '%s\n' "$out" | grep -q '^record skipped: feed slate is' && NBAI_DOWN=1
   else

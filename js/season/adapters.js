@@ -167,7 +167,8 @@ function adaptEspnScoreboard(doc) {
     if (!c) return null;
     const home = c.competitors.find(x => x.homeAway === 'home');
     const away = c.competitors.find(x => x.homeAway === 'away');
-    const final = !!(c.status && c.status.type && c.status.type.name === 'STATUS_FINAL');
+    const status = c.status && c.status.type ? c.status.type.name : null;
+    const final = status === 'STATUS_FINAL';
     return {
       id: String(e.id),
       date: e.date,
@@ -176,6 +177,7 @@ function adaptEspnScoreboard(doc) {
       homeScore: home && home.score != null ? Number(home.score) : null,
       awayScore: away && away.score != null ? Number(away.score) : null,
       final,
+      postponed: status === 'STATUS_POSTPONED' || status === 'STATUS_CANCELED',
     };
   }).filter(Boolean);
 }

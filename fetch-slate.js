@@ -9,7 +9,8 @@
 //   node fetch-slate.js            download feed → js/season/data/slate-snapshot.js
 //   node fetch-slate.js --record   also append tonight's predictions to the ledger, every
 //                                  rotation player's prop projection to the props ledger, and
-//                                  tonight's pitched tickets (js/season/pitch.js, PITCH_SPEC.md)
+//                                  tonight's pitched tickets (js/season/pitch.js, PITCH_SPEC.md;
+//                                  js/season/pitch2.js, PITCH2_SPEC.md)
 //                                  (refused when the feed is not today's slate; --force overrides)
 //   node fetch-slate.js --settle   fill results for unsettled ledger rows via ESPN (and box
 //                                  scores for the props ledger)
@@ -44,6 +45,7 @@ const SNAPSHOT_PATH = path.join(__dirname, 'js/season/data/slate-snapshot.js');
 const LEDGER_PATH = path.join(__dirname, 'js/season/data/season-ledger.js');
 const PROPS_LEDGER_PATH = path.join(__dirname, 'js/season/data/props-ledger.js');
 const PITCH_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch-ledger.js');
+const PITCH2_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch2-ledger.js');
 const TEAM_PRIORS_PATH = path.join(__dirname, 'js/season/data/team-priors.js');
 
 const args = new Set(process.argv.slice(2));
@@ -69,9 +71,11 @@ function loadSeasonContext() {
   load('js/season/props-ledger.js');
   load('js/season/parlay.js');
   load('js/season/pitch.js');
+  load('js/season/pitch2.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
+  if (fs.existsSync(PITCH2_LEDGER_PATH)) load('js/season/data/pitch2-ledger.js');
   return ctx;
 }
 
@@ -90,6 +94,11 @@ async function getJson(url) {
 function writePitchLedger(rows) {
   fs.writeFileSync(PITCH_LEDGER_PATH, '// ============================================================\n// PITCH LEDGER — pitched tickets (2026-27), js/season/pitch.js, spec in PITCH_SPEC.md\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit:\n// a pitch is only evidence if recorded before its legs tip off.\n// ============================================================\n' +
     `const SEASON_PITCH_LEDGER = [\n${rows.map(r => JSON.stringify(r)).join(',\n')}\n];\n`);
+}
+
+function writePitch2Ledger(rows) {
+  fs.writeFileSync(PITCH2_LEDGER_PATH, '// ============================================================\n// PITCH-2 LEDGER — the favourites ticket (2026-27), js/season/pitch2.js, spec in PITCH2_SPEC.md\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit:\n// a pitch is only evidence if recorded before its legs tip off.\n// ============================================================\n' +
+    `const SEASON_PITCH2_LEDGER = [\n${rows.map(r => JSON.stringify(r)).join(',\n')}\n];\n`);
 }
 
 function writePropsLedger(rows) {
@@ -185,6 +194,21 @@ async function main() {
     writePitchLedger(pitchRows);
     for (const t of pitch.tickets) console.log(`Pitch ${t.recipe}: ${t.status === 'pitched' ? `${t.legs.map(l => l.type === 'ml' ? `${l.team} ML ${l.odds > 0 ? '+' : ''}${l.odds}` : `${l.name} ${l.stat} o${l.line}`).join(' · ')} — ${pct(t.p)} (fair ${t.fairAmerican > 0 ? '+' : ''}${t.fairAmerican})` : t.status + ' — ' + t.reason}`);
     console.log(`Pitch ledger: ${pres} (${pitch.date}), ${pitchRows.length} nights`);
+    // pitch-2, the favourites ticket: replaceable until its first leg tips, so a later run re-prices it nearer tip.
+    // Priced at record time from ESPN's pickcenter (DraftKings): an NB.AI slate's odds are as old as its refresh.
+    const p2Rows = Array.isArray(ctx.SEASON_PITCH2_LEDGER) ? ctx.SEASON_PITCH2_LEDGER : [];
+    const live = new Map();
+    for (const g of slate.games.filter(x => !x.tip || new Date(x.tip).getTime() > Date.now())) {
+      try { const pc = ctx.adaptEspnPickcenter(await getJson(ESPN_SUMMARY + g.id), g.home, g.away); if (pc && pc.mlHome != null && pc.mlAway != null) live.set(String(g.id), pc); }
+      catch (e) { console.warn(`pitch-2 price ${g.away} @ ${g.home}: ${e.message} (slate price used)`); }
+    }
+    const p2Slate = { ...slate, games: slate.games.map(g => live.has(String(g.id)) ? { ...g, market: live.get(String(g.id)), priceSource: 'espn' } : { ...g, priceSource: 'slate' }) };
+    const p2 = ctx.buildPitch2(p2Slate, { engine: ctx.SEASON_ENGINE_VERSION, recordedAt, now: Date.now() });
+    const p2res = ctx.mergePitch2(p2Rows, p2, Date.now());
+    writePitch2Ledger(p2Rows);
+    const ft = p2.ticket;
+    console.log(`Pitch favourites: ${ft.status === 'pitched' ? `${ft.label.toUpperCase()} ${ft.legs.map(l => `${l.team} ${l.odds > 0 ? '+' : ''}${l.odds} (${pct(l.p)})${l.flagBook ? ' [' + (l.book || 'no book') + ']' : ''}`).join(' · ')} — ${pct(ft.p)}, price ${ft.price > 0 ? '+' : ''}${ft.price}` : 'no ticket — ' + ft.reason}${ft.gamesTipped ? ` · ${ft.gamesTipped} game${ft.gamesTipped === 1 ? '' : 's'} already tipped` : ''}`);
+    console.log(`Pitch ledger pitch-2: ${p2res} (${p2.date}), ${p2Rows.length} nights`);
   }
 }
 
@@ -308,7 +332,10 @@ async function settle(ctx) {
   const propRows = Array.isArray(ctx.SEASON_PROPS_LEDGER) ? ctx.SEASON_PROPS_LEDGER : [];
   const pitchRows = Array.isArray(ctx.SEASON_PITCH_LEDGER) ? ctx.SEASON_PITCH_LEDGER : [];
   const openPitch = pitchRows.some(r => r.tickets.some(t => t.status === 'pitched' && !t.result));
-  if (!open.length && !rows.some(needsClose) && !propRows.some(r => !r.result) && !openPitch) { console.log('Nothing to settle.'); return; }
+  const p2Rows = Array.isArray(ctx.SEASON_PITCH2_LEDGER) ? ctx.SEASON_PITCH2_LEDGER : [];
+  const openPitch2 = p2Rows.some(r => r.ticket && r.ticket.status === 'pitched' && !r.ticket.result);
+  if (!open.length && !rows.some(needsClose) && !propRows.some(r => !r.result) && !openPitch && !openPitch2) { console.log('Nothing to settle.'); return; }
+  const postponed = new Set();
   const dates = [...new Set(open.map(r => (r.tip || r.date).slice(0, 10)))];
   let settled = 0;
   for (const d of dates) {
@@ -321,6 +348,7 @@ async function settle(ctx) {
       try { results.push(...ctx.adaptEspnScoreboard(await getJson(ESPN_SCOREBOARD + q))); }
       catch (e) { console.warn(`ESPN ${q}: ${e.message}`); }
     }
+    for (const x of results) if (x.postponed) postponed.add(x.id);
     open.filter(r => (r.tip || r.date).slice(0, 10) === d).forEach(r => {
       const hit = results.find(x => x.id === r.id && x.final);
       if (!hit) return;
@@ -363,9 +391,22 @@ async function settle(ctx) {
     }
     pitchSettled = ctx.settlePitches(pitchRows, results, boxes, new Date().toISOString());
   }
-  if (DRY) { console.log(`(dry) would settle ${settled}, props ${propsSettled}, pitches ${pitchSettled}`); return; }
+  // pitch-2: final scores and closes from the ledger, box scores for the starter-out tag.
+  let pitch2Settled = 0;
+  if (openPitch2) {
+    const results = new Map(rows.filter(r => r.result).map(r => [String(r.id), r.result]));
+    const closes = new Map(rows.filter(r => r.close).map(r => [String(r.id), r.close]));
+    const boxes = new Map();
+    for (const g of new Set(p2Rows.filter(r => r.ticket && r.ticket.status === 'pitched' && !r.ticket.result).flatMap(r => r.ticket.legs.map(l => l.game)))) {
+      if (!results.has(g)) continue;
+      try { boxes.set(g, ctx.adaptEspnBox(await cachedJson(`summary-${g}.json`, ESPN_SUMMARY + g))); } catch (e) { console.warn(`box score ${g}: ${e.message} (starter-out left unknown)`); }
+    }
+    pitch2Settled = ctx.settlePitch2(p2Rows, results, postponed, closes, boxes, new Date().toISOString());
+  }
+  if (DRY) { console.log(`(dry) would settle ${settled}, props ${propsSettled}, pitches ${pitchSettled}, pitch-2 ${pitch2Settled}`); return; }
   if (propsSettled) writePropsLedger(propRows);
   if (pitchSettled) writePitchLedger(pitchRows);
+  if (pitch2Settled) writePitch2Ledger(p2Rows);
   writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', rows,
     '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
   console.log(`Settled ${settled}; ${rows.filter(r => !r.result).length} still open.`);
@@ -378,6 +419,11 @@ async function settle(ctx) {
     const pr = ctx.seasonPitchRecord(pitchRows, rows);
     console.log(`  pitch    ${pitchSettled} ticket${pitchSettled === 1 ? '' : 's'} graded this run`);
     for (const k of ['floor', 'edge']) { const g = pr[k]; console.log(`  pitch ${k.padEnd(5)} ${g.won}/${g.settled} tickets won · legs ${g.legsHit}/${g.legs} (shown ${g.legs ? pct(g.legsShown / g.legs) : '—'})${g.priced ? ` · ${g.units >= 0 ? '+' : ''}${g.units}u on ${g.priced} priced` : ''} · ${g.noTicket} no-ticket night${g.noTicket === 1 ? '' : 's'}`); }
+  }
+  if (pitch2Settled) {
+    const pr = ctx.seasonPitch2Record(p2Rows);
+    console.log(`  pitch fav ${pitch2Settled} ticket${pitch2Settled === 1 ? '' : 's'} graded this run`);
+    for (const k of ['safe', 'lean']) { const g = pr[k]; console.log(`  pitch fav-${k} ${g.won}/${g.settled} tickets won (shown ${g.settled ? pct(g.shown / g.settled) : '—'}) · legs ${g.legsHit}/${g.legs} (shown ${g.legs ? pct(g.legsShown / g.legs) : '—'})${g.priced ? ` · ${g.units >= 0 ? '+' : ''}${g.units}u on ${g.priced} priced` : ''}`); }
   }
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
