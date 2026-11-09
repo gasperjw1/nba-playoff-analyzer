@@ -37,5 +37,12 @@ const SEASON_USER_LEGS = [
  {"date":"2026-11-07","gameId":"401909944","team":"SA","opponent":"POR","side":"away","odds":-220,"book":"FanDuel"},
  {"date":"2026-11-07","gameId":"401909941","team":"OKC","opponent":"WSH","side":"home","odds":-520,"book":"FanDuel"},
  {"date":"2026-11-07","gameId":"401909942","team":"GS","opponent":"ORL","side":"home","odds":-220,"book":"FanDuel"},
- {"date":"2026-11-07","gameId":"401909943","team":"HOU","opponent":"PHX","side":"away","odds":-270,"book":"FanDuel"}
+ {"date":"2026-11-07","gameId":"401909943","team":"HOU","opponent":"PHX","side":"away","odds":-270,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909945","team":"PHI","opponent":"CHI","side":"away","odds":-390,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909946","team":"DET","opponent":"LAL","side":"home","odds":-255,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909947","team":"MIN","opponent":"UTAH","side":"home","odds":-650,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909948","team":"DAL","opponent":"BKN","side":"home","odds":-290,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909949","team":"BOS","opponent":"MIL","side":"away","odds":-720,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909951","team":"MIA","opponent":"SAC","side":"away","odds":-405,"book":"FanDuel"},
+ {"date":"2026-11-08","gameId":"401909950","team":"NO","opponent":"LAC","side":"away","odds":-120,"book":"FanDuel"}
 ];
