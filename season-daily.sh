@@ -79,7 +79,7 @@ fi
 # ── 2. snapshot + record tonight's slate ─────────────────────
 espn_fallback() {
   if fb=$(node fetch-slate.js --espn --record 2>&1); then
-    log "ESPN fallback: $(printf '%s\n' "$fb" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch )' | tr '\n' ' ')"
+    log "ESPN fallback: $(printf '%s\n' "$fb" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch |Odds ladders)' | tr '\n' ' ')"
     printf '%s\n' "$fb" | grep -E '^  ([A-Z]{2,4} @ |check: )' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$fb" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
       log "fallback rows recorded (no NB.AI) — review any 'check:' lines, commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js, pitch-ledger.js and pitch2-ledger.js; run again if NB.AI refreshes before tip-off"
@@ -97,7 +97,7 @@ elif [ "$FORCE" -eq 1 ] || ! done_today record; then
     # Only count the day as done when the feed was today's slate; a stale
     # feed leaves the phase open so a later run retries.
     if printf '%s\n' "$out" | grep -q '^Ledger: +'; then mark record; fi
-    log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch |record skipped)' | tr '\n' ' ')"
+    log "record: $(printf '%s\n' "$out" | grep -E '^(Slate |Ledger:|Props ledger:|Pitch |Odds ladders|record skipped)' | tr '\n' ' ')"
     printf '%s\n' "$out" | grep -E '^  [A-Z]{2,4} @ ' | sed 's/^/[season-daily]   /'
     if printf '%s\n' "$out" | grep -q '^Ledger: +[1-9]\|[1-9][0-9]* replaced'; then
       log "new rows recorded — commit js/season/data/slate-snapshot.js, season-ledger.js, props-ledger.js, pitch-ledger.js and pitch2-ledger.js"
