@@ -36,6 +36,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/pitch.js');
   load('js/season/pitch2.js');
   load('js/season/flat.js');
+  load('js/season/fade.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1667,6 +1668,32 @@ console.log('TEST 34: flat $25 moneylines (flat.js, spec flat-1)');
   c.SEASON_PITCH_LEDGER = []; c.SEASON_PITCH2_LEDGER = [];
   const html = c.renderPitchTab();
   assert(html.includes('Flat $25 moneylines above -300 — spec flat-1') && html.includes('Rule bets for 2026-11-09') && html.includes('AAA -150') && html.includes('Your legs (FanDuel') && html.indexOf('spec pitch-2') < html.indexOf('spec flat-1') && html.indexOf('spec flat-1') < html.indexOf('spec pitch-1'), 'section between pitch-2 and pitch-1, with tonight\'s bets');
+}
+
+console.log('TEST 35: fade NB.AI on moderate favourites (fade.js, spec fade-1)');
+{
+  const c = loadCtx(false, true);
+  const S = c.SEASON_FADE_SPEC;
+  assert(S.version === 'fade-1' && S.firstNight === '2026-11-10' && S.favMin === 0.5 && S.favMax === 0.7 && S.gap === 0.08, 'spec constants');
+  const r = (o) => ({ id: 'g', date: '2026-11-10', home: 'AAA', away: 'BBB', mlHome: -150, mlAway: 130, pMarket: 0.6, pFriend: 0.5, result: { homeScore: 101, awayScore: 99 }, close: { mlHome: -160, mlAway: 140 }, ...o });
+  const f = c.fadeClassify(r());
+  assert(f.group === 'fade' && f.team === 'AAA' && f.odds === -150 && f.close === -160 && f.hit === true, 'home favourite at 60%, NB.AI 10 points lower: a fade bet at the recorded price, close kept');
+  assert(c.fadeClassify(r({ pFriend: 0.52 })).group === 'fade', 'exactly 8 points lower counts');
+  assert(c.fadeClassify(r({ pFriend: 0.53 })).group === 'control', '7 points lower is control');
+  assert(c.fadeClassify(r({ pFriend: 0.7 })).group === 'control', 'NB.AI higher than the market is control');
+  assert(c.fadeClassify(r({ pMarket: 0.7 })) === null && c.fadeClassify(r({ pMarket: 0.5 })) === null, '70% and a pick\'em are outside the band');
+  assert(c.fadeClassify(r({ pFriend: null })) === null, 'an ESPN-fallback row (no NB.AI) is never a bet');
+  const aw = c.fadeClassify(r({ pMarket: 0.35, pFriend: 0.5, mlHome: 160, mlAway: -185 }));
+  assert(aw.group === 'fade' && aw.team === 'BBB' && aw.odds === -185 && Math.abs(aw.pFav - 0.65) < 1e-9 && aw.hit === false, 'away favourite: its side, its price, graded from the away score');
+  const rows = [r({ id: '1' }), r({ id: '2', date: '2026-11-09' }), r({ id: '3', pFriend: 0.58, result: { homeScore: 90, awayScore: 99 } }), r({ id: '4', result: null })];
+  const sum = c.seasonFadeSummary(rows);
+  assert(sum.clean.fade.n === 1 && sum.clean.fade.open === 1 && sum.all.fade.n === 2 && sum.clean.control.n === 1 && sum.clean.control.won === 0, 'clean line from Nov 10; open bets counted apart; control graded');
+  assert(sum.clean.fadeClose.n === 1 && Math.abs(sum.clean.fadeClose.profit - 25 * 100 / 160) < 0.01, 'at the close: the close price');
+  assert(c.fadeTonight(rows, '2026-11-10').map(b => b.gameId).join() === '1,4', 'tonight: that date\'s fade bets');
+  c.seasonState.slate = { ...makeSlate(c), date: '2026-11-09' };
+  c.SEASON_PITCH_LEDGER = []; c.SEASON_PITCH2_LEDGER = [];
+  const html = c.renderPitchTab();
+  assert(html.includes('spec fade-1') && html.indexOf('spec flat-1') < html.indexOf('spec fade-1') && html.indexOf('spec fade-1') < html.indexOf('spec pitch-1'), 'Pitch tab: fade section between flat-1 and pitch-1');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

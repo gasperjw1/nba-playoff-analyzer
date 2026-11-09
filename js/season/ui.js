@@ -403,6 +403,31 @@ function renderPitch2Section() {
     <hr style="margin:20px 0">`;
 }
 
+function renderFadeSection() {
+  if (typeof SEASON_FADE_SPEC === 'undefined') return '';
+  const S = SEASON_FADE_SPEC, rows = typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : [];
+  const sum = seasonFadeSummary(rows), stake = SEASON_FLAT_SPEC.stake;
+  const usd = (x) => `${x < 0 ? '−' : '+'}$${Math.abs(x).toFixed(2)}`;
+  const row = (label, g, note) => `<tr><td><b>${label}</b>${note ? `<div class="muted">${note}</div>` : ''}</td><td class="num">${g.n ? `${g.won}/${g.n}` : '—'}${g.open ? ` <span class="muted">+${g.open} open</span>` : ''}</td><td class="num">${g.n ? g.beWins.toFixed(1) : '—'}</td><td class="num">${g.n ? `<span class="${g.profit >= 0 ? 'pos' : 'neg'}">${usd(g.profit)}</span>` : '—'}</td><td class="num">${g.margin != null ? `${(g.margin * 100).toFixed(1)}%` : '—'}</td><td class="num">${g.z != null ? g.z.toFixed(2) : '—'}</td></tr>`;
+  const head = '<tr><th>Bets</th><th class="num">Won</th><th class="num" title="wins the prices need to break even (their implied chances, vig included)">Break-even wins</th><th class="num">Profit</th><th class="num">Margin</th><th class="num" title="(won − break-even) ÷ its standard deviation; inside ±2 is within luck">z</th></tr>';
+  const date = seasonState.slate && seasonState.slate.date;
+  const tonight = date ? fadeTonight(rows, date) : [];
+  const tn = tonight.length ? tonight.map(b => `${b.team} ${parlayFmtOdds(b.odds)} (market ${Math.round(b.pFav * 100)}%, NB.AI ${Math.round(b.pNbai * 100)}%)`).join(' · ') : 'none recorded';
+  const C = sum.clean, A = sum.all;
+  return `<h3 style="margin-top:4px">Fade NB.AI on moderate favourites — spec ${S.version}</h3>
+    <p class="muted">Market favourites priced 50–70% when NB.AI rates them at least 8 points lower, against the other 50–70% favourites on NB.AI nights (frozen ${S.frozen}; counts from ${S.firstNight}). Found after the fact on 19 games (8 of 8 vs 5 of 11), so it is only tracked. It has to beat its control, not just its price: favourites have beaten their prices all season. $${stake} a bet at DraftKings; unproven, never a suggestion.</p>
+    <p>Fade bets for ${date || 'tonight'}: <b>${tn}</b></p>
+    <div style="overflow-x:auto"><table>${head}
+      ${row(`Fade, from ${S.firstNight}`, C.fade, 'at the price recorded before tip')}
+      ${row('… at the close', C.fadeClose)}
+      ${row(`Control, from ${S.firstNight}`, C.control, 'other 50–70% favourites: NB.AI under 8 points lower, or higher')}
+      ${row('… at the close', C.controlClose)}
+      ${row(`Fade, all recorded games (from ${sum.first || '—'})`, A.fade, 'includes the games the split was found on')}
+      ${row('Control, all recorded games', A.control)}
+    </table></div>
+    <hr style="margin:20px 0">`;
+}
+
 function renderFlatSection() {
   if (typeof SEASON_FLAT_SPEC === 'undefined') return '';
   const S = SEASON_FLAT_SPEC;
@@ -470,6 +495,7 @@ function renderPitchTab() {
   return `<div class="ledger">
     ${renderPitch2Section()}
     ${renderFlatSection()}
+    ${renderFadeSection()}
     <h3>Floor and edge tickets — spec ${S.version}</h3>
     <p class="muted">Two tickets a night under spec ${S.version} (frozen ${S.frozen}, judged from ${S.firstNight}): a floor ticket, the main recipe, and an edge ticket, an experiment. Your daily run records them before any leg tips and grades them the next morning, so each recipe earns its own record. Shown chances are the calibrated or evidence-adjusted ones, not the model's raw claims. Unproven; it never sizes a stake.</p>
     <p class="muted">${recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date} (${recorded.source || 'slate'}).` : `<span class="warn">Preview from the current slate — not recorded yet; your daily run records tonight's pitch.</span>`}</p>
