@@ -49,7 +49,8 @@ const etTime = (t) => new Date(t).toLocaleTimeString('en-US', { timeZone: 'Ameri
 //      buildModel: async (games) → Map(id → {pHome, report, source, engine, props}), fetchImpl, log, dry, sleep }
 // → { due, calls, cost, stored } (calls: charged-or-not API calls made, events list included).
 async function pullOdds(o) {
-  const { ctx } = o, S = ctx.SEASON_ODDS_SPEC, log = o.log || console.log;
+  const { ctx } = o, S = o.spec || ctx.SEASON_ODDS_SPEC, log = o.log || console.log;
+  const label = S.ladder ? 'Odds ladders' : 'Odds';
   const now = o.now != null ? o.now : Date.now();
   const fetchImpl = o.fetchImpl || fetch, sleep = o.sleep || ((ms) => new Promise(r => setTimeout(r, ms)));
   const ledger = loadOddsLedger(o.ledgerPath, S);
@@ -57,15 +58,23 @@ async function pullOdds(o) {
   const plan = ctx.oddsRunPlan(o.games, ledger, now, S);
   const out = { due: due.length, calls: 0, cost: 0, stored: 0 };
   const lastRemaining = () => { for (let i = ledger.calls.length - 1; i >= 0; i--) if (ledger.calls[i].remaining != null) return ledger.calls[i].remaining; return null; };
+  if (!due.length && S.ladder) {
+    log(`${label} (${S.version}, ${S.book}): nothing to pull — every game still to tip has its alternate PRA ladder${lastRemaining() != null ? ` · ${lastRemaining()} credits left` : ''}`);
+    return out;
+  }
   if (!due.length) {
-    log(`Odds (${S.version}, ${S.book}): nothing due — a game is priced once its tip is within ${S.windowMin} minutes.`);
+    const done = (o.games || []).filter(g => ledger.games[String(g.id)]);
+    const next = plan.find(r => r.from > now);
+    log(`${label} (${S.version}, ${S.book}): nothing due right now — a game is priced once its tip is within ${S.windowMin} minutes` +
+      (next ? `; the next window opens at ${etTime(next.from)} (in ${Math.ceil((next.from - now) / 60e3)} min).` : plan.length ? '.' : '; nothing left to price tonight.'));
+    if (done.length) log(`  already priced tonight: ${done.map(g => `${g.away} @ ${g.home}`).join(', ')}`);
     for (const r of plan) log(`  run between ${etTime(r.from)} and ${etTime(r.to)}: ${r.games.map(g => `${g.away} @ ${g.home} (${etTime(g.tip)})`).join(', ')}`);
     if (lastRemaining() != null) log(`  credits left at the last call: ${lastRemaining()}`);
     return out;
   }
-  log(`Odds (${S.version}, ${S.book}): ${due.length} game${due.length === 1 ? '' : 's'} due, at most ${ctx.oddsEstimate(due)} credits`);
-  for (const d of due) log(`  ${d.game.away} @ ${d.game.home} (${etTime(d.game.tip)}): ${[...d.lines, ...d.props].join(', ')}`);
-  const later = plan.filter(r => r.games.some(g => !due.some(d => String(d.game.id) === String(g.id))));
+  log(`${label} (${S.version}, ${S.book}): ${due.length} game${due.length === 1 ? '' : 's'} due, at most ${ctx.oddsEstimate(due)} credits`);
+  if (!S.ladder) for (const d of due) log(`  ${d.game.away} @ ${d.game.home} (${etTime(d.game.tip)}): ${[...d.lines, ...d.props].join(', ')}`);
+  const later = S.ladder ? [] : plan.filter(r => r.games.some(g => !due.some(d => String(d.game.id) === String(g.id))));
   for (const r of later) log(`  later, run between ${etTime(r.from)} and ${etTime(r.to)}: ${r.games.filter(g => !due.some(d => String(d.game.id) === String(g.id))).map(g => `${g.away} @ ${g.home}`).join(', ')}`);
   if (o.dry) { log('  (dry) no API calls made'); return out; }
   if (!o.key) throw new Error('ODDS_API_KEY is not set (export it in your shell; never commit it)');
@@ -132,13 +141,13 @@ async function pullOdds(o) {
       let r;
       try { r = await call('props', `/sports/${S.sport}/events/${e.id}/odds?bookmakers=${S.book}&markets=${d.props.join(',')}&oddsFormat=american`, { game: String(d.game.id), markets: d.props }); }
       catch (err) {
-        ctx.oddsRecord(ledger, d.game, e, d.props, {}, at, null);   // counts a try, so a bad market cannot loop
+        ctx.oddsRecord(ledger, d.game, e, d.props, {}, at, null);   // counts a try (ladder pull too), so a bad market cannot loop
         ctx.oddsCharge(ledger, d.game.id, d.props.length);
         saveOddsLedger(o.ledgerPath, ledger);
         log(`  ${d.game.away} @ ${d.game.home} props: ${err.message}`);
         continue;
       }
-      const stored = ctx.oddsRecord(ledger, d.game, e, d.props, ctx.oddsBookMarkets(r.json, S.book), at, models.get(String(d.game.id)));
+      const stored = ctx.oddsRecord(ledger, d.game, e, d.props, ctx.oddsBookMarkets(r.json, S.book), at, models.get(String(d.game.id)), !S.ladder);
       ctx.oddsCharge(ledger, d.game.id, r.usage.cost != null ? r.usage.cost : d.props.length);
       r.entry.stored = stored;
       out.stored += stored.length;
@@ -152,6 +161,7 @@ async function pullOdds(o) {
       const props = S.props.filter(k => row.markets[k]).map(k => `${ctx.SEASON_ODDS_STAT[k]}${k.endsWith('_alternate') ? '-alt' : ''} ${row.markets[k].outcomes.length}`);
       const missing = [...S.lines, ...S.props].filter(k => !row.markets[k]);
       const sgn = (x) => x == null ? '—' : (x > 0 ? '+' : '') + x;
+      if (S.ladder) { log(`  ${row.away} @ ${row.home}: ${props.length ? `alt PRA ${row.markets.player_points_rebounds_assists_alternate.outcomes.length} lines` : 'alt PRA not posted yet (free; retried next run)'} · ${row.credits || 0}/${S.maxPerGame} credits`); continue; }
       log(`  ${row.away} @ ${row.home}: ML ${row.away} ${sgn(l.mlAway)} / ${row.home} ${sgn(l.mlHome)} · spread ${row.home} ${sgn(l.spreadHome)} (${sgn(l.spreadPriceHome)})` +
         ` · props ${props.join(', ') || 'none'}${missing.length ? ` · missing ${missing.join(', ')}` : ''}` +
         ` · ${row.credits || 0}/${S.maxPerGame} credits` +

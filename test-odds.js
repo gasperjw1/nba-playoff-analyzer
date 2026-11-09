@@ -153,6 +153,7 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
 
   await run(); const n3 = urls.length; const r4 = await run();
   assert(r4.calls === 0 && urls.length === n3, 'after three tries a market FanDuel never posts stops being requested: run 4 makes no call');
+  assert(logs.some(s => /nothing due right now.*the next window opens at .* \(in \d+ min\)/.test(s)) && logs.some(s => /already priced tonight: MIL @ BOS, UTAH @ MIN/.test(s)), 'nothing due: says when the next window opens and what is already priced');
   led = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
   assert(led.games['11'].tries.player_points_rebounds_assists_alternate === 3 && led.games['11'].tries.h2h === 1, 'tries recorded per market');
   assert(Object.values(led.games).every(g => g.credits <= S.maxPerGame) && led.games['11'].credits === 7 && led.games['12'].credits === 2 + 1 + 2, 'credits charged per game, all within the cap (BOS 2 + 5, MIN 2 + 1 + 2)');
@@ -181,6 +182,45 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
   const nm = await run({ games: [game('41', 'NY', 'CLE', 30)], ledgerPath: path.join(dir, 'nomodel.json'), buildModel: async () => { throw new Error('feed down'); } });
   const nl = JSON.parse(fs.readFileSync(path.join(dir, 'nomodel.json'), 'utf8'));
   assert(nm.stored > 0 && nl.games['41'].markets.h2h.model === null && logs.some(s => /model unavailable \(feed down\)/.test(s)), 'model failure: prices stored, model left null');
+
+  console.log('TEST 6: the once-a-day ladder pull (--record)');
+  {
+    const L = ctx.SEASON_ODDS_LADDER_SPEC, lp = path.join(dir, 'ladder.json');
+    assert(L.ladder && L.lines.length === 0 && L.props.join() === 'player_points_rebounds_assists_alternate' && L.maxPerGame === 10 && L.minRemaining === 5000, 'ladder spec: alt PRA only, same caps and floor');
+    const gs = [game('51', 'BOS', 'MIL', 40), game('52', 'MIN', 'UTAH', 200), game('53', 'SAC', 'MIA', 400)];
+    const evs = [['eB', 'Boston Celtics', 'Milwaukee Bucks', 0], ['eM', 'Minnesota Timberwolves', 'Utah Jazz', 1], ['eS', 'Sacramento Kings', 'Miami Heat', 2]]
+      .map(([id, h, a, i]) => ({ id, home_team: h, away_team: a, commence_time: gs[i].tip }));
+    let left = 20000, posted = new Set(['eB', 'eM']);
+    const seen = [];
+    const fi = async (url) => {
+      seen.push(url);
+      const u = new URL(url), mk = (u.searchParams.get('markets') || '').split(',').filter(Boolean);
+      let body, cost = 0;
+      if (/\/events$/.test(u.pathname)) body = evs;
+      else if (!/\/events\//.test(u.pathname)) { const ids = u.searchParams.get('eventIds').split(','); body = evs.filter(e => ids.includes(e.id)).map(e => ({ ...e, bookmakers: [{ key: 'fanduel', markets: mk.map(k => ({ key: k, outcomes: [{ name: e.home_team, price: -150, point: k === 'spreads' ? -3.5 : undefined }, { name: e.away_team, price: 130, point: k === 'spreads' ? 3.5 : undefined }] })) }] })); cost = mk.length; }
+      else { const id = u.pathname.split('/')[5]; const av = posted.has(id) ? mk : []; body = { ...evs.find(e => e.id === id), bookmakers: av.length ? [{ key: 'fanduel', markets: av.map(k => ({ key: k, outcomes: [{ name: 'Over', description: 'Someone', point: 15.5, price: -300 }] })) }] : [] }; cost = av.length; }
+      left -= cost;
+      return { ok: true, status: 200, headers: new Headers({ 'x-requests-last': String(cost), 'x-requests-remaining': String(left), 'x-requests-used': String(20000 - left) }), json: async () => body, text: async () => '' };
+    };
+    const base = { ctx, key: KEY, games: gs, now: T0, ledgerPath: lp, lockPath, fetchImpl: fi, log: () => {}, sleep: async () => {}, buildModel: async (g2) => new Map(g2.map(g => [String(g.id), { pHome: 0.5, props: [] }])) };
+    const l1 = await pullOdds({ ...base, spec: L });
+    assert(l1.cost === 2 && seen.length === 4 && !seen.some(u => /markets=h2h|spreads/.test(u)) && seen.slice(1).every(u => new URL(u).searchParams.get('markets') === 'player_points_rebounds_assists_alternate'), 'ladder pull: every game still to tip, alt PRA only, 1 credit per posted ladder, no line call');
+    let led = JSON.parse(fs.readFileSync(lp, 'utf8'));
+    assert(led.games['51'].markets.player_points_rebounds_assists_alternate && !led.games['53'].markets.player_points_rebounds_assists_alternate && !(led.games['53'].tries.player_points_rebounds_assists_alternate), 'a ladder not posted yet is free and counts no try');
+    const n1 = seen.length;
+    const r = await pullOdds({ ...base });
+    const hourBefore = seen.slice(n1).filter(u => /\/events\/eB\/odds/.test(u));
+    assert(hourBefore.length === 1 && !new URL(hourBefore[0]).searchParams.get('markets').includes('alternate') && r.cost === 2 + 5, 'the hour-before pull then skips the stored ladder: lines (2) + 5 props');
+    led = JSON.parse(fs.readFileSync(lp, 'utf8'));
+    assert(led.games['51'].credits === 1 + 2 + 5 && led.games['51'].credits <= 10, 'one game in all: ladder 1 + lines 2 + props 5 = 8, under the cap');
+    posted.add('eS');
+    const n2 = seen.length;
+    const l2 = await pullOdds({ ...base, spec: L });
+    assert(l2.cost === 1 && seen.slice(n2).filter(u => /\/events\/e.\/odds/.test(u)).length === 1 && seen.slice(n2).some(u => u.includes('/events/eS/odds')), 'a second record pulls only the ladder still missing');
+    const n3 = seen.length;
+    const l3 = await pullOdds({ ...base, spec: L });
+    assert(l3.calls === 0 && seen.length === n3, 'every ladder stored: a third record makes no call');
+  }
 
   fs.rmSync(dir, { recursive: true, force: true });
   console.log(`\n${passed} passed, ${failed} failed`);

@@ -19,6 +19,13 @@ Code: `js/season/odds.js` (`SEASON_ODDS_SPEC`), with the IO in `odds-pull.js`. R
   `--record` uses. It then stores the model's moneyline chance and each prop's Over/Under chance with
   the price. Recorded tickets and ledgers are never touched.
 
+- **Once-a-day ladder pull** (added 2026-11-09 at the user's ask, after the FanDuel floor test,
+  `research-floor-fd.js`): `--record` also pulls only the alternate PRA ladder for every game still to
+  tip, at 1 credit a game, with the model as just recorded. Every game's ladder is then collected even
+  when its hour-before run is missed. The hour-before pull skips the stored ladder, so a game still
+  costs at most 8. A ladder that isn't posted yet costs nothing and uses no try, so it's retried on the
+  next record or by the hour-before pull. Without `ODDS_API_KEY`, or with `--no-odds`, it's skipped.
+
 ## Guards (one pull per game)
 
 1. A market is requested only while it's missing for that game. A stored market is never overwritten,

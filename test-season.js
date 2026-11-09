@@ -1275,11 +1275,11 @@ console.log('TEST 29: trust rules scored per engine era');
   assert(by['2026-11-05.b2b2'].R1.n === 2 && by['2026-11-05.b2b2'].R1.won === 1, 'old engine: its rows from Nov 6 (Nov 5 before the start)');
   assert(by['2026-11-07.rotcap'].R1.n === 1 && by['2026-11-07.rotcap'].R1.won === 0, 'new engine: its rows from Nov 8 only');
   assert(!('2026-11-02.aging-v2' in by) && Object.values(by).reduce((s, g) => s + g.ALL.n, 0) === 3, 'an engine from before the rules is never judged; no row counts twice');
-  // On the real ledger every judged row so far is the old engine: its era equals the old single record.
+  // On the real ledger (the new engine's rows are judged from Nov 8): the old era is the single record
+  // over its own rows, and the eras add up to the whole record — no row lost or counted twice.
   const L = c.loadSeasonLedger(), eras = c.seasonTrustRecordByEngine(L);
   assert(JSON.stringify(eras['2026-11-05.b2b2']) === JSON.stringify(c.seasonTrustRecord(L.filter(r => r.engine === '2026-11-05.b2b2'))) &&
-    eras['2026-11-05.b2b2'].ALL.n === c.seasonTrustRecord(L).ALL.n, 'real ledger: the old era reproduces the record as it stood');
-  assert(eras['2026-11-07.rotcap'].ALL.n === 0, 'no row on the new engine is judged yet');
+    Object.values(eras).reduce((s, g) => s + g.ALL.n, 0) === c.seasonTrustRecord(L).ALL.n, 'real ledger: the old era is its own rows\' record, and the eras add up to the whole');
   const lt = c.renderLedgerTab();
   assert(lt.includes('scored separately per engine') && E.every(e => lt.includes(`${e.engine}, from ${e.judgedFrom}`)), 'Ledger tab: one live column per engine era');
   const sg = c.SEASON_SLATE_SNAPSHOT.games.find(g => { const cl = c.seasonCleanSlate(c.SEASON_SLATE_SNAPSHOT); const ch = c.seasonTrustCheck(c.projectSeasonGame(g, cl), g.market || {}); return ch && ch.rule && ch.rule !== 'AVOID'; });

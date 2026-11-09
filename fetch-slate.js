@@ -31,7 +31,9 @@
 //                                  chance at the same moment (latest official injury report).
 //                                  Needs ODDS_API_KEY; writes .odds/odds-ledger.json (local,
 //                                  never committed). --odds --dry lists what is due, no calls;
-//                                  --odds --espn models on the ESPN slate.
+//                                  --odds --espn models on the ESPN slate. --record also pulls
+//                                  FanDuel's alternate PRA ladder for every game still to tip
+//                                  (1 credit a game, once; --no-odds skips it).
 //
 // Daily routine: `./season-daily.sh` picks the phase by time of day and
 // runs each at most once per day (the SessionStart hook calls it too).
@@ -230,6 +232,19 @@ async function main() {
     // flat-1 tracks every favourite from −299 to −100 at the price the ledger just recorded (the slate's).
     const flat = ctx.flatTonight(slate);
     console.log(`Pitch flat $${ctx.SEASON_FLAT_SPEC.stake} (favourites −299 to −100, slate price): ${flat.length ? flat.map(b => `${b.team} ${b.odds > 0 ? '+' : ''}${b.odds}`).join(' · ') : 'none'}`);
+    // FanDuel's alternate PRA ladder for every game still to tip (odds-1 ladder pull, ODDS_SPEC.md): once per
+    // game, 1 credit each, with the model as just recorded. Never blocks the record.
+    if (!process.env.ODDS_API_KEY) console.log('Odds ladders: skipped (ODDS_API_KEY not set)');
+    else if (args.has('--no-odds')) console.log('Odds ladders: skipped (--no-odds)');
+    else {
+      const pre = slate.games.filter(g => g.tip && new Date(g.tip).getTime() > Date.now());
+      const models = new Map(pre.map(g => [String(g.id), { pHome: +ctx.projectSeasonGame(g, slate).pHome.toFixed(4), report: slate.injuryReport ? slate.injuryReport.name : null,
+        source: slate.source || 'nb.ai', engine: ctx.SEASON_ENGINE_VERSION, props: ctx.buildPropRows(g, propSlate, {}) }]));
+      try {
+        await require('./odds-pull.js').pullOdds({ ctx, spec: ctx.SEASON_ODDS_LADDER_SPEC, key: process.env.ODDS_API_KEY, ledgerPath: ODDS_LEDGER_PATH, lockPath: ODDS_LOCK_PATH,
+          games: pre.map(g => ({ id: g.id, date: slate.date, tip: g.tip, home: g.home, away: g.away })), buildModel: async () => models });
+      } catch (e) { console.warn(`Odds ladders: ${e.message}`); }
+    }
   }
 }
 

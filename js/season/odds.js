@@ -30,6 +30,12 @@ const SEASON_ODDS_SPEC = {
   props: ['player_points', 'player_rebounds', 'player_assists', 'player_points_rebounds_assists',
     'player_threes', 'player_points_rebounds_assists_alternate'],
 };
+// The once-a-day ladder pull (`--record`, approved 2026-11-09): FanDuel's alternate PRA ladder for
+// every game still to tip, so each game's ladder is collected whether or not its hour-before run
+// happens. Same ledger, caps and floor; the hour-before pull then skips the stored market. A
+// missing ladder counts no try here (an empty reply is free), so an early record cannot use up
+// the hour-before pull's tries.
+const SEASON_ODDS_LADDER_SPEC = { ...SEASON_ODDS_SPEC, windowMin: 24 * 60, lines: [], props: ['player_points_rebounds_assists_alternate'], ladder: true };
 const SEASON_ODDS_STAT = {
   player_points: 'pts', player_rebounds: 'reb', player_assists: 'ast', player_points_rebounds_assists: 'pra',
   player_points_rebounds_assists_alternate: 'pra', player_threes: 'tpm',
@@ -129,15 +135,15 @@ function _oddsPriceOutcomes(key, outcomes, g, model) {
 // Store the requested markets a reply holds, never overwriting one already stored; a requested
 // market the reply lacks counts a try. model: the game's snapshot (see _oddsPriceOutcomes).
 // → keys stored.
-function oddsRecord(ledger, g, event, requested, markets, at, model) {
+function oddsRecord(ledger, g, event, requested, markets, at, model, countTries) {
   ledger.games = ledger.games || {};
   const id = String(g.id);
   const row = ledger.games[id] = ledger.games[id] || { game: id, date: g.date || null, tip: g.tip, home: g.home, away: g.away, event: event ? event.id : null, markets: {}, tries: {} };
   const stored = [];
   for (const k of requested) {
     if (row.markets[k]) continue;
-    row.tries[k] = (row.tries[k] || 0) + 1;
     const m = markets[k];
+    if (countTries !== false || (m && m.outcomes.length)) row.tries[k] = (row.tries[k] || 0) + 1;
     if (!m || !m.outcomes.length) continue;
     row.markets[k] = { at, lastUpdate: m.lastUpdate, outcomes: _oddsPriceOutcomes(k, m.outcomes, g, model),
       model: model ? { pHome: model.pHome == null ? null : model.pHome, report: model.report || null, source: model.source || null, engine: model.engine || null } : null };

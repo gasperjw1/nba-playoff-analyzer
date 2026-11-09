@@ -387,5 +387,130 @@ const SEASON_USER_BETS = [
    "legsHit": 4,
    "settledAt": "2026-11-08T09:01:20.943Z"
   }
+ },
+ {
+  "id": "season-2026-11-08-001",
+  "date": "2026-11-08",
+  "loggedAt": "2026-11-09T06:54:24.212Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 209,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "each leg was also bet straight (user-legs.js)",
+  "legs": [
+   {
+    "gameId": "401909945",
+    "team": "PHI",
+    "opponent": "CHI",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -390,
+    "dkClose": -423,
+    "pOurs": 0.851,
+    "pMarket": 0.7921,
+    "hit": true,
+    "final": "PHI 127 – CHI 121"
+   },
+   {
+    "gameId": "401909946",
+    "team": "DET",
+    "opponent": "LAL",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -255,
+    "dkClose": -277,
+    "pOurs": 0.7452,
+    "pMarket": 0.7,
+    "hit": false,
+    "final": "LAL 121 – DET 116"
+   },
+   {
+    "gameId": "401909947",
+    "team": "MIN",
+    "opponent": "UTAH",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -650,
+    "dkClose": -700,
+    "pOurs": 0.868,
+    "pMarket": 0.8316,
+    "hit": true,
+    "final": "UTAH 100 – MIN 115"
+   },
+   {
+    "gameId": "401909948",
+    "team": "DAL",
+    "opponent": "BKN",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -290,
+    "dkClose": -305,
+    "pOurs": 0.8034,
+    "pMarket": 0.7249,
+    "hit": true,
+    "final": "BKN 93 – DAL 130"
+   },
+   {
+    "gameId": "401909949",
+    "team": "BOS",
+    "opponent": "MIL",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -720,
+    "dkClose": -790,
+    "pOurs": 0.8597,
+    "pMarket": 0.8475,
+    "hit": true,
+    "final": "BOS 117 – MIL 97"
+   }
+  ],
+  "result": {
+   "outcome": "loss",
+   "legsHit": 4,
+   "settledAt": "2026-11-09T06:54:24.212Z"
+  }
+ },
+ {
+  "id": "season-2026-11-08-002",
+  "date": "2026-11-08",
+  "loggedAt": "2026-11-09T06:54:24.212Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 129,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "each leg was also bet straight (user-legs.js)",
+  "legs": [
+   {
+    "gameId": "401909951",
+    "team": "MIA",
+    "opponent": "SAC",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -405,
+    "dkClose": -574,
+    "pOurs": 0.7112,
+    "pMarket": 0.7846,
+    "hit": true,
+    "final": "MIA 114 – SAC 108"
+   },
+   {
+    "gameId": "401909950",
+    "team": "NO",
+    "opponent": "LAC",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -120,
+    "dkClose": -129,
+    "pOurs": 0.6331,
+    "pMarket": 0.5264,
+    "hit": false,
+    "final": "NO 123 – LAC 139"
+   }
+  ],
+  "result": {
+   "outcome": "loss",
+   "legsHit": 1,
+   "settledAt": "2026-11-09T06:54:24.212Z"
+  }
  }
 ];
