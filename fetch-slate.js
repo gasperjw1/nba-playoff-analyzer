@@ -86,6 +86,7 @@ function loadSeasonContext() {
   load('js/season/pitch.js');
   load('js/season/pitch2.js');
   load('js/season/flat.js');
+  load('js/season/fade.js');
   load('js/season/odds.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
@@ -232,6 +233,9 @@ async function main() {
     // flat-1 tracks every favourite from −299 to −100 at the price the ledger just recorded (the slate's).
     const flat = ctx.flatTonight(slate);
     console.log(`Pitch flat $${ctx.SEASON_FLAT_SPEC.stake} (favourites −299 to −100, slate price): ${flat.length ? flat.map(b => `${b.team} ${b.odds > 0 ? '+' : ''}${b.odds}`).join(' · ') : 'none'}`);
+    // fade-1: 50–70% favourites NB.AI doubts by 8+ points, from the rows just recorded (NB.AI nights only).
+    const fade = ctx.fadeTonight(existing, slate.date);
+    console.log(`Pitch fade NB.AI (50–70% favourites NB.AI doubts by 8+): ${slate.source === 'espn' ? 'none — no NB.AI on an ESPN slate' : fade.length ? fade.map(b => `${b.team} ${b.odds > 0 ? '+' : ''}${b.odds} (market ${pct(b.pFav)}, NB.AI ${pct(b.pNbai)})`).join(' · ') : 'none'}`);
     // FanDuel's alternate PRA ladder for every game still to tip (odds-1 ladder pull, ODDS_SPEC.md): once per
     // game, 1 credit each, with the model as just recorded. Never blocks the record.
     if (!process.env.ODDS_API_KEY) console.log('Odds ladders: skipped (ODDS_API_KEY not set)');
@@ -466,6 +470,9 @@ async function settle(ctx) {
   const flatLine = (g) => g.n ? `${g.won}/${g.n} won (break-even ${g.beWins.toFixed(1)}) · ${g.profit >= 0 ? '+' : '−'}$${Math.abs(g.profit).toFixed(2)} on $${g.staked} (${(g.margin * 100).toFixed(1)}%)${g.open ? ` · ${g.open} open` : ''}` : `no bets yet${g.open ? ` · ${g.open} open` : ''}`;
   console.log(`  flat favs from ${ctx.SEASON_FLAT_SPEC.firstNight}: ${flatLine(fs1.ledger.clean)}`);
   console.log(`  flat yours above −300: ${flatLine(fs1.yours.rule)}`);
+  // fade-1: the fade bets against their control (other 50–70% favourites on NB.AI nights).
+  const fd = ctx.seasonFadeSummary(rows);
+  console.log(`  fade NB.AI from ${ctx.SEASON_FADE_SPEC.firstNight}: ${flatLine(fd.clean.fade)} · control ${flatLine(fd.clean.control)}`);
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
 }
