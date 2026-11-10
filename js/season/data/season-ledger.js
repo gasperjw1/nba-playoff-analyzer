@@ -3710,7 +3710,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.033Z",
-  "result": null
+  "result": {
+   "homeScore": 114,
+   "awayScore": 124,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": -144,
+   "mlAway": 121,
+   "spreadHome": -2.5,
+   "total": 233.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 112,
+    "mlAway": -133,
+    "spreadHome": 2.5,
+    "total": 236.5
+   }
+  }
  },
  {
   "id": "401909953",
@@ -3796,7 +3813,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.034Z",
-  "result": null
+  "result": {
+   "homeScore": 124,
+   "awayScore": 112,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": 261,
+   "mlAway": -324,
+   "spreadHome": 8.5,
+   "total": 215.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 250,
+    "mlAway": -309,
+    "spreadHome": 9.5,
+    "total": 217.5
+   }
+  }
  },
  {
   "id": "401909954",
@@ -3882,7 +3916,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.035Z",
-  "result": null
+  "result": {
+   "homeScore": 122,
+   "awayScore": 111,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": -411,
+   "mlAway": 323,
+   "spreadHome": -9.5,
+   "total": 218.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -448,
+    "mlAway": 348,
+    "spreadHome": -11.5,
+    "total": 218.5
+   }
+  }
  },
  {
   "id": "401909955",
@@ -3968,7 +4019,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.035Z",
-  "result": null
+  "result": {
+   "homeScore": 102,
+   "awayScore": 118,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": 101,
+   "mlAway": -119,
+   "spreadHome": 1.5,
+   "total": 225.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -139,
+    "mlAway": 117,
+    "spreadHome": -2.5,
+    "total": 228.5
+   }
+  }
  },
  {
   "id": "401909956",
@@ -4054,7 +4122,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.036Z",
-  "result": null
+  "result": {
+   "homeScore": 125,
+   "awayScore": 122,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": -191,
+   "mlAway": 160,
+   "spreadHome": -4.5,
+   "total": 227.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -169,
+    "mlAway": 142,
+    "spreadHome": -4.5,
+    "total": 222.5
+   }
+  }
  },
  {
   "id": "401909957",
@@ -4140,7 +4225,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.037Z",
-  "result": null
+  "result": {
+   "homeScore": 110,
+   "awayScore": 100,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": -191,
+   "mlAway": 160,
+   "spreadHome": -4.5,
+   "total": 224.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -166,
+    "mlAway": 139,
+    "spreadHome": -4.5,
+    "total": 222.5
+   }
+  }
  },
  {
   "id": "401909958",
@@ -4226,7 +4328,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.037Z",
-  "result": null
+  "result": {
+   "homeScore": 96,
+   "awayScore": 122,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": 312,
+   "mlAway": -396,
+   "spreadHome": 9.5,
+   "total": 225.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 200,
+    "mlAway": -243,
+    "spreadHome": 7.5,
+    "total": 225.5
+   }
+  }
  },
  {
   "id": "401909959",
@@ -4312,6 +4431,23 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-09T21:31:38.038Z",
-  "result": null
+  "result": {
+   "homeScore": 138,
+   "awayScore": 87,
+   "settledAt": "2026-11-10T19:53:18.715Z"
+  },
+  "close": {
+   "mlHome": -542,
+   "mlAway": 409,
+   "spreadHome": -10.5,
+   "total": 228.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -378,
+    "mlAway": 300,
+    "spreadHome": -9.5,
+    "total": 231.5
+   }
+  }
  }
 ];

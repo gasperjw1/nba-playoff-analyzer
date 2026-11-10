@@ -512,5 +512,173 @@ const SEASON_USER_BETS = [
    "legsHit": 1,
    "settledAt": "2026-11-09T06:54:24.212Z"
   }
+ },
+ {
+  "id": "season-2026-11-09-001",
+  "date": "2026-11-09",
+  "loggedAt": "2026-11-10T19:59:47.847Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 100,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "placed earlier than the others, at better prices; the same three legs as pitch-2's ticket",
+  "legs": [
+   {
+    "gameId": "401909959",
+    "team": "GS",
+    "opponent": "NO",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -474,
+    "dkClose": -542,
+    "pOurs": 0.7497,
+    "pMarket": 0.7616,
+    "hit": true,
+    "final": "NO 87 – GS 138"
+   },
+   {
+    "gameId": "401909954",
+    "team": "DET",
+    "opponent": "WSH",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -383,
+    "dkClose": -411,
+    "pOurs": 0.7934,
+    "pMarket": 0.7981,
+    "hit": true,
+    "final": "WSH 111 – DET 122"
+   },
+   {
+    "gameId": "401909958",
+    "team": "SA",
+    "opponent": "PHX",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -321,
+    "dkClose": -396,
+    "pOurs": 0.7903,
+    "pMarket": 0.7574,
+    "hit": true,
+    "final": "SA 122 – PHX 96"
+   }
+  ],
+  "result": {
+   "outcome": "win",
+   "legsHit": 3,
+   "settledAt": "2026-11-10T19:59:47.847Z"
+  }
+ },
+ {
+  "id": "season-2026-11-09-002",
+  "date": "2026-11-09",
+  "loggedAt": "2026-11-10T19:59:47.847Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 133,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "CLE was in this parlay only, not bet straight",
+  "legs": [
+   {
+    "gameId": "401909959",
+    "team": "GS",
+    "opponent": "NO",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -590,
+    "dkClose": -542,
+    "pOurs": 0.7497,
+    "pMarket": 0.7616,
+    "hit": true,
+    "final": "NO 87 – GS 138"
+   },
+   {
+    "gameId": "401909954",
+    "team": "DET",
+    "opponent": "WSH",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -460,
+    "dkClose": -411,
+    "pOurs": 0.7934,
+    "pMarket": 0.7981,
+    "hit": true,
+    "final": "WSH 111 – DET 122"
+   },
+   {
+    "gameId": "401909958",
+    "team": "SA",
+    "opponent": "PHX",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -375,
+    "dkClose": -396,
+    "pOurs": 0.7903,
+    "pMarket": 0.7574,
+    "hit": true,
+    "final": "SA 122 – PHX 96"
+   },
+   {
+    "gameId": "401909953",
+    "team": "CLE",
+    "opponent": "CHA",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -340,
+    "dkClose": -324,
+    "pOurs": 0.7852,
+    "pMarket": 0.7405,
+    "hit": false,
+    "final": "CLE 112 – CHA 124"
+   }
+  ],
+  "result": {
+   "outcome": "loss",
+   "legsHit": 3,
+   "settledAt": "2026-11-10T19:59:47.847Z"
+  }
+ },
+ {
+  "id": "season-2026-11-09-003",
+  "date": "2026-11-09",
+  "loggedAt": "2026-11-10T19:59:47.847Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": -236,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "GS, DET and SA were also bet straight at these prices (user-legs.js)",
+  "legs": [
+   {
+    "gameId": "401909959",
+    "team": "GS",
+    "opponent": "NO",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -590,
+    "dkClose": -542,
+    "pOurs": 0.7497,
+    "pMarket": 0.7616,
+    "hit": true,
+    "final": "NO 87 – GS 138"
+   },
+   {
+    "gameId": "401909954",
+    "team": "DET",
+    "opponent": "WSH",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -460,
+    "dkClose": -411,
+    "pOurs": 0.7934,
+    "pMarket": 0.7981,
+    "hit": true,
+    "final": "WSH 111 – DET 122"
+   }
+  ],
+  "result": {
+   "outcome": "win",
+   "legsHit": 2,
+   "settledAt": "2026-11-10T19:59:47.847Z"
+  }
  }
 ];
