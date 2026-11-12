@@ -87,11 +87,12 @@ function brier(p, y) { return (p - y) * (p - y); }
 function logLoss(p, y) { const q = Math.max(1e-6, Math.min(1 - 1e-6, p)); return -(y * Math.log(q) + (1 - y) * Math.log(1 - q)); }
 
 // entries: settled ledger rows with { result:{homeScore,awayScore}, pOurs, pFriend, pMarket, pBlend, marginOurs, spreadHome }
+// (pOursReport: ours with the official injury report, on rows recorded since it existed)
 // Returns per-source { n, accuracy, brier, logLoss, marginMae } plus a
 // 'baseline' row (always pick home at P=0.58 — roughly the league rate).
 function scoreForecasts(entries) {
   const settled = entries.filter(e => e.result && typeof e.result.homeScore === 'number' && typeof e.result.awayScore === 'number');
-  const sources = { ours: 'pOurs', friend: 'pFriend', market: 'pMarket', blend: 'pBlend' };
+  const sources = { ours: 'pOurs', report: 'pOursReport', friend: 'pFriend', market: 'pMarket', blend: 'pBlend' };
   const out = {};
   Object.keys(sources).forEach(name => {
     const key = sources[name];

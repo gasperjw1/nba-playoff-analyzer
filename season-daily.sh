@@ -68,7 +68,14 @@ if [ "$FORCE" -eq 1 ] || ! done_today settle; then
   if out=$(node fetch-slate.js --settle 2>&1); then
     mark settle
     log "settle: $(printf '%s\n' "$out" | grep -E '^(Settled|Nothing)' | head -1)"
-    printf '%s\n' "$out" | grep -E '^  (ours|friend|market|blend|baseline|props|pitch|flat|fade) ' | sed 's/^/[season-daily]   /'
+    printf '%s\n' "$out" | grep -E '^  (ours|report|friend|market|blend|baseline|props|pitch|flat|fade) ' | sed 's/^/[season-daily]   /'
+    # Last night with the official injury report laid over the feed, as of each tip
+    # (injury-view.js; a reconstruction for review, not ledger evidence).
+    if iv=$(node injury-view.js --brief 2>&1); then
+      printf '%s\n' "$iv" | sed 's/^/[season-daily]   /'
+    else
+      log "injury view unavailable: $(printf '%s\n' "$iv" | tail -1)"
+    fi
   else
     log "settle FAILED: $(printf '%s\n' "$out" | tail -2 | tr '\n' ' ')"
   fi

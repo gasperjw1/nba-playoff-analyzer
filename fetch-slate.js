@@ -197,8 +197,22 @@ async function main() {
       for (const x of await require('./late-flip.js').lateFlipChecks(slate.date)) flips.set(`${x.home}|${x.away}`, x);
       for (const x of flips.values()) console.log(`  late-flip ${x.away} @ ${x.home}: evening before ${pct(x.pEve)}, latest ${pct(x.pNow)}${x.flip ? ` — FLIP, rule takes ${x.side === 'home' ? x.home : x.away}` : ''}`);
     } catch (e) { console.warn(`late-flip check unavailable (${e.message}); rows recorded without it`); }
+    // The same engine with the latest official injury report over the feed (pOursReport), recorded
+    // beside pOurs, never replacing it. Never blocks recording.
+    const reps = new Map();
+    try {
+      const report = await require('./late-flip.js').reportBefore(Date.now(), Date.now());
+      const applied = ctx.seasonApplyInjuryReport(slate, report);
+      for (const { g, proj } of rows) {
+        const changes = applied.changes.filter(c => c.team === g.home || c.team === g.away);
+        const rp = ctx.projectSeasonGame(g, applied.slate);
+        reps.set(String(g.id), { name: report.name, proj: rp, changes });
+        console.log(`  ${g.away} @ ${g.home}  with injury report ${pct(rp.pHome)} (feed ${pct(proj.pHome)}; ${changes.length ? changes.map(c => `${c.team} ${c.name} ${c.from} → ${c.to}`).join(', ') : 'no changes'})`);
+      }
+      console.log(`Injury report ${report.name} over the feed: ${applied.changes.length} status change${applied.changes.length === 1 ? '' : 's'}`);
+    } catch (e) { console.warn(`injury report unavailable (${e.message}); rows recorded without pOursReport`); }
     const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate,
-      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`))), new Date());
+      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`), reps.get(String(g.id)))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);

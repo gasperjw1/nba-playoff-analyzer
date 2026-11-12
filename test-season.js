@@ -1696,5 +1696,24 @@ console.log('TEST 35: fade NB.AI on moderate favourites (fade.js, spec fade-1)')
   assert(html.includes('spec fade-1') && html.indexOf('spec flat-1') < html.indexOf('spec fade-1') && html.indexOf('spec fade-1') < html.indexOf('spec pitch-1'), 'Pitch tab: fade section between flat-1 and pitch-1');
 }
 
+console.log('TEST 36: the model with the official injury report beside the feed-only number');
+{
+  const c = loadCtx(false);
+  const slate = makeSlate(c);
+  const g = slate.games[0];
+  const proj = c.projectSeasonGame(g, slate);
+  const blend = c.blendGameForecast({ pOurs: proj.pHome, pFriend: null, mlHome: -150, mlAway: 130 });
+  const rp = { ...proj, pHome: proj.pHome - 0.05, margin: proj.margin - 1.5 };
+  const changes = [{ team: g.home, name: 'Someone', from: 'Questionable', to: 'Out' }];
+  const row = c.buildLedgerEntry(g, proj, blend, slate, null, null, null, { name: 'Injury-Report_2026-11-12_06_30PM.pdf', proj: rp, changes });
+  assert(row.pOurs === proj.pHome && row.pOursReport === rp.pHome, 'pOurs stays feed-only; pOursReport recorded beside it');
+  assert(row.report.name === 'Injury-Report_2026-11-12_06_30PM.pdf' && row.report.margin === rp.margin && row.report.changes === changes, 'report name, margin and the two teams\' changes stored');
+  const bare = c.buildLedgerEntry(g, proj, blend, slate);
+  assert(bare.pOursReport === null && bare.report === null, 'no report run → null');
+  const res = (o) => ({ result: { homeScore: 110, awayScore: 100 }, pOurs: 0.6, pMarket: 0.6, ...o });
+  const sc = c.scoreForecasts([res({ pOursReport: 0.7 }), res({})]);
+  assert(sc.report.n === 1 && sc.ours.n === 2 && Math.abs(sc.report.brier - 0.09) < 1e-9, 'scored only on rows that carry it');
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

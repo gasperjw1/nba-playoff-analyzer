@@ -31,7 +31,7 @@ function seasonOppAdjSlate(slate) {
   return { ...clean, teams: seasonOpponentAdjust(clean.teams, clean.league, slate.results) };
 }
 
-function buildLedgerEntry(game, projection, blend, slate, clean, adj, late) {
+function buildLedgerEntry(game, projection, blend, slate, clean, adj, late, rep) {
   const m = game.market || {};
   const friend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   return {
@@ -55,6 +55,11 @@ function buildLedgerEntry(game, projection, blend, slate, clean, adj, late) {
     // Late injury flip (trust.js SEASON_LATE_FLIP): the replay pipeline's evening-before
     // and latest-report picks, from late-flip.js at record time (null when not run)
     late: late || null,
+    // Same engine with the latest official injury report laid over the feed's statuses
+    // (injury-report.js) at record time; pOurs stays the feed-only number (null when not run).
+    // rep: { name, proj, changes: [{ team, name, from, to }] } for this game's two teams.
+    pOursReport: rep ? rep.proj.pHome : null,
+    report: rep ? { name: rep.name, margin: rep.proj.margin, changes: rep.changes } : null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,
