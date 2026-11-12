@@ -13,6 +13,9 @@
 node fetch-slate.js --injuries # late news NB.AI hasn't picked up? refresh the snapshot with the latest official injury report (recorded rows stay as recorded); commit slate-snapshot.js
 ```
 ```bash
+node injury-view.js [YYYY-MM-DD]   # a night (default yesterday) with the official report 30+ min before each tip laid over the feed: picks, scores, rebuilt tickets (review only, writes nothing; the settle step prints its scores)
+```
+```bash
 node fetch-slate.js --odds --dry   # which games are due for FanDuel odds, when to run next, the most it could cost (no API call)
 node fetch-slate.js --odds         # FanDuel lines + props for games tipping within the hour, once per game (ODDS_SPEC.md); needs ODDS_API_KEY; add --espn on a stale-NB.AI day
 # (--record, so ./season-daily.sh too, already pulls every game's FanDuel alt-PRA ladder once: 1 credit a game; --no-odds skips it)
