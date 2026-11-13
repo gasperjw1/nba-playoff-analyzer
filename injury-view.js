@@ -96,10 +96,25 @@ function score(list) {
 async function main() {
   const ctx = loadContext();
   const snap = snapshotFor(DATE);
-  if (!snap) { console.log(`injury view ${DATE}: no slate snapshot for that night`); return; }
-  const S = snap.slate;
   const results = await finals(DATE);
   const rows = new Map((ctx.SEASON_LEDGER || []).filter(r => r.date === DATE).map(r => [String(r.id), r]));
+  if (!snap) {
+    // No snapshot to rebuild from (never committed, or overwritten): the ledger's recorded rows still score.
+    console.log(`Injury view ${DATE}: no slate snapshot for that night, so no rebuild`);
+    const rec = [...rows.values()].map(row => {
+      const res = results.get(String(row.id)) || row.result;
+      return { row, y: res && res.homeScore != null ? (res.homeScore > res.awayScore ? 1 : 0) : null };
+    }).filter(x => x.y != null);
+    if (!rec.length) return;
+    const col = (get) => score(rec.map(x => ({ p: get(x.row), y: x.y })).filter(x => x.p != null));
+    console.log(`  recorded before tip (${rec.length} games, from the ledger):`);
+    console.log(`    pOurs (feed only)    ${col(r => r.pOurs)}`);
+    console.log(`    pOursReport          ${col(r => r.pOursReport)}`);
+    console.log(`    market               ${col(r => r.pMarket)}`);
+    console.log(`    replay late          ${col(r => r.late && r.late.pNow)}`);
+    return;
+  }
+  const S = snap.slate;
   const fetched = new Date(S.fetchedAt).getTime();
   const lead = LEAD_MIN * 60e3;
 
@@ -127,7 +142,9 @@ async function main() {
   }
 
   const scored = games.filter(x => x.y != null && x.before);
-  const recorded = scored.filter(x => x.row);
+  // Ledger rows were recorded before tip whatever the snapshot's time, so they score even when
+  // the snapshot on disk was re-fetched after the games tipped.
+  const recorded = games.filter(x => x.y != null && x.row);
   const col = (list, get) => score(list.map(x => ({ p: get(x), y: x.y })).filter(x => x.p != null));
   console.log(`Injury view ${DATE}: ${games.length} games · snapshot ${snap.from}, fetched ${etTime(fetched)} ET${S.injuryReport ? ` (already over ${S.injuryReport.name})` : ''} · report ${LEAD_MIN}+ min before each tip`);
   console.log(`  model, feed only      ${col(scored, x => x.feed)}`);
@@ -135,10 +152,14 @@ async function main() {
   console.log(`  market                ${col(scored, x => x.pMarket)}`);
   console.log(`  NB.AI                 ${col(scored, x => x.nbai)}`);
   if (recorded.length) {
-    console.log(`  recorded games (${recorded.length}): pOurs ${col(recorded, x => x.row.pOurs)} · pOursReport ${col(recorded, x => x.row.pOursReport)} · replay late ${col(recorded, x => x.row.late && x.row.late.pNow)}`);
+    console.log(`  recorded before tip (${recorded.length} games, from the ledger):`);
+    console.log(`    pOurs (feed only)    ${col(recorded, x => x.row.pOurs)}`);
+    console.log(`    pOursReport          ${col(recorded, x => x.row.pOursReport)}`);
+    console.log(`    market               ${col(recorded, x => x.row.pMarket)}`);
+    console.log(`    replay late          ${col(recorded, x => x.row.late && x.row.late.pNow)}`);
   }
   const open = games.filter(x => x.y == null).length, late = games.filter(x => !x.before).length;
-  if (open || late) console.log(`  not scored: ${open ? `${open} without a final` : ''}${open && late ? ', ' : ''}${late ? `${late} tipped before the snapshot` : ''}`);
+  if (open || late) console.log(`  not scored above: ${open ? `${open} without a final` : ''}${open && late ? ', ' : ''}${late ? `${late} tipped before the snapshot was fetched` : ''}`);
   if (BRIEF) return;
 
   const side = (g, p) => p == null ? '   —    ' : `${(p >= 0.5 ? g.home : g.away).padEnd(4)}${pct(Math.max(p, 1 - p))}`;
@@ -170,6 +191,7 @@ async function main() {
     return `${v > l.line ? 'hit' : 'miss'} ${v}`;
   }
   console.log(`\n  tickets as of the first tip (${etTime(first)} ET), over ${ov.name}, snapshot odds:`);
+  if (fetched >= first) console.log(`  (snapshot fetched after the first tip: statuses and prices are post-tip; the recorded tickets are in the pitch ledgers)`);
   const p1 = ctx.buildPitches(ov.slate, { now }), p2 = ctx.buildPitch2(ov.slate, { now });
   for (const t of [...p1.tickets, p2.ticket]) {
     if (t.status !== 'pitched') { console.log(`  ${t.recipe.padEnd(10)} no ticket — ${t.reason}`); continue; }
