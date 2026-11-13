@@ -784,6 +784,7 @@ console.log('TEST 18: team priors + user bet log');
   const lg = c.deriveLeagueAverages(pri);
   assert(lg.derived && lg.teams === 30, 'league averages derive from the priors table');
   load('js/season/data/user-bets.js');
+  load('js/season/data/props-ledger.js');
   const byId = Object.fromEntries(c.SEASON_LEDGER.map(r => [r.id, r]));
   const dec = a => a > 0 ? 1 + a / 100 : 1 + 100 / -a;
   c.SEASON_USER_BETS.forEach(b => {
@@ -791,6 +792,14 @@ console.log('TEST 18: team priors + user bet log');
     const legsOk = b.legs.every(l => {
       const r = byId[l.gameId];
       if (!r || ![r.home, r.away].includes(l.team) || (l.side === 'home') !== (r.home === l.team)) return false;
+      if (l.market === 'prop') {
+        // A prop leg: the props ledger's recorded projection for that player and game, graded on his line.
+        const pr = c.SEASON_PROPS_LEDGER.find(x => x.game === l.gameId && x.player === l.player);
+        if (!pr || pr.team !== l.team || pr[l.stat] !== l.projection || pr.sd[l.stat] !== l.sd) return false;
+        if (Math.abs(l.pOurs - c.probOver(l.projection, l.sd, l.line)) >= 1e-3) return false;
+        if (!b.result) return l.hit === null;
+        return !!pr.result && pr.result[l.stat] === l.actual && (pr.result[l.stat] > l.line) === l.hit;
+      }
       if (Math.abs(l.pOurs - (l.side === 'home' ? r.pOurs : 1 - r.pOurs)) >= 1e-3) return false;
       if (!b.result) return l.hit === null && l.final === null;
       if (!r.result) return false;

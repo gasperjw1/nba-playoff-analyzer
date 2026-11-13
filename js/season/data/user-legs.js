@@ -48,5 +48,9 @@ const SEASON_USER_LEGS = [
  {"date":"2026-11-09","gameId":"401909959","team":"GS","opponent":"NO","side":"home","odds":-590,"book":"FanDuel","straight":true},
  {"date":"2026-11-09","gameId":"401909954","team":"DET","opponent":"WSH","side":"home","odds":-460,"book":"FanDuel","straight":true},
  {"date":"2026-11-09","gameId":"401909958","team":"SA","opponent":"PHX","side":"away","odds":-375,"book":"FanDuel","straight":true},
- {"date":"2026-11-09","gameId":"401909953","team":"CLE","opponent":"CHA","side":"away","odds":-340,"book":"FanDuel","straight":false}
+ {"date":"2026-11-09","gameId":"401909953","team":"CLE","opponent":"CHA","side":"away","odds":-340,"book":"FanDuel","straight":false},
+ {"date":"2026-11-11","gameId":"401909973","team":"ORL","opponent":"UTAH","side":"away","odds":-168,"book":"FanDuel","straight":true},
+ {"date":"2026-11-12","gameId":"401909976","team":"PHI","opponent":"TOR","side":"home","odds":-335,"book":"FanDuel","straight":true},
+ {"date":"2026-11-12","gameId":"401909978","team":"MIN","opponent":"DAL","side":"home","odds":-230,"book":"FanDuel","straight":true},
+ {"date":"2026-11-12","gameId":"401909979","team":"PHX","opponent":"CHA","side":"home","odds":-225,"book":"FanDuel","straight":true}
 ];

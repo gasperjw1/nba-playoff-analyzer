@@ -680,5 +680,110 @@ const SEASON_USER_BETS = [
    "legsHit": 2,
    "settledAt": "2026-11-10T19:59:47.847Z"
   }
+ },
+ {
+  "id": "season-2026-11-11-001",
+  "date": "2026-11-11",
+  "loggedAt": "2026-11-13T18:13:08.379Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 116,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN); a prop leg's pOurs is the props ledger's recorded projection",
+  "note": "ORL was also bet straight (user-legs.js)",
+  "legs": [
+   {
+    "gameId": "401909973",
+    "team": "ORL",
+    "opponent": "UTAH",
+    "side": "away",
+    "market": "moneyline",
+    "odds": -168,
+    "dkClose": -179,
+    "pOurs": 0.6068,
+    "pMarket": 0.616,
+    "hit": true,
+    "final": "ORL 123 – UTAH 108"
+   },
+   {
+    "gameId": "401909974",
+    "team": "HOU",
+    "opponent": "GS",
+    "side": "home",
+    "market": "prop",
+    "player": "4432639",
+    "name": "Jabari Smith Jr.",
+    "stat": "pra",
+    "dir": "over",
+    "line": 19.5,
+    "odds": -280,
+    "pOurs": 0.7698,
+    "projection": 26.6,
+    "sd": 9.62,
+    "actual": 22,
+    "hit": true,
+    "final": "GS 108 – HOU 115"
+   }
+  ],
+  "result": {
+   "outcome": "win",
+   "legsHit": 2,
+   "settledAt": "2026-11-13T18:13:08.379Z"
+  }
+ },
+ {
+  "id": "season-2026-11-12-001",
+  "date": "2026-11-12",
+  "loggedAt": "2026-11-13T17:42:45.657Z",
+  "type": "parlay",
+  "stake": null,
+  "americanOdds": 169,
+  "oddsSource": "FanDuel prices the user took (reported in chat); dkClose is DraftKings' close (ESPN)",
+  "note": "each leg was also bet straight (user-legs.js)",
+  "legs": [
+   {
+    "gameId": "401909976",
+    "team": "PHI",
+    "opponent": "TOR",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -335,
+    "dkClose": -277,
+    "pOurs": 0.6542,
+    "pMarket": 0.7008,
+    "hit": true,
+    "final": "TOR 112 – PHI 123"
+   },
+   {
+    "gameId": "401909978",
+    "team": "MIN",
+    "opponent": "DAL",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -230,
+    "dkClose": -223,
+    "pOurs": 0.6018,
+    "pMarket": 0.663,
+    "hit": true,
+    "final": "DAL 94 – MIN 133"
+   },
+   {
+    "gameId": "401909979",
+    "team": "PHX",
+    "opponent": "CHA",
+    "side": "home",
+    "market": "moneyline",
+    "odds": -225,
+    "dkClose": -217,
+    "pOurs": 0.6806,
+    "pMarket": 0.6687,
+    "hit": true,
+    "final": "CHA 96 – PHX 101"
+   }
+  ],
+  "result": {
+   "outcome": "win",
+   "legsHit": 3,
+   "settledAt": "2026-11-13T17:42:45.657Z"
+  }
  }
 ];
