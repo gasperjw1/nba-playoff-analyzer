@@ -5067,5 +5067,802 @@ const SEASON_LEDGER = [
     "total": 226.5
    }
   }
+ },
+ {
+  "id": "401909973",
+  "date": "2026-11-11",
+  "tip": "2026-11-12T02:00Z",
+  "home": "UTAH",
+  "away": "ORL",
+  "pOurs": 0.3932,
+  "marginOurs": -3.39,
+  "totalOurs": 223.8,
+  "pOursClean": 0.3671,
+  "marginOursClean": -4.24,
+  "totalOursClean": 227,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.6329,
+   "ml": -179,
+   "implied": 0.6416,
+   "edge": -0.0087,
+   "gap": 0.26,
+   "driver": "aging",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -4.32,
+    "current": -1.36,
+    "absent": 0.88,
+    "change": -1.21,
+    "aging": 0.13,
+    "fit": -0.36,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "UTAH",
+   "away": "ORL",
+   "tip": "2026-11-12T02:00Z",
+   "pEve": 0.3609,
+   "pNow": 0.3674,
+   "marginEve": -4.45,
+   "marginNow": -4.23,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -4.47,
+    "current": -0.95,
+    "absent": 0.53,
+    "change": -1.14,
+    "aging": 0.08,
+    "fit": -0.5,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -4.32,
+    "current": -1.36,
+    "absent": 0.86,
+    "change": -1.18,
+    "aging": 0.13,
+    "fit": -0.36,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-10_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-11_08_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pFriend": 0.4011,
+  "pMarket": 0.384,
+  "pBlend": 0.3971,
+  "mlHome": 150,
+  "mlAway": -179,
+  "spreadHome": 4.5,
+  "totalMarket": 214.5,
+  "book": "DraftKings",
+  "feedVersion": "0.4",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T01:22:46.619Z",
+  "result": {
+   "homeScore": 108,
+   "awayScore": 123,
+   "settledAt": "2026-11-12T07:25:18.871Z"
+  },
+  "close": {
+   "mlHome": 150,
+   "mlAway": -179,
+   "spreadHome": 4.5,
+   "total": 215.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 140,
+    "mlAway": -167,
+    "spreadHome": 4.5,
+    "total": 218.5
+   }
+  }
+ },
+ {
+  "id": "401909974",
+  "date": "2026-11-11",
+  "tip": "2026-11-12T02:30Z",
+  "home": "HOU",
+  "away": "GS",
+  "pOurs": 0.6287,
+  "marginOurs": 4.1,
+  "totalOurs": 227.6,
+  "pOursClean": 0.6592,
+  "marginOursClean": 5.13,
+  "totalOursClean": 226.9,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.3408,
+   "ml": 217,
+   "implied": 0.3155,
+   "edge": 0.0253,
+   "gap": -1.37,
+   "driver": "change",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 2.83,
+    "current": 0.07,
+    "absent": 1.91,
+    "change": -1.81,
+    "aging": 0.45,
+    "fit": -0.32,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "HOU",
+   "away": "GS",
+   "tip": "2026-11-12T02:30Z",
+   "pEve": 0.6568,
+   "pNow": 0.6577,
+   "marginEve": 5.05,
+   "marginNow": 5.08,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 2.83,
+    "current": 0.07,
+    "absent": 1.91,
+    "change": -1.95,
+    "aging": 0.47,
+    "fit": -0.28,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 2.83,
+    "current": 0.07,
+    "absent": 1.93,
+    "change": -1.88,
+    "aging": 0.45,
+    "fit": -0.32,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-10_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-11_08_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pFriend": 0.6329,
+  "pMarket": 0.6969,
+  "pBlend": 0.6308,
+  "mlHome": -264,
+  "mlAway": 217,
+  "spreadHome": -6.5,
+  "totalMarket": 219.5,
+  "book": "DraftKings",
+  "feedVersion": "0.4",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T01:22:46.620Z",
+  "result": {
+   "homeScore": 115,
+   "awayScore": 108,
+   "settledAt": "2026-11-12T07:25:18.871Z"
+  },
+  "close": {
+   "mlHome": -249,
+   "mlAway": 205,
+   "spreadHome": -6.5,
+   "total": 219.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -189,
+    "mlAway": 158,
+    "spreadHome": -5.5,
+    "total": 222.5
+   }
+  }
+ },
+ {
+  "id": "401909975",
+  "date": "2026-11-11",
+  "tip": "2026-11-12T03:00Z",
+  "home": "POR",
+  "away": "OKC",
+  "pOurs": 0.71,
+  "marginOurs": 6.92,
+  "totalOurs": 222.1,
+  "pOursClean": 0.6368,
+  "marginOursClean": 4.38,
+  "totalOursClean": 221.8,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.6368,
+   "ml": -105,
+   "implied": 0.5122,
+   "edge": 0.1246,
+   "gap": 5.88,
+   "driver": "absent",
+   "rule": "AVOID",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -5.75,
+    "current": 0.72,
+    "absent": 5.18,
+    "change": 2.07,
+    "aging": 0.31,
+    "fit": -0.15,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "POR",
+   "away": "OKC",
+   "tip": "2026-11-12T03:00Z",
+   "pEve": 0.528,
+   "pNow": 0.6251,
+   "marginEve": 0.88,
+   "marginNow": 3.99,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -5.76,
+    "current": -0.96,
+    "absent": 3.99,
+    "change": 1.7,
+    "aging": 0.25,
+    "fit": -0.34,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -5.57,
+    "current": 0.38,
+    "absent": 5.03,
+    "change": 2.04,
+    "aging": 0.3,
+    "fit": -0.19,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-10_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-11_08_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pFriend": 0.5579,
+  "pMarket": 0.4912,
+  "pBlend": 0.6374,
+  "mlHome": -105,
+  "mlAway": -113,
+  "spreadHome": 1.5,
+  "totalMarket": 225.5,
+  "book": "DraftKings",
+  "feedVersion": "0.4",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T01:22:46.620Z",
+  "result": {
+   "homeScore": 118,
+   "awayScore": 108,
+   "settledAt": "2026-11-12T07:25:18.871Z"
+  },
+  "close": {
+   "mlHome": -147,
+   "mlAway": 124,
+   "spreadHome": -2.5,
+   "total": 224.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 111,
+    "mlAway": -132,
+    "spreadHome": 2.5,
+    "total": 224.5
+   }
+  }
+ },
+ {
+  "id": "401909976",
+  "date": "2026-11-12",
+  "tip": "2026-11-13T00:00Z",
+  "home": "PHI",
+  "away": "TOR",
+  "pOurs": 0.6542,
+  "marginOurs": 4.96,
+  "totalOurs": 222,
+  "pOursClean": 0.6543,
+  "marginOursClean": 4.96,
+  "totalOursClean": 222.5,
+  "pOursAdj": 0.6659,
+  "marginOursAdj": 5.36,
+  "totalOursAdj": 222.5,
+  "trust": {
+   "side": "away",
+   "p": 0.3457,
+   "ml": 221,
+   "implied": 0.3115,
+   "edge": 0.0342,
+   "gap": -2.54,
+   "driver": "prior",
+   "rule": "R1",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -1.43,
+    "current": -0.54,
+    "absent": 1.59,
+    "change": 1.46,
+    "aging": 0.06,
+    "fit": -0.18,
+    "rest": 2,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "PHI",
+   "away": "TOR",
+   "tip": "2026-11-13T00:00Z",
+   "pEve": 0.6924,
+   "pNow": 0.6537,
+   "marginEve": 6.28,
+   "marginNow": 4.94,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -1.48,
+    "current": -0.74,
+    "absent": 3.07,
+    "change": 1.8,
+    "aging": 0.06,
+    "fit": -0.43,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -1.43,
+    "current": -0.54,
+    "absent": 1.59,
+    "change": 1.46,
+    "aging": 0.06,
+    "fit": -0.2,
+    "rest": 2,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-11_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.6528,
+  "report": {
+   "name": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "margin": 4.91,
+   "changes": [
+    {
+     "team": "PHI",
+     "name": "Joel Embiid",
+     "from": "Day-To-Day",
+     "to": "Questionable"
+    },
+    {
+     "team": "TOR",
+     "name": "Kevin McCullar Jr.",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.7008,
+  "pBlend": 0.6542,
+  "mlHome": -270,
+  "mlAway": 221,
+  "spreadHome": -7.5,
+  "totalMarket": 223.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T23:05:58.056Z",
+  "result": {
+   "homeScore": 123,
+   "awayScore": 112,
+   "settledAt": "2026-11-13T17:22:19.876Z"
+  },
+  "close": {
+   "mlHome": -277,
+   "mlAway": 226,
+   "spreadHome": -7.5,
+   "total": 222.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -410,
+    "mlAway": 341,
+    "spreadHome": -9.5,
+    "total": 221.5
+   }
+  }
+ },
+ {
+  "id": "401909977",
+  "date": "2026-11-12",
+  "tip": "2026-11-13T00:00Z",
+  "home": "WSH",
+  "away": "DET",
+  "pOurs": 0.2243,
+  "marginOurs": -9.47,
+  "totalOurs": 220.1,
+  "pOursClean": 0.1912,
+  "marginOursClean": -10.92,
+  "totalOursClean": 222.4,
+  "pOursAdj": 0.1962,
+  "marginOursAdj": -10.69,
+  "totalOursAdj": 222.4,
+  "trust": {
+   "side": "away",
+   "p": 0.8088,
+   "ml": -438,
+   "implied": 0.8141,
+   "edge": -0.0053,
+   "gap": -0.42,
+   "driver": "fit",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -9.62,
+    "current": -4.92,
+    "absent": 1.41,
+    "change": 2.12,
+    "aging": 0.33,
+    "fit": -0.24,
+    "rest": -2,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "WSH",
+   "away": "DET",
+   "tip": "2026-11-13T00:00Z",
+   "pEve": 0.2018,
+   "pNow": 0.1907,
+   "marginEve": -10.44,
+   "marginNow": -10.94,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -9.79,
+    "current": -4.59,
+    "absent": 1.39,
+    "change": 2.48,
+    "aging": 0.34,
+    "fit": -0.27,
+    "rest": -2,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -9.62,
+    "current": -4.92,
+    "absent": 1.41,
+    "change": 2.12,
+    "aging": 0.33,
+    "fit": -0.26,
+    "rest": -2,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-11_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.2238,
+  "report": {
+   "name": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "margin": -9.49,
+   "changes": [
+    {
+     "team": "DET",
+     "name": "Ebuka Okorie",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "DET",
+     "name": "Ugonna Onyenso",
+     "from": "Day-To-Day",
+     "to": "Out"
+    },
+    {
+     "team": "WSH",
+     "name": "Felix Okpara",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.2179,
+  "pBlend": 0.2243,
+  "mlHome": 341,
+  "mlAway": -438,
+  "spreadHome": 10.5,
+  "totalMarket": 222.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T23:05:58.057Z",
+  "result": {
+   "homeScore": 140,
+   "awayScore": 144,
+   "settledAt": "2026-11-13T17:22:19.876Z"
+  },
+  "close": {
+   "mlHome": 341,
+   "mlAway": -438,
+   "spreadHome": 10.5,
+   "total": 223.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 293,
+    "mlAway": -369,
+    "spreadHome": 9.5,
+    "total": 220.5
+   }
+  }
+ },
+ {
+  "id": "401909978",
+  "date": "2026-11-12",
+  "tip": "2026-11-13T01:00Z",
+  "home": "MIN",
+  "away": "DAL",
+  "pOurs": 0.6018,
+  "marginOurs": 3.23,
+  "totalOurs": 225.5,
+  "pOursClean": 0.6017,
+  "marginOursClean": 3.22,
+  "totalOursClean": 225.2,
+  "pOursAdj": 0.6098,
+  "marginOursAdj": 3.48,
+  "totalOursAdj": 225.2,
+  "trust": {
+   "side": "away",
+   "p": 0.3983,
+   "ml": 185,
+   "implied": 0.3509,
+   "edge": 0.0474,
+   "gap": -2.28,
+   "driver": "change",
+   "rule": "R2",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 4.2,
+    "current": 2.33,
+    "absent": -3.34,
+    "change": -2.1,
+    "aging": -0.37,
+    "fit": 0,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "MIN",
+   "away": "DAL",
+   "tip": "2026-11-13T01:00Z",
+   "pEve": 0.6007,
+   "pNow": 0.6007,
+   "marginEve": 3.19,
+   "marginNow": 3.19,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 4.2,
+    "current": 2.33,
+    "absent": -3.34,
+    "change": -2.1,
+    "aging": -0.37,
+    "fit": -0.03,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 4.2,
+    "current": 2.33,
+    "absent": -3.34,
+    "change": -2.1,
+    "aging": -0.37,
+    "fit": -0.03,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-11_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.6018,
+  "report": {
+   "name": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "margin": 3.23,
+   "changes": [
+    {
+     "team": "DAL",
+     "name": "Morez Johnson Jr.",
+     "from": "Day-To-Day",
+     "to": "Probable"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.663,
+  "pBlend": 0.6018,
+  "mlHome": -223,
+  "mlAway": 185,
+  "spreadHome": -5.5,
+  "totalMarket": 225.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T23:05:58.059Z",
+  "result": {
+   "homeScore": 133,
+   "awayScore": 94,
+   "settledAt": "2026-11-13T17:22:19.876Z"
+  },
+  "close": {
+   "mlHome": -223,
+   "mlAway": 185,
+   "spreadHome": -5.5,
+   "total": 226.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -185,
+    "mlAway": 155,
+    "spreadHome": -4.5,
+    "total": 226.5
+   }
+  }
+ },
+ {
+  "id": "401909979",
+  "date": "2026-11-12",
+  "tip": "2026-11-13T02:00Z",
+  "home": "PHX",
+  "away": "CHA",
+  "pOurs": 0.6806,
+  "marginOurs": 5.87,
+  "totalOurs": 219,
+  "pOursClean": 0.6636,
+  "marginOursClean": 5.28,
+  "totalOursClean": 220.2,
+  "pOursAdj": 0.6829,
+  "marginOursAdj": 5.95,
+  "totalOursAdj": 220.2,
+  "trust": {
+   "side": "away",
+   "p": 0.3364,
+   "ml": 190,
+   "implied": 0.3448,
+   "edge": -0.0084,
+   "gap": -1.22,
+   "driver": "prior",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -1.62,
+    "current": 2.34,
+    "absent": 1,
+    "change": 1.43,
+    "aging": -0.24,
+    "fit": 0.87,
+    "rest": -0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "PHX",
+   "away": "CHA",
+   "tip": "2026-11-13T02:00Z",
+   "pEve": 0.67,
+   "pNow": 0.6644,
+   "marginEve": 5.5,
+   "marginNow": 5.31,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -1.62,
+    "current": 2.34,
+    "absent": 0.43,
+    "change": 2.2,
+    "aging": -0.24,
+    "fit": 0.89,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -1.62,
+    "current": 2.34,
+    "absent": 1,
+    "change": 1.43,
+    "aging": -0.24,
+    "fit": 0.9,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-11_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.68,
+  "report": {
+   "name": "Injury-Report_2026-11-12_06_00PM.pdf",
+   "margin": 5.85,
+   "changes": [
+    {
+     "team": "CHA",
+     "name": "Hannes Steinbach",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "CHA",
+     "name": "Michael Ajayi",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.6687,
+  "pBlend": 0.6806,
+  "mlHome": -229,
+  "mlAway": 190,
+  "spreadHome": -6.5,
+  "totalMarket": 214.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-12T23:05:58.060Z",
+  "result": {
+   "homeScore": 101,
+   "awayScore": 96,
+   "settledAt": "2026-11-13T17:22:19.876Z"
+  },
+  "close": {
+   "mlHome": -217,
+   "mlAway": 180,
+   "spreadHome": -6.5,
+   "total": 214.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -250,
+    "mlAway": 206,
+    "spreadHome": -7.5,
+    "total": 213.5
+   }
+  }
  }
 ];
