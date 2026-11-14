@@ -5962,7 +5962,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.966Z",
-  "result": null
+  "result": {
+   "homeScore": 133,
+   "awayScore": 121,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": -142,
+   "mlAway": 120,
+   "spreadHome": -2.5,
+   "total": 234.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -125,
+    "mlAway": 105,
+    "spreadHome": -1.5,
+    "total": 237.5
+   }
+  }
  },
  {
   "id": "401909299",
@@ -6079,7 +6096,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.968Z",
-  "result": null
+  "result": {
+   "homeScore": 125,
+   "awayScore": 117,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": 211,
+   "mlAway": -257,
+   "spreadHome": 6.5,
+   "total": 246.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 216,
+    "mlAway": -263,
+    "spreadHome": 6.5,
+    "total": 246.5
+   }
+  }
  },
  {
   "id": "401909300",
@@ -6184,7 +6218,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.969Z",
-  "result": null
+  "result": {
+   "homeScore": 111,
+   "awayScore": 142,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": 136,
+   "mlAway": -162,
+   "spreadHome": 3.5,
+   "total": 235.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 119,
+    "mlAway": -141,
+    "spreadHome": 4.5,
+    "total": 234.5
+   }
+  }
  },
  {
   "id": "401909301",
@@ -6289,7 +6340,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.971Z",
-  "result": null
+  "result": {
+   "homeScore": 125,
+   "awayScore": 118,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": -1180,
+   "mlAway": 740,
+   "spreadHome": -15.5,
+   "total": 221.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -1580,
+    "mlAway": 900,
+    "spreadHome": -17.5,
+    "total": 217.5
+   }
+  }
  },
  {
   "id": "401909302",
@@ -6400,7 +6468,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.972Z",
-  "result": null
+  "result": {
+   "homeScore": 123,
+   "awayScore": 85,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": -700,
+   "mlAway": 501,
+   "spreadHome": -12.5,
+   "total": 217.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -520,
+    "mlAway": 390,
+    "spreadHome": -11.5,
+    "total": 234.5
+   }
+  }
  },
  {
   "id": "401909303",
@@ -6505,7 +6590,24 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.973Z",
-  "result": null
+  "result": {
+   "homeScore": 107,
+   "awayScore": 120,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": 361,
+   "mlAway": -468,
+   "spreadHome": 10.5,
+   "total": 229.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 426,
+    "mlAway": -569,
+    "spreadHome": 10.5,
+    "total": 229.5
+   }
+  }
  },
  {
   "id": "401909304",
@@ -6610,6 +6712,23 @@ const SEASON_LEDGER = [
   "source": "espn",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-14T00:03:01.974Z",
-  "result": null
+  "result": {
+   "homeScore": 113,
+   "awayScore": 112,
+   "settledAt": "2026-11-14T06:31:25.242Z"
+  },
+  "close": {
+   "mlHome": 196,
+   "mlAway": -237,
+   "spreadHome": 6.5,
+   "total": 221.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 226,
+    "mlAway": -276,
+    "spreadHome": 7.5,
+    "total": 221.5
+   }
+  }
  }
 ];
