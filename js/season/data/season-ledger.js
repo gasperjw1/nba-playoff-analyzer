@@ -5864,5 +5864,752 @@ const SEASON_LEDGER = [
     "total": 213.5
    }
   }
+ },
+ {
+  "id": "401909298",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T01:00Z",
+  "home": "MIA",
+  "away": "CLE",
+  "pOurs": 0.506,
+  "marginOurs": 0.19,
+  "totalOurs": 235.3,
+  "pOursClean": 0.5255,
+  "marginOursClean": 0.8,
+  "totalOursClean": 234.4,
+  "pOursAdj": 0.507,
+  "marginOursAdj": 0.22,
+  "totalOursAdj": 234.4,
+  "trust": {
+   "side": "away",
+   "p": 0.4745,
+   "ml": 120,
+   "implied": 0.4545,
+   "edge": 0.02,
+   "gap": -1.7,
+   "driver": "current",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -0.88,
+    "current": -2.27,
+    "absent": 2.76,
+    "change": -0.05,
+    "aging": -0.15,
+    "fit": -0.61,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "MIA",
+   "away": "CLE",
+   "tip": "2026-11-14T01:00Z",
+   "pEve": 0.5242,
+   "pNow": 0.5252,
+   "marginEve": 0.76,
+   "marginNow": 0.79,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -0.88,
+    "current": -2.27,
+    "absent": 6.22,
+    "change": -3.78,
+    "aging": -0.13,
+    "fit": -0.4,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -0.88,
+    "current": -2.27,
+    "absent": 2.73,
+    "change": -0.03,
+    "aging": -0.15,
+    "fit": -0.61,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.506,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": 0.19,
+   "changes": [
+    {
+     "team": "CLE",
+     "name": "Ernest Udeh Jr.",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.5635,
+  "pBlend": 0.506,
+  "mlHome": -142,
+  "mlAway": 120,
+  "spreadHome": -2.5,
+  "totalMarket": 235.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.966Z",
+  "result": null
+ },
+ {
+  "id": "401909299",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T01:00Z",
+  "home": "CHI",
+  "away": "ATL",
+  "pOurs": 0.2714,
+  "marginOurs": -7.61,
+  "totalOurs": 238.2,
+  "pOursClean": 0.2963,
+  "marginOursClean": -6.69,
+  "totalOursClean": 237.3,
+  "pOursAdj": 0.3304,
+  "marginOursAdj": -5.48,
+  "totalOursAdj": 237.3,
+  "trust": {
+   "side": "away",
+   "p": 0.7037,
+   "ml": -257,
+   "implied": 0.7199,
+   "edge": -0.0162,
+   "gap": -0.19,
+   "driver": "fit",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -3.76,
+    "current": -5.92,
+    "absent": 0.05,
+    "change": 1.25,
+    "aging": 0.33,
+    "fit": -0.14,
+    "rest": -0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "CHI",
+   "away": "ATL",
+   "tip": "2026-11-14T01:00Z",
+   "pEve": 0.2642,
+   "pNow": 0.2663,
+   "marginEve": -7.88,
+   "marginNow": -7.8,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -3.76,
+    "current": -5.92,
+    "absent": 0.47,
+    "change": -0.3,
+    "aging": 0.33,
+    "fit": -0.2,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -3.76,
+    "current": -5.92,
+    "absent": 0.47,
+    "change": -0.26,
+    "aging": 0.33,
+    "fit": -0.16,
+    "rest": -0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.2418,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": -8.76,
+   "changes": [
+    {
+     "team": "ATL",
+     "name": "Jalen Wilson",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "CHI",
+     "name": "Norman Powell",
+     "from": "Available",
+     "to": "Questionable"
+    },
+    {
+     "team": "CHI",
+     "name": "Jaylin Sellers",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "CHI",
+     "name": "Dailyn Swain",
+     "from": "Day-To-Day",
+     "to": "Questionable"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.3088,
+  "pBlend": 0.2714,
+  "mlHome": 211,
+  "mlAway": -257,
+  "spreadHome": 6.5,
+  "totalMarket": 246.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.968Z",
+  "result": null
+ },
+ {
+  "id": "401909300",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T01:00Z",
+  "home": "NO",
+  "away": "MEM",
+  "pOurs": 0.3177,
+  "marginOurs": -5.93,
+  "totalOurs": 235.7,
+  "pOursClean": 0.368,
+  "marginOursClean": -4.21,
+  "totalOursClean": 236.3,
+  "pOursAdj": 0.3638,
+  "marginOursAdj": -4.35,
+  "totalOursAdj": 236.2,
+  "trust": {
+   "side": "away",
+   "p": 0.632,
+   "ml": -162,
+   "implied": 0.6183,
+   "edge": 0.0137,
+   "gap": -0.71,
+   "driver": "fit",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 0.74,
+    "current": -4.87,
+    "absent": -1.49,
+    "change": -0.17,
+    "aging": -0.05,
+    "fit": -0.37,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "NO",
+   "away": "MEM",
+   "tip": "2026-11-14T01:00Z",
+   "pEve": 0.3933,
+   "pNow": 0.3696,
+   "marginEve": -3.38,
+   "marginNow": -4.16,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": 0.74,
+    "current": -4.87,
+    "absent": -1.03,
+    "change": 0.02,
+    "aging": -0.06,
+    "fit": -0.18,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 0.74,
+    "current": -4.87,
+    "absent": -1.49,
+    "change": -0.17,
+    "aging": -0.05,
+    "fit": -0.32,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.3194,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": -5.87,
+   "changes": [
+    {
+     "team": "MEM",
+     "name": "Karim Lopez",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "MEM",
+     "name": "Jahmai Mashack",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.4066,
+  "pBlend": 0.3177,
+  "mlHome": 136,
+  "mlAway": -162,
+  "spreadHome": 3.5,
+  "totalMarket": 235.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.969Z",
+  "result": null
+ },
+ {
+  "id": "401909301",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T01:30Z",
+  "home": "HOU",
+  "away": "UTAH",
+  "pOurs": 0.9377,
+  "marginOurs": 19.2,
+  "totalOurs": 227.6,
+  "pOursClean": 0.9254,
+  "marginOursClean": 18.03,
+  "totalOursClean": 227.8,
+  "pOursAdj": 0.931,
+  "marginOursAdj": 18.54,
+  "totalOursAdj": 227.8,
+  "trust": {
+   "side": "home",
+   "p": 0.9254,
+   "ml": -1180,
+   "implied": 0.9219,
+   "edge": 0.0035,
+   "gap": 2.53,
+   "driver": "absent",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 6.32,
+    "current": 7.64,
+    "absent": 1.13,
+    "change": 0.6,
+    "aging": 0.04,
+    "fit": -0.2,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "HOU",
+   "away": "UTAH",
+   "tip": "2026-11-14T01:30Z",
+   "pEve": 0.9249,
+   "pNow": 0.9249,
+   "marginEve": 17.99,
+   "marginNow": 17.99,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 6.32,
+    "current": 7.64,
+    "absent": 1.13,
+    "change": 0.6,
+    "aging": 0.04,
+    "fit": -0.24,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 6.32,
+    "current": 7.64,
+    "absent": 1.13,
+    "change": 0.6,
+    "aging": 0.04,
+    "fit": -0.24,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.9373,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": 19.16,
+   "changes": [
+    {
+     "team": "UTAH",
+     "name": "Harrison Ingram",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "UTAH",
+     "name": "Kobe Bufkin",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.8856,
+  "pBlend": 0.9377,
+  "mlHome": -1180,
+  "mlAway": 740,
+  "spreadHome": -15.5,
+  "totalMarket": 221.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.971Z",
+  "result": null
+ },
+ {
+  "id": "401909302",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T02:30Z",
+  "home": "SA",
+  "away": "GS",
+  "pOurs": 0.8079,
+  "marginOurs": 10.88,
+  "totalOurs": 228.9,
+  "pOursClean": 0.8119,
+  "marginOursClean": 11.06,
+  "totalOursClean": 227.5,
+  "pOursAdj": 0.7933,
+  "marginOursAdj": 10.22,
+  "totalOursAdj": 227.5,
+  "trust": {
+   "side": "away",
+   "p": 0.1881,
+   "ml": 473,
+   "implied": 0.1745,
+   "edge": 0.0136,
+   "gap": -1.44,
+   "driver": null,
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 4.15,
+    "current": 1.21,
+    "absent": 214862644040371.34,
+    "change": -214862644040368.2,
+    "aging": 0.45,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "SA",
+   "away": "GS",
+   "tip": "2026-11-14T02:30Z",
+   "pEve": 0.8119,
+   "pNow": 0.8119,
+   "marginEve": 11.06,
+   "marginNow": 11.06,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 4.15,
+    "current": 1.21,
+    "absent": 214862644040371.34,
+    "change": -214862644040368.2,
+    "aging": 0.45,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 4.15,
+    "current": 1.21,
+    "absent": 214862644040371.34,
+    "change": -214862644040368.2,
+    "aging": 0.45,
+    "fit": 0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.8079,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": 10.88,
+   "changes": [
+    {
+     "team": "GS",
+     "name": "Charles Bassey",
+     "from": "Day-To-Day",
+     "to": "Probable"
+    },
+    {
+     "team": "SA",
+     "name": "De'Aaron Fox",
+     "from": "Day-To-Day",
+     "to": "Questionable"
+    },
+    {
+     "team": "SA",
+     "name": "Devin Vassell",
+     "from": "Day-To-Day",
+     "to": "Questionable"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.8324,
+  "pBlend": 0.8079,
+  "mlHome": -650,
+  "mlAway": 473,
+  "spreadHome": -12.5,
+  "totalMarket": 216.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.972Z",
+  "result": null
+ },
+ {
+  "id": "401909303",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T03:00Z",
+  "home": "SAC",
+  "away": "POR",
+  "pOurs": 0.1413,
+  "marginOurs": -13.43,
+  "totalOurs": 231.8,
+  "pOursClean": 0.1842,
+  "marginOursClean": -11.24,
+  "totalOursClean": 231,
+  "pOursAdj": 0.1748,
+  "marginOursAdj": -11.69,
+  "totalOursAdj": 231,
+  "trust": {
+   "side": "away",
+   "p": 0.8158,
+   "ml": -468,
+   "implied": 0.8239,
+   "edge": -0.0081,
+   "gap": -0.74,
+   "driver": "aging",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -4.73,
+    "current": -7.11,
+    "absent": 0.18,
+    "change": -1.72,
+    "aging": -0.25,
+    "fit": -0.11,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "SAC",
+   "away": "POR",
+   "tip": "2026-11-14T03:00Z",
+   "pEve": 0.187,
+   "pNow": 0.1866,
+   "marginEve": -11.11,
+   "marginNow": -11.13,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -4.73,
+    "current": -7.11,
+    "absent": 0.28,
+    "change": -1.73,
+    "aging": -0.27,
+    "fit": -0.05,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -4.73,
+    "current": -7.11,
+    "absent": 0.18,
+    "change": -1.72,
+    "aging": -0.25,
+    "fit": 0,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.1433,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": -13.32,
+   "changes": [
+    {
+     "team": "SAC",
+     "name": "Alex Karaban",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "SAC",
+     "name": "Jonathan Mogbo",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.2084,
+  "pBlend": 0.1413,
+  "mlHome": 361,
+  "mlAway": -468,
+  "spreadHome": 10.5,
+  "totalMarket": 229.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.973Z",
+  "result": null
+ },
+ {
+  "id": "401909304",
+  "date": "2026-11-13",
+  "tip": "2026-11-14T03:30Z",
+  "home": "LAC",
+  "away": "OKC",
+  "pOurs": 0.3525,
+  "marginOurs": -4.73,
+  "totalOurs": 219.8,
+  "pOursClean": 0.3432,
+  "marginOursClean": -5.05,
+  "totalOursClean": 220.1,
+  "pOursAdj": 0.3409,
+  "marginOursAdj": -5.12,
+  "totalOursAdj": 220.1,
+  "trust": {
+   "side": "home",
+   "p": 0.3432,
+   "ml": 231,
+   "implied": 0.3021,
+   "edge": 0.0411,
+   "gap": 2.45,
+   "driver": "absent",
+   "rule": "AVOID",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -4.55,
+    "current": -3.54,
+    "absent": 4.23,
+    "change": -3.81,
+    "aging": -0.28,
+    "fit": 0.4,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "LAC",
+   "away": "OKC",
+   "tip": "2026-11-14T03:30Z",
+   "pEve": 0.3441,
+   "pNow": 0.3417,
+   "marginEve": -5.02,
+   "marginNow": -5.1,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -4.55,
+    "current": -3.54,
+    "absent": 4.23,
+    "change": -3.81,
+    "aging": -0.28,
+    "fit": 0.43,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -4.55,
+    "current": -3.54,
+    "absent": 4.23,
+    "change": -3.81,
+    "aging": -0.28,
+    "fit": 0.35,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-12_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.3531,
+  "report": {
+   "name": "Injury-Report_2026-11-13_07_00PM.pdf",
+   "margin": -4.71,
+   "changes": [
+    {
+     "team": "LAC",
+     "name": "Nick Martinelli",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "OKC",
+     "name": "Ajay Mitchell",
+     "from": "Day-To-Day",
+     "to": "Questionable"
+    }
+   ]
+  },
+  "pFriend": null,
+  "pMarket": 0.2902,
+  "pBlend": 0.3525,
+  "mlHome": 231,
+  "mlAway": -283,
+  "spreadHome": 7.5,
+  "totalMarket": 222.5,
+  "book": "DraftKings",
+  "feedVersion": null,
+  "source": "espn",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-14T00:03:01.974Z",
+  "result": null
  }
 ];
