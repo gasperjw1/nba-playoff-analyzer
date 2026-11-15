@@ -11,12 +11,14 @@
 // "consistent" when it leans the same way in all three seasons and beats −110's break-even
 // (52.4%) against the spread in each. The count is compared with shuffled residuals, which says
 // how many consistent pockets noise alone produces.
-// Stage 2, confirmation: the few pockets frozen in SITUATIONS_RESEARCH.md, scored once on
-// 2021-22 + 2022-23 (never scored). Not in this file yet.
+// Stage 2, confirmation: the pockets frozen in SITUATIONS_RESEARCH.md (commit e7bd82f), scored
+// once on 2021-22 + 2022-23 (never scored), with DraftKings' listed line as the close.
 //
 //   node research-situations.js --fetch-sched     tip times and national TV (ESPN scoreboards)
 //   node research-situations.js                   the exploration scan
 //   node research-situations.js --game <id>       one game's situations, for hand checks
+//   node research-situations.js --fetch-old       2021-22 + 2022-23 games, box scores and lines (ESPN)
+//   node research-situations.js --confirm         stage 2: the frozen pockets on 2021-23
 // ESPN's free endpoints only. The Odds API key is cleared here, so nothing can spend credits.
 // ============================================================
 delete process.env.ODDS_API_KEY;
@@ -25,7 +27,8 @@ const path = require('path');
 const { load, ARENA, usDst } = require('./research-luck-schedule.js');
 
 const CACHE = path.join(__dirname, '.cache/espn-nba');
-const HIST = path.join(CACHE, 'hist'), SCHED = path.join(CACHE, 'hist-sched.json');
+const HIST = path.join(CACHE, 'hist'), SCHED = path.join(CACHE, 'hist-sched.json'), OLD = path.join(CACHE, 'old');
+const OLD_SEASONS = { '2021-22': ['2021-10-19', '2022-04-10'], '2022-23': ['2022-10-18', '2023-04-09'] };
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/';
 const SEASONS = ['2023-24', '2024-25', '2025-26'];
 const MIN_PRIOR = 5, MIN_N = 150, MIN_SEASON_N = 30, BE = 0.524, SHUFFLES = 200;
@@ -102,8 +105,8 @@ async function fetchSched() {
 }
 
 // Minutes per player from the cached box scores (absent or 0 minutes = didn't play).
-const played = (id) => {
-  const f = path.join(HIST, `box-${id}.json`);
+const playedIn = (id, dir = HIST) => {
+  const f = path.join(dir, `box-${id}.json`);
   const m = new Map();
   if (fs.existsSync(f)) for (const p of JSON.parse(fs.readFileSync(f, 'utf8')).players) if (p.min > 0) m.set(String(p.id), { team: p.team, min: p.min });
   return m;
@@ -113,7 +116,8 @@ const etMinutes = (tip, date) => { const t = new Date(tip); return ((t.getUTCHou
 
 // ── one season → scored games with each side's situations ──────────
 function build(seasonName, season, sched) {
-  const games = season.games;
+  const games = season.games, dir = season.dir || HIST;
+  const played = (id) => playedIn(id, dir);
   const opener = games[0].date, finale = games[games.length - 1].date;
   const dates = [...new Set(games.map(g => g.date))];
   let asb = null, widest = 0;   // All-Star break: the longest gap between game dates in February
@@ -273,6 +277,128 @@ function shuffled(rows, resid, rnd) {
 }
 const mulberry = (a) => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 
+// ── stage 2: 2021-22 + 2022-23 ──────────────────────────────────────
+const addDays = (d, n) => new Date(Date.parse(d + 'T12:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+async function getJson(url) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+      if (res.ok) return res.json();
+      if (res.status === 404) return null;
+      throw new Error(`${url} → ${res.status}`);
+    } catch (e) { if (attempt === 3) throw e; }
+    await sleep(1500 * (attempt + 1));
+  }
+}
+// Per game, the same three trimmed files the 2023-26 research uses: team box lines (team-), players'
+// minutes (box-) and every book's lines (odds-), in .cache/espn-nba/old.
+async function fetchOld() {
+  fs.mkdirSync(OLD, { recursive: true });
+  const ids = [];
+  for (const [from, to] of Object.values(OLD_SEASONS)) for (let d = from; d <= to; d = addDays(d, 1)) {
+    const f = path.join(OLD, `sb-${d}.json`);
+    let sb = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null;
+    if (!sb) {
+      const raw = await getJson(`${ESPN}scoreboard?dates=${d.replace(/-/g, '')}`);
+      sb = ((raw && raw.events) || []).map(e => ({ id: e.id, type: e.season && e.season.type, done: !!(e.status && e.status.type && e.status.type.completed), tip: e.date }));
+      fs.writeFileSync(f, JSON.stringify(sb));
+      await sleep(120);
+    }
+    for (const e of sb) if (e.type === 2 && e.done) ids.push({ id: e.id, date: d });
+  }
+  let next = 0, failed = 0;
+  const worker = async () => {
+    while (next < ids.length) {
+      const { id, date } = ids[next++];
+      try {
+        if (!fs.existsSync(path.join(OLD, `team-${id}.json`)) || !fs.existsSync(path.join(OLD, `box-${id}.json`))) {
+          const s = await getJson(`${ESPN}summary?event=${id}`), c = s.header.competitions[0];
+          const side = (h) => c.competitors.find(x => x.homeAway === h);
+          fs.writeFileSync(path.join(OLD, `team-${id}.json`), JSON.stringify({ date, seasonType: s.header.season && s.header.season.type,
+            header: { id: s.header.id, competitions: [{ competitors: c.competitors.map(x => ({ homeAway: x.homeAway, score: x.score, team: { abbreviation: x.team.abbreviation }, linescores: x.linescores })) }] },
+            boxscore: { teams: (s.boxscore.teams || []).map(t => ({ team: { abbreviation: t.team.abbreviation }, statistics: t.statistics.map(x => ({ name: x.name, displayValue: x.displayValue })) })) } }));
+          fs.writeFileSync(path.join(OLD, `box-${id}.json`), JSON.stringify({ id, date, home: side('home').team.abbreviation, away: side('away').team.abbreviation,
+            hs: +side('home').score, as: +side('away').score,
+            players: (s.boxscore.players || []).flatMap(t => { const st = t.statistics[0], mi = st.labels.indexOf('MIN');
+              return st.athletes.map(a => ({ team: t.team.abbreviation, id: a.athlete.id, name: a.athlete.displayName, min: a.didNotPlay || !a.stats || !a.stats.length ? 0 : +a.stats[mi] || 0 })); }) }));
+        }
+        if (!fs.existsSync(path.join(OLD, `odds-${id}.json`))) {
+          const j = await getJson(`https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/${id}/competitions/${id}/odds`);
+          const ml = (o) => { const v = o && o.moneyLine; if (v == null) return null; const a = typeof v === 'object' ? Number(v.american) : Number(v); return isFinite(a) ? a : null; };
+          fs.writeFileSync(path.join(OLD, `odds-${id}.json`), JSON.stringify({ id, providers: ((j && j.items) || []).map(i => ({ name: i.provider && i.provider.name,
+            home: ml(i.homeTeamOdds), away: ml(i.awayTeamOdds), closeHome: ml(i.homeTeamOdds && i.homeTeamOdds.close), closeAway: ml(i.awayTeamOdds && i.awayTeamOdds.close), spread: i.spread ?? null })) }));
+        }
+      } catch (e) { failed++; }
+      await sleep(100);
+    }
+  };
+  await Promise.all(Array.from({ length: 4 }, worker));
+  console.log(`${ids.length} regular-season games listed; ${failed} failed; files in ${path.relative(__dirname, OLD)}`);
+}
+
+// The 2021-23 seasons in load()'s shape. The close is DraftKings' close field where it exists, else
+// its listed line (SITUATIONS_RESEARCH.md); no other book.
+function loadOld() {
+  const { adaptGame } = require('./research-matchup.js');
+  const seasons = {}, skipped = { notRegular: 0, notNba: 0, noBox: 0, noOdds: 0, badSpread: 0 };
+  for (const f of fs.readdirSync(OLD).filter(f => f.startsWith('team-'))) {
+    const t = JSON.parse(fs.readFileSync(path.join(OLD, f), 'utf8')), date = t.date, id = String(t.header.id);
+    if (t.seasonType !== 2) { skipped.notRegular++; continue; }
+    const g = t.boxscore.teams.length === 2 ? adaptGame(t, date) : null;
+    if (g && (!ARENA[g.home] || !ARENA[g.away])) { skipped.notNba++; continue; }
+    if (!g || !(g.H.fga > 0) || !(g.A.fga > 0) || g.H.q.length < 4 || g.A.q.length < 4) { skipped.noBox++; continue; }
+    const name = date < '2022-07-01' ? '2021-22' : '2022-23';
+    const s = (seasons[name] = seasons[name] || { games: [], close: new Map(), dir: OLD });
+    s.games.push(g);
+    const of = path.join(OLD, `odds-${id}.json`), o = fs.existsSync(of) ? JSON.parse(fs.readFileSync(of, 'utf8')) : null;
+    const pv = o && o.providers.find(p => /^draftkings$/i.test(p.name || ''));
+    const mh = pv && (pv.closeHome ?? pv.home), ma = pv && (pv.closeAway ?? pv.away);
+    if (!pv || mh == null || ma == null || pv.spread == null || Math.abs(mh) < 100 || Math.abs(ma) < 100) { skipped.noOdds++; continue; }
+    if (pv.spread !== 0 && mh !== ma && (pv.spread < 0) !== (mh < ma)) { skipped.badSpread++; continue; }
+    s.close.set(g.id, { spreadHome: pv.spread, mlHome: mh, mlAway: ma, book: pv.name });
+  }
+  for (const s of Object.values(seasons)) s.games.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id < b.id ? -1 : 1));
+  return { seasons, skipped };
+}
+
+// The frozen pockets (SITUATIONS_RESEARCH.md, e7bd82f): key, lean, whether the control test applies.
+const FROZEN = [['first4w|bigFav', 1, true], ['lookahead|bigFav', 1, true], ['starOut1|smallFav', -1, false], ['division|bigFav', 1, true], ['hot5|bigFav', 1, true]];
+function confirm() {
+  const { seasons, skipped } = loadOld();
+  const names = Object.keys(OLD_SEASONS);
+  const built = names.map(n => build(n, seasons[n], {}));
+  const rows = built.flatMap(b => b.rows);
+  console.log(`2021-23: ${names.map((n, i) => `${n} ${built[i].rows.length} games scored (${seasons[n].games.length} with box lines, ${seasons[n].close.size} with a line)`).join(', ')}`);
+  console.log(`left out: ${JSON.stringify(skipped)}`);
+  const all = pockets(rows, 0), byKey = new Map(all.map(p => [p.key, p]));
+  const sides = (m, lean) => m.map(([i, sg]) => ({ i, x: lean * sg * rows[i].resid, season: rows[i].season }));
+  const bigFav = [];
+  rows.forEach((r, i) => { if (r.spreadHome <= -7) bigFav.push([i, 1]); else if (r.spreadHome >= 7) bigFav.push([i, -1]); });
+  const st = (xs) => { const n = xs.length, m = mean(xs), v = xs.reduce((a, x) => a + (x - m) ** 2, 0) / (n - 1); return { n, m, v, t: m / Math.sqrt(v / n) }; };
+  const report = (label, ss, lean, control) => {
+    const xs = ss.map(s => s.x), a = st(xs), cov = xs.filter(x => x > 0).length, lost = xs.filter(x => x < 0).length, rate = cov / (cov + lost);
+    const med = [...xs].sort((p, q) => p - q)[Math.floor(xs.length / 2)];
+    let ctl = null;
+    if (control) {
+      const inP = new Set(ss.map(s => s.i)), rest = st(bigFav.filter(([i]) => !inP.has(i)).map(([i, sg]) => sg * rows[i].resid));
+      ctl = { diff: a.m - rest.m, t: (a.m - rest.m) / Math.sqrt(a.v / a.n + rest.v / rest.n) };
+    }
+    const pass = a.t >= 2 && rate >= BE && (!control || ctl.t >= 1);
+    const per = names.map(n => { const q = xs.filter((x, k) => ss[k].season === n), c = q.filter(x => x > 0).length, l = q.filter(x => x < 0).length;
+      return `${n.slice(2)} ${(100 * c / (c + l)).toFixed(1)}%/${q.length} ${(mean(q) >= 0 ? '+' : '') + mean(q).toFixed(2)}`; }).join('  ');
+    console.log(`\n${label}  (lean: ${lean > 0 ? 'bet' : 'fade'})`);
+    console.log(`  sides ${a.n}, mean ${(a.m >= 0 ? '+' : '') + a.m.toFixed(2)} in the lean's direction, median ${med.toFixed(1)}, t ${a.t.toFixed(2)}, vs the spread ${(100 * rate).toFixed(1)}% (${cov}-${lost}), profit at −110 ${(100 * (cov * 100 / 110 - lost) / (cov + lost)).toFixed(1)}%`);
+    if (ctl) console.log(`  vs the other big favourites: ${(ctl.diff >= 0 ? '+' : '') + ctl.diff.toFixed(2)} points, t ${ctl.t.toFixed(2)}`);
+    console.log(`  by season: ${per}`);
+    console.log(`  ${pass ? 'PASS' : 'no'}: t ≥ 2 ${a.t >= 2 ? '✓' : '✗'}, ≥ 52.4% ${rate >= BE ? '✓' : '✗'}${control ? `, beats the control t ≥ 1 ${ctl.t >= 1 ? '✓' : '✗'}` : ''}`);
+    return pass;
+  };
+  let passes = 0;
+  FROZEN.forEach(([key, lean, control], k) => { const p = byKey.get(key); passes += report(`${k + 1}. ${p ? p.label : key}`, p ? sides(p.m, lean) : [], lean, control) ? 1 : 0; });
+  passes += report('6. control: every big favourite (7+)', sides(bigFav, 1), 1, false) ? 1 : 0;
+  console.log(`\n${passes} of 6 pass.`);
+}
+
 function main() {
   const sched = fs.existsSync(SCHED) ? JSON.parse(fs.readFileSync(SCHED, 'utf8')) : null;
   if (!sched) { console.log('No tip times yet: run  node research-situations.js --fetch-sched  first.'); process.exit(1); }
@@ -328,5 +454,6 @@ function main() {
   }
 }
 
-module.exports = { build, pockets, score, SIDE, GAME, COACH_CHANGE };
-if (require.main === module) (has('--fetch-sched') ? fetchSched() : Promise.resolve(main())).catch(e => { console.error(e); process.exit(1); });
+module.exports = { build, pockets, score, loadOld, SIDE, GAME, COACH_CHANGE };
+if (require.main === module) (has('--fetch-sched') ? fetchSched() : has('--fetch-old') ? fetchOld() : has('--confirm') ? Promise.resolve(confirm()) : Promise.resolve(main()))
+  .catch(e => { console.error(e); process.exit(1); });

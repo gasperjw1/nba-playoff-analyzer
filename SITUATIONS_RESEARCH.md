@@ -253,3 +253,55 @@ needs t ≥ 2 one-sided (about 2.3%) plus the cover rate.
 A live shadow on ledger rows, like `b2b-1`, judged on 2026-27 and later against the close. It's
 never an engine change, and never a bet before it holds live. Pocket 1 can only be judged live
 from next October; this season's 4-week window ends Nov 17.
+
+## Confirmation results (run 2026-11-15, after the pre-registration commit e7bd82f)
+
+`node research-situations.js --fetch-old`, then `--confirm`, scored once. Checked before scoring:
+- **Coverage:** all 1,230 games in each season are present, 1,231 listed less the All-Star game.
+  DraftKings lines exist for 1,228 and 1,230 games; one was dropped for a contradictory spread and
+  one has no line.
+- **Box scores:** team minutes add up in 4,919 of 4,920 team-games.
+- **Spreads:** DraftKings' is within 1 point of other books' median in 2,435 of 2,458 games. It
+  agrees with the moneyline in all but 2.
+- **Situation rates** are close to 2023-26's. One exception: games with an 8+ point home underdog
+  were about half as common.
+- **A known event:** Durant's first game out after his Jan 15 2022 knee injury (Jan 17 at CLE) is
+  flagged.
+- **Scored:** 1,150 and 1,151 games.
+
+| # | Pocket (lean) | Sides | Mean (lean's direction) | t | vs the spread | vs other big favourites | 21-22 | 22-23 | Result |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | big favourite, first 4 weeks (bet) | 76 | −0.61 | −0.40 | 45.2% | −0.60, t −0.38 | 50.0% | 40.0% | no |
+| 2 | big favourite vs a bottom-8 team, top-8 team next (bet) | 104 | +0.54 | 0.49 | 50.0% | +0.69, t 0.56 | 42.3% | 58.0% | no |
+| 3 | small favourite, a top-2 player's first game out (fade) | 127 | −0.38 | −0.33 | 50.0% | — | 46.4% | 52.9% | no |
+| 4 | big favourite, division game (bet) | 160 | +1.69 | 1.70 | 52.9% | +2.17, t 1.94 | 55.7% | 49.3% | no (t < 2) |
+| 5 | big favourite, hot 3P% last 5 (bet) | 109 | +1.88 | 1.51 | 47.7% | +2.22, t 1.67 | 48.3% | 46.9% | no |
+| 6 | control: every big favourite | 839 | −0.06 | −0.13 | 48.8% | — | 46.9% | 51.0% | no |
+
+**0 of 6 pass.** The division game and control figures were recomputed independently and matched.
+
+- **The early-season pocket reversed:** 45.2% against the spread, below the other big favourites.
+- **The big-favourite baseline didn't carry over:** −0.06 points in 2021-23, against +0.88 in
+  2023-26.
+- **The nearest miss is pocket 4,** division games with a big favourite:
+  - +1.69 points, 52.9% against the spread, and 2.17 points better than the other big favourites;
+  - but t 1.70 misses the bar, and 2022-23 went 49.3%;
+  - by the rule it doesn't pass, and it isn't tracked;
+  - a later test would need data not yet seen (the live seasons), as `situ-2`.
+- **Power was lower than planned:** 2021-23 had fewer 7+ point spreads, so the big-favourite
+  pockets got about 70% of the sides the power estimate assumed (76 rather than about 111 for
+  pocket 1).
+
+## Conclusion
+
+Situational pockets don't beat the close. Exploration found no more consistent pockets than noise.
+The five best candidates, scored once on two unseen seasons, all failed, and the big-favourite
+pattern behind most of them disappeared.
+
+With matchup-1 and luck-sched-1, three rounds of research have now tested:
+- 23 straight-line features;
+- 118 situational pockets;
+- 5 frozen pockets on fresh seasons.
+
+Only the team-specific back-to-back split (`b2b-1`) has held. The closing spread prices what box
+scores, schedules, player availability and broadcasts can tell us.
