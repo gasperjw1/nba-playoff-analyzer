@@ -86,3 +86,83 @@ arenas, so it is a mean residual, not a slope across games.
   last 10 for L1), and to dropping the 1% largest residuals.
 
 The 2026-27 season so far (83 ledger games) is too small to score, so it isn't used.
+
+## Results (run 2026-11-15, after the pre-registration commit e7e70ea)
+
+`node research-luck-schedule.js --robust`. Data:
+- **Seasons:** 2023-24 (1,147 games scored), 2024-25 (1,141) and 2025-26 (1,139). That's 2,288 train
+  and 1,139 holdout games.
+- **Left out:** 8 exhibition-team games, 13 without a close, 16 whose spread contradicted the
+  moneyline, and games before both teams had 5 prior games.
+- **The residual against the close:** mean −0.05 in train and −0.22 in the holdout; sd 13.6 and 13.9.
+
+| Q | Feature | Predicted | Train t | Holdout t | Result |
+|---|---|---|---|---|---|
+| L1 | recent luck (last 5) | − | −1.52 | 0.53 | no |
+| L2 | season luck | − | 1.02 | −1.68 | no |
+| L3 | last game luck | − | −0.70 | −0.89 | no |
+| L4 | luck-adjusted form | + | **3.96** | −0.27 | no |
+| S1 | 3 games in 4 nights | − | −1.02 | −0.17 | no |
+| S2 | rest days (0–3) | + | 1.78 | −0.82 | no |
+| S3 | travel distance | − | −0.83 | −1.12 | no |
+| **S4** | **time zones moved east** | − | **−2.25** | **−1.31** | **PASS** (−0.60 ± 0.27 points per zone in train) |
+| S5 | away road-trip game number | + | 1.82 | 0.18 | no |
+| S6 | home first game after 3+ road | − | −1.05 | −0.43 | no |
+| S7 | altitude home | + | 1.05 | −0.03 | no |
+
+Per-season t for S4: −0.73 (2023-24), −2.46 (2024-25), −1.31 (2025-26). It's uncorrelated with the
+market margin (r 0.009) and with `b2b-1` (r 0.010).
+
+**Shooting luck:** the market doesn't overreact to past shooting luck in any window (last game, last
+3/5/10, season). The luck questions don't depend on the 3P% shrinkage (k 150 or 600). L4,
+luck-adjusted form, was strong in both training seasons (t 2.14 and 3.46), but the sign reversed in
+2025-26 (t −0.27). It passes nothing.
+
+**S4 checks** (none pre-registered):
+
+| Check | Train t | Holdout t | Still passes |
+|---|---|---|---|
+| neutral-site games and each team's next game dropped (37 games) | −2.31 | −1.27 | yes |
+| the same, with US daylight time (Phoenix excepted) | −2.25 | −1.13 | yes |
+| neutral-site games placed at their venue (Mexico City, Paris, Berlin, London, Las Vegas) | −2.26 | −0.71 | no: the transatlantic trips (±7 zones) dominate the slope |
+| the 1% largest residuals dropped | −2.02 | −0.59 | no |
+
+Where the effect sits, over all three seasons (S4 = home zones moved east − away's):
+
+| S4 | −3 | −2 | −1 | 0 | +1 | +2 | +3 |
+|---|---|---|---|---|---|---|---|
+| games | 64 | 204 | 607 | 1,707 | 584 | 193 | 68 |
+| mean residual | +2.22 | +0.34 | +0.22 | +0.02 | −0.15 | −2.78 | −1.88 |
+
+One zone shows nothing; the effect is in 2–3 zone moves. As a bet against the team that moved east
+2+ zones:
+
+| Season | Against the spread |
+|---|---|
+| 2023-24 | 99-82-3 (54.7%) |
+| 2024-25 | 90-76 (54.2%) |
+| 2025-26 | **82-97 (45.8%)** |
+
+The holdout's mean residual was in the predicted direction (+1.66 points), but most of its games went
+the other way. The mean was carried by a few lopsided games, which is also why the 1% trim breaks it.
+
+Exploratory, chosen after seeing the table: home teams just back from a 2+ zone eastward trip lost to
+the spread by 3.4, 2.2 and 2.1 points on average. Fading them went 64%, 52% and 47%, and the 2025-26
+median residual was +1.5. That's not consistent either.
+
+## Conclusion
+
+- **Shooting luck:** no overreaction to past luck. Upsets lean on luck in the game itself, which
+  can't be known before tip, and the close already ignores past luck about right.
+- **Schedule:** only eastward time-zone travel passed. It passes by the letter of the rule but not
+  robustly:
+  - the 1% trim breaks it;
+  - the holdout's record against the spread lost (45.8%);
+  - the effect lives in a few lopsided games after 2–3 zone moves.
+- **Recommendation:** treat S4 as unconfirmed, not as a second `b2b-1`. The pre-registered next step
+  for a pass is a shadow measure. If one is added, it should be judged on its median, or on its
+  record against the spread, as well as its mean.
+- **What this rules out:** with matchup-1, 23 team, style, situational, luck and schedule features
+  have now been tested against the close on three seasons. One is robust (the team-specific
+  back-to-back split), and one is fragile (eastward travel). The closing spread already prices
+  almost everything we can build from box scores and the schedule.
