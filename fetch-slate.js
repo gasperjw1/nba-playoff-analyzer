@@ -87,6 +87,7 @@ function loadSeasonContext() {
   load('js/season/pitch2.js');
   load('js/season/flat.js');
   load('js/season/fade.js');
+  load('js/season/b2b.js');
   load('js/season/odds.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
@@ -211,8 +212,22 @@ async function main() {
       }
       console.log(`Injury report ${report.name} over the feed: ${applied.changes.length} status change${applied.changes.length === 1 ? '' : 's'}`);
     } catch (e) { console.warn(`injury report unavailable (${e.message}); rows recorded without pOursReport`); }
+    // Back-to-back split shadow (spec b2b-1): each team's back-to-back minus rested net rating from
+    // this season's box scores, for a team on a back-to-back tonight. Never blocks recording.
+    const b2bs = new Map();
+    try {
+      const splits = await require('./b2b-shadow.js').b2bSplits(slate.date, rows.map(({ g }) => g));
+      for (const { g, proj } of rows) {
+        const s = splits.get(String(g.id)), e = s && ctx.seasonB2bEntry(s.home, s.away, proj.pHome);
+        if (!e) continue;
+        b2bs.set(String(g.id), e);
+        const on = [['home', g.home], ['away', g.away]].filter(([k]) => e[k].b2b);
+        if (on.length) console.log(`  b2b-1 ${g.away} @ ${g.home}: ${on.map(([k, t]) => `${t} on a back-to-back (split ${e[k].split >= 0 ? '+' : ''}${e[k].split} over ${e[k].nB2b})`).join(', ')} → shift ${e.shift >= 0 ? '+' : ''}${e.shift} pts, ${pct(proj.pHome)} → ${pct(e.pOurs)}`);
+      }
+      console.log(`Back-to-back shadow (b2b-1): ${b2bs.size} rows, ${[...b2bs.values()].filter(e => e.feature).length} with a team on a back-to-back`);
+    } catch (e) { console.warn(`back-to-back shadow unavailable (${e.message}); rows recorded without b2b`); }
     const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate,
-      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`), reps.get(String(g.id)))), new Date());
+      cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`), reps.get(String(g.id)), b2bs.get(String(g.id)))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
       '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
     console.log(`Ledger: +${added} recorded, ${replaced} replaced (ESPN fallback rows), ${late} skipped (already tipped), ${existing.length} total rows`);
@@ -487,6 +502,10 @@ async function settle(ctx) {
   // fade-1: the fade bets against their control (other 50–70% favourites on NB.AI nights).
   const fd = ctx.seasonFadeSummary(rows);
   console.log(`  fade NB.AI from ${ctx.SEASON_FADE_SPEC.firstNight}: ${flatLine(fd.clean.fade)} · control ${flatLine(fd.clean.control)}`);
+  // b2b-1: the back-to-back split shadow against the close (B2B_SPEC.md): a retire check at 150 games,
+  // the pooled read at the end of the regular season.
+  const bb = ctx.seasonB2bRecord(rows), atsN = bb.ats.w + bb.ats.l;
+  console.log(`  b2b-1 from ${ctx.SEASON_B2B_SPEC.firstNight}: ${bb.n} back-to-back games (retire check at ${ctx.SEASON_B2B_SPEC.retireCheckAt})${bb.t != null ? ` · live slope ${bb.slope} ± ${bb.se} (t ${bb.t}) · pooled with 2025-26 t ${bb.pooled.t}` : ''} · ATS |F| ≥ ${ctx.SEASON_B2B_SPEC.threshold} ${bb.ats.w}-${bb.ats.l}${bb.ats.p ? `-${bb.ats.p}` : ''}${atsN ? ` (${pct(bb.ats.w / atsN)}, break-even 52.4%)` : ''}${bb.brier.n ? ` · Brier shadow ${bb.brier.b2b} vs pOurs ${bb.brier.ours} vs market ${bb.brier.market}` : ''}${bb.open ? ` · ${bb.open} open` : ''}`);
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
 }

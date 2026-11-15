@@ -37,6 +37,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/pitch2.js');
   load('js/season/flat.js');
   load('js/season/fade.js');
+  load('js/season/b2b.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1722,6 +1723,58 @@ console.log('TEST 36: the model with the official injury report beside the feed-
   const res = (o) => ({ result: { homeScore: 110, awayScore: 100 }, pOurs: 0.6, pMarket: 0.6, ...o });
   const sc = c.scoreForecasts([res({ pOursReport: 0.7 }), res({})]);
   assert(sc.report.n === 1 && sc.ours.n === 2 && Math.abs(sc.report.brier - 0.09) < 1e-9, 'scored only on rows that carry it');
+}
+
+console.log('TEST 37: back-to-back split shadow (b2b.js + b2b-shadow.js, spec b2b-1)');
+{
+  const c = loadCtx(false);
+  const S = c.SEASON_B2B_SPEC;
+  assert(S.version === 'b2b-1' && S.k === 5 && S.minPrior === 4 && S.slope === 0.28 && S.threshold === 2.9 && S.firstNight === '2026-11-16' && S.retireCheckAt === 150 && S.holdout.slope === 0.4319 && S.holdout.se === 0.172 && S.pooledT === 3, 'spec constants');
+  // Entry: only a team on a back-to-back contributes; shift = slope · F; pOurs shifted through Φ(·/12.5).
+  const side = (b2b, split, n = 10) => ({ b2b, split, nB2b: 3, nRest: n - 3, n });
+  const p0 = c.marginToWinProb(3);
+  const e = c.seasonB2bEntry(side(true, -6), side(false, 4), p0);
+  assert(e.feature === -6 && Math.abs(e.shift - (-1.68)) < 1e-9 && Math.abs(e.pOurs - c.marginToWinProb(3 - 1.68)) < 1e-4 && e.spec === 'b2b-1', 'home on a back-to-back: F = home split, shift −1.68 on pOurs\'s margin');
+  assert(c.seasonB2bEntry(side(true, -6), side(true, -2), 0.5).feature === -4, 'both on back-to-backs: home split − away split');
+  const none = c.seasonB2bEntry(side(false, -6), side(false, 5), 0.6123);
+  assert(none.feature === 0 && none.shift === 0 && none.pOurs === 0.6123, 'neither: F = 0 and pOurs unchanged');
+  assert(c.seasonB2bEntry(side(true, -6, 3), side(false, 0), 0.5) === null && c.seasonB2bEntry(null, side(false, 0), 0.5) === null, 'fewer than 4 prior games or no split → null');
+  // Ledger row stores it; without it, null.
+  const slate = makeSlate(c), g = slate.games[0], proj = c.projectSeasonGame(g, slate);
+  const blend = c.blendGameForecast({ pOurs: proj.pHome, pFriend: null, mlHome: -150, mlAway: 130 });
+  assert(c.buildLedgerEntry(g, proj, blend, slate, null, null, null, null, e).b2b === e && c.buildLedgerEntry(g, proj, blend, slate).b2b === null, 'row stores b2b; none → null');
+  // Record: from firstNight, F ≠ 0, settled with a close; ATS at |F| ≥ 2.9; pushes apart.
+  const row = (date, f, hs, as, spread, o = {}) => ({ date, b2b: { feature: f, pOurs: 0.55 }, pOurs: 0.5, pMarket: 0.5, result: hs == null ? null : { homeScore: hs, awayScore: as }, close: { spreadHome: spread }, ...o });
+  const rows = [row('2026-11-15', 5, 120, 100, -2), row('2026-11-16', 0, 100, 90, -2),
+    row('2026-11-16', 4, 110, 100, -5), row('2026-11-16', -3, 100, 110, 2), row('2026-11-17', 3, 100, 100, 0), row('2026-11-17', 1, 105, 100, -3), row('2026-11-17', 6, null)];
+  const rec = c.seasonB2bRecord(rows);
+  // Residuals: +5 (F 4), −8 (F −3), 0 (F 3), +2 (F 1).
+  assert(rec.n === 4 && rec.open === 1, 'counts settled rows from firstNight with F ≠ 0; open apart');
+  assert(rec.ats.w === 2 && rec.ats.l === 0 && rec.ats.p === 1, 'ATS: |F| ≥ 2.9 only (F 4 won, F −3 won, F 3 pushed; F 1 not counted)');
+  const fx = [4, -3, 3, 1], ry = [5, -8, 0, 2], mf = 1.25, mr = -0.25;
+  const sxx = fx.reduce((a, f) => a + (f - mf) ** 2, 0), sxy = fx.reduce((a, f, i) => a + (f - mf) * (ry[i] - mr), 0);
+  assert(Math.abs(rec.slope - sxy / sxx) < 1e-3, 'live slope is OLS of residual on F');
+  const ry2 = ry.map((y, i) => y - (mr - (sxy / sxx) * mf) - (sxy / sxx) * fx[i]), se = Math.sqrt(ry2.reduce((a, x) => a + x * x, 0) / 2 / sxx);
+  const wh = 1 / 0.172 ** 2, wl = 1 / se ** 2, pb = (wh * 0.4319 + wl * sxy / sxx) / (wh + wl);
+  assert(Math.abs(rec.se - se) < 1e-3 && Math.abs(rec.pooled.slope - pb) < 1e-3 && Math.abs(rec.pooled.t - pb * Math.sqrt(wh + wl)) < 0.01, 'pooled: inverse-variance mean of the live and 2025-26 slopes');
+  assert(rec.brier.n === 4 && rec.brier.b2b != null && rec.brier.ours != null, 'Brier on the same rows');
+  // Splits from box-score games: a team that loses its back-to-backs gets a negative split.
+  const { splitsFromGames } = require('./b2b-shadow.js');
+  const line = (pts) => ({ fgm: 30, fga: 80, tpm: 10, tpa: 30, ftm: 15, fta: 20, oreb: 10, dreb: 35, tov: 12, pip: 40, fb: 10, pts, q: [pts, 0, 0, 0] });
+  const games = [];
+  const add = (date, home, away, hs, as) => games.push({ id: String(games.length + 1), date, home, away, hs, as, H: line(hs), A: line(as) });
+  // AAA: wins by 10, losses by 20 on Nov 2 and 6; Nov 2, 5, 6 and 9 are the day after a game.
+  const sched = [['2026-11-01', 110, 100], ['2026-11-02', 90, 110], ['2026-11-04', 110, 100], ['2026-11-05', 110, 100], ['2026-11-06', 90, 110], ['2026-11-08', 110, 100]];
+  sched.forEach(([d, a, b], i) => add(d, 'AAA', ['BBB', 'CCC', 'DDD'][i % 3], a, b));
+  for (let i = 0; i < 8; i++) add(`2026-11-0${1 + (i % 8)}`, ['BBB', 'CCC'][i % 2], ['DDD', 'EEE'][i % 2], 100, 100);
+  add('2026-11-09', 'BBB', 'AAA', 100, 100);   // the day after Nov 8, and the day before tonight
+  const sp = splitsFromGames(games, '2026-11-10', [{ id: 'x', home: 'AAA', away: 'EEE' }]).get('x');
+  const poss = 80 - 10 + 12 + 0.44 * 20, net = (m) => 100 * m / poss;
+  const nets = [10, -20, 10, 10, -20, 10, 0].map(net), b2bN = [-20, 10, -20, 0].map(net), restN = [10, 10, 10].map(net);
+  const k = 5, sh = (xs, p) => (xs.reduce((a, x) => a + x, 0) + k * p) / (xs.length + k), all = sh(nets, 0);
+  assert(sp.home.b2b === true && sp.home.n === 7 && sp.home.nB2b === 4 && sp.home.nRest === 3, 'AAA: 7 games, 4 back-to-backs (Nov 2, 5, 6, 9), on one tonight');
+  assert(Math.abs(sp.home.split - (sh(b2bN, all) - sh(restN, all))) < 1e-3 && sp.home.split < 0, 'split = shrunk back-to-back net − shrunk rested net, both to the overall (k 5)');
+  assert(sp.away.b2b === false, 'EEE did not play yesterday');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
