@@ -392,6 +392,6 @@ function noVig(mh, ma) { const i = (a) => (a < 0 ? -a / (-a + 100) : 100 / (a + 
 function median(xs) { const s = [...xs].sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
 const pct = (p) => (100 * p).toFixed(0) + '%';
 
-module.exports = { partB, score, slope, situational, profiles, seasonGames };
+module.exports = { partB, score, slope, situational, profiles, seasonGames, adaptGame, noVig };
 
 if (require.main === module) (has('--fetch-hist') ? fetchHist() : has('--part-b') ? mainB() : main()).catch(e => { console.error(e); process.exit(1); });

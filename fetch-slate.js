@@ -87,6 +87,7 @@ function loadSeasonContext() {
   load('js/season/pitch2.js');
   load('js/season/flat.js');
   load('js/season/fade.js');
+  load('js/season/pitch3.js');
   load('js/season/b2b.js');
   load('js/season/odds.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
@@ -265,6 +266,9 @@ async function main() {
     // fade-1: 50–70% favourites NB.AI doubts by 8+ points, from the rows just recorded (NB.AI nights only).
     const fade = ctx.fadeTonight(existing, slate.date);
     console.log(`Pitch fade NB.AI (50–70% favourites NB.AI doubts by 8+): ${slate.source === 'espn' ? 'none — no NB.AI on an ESPN slate' : fade.length ? fade.map(b => `${b.team} ${b.odds > 0 ? '+' : ''}${b.odds} (market ${pct(b.pFav)}, NB.AI ${pct(b.pNbai)})`).join(' · ') : 'none'}`);
+    // pitch-3: moneylines 5+ points over DraftKings' no-vig price, from the rows just recorded, as straights and a pair.
+    const p3 = ctx.pitch3Tonight(existing, slate.date), p3leg = (l) => `${l.team} ${l.odds > 0 ? '+' : ''}${l.odds} (${pct(l.pModel)} vs ${pct(l.pMarket)}, ${l.tier})`;
+    console.log(`Pitch edge straights (pitch-3, 5+ pp over DK no-vig): ${p3.legs.length ? p3.legs.map(p3leg).join(' · ') : 'none'}${p3.pair ? ` · pair ${p3.pair.legs.map(l => l.team).join(' + ')} ${p3.pair.odds > 0 ? '+' : ''}${p3.pair.odds} (${pct(p3.pair.pModel)} vs ${pct(p3.pair.pMarket)})` : ''}`);
     // FanDuel's alternate PRA ladder for every game still to tip (odds-1 ladder pull, ODDS_SPEC.md): once per
     // game, 1 credit each, with the model as just recorded. Never blocks the record.
     if (!process.env.ODDS_API_KEY) console.log('Odds ladders: skipped (ODDS_API_KEY not set)');
@@ -502,6 +506,9 @@ async function settle(ctx) {
   // fade-1: the fade bets against their control (other 50–70% favourites on NB.AI nights).
   const fd = ctx.seasonFadeSummary(rows);
   console.log(`  fade NB.AI from ${ctx.SEASON_FADE_SPEC.firstNight}: ${flatLine(fd.clean.fade)} · control ${flatLine(fd.clean.control)}`);
+  // pitch-3: edge straights and pairs, against the market's no-vig chances and the price (PITCH3_SPEC.md).
+  const p3s = ctx.seasonPitch3Summary(rows), p3c = p3s.clean, p3m = (g) => g.market.n ? `${g.market.won}/${g.market.n} vs market ${g.market.expected.toFixed(1)} (z ${g.market.z})` : 'none settled';
+  console.log(`  pitch-3 from ${ctx.SEASON_PITCH3_SPEC.firstNight}: straights ${p3m(p3c.all)} · ${flatLine(p3c.all.price)} · 8+ ${p3m(p3c.big)} · 5–8 ${p3m(p3c.small)} · pairs ${flatLine(p3c.pairs.price)} · ${p3s.read}`);
   // b2b-1: the back-to-back split shadow against the close (B2B_SPEC.md): a retire check at 150 games,
   // the pooled read at the end of the regular season.
   const bb = ctx.seasonB2bRecord(rows), atsN = bb.ats.w + bb.ats.l;
