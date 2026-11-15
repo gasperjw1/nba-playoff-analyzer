@@ -31,7 +31,7 @@ function seasonOppAdjSlate(slate) {
   return { ...clean, teams: seasonOpponentAdjust(clean.teams, clean.league, slate.results) };
 }
 
-function buildLedgerEntry(game, projection, blend, slate, clean, adj, late, rep) {
+function buildLedgerEntry(game, projection, blend, slate, clean, adj, late, rep, b2b) {
   const m = game.market || {};
   const friend = game.external && game.external.nbai ? game.external.nbai.pHome : null;
   return {
@@ -60,6 +60,8 @@ function buildLedgerEntry(game, projection, blend, slate, clean, adj, late, rep)
     // rep: { name, proj, changes: [{ team, name, from, to }] } for this game's two teams.
     pOursReport: rep ? rep.proj.pHome : null,
     report: rep ? { name: rep.name, margin: rep.proj.margin, changes: rep.changes } : null,
+    // Back-to-back split shadow (b2b.js, spec b2b-1): seasonB2bEntry at record time (null when not run).
+    b2b: b2b || null,
     pFriend: typeof friend === 'number' ? +friend.toFixed(4) : null,
     pMarket: blend.pMarket,
     pBlend: blend.pBlend,

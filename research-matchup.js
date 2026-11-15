@@ -24,15 +24,18 @@ const K = +(process.env.MATCHUP_K || 5), HCA = 2.0, SIGMA = 12.5;   // MATCHUP_K
 const has = (f) => process.argv.includes(f);
 const addDays = (d, n) => new Date(Date.parse(d + 'T12:00:00Z') + n * 864e5).toISOString().slice(0, 10);
 
-async function cachedJson(file, url) {
+// Cached only when keep(json) holds, as in fetch-slate.js: a scoreboard caught mid-evening is
+// fetched again next time rather than missing its late games for good.
+async function cachedJson(file, url, keep = () => true) {
   const f = path.join(CACHE, file);
   if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status} ${url}`);
   const j = await res.json();
-  fs.writeFileSync(f, JSON.stringify(j));
+  if (keep(j)) fs.writeFileSync(f, JSON.stringify(j));
   return j;
 }
+const allCompleted = (sb) => (sb.events || []).length > 0 && sb.events.every(e => e.status && e.status.type && e.status.type.completed);
 
 function loadLedger() {
   const c = vm.createContext({});
@@ -67,7 +70,7 @@ function adaptGame(sum, date) {
 async function seasonGames(through) {
   const games = [];
   for (let d = FIRST; d <= through; d = addDays(d, 1)) {
-    const sb = await cachedJson(`scoreboard-${d}.json`, `${ESPN}scoreboard?dates=${d.replace(/-/g, '')}`);
+    const sb = await cachedJson(`scoreboard-${d}.json`, `${ESPN}scoreboard?dates=${d.replace(/-/g, '')}`, allCompleted);
     for (const e of sb.events || []) {
       if (!e.status.type.completed || (e.season && e.season.type !== 2)) continue;
       const g = adaptGame(await cachedJson(`summary-${e.id}.json`, `${ESPN}summary?event=${e.id}`), d);
@@ -389,6 +392,6 @@ function noVig(mh, ma) { const i = (a) => (a < 0 ? -a / (-a + 100) : 100 / (a + 
 function median(xs) { const s = [...xs].sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
 const pct = (p) => (100 * p).toFixed(0) + '%';
 
-module.exports = { partB, score, slope, situational, profiles };
+module.exports = { partB, score, slope, situational, profiles, seasonGames };
 
 if (require.main === module) (has('--fetch-hist') ? fetchHist() : has('--part-b') ? mainB() : main()).catch(e => { console.error(e); process.exit(1); });
