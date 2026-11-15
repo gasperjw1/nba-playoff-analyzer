@@ -37,6 +37,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/pitch2.js');
   load('js/season/flat.js');
   load('js/season/fade.js');
+  load('js/season/pitch3.js');
   load('js/season/b2b.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
@@ -1775,6 +1776,60 @@ console.log('TEST 37: back-to-back split shadow (b2b.js + b2b-shadow.js, spec b2
   assert(sp.home.b2b === true && sp.home.n === 7 && sp.home.nB2b === 4 && sp.home.nRest === 3, 'AAA: 7 games, 4 back-to-backs (Nov 2, 5, 6, 9), on one tonight');
   assert(Math.abs(sp.home.split - (sh(b2bN, all) - sh(restN, all))) < 1e-3 && sp.home.split < 0, 'split = shrunk back-to-back net − shrunk rested net, both to the overall (k 5)');
   assert(sp.away.b2b === false, 'EEE did not play yesterday');
+}
+
+console.log('TEST 38: edge straights and pair (pitch3.js, spec pitch-3)');
+{
+  const c = loadCtx(false);
+  const S = c.SEASON_PITCH3_SPEC;
+  assert(S.version === 'pitch-3' && S.firstNight === '2026-11-16' && S.minEdge === 0.05 && S.tier === 0.08 && S.pairLegs === 2 && S.readAt === 100, 'spec constants');
+  const res = (h, a) => ({ homeScore: h, awayScore: a });
+  const row = (o) => Object.assign({ id: 'g' + Math.random().toString(36).slice(2, 8), date: '2026-11-16', tip: '2026-11-17T00:00Z', recordedAt: '2026-11-16T18:00Z', home: 'HHH', away: 'AAA',
+    pOurs: 0.5, pMarket: 0.5, mlHome: -110, mlAway: -110, book: 'DraftKings', source: 'nb.ai' }, o);
+  // Home leg from the report-aware chance (0.62 − 0.55 = 7 pp, tier 5–8); feed only shown beside it.
+  const a = c.pitch3Leg(row({ id: 'a', pOurs: 0.60, pOursReport: 0.62, pMarket: 0.55, mlHome: -130, mlAway: 110, close: { mlHome: -150, mlAway: 130, book: 'DraftKings' }, result: res(110, 100) }));
+  assert(a && a.side === 'home' && a.team === 'HHH' && a.tier === '5–8' && Math.abs(a.edge - 0.07) < 1e-9 && a.pModel === 0.62 && a.pFeed === 0.6 && a.odds === -130 && a.close === -150 && a.hit === true && a.hours === 6,
+    'home leg: report chance, tier 5–8, price, close, hit, hours before tip');
+  assert(Math.abs(a.pClose - c._noVigHome(-150, 130)) < 1e-4, 'close no-vig chance for the side');
+  // Away leg: the model has the home side 10 points under the market, so the away side is 10 over (8+).
+  const b = c.pitch3Leg(row({ id: 'b', pOurs: 0.30, pMarket: 0.40, mlHome: -150, mlAway: 130, result: res(100, 104) }));
+  assert(b && b.side === 'away' && b.team === 'AAA' && b.tier === '8+' && Math.abs(b.pModel - 0.7) < 1e-9 && Math.abs(b.pMarket - 0.6) < 1e-9 && b.odds === 130 && b.hit === true && b.close === null && b.pClose === null,
+    'away leg: 8+ tier, the away price, no close');
+  assert(c.pitch3Leg(row({ pOurs: 0.55, pMarket: 0.50 })) !== null, 'a gap of exactly 5 points qualifies');
+  assert(c.pitch3Leg(row({ pOurs: 0.54, pMarket: 0.50 })) === null, 'under 5 points: no leg');
+  assert(c.pitch3Leg(row({ pOurs: 0.70, pMarket: 0.50, trust: { rule: 'AVOID' } })) === null, 'AVOID game left out');
+  assert(c.pitch3Leg(row({ pOurs: 0.70, pMarket: 0.50, mlHome: null })) === null && c.pitch3Leg(row({ pOurs: 0.70, pMarket: null })) === null, 'missing price or market chance: no leg');
+  assert(c.pitch3Leg(row({ pOurs: 0.70, pMarket: 0.50, close: { mlHome: -200, mlAway: 170, book: 'ESPN BET' } })).pClose === null, 'a close from another book is not compared');
+  // Pair: the two largest gaps, priced as the product.
+  const legs = [a, b, c.pitch3Leg(row({ id: 'd', pOurs: 0.61, pMarket: 0.55, result: res(90, 100) }))];
+  const pair = c.pitch3Pair(legs);
+  const dec = c.parlayDecimal(130) * c.parlayDecimal(-130);
+  assert(pair && pair.legs.map(l => l.gameId).join() === 'b,a' && pair.odds === c.parlayAmerican(dec) && pair.hit === true && Math.abs(pair.pModel - 0.7 * 0.62) < 1e-4 && Math.abs(pair.pMarket - 0.6 * 0.55) < 1e-4,
+    'pair = two largest gaps (10 and 7 over 6), legs multiplied, won when both hit');
+  assert(c.pitch3Pair([a]) === null, 'one leg: no pair');
+  assert(c.pitch3Pair([legs[2], a]).hit === false, 'a pair with a lost leg lost');
+  assert(c.pitch3Pair([a, c.pitch3Leg(row({ id: 'e', pOurs: 0.75, pMarket: 0.60 }))]).hit === null, 'a pair with an open leg is open');
+  // Tonight: legs and pair from the night's rows only.
+  const rows = [row({ id: 'a', pOurs: 0.62, pMarket: 0.55, result: res(110, 100) }), row({ id: 'b', pOurs: 0.30, pMarket: 0.40, result: res(100, 104) }),
+    row({ id: 'z', date: '2026-11-15', pOurs: 0.80, pMarket: 0.50, result: res(90, 100) }), row({ id: 'n', pOurs: 0.52, pMarket: 0.50 })];
+  const tn = c.pitch3Tonight(rows, '2026-11-16');
+  assert(tn.legs.length === 2 && tn.pair && tn.pair.legs.length === 2, 'tonight: 2 legs and a pair, the Nov 15 row and the 2-point gap left out');
+  // Summary: clean from firstNight, before it kept apart; market expected = sum of no-vig chances.
+  const sm = c.seasonPitch3Summary(rows);
+  assert(sm.clean.all.market.n === 2 && sm.clean.all.market.won === 2 && Math.abs(sm.clean.all.market.expected - (0.55 + 0.6)) < 1e-9, 'clean straights vs the market');
+  assert(sm.clean.big.market.n === 1 && sm.clean.small.market.n === 1 && sm.clean.all.price.n === 2 && sm.clean.pairs.price.n === 1 && sm.clean.pairs.price.won === 1, 'tiers and pair counted');
+  assert(sm.before.all.market.n === 1 && sm.before.all.market.won === 0 && sm.before.nights === 1, 'Nov 15 counted as before the spec');
+  assert(sm.read === '2 of 100 settled straights', 'read waits for 100 straights');
+  // The read at 100: retire at or below the market, edge at z ≥ 2 against the break-even, else keep logging.
+  const many = (wins) => Array.from({ length: 100 }, (_, i) => row({ id: 'm' + i, pOurs: 0.62, pMarket: 0.55, mlHome: -130, mlAway: 110, result: i < wins ? res(110, 100) : res(100, 110) }));
+  assert(c.seasonPitch3Summary(many(55)).read.startsWith('retire'), '55 of 100 at 55% expected: retire');
+  assert(c.seasonPitch3Summary(many(58)).read.startsWith('keep logging'), '58 of 100: above the market, under the vig');
+  assert(c.seasonPitch3Summary(many(67)).read.startsWith('edge'), '67 of 100 at −130 (56.5% break-even): z ≥ 2');
+  // Line movement: mean and standard error of close − recorded no-vig chance.
+  const clv = c.seasonPitch3Summary([row({ id: 'c1', pOurs: 0.62, pMarket: 0.55, close: { mlHome: -150, mlAway: 130, book: 'DraftKings' } }),
+    row({ id: 'c2', pOurs: 0.62, pMarket: 0.55, close: { mlHome: -110, mlAway: -110, book: 'DraftKings' } })]).clean.all.clv;
+  const d1 = c._noVigHome(-150, 130) - 0.55, d2 = 0.5 - 0.55, m = (d1 + d2) / 2;
+  assert(clv.n === 2 && Math.abs(clv.mean - m) < 1e-4 && Math.abs(clv.se - Math.sqrt(((d1 - m) ** 2 + (d2 - m) ** 2) / 1 / 2)) < 1e-4, 'line movement mean and SE');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

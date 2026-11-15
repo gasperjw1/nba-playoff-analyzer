@@ -428,6 +428,34 @@ function renderFadeSection() {
     <hr style="margin:20px 0">`;
 }
 
+function renderPitch3Section() {
+  if (typeof SEASON_PITCH3_SPEC === 'undefined') return '';
+  const S = SEASON_PITCH3_SPEC, rows = typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : [];
+  const sum = seasonPitch3Summary(rows), stake = SEASON_FLAT_SPEC.stake;
+  const usd = (x) => `${x < 0 ? '−' : '+'}$${Math.abs(x).toFixed(2)}`;
+  const pc = (p) => `${Math.round(p * 100)}%`;
+  const row = (label, g, note) => { const r = g.price, m = g.market || null;
+    return `<tr><td><b>${label}</b>${note ? `<div class="muted">${note}</div>` : ''}</td><td class="num">${r.n ? `${r.won}/${r.n}` : '—'}${r.open ? ` <span class="muted">+${r.open} open</span>` : ''}</td><td class="num">${m && m.n ? `${m.expected.toFixed(1)} <span class="muted">(z ${m.z})</span>` : g.expected != null && r.n ? g.expected.toFixed(1) : '—'}</td><td class="num">${r.n ? r.beWins.toFixed(1) : '—'}</td><td class="num">${r.n ? `<span class="${r.profit >= 0 ? 'pos' : 'neg'}">${usd(r.profit)}</span>` : '—'}</td><td class="num">${r.margin != null ? `${(r.margin * 100).toFixed(1)}%` : '—'}</td><td class="num">${r.z != null ? r.z.toFixed(2) : '—'}</td></tr>`; };
+  const head = '<tr><th>Bets</th><th class="num">Won</th><th class="num" title="the market\'s own no-vig chances added up: are the gaps real before the vig?">Market expected</th><th class="num" title="wins the prices need to break even (their implied chances, vig included)">Break-even wins</th><th class="num">Profit</th><th class="num">Margin</th><th class="num" title="(won − break-even) ÷ its standard deviation; inside ±2 is within luck">z</th></tr>';
+  const date = seasonState.slate && seasonState.slate.date;
+  const tn = date ? pitch3Tonight(rows, date) : { legs: [], pair: null };
+  const leg = (l) => `${l.team} ${parlayFmtOdds(l.odds)} (model ${pc(l.pModel)} vs market ${pc(l.pMarket)}, ${l.tier})`;
+  const C = sum.clean, B = sum.before, clv = C.all.clv;
+  return `<h3 style="margin-top:4px">Edge straights and pair — spec ${S.version}</h3>
+    <p class="muted">Every moneyline where the model (with the official injury report when recorded) is ${S.minEdge * 100}+ points above DraftKings' no-vig price, as the ledger recorded it: one straight bet each, in tiers of 5–8 and 8+ points, and a 2-leg pair of the night's two largest gaps (frozen ${S.frozen}; counts from ${S.firstNight}). AVOID games are left out. When it was written (Nov 2–15, 5 games still open), 5+ point gaps had won 25 of 45 against 24.4 the market expected: no sign of an edge yet. Read at ${S.readAt} settled straights: retired if no better than the market. $${stake} a bet at DraftKings; unproven, never a suggestion.</p>
+    <p>Straights for ${date || 'tonight'}: <b>${tn.legs.length ? tn.legs.map(leg).join(' · ') : 'none recorded'}</b>${tn.pair ? `<br>Pair: <b>${tn.pair.legs.map(l => l.team).join(' + ')} ${parlayFmtOdds(tn.pair.odds)}</b> (model ${pc(tn.pair.pModel)} vs market ${pc(tn.pair.pMarket)})` : ''}</p>
+    <p class="muted">${sum.read}${clv.n ? ` · line moved ${clv.mean >= 0 ? '+' : '−'}${Math.abs(clv.mean * 100).toFixed(1)} pp toward the legs on average (± ${(clv.se * 100).toFixed(1)}, ${clv.n} legs)` : ''}</p>
+    <div style="overflow-x:auto"><table>${head}
+      ${row(`Straights, from ${S.firstNight}`, C.all, 'at the price recorded before tip')}
+      ${row('… 8+ points', C.big)}
+      ${row('… 5–8 points', C.small)}
+      ${row('Pairs', C.pairs, 'two largest gaps a night')}
+      ${row('Straights, before the spec', B.all, 'seen when it was written')}
+      ${row('Pairs, before the spec', B.pairs)}
+    </table></div>
+    <hr style="margin:20px 0">`;
+}
+
 function renderFlatSection() {
   if (typeof SEASON_FLAT_SPEC === 'undefined') return '';
   const S = SEASON_FLAT_SPEC;
@@ -494,6 +522,7 @@ function renderPitchTab() {
   const recRow = (k, label) => { const g = rec[k]; return `<tr><td><b>${label}</b></td><td class="num">${g.nights}</td><td class="num">${g.tickets}</td><td class="num">${g.settled ? `${g.won}/${g.settled}` : '—'}</td><td class="num">${g.legs ? `${pct(g.legsHit / g.legs)} <span class="muted">vs ${pct(g.legsShown / g.legs)} shown · ${g.legs}</span>` : '—'}</td><td class="num">${g.priced ? `${g.units >= 0 ? '+' : ''}${g.units}u <span class="muted">(${g.priced})</span>` : '—'}</td><td class="num">${g.clvN ? `${g.clvToward}/${g.clvN} <span class="muted">avg ${(g.clvMove * 100).toFixed(1)} pp</span>` : '—'}</td></tr>`; };
   return `<div class="ledger">
     ${renderPitch2Section()}
+    ${renderPitch3Section()}
     ${renderFlatSection()}
     ${renderFadeSection()}
     <h3>Floor and edge tickets — spec ${S.version}</h3>
