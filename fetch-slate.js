@@ -90,6 +90,7 @@ function loadSeasonContext() {
   load('js/season/pitch3.js');
   load('js/season/b2b.js');
   load('js/season/odds.js');
+  load('js/season/shop.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
@@ -513,6 +514,12 @@ async function settle(ctx) {
   // the pooled read at the end of the regular season.
   const bb = ctx.seasonB2bRecord(rows), atsN = bb.ats.w + bb.ats.l;
   console.log(`  b2b-1 from ${ctx.SEASON_B2B_SPEC.firstNight}: ${bb.n} back-to-back games (retire check at ${ctx.SEASON_B2B_SPEC.retireCheckAt})${bb.t != null ? ` · live slope ${bb.slope} ± ${bb.se} (t ${bb.t}) · pooled with 2025-26 t ${bb.pooled.t}` : ''} · ATS |F| ≥ ${ctx.SEASON_B2B_SPEC.threshold} ${bb.ats.w}-${bb.ats.l}${bb.ats.p ? `-${bb.ats.p}` : ''}${atsN ? ` (${pct(bb.ats.w / atsN)}, break-even 52.4%)` : ''}${bb.brier.n ? ` · Brier shadow ${bb.brier.b2b} vs pOurs ${bb.brier.ours} vs market ${bb.brier.market}` : ''}${bb.open ? ` · ${bb.open} open` : ''}`);
+  // shop-1: flagged FanDuel/DraftKings prices against the multi-book consensus (ODDS2_SPEC.md), from the local odds ledger.
+  if (fs.existsSync(ODDS_LEDGER_PATH)) {
+    const sh = ctx.seasonShopSummary(JSON.parse(fs.readFileSync(ODDS_LEDGER_PATH, 'utf8')), rows), ev = (x) => x == null ? '—' : (x >= 0 ? '+' : '') + (x * 100).toFixed(1) + '%';
+    console.log(`  shop-1 price check: ${sh.flags} flag${sh.flags === 1 ? '' : 's'} (${sh.graded} graded)${sh.graded ? ` · won ${sh.won} vs consensus ${sh.expected} (z ${sh.z}) · return ${ev(sh.roi)} ± ${ev(sh.se).replace('+', '')}` : ''}` +
+      `${sh.move.n ? ` · line move ${ev(sh.move.mean)}${sh.move.se != null ? ` ± ${ev(sh.move.se).replace('+', '')}` : ''}` : ''}${sh.saved.n ? ` · better of FD/DK ${ev(sh.saved.best)} vs FD alone ${ev(sh.saved.fanduel)} over ${sh.saved.n} sides` : ''} · ${sh.read}`);
+  }
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
 }
@@ -548,7 +555,8 @@ async function oddsRun(ctx) {
     }
     return out;
   };
-  await require('./odds-pull.js').pullOdds({ ctx, key: process.env.ODDS_API_KEY, games, ledgerPath: ODDS_LEDGER_PATH, lockPath: ODDS_LOCK_PATH, buildModel, dry: DRY });
+  // odds-2 (ODDS2_SPEC.md): the line call names ten books for the same credits; the price check prints per game.
+  await require('./odds-pull.js').pullOdds({ ctx, spec: ctx.SEASON_ODDS2_SPEC, key: process.env.ODDS_API_KEY, games, ledgerPath: ODDS_LEDGER_PATH, lockPath: ODDS_LOCK_PATH, buildModel, dry: DRY });
 }
 
 function pct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }

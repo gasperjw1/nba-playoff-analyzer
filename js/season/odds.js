@@ -36,6 +36,13 @@ const SEASON_ODDS_SPEC = {
 // missing ladder counts no try here (an empty reply is free), so an early record cannot use up
 // the hour-before pull's tries.
 const SEASON_ODDS_LADDER_SPEC = { ...SEASON_ODDS_SPEC, windowMin: 24 * 60, lines: [], props: ['player_points_rebounds_assists_alternate'], ladder: true };
+// odds-2 (ODDS2_SPEC.md, frozen 2026-11-16): the hour-before line call names ten books instead of one.
+// The Odds API counts up to 10 bookmakers (any region) as one region, so it still costs 1 credit per
+// market. FanDuel's markets are stored as before; the others go in row.books for the price check
+// (shop.js). Props and the ladder pull stay FanDuel only. A reply that costs more than markets ×
+// ⌈books / 10⌉ sets ledger.multiBookOff and later runs go back to FanDuel alone.
+const SEASON_ODDS2_SPEC = { ...SEASON_ODDS_SPEC, version: 'odds-2', frozen: '2026-11-16',
+  lineBooks: ['fanduel', 'draftkings', 'williamhill_us', 'betmgm', 'betrivers', 'espnbet', 'fanatics', 'hardrockbet', 'lowvig', 'pinnacle'] };
 const SEASON_ODDS_STAT = {
   player_points: 'pts', player_rebounds: 'reb', player_assists: 'ast', player_points_rebounds_assists: 'pra',
   player_points_rebounds_assists_alternate: 'pra', player_threes: 'tpm',
@@ -148,6 +155,36 @@ function oddsRecord(ledger, g, event, requested, markets, at, model, countTries)
     row.markets[k] = { at, lastUpdate: m.lastUpdate, outcomes: _oddsPriceOutcomes(k, m.outcomes, g, model),
       model: model ? { pHome: model.pHome == null ? null : model.pHome, report: model.report || null, source: model.source || null, engine: model.engine || null } : null };
     stored.push(k);
+  }
+  return stored;
+}
+
+// The books a line call names: the spec's lineBooks unless the cost guard turned them off.
+function oddsLineBooks(spec, ledger) {
+  const S = spec || SEASON_ODDS_SPEC;
+  return S.lineBooks && !(ledger && ledger.multiBookOff) ? S.lineBooks : [S.book];
+}
+// The most a line call may cost: its markets × one region per group of 10 books.
+const oddsLineCost = (markets, books) => markets * Math.ceil(Math.max(1, books.length) / 10);
+
+// The other books' lines from a multi-book reply → row.books[key] = {at, lastUpdate, h2h: {home, away},
+// spreads: {home: {point, price}, away: {point, price}}}. Never overwrites a stored book; the primary
+// book (FanDuel) stays in row.markets. → keys stored.
+function oddsRecordBooks(ledger, g, event, books, at, primary) {
+  const row = ledger.games && ledger.games[String(g.id)];
+  if (!row || !event) return [];
+  row.books = row.books || {};
+  const stored = [];
+  for (const key of books) {
+    if (key === primary || row.books[key]) continue;
+    const m = oddsBookMarkets(event, key);
+    const side = (mk, team) => mk && mk.outcomes.find(o => REPLAY_TEAM_BY_NAME[o.name] === team);
+    const hh = side(m.h2h, g.home), ha = side(m.h2h, g.away), sh = side(m.spreads, g.home), sa = side(m.spreads, g.away);
+    if (!hh && !ha && !sh && !sa) continue;
+    row.books[key] = { at, lastUpdate: (m.h2h || m.spreads || {}).lastUpdate || null,
+      h2h: hh && ha ? { home: hh.price, away: ha.price } : null,
+      spreads: sh && sa ? { home: { point: sh.point, price: sh.price }, away: { point: sa.point, price: sa.price } } : null };
+    stored.push(key);
   }
   return stored;
 }
