@@ -136,3 +136,81 @@ tip.
     edit.
 - **Everything fails:** no part of the engine, core or availability, beats the close historically.
   Edges then have to come from prices (shopping across books) rather than information.
+
+## Results (run 2026-11-15, after the pre-registration commit 1d8fb55)
+
+`node research-injury-close.js`: all 6,119 engine-close-1 games got the feature.
+
+**Checked before reading the decisions:**
+- **Matching:** 99.93–100% of minutes matched to Basketball-Reference.
+- **A's spread:** sd 3.10 points; |A| ≥ 1 in 3,970 games; 22 team values hit the ±12 cap.
+- **The largest values are real rest nights:**
+  - Denver at Phoenix, 2023-04-06 and 03-31: Jokić, Murray, Porter Jr., Gordon and Caldwell-Pope
+    rested after clinching;
+  - Philadelphia at Atlanta, 2023-04-07: Embiid and Harden rested.
+- **Prior BPM:** Jokić's is 11.9 (his 13.7 and 11.7, weighted 1.0 and 0.5, then regressed).
+- **Two team values rebuilt by independent brute-force code:**
+  - Denver −11.43 and Phoenix 5.61 on 2023-04-06. Phoenix's +5.6 with nobody out is Durant's
+    arrival credit: 35.5 baseline minutes, but only 2.9 per team game in the form so far.
+  - Brooklyn −2.66 on 2022-01-17, Durant's first game out. Irving played (a road game), with a small
+    share, which offsets most of it.
+  - Both match the research script exactly at the walk's weight.
+- **The feature is real:** the closing line moves 0.87 ± 0.01 points per point of A, relative to the
+  walk.
+
+| Q | Question | Result | Decision |
+|---|---|---|---|
+| I1 | slope of resid on A | +0.087 ± 0.055 (t 1.57); by season +0.27, −0.16, +0.06, +0.07, +0.22 | no (t < 2) |
+| I2 | slope of resid on the engine-with-availability gap | +0.067 ± 0.069 (t 0.98); positive in 4 of 5 | no |
+| I4 | pitch-3's rule on the engine with availability | won 1,069 of 2,564 against 1,055.1 expected (z 0.60); −4.5% at the close | no |
+
+**0 of 3 pass.**
+
+**I3, calibration (described):**
+- **Results:** (actual − walk) ~ A gives **0.959 ± 0.056**, so the engine's availability values show
+  up in results at about their full size.
+- **Market:** (close − walk) ~ A gives **0.872 ± 0.010**.
+- I1's slope is their difference (0.959 − 0.872 = 0.087), an algebra check that holds.
+- **By season:**
+
+  | Season | Results | Market |
+  |---|---|---|
+  | 2021-22 | 1.11 | 0.84 |
+  | 2022-23 | 0.70 | 0.85 |
+  | 2023-24 | 0.93 | 0.87 |
+  | 2024-25 | 0.92 | 0.84 |
+  | 2025-26 | 1.18 | 0.96 |
+
+**Also described:**
+- I1 on games with |A| ≥ 1: +0.084 ± 0.056.
+- I1 by window: games 0–5 +0.02 ± 0.36; 6–20 −0.07 ± 0.14; 21+ +0.12 ± 0.06.
+- Trimmed: I1 +0.066 ± 0.053, I2 +0.092 ± 0.066.
+- **Brier score:** the engine with availability 0.2074, the core alone 0.2135, the market 0.2034.
+  Availability makes the engine clearly better, but it still trails the market.
+
+**Exploratory (not pre-registered), absences against returns and arrivals:**
+
+| Part | Results | Market | resid |
+|---|---|---|---|
+| absences (players out tonight) | 0.951 ± 0.060 | 0.849 ± 0.011 | +0.102 ± 0.059 |
+| returns and arrivals | 0.99 ± 0.16 | 0.99 ± 0.03 | 0.00 ± 0.16 |
+
+## Conclusion
+
+- **The availability piece doesn't beat the close.**
+  - The market lean is in the engine's direction: the market moved about 0.85–0.87 points per point
+    of the engine's value, results about 0.95.
+  - It falls short of the bar (t 1.57), with one of five seasons going the other way.
+  - pitch-3's rule on the full engine had no edge (z 0.60, −4.5% at the close).
+- **The engine's absence values were about right against results** (0.95 ± 0.06).
+  - The live finding that absences are penalized about 27% more than the market is real as a
+    difference from the market.
+  - But on past seasons the results sided with the engine's size, not the market's (not
+    significantly).
+  - So there's no historical case for shrinking the engine's absence values to match the market.
+  - The live gap's extra size probably comes from what this replica doesn't model: the injury
+    report's Questionable and Doubtful odds, and current-season BPM.
+- **Taken with engine-close-1 and engine-close-2:** no part of the engine beats the close on past
+  seasons. The closest is the absence piece, a lean worth about a tenth of the engine's value
+  (+0.10 ± 0.06). Confirming a lean that size would take about four times as many games, roughly
+  20 seasons. It's real-world small, not a practical betting edge on its own.

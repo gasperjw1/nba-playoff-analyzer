@@ -40,7 +40,13 @@ tested against the closing line on past seasons.**
   2021-26 closes: team ratings, form, home court and rest.
 - **Result:** no information beyond the close (slope −0.03 ± 0.05; 0 of 6 questions pass).
 - **The first-five-games lead** (+0.54 ± 0.22) was scored once on six unseen seasons
-  (engine-close-2, 2015-21) and came out +0.05 ± 0.19. It was noise. The engine as a whole has only been compared
+  (engine-close-2, 2015-21) and came out +0.05 ± 0.19. It was noise.
+- **The availability piece** (injury-close-1, INJURY_PIECE_RESEARCH.md) doesn't pass either
+  (0 of 3).
+  - The market lean is in the engine's direction: the market moved 0.87 per point of the engine's
+    value, results 0.96.
+  - The engine's absence values match results (0.95 ± 0.06), so its live harshness relative to the
+    market isn't evidence it's wrong. The engine as a whole has only been compared
 with the market on this season's walk-forward replay. That's a development set, and there it
 trailed the close within noise.
 
@@ -178,7 +184,7 @@ A scorecard for every piece, in order of what it takes to believe one:
 |---|---|
 | b2b-1 | passes 1–6; live from 11-16 |
 | The engine core (team ratings, form, home court, rest) | **fails vs the close**: 2021-26 (engine-close-1), and the first-five-games lead failed on 2015-21 (engine-close-2) |
-| The engine with night-by-night rosters and injuries | untested historically; live slope 0.85 ± 0.98 on 35 games, undetermined |
+| The engine's availability piece | fails vs the close on 2021-26 (injury-close-1: +0.09 ± 0.06, lean in its favour); its absence scale matches results (0.95) |
 | Engine pieces | pass vs results; **untested vs the close** |
 | Favourites family (flat-1, pitch-2, fade-1) | past seasons say it loses about the vig; this season's good run is within luck |
 | Trust R1–R4 | built on a development set; 3 of 12 live vs 4.8 expected; too early, leaning wrong |
