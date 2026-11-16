@@ -117,3 +117,48 @@ the train t, the holdout sign and the 52.4% bar twice.
 - Never a bet before it holds live, and never a stake size.
 - **All failing** would mean the prop market prices fatigue, streaks, matchups, role and usage
   about as well as the game lines price team information.
+
+## Amendment (2026-11-16, before any feature was scored)
+
+**Found in the data checks after the fetch:**
+- Every book in 2022-24 stores exactly two records per prop (over and under) at one line.
+- ESPN BET in 2024-26 lists several points lines for the same player:
+  - alternates in 2024-25 (78% of its props have more than one line, e.g. 11.5 at −125 and 12.5
+    at −110);
+  - milestone ladders in 2025-26 (99.8%, e.g. 4.5 … 29.5, mostly unpriced).
+- The first code took the first record per book, so the holdout's "line" was an arbitrary rung.
+  It showed as line minus the player's average with an sd of 6.1–6.6, against 2.9–4.0 for the
+  several-book seasons, and overs at 37% in 2025-26.
+
+**The rule, set now (no feature scored yet):**
+- When a book lists more than one line for a player and stat, its main line is the priced line
+  whose over price is closest to −110 (implied 52.4%).
+- Only prices at a 40–65% implied chance count. With none, that book's prop is dropped.
+- A book with a single line is unchanged, so 2022-24 is unaffected.
+- The validity gate and data checks are rerun under this rule before scoring.
+
+## Amendment 2 (2026-11-16, before any feature was scored)
+
+**Found:** the pooled validity gate passed (0.929), but per book and season, some "current" lines
+were updated during games.
+
+| Book-season | Moved lines' error ratio to the open | Corr(move, actual − open) | Moves of 3+ points |
+|---|---|---|---|
+| 2022-23 Caesars / DraftKings / PointsBet | 0.61–0.67 | 0.74–0.79 | 53–57% |
+| 2022-23 BetMGM / BetRivers | never moved (current = open) | — | — |
+| 2023-24, all six books | 0.98 | 0.18–0.22 | 5–9% |
+| 2024-25 ESPN BET | 0.88 | 0.48 | 29% |
+| 2025-26 ESPN BET | 0.93 | 0.37 | 10% |
+
+- A pre-game move predicts the result only modestly (2023-24). A line updated during play tracks
+  it (2022-23).
+- 2024-26 are a mix.
+
+**The rule, set now:**
+- **Train:** 2023-24 closing (current) lines, the only clean closing lines.
+- **Holdout:** 2024-25 and 2025-26 *opening* lines. They're pre-game by definition, but less sharp
+  than closers, so a holdout pass shows the feature beats the opener, not the close.
+- **2022-23:** out of the decisions, though its opening lines are described.
+- **Unchanged:** the questions, features, clustering and pass rule.
+- **Also described:** each feature against 2023-24's opening lines, to show how open and close
+  differ.
