@@ -1,10 +1,11 @@
 // ============================================================
-// odds-pull.js — the IO behind `node fetch-slate.js --odds` (spec odds-1)
+// odds-pull.js — the IO behind `node fetch-slate.js --odds` (specs odds-1, odds-2)
 // ============================================================
 // One run prices the games tipping within the hour that still miss a market
 // (js/season/odds.js decides which, and never re-requests a stored market):
 //   1. the events list (free) maps our games to The Odds API's
-//   2. one slate-wide call for the missing line markets (h2h, spreads)
+//   2. one slate-wide call for the missing line markets (h2h, spreads); under
+//      odds-2 it names ten books for the same credits, the others stored in row.books
 //   3. one call per game for its missing prop markets
 // The ledger (.odds/odds-ledger.json, local only, never committed) is written
 // after every charged reply, before the next call, so a crash cannot lead to
@@ -118,14 +119,21 @@ async function pullOdds(o) {
     const lineKeys = [...new Set(ready.flatMap(d => d.lines))];
     if (lineKeys.length) {
       const ids = ready.filter(d => d.lines.length).map(d => events.get(String(d.game.id)).id);
+      const books = ctx.oddsLineBooks(S, ledger);
       let r = null;
-      try { r = await call('lines', `/sports/${S.sport}/odds?bookmakers=${S.book}&markets=${lineKeys.join(',')}&oddsFormat=american&eventIds=${ids.join(',')}`, { markets: lineKeys, events: ids }); }
+      try { r = await call('lines', `/sports/${S.sport}/odds?bookmakers=${books.join(',')}&markets=${lineKeys.join(',')}&oddsFormat=american&eventIds=${ids.join(',')}`, { markets: lineKeys, events: ids, books: books.length }); }
       catch (err) { log(`  lines: ${err.message}`); }
+      // odds-2 cost guard: a multi-book call charged above markets × ⌈books / 10⌉ turns multi-book off for later runs.
+      if (r && books.length > 1 && r.usage.cost != null && r.usage.cost > ctx.oddsLineCost(lineKeys.length, books)) {
+        ledger.multiBookOff = { at: new Date().toISOString(), cost: r.usage.cost, expected: ctx.oddsLineCost(lineKeys.length, books), books: books.length };
+        log(`  WARNING: the ${books.length}-book line call cost ${r.usage.cost} credits, not ${ctx.oddsLineCost(lineKeys.length, books)} — later runs pull FanDuel only (remove multiBookOff from the ledger to re-enable)`);
+      }
       const byEvent = new Map(((r && r.json) || []).map(e => [e.id, e]));
       for (const d of ready.filter(x => x.lines.length)) {
         const e = events.get(String(d.game.id));
         // A failed call still counts a try, so a bad market cannot loop.
         const stored = ctx.oddsRecord(ledger, d.game, e, d.lines, r ? ctx.oddsBookMarkets(byEvent.get(e.id), S.book) : {}, at, models.get(String(d.game.id)));
+        if (r && books.length > 1) ctx.oddsRecordBooks(ledger, d.game, byEvent.get(e.id), books, at, S.book);
         // The shared call counts in full against each game in it (a failed call: what it asked for).
         ctx.oddsCharge(ledger, d.game.id, r ? (r.usage.cost != null ? r.usage.cost : lineKeys.length) : lineKeys.length);
         out.stored += stored.length;
@@ -166,6 +174,7 @@ async function pullOdds(o) {
         ` · props ${props.join(', ') || 'none'}${missing.length ? ` · missing ${missing.join(', ')}` : ''}` +
         ` · ${row.credits || 0}/${S.maxPerGame} credits` +
         ` · model ${m ? `${row.home} ${(m.pHome * 100).toFixed(1)}%${m.report ? ` (${m.report.slice(14, -4)})` : ''}` : '—'}`);
+      if (row.books && typeof ctx.shopLine === 'function') log(`    ${ctx.shopLine(row)}`);
     }
     log(`  ${out.cost} credits this run · ${lastRemaining() == null ? '?' : lastRemaining()} left`);
     return out;

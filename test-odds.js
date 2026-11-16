@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ============================================================
-// test-odds.js — spec odds-1 (js/season/odds.js, odds-pull.js)
+// test-odds.js — specs odds-1, odds-2 and shop-1 (js/season/odds.js, odds-pull.js, js/season/shop.js)
 // ============================================================
 // The guards that keep The Odds API credits from being spent twice, on a
 // mocked API: no real request is made and no key is needed.
@@ -18,7 +18,7 @@ function assert(ok, msg) { if (ok) passed++; else { failed++; console.log('  FAI
 const ctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
 for (const f of ['js/season/data/season-constants.js', 'js/season/data/player-priors.js', 'js/season/data/chemistry-fit.js', 'js/season/data/aging-fit.js',
   'js/season/data/team-ratings.js', 'js/season/adapters.js', 'js/season/engine.js', 'js/season/props.js', 'js/season/replay-core.js',
-  'js/season/props-ledger.js', 'js/season/odds.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), ctx);
+  'js/season/props-ledger.js', 'js/season/odds.js', 'js/season/shop.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), ctx);
 const S = ctx.SEASON_ODDS_SPEC;
 const T0 = Date.UTC(2026, 10, 9, 23, 0);   // 6:00 PM ET
 const min = 60e3;
@@ -220,6 +220,137 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
     const n3 = seen.length;
     const l3 = await pullOdds({ ...base, spec: L });
     assert(l3.calls === 0 && seen.length === n3, 'every ladder stored: a third record makes no call');
+  }
+
+  console.log('TEST 7: odds-2 spec');
+  {
+    const O = ctx.SEASON_ODDS2_SPEC;
+    assert(O.version === 'odds-2' && O.book === 'fanduel' && O.lineBooks.length === 10 && O.lineBooks[0] === 'fanduel' && O.lineBooks.includes('draftkings') && O.lineBooks.includes('pinnacle'), 'ten line books, FanDuel first, DraftKings and Pinnacle in');
+    assert(new Set(O.lineBooks).size === 10 && ctx.oddsLineCost(2, O.lineBooks) === 2 && ctx.oddsLineCost(2, [...O.lineBooks, 'x']) === 4, 'ten distinct books cost one region (2 credits for two markets); an eleventh would double it');
+    assert(O.minRemaining === 5000 && O.maxPerGame === 10 && O.tries === 3 && O.props.join() === S.props.join(), 'every odds-1 guard and the FanDuel props unchanged');
+    assert(ctx.oddsLineBooks(O, {}).length === 10 && ctx.oddsLineBooks(O, { multiBookOff: {} }).join() === 'fanduel' && ctx.oddsLineBooks(S, {}).join() === 'fanduel', 'the cost guard falls back to FanDuel alone; odds-1 was FanDuel alone');
+  }
+
+  console.log('TEST 8: odds-2, a mocked multi-book night');
+  {
+    const O = ctx.SEASON_ODDS2_SPEC, lp = path.join(dir, 'multi.json');
+    const gs = [game('61', 'BOS', 'MIL', 40), game('62', 'MIN', 'UTAH', 50)];
+    const evs = [{ id: 'eB', home_team: 'Boston Celtics', away_team: 'Milwaukee Bucks', commence_time: gs[0].tip }, { id: 'eM', home_team: 'Minnesota Timberwolves', away_team: 'Utah Jazz', commence_time: gs[1].tip }];
+    const book = (key, h, a, mk) => ({ key, last_update: 'u', markets: mk.map(k => ({ key: k, outcomes: [{ name: '', price: 0 }].length && [
+      { name: k === 'h2h' || k === 'spreads' ? 'HOME' : '', price: k === 'h2h' ? h : -110, point: k === 'spreads' ? -3.5 : undefined },
+      { name: 'AWAY', price: k === 'h2h' ? a : -110, point: k === 'spreads' ? 3.5 : undefined }] })) });
+    let left = 20000, lineCost = null;
+    const seen = [];
+    const fi = async (url) => {
+      seen.push(url);
+      const u = new URL(url), mk = (u.searchParams.get('markets') || '').split(',').filter(Boolean);
+      let body, cost = 0;
+      if (/\/events$/.test(u.pathname)) body = evs;
+      else if (!/\/events\//.test(u.pathname)) {
+        const ids = u.searchParams.get('eventIds').split(','), bks = u.searchParams.get('bookmakers').split(',');
+        body = evs.filter(e => ids.includes(e.id)).map(e => ({ ...e, bookmakers: [['fanduel', 120, -140], ['draftkings', 105, -125], ['williamhill_us', 100, -120], ['pinnacle', 106, -116]]
+          .filter(([k]) => bks.includes(k)).map(([k, h, a]) => { const b = book(k, h, a, mk); b.markets.forEach(m => { m.outcomes[0].name = e.home_team; m.outcomes[1].name = e.away_team; }); return b; }) }));
+        cost = lineCost != null ? lineCost : mk.length;
+      } else { body = { ...evs.find(e => e.id === u.pathname.split('/')[5]), bookmakers: [] }; cost = 0; }
+      left -= cost;
+      return { ok: true, status: 200, headers: new Headers({ 'x-requests-last': String(cost), 'x-requests-remaining': String(left), 'x-requests-used': String(20000 - left) }), json: async () => body, text: async () => '' };
+    };
+    const logs = [];
+    const base = { ctx, key: KEY, games: gs, now: T0, ledgerPath: lp, lockPath, fetchImpl: fi, log: (x) => logs.push(x), sleep: async () => {}, buildModel: async (g2) => new Map(g2.map(g => [String(g.id), { pHome: 0.5, props: [] }])), spec: O };
+    const r1 = await pullOdds(base);
+    const lineUrl = seen.find(u => /markets=h2h/.test(u));
+    assert(new URL(lineUrl).searchParams.get('bookmakers').split(',').join() === O.lineBooks.join() && r1.cost === 2, 'one line call names the ten books and costs 2, as FanDuel alone did');
+    let led = JSON.parse(fs.readFileSync(lp, 'utf8'));
+    const row = led.games['61'];
+    assert(ctx.oddsGameLines(row).mlHome === 120 && ctx.oddsGameLines(row).mlAway === -140 && row.markets.h2h.outcomes.length === 2, 'FanDuel stored in markets exactly as before');
+    assert(Object.keys(row.books).sort().join() === 'draftkings,pinnacle,williamhill_us' && row.books.draftkings.h2h.home === 105 && row.books.draftkings.h2h.away === -125 && row.books.pinnacle.spreads.home.point === -3.5, 'the other books stored by team in row.books, FanDuel not duplicated');
+    assert(row.credits === 2 && !led.multiBookOff, 'the game is charged the shared 2 credits; no cost warning');
+    assert(logs.some(x => /price check \(shop-1\): consensus BOS .* over 4 books \(Pinnacle 47\.5%\).*FLAG BOS \+120 at FanDuel \(EV \+4\.5%, fair 47\.5%\)/.test(x)), 'the --odds output carries the price check with the flag (4 books: FanDuel\'s consensus is the median of 3, 0.4748; EV 0.0445 shown +4.5%)');
+    const n1 = seen.length; const r2 = await pullOdds(base);
+    assert(!seen.slice(n1).some(u => /markets=h2h/.test(u)) && r2.cost === 0, 'a second run makes no line call: the books are never re-pulled');
+    const before = JSON.stringify(row.books);
+    ctx.oddsRecordBooks(led, gs[0], { bookmakers: [book('draftkings', 999, -999, ['h2h'])].map(b => { b.markets[0].outcomes[0].name = 'Boston Celtics'; b.markets[0].outcomes[1].name = 'Milwaukee Bucks'; return b; }) }, O.lineBooks, 'T9', 'fanduel');
+    assert(JSON.stringify(led.games['61'].books) === before, 'a stored book is never overwritten');
+    // The cost guard: a line call that charges 4 turns multi-book off; the next run asks FanDuel only.
+    const lp2 = path.join(dir, 'guard.json'); lineCost = 4;
+    await pullOdds({ ...base, ledgerPath: lp2, games: [gs[0]] });
+    led = JSON.parse(fs.readFileSync(lp2, 'utf8'));
+    assert(led.multiBookOff && led.multiBookOff.cost === 4 && led.multiBookOff.expected === 2 && logs.some(x => /WARNING: the 10-book line call cost 4 credits, not 2/.test(x)), 'cost above markets × ⌈books / 10⌉: warned and multiBookOff set');
+    lineCost = null; const n2 = seen.length;
+    await pullOdds({ ...base, ledgerPath: lp2, games: [gs[1]] });
+    const u2 = seen.slice(n2).find(u => /markets=h2h/.test(u));
+    assert(u2 && new URL(u2).searchParams.get('bookmakers') === 'fanduel', 'after the warning, later runs pull FanDuel only');
+  }
+
+  console.log('TEST 9: shop-1 price check, by hand');
+  {
+    const H = ctx.SEASON_SHOP_SPEC;
+    assert(H.version === 'shop-1' && H.yours.join() === 'fanduel,draftkings' && H.minOthers === 3 && H.edge === 0.01 && H.maxEdge === 0.10 && H.readAt === 150, 'spec constants');
+    const imp = (a) => (a < 0 ? -a / (-a + 100) : 100 / (a + 100)), nvh = (h, a) => imp(h) / (imp(h) + imp(a));
+    const row = { game: '71', date: '2026-11-16', home: 'BOS', away: 'MIL', markets: { h2h: { outcomes: [{ team: 'BOS', price: 120 }, { team: 'MIL', price: -140 }] } },
+      books: { draftkings: { h2h: { home: 105, away: -125 } }, williamhill_us: { h2h: { home: 100, away: -120 } }, betmgm: { h2h: { home: 100, away: -120 } },
+        pinnacle: { h2h: { home: 106, away: -116 } }, fanatics: { h2h: { home: -120, away: 120 } }, lowvig: { h2h: { home: -105, away: 50 } } } };
+    // By hand: FanDuel's consensus = median(DK 0.467532, Caesars 0.478261, BetMGM 0.478261, Pinnacle 0.474767) = 0.476514.
+    // Fanatics (zero vig) and LowVig (+50, under ±100) aren't usable.
+    const fdFair = (nvh(106, -116) + nvh(100, -120)) / 2;
+    assert(Math.abs(fdFair - 0.476514) < 1e-5, 'hand value of the leave-one-out consensus');
+    const c = ctx.shopPrices(row);
+    assert(c.books === 5 && Math.abs(c.fair - nvh(106, -116)) < 1e-4 && Math.abs(c.pinnacle - 0.4748) < 1e-4, 'five usable books (zero-vig and sub-100 lines dropped); all-book median = Pinnacle 0.4748');
+    assert(Math.abs(c.sides.home.fanduel.ev - (fdFair * 2.2 - 1)) < 1e-4 && Math.abs(c.sides.home.fanduel.ev - 0.0483) < 1e-4, 'FanDuel BOS +120: EV +4.83%');
+    assert(Math.abs(c.sides.home.draftkings.ev - (fdFair * 2.05 - 1)) < 1e-4 && Math.abs(c.sides.away.fanduel.ev - ((1 - fdFair) * (1 + 100 / 140) - 1)) < 1e-4 && Math.abs(c.sides.away.draftkings.ev - ((1 - fdFair) * 1.8 - 1)) < 1e-4, 'DraftKings BOS, and both MIL prices');
+    assert(c.flags.length === 1 && c.flags[0].team === 'BOS' && c.flags[0].book === 'fanduel' && c.sides.away.best.book === 'draftkings', 'one flag (BOS at FanDuel); the better MIL price is DraftKings, unflagged (negative EV)');
+    const big = JSON.parse(JSON.stringify(row)); big.markets.h2h.outcomes[0].price = 150; big.markets.h2h.outcomes[1].price = -170;   // a real line (vig 3%), +19% EV
+    assert(ctx.shopPrices(big).flags.length === 0 && ctx.shopPrices(big).sides.home.fanduel.ev > 0.10, 'an edge over +10% is not flagged (stale-line guard)');
+    const thin = { ...row, books: { draftkings: row.books.draftkings, pinnacle: row.books.pinnacle } };
+    assert(ctx.shopPrices(thin) === null, 'fewer than 4 usable books: no check');
+    // Grading from the game ledger: BOS won, closed +110/−130 at DraftKings.
+    const rows = [{ id: '71', result: { homeScore: 110, awayScore: 100 }, close: { mlHome: 110, mlAway: -130, book: 'DraftKings' } }];
+    const legs = ctx.shopLegs({ games: { 71: row } }, rows);
+    assert(legs.length === 1 && legs[0].hit === true && Math.abs(legs[0].pClose - nvh(110, -130)) < 1e-4 && Math.abs(legs[0].move - (nvh(110, -130) - legs[0].p)) < 1e-4, 'graded: hit, and the line moved by the close no-vig minus the consensus at pull');
+    const sm = ctx.seasonShopSummary({ games: { 71: row } }, rows);
+    assert(sm.flags === 1 && sm.graded === 1 && sm.won === 1 && Math.abs(sm.expected - 0.4765) < 0.005 && Math.abs(sm.roi - 1.2) < 1e-9 && sm.read === '1 of 150 graded flags', 'summary: 1 flag won at +120 (return +1.2 units), read waits for 150');
+    const fdEv = [fdFair * 2.2 - 1, (1 - fdFair) * (1 + 100 / 140) - 1], bestEv = [fdFair * 2.2 - 1, (1 - fdFair) * 1.8 - 1];
+    assert(sm.saved.n === 2 && Math.abs(sm.saved.fanduel - (fdEv[0] + fdEv[1]) / 2) < 1e-4 && Math.abs(sm.saved.best - (bestEv[0] + bestEv[1]) / 2) < 1e-4, 'saving: the better of FanDuel and DraftKings against FanDuel alone, per side');
+    assert(ctx.seasonShopSummary({ games: { 71: row } }, []).graded === 0 && ctx.seasonShopSummary({}, rows).flags === 0, 'ungraded and empty ledgers handled');
+  }
+
+  console.log('TEST 10: odds-2 and shop-1 edge cases');
+  {
+    const O = ctx.SEASON_ODDS2_SPEC, H = ctx.SEASON_SHOP_SPEC;
+    assert(H.maxAgeMin === 30, 'stale threshold: 30 minutes');
+    const base = { game: '81', home: 'LAC', away: 'NO', markets: { h2h: { at: '2026-11-16T23:30:00Z', lastUpdate: '2026-11-16T23:29:30Z', outcomes: [{ team: 'LAC', price: 120 }, { team: 'NO', price: -140 }] } },
+      books: { draftkings: { at: '2026-11-16T23:30:00Z', lastUpdate: '2026-11-16T23:29:00Z', h2h: { home: 105, away: -125 } }, williamhill_us: { at: '2026-11-16T23:30:00Z', lastUpdate: '2026-11-16T23:28:00Z', h2h: { home: 100, away: -120 } },
+        betmgm: { at: '2026-11-16T23:30:00Z', lastUpdate: '2026-11-16T23:25:00Z', h2h: { home: 100, away: -120 } }, pinnacle: { at: '2026-11-16T23:30:00Z', lastUpdate: '2026-11-16T22:45:00Z', h2h: { home: 160, away: -190 } } } };
+    const c = ctx.shopPrices(base);
+    assert(c.books === 4 && c.pinnacle === null, 'a line last updated 45 minutes before the pull (Pinnacle here) is not used');
+    const fresh = JSON.parse(JSON.stringify(base)); fresh.books.pinnacle.lastUpdate = '2026-11-16T23:10:00Z';
+    assert(ctx.shopPrices(fresh).books === 5 && ctx.shopPrices(fresh).pinnacle != null, 'the same line updated 20 minutes before is used');
+    const noTimes = JSON.parse(JSON.stringify(base)); delete noTimes.books.pinnacle.lastUpdate;
+    assert(ctx.shopPrices(noTimes).books === 5, 'a line without a time is used (the rule needs both times)');
+    const noFd = JSON.parse(JSON.stringify(fresh)); delete noFd.markets.h2h;
+    const c2 = ctx.shopPrices(noFd);
+    assert(c2 && c2.sides.home.fanduel === null && c2.sides.home.draftkings && c2.sides.home.best.book === 'draftkings', 'FanDuel without a moneyline: DraftKings is still checked');
+    // Team names as The Odds API spells them (LA Clippers) map to our teams.
+    const led = { games: { 81: { game: '81', markets: {}, tries: {} } } };
+    const ev = { bookmakers: [{ key: 'draftkings', last_update: 't', markets: [{ key: 'h2h', last_update: 't', outcomes: [{ name: 'LA Clippers', price: -130 }, { name: 'New Orleans Pelicans', price: 110 }] }] },
+      { key: 'betmgm', markets: [{ key: 'totals', outcomes: [{ name: 'Over', price: -110, point: 220.5 }] }] }] };
+    const st = ctx.oddsRecordBooks(led, { id: '81', home: 'LAC', away: 'NO' }, ev, O.lineBooks, 'T', 'fanduel');
+    assert(st.join() === 'draftkings' && led.games['81'].books.draftkings.h2h.home === -130 && led.games['81'].books.draftkings.h2h.away === 110, '"LA Clippers" maps to LAC; a book with no moneyline or spread is not stored');
+    assert(ctx.oddsRecordBooks({ games: {} }, { id: '99', home: 'LAC', away: 'NO' }, ev, O.lineBooks, 'T', 'fanduel').length === 0 && ctx.oddsRecordBooks(led, { id: '81', home: 'LAC', away: 'NO' }, null, O.lineBooks, 'T', 'fanduel').length === 0, 'no row or no event: nothing stored');
+    // A failed multi-book line call: FanDuel's try counts, no books stored, the run carries on.
+    const lp = path.join(dir, 'fail.json'), g1 = game('82', 'BOS', 'MIL', 40);
+    const evs = [{ id: 'eX', home_team: 'Boston Celtics', away_team: 'Milwaukee Bucks', commence_time: g1.tip }];
+    const fi = async (url) => {
+      const u = new URL(url);
+      if (/\/events$/.test(u.pathname)) return { ok: true, status: 200, headers: new Headers({ 'x-requests-last': '0', 'x-requests-remaining': '19000' }), json: async () => evs, text: async () => '' };
+      if (!/\/events\//.test(u.pathname)) return { ok: false, status: 500, headers: new Headers({ 'x-requests-last': '0', 'x-requests-remaining': '19000' }), json: async () => ({}), text: async () => 'boom' };
+      return { ok: true, status: 200, headers: new Headers({ 'x-requests-last': '0', 'x-requests-remaining': '19000' }), json: async () => ({ ...evs[0], bookmakers: [] }), text: async () => '' };
+    };
+    const lg = [];
+    await pullOdds({ ctx, key: KEY, games: [g1], now: T0, ledgerPath: lp, lockPath, fetchImpl: fi, log: (x) => lg.push(x), sleep: async () => {}, buildModel: async () => new Map(), spec: O });
+    const fl = JSON.parse(fs.readFileSync(lp, 'utf8')).games['82'];
+    assert(fl.tries.h2h === 1 && !fl.markets.h2h && !fl.books && lg.some(x => /lines: lines: HTTP 500/.test(x)) && !fl.credits === false, 'failed line call: a try counted, no books, logged, and charged what it asked for');
+    assert(!JSON.stringify(fl).includes(KEY) && !lg.join().includes(KEY), 'the key never appears');
   }
 
   fs.rmSync(dir, { recursive: true, force: true });
