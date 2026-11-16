@@ -291,3 +291,90 @@ A live shadow for each team's first 5 games from October 2027 (this season's hav
 judged against the close. Never an engine change, and never a bet before it holds live.
 
 **A fail** means the lead was noise. The core then has no information against the close anywhere.
+
+## engine-close-2 results (run 2026-11-15, after the pre-registration commit b37b6d8)
+
+`node research-engine-close.js --fetch-early`, then `--early`. 7,059 games in the walk.
+
+**Checked before scoring:**
+- **The join:** all games joined except 4 in 2019-20, and no final score differed between sources.
+- **Lines:**
+  - 6,988 games scored. 48 were dropped with fewer than 2 books, and 19 with a median spread
+    contradicting the median moneyline.
+  - The median game had 6 books.
+- **Closing, not opening:** the median spread differed from ESPN's "Opening" line in 87% of 2015-17
+  games, as closing lines should. The single-book line (DraftKings, else Westgate) was within 1 point
+  of the median in 97–99% of games each season.
+- **Caveat:** in 2015-21, each book's own moneyline and spread disagree by 2.5+ points in about 5–13%
+  of games, against almost never in 2021-26. The older moneylines look like a different snapshot.
+  E1 uses only spreads.
+
+| | Games | Slope ± se | t |
+|---|---|---|---|
+| **E1: games 0–5, 2015-16 to 2020-21, median close** | **566** | **+0.05 ± 0.19** | **0.26** |
+| by season | ~95 each | +0.30, −0.36, +0.52, −0.25, +0.24, −0.22 | |
+
+**E1 doesn't pass.** An independent recompute from the raw files, with its own median, join and
+closed-form slope, gave the same numbers (0.051 ± 0.193, n 566).
+
+**Described:**
+- **Games 0–5, with the market's margin held fixed:** engine −0.11 ± 0.25, market −0.01 ± 0.20.
+  The early overreaction seen in 2021-26 isn't there.
+- **Games 0–5 with a single book:** −0.09 ± 0.22.
+- **Games 0–5 over all ten seasons, 2015-26:** +0.28 ± 0.14 (t 1.93). Half of that comes from the
+  2021-26 seasons that suggested the question.
+- **All games, 2015-21:** +0.10 ± 0.05 (t 2.00). Games 6–20: +0.31 ± 0.13.
+- **By season**, all games:
+
+  | Season | Slope |
+  |---|---|
+  | 2015-16 | +0.30 |
+  | 2016-17 | +0.07 |
+  | 2017-18 | −0.01 |
+  | 2018-19 | +0.10 |
+  | 2019-20 (the bubble year) | +0.42 |
+  | 2020-21 | −0.15 |
+  | 2021-22 | −0.19 |
+  | 2022-23 | +0.18 |
+  | 2023-24 | −0.10 |
+  | 2024-25 | +0.01 |
+  | 2025-26 | −0.08 |
+
+  The older positive slope is carried by two seasons. Every season since 2020-21 is near zero. The
+  engine's constants were also chosen on these seasons' results, which favours it.
+
+## Conclusion (both studies)
+
+- **The first-five-games lead was noise.** Scored once on six unseen seasons, it's +0.05 ± 0.19.
+- **On the market as it has been since 2020-21,** the engine core has no information beyond the
+  close, at any point in the season.
+- **There's a hint the older market (2015-20) was beatable at times,** in two seasons. It isn't
+  stable and doesn't carry into the current era.
+- **What's left untested historically is the night-by-night roster and injury piece.** It's the
+  only part of the live engine that could hold an edge.
+
+## Second round of checks (2026-11-15, after both results)
+
+Run because the user asked whether every link had been verified. None changed a result.
+
+- **One prediction rebuilt by hand from raw inputs** (HOU at PHI, 2024-01-15):
+  - **form:** PHI's 37 and HOU's 38 earlier games give weights 0.6491 and 0.6552 and form
+    5.263 and 0.793, exactly as the walk has them;
+  - **prior:** the centred opening ratings, 0.307 and −3.293, match the walk's 0.308 and −3.292
+    (that season's scale was 1.00);
+  - **rest:** HOU was on a 3-in-4 (−0.5);
+  - **total:** the parts sum to the walk's 8.213.
+  - The walk's `aB2b` field is set for any rest term, a 3-in-4 included. It's misnamed, but the
+    analysis doesn't use it.
+- **Healthy flags against box scores, with an independent top-5 build:**
+  - OKC at NY, 2025-01-10, flagged healthy: both top fives played.
+  - GS at IND, the same night, flagged not healthy: Curry, Wiggins, Green and Kuminga were out.
+  - A mid-season trade (Schröder) counts for his new team.
+- **The spread's sign on known games:** Golden State at home in November 2016 is −11.5 to −17,
+  with heavy moneylines.
+- **A pitch-3 leg rebuilt by hand:** NYK at BOS, 2024-10-22. Engine 75.2% against no-vig 63.0%, so
+  the leg is BOS at −190, which won 132–109. Counting legs by hand gives the same 3,447.
+- **pitch-3's rule at other conversion widths** (σ = 11.5 / 13.5 / 14.5 points): z −0.13 / −0.09 /
+  −0.55, return −5.6% to −7.2%. The engine's Brier score is 0.2135–0.2142 throughout.
+- **Older moneylines:** −8000 on a 17-point favourite (2016) confirms the 2015-21 moneylines are a
+  different snapshot from the spreads. Only spreads decided engine-close-2.

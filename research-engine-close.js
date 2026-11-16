@@ -8,6 +8,8 @@
 //
 //   node research-engine-close.js            the decision table and descriptive checks
 //   node research-engine-close.js --check    input checks only (parts add up, closes, healthy flags)
+//   node research-engine-close.js --fetch-early   engine-close-2: 2015-16 … 2020-21 scoreboards and lines (ESPN)
+//   node research-engine-close.js --early         engine-close-2: games 0-5 on 2015-21 (pre-registered b37b6d8)
 // ESPN caches and Basketball-Reference only; the Odds API key is cleared, nothing spends credits.
 // ============================================================
 delete process.env.ODDS_API_KEY;
@@ -17,6 +19,7 @@ const { execFileSync } = require('child_process');
 
 const CACHE = path.join(__dirname, '.cache');
 const WALK = path.join(CACHE, 'engine-walk.json');
+const EARLY = path.join(CACHE, 'espn-nba/early'), EARLY_SEASONS = [2016, 2017, 2018, 2019, 2020, 2021];
 const OLD = path.join(CACHE, 'espn-nba/old'), HIST = path.join(CACHE, 'espn-nba/hist'), HIST_ODDS = path.join(CACHE, 'espn-nba/hist-odds');
 const HCA = 2.0, SIGMA = 12.5, MIN_PRIOR = 5, P3_EDGE = 0.05, P3_TIER = 0.08;
 const SEASONS = [2022, 2023, 2024, 2025, 2026];   // Basketball-Reference years: 2021-22 … 2025-26
@@ -95,6 +98,77 @@ function healthyFlags(games) {
   return flags;
 }
 
+// ── engine-close-2: 2015-16 … 2020-21 ───────────────────────────────
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+async function getJson(url) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try { const res = await fetch(url, { signal: AbortSignal.timeout(30000) }); if (res.ok) return res.json(); if (res.status === 404) return null; throw new Error(`${res.status}`); }
+    catch (e) { if (attempt === 3) throw e; }
+    await sleep(1500 * (attempt + 1));
+  }
+}
+// Every date the walk has a game on, 2015-21: the scoreboard (ids, teams, scores) and each game's lines.
+async function fetchEarly() {
+  fs.mkdirSync(EARLY, { recursive: true });
+  const W = walk(), dates = [...new Set(W.engine.filter(r => EARLY_SEASONS.includes(r.t)).map(r => r.date))].sort();
+  const ids = [];
+  for (const d of dates) {
+    const f = path.join(EARLY, `sb-${d}.json`);
+    let sb = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null;
+    if (!sb) {
+      const raw = await getJson(`https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=${d.replace(/-/g, '')}`);
+      sb = ((raw && raw.events) || []).map(e => { const c = e.competitions[0], side = (h) => c.competitors.find(x => x.homeAway === h);
+        return { id: e.id, date: d, type: e.season && e.season.type, done: !!(e.status && e.status.type && e.status.type.completed),
+          home: side('home').team.abbreviation, away: side('away').team.abbreviation, hs: +side('home').score, as: +side('away').score }; });
+      fs.writeFileSync(f, JSON.stringify(sb));
+      await sleep(100);
+    }
+    for (const e of sb) if (e.type === 2 && e.done) ids.push(e.id);
+  }
+  let next = 0, failed = 0;
+  const worker = async () => {
+    while (next < ids.length) {
+      const id = ids[next++], f = path.join(EARLY, `odds-${id}.json`);
+      if (fs.existsSync(f)) continue;
+      try {
+        const j = await getJson(`https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/${id}/competitions/${id}/odds`);
+        const ml = (o) => { const v = o && o.moneyLine; if (v == null) return null; const a = typeof v === 'object' ? Number(v.american) : Number(v); return isFinite(a) ? a : null; };
+        fs.writeFileSync(f, JSON.stringify({ id, providers: ((j && j.items) || []).map(i => ({ name: i.provider && i.provider.name, home: ml(i.homeTeamOdds), away: ml(i.awayTeamOdds), spread: i.spread ?? null })) }));
+      } catch (e) { failed++; }
+      await sleep(100);
+    }
+  };
+  await Promise.all(Array.from({ length: 4 }, worker));
+  console.log(`${dates.length} dates, ${ids.length} regular-season games, ${failed} odds fetches failed; files in ${path.relative(__dirname, EARLY)}`);
+}
+
+// 2015-21 games keyed like espnGames(), with the median-of-books close (ENGINE_CLOSE_RESEARCH.md,
+// engine-close-2) and a single-book check (DraftKings where listed, else Westgate).
+const EXCLUDED_BOOK = /opening|live|consensus|accuscore|teamrankings|numberfire/i;
+const median = (xs) => { const s = [...xs].sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+function earlyGames() {
+  const out = new Map(), skipped = { fewBooks: 0, badSpread: 0, noOdds: 0 };
+  for (const f of fs.readdirSync(EARLY).filter(f => f.startsWith('sb-'))) for (const e of JSON.parse(fs.readFileSync(path.join(EARLY, f), 'utf8'))) {
+    if (e.type !== 2 || !e.done) continue;
+    const of = path.join(EARLY, `odds-${e.id}.json`), o = fs.existsSync(of) ? JSON.parse(fs.readFileSync(of, 'utf8')) : null;
+    let close = null, single = null;
+    if (!o) skipped.noOdds++;
+    else {
+      const books = o.providers.filter(p => p.name && !EXCLUDED_BOOK.test(p.name) && p.spread != null && p.home != null && p.away != null && Math.abs(p.home) >= 100 && Math.abs(p.away) >= 100);
+      if (books.length < 2) skipped.fewBooks++;
+      else {
+        const sp = median(books.map(p => p.spread)), pm = median(books.map(p => noVig(p.home, p.away)));
+        if (sp !== 0 && pm !== 0.5 && (sp < 0) !== (pm > 0.5)) skipped.badSpread++;
+        else close = { spreadHome: sp, pMkt: pm, books: books.length };
+      }
+      const one = books.find(p => /^draftkings$/i.test(p.name)) || books.find(p => /^westgate$/i.test(p.name));
+      if (one && !(one.spread !== 0 && one.home !== one.away && (one.spread < 0) !== (one.home < one.away))) single = { spreadHome: one.spread, pMkt: noVig(one.home, one.away), book: one.name };
+    }
+    out.set(`${e.date}|${br(e.home)}|${br(e.away)}`, { id: String(e.id), date: e.date, hs: e.hs, as: e.as, close, single, players: [] });
+  }
+  return { games: out, skipped };
+}
+
 // ── maths ───────────────────────────────────────────────────────────
 // OLS of y on [1, x1..xk]: coefficients and classical standard errors.
 function ols(X, y) {
@@ -137,16 +211,16 @@ function legRecord(legs) {
 }
 
 // ── build the scored rows ───────────────────────────────────────────
-function rowsFor(W, games, flags, variant) {
+function rowsFor(W, games, flags, variant, seasons = SEASONS) {
   const out = [], unjoined = [];
   for (const r of W[variant]) {
-    if (!SEASONS.includes(r.t)) continue;
+    if (!seasons.includes(r.t)) continue;
     const g = games.get(`${r.date}|${r.home}|${r.away}`);
     if (!g) { unjoined.push(r); continue; }
     if (!g.close || g.hs - g.as !== r.y) continue;
     const mkt = -g.close.spreadHome;
     const row = { t: r.t, date: r.date, home: r.home, away: r.away, y: r.y, pred: r.pred, mkt, resid: r.y - mkt, gap: r.pred - mkt, gMin: r.gMin,
-      pEng: normalCdf(r.pred / SIGMA), pMkt: noVig(g.close.mlHome, g.close.mlAway), mlHome: g.close.mlHome, mlAway: g.close.mlAway, healthy: !!flags.get(g.id), id: g.id };
+      pEng: normalCdf(r.pred / SIGMA), pMkt: g.close.pMkt != null ? g.close.pMkt : noVig(g.close.mlHome, g.close.mlAway), mlHome: g.close.mlHome, mlAway: g.close.mlAway, healthy: !!flags.get(g.id), id: g.id };
     if (r.pH) Object.assign(row, { dPrior: r.pH.prior - r.pA.prior, dForm: r.pH.cur - r.pA.cur, dRest: r.restH - r.restA });
     out.push(row);
   }
@@ -226,5 +300,28 @@ function main() {
   console.log(`\n${passes} of 6 pass.`);
 }
 
-module.exports = { ols, invert, slopeOf, legRecord, p3Legs, espnGames, healthyFlags, rowsFor, walk, noVig, normalCdf };
-if (require.main === module) main();
+// engine-close-2 (pre-registered b37b6d8): E1, games 0-5 on 2015-21 with the median-of-books close.
+function early() {
+  const W = walk(), { games, skipped } = earlyGames();
+  const { rows, unjoined } = rowsFor(W, games, new Map(), 'engine', EARLY_SEASONS);
+  const inWalk = W.engine.filter(r => EARLY_SEASONS.includes(r.t)).length;
+  const line = (lbl, s) => console.log(`  ${lbl.padEnd(34)} n ${String(s.n).padStart(5)}  slope ${s.b.toFixed(3).padStart(6)} ± ${s.se.toFixed(3)}  t ${s.t.toFixed(2).padStart(6)}`);
+  console.log(`engine-close-2: walk games 2015-21 ${inWalk}; scored ${rows.length}; unjoined ${unjoined.length}; lines skipped ${JSON.stringify(skipped)}`);
+  console.log(`books per game: median ${median(rows.map(r => games.get(`${r.date}|${r.home}|${r.away}`).close.books))}`);
+  const e = rows.filter(r => r.gMin <= 5), E1 = slopeOf(e), pass = E1.b > 0 && E1.t >= 2;
+  console.log('\nE1. Games 0-5, slope of resid on the engine\'s gap (median-of-books close)');
+  line('2015-16 … 2020-21 pooled', E1);
+  EARLY_SEASONS.forEach(t => line(label(t), slopeOf(e.filter(r => r.t === t))));
+  console.log(`  ${pass ? 'PASS' : 'no'}: slope > 0 with t ≥ 2 ${pass ? '✓' : '✗'}`);
+  console.log('\nDescribed');
+  const j = ols(e.map(r => [r.pred, r.mkt]), e.map(r => r.resid));
+  console.log(`  games 0-5, resid ~ engine + market: engine ${j.beta[1].toFixed(3)} ± ${j.se[1].toFixed(3)}, market ${j.beta[2].toFixed(3)} ± ${j.se[2].toFixed(3)}`);
+  const one = new Map([...games].filter(([, g]) => g.single).map(([k, g]) => [k, { ...g, close: g.single }]));
+  line('games 0-5, single book (DK else Westgate)', slopeOf(rowsFor(W, one, new Map(), 'engine', EARLY_SEASONS).rows.filter(r => r.gMin <= 5)));
+  for (const [w, f] of [['all games', () => true], ['games 6-20', r => r.gMin > 5 && r.gMin <= 20], ['games 21+', r => r.gMin > 20]]) line(w, slopeOf(rows.filter(f)));
+  const late = espnGames().games, ten = [...e, ...rowsFor(W, late, new Map(), 'engine').rows.filter(r => r.gMin <= 5)];
+  line('games 0-5, ten seasons 2015-26', slopeOf(ten));
+}
+
+module.exports = { ols, invert, slopeOf, legRecord, p3Legs, espnGames, earlyGames, healthyFlags, rowsFor, walk, noVig, normalCdf, median };
+if (require.main === module) (has('--fetch-early') ? fetchEarly() : Promise.resolve(has('--early') ? early() : main())).catch(e => { console.error(e); process.exit(1); });

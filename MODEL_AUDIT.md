@@ -38,8 +38,9 @@ nothing the market doesn't already know.
 tested against the closing line on past seasons.**
 - **Update, same day:** `engine-close-1` (ENGINE_CLOSE_RESEARCH.md) tested the core against the
   2021-26 closes: team ratings, form, home court and rest.
-- **Result:** no information beyond the close (slope −0.03 ± 0.05; 0 of 6 questions pass). The one
-  exception is each team's first 5 games (+0.54 ± 0.22, described, not decided). The engine as a whole has only been compared
+- **Result:** no information beyond the close (slope −0.03 ± 0.05; 0 of 6 questions pass).
+- **The first-five-games lead** (+0.54 ± 0.22) was scored once on six unseen seasons
+  (engine-close-2, 2015-21) and came out +0.05 ± 0.19. It was noise. The engine as a whole has only been compared
 with the market on this season's walk-forward replay. That's a development set, and there it
 trailed the close within noise.
 
@@ -176,7 +177,7 @@ A scorecard for every piece, in order of what it takes to believe one:
 | Piece | Verdict |
 |---|---|
 | b2b-1 | passes 1–6; live from 11-16 |
-| The engine core (team ratings, form, home court, rest) | **fails vs the close on 2021-26** (engine-close-1); possible exception in each team's first 5 games |
+| The engine core (team ratings, form, home court, rest) | **fails vs the close**: 2021-26 (engine-close-1), and the first-five-games lead failed on 2015-21 (engine-close-2) |
 | The engine with night-by-night rosters and injuries | untested historically; live slope 0.85 ± 0.98 on 35 games, undetermined |
 | Engine pieces | pass vs results; **untested vs the close** |
 | Favourites family (flat-1, pitch-2, fade-1) | past seasons say it loses about the vig; this season's good run is within luck |
@@ -188,8 +189,8 @@ A scorecard for every piece, in order of what it takes to believe one:
 ## 5. Recommendations, in order
 
 1. **Done: the engine core against the close on 2021-26** (engine-close-1, 0 of 6 pass). Any live
-   edge has to come from the roster and injury pieces. The first-five-games lead can be confirmed
-   on 2016-21 as engine-close-2. Original plan:
+   edge has to come from the roster and injury pieces. The first-five-games lead failed on 2015-21
+   (engine-close-2). Original plan:
    - research-season-update.js already walks past seasons point-in-time: opening-night prior,
      in-season form, home court, rest.
    - Closes for 2021-26 are now cached (DraftKings).
