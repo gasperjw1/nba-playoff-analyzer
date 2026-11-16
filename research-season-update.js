@@ -108,6 +108,7 @@ async function main() {
   console.log(`${seasons.reduce((s, x) => s + x.games.length, 0)} regular-season games, ${T0 - 1}-${String(T0).slice(2)} … ${LAST - 1}-${String(LAST).slice(2)}`);
 
   // Walk a season forward; returns per-game { t, y (home margin), pred, gMin (fewer games played of the two) }.
+  const run0 = (o) => seasons.flatMap(S => walk(S, o));
   const walk = (S, o) => {
     const st = {};
     for (const T of Object.keys(S.prior)) st[T] = { g: 0, sum: 0, adj: 0, last: null, prev: null };
@@ -134,7 +135,10 @@ async function main() {
       const rh = rating(g.home), ra = rating(g.away);
       const pred = rh - ra + o.hca + rest(H) - rest(A);
       const y = g.hs - g.as;
-      out.push({ t: S.t, y, pred, gMin: Math.min(H.g, A.g), date: g.date, home: g.home, away: g.away, hB2b: rest(H) !== 0 || (o.b2b === 0 && !!H.last && daysBetween(H.last, g.date) === 1), aB2b: rest(A) !== 0 || (o.b2b === 0 && !!A.last && daysBetween(A.last, g.date) === 1) });
+      // parts (ENGINE_OUT only): each team's prior and this-season pieces of its rating, and rest.
+      const part = (T) => { const s = st[T], w = s.g / (s.g + o.K), cur = s.g ? (o.oppAdj ? s.adj : s.sum) / s.g : 0; return { w: +w.toFixed(4), prior: +((1 - w) * S.prior[T]).toFixed(3), cur: +(w * cur).toFixed(3) }; };
+      out.push({ t: S.t, y, pred, gMin: Math.min(H.g, A.g), date: g.date, home: g.home, away: g.away, hB2b: rest(H) !== 0 || (o.b2b === 0 && !!H.last && daysBetween(H.last, g.date) === 1), aB2b: rest(A) !== 0 || (o.b2b === 0 && !!A.last && daysBetween(A.last, g.date) === 1),
+        ...(o.parts ? { pH: part(g.home), pA: part(g.away), restH: rest(H), restA: rest(A) } : {}) });
       // Update after the game: raw margin, and margin adjusted for opponent strength and venue.
       H.sum += y; A.sum -= y;
       // Opponent strength for the adjustment: the full rating, or (oppLast) last season × retention
@@ -147,6 +151,13 @@ async function main() {
     return out;
   };
 
+  // research-engine-close.js input (ENGINE_PRE): every game's prediction and its parts, with the live
+  // engine's values, and the two variants the ledger records beside it. No grid, no scoring.
+  if (process.env.ENGINE_OUT) {
+    const live = { K: 20, hca: 2.0, b2b: -2, t34: -0.5, long: 0.5, oppAdj: false, parts: true };
+    fs.writeFileSync(process.env.ENGINE_OUT, JSON.stringify({ engine: run0(live), double: run0({ ...live, double: true }), oppAdj: run0({ ...live, oppAdj: true, oppLast: true }) }));
+    return;
+  }
   // research-season-rest.js input: every game's prediction with no rest term (engine values otherwise).
   if (process.env.REST_OUT) fs.writeFileSync(process.env.REST_OUT, JSON.stringify(seasons.flatMap(S => walk(S, { K: 20, hca: 2.0, b2b: 0, oppAdj: false }))));
   const ENGINE = { K: 20, hca: 2.5, b2b: -1.0, oppAdj: false };
