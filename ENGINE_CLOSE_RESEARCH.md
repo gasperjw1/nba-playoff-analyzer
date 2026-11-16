@@ -127,3 +127,167 @@ one is about 10%.
     team-specific split does.
 - **Any pass becomes a live shadow,** judged against the close as b2b-1 is. Never an engine
   change, and never a bet before it holds live.
+
+## Results (run 2026-11-15, after the pre-registration commit 466fce0)
+
+`node research-engine-close.js`: 6,119 games scored. 31 of the 6,150 were dropped for having no
+usable line: none listed, or a spread that contradicts the moneyline. Every game joined, and no
+final score differed between the two sources.
+
+**Checked before reading the results:**
+- **The parts** add back up to the walk's prediction (largest difference 0.002, from rounding).
+- **The slope code** matches the closed form exactly.
+- **The regression solver** recovers known coefficients within about 1 standard error, and an
+  independent method (Frisch–Waugh) agrees to four decimals. Its standard errors match a
+  simulation (0.097 vs 0.101).
+- **The planted-signal test:** a planted half-real gap comes back at exactly 2.000 with no noise,
+  and at 0.834 with noise, against 0.83 in theory. The sign and plumbing are right.
+- **The record and price conversions** match hand calculations.
+- **Healthy games** are 13% of the total. That isn't a bug: a team has its whole top 5 available
+  in 39% of games, so both teams do about 15% of the time.
+- **The main slope** was recomputed with the earlier research loaders (luck-sched-1's for 2023-26,
+  situ-1's for 2021-23) and matches exactly, overall and by season.
+
+| Q | Question | Result | Decision |
+|---|---|---|---|
+| Q1 | slope of resid on the gap, all games | **−0.031 ± 0.047** (t −0.67); by season −0.19, +0.18, −0.10, +0.01, −0.08 | no |
+| Q1b | the same, healthy games (793) | +0.20 ± 0.22 (t 0.92); positive in 4 of 5 seasons | no (t < 2) |
+| Q3 | prior | −0.13 ± 0.09 (t −1.56); positive in 1 of 5 | no |
+| Q3 | form | +0.07 ± 0.04 (t 1.67); positive in 3 of 5 | no |
+| Q3 | rest | +0.28 ± 0.17 (t 1.63); positive in 4 of 5 | no (t < 2) |
+| Q5 | sides 5+ points over the no-vig close | won 1,292 of 3,447 against 1,296.7 expected (z −0.17); −6.1% at the close | no |
+
+**0 of 6 pass.**
+
+**Described:**
+- **The variants carry no information either:**
+  - this season counted twice: −0.004 ± 0.046;
+  - opponent-adjusted: −0.023 ± 0.047.
+- **Bigger gaps did worse:** against the spread, toward the engine, by gap size:
+
+  | Gap | Games | Against the spread |
+  |---|---|---|
+  | 0–2 points | 2,808 | 50.5% |
+  | 2–4 | 1,856 | 50.6% |
+  | 4–6 | 861 | 48.9% |
+  | 6+ | 594 | 48.3% |
+
+- **pitch-3's rule by tier:**
+  - 8+ points: z +0.20, −5.5%;
+  - 5–8 points: z −0.57, −7.4%;
+  - healthy games: z −1.08;
+  - only 2022-23 was positive (z 1.56).
+- **Accuracy:** Brier score, engine 0.2135 against the market's 0.2034.
+- **Robustness** (all near zero):
+  - trimmed: −0.005 ± 0.045;
+  - on the probability scale: −0.016 ± 0.058;
+  - market margin from the moneyline instead of the spread: −0.050 ± 0.048.
+- **By window:**
+
+  | Window | Games | Slope |
+  |---|---|---|
+  | games 0–5 | 470 | **+0.54 ± 0.22 (t 2.53)** |
+  | games 6–20 | 1,126 | +0.11 ± 0.13 |
+  | games 21+ | 4,523 | −0.08 ± 0.05 |
+
+  - **The early effect isn't just opening night:** 0.59, 0.29 and 0.75 across games 0–1, 2–3 and
+    4–5, then 0.03 at games 6–10.
+  - **It's positive in 4 of 5 seasons** (0.23, 1.27, −0.34, 0.69, 0.93), and holds on the
+    probability scale (0.56 ± 0.27).
+  - **With the market's margin held fixed,** the engine's coefficient is 0.45 ± 0.24 and the
+    market's own −0.55 ± 0.22. In the first few games the close partly overreacts, and the
+    engine's prior partly corrects it.
+  - **Status:** the window was fixed in advance, but it was a described question, not a decided
+    one. It's a hypothesis, not a finding.
+- **Q3 by window:** the prior coefficient is −0.42 ± 0.17 in games 21+. Late in the season the
+  market leans on preseason ratings a little more than results justify, but less than the engine
+  does.
+
+## Conclusion
+
+On five past seasons, the engine's core (team ratings from last season and this season, home
+court, rest) has **no information beyond the closing line**:
+- its disagreements are noise or worse;
+- the bigger the disagreement, the worse it did;
+- the two variants the ledger records are no better.
+
+**For the live model:**
+- **Edges can't come from the core.** If the live engine has any, it must come from the
+  night-by-night roster and injury pieces, which the live record suggests over-penalize absences.
+- **pitch-3's rule had no edge on the core over five seasons.** Its live record is still the test.
+- **Trust rules R1, R2 and R4** lose the premise they were drafted on: "the market overweights
+  early results" is backwards except in the first ~5 games.
+
+**The one lead is the first five games of each season,** where the engine's prior partly corrects
+an overreacting close. ESPN has lines back to 2016-17 (DraftKings from 2019-20; Westgate and
+Caesars before), five seasons never scored against the close. That's the place to confirm or kill
+it, as a new pre-registration (`engine-close-2`). Even if confirmed, it applies to about 95 games
+(each team's first five) in late October each season.
+
+---
+
+# Confirmation of the first-five-games lead — research `engine-close-2` (pre-registered 2026-11-15)
+
+Written and committed before any 2015-16 → 2020-21 line is fetched or scored. Code: added to
+`research-engine-close.js` after this commit.
+
+## Why
+
+engine-close-1 found no information in the engine core against the close, except possibly in each
+team's first 5 games. There the slope was +0.54 ± 0.22 (t 2.53), positive in 4 of 5 seasons. That
+was a described question, so it's a lead, not a finding. Six earlier seasons have never been scored
+against the close.
+
+## Data
+
+- **Games:** the same engine walk (`research-season-update.js`, `ENGINE_OUT`, live engine values)
+  for the 2015-16 to 2020-21 regular seasons, joined to ESPN's scoreboards by date and teams. Final
+  scores must match.
+- **The close: the median across listed sportsbooks.** ESPN's core odds endpoint lists different
+  books in different years:
+  - offshore books in 2015-17;
+  - Westgate, Caesars and Unibet in 2017-19;
+  - DraftKings from 2019-20.
+
+  No single book covers all six seasons.
+  - **Market margin:** −(the median of the listed spreads).
+  - **Market chance:** the median of the books' no-vig moneyline chances.
+  - **Excluded:** "Opening", live lines, "consensus" and tipster or model sites (accuscore,
+    teamrankings, numberfire). At least 2 books are needed.
+  - **Which line:** the listed line (there's no close field), as in situ-1.
+  - **Dropped:** games whose median spread favourite contradicts the median moneyline.
+- **Known context, decided now:**
+  - 2019-20 includes the bubble restart and 2020-21 the shortened season with few fans. Both are
+    kept.
+  - 2020-21's first five games fall in late December 2020.
+- **Coverage probe before this file:** about 20 sampled games per season, listing which books had a
+  spread and moneyline. No outcomes or engine numbers were looked at.
+
+## Question (one decision)
+
+**E1. In each team's first 5 games** (games 0–5 by the fewer games either team has played, as in
+engine-close-1), the slope of resid on the engine's gap, pooled over the six seasons.
+
+**Pass:** slope > 0 with t ≥ 2.
+
+**Power:**
+- About 95 such games a season, so about 570 games.
+- If the true slope is 0.54 (engine-close-1's estimate), the expected t is about 2.7, and it passes
+  about 75% of the time.
+- If it's half that (typical shrinkage after selection), the expected t is about 1.3, and it passes
+  about 25% of the time.
+
+## Described, not decided
+
+- E1 by season.
+- E1 with the market margin added as a regressor: the engine's and the market's coefficients.
+- E1 with a single book (DraftKings where listed, else Westgate), as a check on the median rule.
+- The full-season slope and games 6–20 and 21+, a further check on engine-close-1's null.
+- The ten seasons 2015-16 to 2025-26 pooled for games 0–5.
+
+## What a pass leads to
+
+A live shadow for each team's first 5 games from October 2027 (this season's have been played),
+judged against the close. Never an engine change, and never a bet before it holds live.
+
+**A fail** means the lead was noise. The core then has no information against the close anywhere.
