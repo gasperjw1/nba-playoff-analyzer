@@ -98,3 +98,126 @@ numbers below (and any live tracker built on them) measure nothing.
   would need its own test, live.
 - **P2 or P3 well below consensus expectations:** the "beats the consensus" sides are where the
   consensus was wrong. Those prices are traps, not value.
+
+## Results (run 2026-11-15, after the pre-registration commit a37200e)
+
+`node research-price-shop.js`: 2,461 games (one left out with no DraftKings line), median 7 distinct
+books.
+
+**Checked:**
+- The logistic solver recovers known coefficients (0.202 and 0.805 against 0.2 and 0.8).
+- The win-record and return functions match hand calculations.
+- An independent recompute from the raw files matches P1 (z −0.19) and the P4 arithmetic exactly.
+
+**P1. The yardstick (the decision): VALID.**
+
+| | Home sides | Won | Consensus expected | z | Calibration slope |
+|---|---|---|---|---|---|
+| all | 2,461 | 1,384 | 1,388.4 | −0.19 | 0.968 ± 0.057 |
+| 2021-22 | 1,230 | 670 | 694.9 | −1.56 | 1.016 ± 0.079 |
+| 2022-23 | 1,231 | 714 | 693.5 | +1.26 | 0.914 ± 0.083 |
+| home over 70% | 664 | 510 | 523.8 | −1.33 | |
+| home 50–70% | 916 | 564 | 550.0 | +0.95 | |
+| home under 50% | 881 | 310 | 314.6 | −0.33 | |
+
+Brier: consensus 0.2126, DraftKings' own no-vig 0.2128. The consensus is calibrated, but no sharper
+than DraftKings alone.
+
+**P2. DraftKings sides that beat the consensus (described):**
+
+| | Bets | Won | Consensus expected | z | Mean EV | Return |
+|---|---|---|---|---|---|---|
+| EV ≥ +1% | 180 | 42 | 45.5 | −0.62 | +4.0% | −5.4% ± 14.8% |
+| EV > 0 | 278 | 78 | 78.0 | 0.00 | +2.8% | −0.6% ± 11.1% |
+
+They won about as the consensus expected, so no sign the edges are illusory. They're far too few to
+show profit (±15%).
+
+**P3. The best price across books at EV ≥ +1% (described):**
+- **1,016 bets:** won 382 against 392.0 expected (z −0.72), mean EV +6.1%, return **+5.0% ± 5.6%**.
+- **Caesars** supplied 432 of them.
+- **Stale or broken lines inflate the biggest "edges".** For example:
+  - PointsBet +260 when every other book was +100 to +118 (CHI at DAL, 2023-04-07);
+  - Titanbets +110 when the rest were −155 to −255 (GS at SA, 2022-02-01).
+
+  106 book-sides showed edges over 15%. Prices like these are usually unavailable, limited or voided.
+- **With edges over 10% dropped** (a check chosen after seeing the data): 872 bets, mean EV +3.8%,
+  return +3.8% ± 6.2%, z −0.56 against the consensus. The return matches the edge, but can't be
+  shown on this sample.
+
+**P4. What shopping is worth: mean EV per side against the leave-one-out consensus:**
+
+| | DraftKings alone | Better of DraftKings and one other | Best of all |
+|---|---|---|---|
+| all sides | −3.75% | −2.47% | −0.24% |
+| favourites | −3.91% | −3.04% | −0.90% |
+| underdogs | −3.60% | −1.91% | +0.41% |
+
+- **The better of DraftKings and each book:**
+
+  | Second book | Mean EV |
+  |---|---|
+  | Caesars | **−1.75%** |
+  | Westgate | −2.33% |
+  | SugarHouse | −2.47% |
+  | Unibet | −2.52% |
+  | PointsBet | −2.52% |
+  | Titanbets | −2.79% |
+  | BetfairSportsbook | −2.87% |
+
+- **Without stale outliers** (Caesars edges over 10% ignored), the better of DraftKings and Caesars
+  is −2.16% mean and −2.73% median, against −3.75% and −3.87% for DraftKings alone.
+- **Illustration**, every home side: at DraftKings −3.9% ± 2.0%; at the better of DraftKings and
+  Caesars −2.2% ± 2.1%.
+
+## Conclusion
+
+- **The multi-book consensus is a fair price.** It's calibrated across price bands and both seasons,
+  so it's a sound yardstick for judging a FanDuel or DraftKings price, live.
+- **Taking the better of two books is worth about 1–1.6 points per bet.** Typical cost per bet
+  falls from about −3.8% to about −2.2 to −2.7%. That makes losses smaller, not profits: picking
+  sides at random still loses after the vig.
+- **Positive expected value needs a filter:** bet only when one of your books beats the consensus.
+  - That happened on about 3.7% of DraftKings sides (+1% or more), averaging about +3–4%.
+  - With two books, expect a few such bets a week.
+  - Results can't prove an edge that small for years (about ±15% on 180 bets), so line movement
+    to the closing consensus is the realistic live judge.
+- **The very largest "edges" are stale or broken lines.** A live rule should ignore them.
+
+## Second round of checks (2026-11-15, after the results)
+
+Run at the user's ask. One conclusion is corrected.
+
+- **One game hand-checked end to end** (Christmas 2022, PHI at NY, a real 119–112 Philadelphia win):
+  - **Exclusions:** BetMGM, the Caesars live line, Westgate's empty line and the tipster sites.
+  - **Groups:** Caesars uses its first-listed version; Holland Casino stands for Titanbets.
+  - **DraftKings:** +110/−130, 4.14% vig, no-vig home chance 0.4573.
+  - **The others:** six books' no-vig chances (0.4509–0.4675), median 0.4574.
+  - **EV:** −3.94% by hand, the same as the script.
+- **Sensitivity to the data rules:**
+
+  | Rule changed | P1 z | Slope | DraftKings alone | Better of DraftKings and Caesars |
+  |---|---|---|---|---|
+  | none (pre-registered) | −0.19 | 0.968 | −3.75% | −1.75% |
+  | Caesars = New Jersey version | −0.19 | 0.966 | −3.78% | **−2.75%** |
+  | Caesars = Colorado version | −0.19 | 0.966 | −3.78% | **−2.52%** |
+  | no minimum vig / 2% minimum | −0.19 | 0.968 | −3.75% | −1.75% |
+  | BetMGM added (lines with vig ≥ 1%) | −0.19 | 0.967 | −3.73% | −1.74% |
+  | at least 5 other books (2,432 games) | −0.25 | 0.968 | −3.75% | −1.75% |
+
+  P1 and DraftKings' own cost don't move. **The Caesars two-book figure depends on which Caesars
+  feed stands for the book:** 2.0 points from the unlabelled feed, but 1.0 (New Jersey) and 1.3
+  (Colorado) from the state books.
+- **The counts reconcile:** the pre-file coverage figures (866 best-price sides, −0.64%) used a fair
+  price that included the book itself. The scored run's leave-one-out rule (as pre-registered) gives
+  1,016 and −0.24%. Both reproduce exactly.
+
+**Corrected conclusion:**
+- A second book is worth about **1.0–1.3 points per bet**, not 1–1.6.
+  - The average over all second books is −2.47% against −3.75%, a gain of 1.3 points.
+  - The 2-point Caesars figure came partly from one unlabelled feed.
+- FanDuel isn't in this data, so the across-books average is the best estimate for it.
+- Everything else stands:
+  - the consensus is a calibrated yardstick;
+  - positive-value sides are about 4% of a book's sides;
+  - the biggest "edges" are stale lines.
