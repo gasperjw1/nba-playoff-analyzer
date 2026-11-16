@@ -111,3 +111,85 @@ normal minus away's, in points, using pre-game rates as in the descriptive look.
 - **D2 alone:** "shooting luck" is partly predictable from the matchup, but the close already
   prices it.
 - **Never** an engine change, and never a bet before it holds live.
+
+## Results (run 2026-11-16, after the pre-registration commit c69be1b)
+
+`node research-coinflip.js`: 5,728 games (train 3,448, holdout 2,280). Mean |resid| 10.49, resid
+sd 13.45.
+
+**Checked before scoring:**
+- **One game rebuilt by independent code from the raw box files** (HOU at PHI, 2024-01-15): league
+  three-point rate 0.3665, PHI 32.49 threes a game and shrunk accuracy 0.3675, HOU's accuracy
+  allowed 0.3447, mean attempt rate 0.3736. All match the script.
+- **The starters-out flag** fires in 46.4% of games, consistent with a team having all of its top 5
+  only 39% of the time (injury-close-1).
+
+| Q | Feature | Train t (per sd) | Holdout t (per sd) | Decision |
+|---|---|---|---|---|
+| V1 | mean three-point attempt rate → miss size | 1.70 (+0.24) | 0.36 (+0.06) | no |
+| V2 | mean possessions → miss size | 0.61 (+0.09) | −0.55 (−0.10) | no |
+| V3 | mean own volatility → miss size | 1.30 (+0.18) | 1.10 (+0.20) | no (same sign, too weak) |
+| V5 | 2+ of a top 5 out → miss size | 0.02 | −1.32 | no |
+| V4 | coin flips more volatile, 2015-21 | 10.20 vs 9.71 points, t **1.86** | | no (just short) |
+| D1 | three-point matchup → resid | −1.51 (−0.34) | −0.71 (−0.20) | no |
+| D2 | three-point matchup → in-game three-point shooting | −0.33 (−0.07) | −1.99 (−0.51) | no |
+
+**0 of 7 pass.** V4 was recomputed from the raw files with separate code: 10.20 (n 962) vs 9.71
+(n 6,030), t 1.86.
+
+**Described:**
+- **Coin flips' extra volatility** has the same sign in both eras: 2015-21, t 1.86; 2021-26 (seen
+  before this file), 11.61 vs 10.32. By the spread instead (|spread| ≤ 1.5, 2015-21): t 1.20.
+- **By quintile** (resid sd), there's a mild rise for attempt rate and own volatility, within about
+  1 point:
+  - V1: 12.87 / 13.36 / 13.16 / 13.94 / 13.88;
+  - V3: 12.88 / 13.30 / 13.37 / 13.94 / 13.76.
+- **Trimmed** (1% largest |resid|): V1 t 1.32, V3 t 1.53, D1 t −2.00.
+- **D1 on coin flips only:** t 0.27.
+
+**D2's design was flawed** (found in checking; the split below wasn't pre-registered):
+- The matchup edge includes each team's own three-point accuracy, and "shooting above normal" is
+  measured against that same rate, so the two pull against each other.
+- The exact split, own part + defence part = D1 (to 1e-15):
+
+  | Part | → in-game three-point shooting | → resid |
+  |---|---|---|
+  | own accuracy above league | t **−5.03** (−0.81 per sd) | t −1.44 |
+  | opponent's accuracy allowed | t **+3.67** (+0.59 per sd) | t −0.96 |
+
+- **Own part:** teams that have shot well regress more than the 300-attempt shrinkage assumes.
+- **Defence part:** the defence faced visibly moves the shooting, as expected.
+- **Neither predicts the close's error.** The market prices both.
+
+## Conclusion
+
+- **Lopsided coin flips are mostly shooting variance inside the game**, which nothing before tip
+  predicts beyond what the close already prices.
+- **Coin flips are a little more volatile than other games** (t 1.86 on six unseen seasons, the same
+  direction as 2021-26), but short of the bar.
+- **No pre-game feature reliably predicts which games will be lopsided:** attempt rate, pace, team
+  volatility and starters out all failed.
+- **The three-point matchup shows up in the shooting but not against the close.**
+- **For the user's bets:**
+  - A coin-flip leg carries a little more variance than its price suggests, and nothing here says
+    which way it goes.
+  - That supports keeping coin flips out of parlays, rather than finding an edge in them.
+- **Not settled:** player-level patterns. That's the separate player study.
+
+## Second round of checks (2026-11-16, at the user's ask)
+
+No result changed. One earlier statement was made precise.
+- **All six regression t-values** (V1–V3, V5, D1, D2, train and holdout) were recomputed in a
+  separate Python implementation with the closed-form slope, and match exactly.
+- **One game's remaining features rebuilt by hand** (HOU at PHI, 2024-01-15):
+  - own volatility 14.30: PHI's sd 15.78 over 36 closes, HOU's 12.82 over 38;
+  - matchup edge 0.944;
+  - starters out 0: PHI's top 5 had one out (Melton), HOU's none.
+  - All match the script.
+- **The variance shares are exact:** 7.65% + 57.69% + 32.08% + 2.57% = 100.00% for coin flips, and
+  100.00% for all games. The split is an identity.
+- **Coin flips' extra volatility on 2021-26** (seen before this study, described only):
+  - In sd terms, it's 2.5 standard errors above 55–65% favourites and 3.7 above 65%+, not "about
+    three" as first said.
+  - On mean miss size, which doesn't assume normal errors: 11.52 vs 10.32 points, Welch t 3.62.
+  - With 2015-21's pre-registered t 1.86, both eras point the same way.

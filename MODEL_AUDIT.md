@@ -227,3 +227,64 @@ A scorecard for every piece, in order of what it takes to believe one:
    The injury piece matters most, since live absences look over-penalized.
 8. **Price shopping next.** The research keeps saying the close is hard to beat with information,
    so better prices are the most direct remaining lever.
+
+## Related literature (searched 2026-11-16)
+
+From abstracts and summaries returned by web search; the full texts weren't read, so methods and
+samples should be checked before relying on details.
+
+- **The closing line is hard to beat.**
+  - Gandar et al. (*Journal of Finance*) found NBA spread lines move enough from open to close to
+    remove early biases, which they read as informed money.
+  - The anomalies found since are narrow: big home underdogs in 2000–08 (*The Sport Journal*),
+    early-season *totals* but not sides (Baryla et al., *Finance Research Letters*, 2007; an
+    early-season over/under study), and preseason games (*Applied Economics*, 2016).
+  - This matches engine-close-1 and engine-close-2 (no information against the close; the
+    early-season sides lead failed) and the memory that model edges show against the open, not
+    the close.
+  - Totals early in the season are an untested lead here.
+  - [ETSU](https://dc.etsu.edu/etsu-works/17780) · [Sport Journal](https://thesportjournal.org/article/nba-gambling-inefficiencies-a-second-look/) · [UWF](https://ircommons.uwf.edu/esploro/outputs/journalArticle/Early-season-NBA-overunder-bias/99380090347306600) · [Applied Economics](https://informahealthcare.com/doi/full/10.1080/00036846.2016.1213367)
+- **Streaks and the hot hand.**
+  - Camerer (*American Economic Review*, 1989) found point spreads biased toward teams on streaks.
+  - Brown and Sauer (1993) and Paul and Weinbach found betting against streaks isn't profitable,
+    though bettors do pile onto hot teams.
+  - Miller and Sanjurjo (*Econometrica*, 2018) showed the classic "no hot hand" result was biased:
+    corrected, a shot-level hot hand appears.
+  - This matches luck-sched-1 (past shooting luck doesn't fool the close) and situ-1 (streaks
+    aren't an edge). Any player-level hot hand should be small.
+  - [Caltech](https://resolver.caltech.edu/CaltechAUTHORS:20110211-141748791) · [arXiv 1902.01265](https://pdf.arxiv.org/pdf/1902.01265) · [Alberta](https://sites.ualberta.ca/~econwps/2011/wp2011-16.pdf)
+- **Three-point defence is mostly noise.**
+  - Ken Pomeroy (college) and Dan Feldman (NBA) found three-point percentage allowed far less
+    stable than two-point: 0.24 correlation from a team's first 25 games to its rest, against 0.66
+    for twos.
+  - A player's three-point percentage last season explained about 14.5% of this season's
+    variance.
+  - This matches coinflip-1: threes above or below normal decide 58% of coin-flip margins; own
+    accuracy regresses harder than the 300-attempt shrinkage assumes (t −5.0); the defence faced
+    carries a smaller real signal (t +3.7).
+  - Heavier three-point shrinkage is worth testing wherever three-point rates feed a model.
+  - [kenpom](https://kenpom.com/blog/one-last-post-on-3p-defense/) · [numberFire](https://www.numberfire.com/nba/news/12065/which-nba-defenses-have-been-the-unluckiest-this-season) · [Power Rank](https://thepowerrank.com/2020/07/28/predictability-vs-skill-in-sports-analytics-3-point-shooting/)
+- **Back-to-backs and travel.**
+  - Charest et al. (*Journal of Clinical Sleep Medicine*, 2021, 2013–2020 seasons) found
+    back-to-backs ending at home went best, about 4% lower win odds per extra 500 km travelled
+    home, and only a marginal eastward effect.
+  - Those are win rates, not results against the market. Here, the generic back-to-back cost is
+    priced; only the team-specific split beat the close (b2b-1); eastward travel was fragile
+    (luck-sched-1).
+  - [PubMed 34170248](https://www.pubmed.gov/34170248/) · [PMC7925613](https://pmc.ncbi.nlm.nih.gov/articles/PMC7925613)
+- **How random games are.**
+  - Lopez, Matthews and Baumer (*Annals of Applied Statistics*, 2018) found the NBA the least
+    random of the four major leagues, because of its wide talent spread.
+  - So randomness concentrates in evenly matched games, consistent with coin flips' extra
+    volatility.
+  - [arXiv 1701.05976](https://arxiv.org/abs/1701.05976v3)
+- **Consensus prices.**
+  - A bookmaker consensus forecasts well (WU Vienna work on bookmaker consensus models); larger
+    markets forecast better (Brown and Yang).
+  - Bookmaker prices still carry margins and favourite–longshot bias.
+  - This matches shop-1 (the multi-book consensus is calibrated) and its larger best-price edges
+    on underdogs.
+  - [WU Vienna](https://core.ac.uk/works/19204548) · [UEA](https://ueaeprints.uea.ac.uk/67342/)
+- **Player props:** no academic study of NBA prop-market efficiency turned up; commercial claims
+  that props are softer are unsourced. One study found the NBA's betting markets unusually
+  inefficient during COVID-19 (empty arenas). [arXiv 2109.07581](https://arxiv.org/pdf/2109.07581)
