@@ -56,6 +56,7 @@ const LEDGER_PATH = path.join(__dirname, 'js/season/data/season-ledger.js');
 const PROPS_LEDGER_PATH = path.join(__dirname, 'js/season/data/props-ledger.js');
 const PITCH_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch-ledger.js');
 const PITCH2_LEDGER_PATH = path.join(__dirname, 'js/season/data/pitch2-ledger.js');
+const MORNING_LEDGER_PATH = path.join(__dirname, 'js/season/data/morning-ledger.js');
 const USER_LEGS_PATH = path.join(__dirname, 'js/season/data/user-legs.js');
 const TEAM_PRIORS_PATH = path.join(__dirname, 'js/season/data/team-priors.js');
 const ODDS_LEDGER_PATH = process.env.ODDS_LEDGER || path.join(__dirname, '.odds/odds-ledger.json');
@@ -89,12 +90,14 @@ function loadSeasonContext() {
   load('js/season/fade.js');
   load('js/season/pitch3.js');
   load('js/season/b2b.js');
+  load('js/season/morning.js');
   load('js/season/odds.js');
   load('js/season/shop.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
   if (fs.existsSync(PITCH2_LEDGER_PATH)) load('js/season/data/pitch2-ledger.js');
+  if (fs.existsSync(MORNING_LEDGER_PATH)) load('js/season/data/morning-ledger.js');
   if (fs.existsSync(USER_LEGS_PATH)) load('js/season/data/user-legs.js');
   return ctx;
 }
@@ -119,6 +122,19 @@ function writePitchLedger(rows) {
 function writePitch2Ledger(rows) {
   fs.writeFileSync(PITCH2_LEDGER_PATH, '// ============================================================\n// PITCH-2 LEDGER — the favourites ticket (2026-27), js/season/pitch2.js, spec in PITCH2_SPEC.md\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit:\n// a pitch is only evidence if recorded before its legs tip off.\n// ============================================================\n' +
     `const SEASON_PITCH2_LEDGER = [\n${rows.map(r => JSON.stringify(r)).join(',\n')}\n];\n`);
+}
+
+function writeMorningLedger(rows) {
+  fs.writeFileSync(MORNING_LEDGER_PATH, '// ============================================================\n// MORNING LEDGER — the morning information test (2026-27), js/season/morning.js, spec in MORNING_SPEC.md\n// ============================================================\n// Written by `node fetch-slate.js --record` (11:00 AM–1:00 PM ET only) / `--settle`. Do not hand-edit:\n// a row is only evidence if recorded in the window before tip-off, and is never replaced.\n// ============================================================\n' +
+    `const SEASON_MORNING_LEDGER = [\n${rows.map(r => JSON.stringify(r)).join(',\n')}\n];\n`);
+}
+
+// morning-1: copy results and closes from the season ledger onto morning rows; write if any changed.
+function settleMorning(ctx, rows) {
+  const mRows = Array.isArray(ctx.SEASON_MORNING_LEDGER) ? ctx.SEASON_MORNING_LEDGER : [];
+  const changed = mRows.length ? ctx.settleMorningRows(mRows, rows) : 0;
+  if (changed && !DRY) writeMorningLedger(mRows);
+  return { mRows, changed };
 }
 
 function writePropsLedger(rows) {
@@ -228,6 +244,31 @@ async function main() {
       }
       console.log(`Back-to-back shadow (b2b-1): ${b2bs.size} rows, ${[...b2bs.values()].filter(e => e.feature).length} with a team on a back-to-back`);
     } catch (e) { console.warn(`back-to-back shadow unavailable (${e.message}); rows recorded without b2b`); }
+    // Morning information test (spec morning-1, MORNING_SPEC.md): on the first run between 11:00 AM and
+    // 1:00 PM ET, one row per game with our number (feed-only and with the injury report) and DraftKings'
+    // price fetched now from ESPN's pickcenter. Never replaced, never written outside the window.
+    try {
+      const mRows = Array.isArray(ctx.SEASON_MORNING_LEDGER) ? ctx.SEASON_MORNING_LEDGER : (ctx.SEASON_MORNING_LEDGER = []);
+      if (!ctx.seasonMorningInWindow(new Date(), slate.date)) {
+        console.log(`Morning ledger (morning-1): outside the 11:00 AM–1:00 PM ET window — no morning rows this run`);
+      } else {
+        const entries = [];
+        let already = 0, tipped = 0;
+        for (const { g, proj } of rows) {
+          if (mRows.some(r => r.id === String(g.id))) { already++; continue; }
+          if (g.tip && new Date(g.tip) <= new Date()) { tipped++; continue; }
+          let pc = null, at = new Date();
+          try { pc = ctx.adaptEspnPickcenter(await getJson(ESPN_SUMMARY + g.id), g.home, g.away); at = new Date(); }
+          catch (e) { console.warn(`morning-1 price ${g.away} @ ${g.home}: ${e.message} (row recorded without a market)`); }
+          const e = ctx.buildMorningEntry(g, proj, reps.get(String(g.id)) || null, pc, slate, new Date(), at);
+          entries.push(e);
+          console.log(`  morning-1 ${g.away} @ ${g.home}: ours ${e.ours.pReport != null ? pct(e.ours.pReport) + ' with report' : pct(e.ours.pFeed) + ' feed-only'} · DraftKings now ${e.market ? pct(e.market.pHome) : '—'}${e.market && e.market.open ? ` (open ${pct(e.market.open.pHome)})` : ''}`);
+        }
+        const mm = ctx.mergeMorningEntries(mRows, entries, new Date());
+        if (mm.added) writeMorningLedger(mRows);
+        console.log(`Morning ledger (morning-1): +${mm.added} recorded, ${already + mm.kept} already recorded, ${tipped + mm.late} skipped (already tipped), ${mRows.length} total rows`);
+      }
+    } catch (e) { console.warn(`morning-1 unavailable (${e.message}); no morning rows this run`); }
     const { added, replaced, late } = ctx.mergeLedgerEntries(existing, rows.map(({ g, proj, blend }) => ctx.buildLedgerEntry(g, proj, blend, slate,
       cleanSlate && ctx.projectSeasonGame(g, cleanSlate), adjSlate && ctx.projectSeasonGame(g, adjSlate), flips.get(`${g.home}|${g.away}`), reps.get(String(g.id)), b2bs.get(String(g.id)))), new Date());
     writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', existing,
@@ -408,7 +449,11 @@ async function settle(ctx) {
   const openPitch = pitchRows.some(r => r.tickets.some(t => t.status === 'pitched' && !t.result));
   const p2Rows = Array.isArray(ctx.SEASON_PITCH2_LEDGER) ? ctx.SEASON_PITCH2_LEDGER : [];
   const openPitch2 = p2Rows.some(r => r.ticket && r.ticket.status === 'pitched' && !r.ticket.result);
-  if (!open.length && !rows.some(needsClose) && !propRows.some(r => !r.result) && !openPitch && !openPitch2) { console.log('Nothing to settle.'); return; }
+  if (!open.length && !rows.some(needsClose) && !propRows.some(r => !r.result) && !openPitch && !openPitch2) {
+    const m = settleMorning(ctx, rows);
+    console.log(`Nothing to settle.${m.changed ? ` (morning-1: ${m.changed} rows updated)` : ''}`);
+    return;
+  }
   const postponed = new Set();
   const dates = [...new Set(open.map(r => (r.tip || r.date).slice(0, 10)))];
   let settled = 0;
@@ -484,6 +529,7 @@ async function settle(ctx) {
   writeJsGlobal(LEDGER_PATH, 'SEASON_LEDGER', rows,
     '// ============================================================\n// SEASON LEDGER — committed prediction rows (2026-27)\n// ============================================================\n// Written by `node fetch-slate.js --record` / `--settle`. Do not hand-edit\n// probabilities: a row is only evidence if recorded before tip-off.\n// ============================================================');
   console.log(`Settled ${settled}; ${rows.filter(r => !r.result).length} still open.`);
+  const morning = settleMorning(ctx, rows);
   if (propsSettled) {
     const pr = ctx.seasonPropsRecord(propRows);
     const f = pr.stats.pra.floor || {};
@@ -514,6 +560,14 @@ async function settle(ctx) {
   // the pooled read at the end of the regular season.
   const bb = ctx.seasonB2bRecord(rows), atsN = bb.ats.w + bb.ats.l;
   console.log(`  b2b-1 from ${ctx.SEASON_B2B_SPEC.firstNight}: ${bb.n} back-to-back games (retire check at ${ctx.SEASON_B2B_SPEC.retireCheckAt})${bb.t != null ? ` · live slope ${bb.slope} ± ${bb.se} (t ${bb.t}) · pooled with 2025-26 t ${bb.pooled.t}` : ''} · ATS |F| ≥ ${ctx.SEASON_B2B_SPEC.threshold} ${bb.ats.w}-${bb.ats.l}${bb.ats.p ? `-${bb.ats.p}` : ''}${atsN ? ` (${pct(bb.ats.w / atsN)}, break-even 52.4%)` : ''}${bb.brier.n ? ` · Brier shadow ${bb.brier.b2b} vs pOurs ${bb.brier.ours} vs market ${bb.brier.market}` : ''}${bb.open ? ` · ${bb.open} open` : ''}`);
+  // morning-1: the morning information test (MORNING_SPEC.md): retire check at 300 games, read at season's end.
+  if (morning.mRows.length) {
+    const mr = ctx.seasonMorningRecord(morning.mRows), sc = mr.scores;
+    console.log(`  morning-1 from ${ctx.SEASON_MORNING_SPEC.firstNight}: ${mr.n} games (${mr.used.report} with the injury report)` +
+      `${mr.coef != null ? ` · our disagreement with the morning price ${mr.coef >= 0 ? '+' : ''}${mr.coef} ± ${mr.se} (t ${mr.t})` : ''}` +
+      `${sc && sc.market ? ` · Brier morning price ${sc.market.brier} vs ours ${sc.ours.brier}${sc.close ? ` vs close ${sc.close.brier}` : ''}` : ''}` +
+      `${mr.moved && mr.moved.share != null ? ` · ${Math.round(mr.moved.share * 100)}% of the open→close move done by morning` : ''} · ${mr.read}`);
+  }
   // shop-1: flagged FanDuel/DraftKings prices against the multi-book consensus (ODDS2_SPEC.md), from the local odds ledger.
   if (fs.existsSync(ODDS_LEDGER_PATH)) {
     const sh = ctx.seasonShopSummary(JSON.parse(fs.readFileSync(ODDS_LEDGER_PATH, 'utf8')), rows), ev = (x) => x == null ? '—' : (x >= 0 ? '+' : '') + (x * 100).toFixed(1) + '%';
