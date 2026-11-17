@@ -175,3 +175,85 @@ piece to show anything beyond the close on unseen seasons.
   far, and a depleted game or positive absence happens in a few of them.
 - **Opponent shooting defence** (the Robinson matchup): there's no player-level three-point defence
   in the data. The team-level matchup (D1) already failed in coinflip-1.
+
+## Results (run 2026-11-16, once, after the pre-registration commit f99ef69)
+
+`node research-absence-roles.js --hold`: 6,508 games from 2015-16 to 2020-21.
+
+| Q | Question | 2015-21 result | 2021-26 (exploration) | Decision |
+|---|---|---|---|---|
+| Q1 | Depleted side vs the close | **+0.51 ± 0.38** (t +1.33), n 975 | −1.02 ± 0.38 | no, the opposite sign |
+| Q2 | Absences that should help, vs the close | −0.20 ± 0.39 (t −0.52), n 783 | +0.84 ± 0.42 | no |
+| Q3 | dR beside dA, results beyond the core | +0.09 ± 0.15 (t 0.59) | +0.27 ± 0.14 | no |
+| Q4 | Defence lost, vs the close | +0.10 ± 0.66 (t 0.15) | +1.28 ± 0.59 | no |
+
+**0 of 4 hold.** None of the four effects seen on 2021-26 shows up on seasons no one had looked at.
+
+**By season (2015-16 → 2020-21):**
+- **Q1:** +0.03, +2.39, +0.48, +1.05, +1.34, −1.41. Only 2020-21 (the season of health-and-safety
+  absences) goes the 2021-26 way. Winners: the depleted side won 401 of 975 against 380.6 implied
+  (z +1.46).
+- **Q2:** −0.08, −0.29, +0.69, −1.16, −0.59, +0.43. Winners 400 of 783 against 396.3 (z +0.28).
+- **Q4:** −0.43, +1.27, −2.17, +1.03, −1.01, +1.01.
+
+**Described (no decision):**
+
+| Against the close, given A | 2015-21 | 2021-26 |
+|---|---|---|
+| X1 replacement correction | +0.15 ± 0.15 | +0.16 ± 0.13 |
+| X2 shooting lost | **+0.33 ± 0.15 (t 2.22)** | −0.01 ± 0.14 |
+| X2 playmaking lost | **+0.20 ± 0.08 (t 2.43)** | +0.04 ± 0.08 |
+| X2 rebounding lost | **−0.48 ± 0.16 (t −2.92)** | +0.04 ± 0.16 |
+| X3 shooting × reliance on threes | +0.07 ± 0.06 | −0.10 ± 0.09 |
+| X4 rebounding × the opponent | +0.40 ± 0.20 (t 2.01) | +0.10 ± 0.22 |
+
+- **In 2015-21 the roles did matter beyond the close.** Teams that lost shooting and playmaking (guards)
+  did worse than the close. Teams that lost rebounding (bigs) did better.
+- **In 2021-26 all three are about zero.** That fits a market that priced bigs too high and guards too
+  low in the late 2010s and has since caught up. The roles are correlated (the same absent guard
+  lowers shooting and passing together), so this is one pattern, not three.
+- **It's described, not decided, and it doesn't carry into this era.** It isn't a usable edge now.
+
+**Checked after the scoring (not pre-registered):**
+- **Against the engine's real absence value:** dA in Q2 and Q3 is a simplified engine-style take.
+  The replica's own A restores players whose minutes the 240 cap had cut (see the correction below).
+  Rerun with A:
+  - Q3's dR: 2021-26 +0.19 ± 0.10 (t 1.83), 2015-21 +0.11 ± 0.11 (t 1.00).
+  - Q2 (team A ≤ −0.5, dR > 0): 2021-26 −0.05 ± 0.63 (n 393), 2015-21 −0.22 ± 0.59 (n 376).
+  - So the 2021-26 Kuzma-case result came from the simplified dA. Against the engine's own value it
+    was never there.
+- **This season (2026-27, 197 games through Nov 15, DraftKings close; names matched on 2024-26, 92%
+  of minutes):**
+  - depleted side −0.63 ± 2.55 (n 24);
+  - absences that should help +0.73 ± 1.99 (n 13 team-games);
+  - 60 of 339 team-games with an absence are better tonight in the replacement-aware view.
+  - All of it is noise at these sizes.
+
+**Correction to the "Why" above (written before the results):** it says the engine refills an absent
+player's minutes at replacement level, so an absence is never a gain. That's only partly right:
+- **Since the 2026-11-07 rotcap engine,** tonight's minutes are capped at 240 in rotation order. When a
+  player sits, the players the cap had cut get their minutes back first, valued at their own
+  max(0, BPM + 2). Only minutes beyond that pool go at replacement.
+- **Nobody plays above his baseline minutes,** and values are floored at replacement. So an absence can
+  net out near zero, or even a small gain when the restored players are rated above replacement and
+  the absent one isn't.
+- **Live examples (snapshot 2026-11-13, everyone else available):**
+  - Duncan Robinson out for Detroit costs −0.02 points: Javonte Green and Isaiah Joe take the minutes
+    and are rated about the same. The replacement-aware version says −0.01.
+  - Kyle Kuzma out for Milwaukee: 0.00, and +0.02 replacement-aware. His BPM is −2.9, and the minutes
+    go to Nate Ament (−2.6) and Ousmane Dieng (−3.1).
+
+## Conclusion
+
+- **How the absence is shaped doesn't beat the close on unseen seasons.** That covers who replaces
+  him, which role is lost, synergy with the team's style, the rebounding matchup, and several players
+  out at once.
+- **The depth lead from 2021-26 reversed on 2015-21** (+0.51 against −1.02). It was a pattern found by
+  looking.
+- **Role effects were real in 2015-21 but are gone in 2021-26.** The market has learned to price
+  them.
+- **Most of the user's replacement point is already in the live engine,** through the rotcap refill.
+  What's left (the floor, and minutes above baseline) adds nothing measurable against results beside
+  the engine's value (t 1.0 on 2015-21).
+- **No shadow follows from this.** The engine's absence values stay as they are, and the scale already
+  matches results (0.96 ± 0.06, injury-close-1).
