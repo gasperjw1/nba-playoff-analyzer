@@ -214,3 +214,25 @@ tip.
   seasons. The closest is the absence piece, a lean worth about a tenth of the engine's value
   (+0.10 ± 0.06). Confirming a lean that size would take about four times as many games, roughly
   20 seasons. It's real-world small, not a practical betting edge on its own.
+
+## Erratum (2026-11-16)
+
+**The bug:** the replica's All-Star filter caught only EAST, WEST, TEAM…, USA and WORLD. It missed the
+codes ESPN used in 2022-26 (LEB, DUR, GIA, SHQ, CHK, KEN, CAN, STARS, STRIPES). Two effects:
+- an All-Star's game counted toward his minutes history;
+- an All-Star who sat just before the break was read as "gone" and left off his team's roster.
+
+About 4% of team-games moved, mostly by small amounts. Found while building absence-1 on the same
+replica (ABSENCE_ROLES_RESEARCH.md). `research-injury-close.js` now uses a 30-team list.
+
+**Rerun:**
+
+| | As published | Fixed |
+|---|---|---|
+| I1 slope of resid on A | +0.087 ± 0.055 (t 1.57) | +0.083 ± 0.055 (t 1.51) |
+| I2 engine-with-availability gap | +0.067 ± 0.069 (t 0.98) | +0.063 ± 0.069 (t 0.90) |
+| I4 pitch-3's rule, 5+ points | 1,069 of 2,564 vs 1,055.1 (z 0.60), −4.5% | 1,067 of 2,561 vs 1,055.4 (z 0.50), −5.0% |
+| I3 results per point of A | 0.959 ± 0.056 | 0.955 ± 0.056 |
+| Brier, engine with availability | 0.2074 | 0.2075 |
+
+Still 0 of 3 pass. No conclusion changes.

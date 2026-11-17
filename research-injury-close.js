@@ -25,6 +25,7 @@ const ALIAS = { 'ronald holland': 'ron holland', 'adama bal': 'adamaalpha bal' }
 const has = (f) => process.argv.includes(f);
 const B = { GS: 'GSW', NY: 'NYK', SA: 'SAS', NO: 'NOP', UTAH: 'UTA', WSH: 'WAS', BKN: 'BRK', CHA: 'CHO', PHX: 'PHO' };
 const br = (a) => B[a] || a;
+const NBA30 = new Set('ATL BOS BKN CHA CHI CLE DAL DEN DET GS HOU IND LAC LAL MEM MIA MIL MIN NO NY OKC ORL PHI PHX POR SAC SA TOR UTAH WSH'.split(' '));
 const yearOf = (d) => (d < '2022-07-01' ? 2022 : d < '2023-07-01' ? 2023 : d < '2024-07-01' ? 2024 : d < '2025-07-01' ? 2025 : 2026);
 const norm = (s) => { const n = s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g, '').replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim(); return ALIAS[n] || n; };
 
@@ -56,7 +57,8 @@ async function build() {
   }
   const feature = new Map(), match = {};
   for (const Y of YEARS) {
-    const games = (bySeason[Y] || []).filter(g => g.home !== 'EAST' && g.away !== 'EAST' && g.home !== 'WEST' && g.away !== 'WEST' && !/^(TEAM|USA|WORLD)/.test(g.home))
+    // All-Star games dropped with a 30-team list (the first filter missed LEB, DUR, GIA, SHQ, CHK, KEN, CAN, STARS and STRIPES; erratum 2026-11-16).
+    const games = (bySeason[Y] || []).filter(g => NBA30.has(g.home) && NBA30.has(g.away))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : String(a.id) < String(b.id) ? -1 : 1));
     const prior = priorsFor(S[Y - 1], S[Y - 2]);
     // ESPN id → Basketball-Reference id: team and name in season Y, else a unique name in season Y.
