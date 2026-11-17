@@ -39,6 +39,7 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/fade.js');
   load('js/season/pitch3.js');
   load('js/season/b2b.js');
+  load('js/season/morning.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
@@ -1830,6 +1831,78 @@ console.log('TEST 38: edge straights and pair (pitch3.js, spec pitch-3)');
     row({ id: 'c2', pOurs: 0.62, pMarket: 0.55, close: { mlHome: -110, mlAway: -110, book: 'DraftKings' } })]).clean.all.clv;
   const d1 = c._noVigHome(-150, 130) - 0.55, d2 = 0.5 - 0.55, m = (d1 + d2) / 2;
   assert(clv.n === 2 && Math.abs(clv.mean - m) < 1e-4 && Math.abs(clv.se - Math.sqrt(((d1 - m) ** 2 + (d2 - m) ** 2) / 1 / 2)) < 1e-4, 'line movement mean and SE');
+}
+
+console.log('TEST 39: morning information test (morning.js, spec morning-1)');
+{
+  const c = loadCtx(false);
+  const S = c.SEASON_MORNING_SPEC;
+  assert(S.version === 'morning-1' && S.firstNight === '2026-11-17' && S.window.from === 660 && S.window.to === 780 && S.clip[0] === 0.01 && S.clip[1] === 0.99 &&
+    S.minN === 30 && S.retireCheckAt === 300 && S.holdT === 2, 'spec constants');
+  // Window: 11:00 AM–1:00 PM ET on the slate's own date, EST in November and EDT in April.
+  assert(c.seasonMorningInWindow('2026-11-17T16:00:00Z', '2026-11-17') && c.seasonMorningInWindow('2026-11-17T17:59:00Z', '2026-11-17'), '11:00 and 12:59 EST are inside');
+  assert(!c.seasonMorningInWindow('2026-11-17T15:59:00Z', '2026-11-17') && !c.seasonMorningInWindow('2026-11-17T18:00:00Z', '2026-11-17'), '10:59 and 1:00 PM EST are outside');
+  assert(!c.seasonMorningInWindow('2026-11-17T16:30:00Z', '2026-11-18'), 'another slate date is outside');
+  assert(c.seasonMorningInWindow('2027-04-01T15:30:00Z', '2027-04-01') && !c.seasonMorningInWindow('2027-04-01T17:30:00Z', '2027-04-01'), 'EDT: 11:30 inside, 1:30 PM outside');
+  // A row: our two numbers, DraftKings now and at the open, no-vig.
+  const slate = { date: '2026-11-17', source: 'nb.ai' }, g = { id: 401, tip: '2026-11-18T00:30:00Z', home: 'NY', away: 'BOS' };
+  const pc = { mlHome: -150, mlAway: 130, spreadHome: -3.5, book: 'Draft Kings', open: { mlHome: -130, mlAway: 110 } };
+  const now = '2026-11-17T16:30:00Z';
+  const e = c.buildMorningEntry(g, { pHome: 0.61234 }, { name: 'Injury-Report_2026-11-17_11_00AM', proj: { pHome: 0.58 }, changes: [{}, {}] }, pc, slate, now, now);
+  near(e.market.pHome, c.noVigHomeProb(-150, 130), 1e-4, 'morning no-vig home chance');
+  near(e.market.open.pHome, c.noVigHomeProb(-130, 110), 1e-4, 'opening no-vig home chance');
+  assert(e.id === '401' && e.spec === 'morning-1' && e.ours.pFeed === 0.6123 && e.ours.pReport === 0.58 && e.ours.changes === 2 && e.ours.report.startsWith('Injury') &&
+    Date.parse(e.recordedAt) === Date.parse(now) && Date.parse(e.market.at) === Date.parse(now) && e.source === 'nb.ai' && e.result === null && e.close === null, 'row fields');
+  const bare = c.buildMorningEntry(g, { pHome: 0.6 }, null, null, slate, now);
+  assert(bare.ours.pReport === null && bare.ours.report === null && bare.market === null, 'no report and no price → nulls');
+  // Merge: inside the window, before tip, never replacing.
+  const rows = [];
+  assert(c.mergeMorningEntries(rows, [e], now).added === 1 && rows.length === 1, 'first morning run adds the row');
+  const later = c.buildMorningEntry(g, { pHome: 0.7 }, null, pc, slate, '2026-11-17T17:00:00Z');
+  const m2 = c.mergeMorningEntries(rows, [later], '2026-11-17T17:00:00Z');
+  assert(m2.added === 0 && m2.kept === 1 && rows[0].ours.pFeed === 0.6123, 'a second run in the window never replaces it');
+  const g2 = { ...g, id: 402 }, eve = c.buildMorningEntry(g2, { pHome: 0.6 }, null, pc, slate, '2026-11-17T22:00:00Z');
+  assert(c.mergeMorningEntries(rows, [eve], '2026-11-17T22:00:00Z').outside === 1 && rows.length === 1, 'an evening run writes nothing');
+  const tipped = c.buildMorningEntry({ ...g, id: 403, tip: '2026-11-17T16:00:00Z' }, { pHome: 0.6 }, null, pc, slate, now);
+  assert(c.mergeMorningEntries(rows, [tipped], now).late === 1 && rows.length === 1, 'a game already tipped is skipped');
+  // Settle: result and close copied from the season ledger row with the same id.
+  const ledger = [{ id: '401', result: { homeScore: 110, awayScore: 100 }, close: { mlHome: -170, mlAway: 145, book: 'Draft Kings' } }];
+  assert(c.settleMorningRows(rows, ledger) === 1 && rows[0].result.homeScore === 110 && Math.abs(rows[0].close.pHome - c.noVigHomeProb(-170, 145)) < 1e-4, 'settled from the ledger');
+  assert(c.settleMorningRows(rows, ledger) === 0, 'settling again changes nothing');
+  // The record: a deterministic sample where results follow the morning price plus 0.5 × our disagreement.
+  let seed = 7; const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const lgt = (p) => Math.log(p / (1 - p)), sig = (x) => 1 / (1 + Math.exp(-x));
+  const mk = (i, bD) => {
+    const pm = 0.2 + 0.6 * rnd(), d = (rnd() - 0.5) * 1.2, po = sig(lgt(pm) + d), y = rnd() < sig(lgt(pm) + bD * d) ? 1 : 0;
+    const t = new Date(Date.parse('2026-11-18T00:30:00Z') + 86400e3 * (i % 100)).toISOString(), date = t.slice(0, 10);
+    const rec = new Date(Date.parse(date + 'T16:30:00Z') - 86400e3).toISOString();
+    return { id: 'x' + i, spec: 'morning-1', date: rec.slice(0, 10), tip: t, recordedAt: rec, ours: { pFeed: po, pReport: i % 10 ? po : null },
+      market: { pHome: pm, open: { pHome: pm }, at: rec }, result: { homeScore: y ? 100 : 90, awayScore: y ? 90 : 100 }, close: { pHome: pm } };
+  };
+  const sample = Array.from({ length: 3000 }, (_, i) => mk(i, 0.5));
+  const rec = c.seasonMorningRecord(sample);
+  assert(rec.n === 3000 && rec.used.report === 2700 && rec.used.feed === 300, 'all rows scored; the report used where present, else feed-only');
+  assert(rec.coef > 0.5 - 3 * rec.se && rec.coef < 0.5 + 3 * rec.se && rec.se > 0.05 && rec.se < 0.2, `disagreement coefficient recovers 0.5 (got ${rec.coef} ± ${rec.se})`);
+  near(rec.beta[1], 1, 4 * 0.06, 'the morning price keeps a slope near 1');
+  near(rec.weight, rec.beta[2] / rec.beta[1], 1e-3, 'implied weight b2 / b1');
+  // The fitted coefficients solve the score equations X'(y − p) = 0.
+  const X = sample.map(r => { const lm = lgt(r.market.pHome); return [1, lm, lgt(r.ours.pReport != null ? r.ours.pReport : r.ours.pFeed) - lm]; });
+  const grad = [0, 1, 2].map(j => X.reduce((s, x, i) => s + x[j] * ((sample[i].result.homeScore > sample[i].result.awayScore ? 1 : 0) - sig(x[0] * rec.beta[0] + x[1] * rec.beta[1] + x[2] * rec.beta[2])), 0));
+  assert(grad.every(v => Math.abs(v) < 0.5), `score equations near zero (got ${grad.map(v => v.toFixed(3))})`);
+  assert(rec.moved.n === 3000 && rec.scores.market.n === 3000 && rec.scores.close.n === 3000, 'scores and move on the same rows');
+  const nul = c.seasonMorningRecord(Array.from({ length: 3000 }, (_, i) => mk(i, 0)));
+  assert(Math.abs(nul.t) < 3, `no information → t near 0 (got ${nul.t})`);
+  // Rows outside the window, after tip, without a price or before firstNight are left out and counted.
+  const odd = [{ ...sample[0], id: 'o1', recordedAt: sample[0].recordedAt.replace('16:30', '20:00') }, { ...sample[1], id: 'o2', market: null },
+    { ...sample[2], id: 'o3', tip: sample[2].recordedAt }, { ...sample[3], id: 'o4', result: null }, { ...sample[4], id: 'o5', date: '2026-11-16' }];
+  const ro = c.seasonMorningRecord(odd);
+  assert(ro.n === 0 && ro.excluded.outsideWindow === 1 && ro.excluded.noMarket === 1 && ro.excluded.afterTip === 1 && ro.excluded.open === 1, 'exclusions counted');
+  assert(ro.read.startsWith('too few'), 'too few to fit');
+  // Retire at the 300-game check when the coefficient is ≤ 0.
+  const neg = Array.from({ length: 400 }, (_, i) => mk(i, -1.5));
+  const rn = c.seasonMorningRecord(neg);
+  assert(rn.coef <= 0 ? rn.read.startsWith('RETIRE') : rn.read.startsWith('keep logging'), 'retire read follows the coefficient at 300+');
+  assert(c.seasonMorningRecord(neg.slice(0, 200)).read.startsWith('keep logging'), 'before 300 games: keep logging');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -4,6 +4,8 @@
 
 ```bash
 ./season-daily.sh            # any time: settles yesterday; from 11 AM ET also records tonight (once per day each)
+# morning-1 (MORNING_SPEC.md): the first record between 11:00 AM and 1:00 PM ET also writes the morning rows
+# (our number + DraftKings now, from ESPN, no credits). Record later and that day simply has none. Commit morning-ledger.js.
 ```
 ```bash
 ./season-daily.sh --espn     # NB.AI stale or down? record from ESPN now (automatic from 5 PM ET); review its 'check:' lines; a later NB.AI run replaces these rows before tip-off
