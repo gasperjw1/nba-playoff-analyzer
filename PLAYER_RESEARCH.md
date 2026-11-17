@@ -162,3 +162,70 @@ were updated during games.
 - **Unchanged:** the questions, features, clustering and pass rule.
 - **Also described:** each feature against 2023-24's opening lines, to show how open and close
   differ.
+
+## Results (run 2026-11-16, after the amendments commit af42578)
+
+`node research-player.js`: 4,923 games of player box lines (3,818 with props); 94,405 player-games
+with 5+ prior games. Decided sample: 17,125 train (2023-24 closing lines, 1,140 games) and 14,316
+holdout (2024-26 opening lines).
+
+**Validity gate (pooled, as registered):** 0.929, passed. The per-book checks that led to amendment
+2 are in the table above.
+
+| Q | Feature | Train t (close) | Holdout t (open) | Favoured side on the top 20% / flagged | Decision |
+|---|---|---|---|---|---|
+| P-H | hot streak | **−2.71** | **−2.89** | unders 53.0% / **52.1%** | no (holdout below 52.4%) |
+| P-F1 | back-to-back | −1.30 | −0.46 | unders 51.9% / 51.2% | no |
+| P-F2 | minutes load | −1.73 | −2.76 | unders 51.7% / 51.8% | no |
+| P-M | position matchup | 1.31 | 0.59 | overs 49.0% / 50.1% | no |
+| P-R | role trend | −0.15 | −2.35 | unders 52.1% / 51.9% | no |
+| P-T | top-2 teammate out | −0.35 | +3.17 | unders 51.4% / 50.6% | no |
+
+**0 of 6 pass.** Base rates: overs 48.6% in train and 48.8% in the holdout.
+
+**Checked (second round, at the user's ask):**
+- **One player-game rebuilt by hand from the raw box files** (Donovan Mitchell, 2024-01-15):
+  - streak +1.653, back-to-back 0, minutes load −1.262, matchup −6.345, role +5.071;
+  - season average 27.857, actual 34;
+  - teammate out: Garland, CLE's other top-2 by minutes, was out;
+  - line: the median of 30.5 / 29.5 / 30.5 / 30.5 = 30.5, open 31.5.
+  - All match the script.
+- **The clustered standard errors** recover the true spread on correlated synthetic data (0.142 vs
+  0.138).
+- **An independent Python recompute** reproduces every t and the top-20% rates exactly.
+- **Clustering by player instead of game** changes little: P-H −2.66 / −2.66.
+
+**Described:**
+- **The hot-streak lean is real but tiny:**
+  - The slope is −0.033 points per point of streak.
+  - The hottest 20% average a 7-point streak above their earlier mean. They land 0.18 points under
+    their line in train and 0.12 in the holdout, 0.34–0.40 below the other players, who land about
+    0.22 over.
+  - Their unders won 53.0% and 52.1%, against base rates of 51.4% and 51.2%.
+  - It's larger against openers (2023-24 open t −3.5; 2022-23 open −2.0), so the close partly
+    corrects it.
+- **Teammate out's holdout +3.17 is a timing artifact of amendment 2.** Opening lines go up before
+  injury news. In 2023-24 the same feature scores +1.9 against openers and −0.35 against closers.
+  The close prices it.
+- **Against the player's own average, every feature moves points** (t 6 to 50). The lines price it
+  in.
+- **Other stats against their lines (2022-26 current lines, so partly in-game in places, described
+  only):**
+  - three-pointers' streak −5.2;
+  - rebounds' minutes load and role −4.6;
+  - assists' back-to-back −2.7.
+- **Over all points props, overs won 47.2%.** That fits the over-shading seen in props-2 (the
+  props backtest).
+
+## Conclusion
+
+- **No player-level feature beats the prop line by enough to bet.**
+- **The one consistent pattern** is the market leaning toward hot scorers: after a hot streak, a
+  player tends to finish slightly under his line. It holds in train and holdout, and survives
+  clustering by player. But the hottest players land only 0.12–0.18 points under their line, and fading them won
+  52–53%, not enough after the vig. That's the textbook result on streaks and betting markets (Camerer 1989;
+  Paul and Weinbach).
+- **Fatigue, matchups, role trend and teammate absences are all priced.**
+- **A data lesson worth keeping:** ESPN's stored "current" prop lines are in-game for some books
+  in 2022-23 and partly in 2024-26. Only 2023-24 is clean. Any future prop study should check line
+  timing per book first.

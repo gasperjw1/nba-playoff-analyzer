@@ -288,3 +288,60 @@ samples should be checked before relying on details.
 - **Player props:** no academic study of NBA prop-market efficiency turned up; commercial claims
   that props are softer are unsourced. One study found the NBA's betting markets unusually
   inefficient during COVID-19 (empty arenas). [arXiv 2109.07581](https://arxiv.org/pdf/2109.07581)
+
+## Cross-level and combined checks (exploratory, 2026-11-16)
+
+Asked: do the team and player studies agree, and could a factor called "noise" really be deciding?
+One game-level dataset merged every team factor tested (engine pieces, availability, luck-sched-1,
+coinflip-1's matchup, matchup-1's interactions and splits). Every study's residual agrees exactly for
+shared games (largest difference 0.000). Nothing here was pre-registered.
+
+**The levels agree:**
+
+| Theme | Team level | Player level |
+|---|---|---|
+| Streaks and shooting | past shooting luck isn't overpriced on its own; own three-point accuracy regresses harder than assumed (coinflip-1, t −5.0 on shooting) | hot scorers finish slightly under their line (t −2.71 / −2.89) |
+| The same, added up | team-summed player hot streaks vs the spread: t −1.95 (2022-26), negative in 3 of 4 seasons | — |
+| Fatigue | the generic back-to-back is priced; the team-specific split beats the close (b2b-1) | back-to-back priced; minutes load leans under (t −1.73 / −2.76), short of the bar |
+| Matchups | the three-point matchup is priced (leans the other way) | defence against position is priced |
+| Injuries and usage | the availability piece is priced (lean +0.09) | teammate out is priced against the close |
+
+**Could a "noise" factor hide a bettable edge?** For each of 28 team factors, the predicted side was
+bet on its strongest 20% of games (or flagged games), with a 95% interval on the win rate.
+- **Ruled out** (interval below 52.4%): 8 factors:
+  - the engine's gap and its prior piece;
+  - rest days and road-trip length;
+  - the three-point matchup and the four-factor gap;
+  - the opponent-strength and halves splits.
+- **Not ruled out:** 20, with intervals about ±3 points wide.
+- **The positive control** (the b2b split, the one known real effect) gains +1.43 ± 1.06 points but
+  wins only 52.1% (48.3–55.8%). So this test can't confirm a real effect either. "Not ruled out"
+  means unproven both ways.
+- **The highest estimates:** season shooting luck 54.5% (51.6–57.4%), venue split 53.8%, last-5
+  form 53.3%. That's roughly what the best of 28 shows by chance, and each failed its own
+  pre-registered holdout.
+
+**All factors together** (ridge regression, standardized):
+- **17 factors, fit 2021-24, tested on 2024-26:** slope of results on the prediction +0.82 (t 3.15),
+  or +1.20 (t 3.33) at ridge 500. Squared error is 0.8–0.9 below the close's, and the top-20% picks
+  won 53.9–55.3% (456 games).
+- **Not the engine's roster leak:** without the engine and availability pieces, slope +0.91
+  (t 2.38), picks 54.8%.
+- **Leave one season out** (17 factors): slopes +1.04, −0.19, +1.07, +1.58, +0.36. Positive in 4 of
+  5 seasons and significant in 3, but picks averaged about 52.8% across held-out seasons.
+- **The largest weights:** the three-point matchup −0.64 per sd (teams with a good three-point
+  matchup underperform the spread, consistent with own-accuracy regression), season luck +0.50,
+  recent luck −0.31.
+- **28 factors, fit 2023-25, tested on 2025-26:** weaker (t 2.00 / 1.68).
+- **The b2b split alone** (2025-26): t 2.70, picks 54.4–54.8%.
+
+**Reading:**
+- Some factors do decide games, in-game shooting above all (58% of coin-flip margins), but they
+  can't be known before tip.
+- Of the pre-game factors, none is a bettable edge alone, and most can't be excluded at a few
+  points of win rate.
+- Together, they carry an out-of-sample signal in most seasons. It's the strongest hint so far that
+  individually "noisy" factors add up.
+- It was found by looking, two of five seasons show nothing, and picks hover near break-even.
+- The honest test is a frozen, pre-registered combined shadow tracked live against the close, as
+  b2b-1 is. 2015-21 lacks the box lines its shooting features need.
