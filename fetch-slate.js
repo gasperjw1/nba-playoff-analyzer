@@ -93,6 +93,9 @@ function loadSeasonContext() {
   load('js/season/morning.js');
   load('js/season/odds.js');
   load('js/season/shop.js');
+  load('js/season/shop2.js');
+  load('js/season/all25.js');
+  if (fs.existsSync(path.join(__dirname, 'js/season/data/season-backfill.js'))) load('js/season/data/season-backfill.js');
   if (fs.existsSync(LEDGER_PATH)) load('js/season/data/season-ledger.js');
   if (fs.existsSync(PROPS_LEDGER_PATH)) load('js/season/data/props-ledger.js');
   if (fs.existsSync(PITCH_LEDGER_PATH)) load('js/season/data/pitch-ledger.js');
@@ -573,6 +576,19 @@ async function settle(ctx) {
     const sh = ctx.seasonShopSummary(JSON.parse(fs.readFileSync(ODDS_LEDGER_PATH, 'utf8')), rows), ev = (x) => x == null ? '—' : (x >= 0 ? '+' : '') + (x * 100).toFixed(1) + '%';
     console.log(`  shop-1 price check: ${sh.flags} flag${sh.flags === 1 ? '' : 's'} (${sh.graded} graded)${sh.graded ? ` · won ${sh.won} vs consensus ${sh.expected} (z ${sh.z}) · return ${ev(sh.roi)} ± ${ev(sh.se).replace('+', '')}` : ''}` +
       `${sh.move.n ? ` · line move ${ev(sh.move.mean)}${sh.move.se != null ? ` ± ${ev(sh.move.se).replace('+', '')}` : ''}` : ''}${sh.saved.n ? ` · better of FD/DK ${ev(sh.saved.best)} vs FD alone ${ev(sh.saved.fanduel)} over ${sh.saved.n} sides` : ''} · ${sh.read}`);
+    // shop-2 (SHOP2_SPEC.md): our bets at the recorded price vs the tracker's price, and with the skip rule.
+    const s2 = ctx.seasonShop2Summary(rows, ctx.SEASON_PITCH_LEDGER || [], ctx.SEASON_PITCH2_LEDGER || [], JSON.parse(fs.readFileSync(ODDS_LEDGER_PATH, 'utf8')));
+    console.log(`  shop-2 from ${ctx.SEASON_SHOP2_SPEC.firstNight}: ${s2.checked} of ${s2.graded} graded bets checked` +
+      `${s2.checked ? ` · recorded ${ev(s2.recorded.roi)} · tracker price ${ev(s2.tracker.roi)} · with skips ${ev(s2.withSkips.roi)} on ${s2.withSkips.n} (skipped ${s2.skipped.n}, ${s2.skipped.won} won) · mean EV ${ev(s2.ev.tracker)}` : ''}` +
+      `${s2.picks.n ? ` · tracker picks ${s2.picks.won}/${s2.picks.n} ${s2.picks.units >= 0 ? '+' : ''}${s2.picks.units}u` : ''} · ${s2.read}`);
+  }
+  // all25-1 (ALL25_SPEC.md): $25 on every parlay and leg pitched since 2026-11-08, at the recorded prices.
+  {
+    const a = ctx.seasonAll25Summary(rows, ctx.SEASON_PITCH_LEDGER || [], ctx.SEASON_PITCH2_LEDGER || [], ctx.SEASON_BACKFILL || null), L = a.live;
+    const usd = (x) => `${x >= 0 ? '+' : '-'}$${Math.abs(x).toFixed(2)}`, r = (t) => (t.roi == null ? '—' : `${t.roi >= 0 ? '+' : ''}${(t.roi * 100).toFixed(1)}%`);
+    console.log(`  all25-1 ($${ctx.SEASON_ALL25_SPEC.stake} on every parlay and leg, ${L.nights} recorded nights): parlays ${L.parlays.won}/${L.parlays.n} ${usd(L.parlays.profit)} · legs ${L.legs.won}/${L.legs.n} ${usd(L.legs.profit)} · ` +
+      `all ${usd(L.all.profit)} on $${L.all.staked} (${r(L.all)})${L.all.unpriced.n ? ` · unpriced floors ${L.all.unpriced.won}/${L.all.unpriced.n} (${usd(L.all.unpriced.atFair)} at our price)` : ''}` +
+      `${a.backfill.nights ? ` · backfilled nights apart: ${usd(a.backfill.all.profit)} on $${a.backfill.all.staked}` : ''}`);
   }
   const score = ctx.scoreForecasts(rows);
   Object.keys(score).forEach(k => { const s = score[k]; if (s.n) console.log(`  ${k.padEnd(8)} n=${s.n} acc=${pct(s.accuracy)} brier=${s.brier}${s.marginMae != null ? ' mae=' + s.marginMae : ''}`); });
@@ -611,6 +627,11 @@ async function oddsRun(ctx) {
   };
   // odds-2 (ODDS2_SPEC.md): the line call names ten books for the same credits; the price check prints per game.
   await require('./odds-pull.js').pullOdds({ ctx, spec: ctx.SEASON_ODDS2_SPEC, key: process.env.ODDS_API_KEY, games, ledgerPath: ODDS_LEDGER_PATH, lockPath: ODDS_LOCK_PATH, buildModel, dry: DRY });
+  // shop-2 (SHOP2_SPEC.md): tonight's tickets and legs at the better of FanDuel and DraftKings against Pinnacle's fair price.
+  if (fs.existsSync(ODDS_LEDGER_PATH)) {
+    const lines = ctx.shop2Lines(today, ctx.SEASON_LEDGER || [], ctx.SEASON_PITCH_LEDGER || [], ctx.SEASON_PITCH2_LEDGER || [], JSON.parse(fs.readFileSync(ODDS_LEDGER_PATH, 'utf8')));
+    if (lines.length) { console.log('  shop-2 price tracker (not a stake size):'); lines.forEach(l => console.log(l)); }
+  }
 }
 
 function pct(p) { return p == null ? '—' : (p * 100).toFixed(1) + '%'; }

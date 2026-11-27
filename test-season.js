@@ -40,12 +40,15 @@ function loadCtx(withSnapshot, withUi) {
   load('js/season/pitch3.js');
   load('js/season/b2b.js');
   load('js/season/morning.js');
+  load('js/season/all25.js');
+  load('js/season/scoreboard.js');
   if (withUi) {
     const el = () => ({ style: {}, innerHTML: '', value: '', textContent: '', className: '', appendChild: () => {}, querySelector: () => null, querySelectorAll: () => [], classList: { add() {}, remove() {} } });
     ctx.document = { getElementById: el, createElement: el, querySelector: () => null, querySelectorAll: () => [] };
     ctx.navigator = { clipboard: null };
     ctx.alert = () => {}; ctx.prompt = () => {}; ctx.confirm = () => false;
     load('js/season/ui.js');
+    load('js/season/pages.js');
   }
   return ctx;
 }
@@ -1903,6 +1906,98 @@ console.log('TEST 39: morning information test (morning.js, spec morning-1)');
   const rn = c.seasonMorningRecord(neg);
   assert(rn.coef <= 0 ? rn.read.startsWith('RETIRE') : rn.read.startsWith('keep logging'), 'retire read follows the coefficient at 300+');
   assert(c.seasonMorningRecord(neg.slice(0, 200)).read.startsWith('keep logging'), 'before 300 games: keep logging');
+}
+
+console.log('TEST 40: $25 on every parlay and leg (all25.js, spec all25-1)');
+{
+  const c = loadCtx(false, true);
+  const S = c.SEASON_ALL25_SPEC;
+  assert(S.version === 'all25-1' && S.firstNight === '2026-11-08' && S.stake === 25, 'spec constants');
+  const prop = (player, line, p, outcome) => ({ type: 'prop', game: 'g' + player, player, name: 'P' + player, stat: 'pra', line, p, result: { outcome } });
+  const ml = (game, side, team, odds, outcome) => ({ type: 'ml', game, side, team, odds, result: { outcome } });
+  const pitch = [
+    { date: '2026-11-07', tickets: [{ recipe: 'floor', status: 'pitched', legs: [prop(9, 10.5, 0.9, 'hit')], p: 0.9, result: { outcome: 'win' } }] },   // before firstNight
+    { date: '2026-11-08', tickets: [{ recipe: 'floor', status: 'pitched', p: 0.7695, legs: [prop(1, 15.5, 0.9, 'hit'), prop(2, 18.5, 0.9, 'hit'), prop(3, 12.5, 0.95, 'void')], result: { outcome: 'win', legsVoid: 1 } },
+      { recipe: 'edge', status: 'no ticket', legs: [] }] },
+  ];
+  const pitch2 = [
+    { date: '2026-11-08', ticket: { status: 'pitched', price: -150, legs: [ml('a1', 'home', 'AAA', -300, 'hit'), ml('b1', 'away', 'BBB', -200, 'hit')], result: { outcome: 'win' } } },
+    { date: '2026-11-09', ticket: { status: 'pitched', price: 120, legs: [ml('a2', 'home', 'CCC', -250, 'hit'), ml('b2', 'away', 'DDD', -180, 'miss')], result: { outcome: 'loss' } } },
+    { date: '2026-11-16', ticket: { status: 'pitched', price: 200, legs: [ml('r1', 'home', 'R1H', -160, 'hit'), ml('r3', 'home', 'R3H', -400, 'hit'), ml('r4', 'away', 'R4A', -130, 'miss')], result: { outcome: 'loss' } } },
+  ];
+  // Two ledger rows on Nov 16 make pitch-3 legs: R1 home (also a pitch-2 leg: counted once) and R2 away, and their pair.
+  const rows = [
+    { id: 'r1', date: '2026-11-16', home: 'R1H', away: 'R1A', pOursReport: 0.70, pMarket: 0.60, mlHome: -160, mlAway: 140, result: { homeScore: 110, awayScore: 100 } },
+    { id: 'r2', date: '2026-11-16', home: 'R2H', away: 'R2A', pOursReport: 0.30, pMarket: 0.42, mlHome: -140, mlAway: 120, result: { homeScore: 110, awayScore: 100 } },
+  ];
+  const backfill = { nights: [{ date: '2026-11-20', pitch1: [], pitch2: { status: 'pitched', price: -110, legs: [ml('z1', 'home', 'ZZZ', -110, 'hit')], result: { outcome: 'win' } }, pitch3: { legs: [], pair: null } }] };
+  const s = c.seasonAll25Summary(rows, pitch, pitch2, backfill), L = s.live;
+  const near = (a, b) => Math.abs(a - b) < 0.01;
+  assert(L.nights === 3 && s.backfill.nights === 1, 'three recorded nights from Nov 8 (Nov 7 left out), one backfilled night apart');
+  // Parlays: Nov 8 −150 win +16.67; Nov 9 +120 loss; Nov 16 +200 loss; pair (−160 × +120 = +258) loss.
+  assert(L.parlays.n === 4 && L.parlays.won === 1 && near(L.parlays.profit, 25 / 1.5 - 75), 'priced parlays: 1/4, +$16.67 − $75');
+  // Legs: −300 ✓ +8.33, −200 ✓ +12.50, −250 ✓ +10, −180 ✗, −160 ✓ +15.63, −400 ✓ +6.25, −130 ✗, R2 +120 ✗.
+  assert(L.legs.n === 8 && L.legs.won === 5 && near(L.legs.profit, 25 / 3 + 12.5 + 10 + 15.625 + 6.25 - 75), 'priced legs: 8 distinct (R1 once), 5 won, −$22.29');
+  assert(L.legsBy.favourites.n === 7 && L.legsBy['pitch-3'].n === 1 && L.legsBy['pitch-3'].won === 0, 'a leg on two tickets counts under the first recipe');
+  // Floors: unpriced, at our fair price. The ticket's chance excludes the void leg (0.9 × 0.9); the void leg isn't a bet.
+  assert(L.parlays.unpriced.n === 1 && near(L.parlays.unpriced.atFair, 25 * (1 / 0.81 - 1)), 'floor ticket kept out of the dollars, +$5.86 at our price (void leg excluded)');
+  assert(L.legs.unpriced.n === 2 && near(L.legs.unpriced.atFair, 2 * 25 * (1 / 0.9 - 1)), 'two floor legs at our price; the void leg is no bet');
+  assert(near(L.all.profit, L.parlays.profit + L.legs.profit) && L.all.staked === 300, 'all = parlays + legs, $300 staked on 12 priced bets');
+  const last = s.perNight.find(n => n.date === '2026-11-16');
+  assert(near(last.running, L.all.profit) && s.perNight.find(n => n.date === '2026-11-20').running === null, 'the running total covers recorded nights only');
+  assert(s.backfill.all.n === 2 && near(s.backfill.all.profit, 2 * 25 / 1.1), 'backfilled night: its parlay and leg, kept apart');
+  // Market expectation and luck (display only). Expected = Σ $25 × (market chance × decimal − 1) over priced bets with a chance.
+  const one = c.all25Night('2026-11-20', 'live', [], { status: 'pitched', price: -150, result: { outcome: 'win' },
+    legs: [{ type: 'ml', game: 'q1', side: 'home', team: 'Q', odds: -300, pNoVig: 0.73, result: { outcome: 'hit' } }, { type: 'ml', game: 'q2', side: 'away', team: 'W', odds: -200, pNoVig: 0.64, result: { outcome: 'hit' } }] }, null);
+  const t1 = c.all25Tally(one.parlays.concat(one.legs));
+  const dec = (a) => (a > 0 ? 1 + a / 100 : 1 + 100 / -a);
+  assert(near(t1.expected, 25 * (0.73 * 0.64 * dec(-150) - 1) + 25 * (0.73 * dec(-300) - 1) + 25 * (0.64 * dec(-200) - 1)) && t1.expN === 3, 'expected profit at the market\'s chances, parlay chance = product of legs');
+  const lk = c.all25Luck([one], 20000, 3);
+  // Exact distribution: both legs win (0.4672) → +16.67+8.33+12.50 = +37.50; only q1 → −25+8.33−25; only q2 → −25−25+12.5; neither → −75.
+  const pA = 0.73 * 0.64, pB = 0.73 * 0.36, pC = 0.27 * 0.64, pD = 0.27 * 0.36, vals = [37.5, -41.6667, -37.5, -75];
+  const mu = pA * vals[0] + pB * vals[1] + pC * vals[2] + pD * vals[3];
+  assert(lk.n === 3 && lk.games === 2 && near(lk.actual, 37.5) && Math.abs(lk.mean - mu) < 1.5 && Math.abs(lk.share - pA) < 0.015, 'luck simulation: parlay and its legs share outcomes; mean and P(at least this good) match the exact values');
+  assert(c.all25Luck([one], 2000, 9).share === c.all25Luck([one], 2000, 9).share, 'seeded: the same number every load');
+  // The Pitch tab section.
+  c.SEASON_PITCH_LEDGER = pitch; c.SEASON_PITCH2_LEDGER = pitch2; c.SEASON_BACKFILL = backfill; c.loadSeasonLedger = () => rows;
+  const html = c.renderAll25Section();
+  assert(html.includes('$25 on every parlay and leg — spec all25-1') && html.includes('Recorded nights (3)') && html.includes('−$80.63') && html.includes('backfilled'), 'section renders the totals and the running profit');
+}
+
+console.log('TEST 41: main pages and the models-vs-market scoreboard (pages.js, scoreboard.js)');
+{
+  const c = loadCtx(true, true);
+  // Navigation: four main tabs; every older tab lives under Research and old links still open it.
+  assert(c.SEASON_MAIN_TABS.map(t => t[0]).join() === 'today,profit,models,research' && c.seasonState.tab === 'today', 'four main tabs; Today is the landing page');
+  c.seasonSetTab('research');
+  assert(c.seasonState.tab === 'results', 'Research opens Results by Day first');
+  c.seasonSetTab('pitch'); c.seasonSetTab('today'); c.seasonSetTab('research');
+  assert(c.seasonState.tab === 'pitch', 'Research returns to the sub-tab last opened');
+  assert(c.renderResearchNav().includes('Ledger &amp; Scoring') || c.renderResearchNav().includes('Ledger & Scoring'), 'the Research sub-nav lists the older tabs');
+  // Scoreboard by hand: three settled games, close no-vig from DraftKings' close.
+  const imp = (a) => (a < 0 ? -a / (-a + 100) : 100 / (a + 100)), nv = (h, a) => imp(h) / (imp(h) + imp(a));
+  const g = (id, pOurs, close, home, away) => ({ id, date: '2026-11-10', home: 'H', away: 'A', pOurs, pMarket: 0.5, close: { mlHome: close[0], mlAway: close[1] }, result: { homeScore: home, awayScore: away } });
+  const rows = [g('1', 0.7, [-200, 170], 100, 90), g('2', 0.6, [-150, 130], 90, 100), g('3', 0.3, [120, -140], 95, 100)];
+  const v = c.seasonModelVsClose(rows, r => r.pOurs);
+  const c1 = nv(-200, 170), c2 = nv(-150, 130), c3 = nv(120, -140);
+  const d = [(0.7 - 1) ** 2 - (c1 - 1) ** 2, (0.6 - 0) ** 2 - (c2 - 0) ** 2, (0.3 - 0) ** 2 - (c3 - 0) ** 2], m = (d[0] + d[1] + d[2]) / 3;
+  assert(v.n === 3 && Math.abs(v.winners - 2 / 3) < 1e-9 && Math.abs(v.diff - m) < 1e-12 && v.verdict === 'too few games', 'paired Brier difference by hand; under 30 games says so');
+  assert(Math.abs(c.seasonCloseHome(rows[0]) - c1) < 1e-12 && c.seasonCloseHome({ pMarket: 0.61 }) === 0.61, 'the benchmark is DraftKings\' close, else the recorded market');
+  const cal = c.seasonCalibration(rows, r => r.pOurs);
+  assert(cal[0].n === 0 && cal[1].n === 1 && cal[1].wins === 0 && cal[2].n === 2 && cal[2].wins === 2, 'calibration buckets the favourite\'s chance (0.6 → 60–70%, lost; 0.7 and 0.3 → 70–80%, both won)');
+  // A clear miss over 40 games reads "worse than the market".
+  const bad = Array.from({ length: 40 }, (_, i) => g(String(i), i % 2 ? 0.05 : 0.95, [-150, 130], i % 2 ? 100 : 90, i % 2 ? 90 : 100));
+  assert(c.seasonModelVsClose(bad, r => r.pOurs).verdict === 'worse than the market', 'a model wrong at 95% is worse than the market');
+  // The pages render: one pitched night for Profit, three settled games for Models, the snapshot slate for Today.
+  c.SEASON_PITCH_LEDGER = []; c.SEASON_BACKFILL = null;
+  c.SEASON_PITCH2_LEDGER = [{ date: '2026-11-10', ticket: { status: 'pitched', price: -150, legs: [{ type: 'ml', game: '1', side: 'home', team: 'H', odds: -300, pNoVig: 0.73, result: { outcome: 'hit' } }], result: { outcome: 'win' } } }];
+  c.loadSeasonLedger = () => rows;
+  const profit = c.renderProfitTab();
+  assert(profit.includes('on every parlay and leg since') && profit.includes('Read this before the number') && profit.includes('+$16.67'), 'Profit page renders the total (−150 win = +$16.67) with the expectation note');
+  assert(c.renderModelsTab().includes('Models vs market') && c.renderModelsTab().includes('Our model'), 'Models page renders the scoreboard');
+  c.seasonState.slate = c.SEASON_SLATE_SNAPSHOT;
+  const today = c.renderTodayTab();
+  assert(today.includes("Today's bets"), 'Today page renders (tickets, or the not-loaded-yet note for an old slate)');
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
