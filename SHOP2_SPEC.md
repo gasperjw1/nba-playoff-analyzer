@@ -127,3 +127,71 @@ V2 − V1 is what the better of the two books added; V3 − V1 adds the skip rul
   to the close. It's read at 150 bets.
 - The odds ledger stays local: The Odds API's terms on republishing are unchecked. Only aggregate
   records go on the site.
+
+---
+
+## Backfill results (scored 2026-11-26, after the freeze; appended, method unchanged)
+
+`node research-shop-backfill.js`.
+- **The pull:** 32 snapshots, 320 credits, 16,731 left. The snapshots are local in `.odds/hist/`.
+- **Checks:**
+  - All 144 legs had a usable Pinnacle price. Pinnacle's line was at most 11 minutes old at any snapshot, and every matched event tipped within 20 minutes of our tip time.
+  - V0 reproduces every tracker's recorded record exactly: flat-1 −11.3%, pitch-3 straights +48.7%,
+    pairs +14.6%, pitch-2 +3.73u, edge +2.58u.
+- Floor tickets went 13 of 16 against 11.9 shown; they're unpriced, so left out.
+
+**ROI per 1-unit bet, by tracker:**
+
+| Tracker | Bets | Won | V0 recorded | V1 DraftKings | V2 tracker | V3 with skips |
+|---|---|---|---|---|---|---|
+| pitch-2 favourites | 15 | 9 | +24.8% | +23.9% | +26.4% | +26.4% (15) |
+| flat-1 favourites | 65 | 37 | −11.3% | −11.2% | −10.6% | −6.5% (52) |
+| fade-1 | 8 | 4 | −21.9% | −21.6% | −21.2% | −33.1% (7) |
+| pitch-3 straights | 14 | 11 | +48.7% | +45.6% | +46.0% | +20.7% (10) |
+| pitch-3 pairs | 4 | 2 | +14.6% | +19.8% | +20.0% | +20.0% (4) |
+| pitch-1 edge | 2 | 2 | +129.2% | +139.5% | +140.0% | +140.0% (2) |
+
+**ROI per 1-unit bet, in total:**
+
+| | Bets | Won | V0 recorded | V1 DraftKings | V2 tracker | V3 with skips |
+|---|---|---|---|---|---|---|
+| **All** | 108 | 65 | **+4.3%** (+4.59u) | +4.2% | **+5.0%** (+5.42u) | +4.4% on 90 (+3.94u) |
+| Recorded nights | 60 | 35 | +1.8% | +1.6% | +2.4% | −1.9% (48) |
+| Backfilled nights | 48 | 30 | +7.3% | +7.5% | +8.2% | +11.5% (42) |
+
+**The tracker's own picks:**
+- 1 side in 16 nights was +1% to +10% at FanDuel or DraftKings against Pinnacle (EV +1.1%), and it
+  lost.
+- With only two books, the tracker almost never finds a bet worth taking on its own. Its value is
+  choosing the book.
+
+**What the tracker changed on the same bets:**
+- **Mean EV at bet time** went from −4.05% ± 0.19 (DraftKings) to −3.40% ± 0.19 (the better of the
+  two books), +0.65 pts.
+  - That's about half of what `PRICE_SHOP_RESEARCH.md` found ("about 1–1.6 points per bet" for DraftKings plus one other book). FanDuel and DraftKings track each other more closely than DraftKings does a random book.
+  - A winning bet paid +0.0123 ± 0.0027 units more.
+  - FanDuel was the better book on 70 bets, DraftKings on 38.
+- **The skip rule** dropped the 18 worst-priced bets (EV −4.92% vs −3.10% for the rest).
+  - They went 11 of 18 (+1.48u), so skipping cost money on results while it improved the price.
+    Eighteen bets is noise.
+- **Line movement** of our sides' fair chance:
+  - +0.08% ± 0.26 to the close snapshot;
+  - +0.35% ± 0.33 to DraftKings' close.
+
+  No sign our bets beat the close.
+- **The profit is luck, not price.**
+  - At the tracker's prices and Pinnacle's fair chances, 108 bets expected −3.67u (sd 9.02u). They
+    returned +5.43u (z +1.01).
+  - pitch-3 straights alone ran z +2.10 (expected −0.43u, actual +6.43u).
+- **The "recorded" price on backfilled nights** is DraftKings' close, which `season-backfill.js` used
+  in place of a record-time price. On recorded nights it's the price actually recorded.
+- **The tracker's own picks:** 224 sides were priced at bet time.
+  - 1 was at +1% EV or better, and 2 at 0% or better; the median was −3.41%.
+  - The research found +1% sides on about 3.7% of DraftKings sides. It used the median of the other
+    books, with proportional de-vig, as the fair price, and that's noisier than Pinnacle.
+
+**Correction, 2026-11-27 re-check.** An independent re-pricing from the raw snapshots, with new code,
+agreed with the script to 4e-16 on EV. It found one bug: a snapshot holding OKC at POR twice (Nov 10
+and Nov 11) left that leg unpriced. Fixing it priced the leg, which the skip rule then drops. The
+numbers above are the corrected run. The first version said 143/144 legs, 17 skipped (+2.48u), V3
++3.2% on 91, FanDuel 69, and z ≈ 0.8.

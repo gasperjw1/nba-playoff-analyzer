@@ -18,7 +18,7 @@ function assert(ok, msg) { if (ok) passed++; else { failed++; console.log('  FAI
 const ctx = vm.createContext({ console, Math, Array, Object, Set, Map, JSON, parseInt, parseFloat, isNaN, isFinite, Boolean, Number, String, RegExp, Date, Error });
 for (const f of ['js/season/data/season-constants.js', 'js/season/data/player-priors.js', 'js/season/data/chemistry-fit.js', 'js/season/data/aging-fit.js',
   'js/season/data/team-ratings.js', 'js/season/adapters.js', 'js/season/engine.js', 'js/season/props.js', 'js/season/replay-core.js',
-  'js/season/props-ledger.js', 'js/season/odds.js', 'js/season/shop.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), ctx);
+  'js/season/props-ledger.js', 'js/season/odds.js', 'js/season/shop.js', 'js/season/parlay.js', 'js/season/pitch3.js', 'js/season/flat.js', 'js/season/fade.js', 'js/season/shop2.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8').replace(/^(const|let) /gm, 'var '), ctx);
 const S = ctx.SEASON_ODDS_SPEC;
 const T0 = Date.UTC(2026, 10, 9, 23, 0);   // 6:00 PM ET
 const min = 60e3;
@@ -351,6 +351,54 @@ console.log('TEST 5: a mocked night — nothing is paid for twice');
     const fl = JSON.parse(fs.readFileSync(lp, 'utf8')).games['82'];
     assert(fl.tries.h2h === 1 && !fl.markets.h2h && !fl.books && lg.some(x => /lines: lines: HTTP 500/.test(x)) && !fl.credits === false, 'failed line call: a try counted, no books, logged, and charged what it asked for');
     assert(!JSON.stringify(fl).includes(KEY) && !lg.join().includes(KEY), 'the key never appears');
+  }
+
+  console.log('TEST 11: shop-2 price tracker for our tickets, by hand');
+  {
+    const T = ctx.SEASON_SHOP2_SPEC;
+    assert(T.version === 'shop-2' && T.firstNight === '2026-11-27' && T.skipStraight === -0.04 && T.skipPerLeg === -0.04 && T.pickLo === 0.01 && T.pickHi === 0.10 && T.minOthers === 3 && T.readAt === 150, 'spec constants');
+    const imp = (a) => (a < 0 ? -a / (-a + 100) : 100 / (a + 100)), dec = (a) => (a > 0 ? 1 + a / 100 : 1 + 100 / -a);
+    const pow = (a, b) => { const x = imp(a), y = imp(b); let lo = 1, hi = 3; for (let i = 0; i < 80; i++) { const k = (lo + hi) / 2; if (x ** k + y ** k > 1) lo = k; else hi = k; } return x ** ((lo + hi) / 2); };
+    const mk = (id, home, away, fd, books) => ({ game: id, date: '2026-11-27', home, away, markets: { h2h: { outcomes: [{ team: home, price: fd[0] }, { team: away, price: fd[1] }] } },
+      books: Object.fromEntries(Object.entries(books).map(([k, v]) => [k, { h2h: { home: v[0], away: v[1] } }])) });
+    // Game 91: Pinnacle −150/+130 sets the fair price; FanDuel −160/+140, DraftKings −145/+120.
+    const g91 = mk('91', 'BOS', 'MIL', [-160, 140], { draftkings: [-145, 120], pinnacle: [-150, 130], betmgm: [-155, 125], williamhill_us: [-150, 120], fanatics: [-152, 124] });
+    const pin = pow(-150, 130);
+    const f = ctx.shop2Fair(g91);
+    assert(f.src === 'pinnacle' && Math.abs(f.p - pin) < 1e-9 && pin > imp(-150) / (imp(-150) + imp(130)), 'fair = Pinnacle power no-vig (above the proportional chance for the favourite)');
+    const noPin = mk('92', 'BOS', 'MIL', [-160, 140], { draftkings: [-145, 120], betmgm: [-155, 125], williamhill_us: [-150, 120], fanatics: [-152, 124] });
+    const med = [pow(-155, 125), pow(-150, 120), pow(-152, 124)].sort((a, b) => a - b)[1];
+    assert(ctx.shop2Fair(noPin).src === 'median of 3' && Math.abs(ctx.shop2Fair(noPin).p - med) < 1e-9, 'no Pinnacle: median power no-vig of the 3 books other than FanDuel and DraftKings');
+    const thin = mk('93', 'BOS', 'MIL', [-160, 140], { draftkings: [-145, 120], betmgm: [-155, 125], williamhill_us: [-150, 120] });
+    assert(ctx.shop2Fair(thin) === null && ctx.shop2Check({ kind: 'straight', legs: [{ row: thin, side: 'home' }] }).verdict === 'unpriced', 'two other books and no Pinnacle: no fair price, the bet is unpriced');
+    const h = ctx.shop2Side(g91, 'home'), a = ctx.shop2Side(g91, 'away');
+    assert(h.best === -145 && h.book === 'draftkings' && a.best === 140 && a.book === 'fanduel', 'the better of FanDuel and DraftKings per side (BOS −145 at DK, MIL +140 at FD)');
+    assert(Math.abs(h.ev - (pin * dec(-145) - 1)) < 1e-9 && Math.abs(a.ev - ((1 - pin) * 2.4 - 1)) < 1e-9, 'EV = fair × decimal − 1');
+    const tie = mk('94', 'BOS', 'MIL', [-150, 130], { draftkings: [-150, 125], pinnacle: [-150, 130] });
+    assert(ctx.shop2Side(tie, 'home').book === 'fanduel', 'a tie goes to FanDuel');
+    const sh = ctx.shop2Check({ kind: 'straight', legs: [{ row: g91, side: 'home' }] });
+    assert(sh.verdict === 'play' && sh.book === 'draftkings' && sh.price === -145 && Math.abs(sh.evRaw - h.ev) < 1e-9, 'straight: played at DraftKings −145');
+    // A straight at −4% or worse is skipped: FanDuel and DraftKings both −200 against a fair 63%.
+    const bad = mk('95', 'NY', 'TOR', [-200, 165], { draftkings: [-200, 160], pinnacle: [-170, 150] });
+    const bc = ctx.shop2Check({ kind: 'straight', legs: [{ row: bad, side: 'home' }] });
+    assert(bc.verdict === 'skip' && Math.abs(bc.evRaw - (pow(-170, 150) * 1.5 - 1)) < 1e-9 && bc.evRaw < -0.04, 'straight under −4% EV is skipped');
+    // Parlay of 91 home + 95 away: FanDuel 1.625 × 2.65 vs DraftKings 1.690 × 2.60; the larger product wins.
+    const pc = ctx.shop2Check({ kind: 'parlay', legs: [{ row: g91, side: 'home' }, { row: bad, side: 'away' }] });
+    const dFd = dec(-160) * dec(165), dDk = dec(-145) * dec(160), fairP = pin * (1 - pow(-170, 150));
+    assert(pc.book === (dDk > dFd ? 'draftkings' : 'fanduel') && Math.abs(pc.evRaw - (fairP * Math.max(dFd, dDk) - 1)) < 1e-9 && pc.verdict === (pc.evRaw < -0.08 ? 'skip' : 'play'), 'parlay: one book for every leg, EV on the product, skip below −4% a leg');
+    // A night: one ledger row (flat-1 favourite BOS −150 recorded), its odds row priced; MIL +140 at FanDuel is a pick if EV is +1% to +10%.
+    const rows = [{ id: '91', date: '2026-11-27', home: 'BOS', away: 'MIL', mlHome: -150, mlAway: 130, result: { homeScore: 110, awayScore: 100 } }];
+    const night = ctx.shop2Night('2026-11-27', rows, [], [], { games: { 91: g91 } });
+    const fb = night.bets.find(b => b.tracker === 'flat-1 favourites');
+    assert(fb && fb.price0 === -150 && fb.price === -145 && fb.book === 'draftkings' && fb.hit === true, 'flat-1 favourite checked: recorded −150, tracker −145 at DraftKings, graded a win');
+    const evMil = (1 - pin) * 2.4 - 1;
+    assert(night.picks.length === (evMil >= 0.01 && evMil <= 0.10 ? 1 : 0), 'the tracker picks a side only at +1% to +10% EV');
+    const sum = ctx.seasonShop2Summary(rows, [], [], { games: { 91: g91 } });
+    assert(sum.checked === 1 && Math.abs(sum.recorded.units - (dec(-150) - 1)) < 0.01 && Math.abs(sum.tracker.units - (dec(-145) - 1)) < 0.01 && sum.tracker.units > sum.recorded.units, 'summary: the same win pays more at the tracker\'s price');
+    const before = ctx.seasonShop2Summary(rows.map(r => ({ ...r, date: '2026-11-26' })), [], [], { games: { 91: g91 } });
+    assert(before.bets === 0, 'nights before firstNight are not counted live');
+    const lines = ctx.shop2Lines('2026-11-27', rows, [], [], { games: { 91: g91 } });
+    assert(lines.some(x => /shop-2 flat-1 favourites: BOS recorded -150 · DraftKings -145 · EV [+-]\d+\.\d% · PLAY/.test(x)), 'the --odds block names the book, price, EV and verdict');
   }
 
   fs.rmSync(dir, { recursive: true, force: true });
