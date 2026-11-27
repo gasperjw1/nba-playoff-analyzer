@@ -1946,6 +1946,18 @@ console.log('TEST 40: $25 on every parlay and leg (all25.js, spec all25-1)');
   const last = s.perNight.find(n => n.date === '2026-11-16');
   assert(near(last.running, L.all.profit) && s.perNight.find(n => n.date === '2026-11-20').running === null, 'the running total covers recorded nights only');
   assert(s.backfill.all.n === 2 && near(s.backfill.all.profit, 2 * 25 / 1.1), 'backfilled night: its parlay and leg, kept apart');
+  // Market expectation and luck (display only). Expected = Σ $25 × (market chance × decimal − 1) over priced bets with a chance.
+  const one = c.all25Night('2026-11-20', 'live', [], { status: 'pitched', price: -150, result: { outcome: 'win' },
+    legs: [{ type: 'ml', game: 'q1', side: 'home', team: 'Q', odds: -300, pNoVig: 0.73, result: { outcome: 'hit' } }, { type: 'ml', game: 'q2', side: 'away', team: 'W', odds: -200, pNoVig: 0.64, result: { outcome: 'hit' } }] }, null);
+  const t1 = c.all25Tally(one.parlays.concat(one.legs));
+  const dec = (a) => (a > 0 ? 1 + a / 100 : 1 + 100 / -a);
+  assert(near(t1.expected, 25 * (0.73 * 0.64 * dec(-150) - 1) + 25 * (0.73 * dec(-300) - 1) + 25 * (0.64 * dec(-200) - 1)) && t1.expN === 3, 'expected profit at the market\'s chances, parlay chance = product of legs');
+  const lk = c.all25Luck([one], 20000, 3);
+  // Exact distribution: both legs win (0.4672) → +16.67+8.33+12.50 = +37.50; only q1 → −25+8.33−25; only q2 → −25−25+12.5; neither → −75.
+  const pA = 0.73 * 0.64, pB = 0.73 * 0.36, pC = 0.27 * 0.64, pD = 0.27 * 0.36, vals = [37.5, -41.6667, -37.5, -75];
+  const mu = pA * vals[0] + pB * vals[1] + pC * vals[2] + pD * vals[3];
+  assert(lk.n === 3 && lk.games === 2 && near(lk.actual, 37.5) && Math.abs(lk.mean - mu) < 1.5 && Math.abs(lk.share - pA) < 0.015, 'luck simulation: parlay and its legs share outcomes; mean and P(at least this good) match the exact values');
+  assert(c.all25Luck([one], 2000, 9).share === c.all25Luck([one], 2000, 9).share, 'seeded: the same number every load');
   // The Pitch tab section.
   c.SEASON_PITCH_LEDGER = pitch; c.SEASON_PITCH2_LEDGER = pitch2; c.SEASON_BACKFILL = backfill; c.loadSeasonLedger = () => rows;
   const html = c.renderAll25Section();

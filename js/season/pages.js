@@ -97,7 +97,7 @@ function renderTodayTab() {
     <div class="pg-tickets">
       ${_pgTicket('Floor ticket', floor, 'Three props at the model\'s 90% line. Calibrated so far; FanDuel rarely offers these exact lines, so price it at your book.')}
       ${_pgTicket('Favourites ticket', fav, fav && fav.label === 'safe' ? 'All three legs 75%+ by the market. It still pays the book\'s margin on every leg.' : 'Not all three legs reach 75% by the market.')}
-      ${edge && edge.status === 'pitched' ? _pgTicket('Edge ticket', edge, 'Moneylines 8+ points off the market — an experiment; such gaps have only shown up against early prices.') : ''}
+      ${edge && edge.status === 'pitched' ? _pgTicket('Edge ticket', edge, 'Moneylines 8+ points off the market — an experiment; no edge against the closing line so far.') : ''}
       ${straights}
     </div>
     <h3>Every game</h3>
@@ -140,12 +140,18 @@ function renderProfitTab() {
   const nights = sum.perNight.map(n => `<tr${n.source === 'backfill' ? ' class="muted"' : ''}><td>${_pgDayLink(n.date)}${n.source === 'backfill' ? ' <span class="res-tag replay">backfilled</span>' : ''}</td>
     <td class="num">${n.parlays.n ? `${n.parlays.won}/${n.parlays.n}` : '—'}</td><td class="num">${n.legs.n ? `${n.legs.won}/${n.legs.n}` : '—'}</td><td class="num">${_pgMoney(n.profit)}</td><td class="num">${n.running == null ? '—' : _pgMoney(n.running)}</td></tr>`).join('');
   const expPct = A.expN && A.staked ? A.expected / (A.expN * S.stake) : null;
+  const luck = all25Luck(sum.nights.filter(n => n.source === 'live'), 5000, 7);
+  const odds1in = luck.share > 0 ? Math.round(1 / luck.share) : null;
+  const luckLine = luck.n ? (luck.z >= 1.5
+      ? ` Simulating every game at those same chances (parlays and their legs share results), a run this good came up in ${(luck.share * 100).toFixed(1)}% of trials${odds1in ? ` — about 1 in ${odds1in}` : ''}, ${luck.z.toFixed(1)} standard errors above expectation. That is a lucky stretch, not evidence of an edge: heavy favourites have won more often than their prices said this season, and past seasons don't show that lasting.`
+      : ` Simulating every game at those same chances, the result is ${luck.z >= 0 ? luck.z.toFixed(1) + ' standard errors above' : Math.abs(luck.z).toFixed(1) + ' standard errors below'} expectation — inside ordinary luck.`)
+    : '';
   return `<div class="ledger pg">
     <div class="pg-hero"><div class="pg-hero-t">$${S.stake} on every parlay and leg since ${_pgDay(S.firstNight)}</div>
       <div class="pg-hero-v">${_pgMoney(A.profit)}</div>
       <div class="pg-hero-s">${A.won} of ${A.n} bets won · $${A.staked} staked · ROI ${_pgRoi(A.roi)} · ${L.nights} recorded nights</div></div>
     ${_pgRunningChart(sum.perNight)}
-    <div class="pg-note"><b>Read this before the number.</b> At the prices we took, the market's own chances expected ${_pgMoney(A.expected)}${expPct != null ? ` (${_pgRoi(expPct)})` : ''} on these bets; the price check against Pinnacle (shop-2) put them at about −3.4% expected value. So the profit so far is ahead of expectation by luck, about one standard error — not a proven edge.</div>
+    <div class="pg-note"><b>Read this before the number.</b> At the prices we took, the market's own chances expected ${_pgMoney(A.expected)}${expPct != null ? ` (${_pgRoi(expPct)})` : ''} on these bets, and the price check against Pinnacle's sharper line (shop-2, Nov 8–18) put the same bets about 4% below fair.${luckLine}</div>
     <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Recorded nights</th><th class="num">Won</th><th class="num">Staked</th><th class="num">Profit</th><th class="num">ROI</th></tr>
       ${row('Parlays', L.parlays, true)}${by(L.parlaysBy)}${row('Legs', L.legs, true)}${by(L.legsBy)}${row('All', A, true)}</table></div>
     <p class="muted pg-small">Floor tickets and prop legs aren't in the dollars — no price was recorded (FanDuel's ladder doesn't reach our floor lines): ${A.unpriced.won} of ${A.unpriced.n} won${A.unpriced.n ? `, ${_pgMoney(A.unpriced.atFair)} at our own fair price` : ''}; a real book would pay less.
@@ -181,6 +187,6 @@ function renderModelsTab() {
     <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Favourite's chance</th><th class="num">Market (close)</th><th class="num">Our model</th></tr>${cal}</table></div>
     <h3>Week by week: Brier, model − close</h3>
     <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Week</th><th class="num">Games</th><th class="num">Our model</th><th class="num">NB.AI</th></tr>${weeks}</table></div>
-    <p class="muted pg-small">The leak-free replay of the whole season (Research → Results by Day → Replay) tells the same story: the model is level with the close. Its one consistent signal is anticipating line moves from the open, and most of that is timing — see RESEARCH_GAPS.md.</p>
+    <p class="muted pg-small">The leak-free replay of the whole season (Research → Results by Day → Replay) tells the same story: the model is level with the close. It often agrees early with where the line ends up, but most of that comes from seeing injury news the opening price didn't have, not from knowing more than the market.</p>
   </div>`;
 }
