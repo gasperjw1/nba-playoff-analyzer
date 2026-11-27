@@ -525,6 +525,7 @@ function renderPitchTab() {
     ${renderPitch3Section()}
     ${renderFlatSection()}
     ${renderFadeSection()}
+    ${renderBackfillSummary()}
     <h3>Floor and edge tickets — spec ${S.version}</h3>
     <p class="muted">Two tickets a night under spec ${S.version} (frozen ${S.frozen}, judged from ${S.firstNight}): a floor ticket, the main recipe, and an edge ticket, an experiment. Your daily run records them before any leg tips and grades them the next morning, so each recipe earns its own record. Shown chances are the calibrated or evidence-adjusted ones, not the model's raw claims. Unproven; it never sizes a stake.</p>
     <p class="muted">${recorded ? `Recorded ${recorded.recordedAt ? seasonFmtTime(recorded.recordedAt) : ''} for ${recorded.date} (${recorded.source || 'slate'}).` : `<span class="warn">Preview from the current slate — not recorded yet; your daily run records tonight's pitch.</span>`}</p>
@@ -604,12 +605,76 @@ function seasonLabRefreshResult() {
 
 // Live = the ledger (recorded before tip-off). Replay = replay-season.js's walk-forward rows,
 // predicted after the fact from data published before each game; never mixed with the ledger.
-const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['oursAdj', 'Ours · opp-adj'], ['nbai', 'NB.AI'], ['market', 'Market']];
+const SEASON_RESULT_MODELS_LIVE = [['ours', 'Ours'], ['oursClean', 'Ours · 2025-26'], ['oursAdj', 'Ours · opp-adj'], ['nbai', 'NB.AI'], ['walk', 'Claude (walk)'], ['market', 'Market']];
 const SEASON_RESULT_MODELS_REPLAY = [['ours', 'Ours'], ['oursPre', 'Ours + preseason'], ['oursAdj', 'Ours · opp-adj'], ['market', 'Market']];
 function seasonResultModels() { return seasonState.results.mode === 'replay' ? SEASON_RESULT_MODELS_REPLAY : SEASON_RESULT_MODELS_LIVE; }
 function seasonResultsRows() {
-  if (seasonState.results.mode !== 'replay') return loadSeasonLedger();
+  if (seasonState.results.mode !== 'replay') { const live = loadSeasonLedger(); return live.concat(seasonBackfillRows(live)); }
   return typeof SEASON_REPLAY !== 'undefined' && SEASON_REPLAY && Array.isArray(SEASON_REPLAY.rows) ? SEASON_REPLAY.rows : [];
+}
+
+// Days the daily record did not run, rebuilt after the fact (js/season/data/season-backfill.js):
+// the leak-free replay's prediction, DraftKings' close and the final, with each night's tickets
+// rebuilt by the frozen ticket code. Shown on the results page tagged "Backfilled"; never counted in
+// the season totals, the Ledger tab or any ticket record (those read only the recorded ledgers).
+function seasonBackfillRows(live) {
+  if (typeof SEASON_BACKFILL === 'undefined' || !SEASON_BACKFILL || !Array.isArray(SEASON_BACKFILL.rows)) return [];
+  const have = new Set((live || []).map(r => String(r.id)));
+  return SEASON_BACKFILL.rows.filter(r => !have.has(String(r.id)));
+}
+function seasonBackfillNight(date) {
+  return typeof SEASON_BACKFILL !== 'undefined' && SEASON_BACKFILL && Array.isArray(SEASON_BACKFILL.nights) ? SEASON_BACKFILL.nights.find(n => n.date === date) || null : null;
+}
+const _bfMoney = (v) => `${v >= 0 ? '+' : '−'}$${Math.abs(v).toFixed(2)}`;
+const _bfMl = (o) => o == null ? '—' : o > 0 ? '+' + o : String(o);
+const _bfOut = (hit) => hit == null ? '<span class="muted">open</span>' : hit ? '<span class="res-mark ok">✓</span>' : '<span class="res-mark bad">✗</span>';
+
+// One backfilled night's tickets, graded: what the daily record would have pitched.
+function renderBackfillTickets(n) {
+  if (!n) return '';
+  const stake = typeof SEASON_FLAT_SPEC !== 'undefined' ? SEASON_FLAT_SPEC.stake : 25;
+  const profit = (odds, hit) => typeof flatProfit === 'function' ? flatProfit(odds, hit, stake) : 0;
+  const line = [];
+  for (const t of n.pitch1 || []) {
+    const name = t.recipe === 'floor' ? 'Floor ticket (pitch-1)' : 'Edge ticket (pitch-1)';
+    if (t.status !== 'pitched') { line.push(`<li><b>${name}</b>: <span class="muted">no ticket — ${t.reason}</span></li>`); continue; }
+    const legs = t.legs.map(l => l.type === 'prop'
+      ? `${l.name} ${l.stat.toUpperCase()} o${l.line}${l.result ? ` ${_bfOut(l.result.outcome === 'void' ? null : l.result.outcome === 'hit')}${l.result.actual != null ? ' ' + l.result.actual : ''}` : ''}`
+      : `${l.team} ${_bfMl(l.odds)} ${l.result ? _bfOut(l.result.outcome === 'hit') : ''}`).join(' · ');
+    const won = t.result ? t.result.outcome === 'win' : null;
+    line.push(`<li><b>${name}</b>: ${legs} → ${_bfOut(won)} ${t.result ? t.result.outcome : ''}${t.price != null ? ` <span class="muted">at ${_bfMl(t.price)}</span>` : t.fairAmerican != null ? ` <span class="muted">fair ${_bfMl(t.fairAmerican)}, no price on file</span>` : ''}</li>`);
+  }
+  const f = n.pitch2;
+  if (f) line.push(f.status === 'pitched'
+    ? `<li><b>Favourites ticket (pitch-2, ${f.label})</b>: ${f.legs.map(l => `${l.team} ${_bfMl(l.odds)} ${_bfOut(l.result && l.result.outcome === 'hit')}`).join(' · ')} → ${_bfOut(f.result && f.result.outcome === 'win')} <span class="muted">at ${_bfMl(f.price)}</span></li>`
+    : `<li><b>Favourites ticket (pitch-2)</b>: <span class="muted">no ticket — ${f.reason}</span></li>`);
+  const p3 = n.pitch3 || { legs: [] };
+  line.push(`<li><b>Edge straights (pitch-3)</b>: ${p3.legs.length ? p3.legs.map(l => `${l.team} ${_bfMl(l.odds)} <span class="muted">(${(l.edge * 100).toFixed(1)} pts, ${l.tier})</span> ${_bfOut(l.hit)} <span class="muted">${_bfMoney(profit(l.odds, l.hit))}</span>`).join(' · ') : '<span class="muted">none (no 5+ pt gap)</span>'}${p3.pair ? `<br><b>Pair</b>: ${p3.pair.legs.map(l => l.team).join(' + ')} ${_bfMl(p3.pair.odds)} ${_bfOut(p3.pair.hit)} <span class="muted">${_bfMoney(profit(p3.pair.odds, p3.pair.hit))}</span>` : ''}</li>`);
+  const fl = n.flat || [];
+  const flTotal = fl.reduce((s, b) => s + profit(b.odds, b.hit), 0);
+  line.push(`<li><b>Flat $${stake} favourites (flat-1)</b>: ${fl.length ? fl.map(b => `${b.team} ${_bfMl(b.odds)} ${_bfOut(b.hit)}`).join(' · ') + ` <span class="muted">→ ${_bfMoney(flTotal)}</span>` : '<span class="muted">none in the rule</span>'}</li>`);
+  return `<section class="res-block"><h3 class="res-h">Tickets the daily run would have made <span class="muted">backfilled · not in any record</span></h3><ul class="res-legend">${line.join('')}</ul></section>`;
+}
+
+// The Pitch tab's view of the backfilled nights: one line a night, then the totals.
+function renderBackfillSummary() {
+  if (typeof SEASON_BACKFILL === 'undefined' || !SEASON_BACKFILL || !Array.isArray(SEASON_BACKFILL.nights) || !SEASON_BACKFILL.nights.length) return '';
+  const B = SEASON_BACKFILL, S = B.summary || {}, stake = typeof SEASON_FLAT_SPEC !== 'undefined' ? SEASON_FLAT_SPEC.stake : 25;
+  const profit = (odds, hit) => typeof flatProfit === 'function' ? flatProfit(odds, hit, stake) : 0;
+  const tk = (t) => !t || t.status !== 'pitched' ? '<span class="muted">—</span>' : t.result ? (t.result.outcome === 'win' ? '<span class="pos">won</span>' : t.result.outcome === 'loss' ? '<span class="neg">lost</span>' : 'void') : 'open';
+  const rows = B.nights.map(n => {
+    const fl = n.pitch1.find(t => t.recipe === 'floor'), ed = n.pitch1.find(t => t.recipe === 'edge'), p3 = n.pitch3 || { legs: [] };
+    const p3won = p3.legs.filter(l => l.hit).length, p3pl = p3.legs.reduce((s, l) => s + profit(l.odds, l.hit), 0) + (p3.pair ? profit(p3.pair.odds, p3.pair.hit) : 0);
+    const flpl = (n.flat || []).reduce((s, b) => s + profit(b.odds, b.hit), 0);
+    return `<tr><td><a href="#results/${n.date}" onclick="seasonState.tab='results';seasonResultsMode('live');seasonResultsGo('${n.date}');return false;">${seasonFmtDay(n.date)}</a></td><td>${tk(fl)}</td><td>${tk(ed)}</td><td>${tk(n.pitch2)}${n.pitch2 && n.pitch2.label ? ` <span class="muted">${n.pitch2.label}</span>` : ''}</td>
+      <td class="num">${p3.legs.length ? `${p3won}/${p3.legs.length}` : '—'}${p3.pair ? ` + pair ${p3.pair.hit ? '✓' : '✗'}` : ''} <span class="muted">${p3.legs.length ? _bfMoney(p3pl) : ''}</span></td>
+      <td class="num">${(n.flat || []).filter(b => b.hit).length}/${(n.flat || []).length} <span class="muted">${_bfMoney(flpl)}</span></td></tr>`;
+  }).join('');
+  const rec = (r) => r ? `${r.won}/${r.n} · ${_bfMoney(r.profit)} on $${r.staked}` : '—';
+  return `<h3>Backfilled nights — ${seasonFmtDay(B.from)} to ${seasonFmtDay(B.to)} <span class="res-tag replay">not in any record</span></h3>
+    <p class="muted">The daily run didn't record these nights. Each night's tickets were rebuilt afterwards by the same frozen rules, on the leak-free replay's slate (box scores from before the day, the official injury report 60+ minutes before tip), "recorded" an hour before the first tip and priced at DraftKings' close, then graded from the finals. Hindsight-free inputs, but not recorded before tip, so they stay out of every record above and below. Click a date for that night on Results by day.</p>
+    <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Night</th><th>Floor</th><th>Edge</th><th>Favourites</th><th class="num">Edge straights (pitch-3)</th><th class="num">Flat $${stake}</th></tr>${rows}</table></div>
+    <p class="muted">Totals: floor ${S.floor ? `${S.floor.won}/${S.floor.n}` : '—'} · edge ${S.edge ? `${S.edge.won}/${S.edge.n} (${S.edge.units >= 0 ? '+' : ''}${S.edge.units}u)` : '—'} · favourites ${S.favourites ? `${S.favourites.won}/${S.favourites.n} (${S.favourites.units >= 0 ? '+' : ''}${S.favourites.units}u)` : '—'} · pitch-3 straights ${rec(S.pitch3Straights)} · pairs ${rec(S.pitch3Pairs)} · flat ${rec(S.flat)}.</p>`;
 }
 function seasonResultsMode(mode) {
   Object.assign(seasonState.results, { mode, date: null, calOpen: false, calMonth: null });
@@ -630,6 +695,7 @@ function seasonModelCalls(r) {
     oursClean: call(r.pOursClean, r.marginOursClean),
     oursAdj: call(r.pOursAdj, r.marginOursAdj),
     nbai: call(r.pFriend, null),
+    walk: call(r.pWalk, null),
     market: call(r.pMarket, num(r.spreadHome) ? -r.spreadHome : null),
   };
 }
@@ -662,7 +728,8 @@ function seasonResultsByDay(rows) {
     });
     const best = Math.min(...Object.values(calls).filter(Boolean).map(c => c.errShown));
     const g = { row: r, actual, calls, closest: Object.keys(calls).filter(k => calls[k] && calls[k].errShown === best) };
-    day.games.push(g); add(day.summary, g); add(season, g);
+    day.games.push(g); add(day.summary, g);
+    if (r.source !== 'backfill') add(season, g);           // backfilled days show their own scores only
   });
   const days = Object.values(byDate).filter(d => d.games.length).sort((a, b) => b.date.localeCompare(a.date))
     .map(d => ({ ...d, source: d.sources.size === 1 ? [...d.sources][0] : 'mixed' }));
@@ -681,8 +748,10 @@ function renderResultsTab() {
   if (!days.length) return `<div class="results">${modeBar}<div class="home-empty">${replay ? 'No replay rows yet — run <code>node replay-season.js</code>.' : 'No settled games yet. Results appear here the morning after a slate is settled (<code>./season-daily.sh</code>).'}</div></div>`;
   const d = seasonResultsSelected(days);
   const asc = days.map(x => x.date).sort(), i = asc.indexOf(d.date);
-  const nGames = days.reduce((n, x) => n + x.games.length, 0);
-  const tag = d.source === 'replay' ? '<span class="res-tag replay">Replay</span>' : d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  const counted = days.filter(x => x.source !== 'backfill');
+  const nGames = counted.reduce((n, x) => n + x.games.length, 0);
+  const tag = d.source === 'replay' ? '<span class="res-tag replay">Replay</span>' : d.source === 'backfill' ? '<span class="res-tag replay">Backfilled after the fact</span>' : d.source === 'espn' ? '<span class="res-tag">ESPN fallback · no NB.AI</span>' : d.source === 'mixed' ? '<span class="res-tag">partly ESPN fallback</span>' : '';
+  const backfillNote = d.source === 'backfill' ? `<p class="res-banner"><b>Backfilled</b> — the daily run didn't record this day, so it was rebuilt afterwards: <b>Ours · 2025-26</b> is the leak-free replay (only box scores from before the day and the official injury report 60+ minutes before tip), <b>Claude (walk)</b> is Claude's pick written day by day before that day's results were fetched, and <b>Market</b> is DraftKings' close. Shown for completeness; not counted in the season totals or any live record.</p>` : '';
   const r = seasonState.results;
   return `<div class="results">
     ${modeBar}
@@ -695,9 +764,11 @@ function renderResultsTab() {
       <button class="res-arrow" onclick="seasonResultsStep(1)"${i < asc.length - 1 ? '' : ' disabled'} aria-label="Next day" title="Next day (→)">›</button>
       <span class="res-meta"><span class="muted">${d.games.length} game${d.games.length === 1 ? '' : 's'}${d.pending ? ` · ${d.pending} unsettled` : ''} · day ${i + 1} of ${asc.length}</span>${tag}</span>
     </div>
+    ${backfillNote}
     ${seasonResultsDay(d)}
+    ${d.source === 'backfill' ? renderBackfillTickets(seasonBackfillNight(d.date)) : ''}
     <section class="res-block res-season">
-      <h3 class="res-h">Season to date <span class="muted">${nGames} games · ${days.length} day${days.length === 1 ? '' : 's'}</span></h3>
+      <h3 class="res-h">Season to date <span class="muted">${nGames} games · ${counted.length} day${counted.length === 1 ? '' : 's'}${counted.length < days.length ? ` · ${days.length - counted.length} backfilled day${days.length - counted.length === 1 ? '' : 's'} not counted` : ''}</span></h3>
       ${seasonResultsScoreboard(season)}
       <ul class="res-legend">
         <li><b>Winner</b> ✓/✗: did the side the model gave over 50% win? The % is that side's win probability.</li>
@@ -755,7 +826,7 @@ function seasonResultsCalendar(days, selected, unsettledDates) {
   for (let k = 0; k < lead; k++) cells.push('<span></span>');
   for (let day = 1; day <= len; day++) {
     const iso = `${month}-${String(day).padStart(2, '0')}`, d = byDate[iso];
-    if (d) cells.push(`<button class="res-cal-day has${iso === selected ? ' sel' : ''}" onclick="seasonResultsGo('${iso}')" title="${d.games.length} game${d.games.length === 1 ? '' : 's'} · Ours ${d.summary.ours.winners}/${d.summary.ours.n}">${day}</button>`);
+    if (d) cells.push(`<button class="res-cal-day has${iso === selected ? ' sel' : ''}" onclick="seasonResultsGo('${iso}')" title="${d.games.length} game${d.games.length === 1 ? '' : 's'} · ${d.source === 'backfill' ? `backfilled · Ours · 2025-26 ${d.summary.oursClean.winners}/${d.summary.oursClean.n}` : `Ours ${d.summary.ours.winners}/${d.summary.ours.n}`}">${day}</button>`);
     else cells.push(`<span class="res-cal-day${unsettled.has(iso) ? ' wait' : ''}"${unsettled.has(iso) ? ' title="Recorded — not settled yet"' : ''}>${day}</span>`);
   }
   const label = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(Date.UTC(y, m - 1, 1)));
@@ -784,6 +855,7 @@ function seasonResultsScoreboard(sum) {
     <tr><th>Model</th><th>Winners picked</th><th>Avg margin miss</th><th>Closest on margin</th></tr>
     ${seasonResultModels().map(([k, label]) => {
       const s = sum[k];
+      if (!s.n && k === 'walk') return '';                  // only on backfilled days
       if (!s.n) return `<tr class="res-none"><td>${label}</td><td colspan="3">no forecasts</td></tr>`;
       return `<tr><td>${label}</td>
         <td>${lead(pct(k) === top.pct, `${s.winners} of ${s.n}`)} <span class="muted">${pct(k)}%</span></td>
