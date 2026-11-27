@@ -2,6 +2,12 @@
 
 Deferred work, newest first. Each item says why it waits and what done looks like.
 
+## Research queue (RESEARCH_GAPS.md)
+
+Written 2026-11-26 from the gaps review. The order: early price capture (R1), the pre-registered
+big-line-move study `move-1` (R2), injury-news timing (R3), a watch list with re-check points (R4),
+fewer trackers (R5), data quality (R6). The details and the "done when" for each are in the file.
+
 ## Odds feed for player props (pulls built: ODDS_SPEC.md, `odds-1`)
 
 Tabled 2026-11-07; resumed 2026-11-08 on The Odds API's $30 plan (20,000 credits a month), shared with

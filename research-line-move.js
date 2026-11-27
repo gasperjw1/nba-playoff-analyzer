@@ -185,4 +185,5 @@ function main() {
   const r3 = q3(S.games, T_MAIN); console.log(`season fade 8+: n ${r3.n}, won ${r3.won}, ${f2(r3.units)} units`);
 }
 
-main();
+if (require.main === module) main();
+module.exports = { setA, setB, setSeason, game, q1, q3, slope, direction, noVig, powerFair };
