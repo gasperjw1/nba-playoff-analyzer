@@ -7822,7 +7822,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.297Z",
-  "result": null
+  "result": {
+   "homeScore": 105,
+   "awayScore": 115,
+   "settledAt": "2026-11-17T14:37:19.136Z"
+  },
+  "close": {
+   "mlHome": -358,
+   "mlAway": 286,
+   "spreadHome": -8.5,
+   "total": 212.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -426,
+    "mlAway": 333,
+    "spreadHome": -9.5,
+    "total": 211.5
+   }
+  }
  },
  {
   "id": "401909995",
@@ -7934,7 +7951,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.298Z",
-  "result": null
+  "result": {
+   "homeScore": 126,
+   "awayScore": 115,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": -327,
+   "mlAway": 263,
+   "spreadHome": -8.5,
+   "total": 241.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -400,
+    "mlAway": 315,
+    "spreadHome": -10.5,
+    "total": 241.5
+   }
+  }
  },
  {
   "id": "401909996",
@@ -8046,7 +8080,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.299Z",
-  "result": null
+  "result": {
+   "homeScore": 120,
+   "awayScore": 136,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": 143,
+   "mlAway": -170,
+   "spreadHome": 3.5,
+   "total": 231.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 185,
+    "mlAway": -223,
+    "spreadHome": 6.5,
+    "total": 230.5
+   }
+  }
  },
  {
   "id": "401909997",
@@ -8158,7 +8209,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.300Z",
-  "result": null
+  "result": {
+   "homeScore": 123,
+   "awayScore": 135,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": 191,
+   "mlAway": -230,
+   "spreadHome": 5.5,
+   "total": 227.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 172,
+    "mlAway": -207,
+    "spreadHome": 5.5,
+    "total": 226.5
+   }
+  }
  },
  {
   "id": "401909998",
@@ -8270,7 +8338,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.301Z",
-  "result": null
+  "result": {
+   "homeScore": 128,
+   "awayScore": 110,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": 102,
+   "mlAway": -120,
+   "spreadHome": 1.5,
+   "total": 233.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 119,
+    "mlAway": -141,
+    "spreadHome": 2.5,
+    "total": 228.5
+   }
+  }
  },
  {
   "id": "401909999",
@@ -8382,7 +8467,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.301Z",
-  "result": null
+  "result": {
+   "homeScore": 106,
+   "awayScore": 98,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": -130,
+   "mlAway": 110,
+   "spreadHome": -2.5,
+   "total": 227.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -143,
+    "mlAway": 121,
+    "spreadHome": -3.5,
+    "total": 228.5
+   }
+  }
  },
  {
   "id": "401910000",
@@ -8494,7 +8596,24 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.302Z",
-  "result": null
+  "result": {
+   "homeScore": 115,
+   "awayScore": 94,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": 142,
+   "mlAway": -170,
+   "spreadHome": 3.5,
+   "total": 223.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 111,
+    "mlAway": -131,
+    "spreadHome": 2.5,
+    "total": 226.5
+   }
+  }
  },
  {
   "id": "401910001",
@@ -8606,6 +8725,1616 @@ const SEASON_LEDGER = [
   "source": "nb.ai",
   "engine": "2026-11-07.rotcap",
   "recordedAt": "2026-11-16T16:59:43.303Z",
-  "result": null
+  "result": {
+   "homeScore": 105,
+   "awayScore": 117,
+   "settledAt": "2026-11-17T14:37:19.137Z"
+  },
+  "close": {
+   "mlHome": -426,
+   "mlAway": 333,
+   "spreadHome": -9.5,
+   "total": 229.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -370,
+    "mlAway": 294,
+    "spreadHome": -10.5,
+    "total": 228.5
+   }
+  }
+ },
+ {
+  "id": "401910007",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:00Z",
+  "home": "CLE",
+  "away": "MEM",
+  "pOurs": 0.5437,
+  "marginOurs": 1.37,
+  "totalOurs": 235.7,
+  "pOursClean": 0.6399,
+  "marginOursClean": 4.48,
+  "totalOursClean": 234.4,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.3601,
+   "ml": 164,
+   "implied": 0.3788,
+   "edge": -0.0187,
+   "gap": -0.02,
+   "driver": null,
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 4.38,
+    "current": -2.87,
+    "absent": -0.6,
+    "change": 1.98,
+    "aging": -0.49,
+    "fit": 0.08,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "CLE",
+   "away": "MEM",
+   "tip": "2026-11-19T00:00Z",
+   "pEve": 0.6393,
+   "pNow": 0.6388,
+   "marginEve": 4.46,
+   "marginNow": 4.44,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 4.38,
+    "current": -2.87,
+    "absent": -0.33,
+    "change": 1.71,
+    "aging": -0.48,
+    "fit": 0.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 4.38,
+    "current": -2.87,
+    "absent": -0.47,
+    "change": 1.81,
+    "aging": -0.49,
+    "fit": 0.08,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.5437,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 1.37,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -2.42,
+    "nB2b": 3,
+    "nRest": 12,
+    "n": 15
+   },
+   "away": {
+    "b2b": false,
+    "split": 0.172,
+    "nB2b": 2,
+    "nRest": 12,
+    "n": 14
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.5437
+  },
+  "pFriend": 0.6227,
+  "pMarket": 0.6361,
+  "pBlend": 0.5837,
+  "mlHome": -196,
+  "mlAway": 164,
+  "spreadHome": -4.5,
+  "totalMarket": 238.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.661Z",
+  "result": {
+   "homeScore": 121,
+   "awayScore": 124,
+   "settledAt": "2026-11-23T17:51:53.648Z"
+  },
+  "close": {
+   "mlHome": -185,
+   "mlAway": 155,
+   "spreadHome": -4.5,
+   "total": 239.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -196,
+    "mlAway": 164,
+    "spreadHome": -5.5,
+    "total": 236.5
+   }
+  }
+ },
+ {
+  "id": "401910008",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:00Z",
+  "home": "IND",
+  "away": "HOU",
+  "pOurs": 0.2993,
+  "marginOurs": -6.58,
+  "totalOurs": 228.5,
+  "pOursClean": 0.2878,
+  "marginOursClean": -7,
+  "totalOursClean": 227.2,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.2878,
+   "ml": 247,
+   "implied": 0.2882,
+   "edge": -0.0004,
+   "gap": 0.5,
+   "driver": "rest",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -5.71,
+    "current": -4.62,
+    "absent": 1.09,
+    "change": -0.03,
+    "aging": -0.44,
+    "fit": 0.21,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "IND",
+   "away": "HOU",
+   "tip": "2026-11-19T00:00Z",
+   "pEve": 0.2889,
+   "pNow": 0.2797,
+   "marginEve": -6.96,
+   "marginNow": -7.3,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -5.71,
+    "current": -4.62,
+    "absent": 1.03,
+    "change": 0.07,
+    "aging": -0.44,
+    "fit": 0.21,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -5.71,
+    "current": -4.62,
+    "absent": 0.74,
+    "change": 0.12,
+    "aging": -0.42,
+    "fit": 0.09,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.2896,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": -6.93,
+   "changes": [
+    {
+     "team": "IND",
+     "name": "Andrew Nembhard",
+     "from": "Questionable",
+     "to": "Out"
+    }
+   ]
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -1.104,
+    "nB2b": 2,
+    "nRest": 12,
+    "n": 14
+   },
+   "away": {
+    "b2b": false,
+    "split": -3.342,
+    "nB2b": 3,
+    "nRest": 12,
+    "n": 15
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.2993
+  },
+  "pFriend": 0.3867,
+  "pMarket": 0.2769,
+  "pBlend": 0.3417,
+  "mlHome": 247,
+  "mlAway": -304,
+  "spreadHome": 7.5,
+  "totalMarket": 225.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.662Z",
+  "result": {
+   "homeScore": 104,
+   "awayScore": 119,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": 262,
+   "mlAway": -326,
+   "spreadHome": 7.5,
+   "total": 224.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 217,
+    "mlAway": -264,
+    "spreadHome": 7.5,
+    "total": 224.5
+   }
+  }
+ },
+ {
+  "id": "401910009",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:00Z",
+  "home": "MIA",
+  "away": "MIL",
+  "pOurs": 0.8565,
+  "marginOurs": 13.31,
+  "totalOurs": 234,
+  "pOursClean": 0.8374,
+  "marginOursClean": 12.3,
+  "totalOursClean": 232.7,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.1626,
+   "ml": 487,
+   "implied": 0.1704,
+   "edge": -0.0078,
+   "gap": 0.8,
+   "driver": "change",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 3.81,
+    "current": 5.85,
+    "absent": 0.4,
+    "change": 0.45,
+    "aging": -0.21,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "MIA",
+   "away": "MIL",
+   "tip": "2026-11-19T00:00Z",
+   "pEve": 0.818,
+   "pNow": 0.8374,
+   "marginEve": 11.35,
+   "marginNow": 12.3,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 3.81,
+    "current": 5.85,
+    "absent": -0.2,
+    "change": 0.27,
+    "aging": -0.27,
+    "fit": -0.11,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 3.81,
+    "current": 5.85,
+    "absent": 0.4,
+    "change": 0.45,
+    "aging": -0.21,
+    "fit": 0,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.8565,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 13.31,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -1.104,
+    "nB2b": 3,
+    "nRest": 11,
+    "n": 14
+   },
+   "away": {
+    "b2b": false,
+    "split": 2.769,
+    "nB2b": 2,
+    "nRest": 12,
+    "n": 14
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.8565
+  },
+  "pFriend": 0.738,
+  "pMarket": 0.8363,
+  "pBlend": 0.8039,
+  "mlHome": -670,
+  "mlAway": 487,
+  "spreadHome": -11.5,
+  "totalMarket": 236.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.663Z",
+  "result": {
+   "homeScore": 137,
+   "awayScore": 130,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -700,
+   "mlAway": 504,
+   "spreadHome": -11.5,
+   "total": 235.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -770,
+    "mlAway": 539,
+    "spreadHome": -12.5,
+    "total": 236.5
+   }
+  }
+ },
+ {
+  "id": "401910010",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:00Z",
+  "home": "ORL",
+  "away": "PHI",
+  "pOurs": 0.4124,
+  "marginOurs": -2.77,
+  "totalOurs": 224,
+  "pOursClean": 0.4512,
+  "marginOursClean": -1.53,
+  "totalOursClean": 224.3,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.5488,
+   "ml": -104,
+   "implied": 0.5098,
+   "edge": 0.039,
+   "gap": -3.03,
+   "driver": "current",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 0.32,
+    "current": -2.5,
+    "absent": -0.66,
+    "change": -1.39,
+    "aging": -0.15,
+    "fit": 0.35,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "ORL",
+   "away": "PHI",
+   "tip": "2026-11-19T00:00Z",
+   "pEve": 0.4414,
+   "pNow": 0.4521,
+   "marginEve": -1.84,
+   "marginNow": -1.5,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": 0.32,
+    "current": -2.5,
+    "absent": -0.56,
+    "change": -1.9,
+    "aging": -0.15,
+    "fit": 0.45,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 0.32,
+    "current": -2.5,
+    "absent": -0.66,
+    "change": -1.39,
+    "aging": -0.15,
+    "fit": 0.38,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.4124,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": -2.77,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": 2.723,
+    "nB2b": 2,
+    "nRest": 11,
+    "n": 13
+   },
+   "away": {
+    "b2b": false,
+    "split": -0.884,
+    "nB2b": 3,
+    "nRest": 12,
+    "n": 15
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.4124
+  },
+  "pFriend": 0.5112,
+  "pMarket": 0.511,
+  "pBlend": 0.4614,
+  "mlHome": -114,
+  "mlAway": -104,
+  "spreadHome": -1.5,
+  "totalMarket": 222.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.663Z",
+  "result": {
+   "homeScore": 116,
+   "awayScore": 121,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -174,
+   "mlAway": 146,
+   "spreadHome": -4.5,
+   "total": 218.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 103,
+    "mlAway": -122,
+    "spreadHome": 1.5,
+    "total": 223.5
+   }
+  }
+ },
+ {
+  "id": "401910011",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:30Z",
+  "home": "BKN",
+  "away": "CHI",
+  "pOurs": 0.5677,
+  "marginOurs": 2.13,
+  "totalOurs": 235.2,
+  "pOursClean": 0.5147,
+  "marginOursClean": 0.46,
+  "totalOursClean": 233,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.4853,
+   "ml": 128,
+   "implied": 0.4386,
+   "edge": 0.0467,
+   "gap": -2.04,
+   "driver": "prior",
+   "rule": "R1",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -2.35,
+    "current": 1.61,
+    "absent": 0.05,
+    "change": -0.65,
+    "aging": -0.1,
+    "fit": -0.1,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "BKN",
+   "away": "CHI",
+   "tip": "2026-11-19T00:30Z",
+   "pEve": 0.515,
+   "pNow": 0.515,
+   "marginEve": 0.47,
+   "marginNow": 0.47,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -2.35,
+    "current": 1.61,
+    "absent": 0.05,
+    "change": -0.64,
+    "aging": -0.1,
+    "fit": -0.1,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -2.35,
+    "current": 1.61,
+    "absent": 0.05,
+    "change": -0.64,
+    "aging": -0.1,
+    "fit": -0.1,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.5677,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 2.13,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -10.345,
+    "nB2b": 3,
+    "nRest": 10,
+    "n": 13
+   },
+   "away": {
+    "b2b": false,
+    "split": 6.893,
+    "nB2b": 2,
+    "nRest": 11,
+    "n": 13
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.5677
+  },
+  "pFriend": 0.5613,
+  "pMarket": 0.579,
+  "pBlend": 0.5645,
+  "mlHome": -152,
+  "mlAway": 128,
+  "spreadHome": -2.5,
+  "totalMarket": 240.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.664Z",
+  "result": {
+   "homeScore": 107,
+   "awayScore": 137,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -124,
+   "mlAway": 105,
+   "spreadHome": -1.5,
+   "total": 239.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -152,
+    "mlAway": 128,
+    "spreadHome": -2.5,
+    "total": 237.5
+   }
+  }
+ },
+ {
+  "id": "401910012",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T00:30Z",
+  "home": "TOR",
+  "away": "WSH",
+  "pOurs": 0.6343,
+  "marginOurs": 4.29,
+  "totalOurs": 228.9,
+  "pOursClean": 0.6755,
+  "marginOursClean": 5.69,
+  "totalOursClean": 228.3,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.6755,
+   "ml": -191,
+   "implied": 0.6564,
+   "edge": 0.0191,
+   "gap": 1.19,
+   "driver": "fit",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 6.28,
+    "current": 3.48,
+    "absent": -2.42,
+    "change": -2.45,
+    "aging": 0.06,
+    "fit": 0.24,
+    "rest": -1.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "TOR",
+   "away": "WSH",
+   "tip": "2026-11-19T00:30Z",
+   "pEve": 0.754,
+   "pNow": 0.6747,
+   "marginEve": 8.59,
+   "marginNow": 5.66,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 6.32,
+    "current": 3.76,
+    "absent": 0.28,
+    "change": -2.64,
+    "aging": 0.1,
+    "fit": 0.27,
+    "rest": -1.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 6.28,
+    "current": 3.48,
+    "absent": -2.45,
+    "change": -2.45,
+    "aging": 0.06,
+    "fit": 0.24,
+    "rest": -1.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.6343,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 4.29,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": true,
+    "split": -0.681,
+    "nB2b": 2,
+    "nRest": 12,
+    "n": 14
+   },
+   "away": {
+    "b2b": false,
+    "split": -3.458,
+    "nB2b": 4,
+    "nRest": 11,
+    "n": 15
+   },
+   "feature": -0.681,
+   "shift": -0.191,
+   "pOurs": 0.6285
+  },
+  "pFriend": 0.4575,
+  "pMarket": 0.6305,
+  "pBlend": 0.5474,
+  "mlHome": -191,
+  "mlAway": 160,
+  "spreadHome": -4.5,
+  "totalMarket": 225.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.665Z",
+  "result": {
+   "homeScore": 99,
+   "awayScore": 103,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -176,
+   "mlAway": 147,
+   "spreadHome": -4.5,
+   "total": 223.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -276,
+    "mlAway": 226,
+    "spreadHome": -7.5,
+    "total": 227.5
+   }
+  }
+ },
+ {
+  "id": "401910013",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T01:00Z",
+  "home": "NO",
+  "away": "DET",
+  "pOurs": 0.4017,
+  "marginOurs": -3.11,
+  "totalOurs": 229.3,
+  "pOursClean": 0.4028,
+  "marginOursClean": -3.08,
+  "totalOursClean": 228.5,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.4028,
+   "ml": 160,
+   "implied": 0.3846,
+   "edge": 0.0182,
+   "gap": 1.42,
+   "driver": "change",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -5.65,
+    "current": -5.36,
+    "absent": 2.51,
+    "change": 1.17,
+    "aging": 0.35,
+    "fit": -0.1,
+    "rest": 2,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "NO",
+   "away": "DET",
+   "tip": "2026-11-19T01:00Z",
+   "pEve": 0.3607,
+   "pNow": 0.4028,
+   "marginEve": -4.46,
+   "marginNow": -3.08,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -5.76,
+    "current": -5.06,
+    "absent": 1.6,
+    "change": 0.56,
+    "aging": 0.33,
+    "fit": -0.13,
+    "rest": 2,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -5.65,
+    "current": -5.36,
+    "absent": 2.51,
+    "change": 1.17,
+    "aging": 0.35,
+    "fit": -0.1,
+    "rest": 2,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.4017,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": -3.11,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -4.182,
+    "nB2b": 4,
+    "nRest": 11,
+    "n": 15
+   },
+   "away": {
+    "b2b": true,
+    "split": 0.848,
+    "nB2b": 2,
+    "nRest": 11,
+    "n": 13
+   },
+   "feature": -0.848,
+   "shift": -0.237,
+   "pOurs": 0.3944
+  },
+  "pFriend": 0.4868,
+  "pMarket": 0.3695,
+  "pBlend": 0.4438,
+  "mlHome": 160,
+  "mlAway": -191,
+  "spreadHome": 4.5,
+  "totalMarket": 225.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.666Z",
+  "result": {
+   "homeScore": 109,
+   "awayScore": 122,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": 160,
+   "mlAway": -191,
+   "spreadHome": 4.5,
+   "total": 224.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 247,
+    "mlAway": -305,
+    "spreadHome": 8.5,
+    "total": 229.5
+   }
+  }
+ },
+ {
+  "id": "401910014",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T01:00Z",
+  "home": "OKC",
+  "away": "ATL",
+  "pOurs": 0.6297,
+  "marginOurs": 4.14,
+  "totalOurs": 223.7,
+  "pOursClean": 0.6624,
+  "marginOursClean": 5.24,
+  "totalOursClean": 223.5,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.3376,
+   "ml": 205,
+   "implied": 0.3279,
+   "edge": 0.0097,
+   "gap": -0.26,
+   "driver": "aging",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 3.9,
+    "current": 1.42,
+    "absent": -2.43,
+    "change": 0.44,
+    "aging": -0.24,
+    "fit": 0.15,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "OKC",
+   "away": "ATL",
+   "tip": "2026-11-19T01:00Z",
+   "pEve": 0.667,
+   "pNow": 0.667,
+   "marginEve": 5.4,
+   "marginNow": 5.4,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 3.9,
+    "current": 1.42,
+    "absent": -2.45,
+    "change": 0.67,
+    "aging": -0.24,
+    "fit": 0.1,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 3.9,
+    "current": 1.42,
+    "absent": -2.45,
+    "change": 0.67,
+    "aging": -0.24,
+    "fit": 0.1,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.6297,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 4.14,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": 4.312,
+    "nB2b": 3,
+    "nRest": 11,
+    "n": 14
+   },
+   "away": {
+    "b2b": false,
+    "split": -1.363,
+    "nB2b": 3,
+    "nRest": 11,
+    "n": 14
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.6297
+  },
+  "pFriend": 0.5812,
+  "pMarket": 0.6851,
+  "pBlend": 0.6057,
+  "mlHome": -249,
+  "mlAway": 205,
+  "spreadHome": -5.5,
+  "totalMarket": 228.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.667Z",
+  "result": {
+   "homeScore": 112,
+   "awayScore": 117,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -264,
+   "mlAway": 217,
+   "spreadHome": -6.5,
+   "total": 228.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -270,
+    "mlAway": 221,
+    "spreadHome": -7.5,
+    "total": 226.5
+   }
+  }
+ },
+ {
+  "id": "401910016",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T01:00Z",
+  "home": "DAL",
+  "away": "GS",
+  "pOurs": 0.6258,
+  "marginOurs": 4.01,
+  "totalOurs": 226.6,
+  "pOursClean": 0.6242,
+  "marginOursClean": 3.96,
+  "totalOursClean": 225.4,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.3758,
+   "ml": 164,
+   "implied": 0.3788,
+   "edge": -0.003,
+   "gap": -0.54,
+   "driver": "fit",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -2.08,
+    "current": -2.06,
+    "absent": 5.67,
+    "change": 0.58,
+    "aging": 0.1,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "DAL",
+   "away": "GS",
+   "tip": "2026-11-19T01:00Z",
+   "pEve": 0.6242,
+   "pNow": 0.6242,
+   "marginEve": 3.96,
+   "marginNow": 3.96,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": -2.08,
+    "current": -2.06,
+    "absent": 5.67,
+    "change": 0.58,
+    "aging": 0.1,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -2.08,
+    "current": -2.06,
+    "absent": 5.67,
+    "change": 0.58,
+    "aging": 0.1,
+    "fit": -0.25,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.6258,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 4.01,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -7.888,
+    "nB2b": 3,
+    "nRest": 11,
+    "n": 14
+   },
+   "away": {
+    "b2b": false,
+    "split": -2.49,
+    "nB2b": 2,
+    "nRest": 12,
+    "n": 14
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.6258
+  },
+  "pFriend": 0.5723,
+  "pMarket": 0.6365,
+  "pBlend": 0.5993,
+  "mlHome": -197,
+  "mlAway": 164,
+  "spreadHome": -4.5,
+  "totalMarket": 224.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.667Z",
+  "result": {
+   "homeScore": 116,
+   "awayScore": 94,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -197,
+   "mlAway": 164,
+   "spreadHome": -5.5,
+   "total": 223.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -208,
+    "mlAway": 173,
+    "spreadHome": -6.5,
+    "total": 221.5
+   }
+  }
+ },
+ {
+  "id": "401910015",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T02:30Z",
+  "home": "DEN",
+  "away": "BOS",
+  "pOurs": 0.396,
+  "marginOurs": -3.3,
+  "totalOurs": 227.4,
+  "pOursClean": 0.4405,
+  "marginOursClean": -1.87,
+  "totalOursClean": 228.4,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.4405,
+   "ml": 120,
+   "implied": 0.4545,
+   "edge": -0.014,
+   "gap": 0.63,
+   "driver": "rest",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -1.09,
+    "current": -4.59,
+    "absent": 0,
+    "change": 1.19,
+    "aging": -0.25,
+    "fit": 0.37,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "DEN",
+   "away": "BOS",
+   "tip": "2026-11-19T02:30Z",
+   "pEve": 0.4204,
+   "pNow": 0.4204,
+   "marginEve": -2.51,
+   "marginNow": -2.51,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -1.09,
+    "current": -4.59,
+    "absent": 0,
+    "change": 0.58,
+    "aging": -0.25,
+    "fit": 0.34,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -1.09,
+    "current": -4.59,
+    "absent": 0,
+    "change": 0.58,
+    "aging": -0.25,
+    "fit": 0.34,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.396,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": -3.3,
+   "changes": []
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": -0.092,
+    "nB2b": 0,
+    "nRest": 12,
+    "n": 12
+   },
+   "away": {
+    "b2b": false,
+    "split": -12.656,
+    "nB2b": 4,
+    "nRest": 10,
+    "n": 14
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.396
+  },
+  "pFriend": 0.4935,
+  "pMarket": 0.4365,
+  "pBlend": 0.4442,
+  "mlHome": 120,
+  "mlAway": -142,
+  "spreadHome": 2.5,
+  "totalMarket": 219.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.668Z",
+  "result": {
+   "homeScore": 105,
+   "awayScore": 101,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": 115,
+   "mlAway": -136,
+   "spreadHome": 2.5,
+   "total": 218.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 119,
+    "mlAway": -141,
+    "spreadHome": 2.5,
+    "total": 219.5
+   }
+  }
+ },
+ {
+  "id": "401910017",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T03:00Z",
+  "home": "LAL",
+  "away": "UTAH",
+  "pOurs": 0.9009,
+  "marginOurs": 16.09,
+  "totalOurs": 235.9,
+  "pOursClean": 0.8837,
+  "marginOursClean": 14.92,
+  "totalOursClean": 235.9,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "home",
+   "p": 0.8837,
+   "ml": -437,
+   "implied": 0.8138,
+   "edge": 0.0699,
+   "gap": 4.42,
+   "driver": "prior",
+   "rule": "R1",
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": 4.3,
+    "current": 6.93,
+    "absent": 1.86,
+    "change": 0.94,
+    "aging": -0.28,
+    "fit": -0.83,
+    "rest": 0,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "LAL",
+   "away": "UTAH",
+   "tip": "2026-11-19T03:00Z",
+   "pEve": 0.8606,
+   "pNow": 0.863,
+   "marginEve": 13.54,
+   "marginNow": 13.67,
+   "flip": false,
+   "side": "home",
+   "compsEve": {
+    "prior": 4.42,
+    "current": 7.76,
+    "absent": -0.79,
+    "change": 1.13,
+    "aging": -0.25,
+    "fit": -0.73,
+    "rest": 0,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": 4.3,
+    "current": 6.93,
+    "absent": -0.42,
+    "change": 2.16,
+    "aging": -0.25,
+    "fit": -1.05,
+    "rest": 0,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.8856,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": 15.05,
+   "changes": [
+    {
+     "team": "LAL",
+     "name": "Walker Kessler",
+     "from": "Probable",
+     "to": "Available"
+    },
+    {
+     "team": "LAL",
+     "name": "Austin Reaves",
+     "from": "Questionable",
+     "to": "Out"
+    },
+    {
+     "team": "UTAH",
+     "name": "Kobe Bufkin",
+     "from": "Available",
+     "to": "Out"
+    },
+    {
+     "team": "UTAH",
+     "name": "Harrison Ingram",
+     "from": "Available",
+     "to": "Out"
+    }
+   ]
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": true,
+    "split": 3.788,
+    "nB2b": 3,
+    "nRest": 12,
+    "n": 15
+   },
+   "away": {
+    "b2b": true,
+    "split": 0.231,
+    "nB2b": 2,
+    "nRest": 13,
+    "n": 15
+   },
+   "feature": 3.557,
+   "shift": 0.996,
+   "pOurs": 0.9141
+  },
+  "pFriend": 0.7231,
+  "pMarket": 0.7821,
+  "pBlend": 0.8297,
+  "mlHome": -437,
+  "mlAway": 341,
+  "spreadHome": -10.5,
+  "totalMarket": 228.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.669Z",
+  "result": {
+   "homeScore": 97,
+   "awayScore": 109,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": -545,
+   "mlAway": 411,
+   "spreadHome": -11.5,
+   "total": 229.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": -578,
+    "mlAway": 431,
+    "spreadHome": -12.5,
+    "total": 231.5
+   }
+  }
+ },
+ {
+  "id": "401910018",
+  "date": "2026-11-18",
+  "tip": "2026-11-19T03:00Z",
+  "home": "SAC",
+  "away": "PHX",
+  "pOurs": 0.2996,
+  "marginOurs": -6.57,
+  "totalOurs": 230,
+  "pOursClean": 0.2917,
+  "marginOursClean": -6.85,
+  "totalOursClean": 228.5,
+  "pOursAdj": null,
+  "marginOursAdj": null,
+  "totalOursAdj": null,
+  "trust": {
+   "side": "away",
+   "p": 0.7083,
+   "ml": -257,
+   "implied": 0.7199,
+   "edge": -0.0116,
+   "gap": 0.65,
+   "driver": "absent",
+   "rule": null,
+   "minEdge": 0.03,
+   "book": "DraftKings",
+   "comps": {
+    "prior": -5.18,
+    "current": -3.9,
+    "absent": 0.53,
+    "change": 0.08,
+    "aging": -0.09,
+    "fit": -0.79,
+    "rest": 0.5,
+    "hca": 2
+   }
+  },
+  "late": {
+   "home": "SAC",
+   "away": "PHX",
+   "tip": "2026-11-19T03:00Z",
+   "pEve": 0.2915,
+   "pNow": 0.2937,
+   "marginEve": -6.86,
+   "marginNow": -6.78,
+   "flip": false,
+   "side": "away",
+   "compsEve": {
+    "prior": -5.18,
+    "current": -3.9,
+    "absent": 0.54,
+    "change": 0.06,
+    "aging": -0.09,
+    "fit": -0.79,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "compsNow": {
+    "prior": -5.18,
+    "current": -3.9,
+    "absent": 0.61,
+    "change": 0.04,
+    "aging": -0.1,
+    "fit": -0.75,
+    "rest": 0.5,
+    "hca": 2
+   },
+   "reportEve": "Injury-Report_2026-11-17_08_30PM.pdf",
+   "reportNow": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "engine": "2026-11-07.rotcap",
+   "spec": "replay-9"
+  },
+  "pOursReport": 0.3015,
+  "report": {
+   "name": "Injury-Report_2026-11-18_05_30PM.pdf",
+   "margin": -6.5,
+   "changes": [
+    {
+     "team": "SAC",
+     "name": "Precious Achiuwa",
+     "from": "Questionable",
+     "to": "Available"
+    },
+    {
+     "team": "SAC",
+     "name": "De'Andre Hunter",
+     "from": "Questionable",
+     "to": "Available"
+    }
+   ]
+  },
+  "b2b": {
+   "spec": "b2b-1",
+   "home": {
+    "b2b": false,
+    "split": 2.601,
+    "nB2b": 0,
+    "nRest": 13,
+    "n": 13
+   },
+   "away": {
+    "b2b": false,
+    "split": 11.225,
+    "nB2b": 3,
+    "nRest": 10,
+    "n": 13
+   },
+   "feature": 0,
+   "shift": 0,
+   "pOurs": 0.2996
+  },
+  "pFriend": 0.3868,
+  "pMarket": 0.3088,
+  "pBlend": 0.3419,
+  "mlHome": 211,
+  "mlAway": -257,
+  "spreadHome": 7.5,
+  "totalMarket": 226.5,
+  "book": "DraftKings",
+  "feedVersion": "0.5",
+  "source": "nb.ai",
+  "engine": "2026-11-07.rotcap",
+  "recordedAt": "2026-11-18T22:48:02.669Z",
+  "result": {
+   "homeScore": 107,
+   "awayScore": 128,
+   "settledAt": "2026-11-23T17:51:53.649Z"
+  },
+  "close": {
+   "mlHome": 231,
+   "mlAway": -283,
+   "spreadHome": 7.5,
+   "total": 226.5,
+   "book": "DraftKings",
+   "open": {
+    "mlHome": 182,
+    "mlAway": -219,
+    "spreadHome": 6.5,
+    "total": 229.5
+   }
+  }
  }
 ];
