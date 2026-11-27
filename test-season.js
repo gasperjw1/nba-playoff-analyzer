@@ -1994,6 +1994,14 @@ console.log('TEST 41: main pages and the models-vs-market scoreboard (pages.js, 
   c.loadSeasonLedger = () => rows;
   const profit = c.renderProfitTab();
   assert(profit.includes('on every parlay and leg since') && profit.includes('Read this before the number') && profit.includes('+$16.67'), 'Profit page renders the total (−150 win = +$16.67) with the expectation note');
+  assert(!profit.includes('Backfilled nights —'), 'no backfill section without backfilled nights');
+  // A backfilled night: a +120 ticket won (+$30) and its −110 leg won (+$22.73) → +$52.73 apart; combined with the recorded +$16.67 + leg.
+  c.SEASON_BACKFILL = { nights: [{ date: '2026-11-21', pitch1: [], pitch3: { legs: [], pair: null },
+    pitch2: { status: 'pitched', price: 120, legs: [{ type: 'ml', game: 'b1', side: 'home', team: 'B', odds: -110, pNoVig: 0.5, result: { outcome: 'hit' } }], result: { outcome: 'win' } } }] };
+  const pb = c.renderProfitTab(), recTotal = c.seasonAll25Summary(rows, [], c.SEASON_PITCH2_LEDGER, null).live.all.profit;
+  const combined = (recTotal + 30 + 250 / 11).toFixed(2);
+  assert(pb.includes('Backfilled nights — ') && pb.includes('not in the total above') && pb.includes('+$52.73') && pb.includes(`+$${combined}`), `backfill section: its own total (+$52.73) and the combined total (+$${combined})`);
+  c.SEASON_BACKFILL = null;
   assert(c.renderModelsTab().includes('Models vs market') && c.renderModelsTab().includes('Our model'), 'Models page renders the scoreboard');
   c.seasonState.slate = c.SEASON_SLATE_SNAPSHOT;
   const today = c.renderTodayTab();

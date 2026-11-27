@@ -137,7 +137,7 @@ function renderProfitTab() {
   const row = (label, t, bold) => `<tr><td>${bold ? `<b>${label}</b>` : label}</td><td class="num">${t.n ? `${t.won}/${t.n}` : '—'}</td><td class="num">${t.staked ? '$' + t.staked : '—'}</td><td class="num">${t.n ? _pgMoney(t.profit) : '—'}</td><td class="num">${_pgRoi(t.roi)}</td></tr>`;
   const by = (o) => Object.entries(o).filter(([, t]) => t.n).map(([k, t]) => row(`&nbsp;&nbsp;${NAME[k] || k}`, t)).join('');
   const flat = typeof seasonFlatSummary === 'function' ? seasonFlatSummary(rows, typeof SEASON_USER_LEGS !== 'undefined' ? SEASON_USER_LEGS : [], typeof SEASON_PITCH2_LEDGER !== 'undefined' ? SEASON_PITCH2_LEDGER : []).ledger.clean : null;
-  const nights = sum.perNight.map(n => `<tr${n.source === 'backfill' ? ' class="muted"' : ''}><td>${_pgDayLink(n.date)}${n.source === 'backfill' ? ' <span class="res-tag replay">backfilled</span>' : ''}</td>
+  const nights = sum.perNight.filter(n => n.source === 'live').map(n => `<tr><td>${_pgDayLink(n.date)}</td>
     <td class="num">${n.parlays.n ? `${n.parlays.won}/${n.parlays.n}` : '—'}</td><td class="num">${n.legs.n ? `${n.legs.won}/${n.legs.n}` : '—'}</td><td class="num">${_pgMoney(n.profit)}</td><td class="num">${n.running == null ? '—' : _pgMoney(n.running)}</td></tr>`).join('');
   const expPct = A.expN && A.staked ? A.expected / (A.expN * S.stake) : null;
   const luck = all25Luck(sum.nights.filter(n => n.source === 'live'), 5000, 7);
@@ -156,11 +156,31 @@ function renderProfitTab() {
       ${row('Parlays', L.parlays, true)}${by(L.parlaysBy)}${row('Legs', L.legs, true)}${by(L.legsBy)}${row('All', A, true)}</table></div>
     <p class="muted pg-small">Floor tickets and prop legs aren't in the dollars — no price was recorded (FanDuel's ladder doesn't reach our floor lines): ${A.unpriced.won} of ${A.unpriced.n} won${A.unpriced.n ? `, ${_pgMoney(A.unpriced.atFair)} at our own fair price` : ''}; a real book would pay less.
       ${flat && flat.n ? ` Benchmark — $${S.stake} on every favourite (flat-1): ${flat.won}/${flat.n}, ${_pgMoney(flat.profit)} on $${flat.staked}.` : ''}
-      ${B.nights ? ` Backfilled nights (${B.nights}, rebuilt after the fact, not in the total): ${_pgMoney(B.all.profit)} on $${B.all.staked}.` : ''}
+      ${B.nights ? ' The backfilled nights have their own section below.' : ''}
       A leg on two tickets counts once. Spec ${S.version}; never a stake size.</p>
     <details class="pg-details"><summary>Night by night</summary>
       <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Night</th><th class="num">Parlays won</th><th class="num">Legs won</th><th class="num">Night</th><th class="num">Running</th></tr>${nights}</table></div></details>
+    ${B.nights ? _pgBackfillSection(sum, row, by) : ''}
   </div>`;
+}
+
+// The nights the daily run missed, rebuilt afterwards by the same frozen rules (season-backfill.js):
+// their own table and running total, kept out of the recorded total, plus the two combined.
+function _pgBackfillSection(sum, row, by) {
+  const S = SEASON_ALL25_SPEC, B = sum.backfill, A = sum.live.all;
+  const bn = sum.perNight.filter(n => n.source === 'backfill');
+  let run = 0;
+  const nights = bn.map(n => { run += n.profit; return `<tr><td>${_pgDayLink(n.date)}</td><td class="num">${n.parlays.n ? `${n.parlays.won}/${n.parlays.n}` : '—'}</td>
+    <td class="num">${n.legs.n ? `${n.legs.won}/${n.legs.n}` : '—'}</td><td class="num">${_pgMoney(n.profit)}</td><td class="num">${_pgMoney(+run.toFixed(2))}</td></tr>`; }).join('');
+  const tp = +(A.profit + B.all.profit).toFixed(2), ts = A.staked + B.all.staked, tw = A.won + B.all.won, tn = A.n + B.all.n;
+  return `<h3>Backfilled nights — ${_pgDay(bn[0].date)} to ${_pgDay(bn[bn.length - 1].date)} <span class="res-tag replay">not in the total above</span></h3>
+    <p class="muted">The daily run didn't record these nights. Their tickets were rebuilt afterwards by the same frozen rules, from information available before each game (box scores from earlier days, the official injury report 60+ minutes before tip), priced at DraftKings' closing line and graded from the finals. Not recorded before tip, so they stay out of the recorded total.</p>
+    <div class="scorecard"><div class="score-tile"><div class="t">Backfilled week</div><div class="v">${_pgMoney(B.all.profit)}</div><div class="s">${B.all.won} of ${B.all.n} bets won · $${B.all.staked} staked · ROI ${_pgRoi(B.all.roi)} · ${B.nights} nights</div></div>
+      <div class="score-tile"><div class="t">Including the backfilled week</div><div class="v">${_pgMoney(tp)}</div><div class="s">${tw} of ${tn} bets won · $${ts} staked · ROI ${_pgRoi(ts ? tp / ts : null)} since ${_pgDay(S.firstNight)}</div></div></div>
+    <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Backfilled nights</th><th class="num">Won</th><th class="num">Staked</th><th class="num">Profit</th><th class="num">ROI</th></tr>
+      ${row('Parlays', B.parlays, true)}${by(B.parlaysBy)}${row('Legs', B.legs, true)}${by(B.legsBy)}${row('All', B.all, true)}</table></div>
+    <p class="muted pg-small">Floor tickets and prop legs (unpriced): ${B.all.unpriced.won} of ${B.all.unpriced.n} won${B.all.unpriced.n ? `, ${_pgMoney(B.all.unpriced.atFair)} at our own fair price` : ''}. Click a night for its games and tickets on Results by Day.</p>
+    <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Night</th><th class="num">Parlays won</th><th class="num">Legs won</th><th class="num">Night</th><th class="num">Running (backfilled)</th></tr>${nights}</table></div>`;
 }
 
 // ---------- Models vs market ----------
