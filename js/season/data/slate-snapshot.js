@@ -2,475 +2,80 @@
 // Source: https://nb-ai.josh2899.chatgpt.site/saved.json (+ /api/rankings). Do not hand-edit; re-run the script.
 const SEASON_SLATE_SNAPSHOT = {
  "source": "nb.ai",
- "date": "2026-11-25",
- "fetchedAt": "2026-11-25T21:02:16.291559+00:00",
- "modelVersion": "0.5",
+ "date": "2026-11-27",
+ "fetchedAt": "2026-11-27T19:28:51.398150+00:00",
+ "modelVersion": "0.6",
  "league": {
-  "ortg": 114.5,
-  "pace": 99,
-  "derived": false,
-  "teams": 18
+  "ortg": 112.72843176293699,
+  "pace": 101.56986823035382,
+  "derived": true,
+  "teams": 22
  },
  "teams": {
-  "CHI": {
-   "abbr": "CHI",
-   "name": "Bulls",
-   "city": "Chicago",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/chi.png",
+  "ATL": {
+   "abbr": "ATL",
+   "name": "Hawks",
+   "city": "Atlanta",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/atl.png",
    "prior": {
-    "ortg": 110.56648831900165,
-    "drtg": 116.05270477708709,
-    "pace": 104.94375643691994,
+    "ortg": 112.52776727465196,
+    "drtg": 109.80922405946352,
+    "pace": 104.31792061478838,
     "games": 82
    },
    "current": {
-    "ppg": 116.94117647058823,
-    "papg": 123.58823529411765,
+    "ppg": 116.70588235294117,
+    "papg": 113.58823529411765,
     "games": 17
    },
    "rest": {
-    "restDays": 1,
+    "restDays": 4,
     "backToBack": false,
-    "threeInFour": true,
-    "schedulePoints": -0.5
+    "threeInFour": false,
+    "schedulePoints": 0
    },
    "players": [
     {
-     "id": "5105555",
-     "name": "Tobe Awaka",
+     "id": "4278039",
+     "name": "Nickeil Alexander-Walker",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 32,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 31.58823529411765,
+      "pts": 21.294117647058822,
+      "reb": 3.5294117647058822,
+      "ast": 2.8823529411764706,
+      "tpm": 3.588235294117647,
+      "stl": 1.2941176470588236,
+      "blk": 0.35294117647058826,
+      "to": 1.9411764705882353,
+      "fgm": 7.117647058823529,
+      "fga": 17.176470588235293,
+      "ftm": 3.4705882352941178,
+      "fta": 4,
+      "tpa": 10
+     },
+     "seasonGames": 17,
+     "games": 95,
+     "h2h": null,
+     "recent": {
+      "lastPts": 27,
+      "lastMin": 28
+     }
+    },
+    {
+     "id": "4684443",
+     "name": "Rafael Castro",
      "pos": "F",
-     "status": "Out",
+     "status": "Doubtful",
      "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 0.22,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 10,
-      "pts": 2,
-      "reb": 5.25,
-      "ast": 0.75,
-      "tpm": 0,
-      "stl": 0.5,
-      "blk": 0.75,
-      "to": 0.5,
-      "fgm": 0.75,
-      "fga": 1,
-      "ftm": 0.5,
-      "fta": 1.5,
-      "tpa": 0
-     },
-     "seasonGames": 4,
-     "games": 4,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4711294",
-     "name": "Matas Buzelis",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 28.04,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 27.823529411764707,
-      "pts": 15.117647058823529,
-      "reb": 4.823529411764706,
-      "ast": 1.8823529411764706,
-      "tpm": 2.235294117647059,
-      "stl": 0.5882352941176471,
-      "blk": 0.7647058823529411,
-      "to": 2.411764705882353,
-      "fgm": 4.882352941176471,
-      "fga": 10.705882352941176,
-      "ftm": 3.1176470588235294,
-      "fta": 3.6470588235294117,
-      "tpa": 5.882352941176471
-     },
-     "seasonGames": 17,
-     "games": 94,
-     "h2h": {
-      "pts": 10.8,
-      "reb": 3.5,
-      "ast": 1.6,
-      "n": 8
-     },
-     "recent": {
-      "lastPts": 15,
-      "lastMin": 27
-     }
-    },
-    {
-     "id": "4278067",
-     "name": "Nic Claxton",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 23.46,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 21,
-      "pts": 8.857142857142858,
-      "reb": 5,
-      "ast": 1.4285714285714286,
-      "tpm": 0,
-      "stl": 0.5714285714285714,
-      "blk": 0.8571428571428571,
-      "to": 0.8571428571428571,
-      "fgm": 3.4285714285714284,
-      "fga": 5.714285714285714,
-      "ftm": 2,
-      "fta": 2.4285714285714284,
-      "tpa": 0
-     },
-     "seasonGames": 7,
-     "games": 76,
-     "h2h": {
-      "pts": 10.1,
-      "reb": 7.1,
-      "ast": 2.2,
-      "n": 17
-     },
-     "recent": {
-      "lastPts": 6,
-      "lastMin": 23
-     }
-    },
-    {
-     "id": "4066650",
-     "name": "Zach Collins",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.97,
-     "starter": false,
-     "depthRank": 3,
-     "avg": {
-      "min": 11.454545454545455,
-      "pts": 3,
-      "reb": 2.4545454545454546,
-      "ast": 1.1818181818181819,
-      "tpm": 0.18181818181818182,
-      "stl": 0.2727272727272727,
-      "blk": 0.36363636363636365,
-      "to": 0.5454545454545454,
-      "fgm": 1.3636363636363635,
-      "fga": 3.8181818181818183,
-      "ftm": 0.09090909090909091,
-      "fta": 0.09090909090909091,
-      "tpa": 1.3636363636363635
-     },
-     "seasonGames": 11,
-     "games": 21,
-     "h2h": {
-      "pts": 7.2,
-      "reb": 6,
-      "ast": 1.8,
-      "n": 10
-     },
-     "recent": {
-      "lastPts": 5,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "5242496",
-     "name": "Noa Essengue",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 6.8,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 12.3125,
-      "pts": 5.25,
-      "reb": 3.0625,
-      "ast": 0.5,
-      "tpm": 0.5625,
-      "stl": 0.375,
-      "blk": 0.1875,
-      "to": 0.6875,
-      "fgm": 1.75,
-      "fga": 4.125,
-      "ftm": 1.1875,
-      "fta": 2,
-      "tpa": 1.9375
-     },
-     "seasonGames": 16,
-     "games": 18,
-     "h2h": null,
-     "recent": {
-      "lastPts": 6,
-      "lastMin": 4
-     }
-    },
-    {
-     "id": "4871145",
-     "name": "Josh Giddey",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 25.35,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 28.235294117647058,
-      "pts": 10.352941176470589,
-      "reb": 6.117647058823529,
-      "ast": 9.352941176470589,
-      "tpm": 1.1176470588235294,
-      "stl": 0.4117647058823529,
-      "blk": 0.5882352941176471,
-      "to": 3.3529411764705883,
-      "fgm": 4.0588235294117645,
-      "fga": 9.647058823529411,
-      "ftm": 1.1176470588235294,
-      "fta": 1.7647058823529411,
-      "tpa": 3.7058823529411766
-     },
-     "seasonGames": 17,
-     "games": 71,
-     "h2h": {
-      "pts": 18.3,
-      "reb": 8.7,
-      "ast": 6.9,
-      "n": 12
-     },
-     "recent": {
-      "lastPts": 4,
-      "lastMin": 22
-     }
-    },
-    {
-     "id": "4683750",
-     "name": "Jordan Hawkins",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 13.61,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 11,
-      "pts": 5.444444444444445,
-      "reb": 0.8888888888888888,
-      "ast": 0.7777777777777778,
-      "tpm": 0.8888888888888888,
-      "stl": 0.2222222222222222,
-      "blk": 0.2222222222222222,
-      "to": 0.1111111111111111,
-      "fgm": 2.111111111111111,
-      "fga": 5,
-      "ftm": 0.3333333333333333,
-      "fta": 0.4444444444444444,
-      "tpa": 3.3333333333333335
-     },
-     "seasonGames": 9,
-     "games": 60,
-     "h2h": null,
-     "recent": {
-      "lastPts": 19,
-      "lastMin": 18
-     }
-    },
-    {
-     "id": "2990984",
-     "name": "Buddy Hield",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 27,
-     "starter": true,
-     "depthRank": 2,
-     "avg": {
-      "min": 18.466666666666665,
-      "pts": 10.333333333333334,
-      "reb": 2.8,
-      "ast": 1.8666666666666667,
-      "tpm": 2.2666666666666666,
-      "stl": 0.7333333333333333,
-      "blk": 0.13333333333333333,
-      "to": 1.2,
-      "fgm": 3.933333333333333,
-      "fga": 7.8,
-      "ftm": 0.2,
-      "fta": 0.26666666666666666,
-      "tpa": 5.333333333333333
-     },
-     "seasonGames": 15,
-     "games": 66,
-     "h2h": {
-      "pts": 17.5,
-      "reb": 2.9,
-      "ast": 2.4,
-      "n": 23
-     },
-     "recent": {
-      "lastPts": 17,
-      "lastMin": 27
-     }
-    },
-    {
-     "id": "4395626",
-     "name": "Tre Jones",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 25.05,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 19.352941176470587,
-      "pts": 11.117647058823529,
-      "reb": 2.176470588235294,
-      "ast": 4,
-      "tpm": 0.35294117647058826,
-      "stl": 1.0588235294117647,
-      "blk": 0.23529411764705882,
-      "to": 1.2941176470588236,
-      "fgm": 3.9411764705882355,
-      "fga": 8.058823529411764,
-      "ftm": 2.8823529411764706,
-      "fta": 3.4705882352941178,
-      "tpa": 1.3529411764705883
-     },
-     "seasonGames": 17,
-     "games": 82,
-     "h2h": null,
-     "recent": {
-      "lastPts": 16,
-      "lastMin": 27
-     }
-    },
-    {
-     "id": "5044385",
-     "name": "Leonard Miller",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.35,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 14,
-      "pts": 5.416666666666667,
-      "reb": 3.1666666666666665,
-      "ast": 1,
-      "tpm": 0.4166666666666667,
-      "stl": 0.4166666666666667,
-      "blk": 0.5833333333333334,
-      "to": 0.8333333333333334,
-      "fgm": 2.1666666666666665,
-      "fga": 4.916666666666667,
-      "ftm": 0.6666666666666666,
-      "fta": 0.8333333333333334,
-      "tpa": 2.4166666666666665
-     },
-     "seasonGames": 12,
-     "games": 58,
-     "h2h": null,
-     "recent": {
-      "lastPts": 4,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "4432822",
-     "name": "Isaac Okoro",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 29,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 24.58823529411765,
-      "pts": 7.823529411764706,
-      "reb": 2.6470588235294117,
-      "ast": 1.8823529411764706,
-      "tpm": 1.0588235294117647,
-      "stl": 0.7647058823529411,
-      "blk": 0.29411764705882354,
-      "to": 0.8235294117647058,
-      "fgm": 2.3529411764705883,
-      "fga": 5.705882352941177,
-      "ftm": 2.0588235294117645,
-      "fta": 2.588235294117647,
-      "tpa": 3.411764705882353
-     },
-     "seasonGames": 17,
-     "games": 80,
-     "h2h": {
-      "pts": 7,
-      "reb": 2.5,
-      "ast": 1.9,
-      "n": 17
-     },
-     "recent": {
-      "lastPts": 12,
-      "lastMin": 27
-     }
-    },
-    {
-     "id": "2595516",
-     "name": "Norman Powell",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Injury/Illness - Right Hamstring Strain",
-     "availability": 0,
-     "projMin": 17.33,
-     "starter": false,
-     "depthRank": 1,
-     "avg": {
-      "min": 29.53846153846154,
-      "pts": 20.846153846153847,
-      "reb": 2.8461538461538463,
-      "ast": 2.3846153846153846,
-      "tpm": 2.3076923076923075,
-      "stl": 1.3076923076923077,
-      "blk": 0.15384615384615385,
-      "to": 2,
-      "fgm": 6.615384615384615,
-      "fga": 14.846153846153847,
-      "ftm": 5.3076923076923075,
-      "fta": 6.923076923076923,
-      "tpa": 6.769230769230769
-     },
-     "seasonGames": 13,
-     "games": 73,
-     "h2h": {
-      "pts": 11.5,
-      "reb": 2.8,
-      "ast": 1.7,
-      "n": 28
-     },
-     "recent": {
-      "lastPts": 16,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "4593049",
-     "name": "Orlando Robinson",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.14,
+     "availability": 0.1,
+     "projMin": 0.18,
      "starter": false,
      "depthRank": 99,
      "avg": {
@@ -489,199 +94,940 @@ const SEASON_SLATE_SNAPSHOT = {
       "tpa": 0
      },
      "seasonGames": 0,
-     "games": 4,
+     "games": 0,
      "h2h": null,
      "recent": null
     },
     {
-     "id": "4898010",
-     "name": "Jaylin Sellers",
+     "id": "4869342",
+     "name": "Dyson Daniels",
      "pos": "G",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 16.42,
-     "starter": false,
-     "depthRank": 3,
-     "avg": {
-      "min": 9.857142857142858,
-      "pts": 5,
-      "reb": 0.8571428571428571,
-      "ast": 1.7142857142857142,
-      "tpm": 1.1428571428571428,
-      "stl": 0.5714285714285714,
-      "blk": 0.14285714285714285,
-      "to": 0.5714285714285714,
-      "fgm": 1.7142857142857142,
-      "fga": 4,
-      "ftm": 0.42857142857142855,
-      "fta": 0.5714285714285714,
-      "tpa": 2.7142857142857144
-     },
-     "seasonGames": 7,
-     "games": 7,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4397189",
-     "name": "Jalen Smith",
-     "pos": "F",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Gastrointestinal Illness",
-     "availability": 0.5,
-     "projMin": 25.93,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 37.44,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 25.266666666666666,
-      "pts": 14.066666666666666,
-      "reb": 7.533333333333333,
-      "ast": 2.2,
-      "tpm": 2.066666666666667,
-      "stl": 0.7333333333333333,
-      "blk": 1,
-      "to": 0.9333333333333333,
-      "fgm": 5.4,
-      "fga": 9.866666666666667,
-      "ftm": 1.2,
-      "fta": 1.5333333333333334,
-      "tpa": 5.133333333333334
+      "min": 31.647058823529413,
+      "pts": 9.352941176470589,
+      "reb": 8,
+      "ast": 5.882352941176471,
+      "tpm": 0.17647058823529413,
+      "stl": 3,
+      "blk": 0.35294117647058826,
+      "to": 1.411764705882353,
+      "fgm": 4.176470588235294,
+      "fga": 8.823529411764707,
+      "ftm": 0.8235294117647058,
+      "fta": 1.4705882352941178,
+      "tpa": 1.4705882352941178
      },
-     "seasonGames": 15,
-     "games": 68,
-     "h2h": null,
+     "seasonGames": 17,
+     "games": 93,
+     "h2h": {
+      "pts": 10.8,
+      "reb": 4,
+      "ast": 3.8,
+      "n": 10
+     },
      "recent": {
-      "lastPts": 11,
-      "lastMin": 25
+      "lastPts": 5,
+      "lastMin": 39
      }
     },
     {
-     "id": "4848625",
-     "name": "Dailyn Swain",
+     "id": "4431941",
+     "name": "RayJ Dennis",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.15,
+     "projMin": 0.27,
      "starter": false,
-     "depthRank": 7,
+     "depthRank": 5,
      "avg": {
-      "min": 6.75,
-      "pts": 1.75,
-      "reb": 1.25,
-      "ast": 0.75,
-      "tpm": 0,
-      "stl": 0.5,
-      "blk": 0,
-      "to": 1,
-      "fgm": 0.5,
-      "fga": 2.25,
-      "ftm": 0.75,
-      "fta": 0.75,
-      "tpa": 1.25
+      "min": 10.25,
+      "pts": 5.25,
+      "reb": 2.5,
+      "ast": 3,
+      "tpm": 0.5,
+      "stl": 0.75,
+      "blk": 0.25,
+      "to": 0.75,
+      "fgm": 1.75,
+      "fga": 4.75,
+      "ftm": 1.25,
+      "fta": 1.25,
+      "tpa": 1.75
      },
      "seasonGames": 4,
-     "games": 4,
+     "games": 21,
      "h2h": null,
-     "recent": null
+     "recent": {
+      "lastPts": 8,
+      "lastMin": 0
+     }
     },
     {
-     "id": "4431687",
-     "name": "Patrick Williams",
+     "id": "4397020",
+     "name": "Luguentz Dort",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 28.83,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 24.764705882352942,
+      "pts": 9.352941176470589,
+      "reb": 3.235294117647059,
+      "ast": 1.411764705882353,
+      "tpm": 1.588235294117647,
+      "stl": 1.1764705882352942,
+      "blk": 0.23529411764705882,
+      "to": 0.7058823529411765,
+      "fgm": 3.1176470588235294,
+      "fga": 8.294117647058824,
+      "ftm": 1.5294117647058822,
+      "fta": 2,
+      "tpa": 4.764705882352941
+     },
+     "seasonGames": 17,
+     "games": 86,
+     "h2h": null,
+     "recent": {
+      "lastPts": 16,
+      "lastMin": 31
+     }
+    },
+    {
+     "id": "5106262",
+     "name": "Zuby Ejiofor",
      "pos": "F",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 18.75,
+     "projMin": 16.8,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 20.7,
-      "pts": 6.4,
+      "min": 12.272727272727273,
+      "pts": 4.545454545454546,
       "reb": 3,
-      "ast": 1.7,
-      "tpm": 0.8,
-      "stl": 0.8,
-      "blk": 0.5,
-      "to": 1,
-      "fgm": 2.3,
-      "fga": 5.3,
-      "ftm": 1,
-      "fta": 1.1,
-      "tpa": 2.6
+      "ast": 1.0909090909090908,
+      "tpm": 0.5454545454545454,
+      "stl": 0.36363636363636365,
+      "blk": 0.2727272727272727,
+      "to": 0.5454545454545454,
+      "fgm": 1.8181818181818181,
+      "fga": 3.727272727272727,
+      "ftm": 0.36363636363636365,
+      "fta": 0.7272727272727273,
+      "tpa": 1.4545454545454546
      },
-     "seasonGames": 10,
-     "games": 82,
+     "seasonGames": 11,
+     "games": 11,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "2578185",
+     "name": "Dorian Finney-Smith",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.38,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 4,
+      "pts": 0.6,
+      "reb": 0.8,
+      "ast": 0.4,
+      "tpm": 0.2,
+      "stl": 0.2,
+      "blk": 0,
+      "to": 0.2,
+      "fgm": 0.2,
+      "fga": 0.8,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.8
+     },
+     "seasonGames": 5,
+     "games": 42,
      "h2h": {
-      "pts": 9.9,
-      "reb": 4,
+      "pts": 7.4,
+      "reb": 4.3,
       "ast": 0.9,
-      "n": 18
+      "n": 19
      },
      "recent": {
-      "lastPts": 7,
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "5149077",
+     "name": "Kingston Flemings",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 26.33,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 21.923076923076923,
+      "pts": 7.923076923076923,
+      "reb": 2.6923076923076925,
+      "ast": 4.230769230769231,
+      "tpm": 0.7692307692307693,
+      "stl": 0.6923076923076923,
+      "blk": 0.3076923076923077,
+      "to": 2.1538461538461537,
+      "fgm": 3.1538461538461537,
+      "fga": 6.461538461538462,
+      "ftm": 0.8461538461538461,
+      "fta": 1.1538461538461537,
+      "tpa": 1.9230769230769231
+     },
+     "seasonGames": 13,
+     "games": 13,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4712863",
+     "name": "Mouhamed Gueye",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Foot Fracture",
+     "availability": 0,
+     "projMin": 0.34,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 77,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4701230",
+     "name": "Jalen Johnson",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 34.142857142857146,
+      "pts": 19.142857142857142,
+      "reb": 9.142857142857142,
+      "ast": 6.928571428571429,
+      "tpm": 0.8571428571428571,
+      "stl": 1.0714285714285714,
+      "blk": 0.5,
+      "to": 3.4285714285714284,
+      "fgm": 6.928571428571429,
+      "fga": 15.5,
+      "ftm": 4.428571428571429,
+      "fta": 5.5,
+      "tpa": 4.071428571428571
+     },
+     "seasonGames": 14,
+     "games": 89,
+     "h2h": {
+      "pts": 15,
+      "reb": 8.5,
+      "ast": 4.1,
+      "n": 12
+     },
+     "recent": {
+      "lastPts": 12,
+      "lastMin": 30
+     }
+    },
+    {
+     "id": "4280151",
+     "name": "Corey Kispert",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 18.04,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 12.6,
+      "pts": 9.3,
+      "reb": 1.5,
+      "ast": 1,
+      "tpm": 2,
+      "stl": 0.3,
+      "blk": 0.2,
+      "to": 0.3,
+      "fgm": 3.3,
+      "fga": 5.9,
+      "ftm": 0.7,
+      "fta": 0.7,
+      "tpa": 4.1
+     },
+     "seasonGames": 10,
+     "games": 68,
+     "h2h": {
+      "pts": 8.4,
+      "reb": 2.7,
+      "ast": 1.7,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 18,
       "lastMin": 19
      }
     },
     {
-     "id": "5095151",
-     "name": "Caleb Wilson",
-     "pos": "F",
+     "id": "3146557",
+     "name": "Jock Landale",
+     "pos": "C",
      "status": "Out",
-     "injury": "See official report for full injury details",
+     "injury": "Injury/Illness - Right Great Toe Sprain",
+     "availability": 0,
+     "projMin": 11.32,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 15.444444444444445,
+      "pts": 6.777777777777778,
+      "reb": 4.888888888888889,
+      "ast": 1.6666666666666667,
+      "tpm": 0.5555555555555556,
+      "stl": 0.2222222222222222,
+      "blk": 0.5555555555555556,
+      "to": 1.5555555555555556,
+      "fgm": 2.4444444444444446,
+      "fga": 5.333333333333333,
+      "ftm": 1.3333333333333333,
+      "fta": 2,
+      "tpa": 2.4444444444444446
+     },
+     "seasonGames": 9,
+     "games": 77,
+     "h2h": {
+      "pts": 5.1,
+      "reb": 3.7,
+      "ast": 1.4,
+      "n": 7
+     },
+     "recent": {
+      "lastPts": 12,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "2490149",
+     "name": "CJ McCollum",
+     "pos": "G",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Calf Strain",
      "availability": 0,
      "projMin": 0.6,
      "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 26.357142857142858,
+      "pts": 14.5,
+      "reb": 3.0714285714285716,
+      "ast": 3.857142857142857,
+      "tpm": 1.7857142857142858,
+      "stl": 1.1428571428571428,
+      "blk": 0.5,
+      "to": 1.8571428571428572,
+      "fgm": 5.285714285714286,
+      "fga": 12.214285714285714,
+      "ftm": 2.142857142857143,
+      "fta": 2.4285714285714284,
+      "tpa": 5.071428571428571
+     },
+     "seasonGames": 14,
+     "games": 90,
+     "h2h": null,
+     "recent": {
+      "lastPts": 20,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4873201",
+     "name": "Asa Newell",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Great Toe Surgery",
+     "availability": 0,
+     "projMin": 0.26,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 11,
+      "pts": 3.6,
+      "reb": 2.6,
+      "ast": 1,
+      "tpm": 0.4,
+      "stl": 0.2,
+      "blk": 0.2,
+      "to": 0.8,
+      "fgm": 1.4,
+      "fga": 3,
+      "ftm": 0.4,
+      "fta": 0.8,
+      "tpa": 1.6
+     },
+     "seasonGames": 5,
+     "games": 48,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4431680",
+     "name": "Onyeka Okongwu",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.88235294117647,
+      "pts": 14.529411764705882,
+      "reb": 8.176470588235293,
+      "ast": 2.3529411764705883,
+      "tpm": 1.8235294117647058,
+      "stl": 0.9411764705882353,
+      "blk": 0.8235294117647058,
+      "to": 1.411764705882353,
+      "fgm": 5.529411764705882,
+      "fga": 11.235294117647058,
+      "ftm": 1.6470588235294117,
+      "fta": 2.411764705882353,
+      "tpa": 5.470588235294118
+     },
+     "seasonGames": 17,
+     "games": 91,
+     "h2h": {
+      "pts": 11.3,
+      "reb": 7,
+      "ast": 1.6,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 29
+     }
+    },
+    {
+     "id": "5105571",
+     "name": "Henri Veesaar",
+     "pos": "C",
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 0,
+     "starter": false,
      "depthRank": 8,
      "avg": {
-      "min": 30.7,
-      "pts": 18.9,
-      "reb": 6.2,
-      "ast": 1.9,
-      "tpm": 2.3,
-      "stl": 1.8,
-      "blk": 0.9,
-      "to": 2.7,
-      "fgm": 6.8,
-      "fga": 16.2,
-      "ftm": 3,
-      "fta": 4.1,
-      "tpa": 7.1
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
      },
-     "seasonGames": 10,
-     "games": 10,
+     "seasonGames": 0,
+     "games": 0,
      "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4397183",
+     "name": "Aaron Wiggins",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 20.37,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 25.941176470588236,
+      "pts": 13.941176470588236,
+      "reb": 3.6470588235294117,
+      "ast": 2.3529411764705883,
+      "tpm": 2.764705882352941,
+      "stl": 0.8823529411764706,
+      "blk": 0.23529411764705882,
+      "to": 1.4705882352941178,
+      "fgm": 5.352941176470588,
+      "fga": 11.764705882352942,
+      "ftm": 0.47058823529411764,
+      "fta": 0.7647058823529411,
+      "tpa": 6.823529411764706
+     },
+     "seasonGames": 17,
+     "games": 82,
+     "h2h": {
+      "pts": 8.1,
+      "reb": 2.6,
+      "ast": 1.7,
+      "n": 9
+     },
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 19
+     }
+    },
+    {
+     "id": "4431714",
+     "name": "Jalen Wilson",
+     "pos": "F",
+     "status": "Doubtful",
+     "injury": "G League - Two-Way",
+     "availability": 0.1,
+     "projMin": 0.36,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 54,
+     "h2h": {
+      "pts": 5.2,
+      "reb": 1.6,
+      "ast": 1.2,
+      "n": 9
+     },
      "recent": null
     }
    ]
   },
-  "CLE": {
-   "abbr": "CLE",
-   "name": "Cavaliers",
-   "city": "Cleveland",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/cle.png",
+  "BOS": {
+   "abbr": "BOS",
+   "name": "Celtics",
+   "city": "Boston",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/bos.png",
    "prior": {
-    "ortg": 116.13488788510931,
-    "drtg": 113.42825105086206,
-    "pace": 102.16346865024826,
+    "ortg": 115.72418397630592,
+    "drtg": 107.10955149283014,
+    "pace": 97.90991720397221,
     "games": 82
    },
    "current": {
-    "ppg": 118.22222222222223,
-    "papg": 116.77777777777777,
+    "ppg": 112.33333333333333,
+    "papg": 102.88888888888889,
     "games": 18
    },
    "rest": {
-    "restDays": 1,
+    "restDays": 2,
     "backToBack": false,
     "threeInFour": false,
     "schedulePoints": 0
    },
    "players": [
     {
-     "id": "4066328",
-     "name": "Jarrett Allen",
+     "id": "4433188",
+     "name": "Devin Carter",
+     "pos": "G",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.42,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 8,
+      "pts": 0,
+      "reb": 2,
+      "ast": 0.5,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 1.5,
+      "fgm": 0,
+      "fga": 1.5,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 1
+     },
+     "seasonGames": 2,
+     "games": 40,
+     "h2h": {
+      "pts": 6.5,
+      "reb": 4,
+      "ast": 2,
+      "n": 2
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "5142621",
+     "name": "Chris Cenac Jr.",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 5.36,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 7.555555555555555,
+      "pts": 2.888888888888889,
+      "reb": 2.3333333333333335,
+      "ast": 0.2222222222222222,
+      "tpm": 0.2222222222222222,
+      "stl": 0.2222222222222222,
+      "blk": 0.1111111111111111,
+      "to": 0.6666666666666666,
+      "fgm": 1.2222222222222223,
+      "fga": 2.4444444444444446,
+      "ftm": 0.2222222222222222,
+      "fta": 0.4444444444444444,
+      "tpa": 1
+     },
+     "seasonGames": 9,
+     "games": 9,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "3195",
+     "name": "Mike Conley",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.97,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 11,
+      "pts": 6.166666666666667,
+      "reb": 1.5,
+      "ast": 1.3333333333333333,
+      "tpm": 1.6666666666666667,
+      "stl": 1,
+      "blk": 0.16666666666666666,
+      "to": 0.5,
+      "fgm": 2,
+      "fga": 3,
+      "ftm": 0.5,
+      "fta": 0.5,
+      "tpa": 2
+     },
+     "seasonGames": 6,
+     "games": 60,
+     "h2h": null,
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4277951",
+     "name": "Luka Garza",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 15.4,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 13.277777777777779,
+      "pts": 5.777777777777778,
+      "reb": 3.1666666666666665,
+      "ast": 1.4444444444444444,
+      "tpm": 0.8888888888888888,
+      "stl": 0.3333333333333333,
+      "blk": 0.3333333333333333,
+      "to": 0.6111111111111112,
+      "fgm": 1.9444444444444444,
+      "fga": 4.444444444444445,
+      "ftm": 1,
+      "fta": 1.6111111111111112,
+      "tpa": 2.3333333333333335
+     },
+     "seasonGames": 18,
+     "games": 87,
+     "h2h": {
+      "pts": 9.1,
+      "reb": 4.1,
+      "ast": 1.9,
+      "n": 7
+     },
+     "recent": {
+      "lastPts": 7,
+      "lastMin": 18
+     }
+    },
+    {
+     "id": "4251",
+     "name": "Paul George",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 33,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.333333333333332,
+      "pts": 20.4,
+      "reb": 5.533333333333333,
+      "ast": 4.133333333333334,
+      "tpm": 3.466666666666667,
+      "stl": 2.1333333333333333,
+      "blk": 0.4,
+      "to": 2.466666666666667,
+      "fgm": 7.333333333333333,
+      "fga": 16.066666666666666,
+      "ftm": 2.2666666666666666,
+      "fta": 2.8666666666666667,
+      "tpa": 8.133333333333333
+     },
+     "seasonGames": 15,
+     "games": 52,
+     "h2h": {
+      "pts": 18.7,
+      "reb": 5.6,
+      "ast": 3.4,
+      "n": 31
+     },
+     "recent": {
+      "lastPts": 28,
+      "lastMin": 33
+     }
+    },
+    {
+     "id": "5175647",
+     "name": "Hugo Gonzalez",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 14.2,
+     "starter": false,
+     "depthRank": 1,
+     "avg": {
+      "min": 13.38888888888889,
+      "pts": 3.888888888888889,
+      "reb": 2.7222222222222223,
+      "ast": 0.5555555555555556,
+      "tpm": 0.5555555555555556,
+      "stl": 0.5,
+      "blk": 0.3333333333333333,
+      "to": 0.7222222222222222,
+      "fgm": 1.3888888888888888,
+      "fga": 3.388888888888889,
+      "ftm": 0.5555555555555556,
+      "fta": 0.8333333333333334,
+      "tpa": 2.1666666666666665
+     },
+     "seasonGames": 18,
+     "games": 91,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 9
+     }
+    },
+    {
+     "id": "4397251",
+     "name": "Ron Harper Jr.",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 6.94,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 7.4,
+      "pts": 2.8,
+      "reb": 0.5,
+      "ast": 0.4,
+      "tpm": 0.6,
+      "stl": 0.2,
+      "blk": 0,
+      "to": 0.4,
+      "fgm": 1.1,
+      "fga": 2.8,
+      "ftm": 0,
+      "fta": 0.2,
+      "tpa": 2
+     },
+     "seasonGames": 10,
+     "games": 38,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 8
+     }
+    },
+    {
+     "id": "4065804",
+     "name": "Sam Hauser",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 22.41,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 21.11111111111111,
+      "pts": 8.166666666666666,
+      "reb": 3.111111111111111,
+      "ast": 1.2222222222222223,
+      "tpm": 2.3333333333333335,
+      "stl": 0.4444444444444444,
+      "blk": 0.16666666666666666,
+      "to": 0.1111111111111111,
+      "fgm": 2.8333333333333335,
+      "fga": 6.333333333333333,
+      "ftm": 0.16666666666666666,
+      "fta": 0.2222222222222222,
+      "tpa": 5.444444444444445
+     },
+     "seasonGames": 18,
+     "games": 96,
+     "h2h": {
+      "pts": 10.9,
+      "reb": 3.8,
+      "ast": 1.3,
+      "n": 15
+     },
+     "recent": {
+      "lastPts": 4,
+      "lastMin": 22
+     }
+    },
+    {
+     "id": "5106283",
+     "name": "Dillon Mitchell",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.04,
+     "starter": false,
+     "depthRank": 8,
+     "avg": {
+      "min": 2,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 1,
+     "games": 1,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4066354",
+     "name": "Payton Pritchard",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 27.8,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 27.666666666666668,
+      "pts": 13,
+      "reb": 3.1666666666666665,
+      "ast": 3.9444444444444446,
+      "tpm": 2.2777777777777777,
+      "stl": 0.7222222222222222,
+      "blk": 0.16666666666666666,
+      "to": 1.4444444444444444,
+      "fgm": 4.444444444444445,
+      "fga": 11.333333333333334,
+      "ftm": 1.8333333333333333,
+      "fta": 2.111111111111111,
+      "tpa": 6.666666666666667
+     },
+     "seasonGames": 18,
+     "games": 97,
+     "h2h": {
+      "pts": 10.7,
+      "reb": 2.9,
+      "ast": 2.2,
+      "n": 19
+     },
+     "recent": {
+      "lastPts": 14,
+      "lastMin": 28
+     }
+    },
+    {
+     "id": "4397424",
+     "name": "Neemias Queta",
      "pos": "C",
      "status": "Available",
      "injury": null,
@@ -690,41 +1036,967 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 26.933333333333334,
-      "pts": 12.8,
-      "reb": 8.4,
-      "ast": 1.7333333333333334,
-      "tpm": 0.2,
-      "stl": 0.6,
-      "blk": 1.2666666666666666,
-      "to": 1.4,
-      "fgm": 5,
-      "fga": 8,
-      "ftm": 2.6,
-      "fta": 3.533333333333333,
-      "tpa": 0.3333333333333333
+      "min": 23.352941176470587,
+      "pts": 10.411764705882353,
+      "reb": 6.9411764705882355,
+      "ast": 2,
+      "tpm": 0.29411764705882354,
+      "stl": 0.35294117647058826,
+      "blk": 1.2352941176470589,
+      "to": 1.4705882352941178,
+      "fgm": 4,
+      "fga": 6.647058823529412,
+      "ftm": 2.1176470588235294,
+      "fta": 3.411764705882353,
+      "tpa": 0.4117647058823529
      },
-     "seasonGames": 15,
-     "games": 71,
-     "h2h": {
-      "pts": 10.6,
-      "reb": 8.5,
-      "ast": 1.4,
-      "n": 25
-     },
+     "seasonGames": 17,
+     "games": 93,
+     "h2h": null,
      "recent": {
-      "lastPts": 16,
-      "lastMin": 29
+      "lastPts": 21,
+      "lastMin": 25
      }
     },
     {
-     "id": "4702099",
-     "name": "Zack Austin",
+     "id": "4351852",
+     "name": "Mitchell Robinson",
+     "pos": "C",
+     "status": "Out",
+     "injury": "Injury/Illness - Illness",
+     "availability": 0,
+     "projMin": 9.98,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 17.5,
+      "pts": 5.142857142857143,
+      "reb": 5.357142857142857,
+      "ast": 0.8571428571428571,
+      "tpm": 0,
+      "stl": 0.7142857142857143,
+      "blk": 0.7857142857142857,
+      "to": 0.9285714285714286,
+      "fgm": 2.2857142857142856,
+      "fga": 3.5,
+      "ftm": 0.5714285714285714,
+      "fta": 1.5714285714285714,
+      "tpa": 0
+     },
+     "seasonGames": 14,
+     "games": 75,
+     "h2h": null,
+     "recent": {
+      "lastPts": 6,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4593841",
+     "name": "Baylor Scheierman",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 18.03,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 19,
+      "pts": 5.555555555555555,
+      "reb": 3.6666666666666665,
+      "ast": 1.3888888888888888,
+      "tpm": 1.2222222222222223,
+      "stl": 0.8888888888888888,
+      "blk": 0.05555555555555555,
+      "to": 0.6666666666666666,
+      "fgm": 1.8888888888888888,
+      "fga": 4.944444444444445,
+      "ftm": 0.5555555555555556,
+      "fta": 0.5555555555555556,
+      "tpa": 3.2777777777777777
+     },
+     "seasonGames": 18,
+     "games": 95,
+     "h2h": {
+      "pts": 4.2,
+      "reb": 4.2,
+      "ast": 2.4,
+      "n": 5
+     },
+     "recent": {
+      "lastPts": 8,
+      "lastMin": 19
+     }
+    },
+    {
+     "id": "4065648",
+     "name": "Jayson Tatum",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 36.19,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 34.5,
+      "pts": 27.3125,
+      "reb": 6.8125,
+      "ast": 6.8125,
+      "tpm": 2.9375,
+      "stl": 0.75,
+      "blk": 0.75,
+      "to": 3.1875,
+      "fgm": 8.6875,
+      "fga": 20.0625,
+      "ftm": 7,
+      "fta": 8.3125,
+      "tpa": 8.5625
+     },
+     "seasonGames": 16,
+     "games": 32,
+     "h2h": {
+      "pts": 24.9,
+      "reb": 7.2,
+      "ast": 4.4,
+      "n": 28
+     },
+     "recent": {
+      "lastPts": 41,
+      "lastMin": 37
+     }
+    },
+    {
+     "id": "4683689",
+     "name": "Jordan Walsh",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 24,
+     "starter": true,
+     "depthRank": 2,
+     "avg": {
+      "min": 14.277777777777779,
+      "pts": 4.111111111111111,
+      "reb": 2.7777777777777777,
+      "ast": 0.5,
+      "tpm": 0.6666666666666666,
+      "stl": 0.6666666666666666,
+      "blk": 0.05555555555555555,
+      "to": 0.4444444444444444,
+      "fgm": 1.5555555555555556,
+      "fga": 4,
+      "ftm": 0.3333333333333333,
+      "fta": 0.4444444444444444,
+      "tpa": 2.5
+     },
+     "seasonGames": 18,
+     "games": 86,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 5
+     }
+    },
+    {
+     "id": "3078576",
+     "name": "Derrick White",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 32,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30,
+      "pts": 12.352941176470589,
+      "reb": 3.235294117647059,
+      "ast": 5,
+      "tpm": 1.7647058823529411,
+      "stl": 1.1176470588235294,
+      "blk": 0.5882352941176471,
+      "to": 1.6470588235294117,
+      "fgm": 4.647058823529412,
+      "fga": 11.647058823529411,
+      "ftm": 1.2941176470588236,
+      "fta": 1.3529411764705883,
+      "tpa": 6.0588235294117645
+     },
+     "seasonGames": 17,
+     "games": 94,
+     "h2h": null,
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 30
+     }
+    },
+    {
+     "id": "4702745",
+     "name": "Amari Williams",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.16,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 21,
+     "h2h": null,
+     "recent": null
+    }
+   ]
+  },
+  "NO": {
+   "abbr": "NO",
+   "name": "Pelicans",
+   "city": "New Orleans",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/no.png",
+   "prior": {
+    "ortg": 110.60711013009652,
+    "drtg": 116.74657404193525,
+    "pace": 102.86457219970973,
+    "games": 82
+   },
+   "current": {
+    "ppg": 114.52631578947368,
+    "papg": 122.52631578947368,
+    "games": 19
+   },
+   "rest": {
+    "restDays": 3,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "4397136",
+     "name": "Saddiq Bey",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 36.27,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 30.63157894736842,
+      "pts": 16.210526315789473,
+      "reb": 4.473684210526316,
+      "ast": 2.5789473684210527,
+      "tpm": 2.263157894736842,
+      "stl": 0.7894736842105263,
+      "blk": 0.2631578947368421,
+      "to": 0.7894736842105263,
+      "fgm": 5.526315789473684,
+      "fga": 12.894736842105264,
+      "ftm": 2.8947368421052633,
+      "fta": 3.4210526315789473,
+      "tpa": 6.2631578947368425
+     },
+     "seasonGames": 19,
+     "games": 91,
+     "h2h": {
+      "pts": 15.5,
+      "reb": 5,
+      "ast": 1.8,
+      "n": 12
+     },
+     "recent": {
+      "lastPts": 21,
+      "lastMin": 40
+     }
+    },
+    {
+     "id": "4712862",
+     "name": "Malik Dia",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.1,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 4.5,
+      "pts": 2,
+      "reb": 0.5,
+      "ast": 0.5,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0.5,
+      "to": 0,
+      "fgm": 1,
+      "fga": 3,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 1
+     },
+     "seasonGames": 2,
+     "games": 2,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5144091",
+     "name": "Jeremiah Fears",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 37.07,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.789473684210527,
+      "pts": 16.157894736842106,
+      "reb": 5.052631578947368,
+      "ast": 5.631578947368421,
+      "tpm": 1.2105263157894737,
+      "stl": 1.1578947368421053,
+      "blk": 0.42105263157894735,
+      "to": 3,
+      "fgm": 6.157894736842105,
+      "fga": 14.157894736842104,
+      "ftm": 2.6315789473684212,
+      "fta": 3.263157894736842,
+      "tpa": 4.2105263157894735
+     },
+     "seasonGames": 19,
+     "games": 101,
+     "h2h": null,
+     "recent": {
+      "lastPts": 7,
+      "lastMin": 40
+     }
+    },
+    {
+     "id": "5170947",
+     "name": "AJ Johnson",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.51,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 6.142857142857143,
+      "pts": 1,
+      "reb": 0.42857142857142855,
+      "ast": 0.5714285714285714,
+      "tpm": 0,
+      "stl": 0.14285714285714285,
+      "blk": 0.14285714285714285,
+      "to": 0.2857142857142857,
+      "fgm": 0.42857142857142855,
+      "fga": 1.4285714285714286,
+      "ftm": 0.14285714285714285,
+      "fta": 0.2857142857142857,
+      "tpa": 0.2857142857142857
+     },
+     "seasonGames": 7,
+     "games": 54,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4277813",
+     "name": "Herbert Jones",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 25,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 24.68421052631579,
+      "pts": 6.631578947368421,
+      "reb": 2.736842105263158,
+      "ast": 1.6842105263157894,
+      "tpm": 1.0526315789473684,
+      "stl": 1.1578947368421053,
+      "blk": 0.3684210526315789,
+      "to": 1.263157894736842,
+      "fgm": 2.526315789473684,
+      "fga": 7.105263157894737,
+      "ftm": 0.5263157894736842,
+      "fta": 0.7894736842105263,
+      "tpa": 3.3157894736842106
+     },
+     "seasonGames": 19,
+     "games": 75,
+     "h2h": {
+      "pts": 9.7,
+      "reb": 4,
+      "ast": 2.4,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 7,
+      "lastMin": 21
+     }
+    },
+    {
+     "id": "3442",
+     "name": "DeAndre Jordan",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.37,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 14.2,
+      "pts": 5.2,
+      "reb": 5.2,
+      "ast": 0.8,
+      "tpm": 0,
+      "stl": 0.4,
+      "blk": 0.6,
+      "to": 0.6,
+      "fgm": 1.6,
+      "fga": 2,
+      "ftm": 2,
+      "fta": 2.6,
+      "tpa": 0
+     },
+     "seasonGames": 5,
+     "games": 17,
+     "h2h": null,
+     "recent": {
+      "lastPts": 8,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4683634",
+     "name": "Bennedict Mathurin",
+     "pos": "G",
+     "status": "Doubtful",
+     "injury": "Injury/Illness - Left Plantar Fasciitis",
+     "availability": 0.1,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 15.25,
+      "pts": 5.5,
+      "reb": 1.75,
+      "ast": 1.1666666666666667,
+      "tpm": 0.4166666666666667,
+      "stl": 0.3333333333333333,
+      "blk": 0,
+      "to": 0.9166666666666666,
+      "fgm": 1.9166666666666667,
+      "fga": 5.333333333333333,
+      "ftm": 1.25,
+      "fta": 1.3333333333333333,
+      "tpa": 2.1666666666666665
+     },
+     "seasonGames": 12,
+     "games": 66,
+     "h2h": {
+      "pts": 16.2,
+      "reb": 3.3,
+      "ast": 1.5,
+      "n": 6
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4997538",
+     "name": "Karlo Matkovic",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 12.7,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 17,
+      "pts": 6.166666666666667,
+      "reb": 3.6666666666666665,
+      "ast": 0.8333333333333334,
+      "tpm": 1.0555555555555556,
+      "stl": 0.5555555555555556,
+      "blk": 0.5,
+      "to": 1.1111111111111112,
+      "fgm": 2.3333333333333335,
+      "fga": 4.722222222222222,
+      "ftm": 0.4444444444444444,
+      "fta": 0.7222222222222222,
+      "tpa": 2.9444444444444446
+     },
+     "seasonGames": 18,
+     "games": 80,
+     "h2h": {
+      "pts": 6.3,
+      "reb": 4.6,
+      "ast": 1.1,
+      "n": 7
+     },
+     "recent": {
+      "lastPts": 5,
+      "lastMin": 13
+     }
+    },
+    {
+     "id": "4576086",
+     "name": "Bryce McGowens",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 7.36,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 10,
+      "pts": 3.5,
+      "reb": 0.75,
+      "ast": 0.625,
+      "tpm": 0.25,
+      "stl": 1,
+      "blk": 0.25,
+      "to": 0.375,
+      "fgm": 0.75,
+      "fga": 2.125,
+      "ftm": 1.75,
+      "fta": 2,
+      "tpa": 0.875
+     },
+     "seasonGames": 8,
+     "games": 50,
+     "h2h": {
+      "pts": 4.4,
+      "reb": 1.2,
+      "ast": 0.8,
+      "n": 5
+     },
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 6
+     }
+    },
+    {
+     "id": "5061589",
+     "name": "Yves Missi",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 24.13,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 22.625,
+      "pts": 6.125,
+      "reb": 9,
+      "ast": 1.25,
+      "tpm": 0,
+      "stl": 0.875,
+      "blk": 1.5,
+      "to": 1,
+      "fgm": 2.5,
+      "fga": 4.625,
+      "ftm": 1.125,
+      "fta": 2.125,
+      "tpa": 0
+     },
+     "seasonGames": 8,
+     "games": 74,
+     "h2h": null,
+     "recent": {
+      "lastPts": 4,
+      "lastMin": 22
+     }
+    },
+    {
+     "id": "4397688",
+     "name": "Trey Murphy III",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.36,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 32.63636363636363,
+      "pts": 15.090909090909092,
+      "reb": 5.090909090909091,
+      "ast": 3.1818181818181817,
+      "tpm": 2.1818181818181817,
+      "stl": 1.1818181818181819,
+      "blk": 0.2727272727272727,
+      "to": 1.4545454545454546,
+      "fgm": 5.090909090909091,
+      "fga": 11.363636363636363,
+      "ftm": 2.727272727272727,
+      "fta": 3.1818181818181817,
+      "tpa": 6.090909090909091
+     },
+     "seasonGames": 11,
+     "games": 77,
+     "h2h": {
+      "pts": 15.1,
+      "reb": 3.7,
+      "ast": 2.3,
+      "n": 17
+     },
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 35
+     }
+    },
+    {
+     "id": "3907497",
+     "name": "Dejounte Murray",
+     "pos": "G",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Ankle Sprain",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 31.444444444444443,
+      "pts": 13.444444444444445,
+      "reb": 4.555555555555555,
+      "ast": 4.444444444444445,
+      "tpm": 0.8888888888888888,
+      "stl": 1.5555555555555556,
+      "blk": 0.5555555555555556,
+      "to": 2.3333333333333335,
+      "fgm": 4.888888888888889,
+      "fga": 11.333333333333334,
+      "ftm": 2.7777777777777777,
+      "fta": 3,
+      "tpa": 3
+     },
+     "seasonGames": 9,
+     "games": 23,
+     "h2h": {
+      "pts": 12.4,
+      "reb": 5.3,
+      "ast": 5.1,
+      "n": 24
+     },
+     "recent": {
+      "lastPts": 5,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4703115",
+     "name": "Jaron Pierre Jr.",
      "pos": "G",
      "status": "Out",
      "injury": "G League - Two-Way",
      "availability": 0,
-     "projMin": 0.02,
+     "projMin": 0.32,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 14.142857142857142,
+      "pts": 6.142857142857143,
+      "reb": 2.4285714285714284,
+      "ast": 0.14285714285714285,
+      "tpm": 1.2857142857142858,
+      "stl": 0.42857142857142855,
+      "blk": 0.14285714285714285,
+      "to": 0.7142857142857143,
+      "fgm": 2.2857142857142856,
+      "fga": 6.714285714285714,
+      "ftm": 0.2857142857142857,
+      "fta": 0.5714285714285714,
+      "tpa": 3.7142857142857144
+     },
+     "seasonGames": 7,
+     "games": 7,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4277956",
+     "name": "Jordan Poole",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 25.01,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 22.76923076923077,
+      "pts": 12.615384615384615,
+      "reb": 1.6153846153846154,
+      "ast": 3.1538461538461537,
+      "tpm": 1.7692307692307692,
+      "stl": 0.6923076923076923,
+      "blk": 0.3076923076923077,
+      "to": 1.0769230769230769,
+      "fgm": 3.230769230769231,
+      "fga": 7.538461538461538,
+      "ftm": 4.384615384615385,
+      "fta": 4.769230769230769,
+      "tpa": 4.461538461538462
+     },
+     "seasonGames": 13,
+     "games": 52,
+     "h2h": null,
+     "recent": {
+      "lastPts": 28,
+      "lastMin": 27
+     }
+    },
+    {
+     "id": "4869780",
+     "name": "Derik Queen",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 21.79,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 22.157894736842106,
+      "pts": 12.052631578947368,
+      "reb": 7,
+      "ast": 2.0526315789473686,
+      "tpm": 0.5263157894736842,
+      "stl": 0.8947368421052632,
+      "blk": 0.7894736842105263,
+      "to": 2.4210526315789473,
+      "fgm": 4.157894736842105,
+      "fga": 8.526315789473685,
+      "ftm": 3.210526315789474,
+      "fta": 4.157894736842105,
+      "tpa": 1.4210526315789473
+     },
+     "seasonGames": 19,
+     "games": 100,
+     "h2h": {
+      "pts": 10.4,
+      "reb": 4.4,
+      "ast": 1.4,
+      "n": 5
+     },
+     "recent": {
+      "lastPts": 11,
+      "lastMin": 21
+     }
+    },
+    {
+     "id": "4683742",
+     "name": "Julian Reese",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 5.166666666666667,
+      "pts": 1,
+      "reb": 1,
+      "ast": 0.16666666666666666,
+      "tpm": 0,
+      "stl": 0.16666666666666666,
+      "blk": 0.3333333333333333,
+      "to": 0.16666666666666666,
+      "fgm": 0.3333333333333333,
+      "fga": 0.8333333333333334,
+      "ftm": 0.3333333333333333,
+      "fta": 0.3333333333333333,
+      "tpa": 0
+     },
+     "seasonGames": 6,
+     "games": 19,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4431675",
+     "name": "Trendon Watford",
+     "pos": "F",
+     "status": "Probable",
+     "injury": "Injury/Illness - Right Ankle Sprain",
+     "availability": 0.9,
+     "projMin": 0.37,
+     "starter": false,
+     "depthRank": 8,
+     "avg": {
+      "min": 17.833333333333332,
+      "pts": 7.166666666666667,
+      "reb": 3.5,
+      "ast": 1,
+      "tpm": 0.3333333333333333,
+      "stl": 0.8333333333333334,
+      "blk": 0.5,
+      "to": 1,
+      "fgm": 2,
+      "fga": 3.6666666666666665,
+      "ftm": 2.8333333333333335,
+      "fta": 3.5,
+      "tpa": 1
+     },
+     "seasonGames": 6,
+     "games": 59,
+     "h2h": {
+      "pts": 8,
+      "reb": 3,
+      "ast": 2,
+      "n": 9
+     },
+     "recent": {
+      "lastPts": 5,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4395628",
+     "name": "Zion Williamson",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 37.2,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 32.88235294117647,
+      "pts": 21.88235294117647,
+      "reb": 5.352941176470588,
+      "ast": 2.6470588235294117,
+      "tpm": 0.35294117647058826,
+      "stl": 1.7647058823529411,
+      "blk": 0.5294117647058824,
+      "to": 2.0588235294117645,
+      "fgm": 7.882352941176471,
+      "fga": 13.529411764705882,
+      "ftm": 5.764705882352941,
+      "fta": 7.470588235294118,
+      "tpa": 0.7647058823529411
+     },
+     "seasonGames": 17,
+     "games": 79,
+     "h2h": {
+      "pts": 21.7,
+      "reb": 5.5,
+      "ast": 4.5,
+      "n": 13
+     },
+     "recent": {
+      "lastPts": 25,
+      "lastMin": 40
+     }
+    }
+   ]
+  },
+  "DAL": {
+   "abbr": "DAL",
+   "name": "Mavericks",
+   "city": "Dallas",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/dal.png",
+   "prior": {
+    "ortg": 109.95057903236619,
+    "drtg": 112.24873928675049,
+    "pace": 103.2688068,
+    "games": 82
+   },
+   "current": {
+    "ppg": 112.83333333333333,
+    "papg": 111.83333333333333,
+    "games": 18
+   },
+   "rest": {
+    "restDays": 2,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "4593125",
+     "name": "Santi Aldama",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 10.28,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 12.666666666666666,
+      "pts": 5.777777777777778,
+      "reb": 2.6666666666666665,
+      "ast": 0.5555555555555556,
+      "tpm": 0.8888888888888888,
+      "stl": 0.3333333333333333,
+      "blk": 0.1111111111111111,
+      "to": 1.1111111111111112,
+      "fgm": 2.111111111111111,
+      "fga": 5.111111111111111,
+      "ftm": 0.6666666666666666,
+      "fta": 0.8888888888888888,
+      "tpa": 3
+     },
+     "seasonGames": 9,
+     "games": 52,
+     "h2h": {
+      "pts": 9.2,
+      "reb": 4.5,
+      "ast": 1.5,
+      "n": 13
+     },
+     "recent": {
+      "lastPts": 3,
+      "lastMin": 10
+     }
+    },
+    {
+     "id": "5148538",
+     "name": "Tarik Biberovic",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Heel Bursitis",
+     "availability": 0,
+     "projMin": 0.43,
      "starter": false,
      "depthRank": 8,
      "avg": {
@@ -748,411 +2020,267 @@ const SEASON_SLATE_SNAPSHOT = {
      "recent": null
     },
     {
-     "id": "3934723",
-     "name": "Thomas Bryant",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 9.6,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 14.333333333333334,
-      "pts": 8.583333333333334,
-      "reb": 3.5,
-      "ast": 0.75,
-      "tpm": 1.0833333333333333,
-      "stl": 0.3333333333333333,
-      "blk": 0.25,
-      "to": 0.25,
-      "fgm": 2.75,
-      "fga": 5.25,
-      "ftm": 2,
-      "fta": 2.5833333333333335,
-      "tpa": 2.5833333333333335
-     },
-     "seasonGames": 12,
-     "games": 72,
-     "h2h": {
-      "pts": 7.4,
-      "reb": 4.3,
-      "ast": 0.6,
-      "n": 14
-     },
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 8
-     }
-    },
-    {
-     "id": "4997530",
-     "name": "Khalifa Diop",
-     "pos": "C",
-     "status": "Out",
-     "injury": "G League - On Assignment",
-     "availability": 0,
-     "projMin": 0,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 0,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "3992",
-     "name": "James Harden",
+     "id": "4432582",
+     "name": "Max Christie",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 36.71,
+     "projMin": 10.29,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 17.133333333333333,
+      "pts": 5.4,
+      "reb": 2.6666666666666665,
+      "ast": 1,
+      "tpm": 1.1333333333333333,
+      "stl": 0.6,
+      "blk": 0.26666666666666666,
+      "to": 1,
+      "fgm": 1.9333333333333333,
+      "fga": 5.2,
+      "ftm": 0.4,
+      "fta": 0.4,
+      "tpa": 3.6666666666666665
+     },
+     "seasonGames": 15,
+     "games": 92,
+     "h2h": {
+      "pts": 6.6,
+      "reb": 2.9,
+      "ast": 1.9,
+      "n": 12
+     },
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 4
+     }
+    },
+    {
+     "id": "4701208",
+     "name": "Moussa Cisse",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 2.3,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 3.6363636363636362,
+      "pts": 1.1818181818181819,
+      "reb": 0.7272727272727273,
+      "ast": 0.09090909090909091,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0.09090909090909091,
+      "to": 0.18181818181818182,
+      "fgm": 0.36363636363636365,
+      "fga": 0.5454545454545454,
+      "ftm": 0.45454545454545453,
+      "fta": 0.7272727272727273,
+      "tpa": 0
+     },
+     "seasonGames": 11,
+     "games": 48,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 2
+     }
+    },
+    {
+     "id": "4896372",
+     "name": "Walter Clayton Jr.",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 15.88,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.294117647058822,
+      "pts": 7.647058823529412,
+      "reb": 2.823529411764706,
+      "ast": 3.2941176470588234,
+      "tpm": 1.3529411764705883,
+      "stl": 0.5882352941176471,
+      "blk": 0.11764705882352941,
+      "to": 1.4705882352941178,
+      "fgm": 2.588235294117647,
+      "fga": 5.882352941176471,
+      "ftm": 1.1176470588235294,
+      "fta": 1.4705882352941178,
+      "tpa": 3.4705882352941178
+     },
+     "seasonGames": 17,
+     "games": 86,
+     "h2h": null,
+     "recent": {
+      "lastPts": 5,
+      "lastMin": 14
+     }
+    },
+    {
+     "id": "5279129",
+     "name": "Sergio de Larrea",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Knee Sprain",
+     "availability": 0,
+     "projMin": 0.26,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 11.75,
+      "pts": 5.25,
+      "reb": 2,
+      "ast": 1.25,
+      "tpm": 0.75,
+      "stl": 0,
+      "blk": 0,
+      "to": 1,
+      "fgm": 2.25,
+      "fga": 4.5,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 1.25
+     },
+     "seasonGames": 4,
+     "games": 4,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5041939",
+     "name": "Cooper Flagg",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 31.84,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 33.705882352941174,
-      "pts": 18.529411764705884,
-      "reb": 4.882352941176471,
-      "ast": 6.176470588235294,
-      "tpm": 2.8823529411764706,
-      "stl": 0.8823529411764706,
-      "blk": 0.47058823529411764,
-      "to": 3,
-      "fgm": 5.235294117647059,
-      "fga": 12.882352941176471,
-      "ftm": 5.176470588235294,
-      "fta": 5.823529411764706,
-      "tpa": 7.235294117647059
+      "min": 33.294117647058826,
+      "pts": 24.294117647058822,
+      "reb": 6.294117647058823,
+      "ast": 6.705882352941177,
+      "tpm": 1.588235294117647,
+      "stl": 1.7647058823529411,
+      "blk": 0.6470588235294118,
+      "to": 3.0588235294117645,
+      "fgm": 8.176470588235293,
+      "fga": 17.11764705882353,
+      "ftm": 6.352941176470588,
+      "fta": 7.470588235294118,
+      "tpa": 4.9411764705882355
      },
      "seasonGames": 17,
      "games": 87,
-     "h2h": null,
+     "h2h": {
+      "pts": 18,
+      "reb": 7.3,
+      "ast": 4.7,
+      "n": 3
+     },
      "recent": {
-      "lastPts": 21,
-      "lastMin": 37
+      "lastPts": 24,
+      "lastMin": 31
      }
     },
     {
-     "id": "2995706",
-     "name": "Mario Hezonja",
+     "id": "4278049",
+     "name": "Daniel Gafford",
      "pos": "F",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 12.55,
-     "starter": false,
-     "depthRank": 3,
+     "projMin": 28,
+     "starter": true,
+     "depthRank": 1,
      "avg": {
-      "min": 19.22222222222222,
-      "pts": 8.833333333333334,
-      "reb": 5.666666666666667,
-      "ast": 1.7777777777777777,
-      "tpm": 1.1666666666666667,
-      "stl": 0.5555555555555556,
-      "blk": 0.16666666666666666,
-      "to": 0.9444444444444444,
+      "min": 22.5,
+      "pts": 8.944444444444445,
+      "reb": 5.388888888888889,
+      "ast": 2.111111111111111,
+      "tpm": 0.1111111111111111,
+      "stl": 0.7222222222222222,
+      "blk": 1.6666666666666667,
+      "to": 1.2777777777777777,
       "fgm": 3.6666666666666665,
-      "fga": 7.611111111111111,
-      "ftm": 0.3333333333333333,
-      "fta": 0.5555555555555556,
-      "tpa": 3.5555555555555554
+      "fga": 5.277777777777778,
+      "ftm": 1.5,
+      "fta": 2.388888888888889,
+      "tpa": 0.1111111111111111
      },
      "seasonGames": 18,
-     "games": 18,
+     "games": 73,
      "h2h": null,
-     "recent": null
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 27
+     }
     },
     {
-     "id": "4066757",
-     "name": "Sam Merrill",
+     "id": "5105806",
+     "name": "Jett Howard",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25,
-     "starter": true,
-     "depthRank": 2,
-     "avg": {
-      "min": 23.416666666666668,
-      "pts": 7.833333333333333,
-      "reb": 3.0833333333333335,
-      "ast": 1.9166666666666667,
-      "tpm": 1.5833333333333333,
-      "stl": 1.0833333333333333,
-      "blk": 0.16666666666666666,
-      "to": 0.25,
-      "fgm": 2.4166666666666665,
-      "fga": 6.333333333333333,
-      "ftm": 1.4166666666666667,
-      "fta": 1.6666666666666667,
-      "tpa": 4.833333333333333
-     },
-     "seasonGames": 12,
-     "games": 64,
-     "h2h": {
-      "pts": 8.1,
-      "reb": 2.6,
-      "ast": 2.1,
-      "n": 11
-     },
-     "recent": {
-      "lastPts": 12,
-      "lastMin": 25
-     }
-    },
-    {
-     "id": "5177362",
-     "name": "Riley Minix",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.15,
-     "starter": false,
-     "depthRank": 99,
-     "avg": {
-      "min": 13.75,
-      "pts": 3,
-      "reb": 2,
-      "ast": 0,
-      "tpm": 0.5,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 1.25,
-      "fga": 4.25,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 2.75
-     },
-     "seasonGames": 4,
-     "games": 13,
-     "h2h": null,
-     "recent": {
-      "lastPts": 2,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "3908809",
-     "name": "Donovan Mitchell",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 35.39,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 33.1764705882353,
-      "pts": 24.705882352941178,
-      "reb": 4.588235294117647,
-      "ast": 5.176470588235294,
-      "tpm": 2.588235294117647,
-      "stl": 1.2352941176470589,
-      "blk": 0.47058823529411764,
-      "to": 2.9411764705882355,
-      "fgm": 8.764705882352942,
-      "fga": 17.705882352941178,
-      "ftm": 4.588235294117647,
-      "fta": 5.705882352941177,
-      "tpa": 7.294117647058823
-     },
-     "seasonGames": 17,
-     "games": 90,
-     "h2h": null,
-     "recent": {
-      "lastPts": 28,
-      "lastMin": 37
-     }
-    },
-    {
-     "id": "4432158",
-     "name": "Evan Mobley",
-     "pos": "C",
-     "status": "Out",
-     "injury": "Injury/Illness - Left Great Toe Sprain",
-     "availability": 0,
-     "projMin": 19.19,
-     "starter": false,
-     "depthRank": 1,
-     "avg": {
-      "min": 32.083333333333336,
-      "pts": 16.916666666666668,
-      "reb": 7.333333333333333,
-      "ast": 3.5833333333333335,
-      "tpm": 1.9166666666666667,
-      "stl": 0.5833333333333334,
-      "blk": 1.0833333333333333,
-      "to": 1.5,
-      "fgm": 6.333333333333333,
-      "fga": 11.416666666666666,
-      "ftm": 2.3333333333333335,
-      "fta": 3.75,
-      "tpa": 4
-     },
-     "seasonGames": 12,
-     "games": 77,
-     "h2h": {
-      "pts": 14.7,
-      "reb": 8.5,
-      "ast": 3.7,
-      "n": 18
-     },
-     "recent": {
-      "lastPts": 10,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "4702134",
-     "name": "Norchad Omier",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 6.92,
+     "projMin": 0.29,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 12.142857142857142,
-      "pts": 3.2857142857142856,
-      "reb": 4.428571428571429,
-      "ast": 1.2857142857142858,
-      "tpm": 0.14285714285714285,
-      "stl": 0.5714285714285714,
-      "blk": 0.2857142857142857,
-      "to": 0.14285714285714285,
-      "fgm": 1.4285714285714286,
-      "fga": 2.2857142857142856,
+      "min": 3.5714285714285716,
+      "pts": 2.142857142857143,
+      "reb": 0.14285714285714285,
+      "ast": 0.14285714285714285,
+      "tpm": 0.42857142857142855,
+      "stl": 0.14285714285714285,
+      "blk": 0,
+      "to": 0.2857142857142857,
+      "fgm": 0.7142857142857143,
+      "fga": 1.7142857142857142,
       "ftm": 0.2857142857142857,
       "fta": 0.2857142857142857,
-      "tpa": 0.5714285714285714
+      "tpa": 1.2857142857142858
      },
      "seasonGames": 7,
-     "games": 13,
+     "games": 62,
      "h2h": null,
      "recent": {
-      "lastPts": 2,
-      "lastMin": 8
-     }
-    },
-    {
-     "id": "4701233",
-     "name": "Craig Porter Jr.",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.4,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 11.76923076923077,
-      "pts": 2.076923076923077,
-      "reb": 2.3076923076923075,
-      "ast": 1.8461538461538463,
-      "tpm": 0.07692307692307693,
-      "stl": 0.46153846153846156,
-      "blk": 0.46153846153846156,
-      "to": 0.9230769230769231,
-      "fgm": 0.7692307692307693,
-      "fga": 1.7692307692307692,
-      "ftm": 0.46153846153846156,
-      "fta": 0.46153846153846156,
-      "tpa": 0.46153846153846156
-     },
-     "seasonGames": 13,
-     "games": 77,
-     "h2h": {
-      "pts": 5,
-      "reb": 2.1,
-      "ast": 1.1,
-      "n": 9
-     },
-     "recent": {
-      "lastPts": 2,
+      "lastPts": 0,
       "lastMin": 0
      }
     },
     {
-     "id": "5023693",
-     "name": "Tyrese Proctor",
+     "id": "6442",
+     "name": "Kyrie Irving",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 19.73,
-     "starter": false,
-     "depthRank": 2,
+     "status": "Questionable",
+     "injury": "See official report for full injury details",
+     "availability": 0.5,
+     "projMin": 32.99,
+     "starter": true,
+     "depthRank": 1,
      "avg": {
-      "min": 20.58823529411765,
-      "pts": 9.117647058823529,
-      "reb": 3.1176470588235294,
-      "ast": 2.588235294117647,
-      "tpm": 1.6470588235294117,
-      "stl": 0.47058823529411764,
-      "blk": 0.058823529411764705,
-      "to": 0.6470588235294118,
-      "fgm": 3.3529411764705883,
-      "fga": 6.705882352941177,
-      "ftm": 0.7647058823529411,
-      "fta": 1.0588235294117647,
-      "tpa": 3.764705882352941
-     },
-     "seasonGames": 17,
-     "games": 67,
-     "h2h": {
-      "pts": 6.8,
-      "reb": 1.8,
-      "ast": 1.8,
-      "n": 4
-     },
-     "recent": {
-      "lastPts": 4,
-      "lastMin": 21
-     }
-    },
-    {
-     "id": "5041951",
-     "name": "Meleek Thomas",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 20.78,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 23.4,
-      "pts": 12.733333333333333,
-      "reb": 2.7333333333333334,
-      "ast": 1.8,
-      "tpm": 2.3333333333333335,
-      "stl": 1.3333333333333333,
-      "blk": 0.2,
-      "to": 1.1333333333333333,
-      "fgm": 5,
-      "fga": 10.6,
-      "ftm": 0.4,
-      "fta": 0.6,
-      "tpa": 5.733333333333333
+      "min": 30.933333333333334,
+      "pts": 21.266666666666666,
+      "reb": 3.7333333333333334,
+      "ast": 4.733333333333333,
+      "tpm": 3.2,
+      "stl": 1.2,
+      "blk": 0.4,
+      "to": 1.4666666666666666,
+      "fgm": 7.733333333333333,
+      "fga": 17.4,
+      "ftm": 2.6,
+      "fta": 3,
+      "tpa": 8.733333333333333
      },
      "seasonGames": 15,
      "games": 15,
@@ -1160,15 +2288,75 @@ const SEASON_SLATE_SNAPSHOT = {
      "recent": null
     },
     {
-     "id": "5106268",
-     "name": "Nae'Qwan Tomlin",
+     "id": "4873153",
+     "name": "Morez Johnson Jr.",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 18.09,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 17.41176470588235,
+      "pts": 6.470588235294118,
+      "reb": 5,
+      "ast": 1.3529411764705883,
+      "tpm": 0.29411764705882354,
+      "stl": 0.7058823529411765,
+      "blk": 0.11764705882352941,
+      "to": 1.2941176470588236,
+      "fgm": 2.4705882352941178,
+      "fga": 5.705882352941177,
+      "ftm": 1.2352941176470589,
+      "fta": 1.7058823529411764,
+      "tpa": 1.2352941176470589
+     },
+     "seasonGames": 17,
+     "games": 17,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5106040",
+     "name": "Tobi Lawal",
      "pos": "F",
      "status": "Out",
-     "injury": "See official report for full injury details",
+     "injury": "Injury/Illness - Right Groin Strain",
      "availability": 0,
-     "projMin": 0.35,
+     "projMin": 0.1,
      "starter": false,
-     "depthRank": 5,
+     "depthRank": 7,
+     "avg": {
+      "min": 4.625,
+      "pts": 1.375,
+      "reb": 1.125,
+      "ast": 0.375,
+      "tpm": 0.125,
+      "stl": 0.125,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0.625,
+      "fga": 1.5,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.75
+     },
+     "seasonGames": 8,
+     "games": 8,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4683688",
+     "name": "Dereck Lively II",
+     "pos": "C",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Foot Surgery",
+     "availability": 0,
+     "projMin": 0.37,
+     "starter": false,
+     "depthRank": 6,
      "avg": {
       "min": 0,
       "pts": 0,
@@ -1185,58 +2373,1257 @@ const SEASON_SLATE_SNAPSHOT = {
       "tpa": 0
      },
      "seasonGames": 0,
-     "games": 64,
-     "h2h": null,
+     "games": 7,
+     "h2h": {
+      "pts": 9.5,
+      "reb": 6.8,
+      "ast": 1.5,
+      "n": 4
+     },
      "recent": null
     },
     {
-     "id": "4683747",
-     "name": "Jaylon Tyson",
+     "id": "4278594",
+     "name": "Naji Marshall",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 22.27,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 24.133333333333333,
+      "pts": 10.866666666666667,
+      "reb": 2.6,
+      "ast": 3.7333333333333334,
+      "tpm": 1,
+      "stl": 1.5333333333333334,
+      "blk": 0.13333333333333333,
+      "to": 1.7333333333333334,
+      "fgm": 4.066666666666666,
+      "fga": 9.333333333333334,
+      "ftm": 1.7333333333333334,
+      "fta": 2.4,
+      "tpa": 3.533333333333333
+     },
+     "seasonGames": 15,
+     "games": 89,
+     "h2h": {
+      "pts": 12.3,
+      "reb": 3.4,
+      "ast": 2.9,
+      "n": 15
+     },
+     "recent": {
+      "lastPts": 14,
+      "lastMin": 22
+     }
+    },
+    {
+     "id": "3138160",
+     "name": "Caleb Martin",
+     "pos": "F",
+     "status": "Available",
+     "injury": "Injury/Illness - Right Thumb Splint",
+     "availability": 1,
+     "projMin": 29,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 22.571428571428573,
+      "pts": 6.642857142857143,
+      "reb": 3.5714285714285716,
+      "ast": 2.5714285714285716,
+      "tpm": 1.3571428571428572,
+      "stl": 1.3571428571428572,
+      "blk": 0.14285714285714285,
+      "to": 0.7142857142857143,
+      "fgm": 2.5,
+      "fga": 4.785714285714286,
+      "ftm": 0.2857142857142857,
+      "fta": 0.2857142857142857,
+      "tpa": 2.5714285714285716
+     },
+     "seasonGames": 14,
+     "games": 72,
+     "h2h": {
+      "pts": 5.7,
+      "reb": 3.8,
+      "ast": 1.8,
+      "n": 10
+     },
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 30
+     }
+    },
+    {
+     "id": "5211175",
+     "name": "Zaccharie Risacher",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 21.61,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 23.833333333333332,
+      "pts": 9.11111111111111,
+      "reb": 5.055555555555555,
+      "ast": 1.2222222222222223,
+      "tpm": 1,
+      "stl": 1.0555555555555556,
+      "blk": 0.8888888888888888,
+      "to": 1,
+      "fgm": 3.7222222222222223,
+      "fga": 8,
+      "ftm": 0.6666666666666666,
+      "fta": 1.1666666666666667,
+      "tpa": 3.5
+     },
+     "seasonGames": 18,
+     "games": 85,
+     "h2h": {
+      "pts": 7.3,
+      "reb": 3,
+      "ast": 1.3,
+      "n": 3
+     },
+     "recent": {
+      "lastPts": 12,
+      "lastMin": 21
+     }
+    },
+    {
+     "id": "4432107",
+     "name": "Marcus Sasser",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 16.85,
+     "projMin": 0.63,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 14.916666666666666,
+      "pts": 5.083333333333333,
+      "reb": 1.1666666666666667,
+      "ast": 1.6666666666666667,
+      "tpm": 0.8333333333333334,
+      "stl": 0.08333333333333333,
+      "blk": 0.08333333333333333,
+      "to": 0.6666666666666666,
+      "fgm": 1.9166666666666667,
+      "fga": 4.5,
+      "ftm": 0.4166666666666667,
+      "fta": 0.5,
+      "tpa": 2.75
+     },
+     "seasonGames": 12,
+     "games": 50,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4278078",
+     "name": "P.J. Washington",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 26.19,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.5625,
+      "pts": 14,
+      "reb": 6.625,
+      "ast": 1.25,
+      "tpm": 2.1875,
+      "stl": 0.6875,
+      "blk": 1.0625,
+      "to": 1.5,
+      "fgm": 4.6875,
+      "fga": 10.9375,
+      "ftm": 2.4375,
+      "fta": 3.3125,
+      "tpa": 6.0625
+     },
+     "seasonGames": 16,
+     "games": 72,
+     "h2h": {
+      "pts": 8.6,
+      "reb": 3.7,
+      "ast": 1.7,
+      "n": 12
+     },
+     "recent": {
+      "lastPts": 14,
+      "lastMin": 25
+     }
+    }
+   ]
+  },
+  "DEN": {
+   "abbr": "DEN",
+   "name": "Nuggets",
+   "city": "Denver",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/den.png",
+   "prior": {
+    "ortg": 117.46829876332156,
+    "drtg": 114.51557268037419,
+    "pace": 100.91869143563942,
+    "games": 82
+   },
+   "current": {
+    "ppg": 116,
+    "papg": 115.5,
+    "games": 16
+   },
+   "rest": {
+    "restDays": 2,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "4277848",
+     "name": "Marvin Bagley III",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 12.81,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 22.555555555555557,
-      "pts": 8.444444444444445,
-      "reb": 3,
-      "ast": 2.2222222222222223,
-      "tpm": 1.4444444444444444,
-      "stl": 0.4444444444444444,
-      "blk": 0.3333333333333333,
-      "to": 1.1111111111111112,
-      "fgm": 3.111111111111111,
-      "fga": 7.888888888888889,
-      "ftm": 0.7777777777777778,
-      "fta": 1,
-      "tpa": 4.888888888888889
+      "min": 11.75,
+      "pts": 5.875,
+      "reb": 3.5,
+      "ast": 0.375,
+      "tpm": 0.1875,
+      "stl": 0.25,
+      "blk": 0.5625,
+      "to": 0.375,
+      "fgm": 2.25,
+      "fga": 4.25,
+      "ftm": 1.1875,
+      "fta": 1.75,
+      "tpa": 0.5625
      },
-     "seasonGames": 9,
-     "games": 75,
+     "seasonGames": 16,
+     "games": 76,
      "h2h": {
-      "pts": 6.7,
-      "reb": 3.1,
-      "ast": 1.4,
-      "n": 7
+      "pts": 12.5,
+      "reb": 6.1,
+      "ast": 0.9,
+      "n": 11
      },
      "recent": {
-      "lastPts": 0,
+      "lastPts": 9,
       "lastMin": 12
      }
     },
     {
-     "id": "5106261",
-     "name": "Ernest Udeh Jr.",
+     "id": "4431767",
+     "name": "Christian Braun",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 31,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 33.5625,
+      "pts": 13.8125,
+      "reb": 4.4375,
+      "ast": 2.5625,
+      "tpm": 1.8125,
+      "stl": 2.125,
+      "blk": 0.375,
+      "to": 1.125,
+      "fgm": 5.25,
+      "fga": 10.5,
+      "ftm": 1.5,
+      "fta": 1.8125,
+      "tpa": 5
+     },
+     "seasonGames": 16,
+     "games": 60,
+     "h2h": {
+      "pts": 11.6,
+      "reb": 4,
+      "ast": 1.9,
+      "n": 15
+     },
+     "recent": {
+      "lastPts": 15,
+      "lastMin": 29
+     }
+    },
+    {
+     "id": "4698719",
+     "name": "Trevon Brazile",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 12.75,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 17.75,
+      "pts": 6.0625,
+      "reb": 4.75,
+      "ast": 0.3125,
+      "tpm": 0.6875,
+      "stl": 0.375,
+      "blk": 0.5625,
+      "to": 0.6875,
+      "fgm": 2.4375,
+      "fga": 4.25,
+      "ftm": 0.5,
+      "fta": 0.9375,
+      "tpa": 1.875
+     },
+     "seasonGames": 16,
+     "games": 16,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "3978",
+     "name": "DeMar DeRozan",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 19,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 22.133333333333333,
+      "pts": 9.8,
+      "reb": 2.066666666666667,
+      "ast": 2.4,
+      "tpm": 0.2,
+      "stl": 0.5333333333333333,
+      "blk": 0.13333333333333333,
+      "to": 1.0666666666666667,
+      "fgm": 3.3333333333333335,
+      "fga": 8.333333333333334,
+      "ftm": 2.933333333333333,
+      "fta": 3.6,
+      "tpa": 1.2666666666666666
+     },
+     "seasonGames": 15,
+     "games": 92,
+     "h2h": null,
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 17
+     }
+    },
+    {
+     "id": "4065813",
+     "name": "Alpha Diallo",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 2.55,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 7.2,
+      "pts": 1.2,
+      "reb": 0.8,
+      "ast": 0.6,
+      "tpm": 0,
+      "stl": 0.2,
+      "blk": 0,
+      "to": 1,
+      "fgm": 0.6,
+      "fga": 1.4,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.6
+     },
+     "seasonGames": 5,
+     "games": 5,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "3064290",
+     "name": "Aaron Gordon",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 31,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 29.125,
+      "pts": 11.375,
+      "reb": 4.875,
+      "ast": 2.1875,
+      "tpm": 1,
+      "stl": 0.875,
+      "blk": 0.5,
+      "to": 1.1875,
+      "fgm": 3.875,
+      "fga": 9.0625,
+      "ftm": 2.625,
+      "fta": 3.5625,
+      "tpa": 3.8125
+     },
+     "seasonGames": 16,
+     "games": 52,
+     "h2h": {
+      "pts": 12.8,
+      "reb": 5.4,
+      "ast": 2.3,
+      "n": 25
+     },
+     "recent": {
+      "lastPts": 1,
+      "lastMin": 24
+     }
+    },
+    {
+     "id": "4433607",
+     "name": "DaRon Holmes II",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - On Assignment",
+     "availability": 0,
+     "projMin": 2.58,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 2.8,
+      "pts": 0.6,
+      "reb": 0.2,
+      "ast": 0.4,
+      "tpm": 0.2,
+      "stl": 0.4,
+      "blk": 0,
+      "to": 0.2,
+      "fgm": 0.2,
+      "fga": 0.8,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.8
+     },
+     "seasonGames": 5,
+     "games": 30,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 3
+     }
+    },
+    {
+     "id": "4565698",
+     "name": "Bryce Hopkins",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.29,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 13,
+      "pts": 4.75,
+      "reb": 1.875,
+      "ast": 0.375,
+      "tpm": 0.25,
+      "stl": 0.25,
+      "blk": 0,
+      "to": 0.625,
+      "fgm": 1.75,
+      "fga": 3,
+      "ftm": 1,
+      "fta": 1.375,
+      "tpa": 0.625
+     },
+     "seasonGames": 8,
+     "games": 8,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "3138196",
+     "name": "Cameron Johnson",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 29.384615384615383,
+      "pts": 12.76923076923077,
+      "reb": 3.6153846153846154,
+      "ast": 2.3846153846153846,
+      "tpm": 2.076923076923077,
+      "stl": 1.1538461538461537,
+      "blk": 0,
+      "to": 1.3846153846153846,
+      "fgm": 4.538461538461538,
+      "fga": 10.076923076923077,
+      "ftm": 1.6153846153846154,
+      "fta": 2.076923076923077,
+      "tpa": 5.769230769230769
+     },
+     "seasonGames": 13,
+     "games": 67,
+     "h2h": {
+      "pts": 12.9,
+      "reb": 4.8,
+      "ast": 2.2,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 17,
+      "lastMin": 34
+     }
+    },
+    {
+     "id": "3112335",
+     "name": "Nikola Jokic",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.21,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 36.875,
+      "pts": 24.625,
+      "reb": 10.9375,
+      "ast": 8.9375,
+      "tpm": 1.25,
+      "stl": 1.5,
+      "blk": 0.9375,
+      "to": 3.4375,
+      "fgm": 9.5,
+      "fga": 17.9375,
+      "ftm": 4.375,
+      "fta": 4.875,
+      "tpa": 4.1875
+     },
+     "seasonGames": 16,
+     "games": 82,
+     "h2h": {
+      "pts": 20.7,
+      "reb": 11.1,
+      "ast": 7.6,
+      "n": 40
+     },
+     "recent": {
+      "lastPts": 18,
+      "lastMin": 33
+     }
+    },
+    {
+     "id": "4592427",
+     "name": "Spencer Jones",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 21.03,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.555555555555557,
+      "pts": 4,
+      "reb": 2.4444444444444446,
+      "ast": 0.7777777777777778,
+      "tpm": 0.7777777777777778,
+      "stl": 0.2222222222222222,
+      "blk": 0.5555555555555556,
+      "to": 0.7777777777777778,
+      "fgm": 1.4444444444444444,
+      "fga": 3,
+      "ftm": 0.3333333333333333,
+      "fta": 0.4444444444444444,
+      "tpa": 1.8888888888888888
+     },
+     "seasonGames": 9,
+     "games": 72,
+     "h2h": null,
+     "recent": {
+      "lastPts": 7,
+      "lastMin": 22
+     }
+    },
+    {
+     "id": "3135046",
+     "name": "Tyus Jones",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 11.96,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 10.625,
+      "pts": 2.125,
+      "reb": 0.75,
+      "ast": 1.9375,
+      "tpm": 0.25,
+      "stl": 0.375,
+      "blk": 0.1875,
+      "to": 0.625,
+      "fgm": 0.75,
+      "fga": 2.375,
+      "ftm": 0.375,
+      "fta": 0.375,
+      "tpa": 1.125
+     },
+     "seasonGames": 16,
+     "games": 83,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 12
+     }
+    },
+    {
+     "id": "3936299",
+     "name": "Jamal Murray",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 36.35,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 36.9375,
+      "pts": 25.8125,
+      "reb": 4.8125,
+      "ast": 5.6875,
+      "tpm": 3.25,
+      "stl": 1.125,
+      "blk": 1.0625,
+      "to": 2.4375,
+      "fgm": 8.4375,
+      "fga": 16.875,
+      "ftm": 5.6875,
+      "fta": 6.4375,
+      "tpa": 7.125
+     },
+     "seasonGames": 16,
+     "games": 93,
+     "h2h": null,
+     "recent": {
+      "lastPts": 20,
+      "lastMin": 36
+     }
+    },
+    {
+     "id": "4433629",
+     "name": "Ryan Nembhard",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.44,
+     "starter": false,
+     "depthRank": 99,
+     "avg": {
+      "min": 3.3333333333333335,
+      "pts": 3,
+      "reb": 0.3333333333333333,
+      "ast": 0.6666666666666666,
+      "tpm": 0.3333333333333333,
+      "stl": 0,
+      "blk": 0,
+      "to": 0.3333333333333333,
+      "fgm": 1,
+      "fga": 1.6666666666666667,
+      "ftm": 0.6666666666666666,
+      "fta": 0.6666666666666666,
+      "tpa": 0.3333333333333333
+     },
+     "seasonGames": 3,
+     "games": 63,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4431690",
+     "name": "Zeke Nnaji",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 2.9,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 3.6666666666666665,
+      "pts": 2.6666666666666665,
+      "reb": 0.6666666666666666,
+      "ast": 0,
+      "tpm": 0.3333333333333333,
+      "stl": 0.3333333333333333,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0.3333333333333333,
+      "fga": 1.3333333333333333,
+      "ftm": 1.6666666666666667,
+      "fta": 2,
+      "tpa": 0.3333333333333333
+     },
+     "seasonGames": 3,
+     "games": 55,
+     "h2h": null,
+     "recent": {
+      "lastPts": 1,
+      "lastMin": 3
+     }
+    },
+    {
+     "id": "4432181",
+     "name": "Julian Strawther",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.79,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 57,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5105592",
+     "name": "Cam Whitmore",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.38,
+     "starter": false,
+     "depthRank": 8,
+     "avg": {
+      "min": 7.5,
+      "pts": 4,
+      "reb": 1,
+      "ast": 0.5,
+      "tpm": 0,
+      "stl": 0.5,
+      "blk": 0,
+      "to": 0.5,
+      "fgm": 2,
+      "fga": 3.5,
+      "ftm": 0,
+      "fta": 0.5,
+      "tpa": 1
+     },
+     "seasonGames": 2,
+     "games": 23,
+     "h2h": {
+      "pts": 11.8,
+      "reb": 3.3,
+      "ast": 2.5,
+      "n": 4
+     },
+     "recent": {
+      "lastPts": 4,
+      "lastMin": null
+     }
+    }
+   ]
+  },
+  "DET": {
+   "abbr": "DET",
+   "name": "Pistons",
+   "city": "Detroit",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/det.png",
+   "prior": {
+    "ortg": 113.74841865397035,
+    "drtg": 106.86437173877934,
+    "pace": 100.92317036644923,
+    "games": 82
+   },
+   "current": {
+    "ppg": 112.82352941176471,
+    "papg": 107.23529411764706,
+    "games": 17
+   },
+   "rest": {
+    "restDays": 2,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "3908845",
+     "name": "John Collins",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 25.73,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 25.647058823529413,
+      "pts": 11.117647058823529,
+      "reb": 5.647058823529412,
+      "ast": 0.6470588235294118,
+      "tpm": 1.4705882352941178,
+      "stl": 0.47058823529411764,
+      "blk": 0.9411764705882353,
+      "to": 1.1176470588235294,
+      "fgm": 4.0588235294117645,
+      "fga": 8.352941176470589,
+      "ftm": 1.5294117647058822,
+      "fta": 1.8235294117647058,
+      "tpa": 3.176470588235294
+     },
+     "seasonGames": 17,
+     "games": 86,
+     "h2h": {
+      "pts": 14.6,
+      "reb": 7.4,
+      "ast": 1.6,
+      "n": 20
+     },
+     "recent": {
+      "lastPts": 12,
+      "lastMin": 26
+     }
+    },
+    {
+     "id": "4432166",
+     "name": "Cade Cunningham",
+     "pos": "G",
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 19.7,
+     "starter": false,
+     "depthRank": 1,
+     "avg": {
+      "min": 34.93333333333333,
+      "pts": 24.2,
+      "reb": 5.066666666666666,
+      "ast": 8.333333333333334,
+      "tpm": 1.9333333333333333,
+      "stl": 1.3333333333333333,
+      "blk": 0.8666666666666667,
+      "to": 3.2666666666666666,
+      "fgm": 8.533333333333333,
+      "fga": 18.266666666666666,
+      "ftm": 5.2,
+      "fta": 6.266666666666667,
+      "tpa": 6.133333333333334
+     },
+     "seasonGames": 15,
+     "games": 82,
+     "h2h": null,
+     "recent": {
+      "lastPts": 5,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4433621",
+     "name": "Jalen Duren",
+     "pos": "C",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Hamstring Strain",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 19,
+      "pts": 13,
+      "reb": 7.5,
+      "ast": 2,
+      "tpm": 0,
+      "stl": 1,
+      "blk": 1,
+      "to": 1,
+      "fgm": 5,
+      "fga": 8.5,
+      "ftm": 3,
+      "fta": 3.5,
+      "tpa": 0
+     },
+     "seasonGames": 2,
+     "games": 75,
+     "h2h": {
+      "pts": 13.2,
+      "reb": 9.8,
+      "ast": 2.9,
+      "n": 13
+     },
+     "recent": {
+      "lastPts": 4,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "2596112",
+     "name": "Javonte Green",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 23.73,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 19.352941176470587,
+      "pts": 7.0588235294117645,
+      "reb": 2.6470588235294117,
+      "ast": 0.47058823529411764,
+      "tpm": 1.2941176470588236,
+      "stl": 0.9411764705882353,
+      "blk": 0.29411764705882354,
+      "to": 0.23529411764705882,
+      "fgm": 2.176470588235294,
+      "fga": 5,
+      "ftm": 1.411764705882353,
+      "fta": 1.5294117647058822,
+      "tpa": 3.764705882352941
+     },
+     "seasonGames": 17,
+     "games": 99,
+     "h2h": null,
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 27
+     }
+    },
+    {
+     "id": "4397449",
+     "name": "Elijah Harkless",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 12,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 7.4,
+      "pts": 3,
+      "reb": 0.8,
+      "ast": 1.4,
+      "tpm": 0.4,
+      "stl": 0.2,
+      "blk": 0,
+      "to": 0.6,
+      "fgm": 0.6,
+      "fga": 2.4,
+      "ftm": 1.4,
+      "fta": 1.4,
+      "tpa": 0.6
+     },
+     "seasonGames": 5,
+     "games": 31,
+     "h2h": null,
+     "recent": {
+      "lastPts": 7,
+      "lastMin": 14
+     }
+    },
+    {
+     "id": "4683771",
+     "name": "Ronald Holland II",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 14.85,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 15.642857142857142,
+      "pts": 5.285714285714286,
+      "reb": 3.7857142857142856,
+      "ast": 1.6428571428571428,
+      "tpm": 0.7142857142857143,
+      "stl": 0.5714285714285714,
+      "blk": 0.7142857142857143,
+      "to": 0.7857142857142857,
+      "fgm": 1.9285714285714286,
+      "fga": 5.428571428571429,
+      "ftm": 0.7142857142857143,
+      "fta": 1.0714285714285714,
+      "tpa": 2.2142857142857144
+     },
+     "seasonGames": 14,
+     "games": 92,
+     "h2h": {
+      "pts": 6.1,
+      "reb": 2.4,
+      "ast": 1.4,
+      "n": 8
+     },
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 17
+     }
+    },
+    {
+     "id": "4066372",
+     "name": "Kevin Huerter",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 32,
+     "starter": true,
+     "depthRank": 2,
+     "avg": {
+      "min": 27.235294117647058,
+      "pts": 10.235294117647058,
+      "reb": 2.9411764705882355,
+      "ast": 2.764705882352941,
+      "tpm": 1.4705882352941178,
+      "stl": 0.8823529411764706,
+      "blk": 0.8235294117647058,
+      "to": 1.411764705882353,
+      "fgm": 3.823529411764706,
+      "fga": 8.705882352941176,
+      "ftm": 1.1176470588235294,
+      "fta": 1.5294117647058822,
+      "tpa": 4.529411764705882
+     },
+     "seasonGames": 17,
+     "games": 86,
+     "h2h": {
+      "pts": 13.3,
+      "reb": 3.9,
+      "ast": 3.1,
+      "n": 18
+     },
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 32
+     }
+    },
+    {
+     "id": "5107199",
+     "name": "Daniss Jenkins",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.07,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.705882352941178,
+      "pts": 14.117647058823529,
+      "reb": 3.764705882352941,
+      "ast": 4.705882352941177,
+      "tpm": 2.0588235294117645,
+      "stl": 1.0588235294117647,
+      "blk": 0.058823529411764705,
+      "to": 1.6470588235294117,
+      "fgm": 5,
+      "fga": 11.588235294117647,
+      "ftm": 2.0588235294117645,
+      "fta": 2.235294117647059,
+      "tpa": 5.117647058823529
+     },
+     "seasonGames": 17,
+     "games": 89,
+     "h2h": null,
+     "recent": {
+      "lastPts": 15,
+      "lastMin": 35
+     }
+    },
+    {
+     "id": "4395702",
+     "name": "Isaiah Joe",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 26.54,
+     "starter": true,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.714285714285715,
+      "pts": 11.714285714285714,
+      "reb": 2,
+      "ast": 1.1428571428571428,
+      "tpm": 2.142857142857143,
+      "stl": 0.8571428571428571,
+      "blk": 0.14285714285714285,
+      "to": 0.8571428571428571,
+      "fgm": 3.857142857142857,
+      "fga": 8.857142857142858,
+      "ftm": 1.8571428571428572,
+      "fta": 2.4285714285714284,
+      "tpa": 6.285714285714286
+     },
+     "seasonGames": 7,
+     "games": 78,
+     "h2h": {
+      "pts": 8,
+      "reb": 2,
+      "ast": 1.1,
+      "n": 10
+     },
+     "recent": {
+      "lastPts": 21,
+      "lastMin": 30
+     }
+    },
+    {
+     "id": "5107818",
+     "name": "Isaac Jones",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.12,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 3.2,
+      "pts": 0.4,
+      "reb": 1.2,
+      "ast": 0.2,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0.4,
+      "to": 0.2,
+      "fgm": 0.2,
+      "fga": 0.6,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.2
+     },
+     "seasonGames": 5,
+     "games": 12,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4700852",
+     "name": "Chaz Lanier",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 6.37,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 8.5,
+      "pts": 3.375,
+      "reb": 0.75,
+      "ast": 0.125,
+      "tpm": 0.875,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 1.25,
+      "fga": 2.375,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 1.875
+     },
+     "seasonGames": 8,
+     "games": 41,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 7
+     }
+    },
+    {
+     "id": "5258459",
+     "name": "Ebuka Okorie",
+     "pos": "G",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Oblique Strain",
+     "availability": 0,
+     "projMin": 0.09,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 4.2,
+      "pts": 2.2,
+      "reb": 0.4,
+      "ast": 0.6,
+      "tpm": 0,
+      "stl": 0.2,
+      "blk": 0,
+      "to": 0.4,
+      "fgm": 0.8,
+      "fga": 2.4,
+      "ftm": 0.6,
+      "fta": 0.6,
+      "tpa": 0.6
+     },
+     "seasonGames": 5,
+     "games": 5,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5037878",
+     "name": "Ugonna Onyenso",
      "pos": "C",
      "status": "Out",
      "injury": "G League - Two-Way",
      "availability": 0,
-     "projMin": 0.22,
+     "projMin": 0.16,
      "starter": false,
-     "depthRank": 5,
+     "depthRank": 4,
      "avg": {
       "min": 0,
       "pts": 0,
@@ -1258,41 +3645,188 @@ const SEASON_SLATE_SNAPSHOT = {
      "recent": null
     },
     {
-     "id": "4576087",
-     "name": "Peyton Watson",
+     "id": "2990962",
+     "name": "Taurean Prince",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Arthroscopy",
+     "availability": 0,
+     "projMin": 0.53,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 7,
+      "pts": 2,
+      "reb": 0.6666666666666666,
+      "ast": 0.3333333333333333,
+      "tpm": 0.3333333333333333,
+      "stl": 0.6666666666666666,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0.6666666666666666,
+      "fga": 2,
+      "ftm": 0.3333333333333333,
+      "fta": 0.6666666666666666,
+      "tpa": 1.3333333333333333
+     },
+     "seasonGames": 3,
+     "games": 29,
+     "h2h": {
+      "pts": 10.8,
+      "reb": 3.4,
+      "ast": 1.3,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 2,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4278562",
+     "name": "Paul Reed",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 20.67,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 26,
+      "pts": 11.529411764705882,
+      "reb": 7.352941176470588,
+      "ast": 2.176470588235294,
+      "tpm": 0.29411764705882354,
+      "stl": 1.2352941176470589,
+      "blk": 0.8235294117647058,
+      "to": 1.7647058823529411,
+      "fgm": 4.705882352941177,
+      "fga": 8.235294117647058,
+      "ftm": 1.8235294117647058,
+      "fta": 2.6470588235294117,
+      "tpa": 0.5882352941176471
+     },
+     "seasonGames": 17,
+     "games": 82,
+     "h2h": {
+      "pts": 5.1,
+      "reb": 4.4,
+      "ast": 0.9,
+      "n": 17
+     },
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 22
+     }
+    },
+    {
+     "id": "3157465",
+     "name": "Duncan Robinson",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Quadriceps Strain",
+     "availability": 0,
+     "projMin": 16.8,
+     "starter": false,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.583333333333332,
+      "pts": 17.416666666666668,
+      "reb": 1.8333333333333333,
+      "ast": 2.0833333333333335,
+      "tpm": 3.9166666666666665,
+      "stl": 1.3333333333333333,
+      "blk": 0.16666666666666666,
+      "to": 0.9166666666666666,
+      "fgm": 5.25,
+      "fga": 11.666666666666666,
+      "ftm": 3,
+      "fta": 3.5833333333333335,
+      "tpa": 9.083333333333334
+     },
+     "seasonGames": 12,
+     "games": 89,
+     "h2h": {
+      "pts": 11.3,
+      "reb": 2.3,
+      "ast": 1.7,
+      "n": 22
+     },
+     "recent": {
+      "lastPts": 10,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4397882",
+     "name": "Tolu Smith",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.48,
+     "starter": false,
+     "depthRank": 3,
+     "avg": {
+      "min": 3.5555555555555554,
+      "pts": 1.3333333333333333,
+      "reb": 1.4444444444444444,
+      "ast": 0.1111111111111111,
+      "tpm": 0,
+      "stl": 0.1111111111111111,
+      "blk": 0.2222222222222222,
+      "to": 0.2222222222222222,
+      "fgm": 0.4444444444444444,
+      "fga": 0.7777777777777778,
+      "ftm": 0.4444444444444444,
+      "fta": 1.2222222222222223,
+      "tpa": 0
+     },
+     "seasonGames": 9,
+     "games": 24,
+     "h2h": null,
+     "recent": {
+      "lastPts": 3,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4684742",
+     "name": "Ausar Thompson",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 29,
+     "projMin": 33,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27.714285714285715,
-      "pts": 10.785714285714286,
-      "reb": 4.857142857142857,
-      "ast": 2.5714285714285716,
-      "tpm": 1.1428571428571428,
-      "stl": 0.7142857142857143,
-      "blk": 1.7857142857142858,
-      "to": 2,
-      "fgm": 4.071428571428571,
-      "fga": 10.285714285714286,
+      "min": 29.375,
+      "pts": 10.75,
+      "reb": 8.6875,
+      "ast": 5.4375,
+      "tpm": 0,
+      "stl": 1.625,
+      "blk": 1,
+      "to": 2.375,
+      "fgm": 4.625,
+      "fga": 8.375,
       "ftm": 1.5,
-      "fta": 2.2857142857142856,
-      "tpa": 4.214285714285714
+      "fta": 2.0625,
+      "tpa": 0.375
      },
-     "seasonGames": 14,
-     "games": 68,
+     "seasonGames": 16,
+     "games": 89,
      "h2h": {
-      "pts": 7.1,
-      "reb": 3.1,
-      "ast": 1.7,
-      "n": 7
+      "pts": 9.3,
+      "reb": 6.5,
+      "ast": 2.6,
+      "n": 10
      },
      "recent": {
-      "lastPts": 8,
-      "lastMin": 29
+      "lastPts": 6,
+      "lastMin": 31
      }
     }
    ]
@@ -1303,18 +3837,18 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Golden State",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/gs.png",
    "prior": {
-    "ortg": 111.5814432506116,
-    "drtg": 112.22160278320344,
-    "pace": 101.05340432065273,
+    "ortg": 111.96480084610927,
+    "drtg": 112.0991643392447,
+    "pace": 101.08515683853028,
     "games": 82
    },
    "current": {
-    "ppg": 111.23529411764706,
-    "papg": 112.05882352941177,
-    "games": 17
+    "ppg": 112.22222222222223,
+    "papg": 111.94444444444444,
+    "games": 18
    },
    "rest": {
-    "restDays": 2,
+    "restDays": 1,
     "backToBack": false,
     "threeInFour": false,
     "schedulePoints": 0
@@ -1327,30 +3861,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.07,
+     "projMin": 25,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 15.6,
-      "pts": 8.666666666666666,
-      "reb": 6.133333333333334,
-      "ast": 0.7333333333333333,
+      "min": 16,
+      "pts": 8.75,
+      "reb": 6.1875,
+      "ast": 0.75,
       "tpm": 0,
-      "stl": 0.4,
-      "blk": 0.9333333333333333,
-      "to": 1.1333333333333333,
-      "fgm": 3.533333333333333,
-      "fga": 5.066666666666666,
-      "ftm": 1.6,
-      "fta": 2.1333333333333333,
-      "tpa": 0.13333333333333333
+      "stl": 0.375,
+      "blk": 1,
+      "to": 1.1875,
+      "fgm": 3.5625,
+      "fga": 5.3125,
+      "ftm": 1.625,
+      "fta": 2.125,
+      "tpa": 0.1875
      },
-     "seasonGames": 15,
-     "games": 28,
+     "seasonGames": 16,
+     "games": 29,
      "h2h": null,
      "recent": {
-      "lastPts": 13,
-      "lastMin": 26
+      "lastPts": 10,
+      "lastMin": 22
      }
     },
     {
@@ -1380,7 +3914,12 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 0,
      "games": 38,
-     "h2h": null,
+     "h2h": {
+      "pts": 15.9,
+      "reb": 5,
+      "ast": 4.5,
+      "n": 26
+     },
      "recent": null
     },
     {
@@ -1390,7 +3929,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 12.15,
+     "projMin": 2.06,
      "starter": false,
      "depthRank": 2,
      "avg": {
@@ -1413,7 +3952,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 3,
-      "lastMin": 11
+      "lastMin": 0
      }
     },
     {
@@ -1456,35 +3995,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.8,
+     "projMin": 26.27,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 25.714285714285715,
-      "pts": 3.5714285714285716,
-      "reb": 4.785714285714286,
-      "ast": 6.285714285714286,
-      "tpm": 0.5,
-      "stl": 0.8571428571428571,
-      "blk": 0.8571428571428571,
-      "to": 2.5,
-      "fgm": 1.4285714285714286,
-      "fga": 3.4285714285714284,
-      "ftm": 0.21428571428571427,
-      "fta": 0.42857142857142855,
-      "tpa": 1.5
+      "min": 25.733333333333334,
+      "pts": 3.7333333333333334,
+      "reb": 4.733333333333333,
+      "ast": 6.6,
+      "tpm": 0.6,
+      "stl": 0.8,
+      "blk": 0.8,
+      "to": 2.466666666666667,
+      "fgm": 1.4666666666666666,
+      "fga": 3.533333333333333,
+      "ftm": 0.2,
+      "fta": 0.4,
+      "tpa": 1.7333333333333334
      },
-     "seasonGames": 14,
-     "games": 82,
+     "seasonGames": 15,
+     "games": 83,
      "h2h": {
-      "pts": 9.7,
-      "reb": 6.4,
-      "ast": 5.7,
-      "n": 46
+      "pts": 8.1,
+      "reb": 7.6,
+      "ast": 5.9,
+      "n": 40
      },
      "recent": {
-      "lastPts": 9,
-      "lastMin": 27
+      "lastPts": 6,
+      "lastMin": 26
      }
     },
     {
@@ -1494,35 +4033,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 17.73,
+     "projMin": 14.67,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 17,
-      "pts": 4.071428571428571,
-      "reb": 3.5714285714285716,
-      "ast": 1.8571428571428572,
-      "tpm": 0.8571428571428571,
-      "stl": 0.35714285714285715,
+      "min": 16.733333333333334,
+      "pts": 3.933333333333333,
+      "reb": 3.466666666666667,
+      "ast": 1.8666666666666667,
+      "tpm": 0.8,
+      "stl": 0.3333333333333333,
       "blk": 1,
-      "to": 0.5714285714285714,
-      "fgm": 1.5714285714285714,
-      "fga": 4.714285714285714,
-      "ftm": 0.07142857142857142,
-      "fta": 0.14285714285714285,
-      "tpa": 3
+      "to": 0.6,
+      "fgm": 1.5333333333333334,
+      "fga": 4.6,
+      "ftm": 0.06666666666666667,
+      "fta": 0.13333333333333333,
+      "tpa": 2.8666666666666667
      },
-     "seasonGames": 14,
-     "games": 59,
+     "seasonGames": 15,
+     "games": 60,
      "h2h": {
-      "pts": 14.1,
-      "reb": 7.6,
-      "ast": 3.4,
-      "n": 32
+      "pts": 12.1,
+      "reb": 7,
+      "ast": 3.5,
+      "n": 31
      },
      "recent": {
-      "lastPts": 7,
-      "lastMin": 18
+      "lastPts": 2,
+      "lastMin": 13
      }
     },
     {
@@ -1559,29 +4098,29 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "5175737",
      "name": "Yaxel Lendeborg",
      "pos": "F",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Illness",
-     "availability": 0.5,
-     "projMin": 33.21,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 31.47,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 31.705882352941178,
-      "pts": 19.235294117647058,
-      "reb": 7.352941176470588,
-      "ast": 3.6470588235294117,
-      "tpm": 1.9411764705882353,
-      "stl": 1,
-      "blk": 0.7647058823529411,
-      "to": 3.0588235294117645,
-      "fgm": 6.588235294117647,
-      "fga": 14.588235294117647,
-      "ftm": 4.117647058823529,
-      "fta": 5.411764705882353,
-      "tpa": 5.294117647058823
+      "min": 31.666666666666668,
+      "pts": 19,
+      "reb": 7.388888888888889,
+      "ast": 3.5555555555555554,
+      "tpm": 1.8333333333333333,
+      "stl": 1.1111111111111112,
+      "blk": 0.7777777777777778,
+      "to": 3.111111111111111,
+      "fgm": 6.555555555555555,
+      "fga": 14.38888888888889,
+      "ftm": 4.055555555555555,
+      "fta": 5.333333333333333,
+      "tpa": 5.166666666666667
      },
-     "seasonGames": 17,
-     "games": 17,
+     "seasonGames": 18,
+     "games": 18,
      "h2h": null,
      "recent": null
     },
@@ -1612,12 +4151,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 10,
      "games": 35,
-     "h2h": {
-      "pts": 4.5,
-      "reb": 3.5,
-      "ast": 1.5,
-      "n": 2
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 0,
       "lastMin": 0
@@ -1630,34 +4164,34 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.53,
+     "projMin": 27.07,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 22.294117647058822,
-      "pts": 8.705882352941176,
-      "reb": 3.7058823529411766,
-      "ast": 2.7058823529411766,
-      "tpm": 1.8823529411764706,
-      "stl": 1.411764705882353,
-      "blk": 0.47058823529411764,
-      "to": 1.6470588235294117,
-      "fgm": 2.7058823529411766,
-      "fga": 7.529411764705882,
-      "ftm": 1.411764705882353,
-      "fta": 1.6470588235294117,
-      "tpa": 5.117647058823529
+      "min": 22.555555555555557,
+      "pts": 9.555555555555555,
+      "reb": 3.7222222222222223,
+      "ast": 2.9444444444444446,
+      "tpm": 2.2222222222222223,
+      "stl": 1.3888888888888888,
+      "blk": 0.5,
+      "to": 1.7777777777777777,
+      "fgm": 3,
+      "fga": 7.888888888888889,
+      "ftm": 1.3333333333333333,
+      "fta": 1.5555555555555556,
+      "tpa": 5.5
      },
-     "seasonGames": 17,
-     "games": 66,
+     "seasonGames": 18,
+     "games": 67,
      "h2h": {
-      "pts": 13.6,
-      "reb": 3.8,
-      "ast": 3.7,
-      "n": 16
+      "pts": 7.6,
+      "reb": 2.9,
+      "ast": 2.9,
+      "n": 18
      },
      "recent": {
-      "lastPts": 2,
+      "lastPts": 24,
       "lastMin": 27
      }
     },
@@ -1689,9 +4223,9 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 0,
      "games": 60,
      "h2h": {
-      "pts": 9.1,
-      "reb": 1.8,
-      "ast": 1.5,
+      "pts": 10.3,
+      "reb": 2.1,
+      "ast": 1.1,
       "n": 15
      },
      "recent": null
@@ -1703,26 +4237,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 10.37,
+     "projMin": 17.31,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.235294117647058,
-      "pts": 6.882352941176471,
-      "reb": 2.823529411764706,
-      "ast": 1.3529411764705883,
-      "tpm": 1.1764705882352942,
-      "stl": 0.47058823529411764,
-      "blk": 0.11764705882352941,
-      "to": 1.0588235294117647,
-      "fgm": 2.6470588235294117,
-      "fga": 6.588235294117647,
-      "ftm": 0.4117647058823529,
-      "fta": 0.5882352941176471,
-      "tpa": 3.823529411764706
+      "min": 18.27777777777778,
+      "pts": 7.111111111111111,
+      "reb": 2.8333333333333335,
+      "ast": 1.3888888888888888,
+      "tpm": 1.2777777777777777,
+      "stl": 0.4444444444444444,
+      "blk": 0.1111111111111111,
+      "to": 1.0555555555555556,
+      "fgm": 2.7222222222222223,
+      "fga": 6.666666666666667,
+      "ftm": 0.3888888888888889,
+      "fta": 0.5555555555555556,
+      "tpa": 3.9444444444444446
      },
-     "seasonGames": 17,
-     "games": 17,
+     "seasonGames": 18,
+     "games": 18,
      "h2h": null,
      "recent": null
     },
@@ -1733,30 +4267,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 12.43,
+     "projMin": 14.9,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 13.866666666666667,
-      "pts": 4.8,
-      "reb": 1.8666666666666667,
-      "ast": 0.4666666666666667,
-      "tpm": 0.4,
-      "stl": 0.8666666666666667,
+      "min": 14.0625,
+      "pts": 5.0625,
+      "reb": 1.9375,
+      "ast": 0.5,
+      "tpm": 0.4375,
+      "stl": 0.875,
       "blk": 0,
-      "to": 0.8,
-      "fgm": 2.1333333333333333,
-      "fga": 4.133333333333334,
-      "ftm": 0.13333333333333333,
-      "fta": 0.13333333333333333,
-      "tpa": 1.6
+      "to": 0.75,
+      "fgm": 2.1875,
+      "fga": 4.25,
+      "ftm": 0.25,
+      "fta": 0.25,
+      "tpa": 1.625
      },
-     "seasonGames": 15,
-     "games": 88,
-     "h2h": null,
+     "seasonGames": 16,
+     "games": 89,
+     "h2h": {
+      "pts": 6.1,
+      "reb": 1.9,
+      "ast": 1.6,
+      "n": 13
+     },
      "recent": {
-      "lastPts": 8,
-      "lastMin": 13
+      "lastPts": 9,
+      "lastMin": 17
      }
     },
     {
@@ -1766,35 +4305,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 35.09,
+     "projMin": 32,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.4,
-      "pts": 15.933333333333334,
-      "reb": 4.866666666666666,
-      "ast": 3.533333333333333,
-      "tpm": 2.533333333333333,
+      "min": 32.375,
+      "pts": 15.75,
+      "reb": 4.6875,
+      "ast": 3.6875,
+      "tpm": 2.5625,
       "stl": 1,
-      "blk": 0.4666666666666667,
-      "to": 1.7333333333333334,
-      "fgm": 5.466666666666667,
-      "fga": 12.4,
-      "ftm": 2.466666666666667,
-      "fta": 3.3333333333333335,
-      "tpa": 7
+      "blk": 0.5,
+      "to": 1.625,
+      "fgm": 5.4375,
+      "fga": 12.1875,
+      "ftm": 2.3125,
+      "fta": 3.1875,
+      "tpa": 6.9375
      },
-     "seasonGames": 15,
-     "games": 97,
+     "seasonGames": 16,
+     "games": 98,
      "h2h": {
-      "pts": 17.7,
-      "reb": 3.8,
-      "ast": 3.7,
-      "n": 6
+      "pts": 10.2,
+      "reb": 5.3,
+      "ast": 3.4,
+      "n": 10
      },
      "recent": {
-      "lastPts": 18,
-      "lastMin": 38
+      "lastPts": 13,
+      "lastMin": 32
      }
     },
     {
@@ -1825,10 +4364,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 0,
      "games": 32,
      "h2h": {
-      "pts": 18,
-      "reb": 8.9,
-      "ast": 2.5,
-      "n": 18
+      "pts": 21.2,
+      "reb": 7.7,
+      "ast": 2,
+      "n": 16
      },
      "recent": null
     },
@@ -1839,32 +4378,27 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 18.33,
+     "projMin": 17.66,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19.625,
-      "pts": 7.25,
-      "reb": 2.25,
-      "ast": 1.0625,
-      "tpm": 1.0625,
-      "stl": 0.75,
-      "blk": 0.1875,
-      "to": 0.9375,
-      "fgm": 2.6875,
-      "fga": 5.5625,
-      "ftm": 0.8125,
-      "fta": 1,
-      "tpa": 2.8125
+      "min": 19.470588235294116,
+      "pts": 7,
+      "reb": 2.235294117647059,
+      "ast": 1.0588235294117647,
+      "tpm": 1.0588235294117647,
+      "stl": 0.7647058823529411,
+      "blk": 0.17647058823529413,
+      "to": 0.8823529411764706,
+      "fgm": 2.588235294117647,
+      "fga": 5.352941176470588,
+      "ftm": 0.7647058823529411,
+      "fta": 0.9411764705882353,
+      "tpa": 2.764705882352941
      },
-     "seasonGames": 16,
-     "games": 85,
-     "h2h": {
-      "pts": 10.7,
-      "reb": 3.7,
-      "ast": 1.3,
-      "n": 3
-     },
+     "seasonGames": 17,
+     "games": 86,
+     "h2h": null,
      "recent": {
       "lastPts": 3,
       "lastMin": 17
@@ -1877,212 +4411,141 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 21.5,
+     "projMin": 22.56,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19.214285714285715,
-      "pts": 6.785714285714286,
-      "reb": 4.285714285714286,
-      "ast": 1.7857142857142858,
-      "tpm": 0.6428571428571429,
-      "stl": 0.42857142857142855,
-      "blk": 0.35714285714285715,
-      "to": 1.2142857142857142,
-      "fgm": 2.2142857142857144,
-      "fga": 5.428571428571429,
-      "ftm": 1.7142857142857142,
-      "fta": 2.642857142857143,
-      "tpa": 2.142857142857143
+      "min": 19.533333333333335,
+      "pts": 7.8,
+      "reb": 4.2,
+      "ast": 1.7333333333333334,
+      "tpm": 0.7333333333333333,
+      "stl": 0.5333333333333333,
+      "blk": 0.3333333333333333,
+      "to": 1.1333333333333333,
+      "fgm": 2.6,
+      "fga": 5.8,
+      "ftm": 1.8666666666666667,
+      "fta": 2.7333333333333334,
+      "tpa": 2.2666666666666666
      },
-     "seasonGames": 14,
-     "games": 82,
+     "seasonGames": 15,
+     "games": 83,
      "h2h": {
-      "pts": 5.6,
-      "reb": 2.9,
-      "ast": 2.3,
+      "pts": 2.7,
+      "reb": 2.1,
+      "ast": 1.9,
       "n": 7
      },
      "recent": {
-      "lastPts": 13,
-      "lastMin": 23
+      "lastPts": 22,
+      "lastMin": 24
      }
     },
     {
      "id": "4397040",
      "name": "Brandon Williams",
      "pos": "G",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Left Hamstring Strain",
-     "availability": 0.5,
-     "projMin": 1.16,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 11.49,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 16.2,
-      "pts": 10.4,
-      "reb": 2.1,
-      "ast": 2.3,
-      "tpm": 0.7,
-      "stl": 0.9,
-      "blk": 0.4,
-      "to": 1.5,
-      "fgm": 3.3,
-      "fga": 8,
-      "ftm": 3.1,
-      "fta": 3.6,
-      "tpa": 2.3
+      "min": 15.909090909090908,
+      "pts": 10.727272727272727,
+      "reb": 2.090909090909091,
+      "ast": 2.3636363636363638,
+      "tpm": 0.6363636363636364,
+      "stl": 0.8181818181818182,
+      "blk": 0.45454545454545453,
+      "to": 1.4545454545454546,
+      "fgm": 3.6363636363636362,
+      "fga": 8.545454545454545,
+      "ftm": 2.8181818181818183,
+      "fta": 3.3636363636363638,
+      "tpa": 2.272727272727273
      },
-     "seasonGames": 10,
-     "games": 76,
+     "seasonGames": 11,
+     "games": 77,
      "h2h": null,
      "recent": {
-      "lastPts": 4,
-      "lastMin": null
+      "lastPts": 14,
+      "lastMin": 13
      }
     }
    ]
   },
-  "HOU": {
-   "abbr": "HOU",
-   "name": "Rockets",
-   "city": "Houston",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/hou.png",
+  "IND": {
+   "abbr": "IND",
+   "name": "Pacers",
+   "city": "Indiana",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/ind.png",
    "prior": {
-    "ortg": 117.02642230323588,
-    "drtg": 110.50606369671488,
-    "pace": 99.61920479999999,
+    "ortg": 109.11951902245664,
+    "drtg": 114.75817610505771,
+    "pace": 102.97750926315791,
     "games": 82
    },
    "current": {
-    "ppg": 118.11111111111111,
-    "papg": 110.22222222222223,
+    "ppg": 112.38888888888889,
+    "papg": 115.72222222222223,
     "games": 18
    },
    "rest": {
-    "restDays": 1,
+    "restDays": 3,
     "backToBack": false,
     "threeInFour": false,
     "schedulePoints": 0
    },
    "players": [
     {
-     "id": "2991235",
-     "name": "Steven Adams",
-     "pos": "C",
+     "id": "4431752",
+     "name": "Kobe Brown",
+     "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 16.41,
+     "projMin": 5.48,
      "starter": false,
-     "depthRank": 2,
+     "depthRank": 6,
      "avg": {
-      "min": 12.8,
+      "min": 11.625,
       "pts": 4,
-      "reb": 4.4,
-      "ast": 1.2,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0.2,
-      "to": 0.8,
-      "fgm": 1.8,
-      "fga": 3.4,
-      "ftm": 0.4,
-      "fta": 0.4,
-      "tpa": 0
+      "reb": 1.75,
+      "ast": 0.875,
+      "tpm": 0.375,
+      "stl": 0.125,
+      "blk": 0,
+      "to": 0.375,
+      "fgm": 1.5,
+      "fga": 3,
+      "ftm": 0.625,
+      "fta": 0.75,
+      "tpa": 1.375
      },
-     "seasonGames": 5,
-     "games": 37,
+     "seasonGames": 8,
+     "games": 68,
      "h2h": {
-      "pts": 9.3,
-      "reb": 8.5,
-      "ast": 1.4,
-      "n": 34
+      "pts": 4,
+      "reb": 2.7,
+      "ast": 1.3,
+      "n": 7
      },
      "recent": {
       "lastPts": 4,
-      "lastMin": 16
+      "lastMin": 7
      }
     },
     {
-     "id": "3037789",
-     "name": "Bogdan Bogdanovic",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 10.41,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 12.166666666666666,
-      "pts": 5,
-      "reb": 1.2777777777777777,
-      "ast": 1.1666666666666667,
-      "tpm": 1.0555555555555556,
-      "stl": 0.2222222222222222,
-      "blk": 0.05555555555555555,
-      "to": 0.5555555555555556,
-      "fgm": 1.6666666666666667,
-      "fga": 3.6666666666666665,
-      "ftm": 0.6111111111111112,
-      "fta": 0.7777777777777778,
-      "tpa": 2.6666666666666665
-     },
-     "seasonGames": 18,
-     "games": 41,
-     "h2h": null,
-     "recent": {
-      "lastPts": 2,
-      "lastMin": 9
-     }
-    },
-    {
-     "id": "3102529",
-     "name": "Clint Capela",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.65,
-     "starter": false,
-     "depthRank": 3,
-     "avg": {
-      "min": 14.166666666666666,
-      "pts": 3.1666666666666665,
-      "reb": 5.166666666666667,
-      "ast": 1.6666666666666667,
-      "tpm": 0,
-      "stl": 0.8333333333333334,
-      "blk": 0.6666666666666666,
-      "to": 0.8333333333333334,
-      "fgm": 1.5,
-      "fga": 2.3333333333333335,
-      "ftm": 0.16666666666666666,
-      "fta": 0.3333333333333333,
-      "tpa": 0
-     },
-     "seasonGames": 6,
-     "games": 81,
-     "h2h": {
-      "pts": 9.8,
-      "reb": 9.6,
-      "ast": 1.2,
-      "n": 27
-     },
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "4683860",
-     "name": "Quadir Copeland",
+     "id": "5157066",
+     "name": "Johnny Furphy",
      "pos": "G",
      "status": "Out",
-     "injury": "G League - Two-Way",
+     "injury": "See official report for full injury details",
      "availability": 0,
-     "projMin": 0.2,
+     "projMin": 0.41,
      "starter": false,
      "depthRank": 7,
      "avg": {
@@ -2101,356 +4564,285 @@ const SEASON_SLATE_SNAPSHOT = {
       "tpa": 0
      },
      "seasonGames": 0,
-     "games": 0,
+     "games": 35,
      "h2h": null,
      "recent": null
     },
     {
-     "id": "4592857",
-     "name": "Isaiah Crawford",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.15,
+     "id": "4396993",
+     "name": "Tyrese Haliburton",
+     "pos": "G",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Hamstring Strain",
+     "availability": 0,
+     "projMin": 0.6,
      "starter": false,
      "depthRank": 5,
      "avg": {
-      "min": 5.909090909090909,
-      "pts": 2.6363636363636362,
-      "reb": 1.1818181818181819,
-      "ast": 0.2727272727272727,
-      "tpm": 0.45454545454545453,
-      "stl": 0.09090909090909091,
-      "blk": 0.09090909090909091,
-      "to": 0.09090909090909091,
-      "fgm": 0.9090909090909091,
-      "fga": 1.6363636363636365,
-      "ftm": 0.36363636363636365,
-      "fta": 0.36363636363636365,
-      "tpa": 1
+      "min": 33,
+      "pts": 21.75,
+      "reb": 4.5,
+      "ast": 9.5,
+      "tpm": 2.5,
+      "stl": 1.25,
+      "blk": 0.75,
+      "to": 2.25,
+      "fgm": 8,
+      "fga": 15.5,
+      "ftm": 3.25,
+      "fta": 3.75,
+      "tpa": 6.75
      },
-     "seasonGames": 11,
-     "games": 25,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "3202",
-     "name": "Kevin Durant",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 33.55,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 33.55555555555556,
-      "pts": 21.61111111111111,
-      "reb": 5.388888888888889,
-      "ast": 3.7777777777777777,
-      "tpm": 1.6666666666666667,
-      "stl": 0.4444444444444444,
-      "blk": 0.9444444444444444,
-      "to": 2.8333333333333335,
-      "fgm": 6.833333333333333,
-      "fga": 13.38888888888889,
-      "ftm": 6.277777777777778,
-      "fta": 7.111111111111111,
-      "tpa": 3.9444444444444446
-     },
-     "seasonGames": 18,
-     "games": 99,
-     "h2h": {
-      "pts": 26.9,
-      "reb": 6.5,
-      "ast": 3.6,
-      "n": 46
-     },
-     "recent": {
-      "lastPts": 32,
-      "lastMin": 33
-     }
-    },
-    {
-     "id": "4433192",
-     "name": "Tari Eason",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 22.27,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 24.72222222222222,
-      "pts": 10.333333333333334,
-      "reb": 6,
-      "ast": 1.6111111111111112,
-      "tpm": 1.0555555555555556,
-      "stl": 1,
-      "blk": 0.8333333333333334,
-      "to": 1.3888888888888888,
-      "fgm": 4,
-      "fga": 9.166666666666666,
-      "ftm": 1.2777777777777777,
-      "fta": 1.4444444444444444,
-      "tpa": 3.5555555555555554
-     },
-     "seasonGames": 18,
-     "games": 78,
-     "h2h": null,
-     "recent": {
-      "lastPts": 10,
-      "lastMin": 22
-     }
-    },
-    {
-     "id": "5105553",
-     "name": "Julian Phillips",
-     "pos": "F",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 0.2,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 48,
+     "seasonGames": 4,
+     "games": 4,
      "h2h": null,
      "recent": null
     },
     {
-     "id": "4871144",
-     "name": "Alperen Sengun",
+     "id": "4065731",
+     "name": "Jay Huff",
      "pos": "C",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 31,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 32.875,
-      "pts": 21.9375,
-      "reb": 9.1875,
-      "ast": 7,
-      "tpm": 1,
-      "stl": 1,
-      "blk": 0.9375,
-      "to": 2.8125,
-      "fgm": 8.125,
-      "fga": 14.75,
-      "ftm": 4.6875,
-      "fta": 6.375,
-      "tpa": 2
-     },
-     "seasonGames": 16,
-     "games": 90,
-     "h2h": {
-      "pts": 14.8,
-      "reb": 8.3,
-      "ast": 3.7,
-      "n": 17
-     },
-     "recent": {
-      "lastPts": 20,
-      "lastMin": 31
-     }
-    },
-    {
-     "id": "4711272",
-     "name": "Reed Sheppard",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 18.39,
+     "projMin": 1.1,
      "starter": false,
-     "depthRank": 2,
+     "depthRank": 3,
      "avg": {
-      "min": 20.066666666666666,
-      "pts": 8.8,
-      "reb": 1.8,
-      "ast": 2.7333333333333334,
-      "tpm": 2.1333333333333333,
-      "stl": 1.1333333333333333,
-      "blk": 0.26666666666666666,
-      "to": 0.8666666666666667,
-      "fgm": 3.2,
-      "fga": 8.533333333333333,
-      "ftm": 0.26666666666666666,
-      "fta": 0.3333333333333333,
-      "tpa": 6.2
+      "min": 14.6,
+      "pts": 6.4,
+      "reb": 2.8,
+      "ast": 0.7333333333333333,
+      "tpm": 0.8666666666666667,
+      "stl": 0.13333333333333333,
+      "blk": 0.6666666666666666,
+      "to": 0.5333333333333333,
+      "fgm": 2.4,
+      "fga": 4.733333333333333,
+      "ftm": 0.7333333333333333,
+      "fta": 0.8666666666666667,
+      "tpa": 2.7333333333333334
      },
      "seasonGames": 15,
      "games": 97,
-     "h2h": null,
-     "recent": {
-      "lastPts": 5,
-      "lastMin": 17
-     }
-    },
-    {
-     "id": "2990992",
-     "name": "Marcus Smart",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 24.25,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 21.5,
-      "pts": 7.166666666666667,
-      "reb": 2.5,
-      "ast": 2.25,
-      "tpm": 1.5,
-      "stl": 1,
-      "blk": 0.3333333333333333,
-      "to": 1.5,
-      "fgm": 2.4166666666666665,
-      "fga": 6.166666666666667,
-      "ftm": 0.8333333333333334,
-      "fta": 1.0833333333333333,
-      "tpa": 4.25
-     },
-     "seasonGames": 12,
-     "games": 74,
-     "h2h": null,
-     "recent": {
-      "lastPts": 4,
-      "lastMin": 25
-     }
-    },
-    {
-     "id": "4432639",
-     "name": "Jabari Smith Jr.",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 29.56,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 32.94444444444444,
-      "pts": 15.5,
-      "reb": 6.222222222222222,
-      "ast": 2.1666666666666665,
-      "tpm": 2.3333333333333335,
-      "stl": 0.6111111111111112,
-      "blk": 0.8888888888888888,
-      "to": 0.9444444444444444,
-      "fgm": 5.555555555555555,
-      "fga": 11.666666666666666,
-      "ftm": 2.0555555555555554,
-      "fta": 2.4444444444444446,
-      "tpa": 5.888888888888889
-     },
-     "seasonGames": 18,
-     "games": 95,
      "h2h": {
-      "pts": 14.1,
-      "reb": 7.4,
-      "ast": 1.3,
-      "n": 14
+      "pts": 9.6,
+      "reb": 4.4,
+      "ast": 2,
+      "n": 8
      },
      "recent": {
-      "lastPts": 13,
-      "lastMin": 28
-     }
-    },
-    {
-     "id": "3136777",
-     "name": "Jae'Sean Tate",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.2,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 3.8,
-      "pts": 0.7,
-      "reb": 1,
-      "ast": 0.4,
-      "tpm": 0,
-      "stl": 0.2,
-      "blk": 0,
-      "to": 0.3,
-      "fgm": 0.3,
-      "fga": 0.9,
-      "ftm": 0.1,
-      "fta": 0.2,
-      "tpa": 0.1
-     },
-     "seasonGames": 10,
-     "games": 55,
-     "h2h": {
-      "pts": 8.4,
-      "reb": 4,
-      "ast": 2.1,
-      "n": 14
-     },
-     "recent": {
-      "lastPts": 0,
+      "lastPts": 2,
       "lastMin": 0
      }
     },
     {
-     "id": "4684740",
-     "name": "Amen Thompson",
+     "id": "4592829",
+     "name": "Quenton Jackson",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 29.67,
+     "projMin": 18.78,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 21.5,
+      "pts": 8.944444444444445,
+      "reb": 3.388888888888889,
+      "ast": 2.8333333333333335,
+      "tpm": 1.0555555555555556,
+      "stl": 1.3888888888888888,
+      "blk": 0.16666666666666666,
+      "to": 1.3333333333333333,
+      "fgm": 3.2222222222222223,
+      "fga": 6.944444444444445,
+      "ftm": 1.4444444444444444,
+      "fta": 1.6666666666666667,
+      "tpa": 3.2222222222222223
+     },
+     "seasonGames": 18,
+     "games": 67,
+     "h2h": null,
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 20
+     }
+    },
+    {
+     "id": "2530530",
+     "name": "T.J. McConnell",
+     "pos": "G",
+     "status": "Questionable",
+     "injury": "See official report for full injury details",
+     "availability": 0.5,
+     "projMin": 2.19,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 13.714285714285714,
+      "pts": 7,
+      "reb": 2.2857142857142856,
+      "ast": 4.285714285714286,
+      "tpm": 0,
+      "stl": 1,
+      "blk": 0.14285714285714285,
+      "to": 1.5714285714285714,
+      "fgm": 3.4285714285714284,
+      "fga": 6.571428571428571,
+      "ftm": 0.14285714285714285,
+      "fta": 0.14285714285714285,
+      "tpa": 0.2857142857142857
+     },
+     "seasonGames": 7,
+     "games": 63,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "2580365",
+     "name": "Larry Nance Jr.",
+     "pos": "F",
+     "status": "Probable",
+     "injury": "Injury/Illness - Right Ankle Bruise",
+     "availability": 0.9,
+     "projMin": 6.53,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 12.705882352941176,
+      "pts": 4.235294117647059,
+      "reb": 2.235294117647059,
+      "ast": 0.5294117647058824,
+      "tpm": 0.8823529411764706,
+      "stl": 0.7058823529411765,
+      "blk": 0.23529411764705882,
+      "to": 0.47058823529411764,
+      "fgm": 1.5294117647058822,
+      "fga": 3.176470588235294,
+      "ftm": 0.29411764705882354,
+      "fta": 0.5294117647058824,
+      "tpa": 2.176470588235294
+     },
+     "seasonGames": 17,
+     "games": 52,
+     "h2h": {
+      "pts": 6.2,
+      "reb": 5.3,
+      "ast": 1.4,
+      "n": 21
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 4
+     }
+    },
+    {
+     "id": "4395712",
+     "name": "Andrew Nembhard",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 35.47,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.411764705882355,
-      "pts": 16.352941176470587,
-      "reb": 6.882352941176471,
-      "ast": 3.235294117647059,
-      "tpm": 0.35294117647058826,
-      "stl": 1,
-      "blk": 0.7058823529411765,
-      "to": 1.7647058823529411,
-      "fgm": 6.411764705882353,
-      "fga": 11.294117647058824,
-      "ftm": 3.176470588235294,
-      "fta": 4.352941176470588,
-      "tpa": 1
+      "min": 33.07142857142857,
+      "pts": 16.142857142857142,
+      "reb": 2.2857142857142856,
+      "ast": 7.571428571428571,
+      "tpm": 2.2857142857142856,
+      "stl": 0.5714285714285714,
+      "blk": 0.14285714285714285,
+      "to": 2.642857142857143,
+      "fgm": 5.428571428571429,
+      "fga": 12.642857142857142,
+      "ftm": 3,
+      "fta": 3.642857142857143,
+      "tpa": 5.5
      },
-     "seasonGames": 17,
-     "games": 96,
+     "seasonGames": 14,
+     "games": 71,
+     "h2h": null,
+     "recent": {
+      "lastPts": 15,
+      "lastMin": 38
+     }
+    },
+    {
+     "id": "4396909",
+     "name": "Aaron Nesmith",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 29,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 27.333333333333332,
+      "pts": 10.666666666666666,
+      "reb": 3.2,
+      "ast": 2.2666666666666666,
+      "tpm": 1.3333333333333333,
+      "stl": 0.6666666666666666,
+      "blk": 0.4,
+      "to": 1.2,
+      "fgm": 3.533333333333333,
+      "fga": 9.6,
+      "ftm": 2.2666666666666666,
+      "fta": 2.7333333333333334,
+      "tpa": 5.066666666666666
+     },
+     "seasonGames": 15,
+     "games": 60,
      "h2h": {
-      "pts": 15.5,
-      "reb": 7.3,
-      "ast": 4.6,
-      "n": 11
+      "pts": 11.5,
+      "reb": 4.1,
+      "ast": 1.6,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "3133603",
+     "name": "Kelly Oubre Jr.",
+     "pos": "G",
+     "status": "Questionable",
+     "injury": "Injury/Illness - Right Hand Laceration",
+     "availability": 0.5,
+     "projMin": 28.3,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 24.75,
+      "pts": 12.3125,
+      "reb": 3.4375,
+      "ast": 1.125,
+      "tpm": 1.25,
+      "stl": 0.625,
+      "blk": 0.9375,
+      "to": 0.9375,
+      "fgm": 4.625,
+      "fga": 9.5,
+      "ftm": 1.8125,
+      "fta": 2.3125,
+      "tpa": 4.25
+     },
+     "seasonGames": 16,
+     "games": 66,
+     "h2h": {
+      "pts": 13.9,
+      "reb": 3.9,
+      "ast": 1.2,
+      "n": 21
      },
      "recent": {
       "lastPts": 20,
@@ -2458,29 +4850,143 @@ const SEASON_SLATE_SNAPSHOT = {
      }
     },
     {
-     "id": "5105837",
-     "name": "Bruce Thornton",
+     "id": "4433076",
+     "name": "Ben Sheppard",
+     "pos": "G",
+     "status": "Out",
+     "injury": "Injury/Illness - Left Meniscus Surgery",
+     "availability": 0,
+     "projMin": 0.48,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 12,
+      "pts": 3,
+      "reb": 1,
+      "ast": 0,
+      "tpm": 1,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 1,
+      "fga": 3,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 2
+     },
+     "seasonGames": 1,
+     "games": 66,
+     "h2h": {
+      "pts": 6.2,
+      "reb": 3,
+      "ast": 1.3,
+      "n": 6
+     },
+     "recent": {
+      "lastPts": 3,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "3149673",
+     "name": "Pascal Siakam",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.02,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 32.470588235294116,
+      "pts": 22.941176470588236,
+      "reb": 6.235294117647059,
+      "ast": 3.7058823529411766,
+      "tpm": 1.7647058823529411,
+      "stl": 1,
+      "blk": 0.11764705882352941,
+      "to": 1.9411764705882353,
+      "fgm": 8.529411764705882,
+      "fga": 16.823529411764707,
+      "ftm": 4.117647058823529,
+      "fta": 5.647058823529412,
+      "tpa": 4.764705882352941
+     },
+     "seasonGames": 17,
+     "games": 81,
+     "h2h": {
+      "pts": 18.4,
+      "reb": 6.9,
+      "ast": 4.3,
+      "n": 38
+     },
+     "recent": {
+      "lastPts": 20,
+      "lastMin": 35
+     }
+    },
+    {
+     "id": "4398207",
+     "name": "Jalen Slawson",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 15.92,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 14.375,
+      "pts": 4.8125,
+      "reb": 3.6875,
+      "ast": 1.1875,
+      "tpm": 0.4375,
+      "stl": 0.875,
+      "blk": 1,
+      "to": 0.75,
+      "fgm": 1.625,
+      "fga": 3.125,
+      "ftm": 1.125,
+      "fta": 1.5625,
+      "tpa": 1.1875
+     },
+     "seasonGames": 16,
+     "games": 29,
+     "h2h": {
+      "pts": 3,
+      "reb": 2.8,
+      "ast": 1.5,
+      "n": 4
+     },
+     "recent": {
+      "lastPts": 16,
+      "lastMin": 20
+     }
+    },
+    {
+     "id": "5105854",
+     "name": "Braden Smith",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.09,
+     "projMin": 19.06,
      "starter": false,
-     "depthRank": 6,
+     "depthRank": 3,
      "avg": {
-      "min": 3.8181818181818183,
-      "pts": 1.9090909090909092,
-      "reb": 0.09090909090909091,
-      "ast": 0,
-      "tpm": 0.18181818181818182,
-      "stl": 0.09090909090909091,
-      "blk": 0,
-      "to": 0.18181818181818182,
-      "fgm": 0.6363636363636364,
-      "fga": 1.4545454545454546,
+      "min": 16.09090909090909,
+      "pts": 5,
+      "reb": 1.4545454545454546,
+      "ast": 3.3636363636363638,
+      "tpm": 0.5454545454545454,
+      "stl": 1,
+      "blk": 0.2727272727272727,
+      "to": 0.8181818181818182,
+      "fgm": 2,
+      "fga": 4.454545454545454,
       "ftm": 0.45454545454545453,
-      "fta": 0.45454545454545453,
-      "tpa": 0.5454545454545454
+      "fta": 0.7272727272727273,
+      "tpa": 1.2727272727272727
      },
      "seasonGames": 11,
      "games": 11,
@@ -2488,67 +4994,118 @@ const SEASON_SLATE_SNAPSHOT = {
      "recent": null
     },
     {
-     "id": "4432827",
-     "name": "Oscar Tshiebwe",
+     "id": "4278355",
+     "name": "Obi Toppin",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 22.21,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 20.666666666666668,
+      "pts": 11.866666666666667,
+      "reb": 4.2,
+      "ast": 1.6,
+      "tpm": 1.4,
+      "stl": 0.13333333333333333,
+      "blk": 0.13333333333333333,
+      "to": 0.9333333333333333,
+      "fgm": 4.4,
+      "fga": 9,
+      "ftm": 1.6666666666666667,
+      "fta": 2.1333333333333333,
+      "tpa": 4.466666666666667
+     },
+     "seasonGames": 15,
+     "games": 39,
+     "h2h": {
+      "pts": 9.2,
+      "reb": 3.6,
+      "ast": 1.2,
+      "n": 19
+     },
+     "recent": {
+      "lastPts": 17,
+      "lastMin": 24
+     }
+    },
+    {
+     "id": "5106060",
+     "name": "Jarace Walker",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 14.51,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.235294117647058,
+      "pts": 5.705882352941177,
+      "reb": 4.764705882352941,
+      "ast": 1.7058823529411764,
+      "tpm": 0.8235294117647058,
+      "stl": 0.4117647058823529,
+      "blk": 0.47058823529411764,
+      "to": 1.1176470588235294,
+      "fgm": 1.9411764705882353,
+      "fga": 5.764705882352941,
+      "ftm": 1,
+      "fta": 1.588235294117647,
+      "tpa": 3.1176470588235294
+     },
+     "seasonGames": 17,
+     "games": 93,
+     "h2h": {
+      "pts": 5.9,
+      "reb": 5,
+      "ast": 1.8,
+      "n": 9
+     },
+     "recent": {
+      "lastPts": 4,
+      "lastMin": 14
+     }
+    },
+    {
+     "id": "4017837",
+     "name": "Ivica Zubac",
      "pos": "C",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.37,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 7,
-      "pts": 2.8181818181818183,
-      "reb": 3.272727272727273,
-      "ast": 0.8181818181818182,
-      "tpm": 0,
-      "stl": 0.18181818181818182,
-      "blk": 0.36363636363636365,
-      "to": 0.45454545454545453,
-      "fgm": 1.2727272727272727,
-      "fga": 1.8181818181818181,
-      "ftm": 0.2727272727272727,
-      "fta": 0.7272727272727273,
-      "tpa": 0
-     },
-     "seasonGames": 11,
-     "games": 38,
-     "h2h": null,
-     "recent": {
-      "lastPts": 4,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "2991230",
-     "name": "Fred VanVleet",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 30.69,
+     "projMin": 27.24,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.133333333333333,
-      "pts": 13.866666666666667,
-      "reb": 2.8,
-      "ast": 5.6,
-      "tpm": 2.8,
-      "stl": 1.1333333333333333,
-      "blk": 0.3333333333333333,
-      "to": 1.1333333333333333,
-      "fgm": 4.866666666666666,
-      "fga": 11.2,
-      "ftm": 1.3333333333333333,
-      "fta": 1.8,
-      "tpa": 7.2
+      "min": 24.46153846153846,
+      "pts": 11,
+      "reb": 9.076923076923077,
+      "ast": 1.7692307692307692,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0.7692307692307693,
+      "to": 1.4615384615384615,
+      "fgm": 4.615384615384615,
+      "fga": 8.384615384615385,
+      "ftm": 1.7692307692307692,
+      "fta": 2.3076923076923075,
+      "tpa": 0
      },
-     "seasonGames": 15,
-     "games": 15,
-     "h2h": null,
-     "recent": null
+     "seasonGames": 13,
+     "games": 61,
+     "h2h": {
+      "pts": 9.5,
+      "reb": 8.1,
+      "ast": 1.9,
+      "n": 17
+     },
+     "recent": {
+      "lastPts": 14,
+      "lastMin": 26
+     }
     }
    ]
   },
@@ -2558,15 +5115,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "LA",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/lac.png",
    "prior": {
-    "ortg": 112.39330644464565,
-    "drtg": 114.75240322143496,
-    "pace": 99.78152208637317,
+    "ortg": 112.03788976501032,
+    "drtg": 114.83096247381911,
+    "pace": 99.72634581376848,
     "games": 82
    },
    "current": {
-    "ppg": 110.6875,
-    "papg": 117.5,
-    "games": 16
+    "ppg": 109.88235294117646,
+    "papg": 117.3529411764706,
+    "games": 17
    },
    "rest": {
     "restDays": 1,
@@ -2609,33 +5166,33 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "4845363",
      "name": "Cam Christie",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.2,
+     "status": "Questionable",
+     "injury": "G League - Two-Way",
+     "availability": 0.5,
+     "projMin": 3.87,
      "starter": false,
      "depthRank": 7,
      "avg": {
-      "min": 4.625,
-      "pts": 1.625,
-      "reb": 0.25,
-      "ast": 0.25,
-      "tpm": 0.375,
-      "stl": 0.125,
-      "blk": 0.125,
-      "to": 0.375,
-      "fgm": 0.5,
-      "fga": 1.875,
-      "ftm": 0.25,
-      "fta": 0.25,
+      "min": 4.666666666666667,
+      "pts": 1.4444444444444444,
+      "reb": 0.3333333333333333,
+      "ast": 0.2222222222222222,
+      "tpm": 0.3333333333333333,
+      "stl": 0.1111111111111111,
+      "blk": 0.1111111111111111,
+      "to": 0.3333333333333333,
+      "fgm": 0.4444444444444444,
+      "fga": 1.8888888888888888,
+      "ftm": 0.2222222222222222,
+      "fta": 0.2222222222222222,
       "tpa": 1
      },
-     "seasonGames": 8,
-     "games": 62,
+     "seasonGames": 9,
+     "games": 63,
      "h2h": null,
      "recent": {
-      "lastPts": 3,
-      "lastMin": null
+      "lastPts": 0,
+      "lastMin": 5
      }
     },
     {
@@ -2645,35 +5202,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.32,
+     "projMin": 5.69,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 15.933333333333334,
-      "pts": 7.066666666666666,
-      "reb": 2.8,
-      "ast": 0.7333333333333333,
-      "tpm": 0.8,
-      "stl": 0.5333333333333333,
-      "blk": 0.13333333333333333,
-      "to": 0.7333333333333333,
-      "fgm": 2.7333333333333334,
-      "fga": 5.333333333333333,
-      "ftm": 0.8,
-      "fta": 1.0666666666666667,
-      "tpa": 1.6666666666666667
+      "min": 15.25,
+      "pts": 6.75,
+      "reb": 2.75,
+      "ast": 0.6875,
+      "tpm": 0.75,
+      "stl": 0.5,
+      "blk": 0.125,
+      "to": 0.6875,
+      "fgm": 2.625,
+      "fga": 5.125,
+      "ftm": 0.75,
+      "fta": 1,
+      "tpa": 1.5625
      },
-     "seasonGames": 15,
-     "games": 91,
-     "h2h": {
-      "pts": 8.4,
-      "reb": 4.2,
-      "ast": 0.6,
-      "n": 5
-     },
+     "seasonGames": 16,
+     "games": 92,
+     "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 0
+      "lastPts": 2,
+      "lastMin": 5
      }
     },
     {
@@ -2683,30 +5235,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 22.56,
+     "projMin": 22.09,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 25.8125,
-      "pts": 7.125,
-      "reb": 3.875,
-      "ast": 4.125,
-      "tpm": 0.75,
-      "stl": 1.875,
-      "blk": 0.4375,
-      "to": 1.5625,
-      "fgm": 2.625,
-      "fga": 5.625,
-      "ftm": 1.125,
-      "fta": 1.3125,
-      "tpa": 2.3125
+      "min": 25.58823529411765,
+      "pts": 7.411764705882353,
+      "reb": 4,
+      "ast": 4.117647058823529,
+      "tpm": 0.7058823529411765,
+      "stl": 1.7647058823529411,
+      "blk": 0.47058823529411764,
+      "to": 1.588235294117647,
+      "fgm": 2.764705882352941,
+      "fga": 5.764705882352941,
+      "ftm": 1.1764705882352942,
+      "fta": 1.3529411764705883,
+      "tpa": 2.235294117647059
      },
-     "seasonGames": 16,
-     "games": 98,
+     "seasonGames": 17,
+     "games": 99,
      "h2h": null,
      "recent": {
-      "lastPts": 9,
-      "lastMin": 23
+      "lastPts": 12,
+      "lastMin": 22
      }
     },
     {
@@ -2716,30 +5268,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34,
+     "projMin": 32,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 33.125,
-      "pts": 21.25,
-      "reb": 2.0625,
-      "ast": 6.5625,
-      "tpm": 2.5625,
-      "stl": 0.625,
-      "blk": 0.3125,
-      "to": 4.0625,
-      "fgm": 7.3125,
-      "fga": 15.625,
-      "ftm": 4.0625,
-      "fta": 4.6875,
-      "tpa": 7.125
+      "min": 32.88235294117647,
+      "pts": 20.705882352941178,
+      "reb": 2.1176470588235294,
+      "ast": 6.411764705882353,
+      "tpm": 2.5294117647058822,
+      "stl": 0.5882352941176471,
+      "blk": 0.29411764705882354,
+      "to": 3.9411764705882355,
+      "fgm": 7.176470588235294,
+      "fga": 15.411764705882353,
+      "ftm": 3.823529411764706,
+      "fta": 4.411764705882353,
+      "tpa": 7.0588235294117645
      },
-     "seasonGames": 16,
-     "games": 61,
+     "seasonGames": 17,
+     "games": 62,
      "h2h": null,
      "recent": {
-      "lastPts": 26,
-      "lastMin": 34
+      "lastPts": 12,
+      "lastMin": 29
      }
     },
     {
@@ -2749,35 +5301,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 29.07,
+     "projMin": 34.2,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.071428571428573,
-      "pts": 14.357142857142858,
-      "reb": 5.928571428571429,
-      "ast": 1.6428571428571428,
-      "tpm": 2.2142857142857144,
-      "stl": 0.8571428571428571,
-      "blk": 0.21428571428571427,
-      "to": 1.6428571428571428,
-      "fgm": 5.142857142857143,
-      "fga": 11.785714285714286,
-      "ftm": 1.8571428571428572,
-      "fta": 2.7142857142857144,
-      "tpa": 5.357142857142857
+      "min": 29.6,
+      "pts": 14.333333333333334,
+      "reb": 6.333333333333333,
+      "ast": 1.8666666666666667,
+      "tpm": 2.1333333333333333,
+      "stl": 0.8,
+      "blk": 0.2,
+      "to": 1.6,
+      "fgm": 5.133333333333334,
+      "fga": 11.866666666666667,
+      "ftm": 1.9333333333333333,
+      "fta": 2.8666666666666667,
+      "tpa": 5.333333333333333
      },
-     "seasonGames": 14,
-     "games": 82,
+     "seasonGames": 15,
+     "games": 83,
      "h2h": {
-      "pts": 12.9,
-      "reb": 4.9,
-      "ast": 0.8,
-      "n": 16
+      "pts": 11,
+      "reb": 3.4,
+      "ast": 1.1,
+      "n": 14
      },
      "recent": {
-      "lastPts": 19,
-      "lastMin": 29
+      "lastPts": 14,
+      "lastMin": 37
      }
     },
     {
@@ -2787,35 +5339,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 28.21,
+     "projMin": 27.51,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27,
-      "pts": 16,
-      "reb": 7,
+      "min": 26.5,
+      "pts": 17,
+      "reb": 6,
       "ast": 4,
-      "tpm": 0,
+      "tpm": 1,
       "stl": 0,
       "blk": 0,
-      "to": 1,
+      "to": 2.5,
       "fgm": 6,
-      "fga": 18,
+      "fga": 18.5,
       "ftm": 4,
-      "fta": 5,
+      "fta": 4.5,
       "tpa": 6
      },
-     "seasonGames": 1,
-     "games": 80,
+     "seasonGames": 2,
+     "games": 81,
      "h2h": {
-      "pts": 20.2,
-      "reb": 5.2,
-      "ast": 4.4,
-      "n": 23
+      "pts": 16.6,
+      "reb": 4.4,
+      "ast": 3.8,
+      "n": 11
      },
      "recent": {
-      "lastPts": 16,
-      "lastMin": 27
+      "lastPts": 18,
+      "lastMin": 26
      }
     },
     {
@@ -2825,30 +5377,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 14.02,
+     "projMin": 7.29,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 17.8,
-      "pts": 7.4,
-      "reb": 4.866666666666666,
-      "ast": 1.8,
-      "tpm": 0.13333333333333333,
-      "stl": 1.1333333333333333,
-      "blk": 1,
-      "to": 1.4,
-      "fgm": 3.2,
-      "fga": 5.6,
-      "ftm": 0.8666666666666667,
-      "fta": 1.4,
-      "tpa": 0.4
+      "min": 17.125,
+      "pts": 7.1875,
+      "reb": 4.625,
+      "ast": 1.6875,
+      "tpm": 0.125,
+      "stl": 1.0625,
+      "blk": 0.9375,
+      "to": 1.3125,
+      "fgm": 3.125,
+      "fga": 5.375,
+      "ftm": 0.8125,
+      "fta": 1.3125,
+      "tpa": 0.375
      },
-     "seasonGames": 15,
-     "games": 70,
-     "h2h": null,
+     "seasonGames": 16,
+     "games": 71,
+     "h2h": {
+      "pts": 7.2,
+      "reb": 5.1,
+      "ast": 1.1,
+      "n": 9
+     },
      "recent": {
-      "lastPts": 6,
-      "lastMin": 18
+      "lastPts": 4,
+      "lastMin": 7
      }
     },
     {
@@ -2858,29 +5415,34 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26,
+     "projMin": 24.2,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 28.133333333333333,
-      "pts": 10.066666666666666,
-      "reb": 4.466666666666667,
-      "ast": 1.3333333333333333,
-      "tpm": 1.7333333333333334,
-      "stl": 1,
-      "blk": 0.9333333333333333,
-      "to": 1.2,
-      "fgm": 3.6,
-      "fga": 7.4,
-      "ftm": 1.1333333333333333,
-      "fta": 1.9333333333333333,
-      "tpa": 3.8666666666666667
+      "min": 27.8125,
+      "pts": 9.6875,
+      "reb": 4.3125,
+      "ast": 1.3125,
+      "tpm": 1.625,
+      "stl": 0.9375,
+      "blk": 0.875,
+      "to": 1.1875,
+      "fgm": 3.5,
+      "fga": 7.3125,
+      "ftm": 1.0625,
+      "fta": 1.8125,
+      "tpa": 3.8125
      },
-     "seasonGames": 15,
-     "games": 65,
-     "h2h": null,
+     "seasonGames": 16,
+     "games": 66,
+     "h2h": {
+      "pts": 9,
+      "reb": 3,
+      "ast": 1.2,
+      "n": 21
+     },
      "recent": {
-      "lastPts": 7,
+      "lastPts": 4,
       "lastMin": 23
      }
     },
@@ -2891,44 +5453,44 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25,
+     "projMin": 24,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 24.375,
-      "pts": 14.9375,
-      "reb": 5.1875,
-      "ast": 1.8125,
-      "tpm": 1.75,
-      "stl": 0.5,
-      "blk": 0.8125,
-      "to": 1.3125,
-      "fgm": 5.75,
-      "fga": 10.5,
-      "ftm": 1.6875,
-      "fta": 2.4375,
-      "tpa": 4.0625
+      "min": 24,
+      "pts": 14.411764705882353,
+      "reb": 5.0588235294117645,
+      "ast": 1.7647058823529411,
+      "tpm": 1.7058823529411764,
+      "stl": 0.47058823529411764,
+      "blk": 0.8235294117647058,
+      "to": 1.2352941176470589,
+      "fgm": 5.529411764705882,
+      "fga": 10.058823529411764,
+      "ftm": 1.6470588235294117,
+      "fta": 2.3529411764705883,
+      "tpa": 3.9411764705882355
      },
-     "seasonGames": 16,
-     "games": 91,
+     "seasonGames": 17,
+     "games": 92,
      "h2h": {
-      "pts": 13.6,
-      "reb": 5.2,
-      "ast": 1.5,
-      "n": 31
+      "pts": 15,
+      "reb": 5.9,
+      "ast": 1.7,
+      "n": 33
      },
      "recent": {
-      "lastPts": 3,
-      "lastMin": 21
+      "lastPts": 6,
+      "lastMin": 18
      }
     },
     {
      "id": "5105832",
      "name": "Nick Martinelli",
      "pos": "F",
-     "status": "Out",
+     "status": "Questionable",
      "injury": "G League - Two-Way",
-     "availability": 0,
+     "availability": 0.5,
      "projMin": 0.09,
      "starter": false,
      "depthRank": 7,
@@ -2959,26 +5521,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 1.16,
+     "projMin": 3.82,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 7.642857142857143,
-      "pts": 3.357142857142857,
-      "reb": 1.7142857142857142,
-      "ast": 0.7142857142857143,
-      "tpm": 0.21428571428571427,
-      "stl": 0.35714285714285715,
-      "blk": 0.5,
-      "to": 0.7857142857142857,
-      "fgm": 1.0714285714285714,
-      "fga": 1.9285714285714286,
-      "ftm": 1,
-      "fta": 1.2857142857142858,
-      "tpa": 0.5714285714285714
+      "min": 7.466666666666667,
+      "pts": 3.7333333333333334,
+      "reb": 1.6666666666666667,
+      "ast": 0.7333333333333333,
+      "tpm": 0.2,
+      "stl": 0.3333333333333333,
+      "blk": 0.5333333333333333,
+      "to": 0.7333333333333333,
+      "fgm": 1.0666666666666667,
+      "fga": 1.8666666666666667,
+      "ftm": 1.4,
+      "fta": 1.7333333333333334,
+      "tpa": 0.5333333333333333
      },
-     "seasonGames": 14,
-     "games": 14,
+     "seasonGames": 15,
+     "games": 15,
      "h2h": null,
      "recent": null
     },
@@ -3009,12 +5571,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 0,
      "games": 60,
-     "h2h": {
-      "pts": 8.7,
-      "reb": 3,
-      "ast": 1.7,
-      "n": 3
-     },
+     "h2h": null,
      "recent": null
     },
     {
@@ -3024,30 +5581,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 9.53,
+     "projMin": 16,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 11.666666666666666,
-      "pts": 3.3333333333333335,
-      "reb": 3.3333333333333335,
-      "ast": 0.6666666666666666,
+      "min": 13.25,
+      "pts": 3.5,
+      "reb": 3.5,
+      "ast": 0.5,
       "tpm": 0,
-      "stl": 0.6666666666666666,
-      "blk": 1,
-      "to": 1.3333333333333333,
-      "fgm": 1.3333333333333333,
-      "fga": 3,
-      "ftm": 0.6666666666666666,
-      "fta": 0.6666666666666666,
-      "tpa": 0.6666666666666666
+      "stl": 0.5,
+      "blk": 0.75,
+      "to": 1,
+      "fgm": 1.5,
+      "fga": 3.25,
+      "ftm": 0.5,
+      "fta": 0.5,
+      "tpa": 0.5
      },
-     "seasonGames": 3,
-     "games": 43,
+     "seasonGames": 4,
+     "games": 44,
      "h2h": null,
      "recent": {
-      "lastPts": 2,
-      "lastMin": 8
+      "lastPts": 4,
+      "lastMin": 18
      }
     },
     {
@@ -3080,7 +5637,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 0
+      "lastMin": null
      }
     },
     {
@@ -3090,30 +5647,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 13.58,
+     "projMin": 8.78,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 21.3125,
-      "pts": 7.8125,
-      "reb": 2.5,
-      "ast": 2.3125,
-      "tpm": 1.4375,
-      "stl": 0.8125,
-      "blk": 0.125,
-      "to": 1.25,
-      "fgm": 2.625,
-      "fga": 6.5,
-      "ftm": 1.125,
-      "fta": 1.125,
-      "tpa": 4
+      "min": 20.352941176470587,
+      "pts": 7.352941176470588,
+      "reb": 2.3529411764705883,
+      "ast": 2.176470588235294,
+      "tpm": 1.3529411764705883,
+      "stl": 0.7647058823529411,
+      "blk": 0.11764705882352941,
+      "to": 1.1764705882352942,
+      "fgm": 2.4705882352941178,
+      "fga": 6.235294117647059,
+      "ftm": 1.0588235294117647,
+      "fta": 1.0588235294117647,
+      "tpa": 3.823529411764706
      },
-     "seasonGames": 16,
-     "games": 84,
+     "seasonGames": 17,
+     "games": 85,
      "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 12
+      "lastPts": 0,
+      "lastMin": 5
      }
     },
     {
@@ -3123,35 +5680,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25.48,
+     "projMin": 21.75,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 24.3,
-      "pts": 9,
-      "reb": 3.4,
-      "ast": 3.3,
-      "tpm": 2.1,
+      "min": 24,
+      "pts": 8.181818181818182,
+      "reb": 3.6363636363636362,
+      "ast": 3,
+      "tpm": 1.9090909090909092,
       "stl": 1,
       "blk": 0,
-      "to": 1,
-      "fgm": 2.9,
-      "fga": 7.7,
-      "ftm": 1.1,
-      "fta": 1.2,
-      "tpa": 5.8
+      "to": 1.0909090909090908,
+      "fgm": 2.6363636363636362,
+      "fga": 7.454545454545454,
+      "ftm": 1,
+      "fta": 1.0909090909090908,
+      "tpa": 5.545454545454546
      },
-     "seasonGames": 10,
-     "games": 22,
+     "seasonGames": 11,
+     "games": 23,
      "h2h": {
-      "pts": 7.5,
-      "reb": 3.7,
-      "ast": 2,
-      "n": 10
+      "pts": 9,
+      "reb": 3.9,
+      "ast": 3.3,
+      "n": 7
      },
      "recent": {
-      "lastPts": 8,
-      "lastMin": 26
+      "lastPts": 0,
+      "lastMin": 21
      }
     },
     {
@@ -3161,26 +5718,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 17.44,
+     "projMin": 20.1,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 21.8125,
-      "pts": 11.1875,
-      "reb": 3.5,
-      "ast": 2.9375,
-      "tpm": 1.5,
-      "stl": 0.8125,
-      "blk": 0.125,
-      "to": 1.875,
-      "fgm": 2.8125,
-      "fga": 8.1875,
-      "ftm": 4.0625,
-      "fta": 4.6875,
-      "tpa": 4.375
+      "min": 21.764705882352942,
+      "pts": 11.235294117647058,
+      "reb": 3.411764705882353,
+      "ast": 2.764705882352941,
+      "tpm": 1.411764705882353,
+      "stl": 0.7647058823529411,
+      "blk": 0.11764705882352941,
+      "to": 1.7647058823529411,
+      "fgm": 2.764705882352941,
+      "fga": 8.058823529411764,
+      "ftm": 4.294117647058823,
+      "fta": 4.882352941176471,
+      "tpa": 4.235294117647059
      },
-     "seasonGames": 16,
-     "games": 16,
+     "seasonGames": 17,
+     "games": 17,
      "h2h": null,
      "recent": null
     },
@@ -3219,24 +5776,689 @@ const SEASON_SLATE_SNAPSHOT = {
     }
    ]
   },
+  "LAL": {
+   "abbr": "LAL",
+   "name": "Lakers",
+   "city": "Los Angeles",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/lal.png",
+   "prior": {
+    "ortg": 116.47957231832659,
+    "drtg": 112.47478508614243,
+    "pace": 100.81298070863953,
+    "games": 82
+   },
+   "current": {
+    "ppg": 119.38888888888889,
+    "papg": 112.72222222222223,
+    "games": 18
+   },
+   "rest": {
+    "restDays": 3,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "5113969",
+     "name": "Cameron Carr",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 7.78,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 5.875,
+      "pts": 2.625,
+      "reb": 0.75,
+      "ast": 0.125,
+      "tpm": 0.375,
+      "stl": 0.125,
+      "blk": 0,
+      "to": 0.375,
+      "fgm": 1,
+      "fga": 2.375,
+      "ftm": 0.25,
+      "fta": 0.25,
+      "tpa": 1.625
+     },
+     "seasonGames": 8,
+     "games": 8,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5105817",
+     "name": "Carson Cooper",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.17,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 7.666666666666667,
+      "pts": 2,
+      "reb": 2.3333333333333335,
+      "ast": 1,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0.3333333333333333,
+      "fgm": 0.3333333333333333,
+      "fga": 0.6666666666666666,
+      "ftm": 1.3333333333333333,
+      "fta": 2.6666666666666665,
+      "tpa": 0
+     },
+     "seasonGames": 3,
+     "games": 3,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "3945274",
+     "name": "Luka Doncic",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 36.125,
+      "pts": 36.625,
+      "reb": 6.625,
+      "ast": 7.6875,
+      "tpm": 4.8125,
+      "stl": 1.8125,
+      "blk": 0.5625,
+      "to": 5.0625,
+      "fgm": 11.5,
+      "fga": 25,
+      "ftm": 8.8125,
+      "fta": 10.1875,
+      "tpa": 13.1875
+     },
+     "seasonGames": 16,
+     "games": 81,
+     "h2h": null,
+     "recent": {
+      "lastPts": 28,
+      "lastMin": 33
+     }
+    },
+    {
+     "id": "4397014",
+     "name": "Quentin Grimes",
+     "pos": "G",
+     "status": "Available",
+     "injury": "Injury/Illness - Right Finger Splint",
+     "availability": 1,
+     "projMin": 29.67,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 29.125,
+      "pts": 12.4375,
+      "reb": 3.4375,
+      "ast": 3.1875,
+      "tpm": 1.8125,
+      "stl": 0.8125,
+      "blk": 0.1875,
+      "to": 1.6875,
+      "fgm": 3.875,
+      "fga": 8.375,
+      "ftm": 2.875,
+      "fta": 3.6875,
+      "tpa": 4.5
+     },
+     "seasonGames": 16,
+     "games": 91,
+     "h2h": null,
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 30
+     }
+    },
+    {
+     "id": "4868423",
+     "name": "Jaden Hardy",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.36,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 3.25,
+      "pts": 1.375,
+      "reb": 0.5,
+      "ast": 0.5,
+      "tpm": 0.25,
+      "stl": 0.25,
+      "blk": 0,
+      "to": 0.125,
+      "fgm": 0.25,
+      "fga": 1.625,
+      "ftm": 0.625,
+      "fta": 0.75,
+      "tpa": 1.375
+     },
+     "seasonGames": 8,
+     "games": 65,
+     "h2h": {
+      "pts": 11,
+      "reb": 2.7,
+      "ast": 1.8,
+      "n": 9
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4683774",
+     "name": "Bronny James",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.2,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 2.5714285714285716,
+      "pts": 1.1428571428571428,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0.14285714285714285,
+      "to": 0.2857142857142857,
+      "fgm": 0.2857142857142857,
+      "fga": 0.5714285714285714,
+      "ftm": 0.5714285714285714,
+      "fta": 0.5714285714285714,
+      "tpa": 0.2857142857142857
+     },
+     "seasonGames": 7,
+     "games": 49,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4433599",
+     "name": "Arthur Kaluma",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.38,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 0,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4433136",
+     "name": "Walker Kessler",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.27,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 31.11764705882353,
+      "pts": 14,
+      "reb": 10.764705882352942,
+      "ast": 1.7058823529411764,
+      "tpm": 0.058823529411764705,
+      "stl": 1.1176470588235294,
+      "blk": 2.1176470588235294,
+      "to": 1.588235294117647,
+      "fgm": 5.823529411764706,
+      "fga": 8.705882352941176,
+      "ftm": 2.2941176470588234,
+      "fta": 3.9411764705882355,
+      "tpa": 0.058823529411764705
+     },
+     "seasonGames": 17,
+     "games": 22,
+     "h2h": null,
+     "recent": {
+      "lastPts": 10,
+      "lastMin": 36
+     }
+    },
+    {
+     "id": "4592691",
+     "name": "Jake LaRavia",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 33.87,
+     "starter": false,
+     "depthRank": 1,
+     "avg": {
+      "min": 25.88235294117647,
+      "pts": 6.352941176470588,
+      "reb": 4.411764705882353,
+      "ast": 2,
+      "tpm": 0.9411764705882353,
+      "stl": 1.2352941176470589,
+      "blk": 0.7058823529411765,
+      "to": 1.2352941176470589,
+      "fgm": 2.3529411764705883,
+      "fga": 4.823529411764706,
+      "ftm": 0.7058823529411765,
+      "fta": 1.1764705882352942,
+      "tpa": 2.176470588235294
+     },
+     "seasonGames": 17,
+     "games": 99,
+     "h2h": {
+      "pts": 7.4,
+      "reb": 4.7,
+      "ast": 1.6,
+      "n": 10
+     },
+     "recent": {
+      "lastPts": 15,
+      "lastMin": 37
+     }
+    },
+    {
+     "id": "3155535",
+     "name": "Kevon Looney",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.33,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 8.5,
+      "pts": 2,
+      "reb": 3,
+      "ast": 0.16666666666666666,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0.8333333333333334,
+      "fga": 1.5,
+      "ftm": 0.3333333333333333,
+      "fta": 0.3333333333333333,
+      "tpa": 0
+     },
+     "seasonGames": 6,
+     "games": 27,
+     "h2h": {
+      "pts": 5.4,
+      "reb": 5.1,
+      "ast": 1.5,
+      "n": 22
+     },
+     "recent": {
+      "lastPts": 4,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4278580",
+     "name": "Sandro Mamukelashvili",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 15.12,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 22.555555555555557,
+      "pts": 9.166666666666666,
+      "reb": 4.388888888888889,
+      "ast": 1.6666666666666667,
+      "tpm": 1.1666666666666667,
+      "stl": 0.8333333333333334,
+      "blk": 0.4444444444444444,
+      "to": 0.8888888888888888,
+      "fgm": 3.3333333333333335,
+      "fga": 7.833333333333333,
+      "ftm": 1.3333333333333333,
+      "fta": 1.6111111111111112,
+      "tpa": 3.7222222222222223
+     },
+     "seasonGames": 18,
+     "games": 98,
+     "h2h": {
+      "pts": 2,
+      "reb": 1.4,
+      "ast": 0.4,
+      "n": 5
+     },
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 13
+     }
+    },
+    {
+     "id": "4702972",
+     "name": "Chris Manon",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.12,
+     "starter": false,
+     "depthRank": 8,
+     "avg": {
+      "min": 3.5,
+      "pts": 1,
+      "reb": 0.5,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0.5,
+      "fga": 1.5,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.5
+     },
+     "seasonGames": 2,
+     "games": 11,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "5114350",
+     "name": "AK Okereke",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.19,
+     "starter": false,
+     "depthRank": 99,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 0,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4066457",
+     "name": "Austin Reaves",
+     "pos": "G",
+     "status": "Available",
+     "injury": "See official report for full injury details",
+     "availability": 1,
+     "projMin": 34,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 35.25,
+      "pts": 24.666666666666668,
+      "reb": 3.3333333333333335,
+      "ast": 4.666666666666667,
+      "tpm": 2.25,
+      "stl": 1.1666666666666667,
+      "blk": 0.3333333333333333,
+      "to": 3.4166666666666665,
+      "fgm": 8.083333333333334,
+      "fga": 15.75,
+      "ftm": 6.25,
+      "fta": 6.833333333333333,
+      "tpa": 5.5
+     },
+     "seasonGames": 12,
+     "games": 63,
+     "h2h": {
+      "pts": 15.7,
+      "reb": 4.5,
+      "ast": 4.5,
+      "n": 13
+     },
+     "recent": {
+      "lastPts": 18,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4277811",
+     "name": "Collin Sexton",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 21.9,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 19,
+      "pts": 10.764705882352942,
+      "reb": 1.7058823529411764,
+      "ast": 2.7058823529411766,
+      "tpm": 1,
+      "stl": 0.5882352941176471,
+      "blk": 0.23529411764705882,
+      "to": 1.411764705882353,
+      "fgm": 3.7058823529411766,
+      "fga": 8.647058823529411,
+      "ftm": 2.3529411764705883,
+      "fta": 3.176470588235294,
+      "tpa": 3.588235294117647
+     },
+     "seasonGames": 17,
+     "games": 85,
+     "h2h": null,
+     "recent": {
+      "lastPts": 12,
+      "lastMin": 23
+     }
+    },
+    {
+     "id": "5060631",
+     "name": "Adou Thiero",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.14,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 8,
+      "pts": 1.6666666666666667,
+      "reb": 1.8333333333333333,
+      "ast": 1,
+      "tpm": 0,
+      "stl": 0.6666666666666666,
+      "blk": 0.16666666666666666,
+      "to": 0.5,
+      "fgm": 0.6666666666666666,
+      "fga": 2.3333333333333335,
+      "ftm": 0.3333333333333333,
+      "fta": 0.3333333333333333,
+      "tpa": 0.3333333333333333
+     },
+     "seasonGames": 6,
+     "games": 31,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "3907498",
+     "name": "Matisse Thybulle",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 27,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 24.88888888888889,
+      "pts": 7.833333333333333,
+      "reb": 2.388888888888889,
+      "ast": 1,
+      "tpm": 1.7777777777777777,
+      "stl": 2.2777777777777777,
+      "blk": 1,
+      "to": 1.1111111111111112,
+      "fgm": 2.7222222222222223,
+      "fga": 5.944444444444445,
+      "ftm": 0.6111111111111112,
+      "fta": 0.7222222222222222,
+      "tpa": 4.388888888888889
+     },
+     "seasonGames": 18,
+     "games": 48,
+     "h2h": null,
+     "recent": {
+      "lastPts": 14,
+      "lastMin": 27
+     }
+    },
+    {
+     "id": "4278077",
+     "name": "Jarred Vanderbilt",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 12.42,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 11.923076923076923,
+      "pts": 2.076923076923077,
+      "reb": 4,
+      "ast": 1.1538461538461537,
+      "tpm": 0,
+      "stl": 0.3076923076923077,
+      "blk": 0.38461538461538464,
+      "to": 0.5384615384615384,
+      "fgm": 1,
+      "fga": 1.3076923076923077,
+      "ftm": 0.07692307692307693,
+      "fta": 0.6923076923076923,
+      "tpa": 0
+     },
+     "seasonGames": 13,
+     "games": 78,
+     "h2h": null,
+     "recent": {
+      "lastPts": 1,
+      "lastMin": 12
+     }
+    },
+    {
+     "id": "4433137",
+     "name": "Ziaire Williams",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 24,
+     "starter": true,
+     "depthRank": 2,
+     "avg": {
+      "min": 23.266666666666666,
+      "pts": 9.133333333333333,
+      "reb": 2.3333333333333335,
+      "ast": 1.6666666666666667,
+      "tpm": 1.6,
+      "stl": 1.2,
+      "blk": 0.13333333333333333,
+      "to": 0.4,
+      "fgm": 3.2666666666666666,
+      "fga": 6.066666666666666,
+      "ftm": 1,
+      "fta": 1.2666666666666666,
+      "tpa": 3.8
+     },
+     "seasonGames": 15,
+     "games": 71,
+     "h2h": null,
+     "recent": {
+      "lastPts": 9,
+      "lastMin": 19
+     }
+    }
+   ]
+  },
   "MIA": {
    "abbr": "MIA",
    "name": "Heat",
    "city": "Miami",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/mia.png",
    "prior": {
-    "ortg": 114.80999844434912,
-    "drtg": 112.974952609784,
-    "pace": 104.99915350859538,
+    "ortg": 114.60596405592366,
+    "drtg": 113.01563491816287,
+    "pace": 104.78187908944415,
     "games": 82
    },
    "current": {
-    "ppg": 120.6875,
-    "papg": 119.4375,
-    "games": 16
+    "ppg": 119.70588235294117,
+    "papg": 118.94117647058823,
+    "games": 17
    },
    "rest": {
-    "restDays": 2,
+    "restDays": 1,
     "backToBack": false,
     "threeInFour": false,
     "schedulePoints": 0
@@ -3249,35 +6471,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34.21,
+     "projMin": 34.27,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.625,
-      "pts": 19.1875,
-      "reb": 8.1875,
-      "ast": 3.6875,
-      "tpm": 0.75,
-      "stl": 2.0625,
-      "blk": 0.75,
-      "to": 1.4375,
-      "fgm": 6.5625,
-      "fga": 12.25,
-      "ftm": 5.3125,
-      "fta": 7.0625,
-      "tpa": 3.0625
+      "min": 32.76470588235294,
+      "pts": 19.058823529411764,
+      "reb": 8.352941176470589,
+      "ast": 3.6470588235294117,
+      "tpm": 0.7647058823529411,
+      "stl": 2,
+      "blk": 0.7058823529411765,
+      "to": 1.4705882352941178,
+      "fgm": 6.529411764705882,
+      "fga": 12.470588235294118,
+      "ftm": 5.235294117647059,
+      "fta": 6.9411764705882355,
+      "tpa": 3.0588235294117645
      },
-     "seasonGames": 16,
-     "games": 89,
+     "seasonGames": 17,
+     "games": 90,
      "h2h": {
-      "pts": 14.9,
-      "reb": 9.1,
-      "ast": 3.3,
+      "pts": 14.3,
+      "reb": 8.1,
+      "ast": 2.8,
       "n": 27
      },
      "recent": {
-      "lastPts": 24,
-      "lastMin": 37
+      "lastPts": 17,
+      "lastMin": 35
      }
     },
     {
@@ -3287,35 +6509,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Probable",
      "injury": "Injury/Illness - Right Groin Tendinitis",
      "availability": 0.9,
-     "projMin": 31,
+     "projMin": 33.84,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.2,
-      "pts": 28.2,
-      "reb": 12.6,
-      "ast": 5.466666666666667,
-      "tpm": 0.5333333333333333,
-      "stl": 0.8666666666666667,
-      "blk": 1.2666666666666666,
-      "to": 3.1333333333333333,
-      "fgm": 10.8,
-      "fga": 17.933333333333334,
-      "ftm": 6.066666666666666,
-      "fta": 9.4,
-      "tpa": 2.2
+      "min": 32.4375,
+      "pts": 28.4375,
+      "reb": 12.6875,
+      "ast": 5.375,
+      "tpm": 0.5,
+      "stl": 0.9375,
+      "blk": 1.25,
+      "to": 3.25,
+      "fgm": 10.8125,
+      "fga": 17.9375,
+      "ftm": 6.3125,
+      "fta": 9.625,
+      "tpa": 2.125
      },
-     "seasonGames": 15,
-     "games": 51,
+     "seasonGames": 16,
+     "games": 52,
      "h2h": {
-      "pts": 25.3,
-      "reb": 11.9,
-      "ast": 5.9,
-      "n": 38
+      "pts": 24.4,
+      "reb": 10.3,
+      "ast": 4.9,
+      "n": 43
      },
      "recent": {
-      "lastPts": 27,
-      "lastMin": null
+      "lastPts": 32,
+      "lastMin": 36
      }
     },
     {
@@ -3325,26 +6547,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.18,
+     "projMin": 18.77,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.285714285714285,
-      "pts": 7.428571428571429,
-      "reb": 1.8571428571428572,
-      "ast": 1.3571428571428572,
-      "tpm": 1.5,
-      "stl": 0.7142857142857143,
-      "blk": 0.14285714285714285,
-      "to": 0.7142857142857143,
-      "fgm": 2.2857142857142856,
-      "fga": 5.857142857142857,
-      "ftm": 1.3571428571428572,
-      "fta": 1.5714285714285714,
-      "tpa": 4.142857142857143
+      "min": 18.266666666666666,
+      "pts": 7.4,
+      "reb": 1.8,
+      "ast": 1.3333333333333333,
+      "tpm": 1.4666666666666666,
+      "stl": 0.6666666666666666,
+      "blk": 0.13333333333333333,
+      "to": 0.8,
+      "fgm": 2.3333333333333335,
+      "fga": 5.933333333333334,
+      "ftm": 1.2666666666666666,
+      "fta": 1.4666666666666666,
+      "tpa": 4.133333333333334
      },
-     "seasonGames": 14,
-     "games": 14,
+     "seasonGames": 15,
+     "games": 15,
      "h2h": null,
      "recent": null
     },
@@ -3385,35 +6607,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.33,
+     "projMin": 9.06,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 9.3,
-      "pts": 4,
-      "reb": 1.8,
-      "ast": 0.5,
-      "tpm": 0.7,
-      "stl": 0.1,
-      "blk": 0.3,
-      "to": 0.5,
-      "fgm": 1.4,
-      "fga": 3.4,
-      "ftm": 0.5,
-      "fta": 0.7,
-      "tpa": 2.3
+      "min": 9,
+      "pts": 3.6363636363636362,
+      "reb": 1.7272727272727273,
+      "ast": 0.5454545454545454,
+      "tpm": 0.6363636363636364,
+      "stl": 0.09090909090909091,
+      "blk": 0.2727272727272727,
+      "to": 0.45454545454545453,
+      "fgm": 1.2727272727272727,
+      "fga": 3.272727272727273,
+      "ftm": 0.45454545454545453,
+      "fta": 0.6363636363636364,
+      "tpa": 2.272727272727273
      },
-     "seasonGames": 10,
-     "games": 80,
+     "seasonGames": 11,
+     "games": 81,
      "h2h": {
-      "pts": 5.3,
-      "reb": 4.2,
-      "ast": 1.3,
-      "n": 9
+      "pts": 8.9,
+      "reb": 3.2,
+      "ast": 1.2,
+      "n": 13
      },
      "recent": {
-      "lastPts": 11,
-      "lastMin": 15
+      "lastPts": 0,
+      "lastMin": 6
      }
     },
     {
@@ -3421,32 +6643,32 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Myron Gardner",
      "pos": "F",
      "status": "Available",
-     "injury": "Injury/Illness - Right Hamstring Strain",
+     "injury": null,
      "availability": 1,
-     "projMin": 10.95,
+     "projMin": 5.95,
      "starter": false,
      "depthRank": 5,
      "avg": {
-      "min": 10,
-      "pts": 3.1,
-      "reb": 2.2,
-      "ast": 1,
-      "tpm": 0.5,
+      "min": 9.545454545454545,
+      "pts": 2.8181818181818183,
+      "reb": 2.1818181818181817,
+      "ast": 0.9090909090909091,
+      "tpm": 0.45454545454545453,
       "stl": 0,
-      "blk": 0.4,
-      "to": 0.6,
-      "fgm": 1,
-      "fga": 2.3,
-      "ftm": 0.6,
-      "fta": 0.7,
-      "tpa": 1.7
+      "blk": 0.36363636363636365,
+      "to": 0.6363636363636364,
+      "fgm": 0.9090909090909091,
+      "fga": 2.090909090909091,
+      "ftm": 0.5454545454545454,
+      "fta": 0.6363636363636364,
+      "tpa": 1.5454545454545454
      },
-     "seasonGames": 10,
-     "games": 54,
+     "seasonGames": 11,
+     "games": 55,
      "h2h": null,
      "recent": {
-      "lastPts": 4,
-      "lastMin": 11
+      "lastPts": 0,
+      "lastMin": 5
      }
     },
     {
@@ -3507,10 +6729,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 11,
      "games": 91,
      "h2h": {
-      "pts": 11.1,
-      "reb": 2.6,
-      "ast": 2,
-      "n": 30
+      "pts": 13.9,
+      "reb": 3.2,
+      "ast": 2.1,
+      "n": 20
      },
      "recent": {
       "lastPts": 4,
@@ -3547,7 +6769,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 0
+      "lastMin": null
      }
     },
     {
@@ -3557,7 +6779,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.57,
+     "projMin": 0.92,
      "starter": false,
      "depthRank": 3,
      "avg": {
@@ -3578,14 +6800,14 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 10,
      "games": 56,
      "h2h": {
-      "pts": 10,
-      "reb": 4,
+      "pts": 4.8,
+      "reb": 3.2,
       "ast": 3,
-      "n": 4
+      "n": 6
      },
      "recent": {
       "lastPts": 15,
-      "lastMin": 19
+      "lastMin": 0
      }
     },
     {
@@ -3595,35 +6817,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 30,
+     "projMin": 28,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 28.46153846153846,
-      "pts": 11.538461538461538,
-      "reb": 3.3076923076923075,
-      "ast": 3.5384615384615383,
-      "tpm": 1.4615384615384615,
-      "stl": 1.3846153846153846,
-      "blk": 0.07692307692307693,
-      "to": 2.076923076923077,
-      "fgm": 3.5384615384615383,
-      "fga": 7.153846153846154,
-      "ftm": 3,
-      "fta": 3.3846153846153846,
-      "tpa": 3.1538461538461537
+      "min": 28.428571428571427,
+      "pts": 11.285714285714286,
+      "reb": 3.357142857142857,
+      "ast": 3.357142857142857,
+      "tpm": 1.4285714285714286,
+      "stl": 1.2857142857142858,
+      "blk": 0.07142857142857142,
+      "to": 1.9285714285714286,
+      "fgm": 3.5,
+      "fga": 7.142857142857143,
+      "ftm": 2.857142857142857,
+      "fta": 3.2857142857142856,
+      "tpa": 3.2142857142857144
      },
-     "seasonGames": 13,
-     "games": 83,
+     "seasonGames": 14,
+     "games": 84,
      "h2h": {
-      "pts": 10,
-      "reb": 4.6,
-      "ast": 3.4,
-      "n": 7
+      "pts": 8,
+      "reb": 3,
+      "ast": 1.5,
+      "n": 4
      },
      "recent": {
-      "lastPts": 21,
-      "lastMin": 30
+      "lastPts": 8,
+      "lastMin": 28
      }
     },
     {
@@ -3633,30 +6855,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34,
+     "projMin": 37.05,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 35.4375,
-      "pts": 17,
-      "reb": 2.5,
-      "ast": 8.625,
-      "tpm": 2.4375,
-      "stl": 1.3125,
-      "blk": 0.625,
-      "to": 2.5625,
-      "fgm": 6.1875,
-      "fga": 12.125,
-      "ftm": 2.1875,
-      "fta": 2.875,
-      "tpa": 5.625
+      "min": 35.705882352941174,
+      "pts": 17.176470588235293,
+      "reb": 2.588235294117647,
+      "ast": 8.705882352941176,
+      "tpm": 2.4705882352941178,
+      "stl": 1.2352941176470589,
+      "blk": 0.5882352941176471,
+      "to": 2.588235294117647,
+      "fgm": 6.235294117647059,
+      "fga": 12.235294117647058,
+      "ftm": 2.235294117647059,
+      "fta": 3.0588235294117645,
+      "tpa": 5.588235294117647
      },
-     "seasonGames": 16,
-     "games": 86,
+     "seasonGames": 17,
+     "games": 87,
      "h2h": null,
      "recent": {
-      "lastPts": 14,
-      "lastMin": 34
+      "lastPts": 20,
+      "lastMin": 40
      }
     },
     {
@@ -3666,35 +6888,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 20.77,
+     "projMin": 16.64,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19.875,
-      "pts": 7.625,
-      "reb": 5.5,
-      "ast": 1.5,
-      "tpm": 1.25,
-      "stl": 0.6875,
-      "blk": 0.375,
-      "to": 0.9375,
-      "fgm": 2.9375,
-      "fga": 7.6875,
-      "ftm": 0.5,
-      "fta": 0.6875,
-      "tpa": 4.0625
+      "min": 19.58823529411765,
+      "pts": 7.470588235294118,
+      "reb": 5.470588235294118,
+      "ast": 1.4705882352941178,
+      "tpm": 1.2352941176470589,
+      "stl": 0.6470588235294118,
+      "blk": 0.4117647058823529,
+      "to": 0.8823529411764706,
+      "fgm": 2.8823529411764706,
+      "fga": 7.470588235294118,
+      "ftm": 0.47058823529411764,
+      "fta": 0.6470588235294118,
+      "tpa": 4
      },
-     "seasonGames": 16,
-     "games": 83,
+     "seasonGames": 17,
+     "games": 84,
      "h2h": {
-      "pts": 12.5,
-      "reb": 6.5,
-      "ast": 1.4,
-      "n": 35
+      "pts": 10.3,
+      "reb": 5.6,
+      "ast": 1,
+      "n": 31
      },
      "recent": {
-      "lastPts": 10,
-      "lastMin": 21
+      "lastPts": 5,
+      "lastMin": 15
      }
     },
     {
@@ -3724,7 +6946,12 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 7,
      "games": 54,
-     "h2h": null,
+     "h2h": {
+      "pts": 5.2,
+      "reb": 4.2,
+      "ast": 0.5,
+      "n": 12
+     },
      "recent": {
       "lastPts": 0,
       "lastMin": 0
@@ -3758,10 +6985,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 7,
      "games": 77,
      "h2h": {
-      "pts": 5.5,
-      "reb": 3.5,
-      "ast": 1.8,
-      "n": 4
+      "pts": 6,
+      "reb": 1.8,
+      "ast": 1.5,
+      "n": 6
      },
      "recent": {
       "lastPts": 0,
@@ -3775,35 +7002,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24,
+     "projMin": 29.33,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 24,
-      "pts": 14.866666666666667,
-      "reb": 1.6666666666666667,
-      "ast": 2.1333333333333333,
-      "tpm": 4,
-      "stl": 0.2,
-      "blk": 0.8,
-      "to": 0.9333333333333333,
-      "fgm": 5.066666666666666,
-      "fga": 11.466666666666667,
-      "ftm": 0.7333333333333333,
-      "fta": 0.7333333333333333,
-      "tpa": 9.266666666666667
+      "min": 24.4375,
+      "pts": 14.375,
+      "reb": 1.5625,
+      "ast": 2.0625,
+      "tpm": 3.8125,
+      "stl": 0.25,
+      "blk": 0.8125,
+      "to": 0.875,
+      "fgm": 4.9375,
+      "fga": 11.5,
+      "ftm": 0.6875,
+      "fta": 0.6875,
+      "tpa": 9.125
      },
-     "seasonGames": 15,
-     "games": 84,
+     "seasonGames": 16,
+     "games": 85,
      "h2h": {
-      "pts": 17.5,
-      "reb": 2.9,
-      "ast": 1.8,
-      "n": 21
+      "pts": 18.5,
+      "reb": 3.8,
+      "ast": 2,
+      "n": 23
      },
      "recent": {
-      "lastPts": 9,
-      "lastMin": 23
+      "lastPts": 7,
+      "lastMin": 31
      }
     },
     {
@@ -3811,37 +7038,37 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Andrew Wiggins",
      "pos": "F",
      "status": "Available",
-     "injury": null,
+     "injury": "See official report for full injury details",
      "availability": 1,
-     "projMin": 23.67,
+     "projMin": 24.2,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 26.25,
-      "pts": 9.1875,
-      "reb": 2.8125,
-      "ast": 1.5625,
-      "tpm": 1.3125,
-      "stl": 0.5,
-      "blk": 0.8125,
-      "to": 0.8125,
-      "fgm": 3.3125,
-      "fga": 7.625,
-      "ftm": 1.25,
-      "fta": 1.5,
-      "tpa": 3.875
+      "min": 26.11764705882353,
+      "pts": 9.117647058823529,
+      "reb": 2.764705882352941,
+      "ast": 1.588235294117647,
+      "tpm": 1.2352941176470589,
+      "stl": 0.47058823529411764,
+      "blk": 0.7647058823529411,
+      "to": 0.7647058823529411,
+      "fgm": 3.3529411764705883,
+      "fga": 7.529411764705882,
+      "ftm": 1.1764705882352942,
+      "fta": 1.411764705882353,
+      "tpa": 3.764705882352941
      },
-     "seasonGames": 16,
-     "games": 84,
+     "seasonGames": 17,
+     "games": 85,
      "h2h": {
-      "pts": 18,
-      "reb": 5.7,
-      "ast": 2.5,
-      "n": 21
+      "pts": 15.6,
+      "reb": 6.2,
+      "ast": 2.1,
+      "n": 19
      },
      "recent": {
-      "lastPts": 5,
-      "lastMin": 22
+      "lastPts": 8,
+      "lastMin": 24
      }
     }
    ]
@@ -3852,15 +7079,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Milwaukee",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/mil.png",
    "prior": {
-    "ortg": 109.17811279000209,
-    "drtg": 117.82074933441302,
-    "pace": 100.90535035789473,
+    "ortg": 108.89759185263101,
+    "drtg": 117.50039990875746,
+    "pace": 100.84982855384615,
     "games": 82
    },
    "current": {
-    "ppg": 109.72222222222223,
-    "papg": 121.11111111111111,
-    "games": 18
+    "ppg": 109.05263157894737,
+    "papg": 120.21052631578948,
+    "games": 19
    },
    "rest": {
     "restDays": 1,
@@ -3876,26 +7103,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 23.14,
+     "projMin": 19.83,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.875,
-      "pts": 7.625,
-      "reb": 3.0625,
-      "ast": 0.5625,
-      "tpm": 0.9375,
-      "stl": 0.4375,
-      "blk": 0.25,
-      "to": 0.875,
-      "fgm": 2.6875,
-      "fga": 5.9375,
-      "ftm": 1.3125,
-      "fta": 1.75,
-      "tpa": 2.6875
+      "min": 19,
+      "pts": 7.647058823529412,
+      "reb": 3.0588235294117645,
+      "ast": 0.5294117647058824,
+      "tpm": 1,
+      "stl": 0.4117647058823529,
+      "blk": 0.23529411764705882,
+      "to": 0.8823529411764706,
+      "fgm": 2.7058823529411766,
+      "fga": 5.9411764705882355,
+      "ftm": 1.2352941176470589,
+      "fta": 1.6470588235294117,
+      "tpa": 2.823529411764706
      },
-     "seasonGames": 16,
-     "games": 16,
+     "seasonGames": 17,
+     "games": 17,
      "h2h": null,
      "recent": null
     },
@@ -3906,26 +7133,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.85,
+     "projMin": 22.24,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 23.055555555555557,
-      "pts": 11.444444444444445,
-      "reb": 5.722222222222222,
-      "ast": 2.5,
-      "tpm": 1.1666666666666667,
-      "stl": 0.8888888888888888,
-      "blk": 0.2222222222222222,
-      "to": 1.4444444444444444,
-      "fgm": 3.9444444444444446,
-      "fga": 8.666666666666666,
-      "ftm": 2.388888888888889,
-      "fta": 3.2222222222222223,
-      "tpa": 3.7222222222222223
+      "min": 23,
+      "pts": 11,
+      "reb": 5.578947368421052,
+      "ast": 2.526315789473684,
+      "tpm": 1.105263157894737,
+      "stl": 0.8421052631578947,
+      "blk": 0.21052631578947367,
+      "to": 1.4736842105263157,
+      "fgm": 3.789473684210526,
+      "fga": 8.526315789473685,
+      "ftm": 2.3157894736842106,
+      "fta": 3.1578947368421053,
+      "tpa": 3.6315789473684212
      },
-     "seasonGames": 18,
-     "games": 18,
+     "seasonGames": 19,
+     "games": 19,
      "h2h": null,
      "recent": null
     },
@@ -3957,10 +7184,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 10,
      "games": 67,
      "h2h": {
-      "pts": 9.5,
-      "reb": 4.5,
-      "ast": 4.3,
-      "n": 4
+      "pts": 5.8,
+      "reb": 2,
+      "ast": 1.8,
+      "n": 5
      },
      "recent": {
       "lastPts": 0,
@@ -3974,35 +7201,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.6,
+     "projMin": 5.87,
      "starter": false,
      "depthRank": 5,
      "avg": {
-      "min": 16.0625,
-      "pts": 6.125,
-      "reb": 1.25,
-      "ast": 1.1875,
-      "tpm": 1.8125,
-      "stl": 0.125,
-      "blk": 0.125,
-      "to": 0.5,
-      "fgm": 2,
-      "fga": 4.5,
-      "ftm": 0.3125,
-      "fta": 0.3125,
-      "tpa": 4.0625
+      "min": 15.411764705882353,
+      "pts": 5.764705882352941,
+      "reb": 1.1764705882352942,
+      "ast": 1.1176470588235294,
+      "tpm": 1.7058823529411764,
+      "stl": 0.11764705882352941,
+      "blk": 0.11764705882352941,
+      "to": 0.47058823529411764,
+      "fgm": 1.8823529411764706,
+      "fga": 4.411764705882353,
+      "ftm": 0.29411764705882354,
+      "fta": 0.29411764705882354,
+      "tpa": 4
      },
-     "seasonGames": 16,
-     "games": 94,
+     "seasonGames": 17,
+     "games": 95,
      "h2h": {
-      "pts": 11.9,
-      "reb": 2.9,
-      "ast": 1.7,
+      "pts": 9.4,
+      "reb": 2.7,
+      "ast": 1.1,
       "n": 9
      },
      "recent": {
-      "lastPts": 9,
-      "lastMin": 0
+      "lastPts": 0,
+      "lastMin": 5
      }
     },
     {
@@ -4012,34 +7239,34 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 35.64,
+     "projMin": 36.04,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 31.058823529411764,
-      "pts": 21.941176470588236,
-      "reb": 4.529411764705882,
-      "ast": 4.529411764705882,
-      "tpm": 2.9411764705882355,
-      "stl": 0.9411764705882353,
-      "blk": 0.23529411764705882,
-      "to": 2.2941176470588234,
-      "fgm": 7.470588235294118,
-      "fga": 16.235294117647058,
-      "ftm": 4.0588235294117645,
-      "fta": 4.882352941176471,
-      "tpa": 7.411764705882353
+      "min": 31.38888888888889,
+      "pts": 22.27777777777778,
+      "reb": 4.388888888888889,
+      "ast": 4.555555555555555,
+      "tpm": 2.9444444444444446,
+      "stl": 1.0555555555555556,
+      "blk": 0.2222222222222222,
+      "to": 2.4444444444444446,
+      "fgm": 7.611111111111111,
+      "fga": 16.444444444444443,
+      "ftm": 4.111111111111111,
+      "fta": 4.888888888888889,
+      "tpa": 7.5
      },
-     "seasonGames": 17,
-     "games": 50,
+     "seasonGames": 18,
+     "games": 51,
      "h2h": {
-      "pts": 18.8,
-      "reb": 4.8,
-      "ast": 4.1,
-      "n": 16
+      "pts": 25.1,
+      "reb": 4.7,
+      "ast": 4.3,
+      "n": 14
      },
      "recent": {
-      "lastPts": 32,
+      "lastPts": 28,
       "lastMin": 37
      }
     },
@@ -4047,33 +7274,33 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "5214640",
      "name": "Kasparas Jakucionis",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 9.84,
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 12.18,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 17.88235294117647,
-      "pts": 8.470588235294118,
-      "reb": 2.411764705882353,
-      "ast": 3.2941176470588234,
-      "tpm": 1,
-      "stl": 0.7647058823529411,
-      "blk": 0.058823529411764705,
-      "to": 1.7058823529411764,
-      "fgm": 2.7058823529411766,
-      "fga": 5.882352941176471,
-      "ftm": 2.0588235294117645,
-      "fta": 2.4705882352941178,
-      "tpa": 3.235294117647059
+      "min": 17.555555555555557,
+      "pts": 8.222222222222221,
+      "reb": 2.5,
+      "ast": 3.2777777777777777,
+      "tpm": 0.9444444444444444,
+      "stl": 0.7222222222222222,
+      "blk": 0.05555555555555555,
+      "to": 1.6111111111111112,
+      "fgm": 2.6666666666666665,
+      "fga": 5.944444444444445,
+      "ftm": 1.9444444444444444,
+      "fta": 2.3333333333333335,
+      "tpa": 3.3333333333333335
      },
-     "seasonGames": 17,
-     "games": 70,
+     "seasonGames": 18,
+     "games": 71,
      "h2h": null,
      "recent": {
-      "lastPts": 0,
-      "lastMin": 7
+      "lastPts": 4,
+      "lastMin": 12
      }
     },
     {
@@ -4083,44 +7310,44 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25.46,
+     "projMin": 32.33,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27,
-      "pts": 14,
-      "reb": 4.777777777777778,
-      "ast": 2.8333333333333335,
-      "tpm": 1.7777777777777777,
-      "stl": 0.6111111111111112,
-      "blk": 0.05555555555555555,
-      "to": 1.8333333333333333,
-      "fgm": 5,
-      "fga": 11.055555555555555,
-      "ftm": 2.2222222222222223,
-      "fta": 2.888888888888889,
-      "tpa": 4.333333333333333
+      "min": 27.42105263157895,
+      "pts": 14.368421052631579,
+      "reb": 4.7894736842105265,
+      "ast": 2.8947368421052633,
+      "tpm": 1.736842105263158,
+      "stl": 0.6842105263157895,
+      "blk": 0.05263157894736842,
+      "to": 1.7894736842105263,
+      "fgm": 5.2105263157894735,
+      "fga": 11.263157894736842,
+      "ftm": 2.210526315789474,
+      "fta": 2.9473684210526314,
+      "tpa": 4.368421052631579
      },
-     "seasonGames": 18,
-     "games": 93,
+     "seasonGames": 19,
+     "games": 94,
      "h2h": {
-      "pts": 12.2,
-      "reb": 4.8,
-      "ast": 3.1,
-      "n": 9
+      "pts": 11.8,
+      "reb": 4.4,
+      "ast": 3.3,
+      "n": 10
      },
      "recent": {
-      "lastPts": 3,
-      "lastMin": 25
+      "lastPts": 21,
+      "lastMin": 35
      }
     },
     {
      "id": "4697268",
      "name": "Kam Jones",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
      "projMin": 0.37,
      "starter": false,
      "depthRank": 7,
@@ -4155,31 +7382,31 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27.764705882352942,
-      "pts": 12.588235294117647,
-      "reb": 5.235294117647059,
-      "ast": 2.3529411764705883,
-      "tpm": 1.7058823529411764,
-      "stl": 0.9411764705882353,
-      "blk": 0.29411764705882354,
-      "to": 1.7058823529411764,
-      "fgm": 4.647058823529412,
-      "fga": 10.352941176470589,
-      "ftm": 1.588235294117647,
-      "fta": 2.7058823529411766,
-      "tpa": 5.117647058823529
+      "min": 27.944444444444443,
+      "pts": 12.61111111111111,
+      "reb": 5.111111111111111,
+      "ast": 2.3333333333333335,
+      "tpm": 1.7777777777777777,
+      "stl": 0.8888888888888888,
+      "blk": 0.2777777777777778,
+      "to": 1.6666666666666667,
+      "fgm": 4.666666666666667,
+      "fga": 10.38888888888889,
+      "ftm": 1.5,
+      "fta": 2.6666666666666665,
+      "tpa": 5.222222222222222
      },
-     "seasonGames": 17,
-     "games": 86,
+     "seasonGames": 18,
+     "games": 87,
      "h2h": {
-      "pts": 15.2,
-      "reb": 6.1,
-      "ast": 3,
+      "pts": 19.5,
+      "reb": 6,
+      "ast": 2.8,
       "n": 22
      },
      "recent": {
-      "lastPts": 18,
-      "lastMin": 32
+      "lastPts": 13,
+      "lastMin": 31
      }
     },
     {
@@ -4189,39 +7416,44 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 6.98,
+     "projMin": 9.44,
      "starter": false,
      "depthRank": 5,
      "avg": {
-      "min": 8,
-      "pts": 2.75,
-      "reb": 1.75,
-      "ast": 0.75,
-      "tpm": 0.25,
-      "stl": 0.25,
-      "blk": 0.25,
-      "to": 0.25,
+      "min": 8.8,
+      "pts": 2.6,
+      "reb": 1.6,
+      "ast": 1,
+      "tpm": 0.2,
+      "stl": 0.2,
+      "blk": 0.2,
+      "to": 0.2,
       "fgm": 1,
-      "fga": 2.75,
-      "ftm": 0.5,
-      "fta": 0.5,
-      "tpa": 1
+      "fga": 2.6,
+      "ftm": 0.4,
+      "fta": 0.4,
+      "tpa": 0.8
      },
-     "seasonGames": 4,
-     "games": 64,
-     "h2h": null,
+     "seasonGames": 5,
+     "games": 65,
+     "h2h": {
+      "pts": 14,
+      "reb": 3.4,
+      "ast": 2.9,
+      "n": 24
+     },
      "recent": {
-      "lastPts": 0,
-      "lastMin": 8
+      "lastPts": 2,
+      "lastMin": 12
      }
     },
     {
      "id": "5214989",
      "name": "Bogoljub Markovic",
      "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
+     "status": "Out",
+     "injury": "G League - On Assignment",
+     "availability": 0,
      "projMin": 0.1,
      "starter": false,
      "depthRank": 5,
@@ -4273,10 +7505,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 2,
      "games": 49,
      "h2h": {
-      "pts": 2.7,
-      "reb": 2,
-      "ast": 2,
-      "n": 3
+      "pts": 6.3,
+      "reb": 2.5,
+      "ast": 1.3,
+      "n": 4
      },
      "recent": {
       "lastPts": 7,
@@ -4290,39 +7522,39 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.35,
+     "projMin": 24,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 23.8125,
-      "pts": 10.375,
-      "reb": 4.6875,
-      "ast": 3.8125,
-      "tpm": 1.375,
-      "stl": 0.875,
-      "blk": 0.375,
-      "to": 2.3125,
-      "fgm": 3.9375,
-      "fga": 9.9375,
-      "ftm": 1.125,
-      "fta": 1.625,
-      "tpa": 4.3125
+      "min": 23.529411764705884,
+      "pts": 9.882352941176471,
+      "reb": 4.588235294117647,
+      "ast": 3.764705882352941,
+      "tpm": 1.2941176470588236,
+      "stl": 0.8823529411764706,
+      "blk": 0.35294117647058826,
+      "to": 2.176470588235294,
+      "fgm": 3.7058823529411766,
+      "fga": 9.764705882352942,
+      "ftm": 1.1764705882352942,
+      "fta": 1.6470588235294117,
+      "tpa": 4.294117647058823
      },
-     "seasonGames": 16,
-     "games": 90,
+     "seasonGames": 17,
+     "games": 91,
      "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 22
+      "lastPts": 2,
+      "lastMin": 19
      }
     },
     {
      "id": "4397114",
      "name": "Cormac Ryan",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
      "projMin": 0.55,
      "starter": false,
      "depthRank": 8,
@@ -4343,12 +7575,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 0,
      "games": 11,
-     "h2h": {
-      "pts": 21,
-      "reb": 5,
-      "ast": 2.5,
-      "n": 2
-     },
+     "h2h": null,
      "recent": null
     },
     {
@@ -4391,7 +7618,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 5.5,
+     "projMin": 0.48,
      "starter": false,
      "depthRank": 6,
      "avg": {
@@ -4414,7 +7641,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 5
+      "lastMin": 0
      }
     },
     {
@@ -4424,30 +7651,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 27.4,
+     "projMin": 26.53,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 26.6875,
-      "pts": 8.25,
-      "reb": 6.3125,
-      "ast": 2.75,
-      "tpm": 1.5,
-      "stl": 0.5625,
-      "blk": 2.25,
-      "to": 2,
-      "fgm": 3,
-      "fga": 7.8125,
-      "ftm": 0.75,
-      "fta": 0.875,
-      "tpa": 4.6875
+      "min": 26.647058823529413,
+      "pts": 7.9411764705882355,
+      "reb": 6.294117647058823,
+      "ast": 2.7058823529411766,
+      "tpm": 1.4705882352941178,
+      "stl": 0.5882352941176471,
+      "blk": 2.2941176470588234,
+      "to": 2.0588235294117645,
+      "fgm": 2.8823529411764706,
+      "fga": 7.470588235294118,
+      "ftm": 0.7058823529411765,
+      "fta": 0.8235294117647058,
+      "tpa": 4.529411764705882
      },
-     "seasonGames": 16,
-     "games": 87,
+     "seasonGames": 17,
+     "games": 88,
      "h2h": null,
      "recent": {
-      "lastPts": 27,
-      "lastMin": 28
+      "lastPts": 3,
+      "lastMin": 26
      }
     },
     {
@@ -4457,30 +7684,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 22.3,
+     "projMin": 21.44,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19.055555555555557,
-      "pts": 8.722222222222221,
-      "reb": 6.333333333333333,
-      "ast": 0.8888888888888888,
-      "tpm": 0.7222222222222222,
-      "stl": 0.6111111111111112,
-      "blk": 1.1666666666666667,
-      "to": 1.3333333333333333,
-      "fgm": 3.3333333333333335,
-      "fga": 7.611111111111111,
-      "ftm": 1.3333333333333333,
-      "fta": 1.7222222222222223,
-      "tpa": 2.611111111111111
+      "min": 19.210526315789473,
+      "pts": 8.947368421052632,
+      "reb": 6.7368421052631575,
+      "ast": 0.9473684210526315,
+      "tpm": 0.7368421052631579,
+      "stl": 0.5789473684210527,
+      "blk": 1.2105263157894737,
+      "to": 1.3157894736842106,
+      "fgm": 3.473684210526316,
+      "fga": 7.7368421052631575,
+      "ftm": 1.263157894736842,
+      "fta": 1.6842105263157894,
+      "tpa": 2.5789473684210527
      },
-     "seasonGames": 18,
-     "games": 95,
+     "seasonGames": 19,
+     "games": 96,
      "h2h": null,
      "recent": {
-      "lastPts": 9,
-      "lastMin": 23
+      "lastPts": 13,
+      "lastMin": 22
      }
     }
    ]
@@ -4491,15 +7718,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Minnesota",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/min.png",
    "prior": {
-    "ortg": 113.7698088772874,
-    "drtg": 107.15937952167543,
-    "pace": 102.78038736603773,
+    "ortg": 113.72878666058895,
+    "drtg": 107.10968676270372,
+    "pace": 102.72806974126753,
     "games": 82
    },
    "current": {
-    "ppg": 116.38888888888889,
-    "papg": 105.77777777777777,
-    "games": 18
+    "ppg": 116.21052631578948,
+    "papg": 105.78947368421052,
+    "games": 19
    },
    "rest": {
     "restDays": 1,
@@ -4512,38 +7739,33 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "4432816",
      "name": "LaMelo Ball",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 32,
-     "starter": true,
+     "status": "Out",
+     "injury": "Injury/Illness - Left Ankle Sprain",
+     "availability": 0,
+     "projMin": 29.07,
+     "starter": false,
      "depthRank": 1,
      "avg": {
-      "min": 28.5,
-      "pts": 17.22222222222222,
-      "reb": 4.222222222222222,
-      "ast": 5.611111111111111,
-      "tpm": 3.2222222222222223,
-      "stl": 1.6666666666666667,
-      "blk": 0.16666666666666666,
-      "to": 3.3333333333333335,
-      "fgm": 6.166666666666667,
-      "fga": 15.11111111111111,
-      "ftm": 1.6666666666666667,
-      "fta": 2.1666666666666665,
-      "tpa": 9.222222222222221
+      "min": 28.526315789473685,
+      "pts": 17.31578947368421,
+      "reb": 4.368421052631579,
+      "ast": 5.7368421052631575,
+      "tpm": 3.3157894736842106,
+      "stl": 1.631578947368421,
+      "blk": 0.15789473684210525,
+      "to": 3.3157894736842106,
+      "fgm": 6.2105263157894735,
+      "fga": 15.263157894736842,
+      "ftm": 1.5789473684210527,
+      "fta": 2.0526315789473686,
+      "tpa": 9.210526315789474
      },
-     "seasonGames": 18,
-     "games": 90,
-     "h2h": {
-      "pts": 17.4,
-      "reb": 6.2,
-      "ast": 5.4,
-      "n": 5
-     },
+     "seasonGames": 19,
+     "games": 91,
+     "h2h": null,
      "recent": {
-      "lastPts": 17,
-      "lastMin": 30
+      "lastPts": 19,
+      "lastMin": 29
      }
     },
     {
@@ -4551,32 +7773,32 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Joan Beringer",
      "pos": "F",
      "status": "Available",
-     "injury": "Injury/Illness - Right Face Mask",
+     "injury": "Injury/Illness - Face Mask",
      "availability": 1,
-     "projMin": 17,
+     "projMin": 15.4,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 17,
-      "pts": 4.722222222222222,
-      "reb": 6.111111111111111,
-      "ast": 0.3888888888888889,
+      "min": 16.94736842105263,
+      "pts": 4.684210526315789,
+      "reb": 6.052631578947368,
+      "ast": 0.42105263157894735,
       "tpm": 0,
-      "stl": 0.5555555555555556,
-      "blk": 1.3333333333333333,
-      "to": 0.5555555555555556,
-      "fgm": 1.7777777777777777,
-      "fga": 3,
-      "ftm": 1.1666666666666667,
-      "fta": 2,
+      "stl": 0.5263157894736842,
+      "blk": 1.4210526315789473,
+      "to": 0.5789473684210527,
+      "fgm": 1.6842105263157894,
+      "fga": 2.8947368421052633,
+      "ftm": 1.3157894736842106,
+      "fta": 2.210526315789474,
       "tpa": 0
      },
-     "seasonGames": 18,
-     "games": 58,
+     "seasonGames": 19,
+     "games": 59,
      "h2h": null,
      "recent": {
-      "lastPts": 0,
-      "lastMin": 19
+      "lastPts": 4,
+      "lastMin": 16
      }
     },
     {
@@ -4586,7 +7808,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 1.75,
+     "projMin": 0.11,
      "starter": false,
      "depthRank": 4,
      "avg": {
@@ -4609,7 +7831,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 2
+      "lastMin": 0
      }
     },
     {
@@ -4673,10 +7895,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 0,
      "games": 82,
      "h2h": {
-      "pts": 11.6,
-      "reb": 4.8,
-      "ast": 3.1,
-      "n": 16
+      "pts": 12,
+      "reb": 4.1,
+      "ast": 3.8,
+      "n": 17
      },
      "recent": null
     },
@@ -4687,30 +7909,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 32,
+     "projMin": 34,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 31.666666666666668,
-      "pts": 18.166666666666668,
-      "reb": 4.333333333333333,
-      "ast": 3.5,
-      "tpm": 2.1666666666666665,
-      "stl": 1.2777777777777777,
-      "blk": 0.3333333333333333,
-      "to": 2.388888888888889,
-      "fgm": 7.055555555555555,
-      "fga": 13.5,
-      "ftm": 1.8888888888888888,
-      "fta": 2.111111111111111,
-      "tpa": 4.833333333333333
+      "min": 31.842105263157894,
+      "pts": 18.05263157894737,
+      "reb": 4.2631578947368425,
+      "ast": 3.526315789473684,
+      "tpm": 2.263157894736842,
+      "stl": 1.263157894736842,
+      "blk": 0.3157894736842105,
+      "to": 2.4210526315789473,
+      "fgm": 7,
+      "fga": 13.526315789473685,
+      "ftm": 1.7894736842105263,
+      "fta": 2,
+      "tpa": 4.947368421052632
      },
-     "seasonGames": 18,
-     "games": 87,
-     "h2h": null,
+     "seasonGames": 19,
+     "games": 88,
+     "h2h": {
+      "pts": 11.4,
+      "reb": 3.9,
+      "ast": 3.7,
+      "n": 10
+     },
      "recent": {
-      "lastPts": 23,
-      "lastMin": 30
+      "lastPts": 16,
+      "lastMin": 35
      }
     },
     {
@@ -4718,7 +7945,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Anthony Edwards",
      "pos": "G",
      "status": "Out",
-     "injury": "Injury/Illness - Right Knee",
+     "injury": "See official report for full injury details",
      "availability": 0,
      "projMin": 0.6,
      "starter": false,
@@ -4740,12 +7967,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 4,
      "games": 68,
-     "h2h": {
-      "pts": 21.6,
-      "reb": 6.6,
-      "ast": 4.7,
-      "n": 22
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 47,
       "lastMin": null
@@ -4758,7 +7980,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 2.23,
+     "projMin": 0.07,
      "starter": false,
      "depthRank": 4,
      "avg": {
@@ -4792,26 +8014,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.294117647058822,
-      "pts": 7.588235294117647,
-      "reb": 10.588235294117647,
-      "ast": 1.7058823529411764,
+      "min": 29.444444444444443,
+      "pts": 7.666666666666667,
+      "reb": 10.38888888888889,
+      "ast": 1.6111111111111112,
       "tpm": 0,
-      "stl": 0.6470588235294118,
-      "blk": 1,
-      "to": 1.411764705882353,
-      "fgm": 2.7058823529411766,
-      "fga": 5.529411764705882,
-      "ftm": 2.176470588235294,
-      "fta": 4.705882352941177,
-      "tpa": 0.17647058823529413
+      "stl": 0.6666666666666666,
+      "blk": 0.9444444444444444,
+      "to": 1.3333333333333333,
+      "fgm": 2.7777777777777777,
+      "fga": 5.555555555555555,
+      "ftm": 2.111111111111111,
+      "fta": 4.777777777777778,
+      "tpa": 0.16666666666666666
      },
-     "seasonGames": 17,
-     "games": 93,
+     "seasonGames": 18,
+     "games": 94,
      "h2h": null,
      "recent": {
-      "lastPts": 7,
-      "lastMin": 27
+      "lastPts": 9,
+      "lastMin": 32
      }
     },
     {
@@ -4821,30 +8043,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.6,
+     "projMin": 16.33,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 14.222222222222221,
-      "pts": 9.722222222222221,
-      "reb": 1.3333333333333333,
-      "ast": 3,
-      "tpm": 1.8333333333333333,
-      "stl": 0.7777777777777778,
-      "blk": 0.2777777777777778,
-      "to": 1,
-      "fgm": 3.2777777777777777,
-      "fga": 7.222222222222222,
-      "ftm": 1.3333333333333333,
-      "fta": 1.6111111111111112,
-      "tpa": 4.611111111111111
+      "min": 14.368421052631579,
+      "pts": 9.68421052631579,
+      "reb": 1.3157894736842106,
+      "ast": 2.9473684210526314,
+      "tpm": 1.7894736842105263,
+      "stl": 0.7894736842105263,
+      "blk": 0.3684210526315789,
+      "to": 0.9473684210526315,
+      "fgm": 3.3157894736842106,
+      "fga": 7.368421052631579,
+      "ftm": 1.263157894736842,
+      "fta": 1.5263157894736843,
+      "tpa": 4.631578947368421
      },
-     "seasonGames": 18,
-     "games": 88,
+     "seasonGames": 19,
+     "games": 89,
      "h2h": null,
      "recent": {
-      "lastPts": 14,
-      "lastMin": 16
+      "lastPts": 9,
+      "lastMin": 17
      }
     },
     {
@@ -4854,35 +8076,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34,
+     "projMin": 32,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.764705882352942,
-      "pts": 13.352941176470589,
-      "reb": 5.411764705882353,
-      "ast": 2.823529411764706,
-      "tpm": 1.588235294117647,
-      "stl": 0.9411764705882353,
-      "blk": 0.7647058823529411,
-      "to": 1.588235294117647,
-      "fgm": 4.705882352941177,
-      "fga": 10.411764705882353,
-      "ftm": 2.3529411764705883,
-      "fta": 3.588235294117647,
-      "tpa": 4
+      "min": 30.833333333333332,
+      "pts": 13,
+      "reb": 5.388888888888889,
+      "ast": 2.7222222222222223,
+      "tpm": 1.5,
+      "stl": 0.9444444444444444,
+      "blk": 0.7777777777777778,
+      "to": 1.6666666666666667,
+      "fgm": 4.611111111111111,
+      "fga": 10.277777777777779,
+      "ftm": 2.2777777777777777,
+      "fta": 3.5,
+      "tpa": 3.9444444444444446
      },
-     "seasonGames": 17,
-     "games": 53,
+     "seasonGames": 18,
+     "games": 54,
      "h2h": {
-      "pts": 14.1,
-      "reb": 4.6,
-      "ast": 1.9,
+      "pts": 16.4,
+      "reb": 5.3,
+      "ast": 2.6,
       "n": 14
      },
      "recent": {
-      "lastPts": 15,
-      "lastMin": 26
+      "lastPts": 7,
+      "lastMin": 32
      }
     },
     {
@@ -4892,26 +8114,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 21.07,
+     "projMin": 20.97,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.833333333333332,
-      "pts": 6.333333333333333,
-      "reb": 3.8333333333333335,
-      "ast": 1.1666666666666667,
-      "tpm": 1,
-      "stl": 0.4444444444444444,
-      "blk": 0.2777777777777778,
-      "to": 0.6666666666666666,
-      "fgm": 2.111111111111111,
-      "fga": 4.388888888888889,
-      "ftm": 1.1111111111111112,
-      "fta": 1.7222222222222223,
-      "tpa": 3
+      "min": 19.05263157894737,
+      "pts": 6.473684210526316,
+      "reb": 4.157894736842105,
+      "ast": 1.1578947368421053,
+      "tpm": 1.105263157894737,
+      "stl": 0.42105263157894735,
+      "blk": 0.2631578947368421,
+      "to": 0.631578947368421,
+      "fgm": 2.1578947368421053,
+      "fga": 4.473684210526316,
+      "ftm": 1.0526315789473684,
+      "fta": 1.631578947368421,
+      "tpa": 3.1578947368421053
      },
-     "seasonGames": 18,
-     "games": 18,
+     "seasonGames": 19,
+     "games": 19,
      "h2h": null,
      "recent": null
     },
@@ -4922,35 +8144,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34.01,
+     "projMin": 35.68,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 34,
-      "pts": 18.444444444444443,
-      "reb": 6.166666666666667,
-      "ast": 3.7222222222222223,
-      "tpm": 1.6111111111111112,
-      "stl": 1.2222222222222223,
-      "blk": 0.8888888888888888,
-      "to": 2.1666666666666665,
-      "fgm": 7.5,
-      "fga": 13.5,
-      "ftm": 1.8333333333333333,
-      "fta": 2.1666666666666665,
-      "tpa": 4.222222222222222
+      "min": 34.1578947368421,
+      "pts": 19.157894736842106,
+      "reb": 6.368421052631579,
+      "ast": 3.789473684210526,
+      "tpm": 1.736842105263158,
+      "stl": 1.2105263157894737,
+      "blk": 0.8947368421052632,
+      "to": 2.0526315789473686,
+      "fgm": 7.684210526315789,
+      "fga": 13.578947368421053,
+      "ftm": 2.0526315789473686,
+      "fta": 2.3684210526315788,
+      "tpa": 4.2631578947368425
      },
-     "seasonGames": 18,
-     "games": 91,
+     "seasonGames": 19,
+     "games": 92,
      "h2h": {
-      "pts": 12,
-      "reb": 4.2,
-      "ast": 1.6,
-      "n": 22
+      "pts": 12.4,
+      "reb": 4.8,
+      "ast": 1.7,
+      "n": 19
      },
      "recent": {
-      "lastPts": 34,
-      "lastMin": 34
+      "lastPts": 32,
+      "lastMin": 37
      }
     },
     {
@@ -4960,7 +8182,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 1.99,
+     "projMin": 0.19,
      "starter": false,
      "depthRank": 5,
      "avg": {
@@ -4983,7 +8205,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 4,
-      "lastMin": 2
+      "lastMin": null
      }
     },
     {
@@ -4993,30 +8215,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 21.53,
-     "starter": false,
+     "projMin": 24,
+     "starter": true,
      "depthRank": 2,
      "avg": {
-      "min": 23,
-      "pts": 13.133333333333333,
-      "reb": 3.3333333333333335,
+      "min": 22.8125,
+      "pts": 12.8125,
+      "reb": 3.25,
       "ast": 3,
-      "tpm": 1.4666666666666666,
-      "stl": 0.4666666666666667,
-      "blk": 0.06666666666666667,
-      "to": 1.6,
-      "fgm": 4.2,
-      "fga": 8.8,
-      "ftm": 3.2666666666666666,
-      "fta": 4.066666666666666,
-      "tpa": 3.6666666666666665
+      "tpm": 1.375,
+      "stl": 0.4375,
+      "blk": 0.0625,
+      "to": 1.6875,
+      "fgm": 4.0625,
+      "fga": 8.875,
+      "ftm": 3.3125,
+      "fta": 4.0625,
+      "tpa": 3.6875
      },
-     "seasonGames": 15,
-     "games": 58,
+     "seasonGames": 16,
+     "games": 59,
      "h2h": null,
      "recent": {
-      "lastPts": 17,
-      "lastMin": 24
+      "lastPts": 8,
+      "lastMin": 20
      }
     },
     {
@@ -5026,7 +8248,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.2,
+     "projMin": 0.55,
      "starter": false,
      "depthRank": 5,
      "avg": {
@@ -5047,14 +8269,14 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 10,
      "games": 77,
      "h2h": {
-      "pts": 4,
-      "reb": 2.8,
-      "ast": 1.4,
-      "n": 5
+      "pts": 6.3,
+      "reb": 4.2,
+      "ast": 1.3,
+      "n": 6
      },
      "recent": {
       "lastPts": 0,
-      "lastMin": 2
+      "lastMin": 0
      }
     },
     {
@@ -5098,15 +8320,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Brooklyn",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/bkn.png",
    "prior": {
-    "ortg": 107.45787335045786,
-    "drtg": 116.94843555783002,
-    "pace": 100.43514387085955,
+    "ortg": 107.40028546892782,
+    "drtg": 116.44274260309219,
+    "pace": 100.38932917164712,
     "games": 82
    },
    "current": {
-    "ppg": 111.1875,
-    "papg": 120.25,
-    "games": 16
+    "ppg": 110.76470588235294,
+    "papg": 118.88235294117646,
+    "games": 17
    },
    "rest": {
     "restDays": 1,
@@ -5152,26 +8374,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 28.33,
-     "starter": true,
+     "projMin": 24.47,
+     "starter": false,
      "depthRank": 1,
      "avg": {
-      "min": 23.416666666666668,
-      "pts": 12.416666666666666,
+      "min": 23.384615384615383,
+      "pts": 11.923076923076923,
       "reb": 2,
-      "ast": 3.75,
-      "tpm": 2.1666666666666665,
-      "stl": 0.6666666666666666,
-      "blk": 0.08333333333333333,
-      "to": 2.4166666666666665,
-      "fgm": 3.9166666666666665,
-      "fga": 10.75,
-      "ftm": 2.4166666666666665,
-      "fta": 2.9166666666666665,
-      "tpa": 5.916666666666667
+      "ast": 3.6153846153846154,
+      "tpm": 2,
+      "stl": 0.6923076923076923,
+      "blk": 0.07692307692307693,
+      "to": 2.3846153846153846,
+      "fgm": 3.769230769230769,
+      "fga": 10.615384615384615,
+      "ftm": 2.3846153846153846,
+      "fta": 2.8461538461538463,
+      "tpa": 5.846153846153846
      },
-     "seasonGames": 12,
-     "games": 12,
+     "seasonGames": 13,
+     "games": 13,
      "h2h": null,
      "recent": null
     },
@@ -5182,35 +8404,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.66,
+     "projMin": 25.79,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 21.4375,
-      "pts": 6.875,
-      "reb": 4.0625,
-      "ast": 1.0625,
-      "tpm": 1,
-      "stl": 0.375,
-      "blk": 0.6875,
-      "to": 0.8125,
-      "fgm": 2.3125,
-      "fga": 5.5,
-      "ftm": 1.25,
-      "fta": 1.6875,
-      "tpa": 3.375
+      "min": 21.764705882352942,
+      "pts": 7.470588235294118,
+      "reb": 4.117647058823529,
+      "ast": 1.0588235294117647,
+      "tpm": 1.1176470588235294,
+      "stl": 0.4117647058823529,
+      "blk": 0.6470588235294118,
+      "to": 0.8235294117647058,
+      "fgm": 2.588235294117647,
+      "fga": 5.9411764705882355,
+      "ftm": 1.1764705882352942,
+      "fta": 1.588235294117647,
+      "tpa": 3.588235294117647
      },
-     "seasonGames": 16,
-     "games": 82,
-     "h2h": {
-      "pts": 12.3,
-      "reb": 3.3,
-      "ast": 1.3,
-      "n": 6
-     },
+     "seasonGames": 17,
+     "games": 83,
+     "h2h": null,
      "recent": {
-      "lastPts": 13,
-      "lastMin": 26
+      "lastPts": 17,
+      "lastMin": 27
      }
     },
     {
@@ -5220,29 +8437,34 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.4,
-     "starter": false,
+     "projMin": 25,
+     "starter": true,
      "depthRank": 2,
      "avg": {
-      "min": 24,
-      "pts": 11.1,
-      "reb": 2.4,
-      "ast": 2.8,
-      "tpm": 2,
+      "min": 24.09090909090909,
+      "pts": 11.454545454545455,
+      "reb": 2.4545454545454546,
+      "ast": 2.909090909090909,
+      "tpm": 1.8181818181818181,
       "stl": 1,
-      "blk": 0.1,
-      "to": 2.2,
-      "fgm": 3.3,
-      "fga": 9.6,
-      "ftm": 2.5,
-      "fta": 3,
-      "tpa": 6.4
+      "blk": 0.18181818181818182,
+      "to": 2.272727272727273,
+      "fgm": 3.4545454545454546,
+      "fga": 9.727272727272727,
+      "ftm": 2.727272727272727,
+      "fta": 3.3636363636363638,
+      "tpa": 6.2727272727272725
      },
-     "seasonGames": 10,
-     "games": 62,
-     "h2h": null,
+     "seasonGames": 11,
+     "games": 63,
+     "h2h": {
+      "pts": 12.3,
+      "reb": 4,
+      "ast": 4,
+      "n": 3
+     },
      "recent": {
-      "lastPts": 10,
+      "lastPts": 15,
       "lastMin": 25
      }
     },
@@ -5253,35 +8475,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.09,
+     "projMin": 20.42,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19,
-      "pts": 4.466666666666667,
-      "reb": 1.5333333333333334,
-      "ast": 1.5333333333333334,
+      "min": 19.25,
+      "pts": 4.625,
+      "reb": 1.5625,
+      "ast": 1.625,
       "tpm": 1,
-      "stl": 0.9333333333333333,
-      "blk": 0.8,
-      "to": 0.5333333333333333,
-      "fgm": 1.6,
-      "fga": 3.8666666666666667,
-      "ftm": 0.26666666666666666,
-      "fta": 0.4666666666666667,
-      "tpa": 2.6
+      "stl": 0.9375,
+      "blk": 0.75,
+      "to": 0.5,
+      "fgm": 1.625,
+      "fga": 3.9375,
+      "ftm": 0.375,
+      "fta": 0.5625,
+      "tpa": 2.625
      },
-     "seasonGames": 15,
-     "games": 87,
-     "h2h": {
-      "pts": 8.8,
-      "reb": 3.5,
-      "ast": 1.8,
-      "n": 8
-     },
+     "seasonGames": 16,
+     "games": 88,
+     "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 16
+      "lastPts": 7,
+      "lastMin": 23
      }
     },
     {
@@ -5318,9 +8535,9 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "5174655",
      "name": "Chaney Johnson",
      "pos": "F",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
      "projMin": 0.46,
      "starter": false,
      "depthRank": 5,
@@ -5354,35 +8571,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.66,
+     "projMin": 2.6,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 12.555555555555555,
-      "pts": 1.1111111111111112,
-      "reb": 1,
-      "ast": 1.1111111111111112,
-      "tpm": 0.2222222222222222,
-      "stl": 0.5555555555555556,
-      "blk": 0.1111111111111111,
-      "to": 0.2222222222222222,
-      "fgm": 0.4444444444444444,
-      "fga": 1.8888888888888888,
+      "min": 11.5,
+      "pts": 1,
+      "reb": 0.9,
+      "ast": 1,
+      "tpm": 0.2,
+      "stl": 0.5,
+      "blk": 0.1,
+      "to": 0.2,
+      "fgm": 0.4,
+      "fga": 1.8,
       "ftm": 0,
       "fta": 0,
-      "tpa": 1.3333333333333333
+      "tpa": 1.2
      },
-     "seasonGames": 9,
-     "games": 72,
+     "seasonGames": 10,
+     "games": 73,
      "h2h": {
-      "pts": 8.7,
-      "reb": 3.6,
-      "ast": 2.6,
-      "n": 14
+      "pts": 7.8,
+      "reb": 3.3,
+      "ast": 2.1,
+      "n": 15
      },
      "recent": {
       "lastPts": 0,
-      "lastMin": 3
+      "lastMin": 2
      }
     },
     {
@@ -5392,7 +8609,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 2.24,
+     "projMin": 0.38,
      "starter": false,
      "depthRank": 4,
      "avg": {
@@ -5415,7 +8632,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 2
+      "lastMin": 0
      }
     },
     {
@@ -5425,30 +8642,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 6.66,
+     "projMin": 10.16,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 8,
-      "pts": 2,
-      "reb": 1,
-      "ast": 2,
+      "min": 10.5,
+      "pts": 1.5,
+      "reb": 3.5,
+      "ast": 1,
       "tpm": 0,
-      "stl": 0,
-      "blk": 1,
-      "to": 0,
-      "fgm": 1,
+      "stl": 0.5,
+      "blk": 0.5,
+      "to": 0.5,
+      "fgm": 0.5,
       "fga": 1,
-      "ftm": 0,
-      "fta": 0,
+      "ftm": 0.5,
+      "fta": 1,
       "tpa": 0
      },
-     "seasonGames": 1,
-     "games": 5,
+     "seasonGames": 2,
+     "games": 6,
      "h2h": null,
      "recent": {
-      "lastPts": 2,
-      "lastMin": 8
+      "lastPts": 1,
+      "lastMin": 13
      }
     },
     {
@@ -5458,35 +8675,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 31.23,
+     "projMin": 34,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.666666666666664,
-      "pts": 19.6,
-      "reb": 6.8,
-      "ast": 1.6,
-      "tpm": 3,
-      "stl": 1.2,
-      "blk": 0.4,
-      "to": 2.1333333333333333,
-      "fgm": 6.333333333333333,
-      "fga": 14.133333333333333,
-      "ftm": 3.933333333333333,
-      "fta": 5.2,
-      "tpa": 8.133333333333333
+      "min": 32.75,
+      "pts": 19.125,
+      "reb": 7.0625,
+      "ast": 1.75,
+      "tpm": 2.9375,
+      "stl": 1.1875,
+      "blk": 0.375,
+      "to": 2.0625,
+      "fgm": 6.1875,
+      "fga": 14.125,
+      "ftm": 3.8125,
+      "fta": 5.0625,
+      "tpa": 8
      },
-     "seasonGames": 15,
-     "games": 67,
+     "seasonGames": 16,
+     "games": 68,
      "h2h": {
-      "pts": 12.4,
+      "pts": 19.1,
       "reb": 7.3,
-      "ast": 1.9,
-      "n": 10
+      "ast": 2.3,
+      "n": 12
      },
      "recent": {
-      "lastPts": 11,
-      "lastMin": 31
+      "lastPts": 12,
+      "lastMin": 34
      }
     },
     {
@@ -5516,12 +8733,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 5,
      "games": 68,
-     "h2h": {
-      "pts": 9,
-      "reb": 3.3,
-      "ast": 1.7,
-      "n": 3
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 2,
       "lastMin": null
@@ -5534,44 +8746,44 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34.35,
+     "projMin": 37.55,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 33.0625,
-      "pts": 21.5625,
-      "reb": 5.875,
-      "ast": 4.6875,
-      "tpm": 1.625,
-      "stl": 1.0625,
-      "blk": 0.1875,
-      "to": 3.5625,
-      "fgm": 7.25,
-      "fga": 15.0625,
-      "ftm": 5.4375,
-      "fta": 6.8125,
-      "tpa": 4.625
+      "min": 33.411764705882355,
+      "pts": 21.941176470588236,
+      "reb": 6.0588235294117645,
+      "ast": 4.588235294117647,
+      "tpm": 1.6470588235294117,
+      "stl": 1,
+      "blk": 0.17647058823529413,
+      "to": 3.588235294117647,
+      "fgm": 7.411764705882353,
+      "fga": 15.117647058823529,
+      "ftm": 5.470588235294118,
+      "fta": 6.882352941176471,
+      "tpa": 4.705882352941177
      },
-     "seasonGames": 16,
-     "games": 95,
+     "seasonGames": 17,
+     "games": 96,
      "h2h": {
-      "pts": 18.3,
-      "reb": 9.5,
-      "ast": 3.6,
+      "pts": 20.5,
+      "reb": 10.3,
+      "ast": 4.4,
       "n": 26
      },
      "recent": {
-      "lastPts": 29,
-      "lastMin": 35
+      "lastPts": 28,
+      "lastMin": 39
      }
     },
     {
      "id": "5242502",
      "name": "Ben Saraf",
      "pos": "G",
-     "status": "Out",
-     "injury": "G League - On Assignment",
-     "availability": 0,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
      "projMin": 0.47,
      "starter": false,
      "depthRank": 5,
@@ -5605,35 +8817,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 26.13,
+     "projMin": 29.73,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 23.9375,
-      "pts": 8.8125,
-      "reb": 7.25,
-      "ast": 4.0625,
-      "tpm": 0.3125,
-      "stl": 0.8125,
-      "blk": 1.125,
-      "to": 1.8125,
-      "fgm": 3.375,
-      "fga": 6.1875,
-      "ftm": 1.75,
-      "fta": 2.4375,
-      "tpa": 1.125
+      "min": 24.352941176470587,
+      "pts": 8.941176470588236,
+      "reb": 7.647058823529412,
+      "ast": 4.117647058823529,
+      "tpm": 0.35294117647058826,
+      "stl": 1,
+      "blk": 1.1764705882352942,
+      "to": 1.7058823529411764,
+      "fgm": 3.4705882352941178,
+      "fga": 6.411764705882353,
+      "ftm": 1.6470588235294117,
+      "fta": 2.2941176470588234,
+      "tpa": 1.1176470588235294
      },
-     "seasonGames": 16,
-     "games": 78,
+     "seasonGames": 17,
+     "games": 79,
      "h2h": {
-      "pts": 5.6,
-      "reb": 3.6,
-      "ast": 1.7,
+      "pts": 6.7,
+      "reb": 5.9,
+      "ast": 1.1,
       "n": 12
      },
      "recent": {
-      "lastPts": 6,
-      "lastMin": 26
+      "lastPts": 11,
+      "lastMin": 31
      }
     },
     {
@@ -5663,12 +8875,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 14,
      "games": 70,
-     "h2h": {
-      "pts": 6.3,
-      "reb": 2.3,
-      "ast": 1.7,
-      "n": 3
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 4,
       "lastMin": null
@@ -5678,38 +8885,38 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "3150844",
      "name": "Moritz Wagner",
      "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 14.53,
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 7.47,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 17.875,
-      "pts": 9.9375,
-      "reb": 3.3125,
-      "ast": 1.5625,
-      "tpm": 1.25,
-      "stl": 0.75,
-      "blk": 0.0625,
-      "to": 1.1875,
-      "fgm": 3.5,
-      "fga": 5.75,
-      "ftm": 1.6875,
-      "fta": 2.375,
-      "tpa": 1.9375
+      "min": 17.058823529411764,
+      "pts": 9.470588235294118,
+      "reb": 3.1176470588235294,
+      "ast": 1.4705882352941178,
+      "tpm": 1.1764705882352942,
+      "stl": 0.7058823529411765,
+      "blk": 0.058823529411764705,
+      "to": 1.1176470588235294,
+      "fgm": 3.2941176470588234,
+      "fga": 5.470588235294118,
+      "ftm": 1.7058823529411764,
+      "fta": 2.3529411764705883,
+      "tpa": 1.8823529411764706
      },
-     "seasonGames": 16,
-     "games": 52,
+     "seasonGames": 17,
+     "games": 53,
      "h2h": {
-      "pts": 11.5,
-      "reb": 5.2,
-      "ast": 1.6,
-      "n": 20
+      "pts": 5.9,
+      "reb": 3.3,
+      "ast": 0.8,
+      "n": 12
      },
      "recent": {
-      "lastPts": 11,
-      "lastMin": 14
+      "lastPts": 2,
+      "lastMin": 4
      }
     },
     {
@@ -5719,35 +8926,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25.53,
+     "projMin": 25,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 23.181818181818183,
-      "pts": 10.272727272727273,
-      "reb": 5.545454545454546,
-      "ast": 2.090909090909091,
-      "tpm": 2.1818181818181817,
-      "stl": 0.2727272727272727,
-      "blk": 0.36363636363636365,
-      "to": 1.4545454545454546,
-      "fgm": 3.272727272727273,
-      "fga": 7,
-      "ftm": 1.5454545454545454,
-      "fta": 2.272727272727273,
-      "tpa": 4.181818181818182
+      "min": 22.833333333333332,
+      "pts": 9.833333333333334,
+      "reb": 5.083333333333333,
+      "ast": 2,
+      "tpm": 2.0833333333333335,
+      "stl": 0.25,
+      "blk": 0.3333333333333333,
+      "to": 1.4166666666666667,
+      "fgm": 3.1666666666666665,
+      "fga": 7.083333333333333,
+      "ftm": 1.4166666666666667,
+      "fta": 2.0833333333333335,
+      "tpa": 4.166666666666667
      },
-     "seasonGames": 11,
-     "games": 68,
-     "h2h": {
-      "pts": 15,
-      "reb": 4,
-      "ast": 3,
-      "n": 2
-     },
+     "seasonGames": 12,
+     "games": 69,
+     "h2h": null,
      "recent": {
-      "lastPts": 11,
-      "lastMin": 25
+      "lastPts": 5,
+      "lastMin": 19
      }
     }
    ]
@@ -5758,18 +8960,18 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "New York",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/ny.png",
    "prior": {
-    "ortg": 114.7218145310469,
-    "drtg": 108.48842221998318,
-    "pace": 98.35739585272819,
+    "ortg": 114.95334056974657,
+    "drtg": 108.37357248521776,
+    "pace": 98.34693806713008,
     "games": 83
    },
    "current": {
-    "ppg": 108.94117647058823,
-    "papg": 103.23529411764706,
-    "games": 17
+    "ppg": 109.61111111111111,
+    "papg": 103.16666666666667,
+    "games": 18
    },
    "rest": {
-    "restDays": 2,
+    "restDays": 1,
     "backToBack": false,
     "threeInFour": false,
     "schedulePoints": 0
@@ -5812,30 +9014,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 19.91,
+     "projMin": 18.51,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 11.1,
-      "pts": 3.3,
-      "reb": 1.1,
-      "ast": 1.9,
-      "tpm": 0.7,
-      "stl": 0.3,
-      "blk": 0.3,
-      "to": 0.9,
-      "fgm": 1.3,
-      "fga": 3.6,
+      "min": 11.818181818181818,
+      "pts": 4.909090909090909,
+      "reb": 1.0909090909090908,
+      "ast": 2,
+      "tpm": 1.0909090909090908,
+      "stl": 0.45454545454545453,
+      "blk": 0.2727272727272727,
+      "to": 0.9090909090909091,
+      "fgm": 1.9090909090909092,
+      "fga": 4.181818181818182,
       "ftm": 0,
       "fta": 0,
-      "tpa": 2.1
+      "tpa": 2.5454545454545454
      },
-     "seasonGames": 10,
-     "games": 79,
-     "h2h": null,
+     "seasonGames": 11,
+     "games": 80,
+     "h2h": {
+      "pts": 10.4,
+      "reb": 3,
+      "ast": 2,
+      "n": 7
+     },
      "recent": {
-      "lastPts": 11,
-      "lastMin": 22
+      "lastPts": 21,
+      "lastMin": 19
      }
     },
     {
@@ -5866,10 +9073,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 15,
      "games": 83,
      "h2h": {
-      "pts": 13.3,
-      "reb": 4.6,
-      "ast": 2,
-      "n": 29
+      "pts": 12.5,
+      "reb": 5.1,
+      "ast": 2.1,
+      "n": 28
      },
      "recent": {
       "lastPts": 15,
@@ -5883,68 +9090,68 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 31.25,
+     "projMin": 35.25,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 26.41176470588235,
-      "pts": 7.823529411764706,
-      "reb": 3.411764705882353,
-      "ast": 2.176470588235294,
-      "tpm": 1.1176470588235294,
-      "stl": 1.0588235294117647,
-      "blk": 0.47058823529411764,
-      "to": 1.2941176470588236,
-      "fgm": 3.176470588235294,
-      "fga": 7.882352941176471,
-      "ftm": 0.35294117647058826,
-      "fta": 0.47058823529411764,
-      "tpa": 3.5294117647058822
+      "min": 27,
+      "pts": 8.444444444444445,
+      "reb": 3.6666666666666665,
+      "ast": 2.1666666666666665,
+      "tpm": 1.1111111111111112,
+      "stl": 1,
+      "blk": 0.5,
+      "to": 1.2777777777777777,
+      "fgm": 3.5,
+      "fga": 8.277777777777779,
+      "ftm": 0.3333333333333333,
+      "fta": 0.4444444444444444,
+      "tpa": 3.5555555555555554
      },
-     "seasonGames": 17,
-     "games": 99,
+     "seasonGames": 18,
+     "games": 100,
      "h2h": {
-      "pts": 16.1,
-      "reb": 4,
-      "ast": 3.6,
+      "pts": 18,
+      "reb": 4.5,
+      "ast": 4.3,
       "n": 23
      },
      "recent": {
-      "lastPts": 8,
-      "lastMin": 31
+      "lastPts": 19,
+      "lastMin": 37
      }
     },
     {
      "id": "3934672",
      "name": "Jalen Brunson",
      "pos": "G",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Illness",
-     "availability": 0.5,
-     "projMin": 34,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 35.36,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 34.23529411764706,
-      "pts": 26.529411764705884,
-      "reb": 3.1176470588235294,
-      "ast": 5.9411764705882355,
-      "tpm": 3,
-      "stl": 0.7647058823529411,
-      "blk": 0.29411764705882354,
+      "min": 34.333333333333336,
+      "pts": 26.11111111111111,
+      "reb": 3.111111111111111,
+      "ast": 5.888888888888889,
+      "tpm": 2.9444444444444446,
+      "stl": 0.7222222222222222,
+      "blk": 0.2777777777777778,
       "to": 2,
-      "fgm": 9.117647058823529,
-      "fga": 20.88235294117647,
-      "ftm": 5.294117647058823,
-      "fta": 6.588235294117647,
-      "tpa": 7.411764705882353
+      "fgm": 8.944444444444445,
+      "fga": 20.944444444444443,
+      "ftm": 5.277777777777778,
+      "fta": 6.555555555555555,
+      "tpa": 7.444444444444445
      },
-     "seasonGames": 17,
-     "games": 95,
+     "seasonGames": 18,
+     "games": 96,
      "h2h": null,
      "recent": {
-      "lastPts": 22,
-      "lastMin": 32
+      "lastPts": 19,
+      "lastMin": 36
      }
     },
     {
@@ -5975,10 +9182,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 12,
      "games": 85,
      "h2h": {
-      "pts": 15.7,
-      "reb": 3.3,
-      "ast": 2.3,
-      "n": 19
+      "pts": 13,
+      "reb": 2.9,
+      "ast": 2.5,
+      "n": 24
      },
      "recent": {
       "lastPts": 3,
@@ -5992,30 +9199,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 12.53,
+     "projMin": 11.6,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 7.5,
-      "pts": 3.6666666666666665,
-      "reb": 0.8333333333333334,
-      "ast": 0.3333333333333333,
-      "tpm": 0.5,
-      "stl": 0.16666666666666666,
-      "blk": 0,
-      "to": 0.3333333333333333,
-      "fgm": 1.5,
-      "fga": 2.8333333333333335,
-      "ftm": 0.16666666666666666,
-      "fta": 0.16666666666666666,
-      "tpa": 1.1666666666666667
+      "min": 8.428571428571429,
+      "pts": 4.142857142857143,
+      "reb": 0.8571428571428571,
+      "ast": 0.5714285714285714,
+      "tpm": 0.5714285714285714,
+      "stl": 0.2857142857142857,
+      "blk": 0.14285714285714285,
+      "to": 0.2857142857142857,
+      "fgm": 1.7142857142857142,
+      "fga": 3.4285714285714284,
+      "ftm": 0.14285714285714285,
+      "fta": 0.14285714285714285,
+      "tpa": 1.4285714285714286
      },
-     "seasonGames": 6,
-     "games": 34,
+     "seasonGames": 7,
+     "games": 35,
      "h2h": null,
      "recent": {
-      "lastPts": 5,
-      "lastMin": 17
+      "lastPts": 7,
+      "lastMin": 14
      }
     },
     {
@@ -6025,106 +9232,101 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 7.55,
+     "projMin": 4.21,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 11.285714285714286,
-      "pts": 2.4285714285714284,
-      "reb": 2.142857142857143,
-      "ast": 1.4285714285714286,
-      "tpm": 0.2857142857142857,
+      "min": 10.375,
+      "pts": 2.5,
+      "reb": 2,
+      "ast": 1.375,
+      "tpm": 0.375,
       "stl": 0,
-      "blk": 0.2857142857142857,
-      "to": 0.42857142857142855,
-      "fgm": 0.8571428571428571,
-      "fga": 3,
-      "ftm": 0.42857142857142855,
-      "fta": 0.5714285714285714,
-      "tpa": 2.142857142857143
+      "blk": 0.25,
+      "to": 0.375,
+      "fgm": 0.875,
+      "fga": 2.75,
+      "ftm": 0.375,
+      "fta": 0.5,
+      "tpa": 2
      },
-     "seasonGames": 7,
-     "games": 75,
+     "seasonGames": 8,
+     "games": 76,
      "h2h": null,
      "recent": {
-      "lastPts": 0,
-      "lastMin": 8
+      "lastPts": 3,
+      "lastMin": 4
      }
     },
     {
      "id": "6585",
      "name": "Andre Drummond",
      "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 18.53,
+     "status": "Out",
+     "injury": "Injury/Illness - Concussion Protocol",
+     "availability": 0,
+     "projMin": 12.13,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 13.941176470588236,
-      "pts": 3.764705882352941,
-      "reb": 7.764705882352941,
-      "ast": 1,
-      "tpm": 0.058823529411764705,
-      "stl": 0.35294117647058826,
-      "blk": 0.7058823529411765,
-      "to": 1,
-      "fgm": 1.6470588235294117,
-      "fga": 4,
-      "ftm": 0.4117647058823529,
-      "fta": 0.7058823529411765,
-      "tpa": 0.17647058823529413
+      "min": 13.666666666666666,
+      "pts": 3.7222222222222223,
+      "reb": 7.444444444444445,
+      "ast": 0.9444444444444444,
+      "tpm": 0.1111111111111111,
+      "stl": 0.3333333333333333,
+      "blk": 0.6666666666666666,
+      "to": 0.9444444444444444,
+      "fgm": 1.6111111111111112,
+      "fga": 3.8333333333333335,
+      "ftm": 0.3888888888888889,
+      "fta": 0.6666666666666666,
+      "tpa": 0.2222222222222222
      },
-     "seasonGames": 17,
-     "games": 80,
-     "h2h": {
-      "pts": 13,
-      "reb": 12,
-      "ast": 1.4,
-      "n": 46
-     },
+     "seasonGames": 18,
+     "games": 81,
+     "h2h": null,
      "recent": {
-      "lastPts": 2,
-      "lastMin": 19
+      "lastPts": 3,
+      "lastMin": 9
      }
     },
     {
      "id": "3062679",
      "name": "Josh Hart",
      "pos": "G",
-     "status": "Probable",
-     "injury": "Injury/Illness - Right Shoulder Sprain",
-     "availability": 0.9,
-     "projMin": 36.24,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.98,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.714285714285715,
-      "pts": 6.571428571428571,
-      "reb": 6.714285714285714,
-      "ast": 4,
-      "tpm": 1.2142857142857142,
-      "stl": 1.5,
-      "blk": 0.21428571428571427,
-      "to": 1.5,
-      "fgm": 2.5714285714285716,
-      "fga": 7.571428571428571,
-      "ftm": 0.21428571428571427,
-      "fta": 0.35714285714285715,
-      "tpa": 4.428571428571429
+      "min": 31.066666666666666,
+      "pts": 7.133333333333334,
+      "reb": 6.733333333333333,
+      "ast": 4.466666666666667,
+      "tpm": 1.2,
+      "stl": 1.6,
+      "blk": 0.26666666666666666,
+      "to": 1.6,
+      "fgm": 2.8,
+      "fga": 8,
+      "ftm": 0.3333333333333333,
+      "fta": 0.5333333333333333,
+      "tpa": 4.466666666666667
      },
-     "seasonGames": 14,
-     "games": 81,
+     "seasonGames": 15,
+     "games": 82,
      "h2h": {
-      "pts": 9.2,
-      "reb": 6.9,
-      "ast": 3.2,
-      "n": 19
+      "pts": 11.1,
+      "reb": 8,
+      "ast": 4.7,
+      "n": 21
      },
      "recent": {
-      "lastPts": 10,
-      "lastMin": 39
+      "lastPts": 15,
+      "lastMin": 36
      }
     },
     {
@@ -6155,14 +9357,14 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 4,
      "games": 58,
      "h2h": {
-      "pts": 5.4,
-      "reb": 1.4,
-      "ast": 0.4,
-      "n": 5
+      "pts": 2.3,
+      "reb": 1.3,
+      "ast": 0.7,
+      "n": 3
      },
      "recent": {
       "lastPts": 0,
-      "lastMin": 0
+      "lastMin": null
      }
     },
     {
@@ -6172,30 +9374,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 9.86,
+     "projMin": 7.13,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 13.266666666666667,
-      "pts": 4.066666666666666,
-      "reb": 2.1333333333333333,
-      "ast": 4.066666666666666,
-      "tpm": 0.5333333333333333,
-      "stl": 0.4666666666666667,
-      "blk": 0.06666666666666667,
-      "to": 0.6,
-      "fgm": 1.4666666666666666,
-      "fga": 3.7333333333333334,
-      "ftm": 0.6,
-      "fta": 0.6,
-      "tpa": 2.066666666666667
+      "min": 12.875,
+      "pts": 3.8125,
+      "reb": 2.0625,
+      "ast": 3.9375,
+      "tpm": 0.5,
+      "stl": 0.4375,
+      "blk": 0.0625,
+      "to": 0.625,
+      "fgm": 1.375,
+      "fga": 3.5625,
+      "ftm": 0.5625,
+      "fta": 0.5625,
+      "tpa": 2
      },
-     "seasonGames": 15,
-     "games": 76,
-     "h2h": null,
+     "seasonGames": 16,
+     "games": 77,
+     "h2h": {
+      "pts": 4.3,
+      "reb": 1.7,
+      "ast": 1.3,
+      "n": 3
+     },
      "recent": {
-      "lastPts": 8,
-      "lastMin": 11
+      "lastPts": 0,
+      "lastMin": 7
      }
     },
     {
@@ -6203,7 +9410,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Miles McBride",
      "pos": "G",
      "status": "Out",
-     "injury": "See official report for full injury details",
+     "injury": "Injury/Illness - Left Athletic Pubalgia",
      "availability": 0,
      "projMin": 13.43,
      "starter": false,
@@ -6228,7 +9435,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 3,
-      "lastMin": 0
+      "lastMin": null
      }
     },
     {
@@ -6238,26 +9445,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.22,
+     "projMin": 7.47,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 0,
-      "pts": 0,
+      "min": 9,
+      "pts": 5,
       "reb": 0,
       "ast": 0,
-      "tpm": 0,
+      "tpm": 1,
       "stl": 0,
       "blk": 0,
       "to": 0,
-      "fgm": 0,
-      "fga": 0,
+      "fgm": 2,
+      "fga": 3,
       "ftm": 0,
       "fta": 0,
-      "tpa": 0
+      "tpa": 2
      },
-     "seasonGames": 0,
-     "games": 0,
+     "seasonGames": 1,
+     "games": 1,
      "h2h": null,
      "recent": null
     },
@@ -6272,69 +9479,64 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 2,
      "avg": {
-      "min": 26.941176470588236,
-      "pts": 11.352941176470589,
-      "reb": 1.6470588235294117,
-      "ast": 1.9411764705882353,
-      "tpm": 2.4705882352941178,
-      "stl": 0.4117647058823529,
-      "blk": 0.17647058823529413,
-      "to": 0.9411764705882353,
-      "fgm": 3.9411764705882355,
-      "fga": 8,
-      "ftm": 1,
-      "fta": 1.2352941176470589,
-      "tpa": 5.588235294117647
+      "min": 27.11111111111111,
+      "pts": 11.333333333333334,
+      "reb": 1.6666666666666667,
+      "ast": 1.8333333333333333,
+      "tpm": 2.5,
+      "stl": 0.3888888888888889,
+      "blk": 0.16666666666666666,
+      "to": 0.8888888888888888,
+      "fgm": 3.888888888888889,
+      "fga": 7.722222222222222,
+      "ftm": 1.0555555555555556,
+      "fta": 1.2777777777777777,
+      "tpa": 5.444444444444445
      },
-     "seasonGames": 17,
-     "games": 68,
-     "h2h": {
-      "pts": 8.9,
-      "reb": 2.9,
-      "ast": 1.6,
-      "n": 22
-     },
+     "seasonGames": 18,
+     "games": 69,
+     "h2h": null,
      "recent": {
-      "lastPts": 17,
-      "lastMin": 32
+      "lastPts": 11,
+      "lastMin": 30
      }
     },
     {
      "id": "3136195",
      "name": "Karl-Anthony Towns",
      "pos": "C",
-     "status": "Probable",
+     "status": "Questionable",
      "injury": "See official report for full injury details",
-     "availability": 0.9,
+     "availability": 0.5,
      "projMin": 33,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.5,
-      "pts": 21.8125,
-      "reb": 13.875,
-      "ast": 4,
-      "tpm": 2.125,
+      "min": 32.529411764705884,
+      "pts": 21.235294117647058,
+      "reb": 13.647058823529411,
+      "ast": 4.176470588235294,
+      "tpm": 2.0588235294117645,
       "stl": 1,
-      "blk": 0.6875,
-      "to": 3,
-      "fgm": 7.875,
-      "fga": 14.5,
-      "ftm": 3.9375,
-      "fta": 5.1875,
-      "tpa": 5.125
+      "blk": 0.8235294117647058,
+      "to": 2.9411764705882355,
+      "fgm": 7.647058823529412,
+      "fga": 14.117647058823529,
+      "ftm": 3.8823529411764706,
+      "fta": 5.117647058823529,
+      "tpa": 4.9411764705882355
      },
-     "seasonGames": 16,
-     "games": 94,
+     "seasonGames": 17,
+     "games": 95,
      "h2h": {
       "pts": 21.3,
-      "reb": 9.9,
-      "ast": 2.9,
-      "n": 19
+      "reb": 10.4,
+      "ast": 2.7,
+      "n": 23
      },
      "recent": {
-      "lastPts": 30,
-      "lastMin": 29
+      "lastPts": 12,
+      "lastMin": 33
      }
     },
     {
@@ -6344,30 +9546,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.77,
+     "projMin": 6.9,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 7.571428571428571,
-      "pts": 1.8571428571428572,
-      "reb": 3,
-      "ast": 0.2857142857142857,
+      "min": 7.375,
+      "pts": 2.375,
+      "reb": 3.5,
+      "ast": 0.25,
       "tpm": 0,
-      "stl": 0.14285714285714285,
-      "blk": 1,
-      "to": 0.5714285714285714,
-      "fgm": 0.8571428571428571,
-      "fga": 1.8571428571428572,
-      "ftm": 0.14285714285714285,
-      "fta": 0.2857142857142857,
+      "stl": 0.125,
+      "blk": 0.875,
+      "to": 0.75,
+      "fgm": 1.125,
+      "fga": 2.25,
+      "ftm": 0.125,
+      "fta": 0.25,
       "tpa": 0
      },
-     "seasonGames": 7,
-     "games": 11,
-     "h2h": null,
+     "seasonGames": 8,
+     "games": 12,
+     "h2h": {
+      "pts": 8.9,
+      "reb": 6.1,
+      "ast": 0.6,
+      "n": 8
+     },
      "recent": {
-      "lastPts": 5,
-      "lastMin": 0
+      "lastPts": 6,
+      "lastMin": 6
      }
     }
    ]
@@ -6378,15 +9585,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Philadelphia",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/phi.png",
    "prior": {
-    "ortg": 113.48076620131721,
-    "drtg": 112.76544515989679,
-    "pace": 101.92322608421053,
+    "ortg": 113.50639265820143,
+    "drtg": 112.62429851663295,
+    "pace": 101.79596387692308,
     "games": 82
    },
    "current": {
-    "ppg": 115.27777777777777,
-    "papg": 113.44444444444444,
-    "games": 18
+    "ppg": 115.05263157894737,
+    "papg": 112.94736842105263,
+    "games": 19
    },
    "rest": {
     "restDays": 1,
@@ -6402,29 +9609,29 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 16.33,
+     "projMin": 16.5,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 13.5,
+      "min": 14.333333333333334,
       "pts": 9,
-      "reb": 3,
-      "ast": 0.5,
-      "tpm": 0.5,
-      "stl": 0.5,
+      "reb": 4.666666666666667,
+      "ast": 0.3333333333333333,
+      "tpm": 0.3333333333333333,
+      "stl": 0.3333333333333333,
       "blk": 1,
-      "to": 0.5,
+      "to": 0.3333333333333333,
       "fgm": 4,
-      "fga": 6,
-      "ftm": 0.5,
-      "fta": 0.5,
-      "tpa": 1
+      "fga": 6.666666666666667,
+      "ftm": 0.6666666666666666,
+      "fta": 1,
+      "tpa": 0.6666666666666666
      },
-     "seasonGames": 2,
-     "games": 73,
+     "seasonGames": 3,
+     "games": 74,
      "h2h": null,
      "recent": {
-      "lastPts": 6,
+      "lastPts": 9,
       "lastMin": 16
      }
     },
@@ -6435,68 +9642,68 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 5.79,
+     "projMin": 10.52,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 13.3,
-      "pts": 2.3,
-      "reb": 3.7,
-      "ast": 0.7,
+      "min": 13.272727272727273,
+      "pts": 2.090909090909091,
+      "reb": 3.909090909090909,
+      "ast": 0.6363636363636364,
       "tpm": 0,
-      "stl": 0.5,
-      "blk": 1,
-      "to": 0.8,
-      "fgm": 1,
-      "fga": 2.4,
-      "ftm": 0.3,
-      "fta": 0.7,
-      "tpa": 0.3
+      "stl": 0.45454545454545453,
+      "blk": 1.0909090909090908,
+      "to": 0.7272727272727273,
+      "fgm": 0.9090909090909091,
+      "fga": 2.4545454545454546,
+      "ftm": 0.2727272727272727,
+      "fta": 0.6363636363636364,
+      "tpa": 0.36363636363636365
      },
-     "seasonGames": 10,
-     "games": 81,
+     "seasonGames": 11,
+     "games": 82,
      "h2h": null,
      "recent": {
-      "lastPts": 4,
-      "lastMin": 5
+      "lastPts": 0,
+      "lastMin": 13
      }
     },
     {
      "id": "3917376",
      "name": "Jaylen Brown",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 32,
-     "starter": true,
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 22.15,
+     "starter": false,
      "depthRank": 1,
      "avg": {
-      "min": 34.333333333333336,
-      "pts": 22.4,
-      "reb": 6.333333333333333,
-      "ast": 3.6,
-      "tpm": 1.8666666666666667,
-      "stl": 1.3333333333333333,
-      "blk": 0.4666666666666667,
-      "to": 2.4,
-      "fgm": 8.333333333333334,
-      "fga": 16.733333333333334,
-      "ftm": 3.8666666666666667,
-      "fta": 5.466666666666667,
-      "tpa": 4.866666666666666
+      "min": 33.25,
+      "pts": 21.375,
+      "reb": 6,
+      "ast": 3.4375,
+      "tpm": 1.75,
+      "stl": 1.25,
+      "blk": 0.4375,
+      "to": 2.25,
+      "fgm": 7.9375,
+      "fga": 16.1875,
+      "ftm": 3.75,
+      "fta": 5.25,
+      "tpa": 4.625
      },
-     "seasonGames": 15,
-     "games": 89,
+     "seasonGames": 16,
+     "games": 90,
      "h2h": {
-      "pts": 20.3,
-      "reb": 5.5,
-      "ast": 2.6,
-      "n": 28
+      "pts": 23,
+      "reb": 5.7,
+      "ast": 3,
+      "n": 32
      },
      "recent": {
-      "lastPts": 20,
-      "lastMin": 29
+      "lastPts": 6,
+      "lastMin": 17
      }
     },
     {
@@ -6506,35 +9713,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 19.41,
-     "starter": false,
+     "projMin": 28,
+     "starter": true,
      "depthRank": 2,
      "avg": {
-      "min": 23.444444444444443,
-      "pts": 5.777777777777778,
-      "reb": 2.888888888888889,
-      "ast": 1.6111111111111112,
-      "tpm": 1.3888888888888888,
-      "stl": 0.7222222222222222,
-      "blk": 0.3888888888888889,
-      "to": 0.3333333333333333,
-      "fgm": 1.9444444444444444,
-      "fga": 4.333333333333333,
-      "ftm": 0.5,
-      "fta": 0.5555555555555556,
-      "tpa": 3.2222222222222223
+      "min": 23.68421052631579,
+      "pts": 5.7368421052631575,
+      "reb": 2.789473684210526,
+      "ast": 1.6842105263157894,
+      "tpm": 1.368421052631579,
+      "stl": 0.7894736842105263,
+      "blk": 0.3684210526315789,
+      "to": 0.3684210526315789,
+      "fgm": 1.9473684210526316,
+      "fga": 4.421052631578948,
+      "ftm": 0.47368421052631576,
+      "fta": 0.5263157894736842,
+      "tpa": 3.263157894736842
      },
-     "seasonGames": 18,
-     "games": 69,
+     "seasonGames": 19,
+     "games": 70,
      "h2h": {
-      "pts": 12.1,
-      "reb": 2.7,
-      "ast": 2,
-      "n": 35
+      "pts": 10.2,
+      "reb": 3.2,
+      "ast": 1.8,
+      "n": 36
      },
      "recent": {
-      "lastPts": 2,
-      "lastMin": 17
+      "lastPts": 5,
+      "lastMin": 28
      }
     },
     {
@@ -6544,35 +9751,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 35.74,
+     "projMin": 35.87,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 34.294117647058826,
-      "pts": 13.647058823529411,
-      "reb": 6.352941176470588,
-      "ast": 4.176470588235294,
-      "tpm": 1.588235294117647,
-      "stl": 1.7058823529411764,
-      "blk": 0.4117647058823529,
-      "to": 1.3529411764705883,
-      "fgm": 5.294117647058823,
-      "fga": 11.470588235294118,
-      "ftm": 1.4705882352941178,
-      "fta": 1.8235294117647058,
-      "tpa": 4.823529411764706
+      "min": 34.388888888888886,
+      "pts": 13.88888888888889,
+      "reb": 6.333333333333333,
+      "ast": 4.222222222222222,
+      "tpm": 1.6111111111111112,
+      "stl": 1.7222222222222223,
+      "blk": 0.3888888888888889,
+      "to": 1.3333333333333333,
+      "fgm": 5.333333333333333,
+      "fga": 11.555555555555555,
+      "ftm": 1.6111111111111112,
+      "fta": 1.9444444444444444,
+      "tpa": 4.944444444444445
      },
-     "seasonGames": 17,
-     "games": 92,
+     "seasonGames": 18,
+     "games": 93,
      "h2h": {
-      "pts": 16,
-      "reb": 4.5,
-      "ast": 4.5,
-      "n": 2
+      "pts": 15.2,
+      "reb": 6,
+      "ast": 4.3,
+      "n": 6
      },
      "recent": {
-      "lastPts": 12,
-      "lastMin": 35
+      "lastPts": 18,
+      "lastMin": 36
      }
     },
     {
@@ -6582,7 +9789,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.4,
+     "projMin": 0.35,
      "starter": false,
      "depthRank": 6,
      "avg": {
@@ -6603,25 +9810,25 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 8,
      "games": 71,
      "h2h": {
-      "pts": 8,
-      "reb": 2.8,
-      "ast": 2.3,
-      "n": 4
+      "pts": 1.6,
+      "reb": 1.2,
+      "ast": 1.2,
+      "n": 5
      },
      "recent": {
       "lastPts": 5,
-      "lastMin": 3
+      "lastMin": 0
      }
     },
     {
      "id": "3059318",
      "name": "Joel Embiid",
      "pos": "C",
-     "status": "Out",
+     "status": "Questionable",
      "injury": "Injury/Illness - Illness",
-     "availability": 0,
-     "projMin": 18.9,
-     "starter": false,
+     "availability": 0.5,
+     "projMin": 34,
+     "starter": true,
      "depthRank": 1,
      "avg": {
       "min": 32,
@@ -6641,10 +9848,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 14,
      "games": 52,
      "h2h": {
-      "pts": 23.5,
-      "reb": 10.2,
-      "ast": 2.8,
-      "n": 21
+      "pts": 30.4,
+      "reb": 10.8,
+      "ast": 3.9,
+      "n": 24
      },
      "recent": {
       "lastPts": 26,
@@ -6686,7 +9893,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "name": "Ariel Hukporti",
      "pos": "C",
      "status": "Out",
-     "injury": "See official report for full injury details",
+     "injury": "Injury/Illness - Right Achilles Tendon",
      "availability": 0,
      "projMin": 0.21,
      "starter": false,
@@ -6718,30 +9925,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 31,
+     "projMin": 34.04,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.42857142857143,
-      "pts": 16.571428571428573,
-      "reb": 6.714285714285714,
-      "ast": 6.5,
-      "tpm": 1,
-      "stl": 1.1428571428571428,
-      "blk": 0.6428571428571429,
-      "to": 2.2857142857142856,
-      "fgm": 6.214285714285714,
-      "fga": 13.071428571428571,
-      "ftm": 3.142857142857143,
-      "fta": 4.214285714285714,
-      "tpa": 3.642857142857143
+      "min": 32.6,
+      "pts": 17.133333333333333,
+      "reb": 6.933333333333334,
+      "ast": 6.866666666666666,
+      "tpm": 1.2,
+      "stl": 1.1333333333333333,
+      "blk": 0.6,
+      "to": 2.3333333333333335,
+      "fgm": 6.4,
+      "fga": 13.2,
+      "ftm": 3.1333333333333333,
+      "fta": 4.133333333333334,
+      "tpa": 3.8
      },
-     "seasonGames": 14,
-     "games": 77,
-     "h2h": null,
+     "seasonGames": 15,
+     "games": 78,
+     "h2h": {
+      "pts": 26.4,
+      "reb": 7.6,
+      "ast": 6.8,
+      "n": 70
+     },
      "recent": {
-      "lastPts": 23,
-      "lastMin": 30
+      "lastPts": 25,
+      "lastMin": 35
      }
     },
     {
@@ -6784,30 +9996,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 35.27,
+     "projMin": 36.6,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 36.05882352941177,
-      "pts": 25.705882352941178,
-      "reb": 3.235294117647059,
-      "ast": 5.647058823529412,
-      "tpm": 2.5294117647058822,
-      "stl": 1.1176470588235294,
-      "blk": 0.5294117647058824,
-      "to": 2,
-      "fgm": 8.470588235294118,
-      "fga": 17.235294117647058,
-      "ftm": 6.235294117647059,
-      "fta": 7.117647058823529,
-      "tpa": 6.9411764705882355
+      "min": 36.111111111111114,
+      "pts": 25.944444444444443,
+      "reb": 3.2777777777777777,
+      "ast": 5.666666666666667,
+      "tpm": 2.5555555555555554,
+      "stl": 1.1111111111111112,
+      "blk": 0.5,
+      "to": 2.1666666666666665,
+      "fgm": 8.666666666666666,
+      "fga": 17.444444444444443,
+      "ftm": 6.055555555555555,
+      "fta": 6.944444444444445,
+      "tpa": 6.833333333333333
      },
-     "seasonGames": 17,
-     "games": 90,
+     "seasonGames": 18,
+     "games": 91,
      "h2h": null,
      "recent": {
-      "lastPts": 22,
-      "lastMin": 35
+      "lastPts": 30,
+      "lastMin": 37
      }
     },
     {
@@ -6817,7 +10029,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.73,
+     "projMin": 0.15,
      "starter": false,
      "depthRank": 5,
      "avg": {
@@ -6867,7 +10079,12 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 2,
      "games": 66,
-     "h2h": null,
+     "h2h": {
+      "pts": 5.3,
+      "reb": 2.7,
+      "ast": 0.3,
+      "n": 3
+     },
      "recent": {
       "lastPts": 0,
       "lastMin": null
@@ -6880,68 +10097,68 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 20.5,
+     "projMin": 17.17,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 22.5,
-      "pts": 10.722222222222221,
-      "reb": 1.7777777777777777,
-      "ast": 1.1666666666666667,
-      "tpm": 2.2777777777777777,
-      "stl": 0.3888888888888889,
-      "blk": 0.1111111111111111,
-      "to": 0.4444444444444444,
-      "fgm": 3.7777777777777777,
-      "fga": 8.444444444444445,
-      "ftm": 0.8888888888888888,
-      "fta": 1.0555555555555556,
-      "tpa": 5.611111111111111
+      "min": 22.105263157894736,
+      "pts": 10.473684210526315,
+      "reb": 1.736842105263158,
+      "ast": 1.1578947368421053,
+      "tpm": 2.263157894736842,
+      "stl": 0.42105263157894735,
+      "blk": 0.10526315789473684,
+      "to": 0.42105263157894735,
+      "fgm": 3.6842105263157894,
+      "fga": 8.31578947368421,
+      "ftm": 0.8421052631578947,
+      "fta": 1,
+      "tpa": 5.631578947368421
      },
-     "seasonGames": 18,
-     "games": 73,
+     "seasonGames": 19,
+     "games": 74,
      "h2h": null,
      "recent": {
-      "lastPts": 3,
-      "lastMin": 18
+      "lastPts": 6,
+      "lastMin": 15
      }
     },
     {
      "id": "3912848",
      "name": "Dean Wade",
      "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 26.94,
+     "status": "Questionable",
+     "injury": "See official report for full injury details",
+     "availability": 0.5,
+     "projMin": 25.14,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 26.785714285714285,
-      "pts": 4.642857142857143,
-      "reb": 4.428571428571429,
-      "ast": 1.7857142857142858,
-      "tpm": 0.9285714285714286,
-      "stl": 1.0714285714285714,
-      "blk": 0.5,
-      "to": 0.35714285714285715,
-      "fgm": 1.5714285714285714,
-      "fga": 3.7857142857142856,
-      "ftm": 0.5714285714285714,
-      "fta": 0.7857142857142857,
-      "tpa": 2.5714285714285716
+      "min": 26.733333333333334,
+      "pts": 4.666666666666667,
+      "reb": 4.4,
+      "ast": 1.6666666666666667,
+      "tpm": 0.9333333333333333,
+      "stl": 1.0666666666666667,
+      "blk": 0.5333333333333333,
+      "to": 0.3333333333333333,
+      "fgm": 1.6,
+      "fga": 3.933333333333333,
+      "ftm": 0.5333333333333333,
+      "fta": 0.8666666666666667,
+      "tpa": 2.6666666666666665
      },
-     "seasonGames": 14,
-     "games": 73,
+     "seasonGames": 15,
+     "games": 74,
      "h2h": {
       "pts": 6.7,
-      "reb": 3.2,
-      "ast": 0.7,
-      "n": 11
+      "reb": 4.1,
+      "ast": 1.5,
+      "n": 19
      },
      "recent": {
-      "lastPts": 2,
-      "lastMin": 28
+      "lastPts": 5,
+      "lastMin": 26
      }
     },
     {
@@ -6951,35 +10168,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24,
-     "starter": true,
+     "projMin": 16.4,
+     "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 14.357142857142858,
-      "pts": 6.857142857142857,
-      "reb": 4.785714285714286,
-      "ast": 1.0714285714285714,
-      "tpm": 0.5714285714285714,
-      "stl": 0.21428571428571427,
-      "blk": 0.07142857142857142,
-      "to": 0.2857142857142857,
-      "fgm": 2.642857142857143,
-      "fga": 4.928571428571429,
-      "ftm": 1,
-      "fta": 1.5714285714285714,
-      "tpa": 1.7857142857142858
+      "min": 14.533333333333333,
+      "pts": 6.866666666666666,
+      "reb": 4.6,
+      "ast": 1.0666666666666667,
+      "tpm": 0.6,
+      "stl": 0.26666666666666666,
+      "blk": 0.06666666666666667,
+      "to": 0.26666666666666666,
+      "fgm": 2.6666666666666665,
+      "fga": 4.8,
+      "ftm": 0.9333333333333333,
+      "fta": 1.4666666666666666,
+      "tpa": 1.7333333333333334
      },
-     "seasonGames": 14,
-     "games": 78,
+     "seasonGames": 15,
+     "games": 79,
      "h2h": {
-      "pts": 2.3,
-      "reb": 1.4,
-      "ast": 1.1,
-      "n": 7
+      "pts": 4.9,
+      "reb": 4,
+      "ast": 0.7,
+      "n": 10
      },
      "recent": {
-      "lastPts": 10,
-      "lastMin": 20
+      "lastPts": 7,
+      "lastMin": 17
      }
     }
    ]
@@ -6990,15 +10207,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Phoenix",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/phx.png",
    "prior": {
-    "ortg": 112.71237979900911,
-    "drtg": 112.19020162428124,
-    "pace": 100.28763065870021,
+    "ortg": 112.49786514221108,
+    "drtg": 112.3165421078526,
+    "pace": 100.25985685711372,
     "games": 82
    },
    "current": {
-    "ppg": 114.4375,
-    "papg": 115,
-    "games": 16
+    "ppg": 113.82352941176471,
+    "papg": 115.05882352941177,
+    "games": 17
    },
    "rest": {
     "restDays": 1,
@@ -7014,30 +10231,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 39.23,
+     "projMin": 35.83,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 34.4375,
-      "pts": 24.5,
-      "reb": 2.8125,
-      "ast": 5.4375,
-      "tpm": 1.875,
-      "stl": 1.1875,
-      "blk": 0.3125,
-      "to": 2.375,
-      "fgm": 8.375,
-      "fga": 17.8125,
-      "ftm": 5.875,
-      "fta": 6.375,
-      "tpa": 5.5625
+      "min": 34.529411764705884,
+      "pts": 24.529411764705884,
+      "reb": 2.6470588235294117,
+      "ast": 5.411764705882353,
+      "tpm": 1.8823529411764706,
+      "stl": 1.1764705882352942,
+      "blk": 0.29411764705882354,
+      "to": 2.411764705882353,
+      "fgm": 8.235294117647058,
+      "fga": 17.823529411764707,
+      "ftm": 6.176470588235294,
+      "fta": 6.705882352941177,
+      "tpa": 5.764705882352941
      },
-     "seasonGames": 16,
-     "games": 83,
+     "seasonGames": 17,
+     "games": 84,
      "h2h": null,
      "recent": {
-      "lastPts": 22,
-      "lastMin": 42
+      "lastPts": 25,
+      "lastMin": 36
      }
     },
     {
@@ -7080,35 +10297,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 33.13,
+     "projMin": 26.86,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.375,
-      "pts": 14.75,
-      "reb": 7.3125,
-      "ast": 3.3125,
-      "tpm": 1.6875,
-      "stl": 1.125,
-      "blk": 0.6875,
-      "to": 0.75,
-      "fgm": 5.5625,
-      "fga": 11.625,
-      "ftm": 1.9375,
-      "fta": 2.375,
-      "tpa": 5.25
+      "min": 29.11764705882353,
+      "pts": 14,
+      "reb": 7.352941176470588,
+      "ast": 3.3529411764705883,
+      "tpm": 1.588235294117647,
+      "stl": 1.0588235294117647,
+      "blk": 0.6470588235294118,
+      "to": 0.7058823529411765,
+      "fgm": 5.294117647058823,
+      "fga": 11.411764705882353,
+      "ftm": 1.8235294117647058,
+      "fta": 2.235294117647059,
+      "tpa": 5.294117647058823
      },
-     "seasonGames": 16,
-     "games": 93,
+     "seasonGames": 17,
+     "games": 94,
      "h2h": {
-      "pts": 15.3,
-      "reb": 7.8,
-      "ast": 2.1,
-      "n": 12
+      "pts": 14.6,
+      "reb": 7.2,
+      "ast": 3.2,
+      "n": 13
      },
      "recent": {
-      "lastPts": 14,
-      "lastMin": 35
+      "lastPts": 2,
+      "lastMin": 25
      }
     },
     {
@@ -7118,35 +10335,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 32.48,
+     "projMin": 31,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.1875,
-      "pts": 15.1875,
-      "reb": 3.6875,
-      "ast": 2.625,
-      "tpm": 2.125,
-      "stl": 0.625,
-      "blk": 0.125,
-      "to": 1.6875,
-      "fgm": 5.6875,
-      "fga": 12.5625,
-      "ftm": 1.6875,
-      "fta": 2.5,
-      "tpa": 4.875
+      "min": 29.294117647058822,
+      "pts": 15,
+      "reb": 3.823529411764706,
+      "ast": 2.7058823529411766,
+      "tpm": 2,
+      "stl": 0.6470588235294118,
+      "blk": 0.11764705882352941,
+      "to": 1.6470588235294117,
+      "fgm": 5.647058823529412,
+      "fga": 12.588235294117647,
+      "ftm": 1.7058823529411764,
+      "fta": 2.4705882352941178,
+      "tpa": 4.764705882352941
      },
-     "seasonGames": 16,
-     "games": 72,
+     "seasonGames": 17,
+     "games": 73,
      "h2h": {
-      "pts": 14.4,
-      "reb": 3.2,
-      "ast": 1.8,
-      "n": 21
+      "pts": 14.2,
+      "reb": 3.6,
+      "ast": 2.2,
+      "n": 25
      },
      "recent": {
-      "lastPts": 16,
-      "lastMin": 34
+      "lastPts": 12,
+      "lastMin": 31
      }
     },
     {
@@ -7156,30 +10373,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 10.76,
+     "projMin": 11.16,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 15.8125,
-      "pts": 4.6875,
-      "reb": 3.9375,
+      "min": 15.470588235294118,
+      "pts": 4.411764705882353,
+      "reb": 3.823529411764706,
       "ast": 1,
-      "tpm": 0.75,
-      "stl": 0.4375,
-      "blk": 0.5,
-      "to": 0.375,
-      "fgm": 1.75,
-      "fga": 3.75,
-      "ftm": 0.4375,
-      "fta": 0.875,
-      "tpa": 1.75
+      "tpm": 0.7058823529411765,
+      "stl": 0.4117647058823529,
+      "blk": 0.47058823529411764,
+      "to": 0.35294117647058826,
+      "fgm": 1.6470588235294117,
+      "fga": 3.5294117647058822,
+      "ftm": 0.4117647058823529,
+      "fta": 0.8235294117647058,
+      "tpa": 1.6470588235294117
      },
-     "seasonGames": 16,
-     "games": 86,
-     "h2h": null,
+     "seasonGames": 17,
+     "games": 87,
+     "h2h": {
+      "pts": 6.3,
+      "reb": 3.5,
+      "ast": 1.2,
+      "n": 6
+     },
      "recent": {
-      "lastPts": 3,
-      "lastMin": 9
+      "lastPts": 0,
+      "lastMin": 10
      }
     },
     {
@@ -7222,30 +10444,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 27.77,
+     "projMin": 23.31,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 24.8125,
-      "pts": 10.25,
-      "reb": 2.5625,
-      "ast": 3.8125,
-      "tpm": 2.3125,
-      "stl": 1.5,
-      "blk": 0.0625,
-      "to": 1.625,
-      "fgm": 3.625,
-      "fga": 8.6875,
-      "ftm": 0.6875,
+      "min": 24.647058823529413,
+      "pts": 9.941176470588236,
+      "reb": 2.6470588235294117,
+      "ast": 3.7058823529411766,
+      "tpm": 2.176470588235294,
+      "stl": 1.5294117647058822,
+      "blk": 0.058823529411764705,
+      "to": 1.5294117647058822,
+      "fgm": 3.5294117647058822,
+      "fga": 8.588235294117647,
+      "ftm": 0.7058823529411765,
       "fta": 1,
-      "tpa": 6.25
+      "tpa": 6.117647058823529
      },
-     "seasonGames": 16,
-     "games": 96,
-     "h2h": null,
+     "seasonGames": 17,
+     "games": 97,
+     "h2h": {
+      "pts": 4.7,
+      "reb": 3.7,
+      "ast": 2.5,
+      "n": 6
+     },
      "recent": {
-      "lastPts": 18,
-      "lastMin": 30
+      "lastPts": 5,
+      "lastMin": 22
      }
     },
     {
@@ -7255,35 +10482,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 18.83,
+     "projMin": 18.23,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 20.5,
-      "pts": 8.416666666666666,
-      "reb": 4.5,
-      "ast": 2.75,
-      "tpm": 1.8333333333333333,
-      "stl": 1.4166666666666667,
-      "blk": 0.08333333333333333,
-      "to": 0.5833333333333334,
+      "min": 20.23076923076923,
+      "pts": 8.615384615384615,
+      "reb": 4.538461538461538,
+      "ast": 2.5384615384615383,
+      "tpm": 1.8461538461538463,
+      "stl": 1.3076923076923077,
+      "blk": 0.07692307692307693,
+      "to": 0.5384615384615384,
       "fgm": 3,
       "fga": 7,
-      "ftm": 0.5833333333333334,
-      "fta": 0.75,
-      "tpa": 4.75
+      "ftm": 0.7692307692307693,
+      "fta": 0.9230769230769231,
+      "tpa": 4.6923076923076925
      },
-     "seasonGames": 12,
-     "games": 82,
+     "seasonGames": 13,
+     "games": 83,
      "h2h": {
-      "pts": 9.1,
-      "reb": 3.4,
-      "ast": 2.2,
-      "n": 9
+      "pts": 5.1,
+      "reb": 3.3,
+      "ast": 1.8,
+      "n": 8
      },
      "recent": {
-      "lastPts": 6,
-      "lastMin": 18
+      "lastPts": 11,
+      "lastMin": 17
      }
     },
     {
@@ -7293,30 +10520,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 33.93,
+     "projMin": 34,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27.4375,
-      "pts": 13.25,
-      "reb": 3.625,
-      "ast": 3,
-      "tpm": 1.3125,
-      "stl": 0.9375,
-      "blk": 0.375,
-      "to": 2.3125,
-      "fgm": 4.875,
-      "fga": 11.375,
-      "ftm": 2.1875,
-      "fta": 3,
-      "tpa": 4.1875
+      "min": 27.88235294117647,
+      "pts": 13.411764705882353,
+      "reb": 3.6470588235294117,
+      "ast": 3.1176470588235294,
+      "tpm": 1.2352941176470589,
+      "stl": 0.9411764705882353,
+      "blk": 0.4117647058823529,
+      "to": 2.235294117647059,
+      "fgm": 5.0588235294117645,
+      "fga": 11.941176470588236,
+      "ftm": 2.0588235294117645,
+      "fta": 2.823529411764706,
+      "tpa": 4.176470588235294
      },
-     "seasonGames": 16,
-     "games": 48,
-     "h2h": null,
+     "seasonGames": 17,
+     "games": 49,
+     "h2h": {
+      "pts": 16.1,
+      "reb": 4.9,
+      "ast": 3.8,
+      "n": 18
+     },
      "recent": {
-      "lastPts": 25,
-      "lastMin": 37
+      "lastPts": 16,
+      "lastMin": 35
      }
     },
     {
@@ -7326,35 +10558,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 28.8,
+     "projMin": 27,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 23.428571428571427,
-      "pts": 5.928571428571429,
-      "reb": 5.285714285714286,
-      "ast": 3.142857142857143,
+      "min": 23.2,
+      "pts": 6.4,
+      "reb": 5.066666666666666,
+      "ast": 3.066666666666667,
       "tpm": 0,
-      "stl": 0.5714285714285714,
-      "blk": 0.7857142857142857,
-      "to": 1.5714285714285714,
-      "fgm": 2.5,
-      "fga": 4.285714285714286,
-      "ftm": 0.9285714285714286,
-      "fta": 2.2857142857142856,
+      "stl": 0.6,
+      "blk": 0.8,
+      "to": 1.4666666666666666,
+      "fgm": 2.7333333333333334,
+      "fga": 4.533333333333333,
+      "ftm": 0.9333333333333333,
+      "fta": 2.3333333333333335,
       "tpa": 0
      },
-     "seasonGames": 14,
-     "games": 96,
-     "h2h": {
-      "pts": 5.6,
-      "reb": 4.9,
-      "ast": 1.7,
-      "n": 7
-     },
+     "seasonGames": 15,
+     "games": 97,
+     "h2h": null,
      "recent": {
-      "lastPts": 7,
-      "lastMin": 30
+      "lastPts": 13,
+      "lastMin": 20
      }
     },
     {
@@ -7364,35 +10591,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.13,
+     "projMin": 18.27,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 17.066666666666666,
-      "pts": 8.333333333333334,
-      "reb": 1.6666666666666667,
-      "ast": 1.6666666666666667,
-      "tpm": 1.8666666666666667,
-      "stl": 0.13333333333333333,
+      "min": 17.1875,
+      "pts": 8.3125,
+      "reb": 1.625,
+      "ast": 1.6875,
+      "tpm": 1.8125,
+      "stl": 0.1875,
       "blk": 0,
-      "to": 0.4,
+      "to": 0.375,
       "fgm": 3,
-      "fga": 6,
-      "ftm": 0.4666666666666667,
-      "fta": 0.6666666666666666,
-      "tpa": 4.533333333333333
+      "fga": 5.9375,
+      "ftm": 0.5,
+      "fta": 0.6875,
+      "tpa": 4.375
      },
-     "seasonGames": 15,
-     "games": 93,
+     "seasonGames": 16,
+     "games": 94,
      "h2h": {
-      "pts": 10.3,
-      "reb": 2.8,
-      "ast": 1.7,
-      "n": 23
+      "pts": 6.3,
+      "reb": 3.3,
+      "ast": 2.2,
+      "n": 21
      },
      "recent": {
-      "lastPts": 4,
-      "lastMin": 14
+      "lastPts": 8,
+      "lastMin": 19
      }
     },
     {
@@ -7402,30 +10629,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.67,
+     "projMin": 21.33,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.375,
-      "pts": 7.6875,
-      "reb": 5.625,
-      "ast": 1,
-      "tpm": 0.125,
-      "stl": 0.375,
-      "blk": 0.875,
-      "to": 1.1875,
-      "fgm": 3.125,
-      "fga": 4.9375,
-      "ftm": 1.3125,
-      "fta": 1.6875,
-      "tpa": 0.4375
+      "min": 18.764705882352942,
+      "pts": 7.9411764705882355,
+      "reb": 5.647058823529412,
+      "ast": 0.9411764705882353,
+      "tpm": 0.11764705882352941,
+      "stl": 0.4117647058823529,
+      "blk": 0.8823529411764706,
+      "to": 1.2941176470588236,
+      "fgm": 3.176470588235294,
+      "fga": 4.882352941176471,
+      "ftm": 1.4705882352941178,
+      "fta": 1.9411764705882353,
+      "tpa": 0.4117647058823529
      },
-     "seasonGames": 16,
-     "games": 62,
+     "seasonGames": 17,
+     "games": 63,
      "h2h": null,
      "recent": {
-      "lastPts": 8,
-      "lastMin": 16
+      "lastPts": 12,
+      "lastMin": 25
      }
     },
     {
@@ -7486,10 +10713,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 6,
      "games": 38,
      "h2h": {
-      "pts": 5.9,
-      "reb": 2.8,
-      "ast": 0.8,
-      "n": 9
+      "pts": 9.8,
+      "reb": 5,
+      "ast": 1.3,
+      "n": 4
      },
      "recent": {
       "lastPts": 2,
@@ -7586,7 +10813,12 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 0,
      "games": 60,
-     "h2h": null,
+     "h2h": {
+      "pts": 15.6,
+      "reb": 10.9,
+      "ast": 1.7,
+      "n": 7
+     },
      "recent": null
     }
    ]
@@ -7597,15 +10829,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Portland",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/por.png",
    "prior": {
-    "ortg": 112.90360005951464,
-    "drtg": 110.06982986712899,
-    "pace": 102.88408869189189,
+    "ortg": 112.91937204270488,
+    "drtg": 110.031428226275,
+    "pace": 102.86608635789474,
     "games": 82
    },
    "current": {
-    "ppg": 116.82352941176471,
-    "papg": 110.3529411764706,
-    "games": 17
+    "ppg": 116.77777777777777,
+    "papg": 110.38888888888889,
+    "games": 18
    },
    "rest": {
     "restDays": 1,
@@ -7621,35 +10853,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 30.92,
+     "projMin": 34.92,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 32.6,
-      "pts": 24.333333333333332,
-      "reb": 6.2,
-      "ast": 6.066666666666666,
-      "tpm": 2.2666666666666666,
-      "stl": 1,
-      "blk": 0.4666666666666667,
-      "to": 3.3333333333333335,
-      "fgm": 8.2,
-      "fga": 15.8,
-      "ftm": 5.666666666666667,
-      "fta": 8.2,
-      "tpa": 5.466666666666667
+      "min": 32.8125,
+      "pts": 24.875,
+      "reb": 6.5625,
+      "ast": 6.125,
+      "tpm": 2.4375,
+      "stl": 1.0625,
+      "blk": 0.4375,
+      "to": 3.25,
+      "fgm": 8.375,
+      "fga": 16.125,
+      "ftm": 5.6875,
+      "fta": 8.1875,
+      "tpa": 5.625
      },
-     "seasonGames": 15,
-     "games": 83,
+     "seasonGames": 16,
+     "games": 84,
      "h2h": {
-      "pts": 17.8,
-      "reb": 7.1,
-      "ast": 4.2,
-      "n": 13
+      "pts": 15.2,
+      "reb": 5.9,
+      "ast": 4.6,
+      "n": 12
      },
      "recent": {
-      "lastPts": 31,
-      "lastMin": 30
+      "lastPts": 33,
+      "lastMin": 36
      }
     },
     {
@@ -7659,35 +10891,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34,
+     "projMin": 31.59,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.941176470588236,
-      "pts": 11.764705882352942,
-      "reb": 3.764705882352941,
-      "ast": 1.4705882352941178,
-      "tpm": 2.4705882352941178,
-      "stl": 0.8235294117647058,
-      "blk": 0.5882352941176471,
-      "to": 1.2941176470588236,
-      "fgm": 4.117647058823529,
-      "fga": 9.529411764705882,
-      "ftm": 1.0588235294117647,
-      "fta": 1.2941176470588236,
-      "tpa": 6.705882352941177
+      "min": 30,
+      "pts": 11.555555555555555,
+      "reb": 3.7777777777777777,
+      "ast": 1.5,
+      "tpm": 2.388888888888889,
+      "stl": 0.8333333333333334,
+      "blk": 0.5555555555555556,
+      "to": 1.2777777777777777,
+      "fgm": 4,
+      "fga": 9.333333333333334,
+      "ftm": 1.1666666666666667,
+      "fta": 1.4444444444444444,
+      "tpa": 6.555555555555555
      },
-     "seasonGames": 17,
-     "games": 99,
+     "seasonGames": 18,
+     "games": 100,
      "h2h": {
       "pts": 10.3,
-      "reb": 6.8,
-      "ast": 1.8,
-      "n": 11
+      "reb": 5,
+      "ast": 1.9,
+      "n": 10
      },
      "recent": {
-      "lastPts": 5,
-      "lastMin": 29
+      "lastPts": 8,
+      "lastMin": 31
      }
     },
     {
@@ -7697,7 +10929,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 6.08,
+     "projMin": 0.61,
      "starter": false,
      "depthRank": 3,
      "avg": {
@@ -7720,7 +10952,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 6
+      "lastMin": 0
      }
     },
     {
@@ -7730,30 +10962,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25.2,
+     "projMin": 28.73,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 24.470588235294116,
-      "pts": 7.882352941176471,
-      "reb": 3.7058823529411766,
-      "ast": 1.8235294117647058,
-      "tpm": 1.411764705882353,
-      "stl": 0.6470588235294118,
-      "blk": 0.29411764705882354,
-      "to": 0.7058823529411765,
-      "fgm": 2.4705882352941178,
-      "fga": 5.411764705882353,
-      "ftm": 1.5294117647058822,
-      "fta": 2.176470588235294,
-      "tpa": 3.7058823529411766
+      "min": 24.77777777777778,
+      "pts": 8.333333333333334,
+      "reb": 3.7222222222222223,
+      "ast": 1.8333333333333333,
+      "tpm": 1.5555555555555556,
+      "stl": 0.7222222222222222,
+      "blk": 0.3333333333333333,
+      "to": 0.6666666666666666,
+      "fgm": 2.6666666666666665,
+      "fga": 5.888888888888889,
+      "ftm": 1.4444444444444444,
+      "fta": 2.0555555555555554,
+      "tpa": 4.055555555555555
      },
-     "seasonGames": 17,
-     "games": 92,
-     "h2h": null,
+     "seasonGames": 18,
+     "games": 93,
+     "h2h": {
+      "pts": 6.8,
+      "reb": 3.8,
+      "ast": 2,
+      "n": 4
+     },
      "recent": {
-      "lastPts": 5,
-      "lastMin": 24
+      "lastPts": 16,
+      "lastMin": 30
      }
     },
     {
@@ -7767,31 +11004,31 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 26.235294117647058,
-      "pts": 11.647058823529411,
-      "reb": 11.294117647058824,
-      "ast": 2.1176470588235294,
-      "tpm": 1,
-      "stl": 0.5882352941176471,
-      "blk": 2.1176470588235294,
-      "to": 1.411764705882353,
-      "fgm": 4.823529411764706,
-      "fga": 8.117647058823529,
+      "min": 25.944444444444443,
+      "pts": 11.277777777777779,
+      "reb": 11.11111111111111,
+      "ast": 2.111111111111111,
+      "tpm": 0.9444444444444444,
+      "stl": 0.5555555555555556,
+      "blk": 2.0555555555555554,
+      "to": 1.3333333333333333,
+      "fgm": 4.666666666666667,
+      "fga": 7.944444444444445,
       "ftm": 1,
-      "fta": 1.7647058823529411,
-      "tpa": 2.411764705882353
+      "fta": 1.7777777777777777,
+      "tpa": 2.2777777777777777
      },
-     "seasonGames": 17,
-     "games": 94,
+     "seasonGames": 18,
+     "games": 95,
      "h2h": {
-      "pts": 9.1,
-      "reb": 8,
-      "ast": 1.9,
-      "n": 8
+      "pts": 11,
+      "reb": 9,
+      "ast": 2.4,
+      "n": 7
      },
      "recent": {
-      "lastPts": 15,
-      "lastMin": 29
+      "lastPts": 5,
+      "lastMin": 21
      }
     },
     {
@@ -7801,35 +11038,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.48,
+     "projMin": 4.54,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 8.8,
-      "pts": 3.2,
-      "reb": 2.3,
-      "ast": 0.8,
-      "tpm": 0.5,
-      "stl": 0.3,
-      "blk": 0.1,
-      "to": 1,
-      "fgm": 1,
-      "fga": 2.1,
-      "ftm": 0.7,
-      "fta": 1,
-      "tpa": 1
+      "min": 8.454545454545455,
+      "pts": 2.909090909090909,
+      "reb": 2.272727272727273,
+      "ast": 0.8181818181818182,
+      "tpm": 0.45454545454545453,
+      "stl": 0.2727272727272727,
+      "blk": 0.09090909090909091,
+      "to": 0.9090909090909091,
+      "fgm": 0.9090909090909091,
+      "fga": 2,
+      "ftm": 0.6363636363636364,
+      "fta": 0.9090909090909091,
+      "tpa": 0.9090909090909091
      },
-     "seasonGames": 10,
-     "games": 53,
-     "h2h": {
-      "pts": 4.7,
-      "reb": 4.3,
-      "ast": 0.7,
-      "n": 3
-     },
+     "seasonGames": 11,
+     "games": 54,
+     "h2h": null,
      "recent": {
-      "lastPts": 2,
-      "lastMin": 3
+      "lastPts": 0,
+      "lastMin": 5
      }
     },
     {
@@ -7839,30 +11071,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 25.43,
+     "projMin": 22.83,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 23.235294117647058,
-      "pts": 9.941176470588236,
-      "reb": 2.1176470588235294,
-      "ast": 1.5294117647058822,
-      "tpm": 1.1764705882352942,
-      "stl": 0.5294117647058824,
-      "blk": 0.23529411764705882,
-      "to": 2.0588235294117645,
-      "fgm": 3.176470588235294,
-      "fga": 9.117647058823529,
-      "ftm": 2.411764705882353,
-      "fta": 3.0588235294117645,
-      "tpa": 4.470588235294118
+      "min": 23.22222222222222,
+      "pts": 9.944444444444445,
+      "reb": 2.2777777777777777,
+      "ast": 1.5,
+      "tpm": 1.1666666666666667,
+      "stl": 0.5,
+      "blk": 0.2222222222222222,
+      "to": 2,
+      "fgm": 3.1666666666666665,
+      "fga": 9.11111111111111,
+      "ftm": 2.4444444444444446,
+      "fta": 3.111111111111111,
+      "tpa": 4.5
      },
-     "seasonGames": 17,
-     "games": 47,
+     "seasonGames": 18,
+     "games": 48,
      "h2h": null,
      "recent": {
-      "lastPts": 17,
-      "lastMin": 26
+      "lastPts": 10,
+      "lastMin": 23
      }
     },
     {
@@ -7872,30 +11104,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 27.8,
-     "starter": false,
+     "projMin": 31,
+     "starter": true,
      "depthRank": 2,
      "avg": {
-      "min": 27.11764705882353,
-      "pts": 14.058823529411764,
-      "reb": 3.7058823529411766,
-      "ast": 4.470588235294118,
-      "tpm": 2.4705882352941178,
-      "stl": 1.2941176470588236,
-      "blk": 0.17647058823529413,
-      "to": 1.9411764705882353,
-      "fgm": 4.764705882352941,
-      "fga": 10,
-      "ftm": 2.0588235294117645,
-      "fta": 2.411764705882353,
-      "tpa": 5.588235294117647
+      "min": 27.38888888888889,
+      "pts": 13.88888888888889,
+      "reb": 3.8333333333333335,
+      "ast": 4.611111111111111,
+      "tpm": 2.5,
+      "stl": 1.2222222222222223,
+      "blk": 0.16666666666666666,
+      "to": 1.9444444444444444,
+      "fgm": 4.722222222222222,
+      "fga": 10.222222222222221,
+      "ftm": 1.9444444444444444,
+      "fta": 2.2777777777777777,
+      "tpa": 5.777777777777778
      },
-     "seasonGames": 17,
-     "games": 70,
+     "seasonGames": 18,
+     "games": 71,
      "h2h": null,
      "recent": {
-      "lastPts": 18,
-      "lastMin": 28
+      "lastPts": 11,
+      "lastMin": 32
      }
     },
     {
@@ -7905,30 +11137,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 11.07,
+     "projMin": 5.53,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 12.75,
-      "pts": 4.25,
-      "reb": 1.25,
-      "ast": 0.5,
-      "tpm": 1,
-      "stl": 0.75,
+      "min": 12,
+      "pts": 3.7777777777777777,
+      "reb": 1.4444444444444444,
+      "ast": 0.4444444444444444,
+      "tpm": 0.8888888888888888,
+      "stl": 0.6666666666666666,
       "blk": 0,
-      "to": 0.75,
-      "fgm": 1.625,
-      "fga": 3.875,
+      "to": 0.6666666666666666,
+      "fgm": 1.4444444444444444,
+      "fga": 3.6666666666666665,
       "ftm": 0,
-      "fta": 0.125,
-      "tpa": 2.375
+      "fta": 0.3333333333333333,
+      "tpa": 2.3333333333333335
      },
-     "seasonGames": 8,
-     "games": 13,
+     "seasonGames": 9,
+     "games": 14,
      "h2h": null,
      "recent": {
-      "lastPts": 9,
-      "lastMin": 14
+      "lastPts": 0,
+      "lastMin": 6
      }
     },
     {
@@ -7968,29 +11200,29 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "6606",
      "name": "Damian Lillard",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 29.82,
-     "starter": true,
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 32.8,
+     "starter": false,
      "depthRank": 1,
      "avg": {
-      "min": 29.764705882352942,
-      "pts": 20.41176470588235,
-      "reb": 3.176470588235294,
-      "ast": 4.0588235294117645,
-      "tpm": 3,
-      "stl": 0.6470588235294118,
-      "blk": 0.17647058823529413,
-      "to": 2.1176470588235294,
-      "fgm": 5.823529411764706,
-      "fga": 14.764705882352942,
-      "ftm": 5.764705882352941,
-      "fta": 6.411764705882353,
-      "tpa": 8.941176470588236
+      "min": 30,
+      "pts": 20.88888888888889,
+      "reb": 3.1666666666666665,
+      "ast": 4.222222222222222,
+      "tpm": 3.111111111111111,
+      "stl": 0.7222222222222222,
+      "blk": 0.16666666666666666,
+      "to": 2.111111111111111,
+      "fgm": 5.888888888888889,
+      "fga": 15.055555555555555,
+      "ftm": 6,
+      "fta": 6.611111111111111,
+      "tpa": 9.11111111111111
      },
-     "seasonGames": 17,
-     "games": 17,
+     "seasonGames": 18,
+     "games": 18,
      "h2h": null,
      "recent": null
     },
@@ -8034,7 +11266,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.11,
+     "projMin": 0.43,
      "starter": false,
      "depthRank": 4,
      "avg": {
@@ -8055,14 +11287,14 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 9,
      "games": 56,
      "h2h": {
-      "pts": 6.5,
-      "reb": 2.3,
-      "ast": 0.7,
-      "n": 6
+      "pts": 7.8,
+      "reb": 6,
+      "ast": 1.5,
+      "n": 4
      },
      "recent": {
       "lastPts": 0,
-      "lastMin": 3
+      "lastMin": 0
      }
     },
     {
@@ -8093,10 +11325,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 0,
      "games": 50,
      "h2h": {
-      "pts": 14.6,
-      "reb": 3.7,
-      "ast": 1.6,
-      "n": 9
+      "pts": 16.9,
+      "reb": 4.8,
+      "ast": 2.6,
+      "n": 10
      },
      "recent": null
     },
@@ -8107,7 +11339,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 3.12,
+     "projMin": 0.19,
      "starter": false,
      "depthRank": 6,
      "avg": {
@@ -8130,7 +11362,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 2,
-      "lastMin": 3
+      "lastMin": null
      }
     },
     {
@@ -8140,30 +11372,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 15.77,
+     "projMin": 19.11,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 16.285714285714285,
-      "pts": 6.285714285714286,
-      "reb": 6.285714285714286,
-      "ast": 1.1428571428571428,
+      "min": 16.6,
+      "pts": 6.133333333333334,
+      "reb": 6.066666666666666,
+      "ast": 1.0666666666666667,
       "tpm": 0,
-      "stl": 0.7142857142857143,
-      "blk": 1.0714285714285714,
-      "to": 0.7857142857142857,
-      "fgm": 2.642857142857143,
-      "fga": 3.9285714285714284,
-      "ftm": 1,
-      "fta": 1.1428571428571428,
+      "stl": 0.7333333333333333,
+      "blk": 1.0666666666666667,
+      "to": 0.7333333333333333,
+      "fgm": 2.6,
+      "fga": 3.8,
+      "ftm": 0.9333333333333333,
+      "fta": 1.1333333333333333,
       "tpa": 0
      },
-     "seasonGames": 14,
-     "games": 73,
+     "seasonGames": 15,
+     "games": 74,
      "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 16
+      "lastPts": 4,
+      "lastMin": 21
      }
     },
     {
@@ -8193,651 +11425,10 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 6,
      "games": 38,
-     "h2h": {
-      "pts": 4.8,
-      "reb": 1.8,
-      "ast": 1.5,
-      "n": 4
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 8,
       "lastMin": null
-     }
-    }
-   ]
-  },
-  "SAC": {
-   "abbr": "SAC",
-   "name": "Kings",
-   "city": "Sacramento",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/sac.png",
-   "prior": {
-    "ortg": 107.4918755724191,
-    "drtg": 118.4377925909888,
-    "pace": 101.52748557837839,
-    "games": 82
-   },
-   "current": {
-    "ppg": 106.82352941176471,
-    "papg": 119.3529411764706,
-    "games": 17
-   },
-   "rest": {
-    "restDays": 1,
-    "backToBack": false,
-    "threeInFour": false,
-    "schedulePoints": 0
-   },
-   "players": [
-    {
-     "id": "4431679",
-     "name": "Precious Achiuwa",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 12.74,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 23.571428571428573,
-      "pts": 9.142857142857142,
-      "reb": 5.714285714285714,
-      "ast": 0.9285714285714286,
-      "tpm": 0.2857142857142857,
-      "stl": 1.0714285714285714,
-      "blk": 0.9285714285714286,
-      "to": 1.0714285714285714,
-      "fgm": 3.9285714285714284,
-      "fga": 7.285714285714286,
-      "ftm": 1,
-      "fta": 2,
-      "tpa": 0.8571428571428571
-     },
-     "seasonGames": 14,
-     "games": 87,
-     "h2h": {
-      "pts": 8.3,
-      "reb": 6.5,
-      "ast": 1.3,
-      "n": 12
-     },
-     "recent": {
-      "lastPts": 9,
-      "lastMin": 10
-     }
-    },
-    {
-     "id": "5142620",
-     "name": "Darius Acuff Jr.",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 34.27,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 36.588235294117645,
-      "pts": 24.58823529411765,
-      "reb": 3.411764705882353,
-      "ast": 7.176470588235294,
-      "tpm": 2.9411764705882355,
-      "stl": 0.8235294117647058,
-      "blk": 0.17647058823529413,
-      "to": 3.7058823529411766,
-      "fgm": 8.941176470588236,
-      "fga": 22.176470588235293,
-      "ftm": 3.764705882352941,
-      "fta": 4.529411764705882,
-      "tpa": 9.176470588235293
-     },
-     "seasonGames": 17,
-     "games": 17,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4395650",
-     "name": "Leaky Black",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 15.1,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 18.916666666666668,
-      "pts": 4.583333333333333,
-      "reb": 3,
-      "ast": 1.5833333333333333,
-      "tpm": 1.3333333333333333,
-      "stl": 1.5,
-      "blk": 0.5,
-      "to": 0.3333333333333333,
-      "fgm": 1.5833333333333333,
-      "fga": 3.9166666666666665,
-      "ftm": 0.08333333333333333,
-      "fta": 0.16666666666666666,
-      "tpa": 3.1666666666666665
-     },
-     "seasonGames": 12,
-     "games": 27,
-     "h2h": null,
-     "recent": {
-      "lastPts": 3,
-      "lastMin": 13
-     }
-    },
-    {
-     "id": "4433174",
-     "name": "Dylan Cardwell",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 11.92,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 14.6,
-      "pts": 4,
-      "reb": 5.3,
-      "ast": 1.2,
-      "tpm": 0,
-      "stl": 0.4,
-      "blk": 0.8,
-      "to": 1.1,
-      "fgm": 1.6,
-      "fga": 2.9,
-      "ftm": 0.8,
-      "fta": 1.7,
-      "tpa": 0.1
-     },
-     "seasonGames": 10,
-     "games": 54,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 11
-     }
-    },
-    {
-     "id": "4065732",
-     "name": "De'Andre Hunter",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 36.13,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 33.86666666666667,
-      "pts": 15.266666666666667,
-      "reb": 4.666666666666667,
-      "ast": 2.066666666666667,
-      "tpm": 2.1333333333333333,
-      "stl": 0.4,
-      "blk": 0.2,
-      "to": 1.2666666666666666,
-      "fgm": 5.266666666666667,
-      "fga": 11.2,
-      "ftm": 2.6,
-      "fta": 3.4,
-      "tpa": 5.333333333333333
-     },
-     "seasonGames": 15,
-     "games": 60,
-     "h2h": null,
-     "recent": {
-      "lastPts": 15,
-      "lastMin": 38
-     }
-    },
-    {
-     "id": "4917149",
-     "name": "Alex Karaban",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 3.18,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 10.375,
-      "pts": 0.875,
-      "reb": 1.25,
-      "ast": 0.375,
-      "tpm": 0.25,
-      "stl": 0.25,
-      "blk": 0,
-      "to": 0.625,
-      "fgm": 0.25,
-      "fga": 1.375,
-      "ftm": 0.125,
-      "fta": 0.25,
-      "tpa": 1.25
-     },
-     "seasonGames": 8,
-     "games": 8,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "3064440",
-     "name": "Zach LaVine",
-     "pos": "G",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Right Knee Soreness",
-     "availability": 0.5,
-     "projMin": 30.89,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 32.9375,
-      "pts": 20.3125,
-      "reb": 3.75,
-      "ast": 2.625,
-      "tpm": 2.625,
-      "stl": 1,
-      "blk": 0.5,
-      "to": 2.5625,
-      "fgm": 7,
-      "fga": 14.125,
-      "ftm": 3.6875,
-      "fta": 4.375,
-      "tpa": 6.6875
-     },
-     "seasonGames": 16,
-     "games": 55,
-     "h2h": {
-      "pts": 19.3,
-      "reb": 4.5,
-      "ast": 3.8,
-      "n": 25
-     },
-     "recent": {
-      "lastPts": 18,
-      "lastMin": 30
-     }
-    },
-    {
-     "id": "5107897",
-     "name": "Jonathan Mogbo",
-     "pos": "F",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 0.15,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 14.2,
-      "pts": 3,
-      "reb": 2.2,
-      "ast": 0.8,
-      "tpm": 0.2,
-      "stl": 0.8,
-      "blk": 0.4,
-      "to": 0.6,
-      "fgm": 1.2,
-      "fga": 3.4,
-      "ftm": 0.4,
-      "fta": 0.4,
-      "tpa": 1.2
-     },
-     "seasonGames": 5,
-     "games": 43,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "4066262",
-     "name": "Malik Monk",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 15.87,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 16.25,
-      "pts": 7.9375,
-      "reb": 1.25,
-      "ast": 3.5625,
-      "tpm": 1.125,
-      "stl": 0.5,
-      "blk": 0.1875,
-      "to": 1.6875,
-      "fgm": 2.625,
-      "fga": 6.9375,
-      "ftm": 1.5625,
-      "fta": 1.75,
-      "tpa": 3.5625
-     },
-     "seasonGames": 16,
-     "games": 78,
-     "h2h": null,
-     "recent": {
-      "lastPts": 15,
-      "lastMin": 16
-     }
-    },
-    {
-     "id": "4594327",
-     "name": "Keegan Murray",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 38.25,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 31.2,
-      "pts": 11.1,
-      "reb": 4.5,
-      "ast": 1.6,
-      "tpm": 1,
-      "stl": 0.9,
-      "blk": 0.7,
-      "to": 1.2,
-      "fgm": 4.5,
-      "fga": 10.5,
-      "ftm": 1.1,
-      "fta": 1.4,
-      "tpa": 4.2
-     },
-     "seasonGames": 10,
-     "games": 33,
-     "h2h": {
-      "pts": 12.3,
-      "reb": 4.9,
-      "ast": 1.4,
-      "n": 11
-     },
-     "recent": {
-      "lastPts": 14,
-      "lastMin": 39
-     }
-    },
-    {
-     "id": "4709131",
-     "name": "Sean Pedulla",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.1,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 7,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4279318",
-     "name": "Daeqwon Plowden",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 3.32,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 9.833333333333334,
-      "pts": 3.1666666666666665,
-      "reb": 0.8333333333333334,
-      "ast": 0.25,
-      "tpm": 0.6666666666666666,
-      "stl": 0.25,
-      "blk": 0.08333333333333333,
-      "to": 0.3333333333333333,
-      "fgm": 1.0833333333333333,
-      "fga": 2.3333333333333335,
-      "ftm": 0.3333333333333333,
-      "fta": 0.6666666666666666,
-      "tpa": 1.6666666666666667
-     },
-     "seasonGames": 12,
-     "games": 44,
-     "h2h": {
-      "pts": 15.5,
-      "reb": 5,
-      "ast": 2,
-      "n": 2
-     },
-     "recent": {
-      "lastPts": 1,
-      "lastMin": 1
-     }
-    },
-    {
-     "id": "2488653",
-     "name": "Mason Plumlee",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.19,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 4.5,
-      "pts": 1,
-      "reb": 1,
-      "ast": 0.5,
-      "tpm": 0,
-      "stl": 0.5,
-      "blk": 0.5,
-      "to": 1.5,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 1,
-      "fta": 1,
-      "tpa": 0
-     },
-     "seasonGames": 2,
-     "games": 22,
-     "h2h": {
-      "pts": 7.7,
-      "reb": 6.9,
-      "ast": 2.9,
-      "n": 34
-     },
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "4898371",
-     "name": "Maxime Raynaud",
-     "pos": "C",
-     "status": "Out",
-     "injury": "See official report for full injury details",
-     "availability": 0,
-     "projMin": 0.6,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 74,
-     "h2h": {
-      "pts": 13.5,
-      "reb": 6.5,
-      "ast": 1.8,
-      "n": 4
-     },
-     "recent": null
-    },
-    {
-     "id": "3155942",
-     "name": "Domantas Sabonis",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 32,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 33.25,
-      "pts": 14.5,
-      "reb": 13.5,
-      "ast": 5.5,
-      "tpm": 0.25,
-      "stl": 0.5625,
-      "blk": 0.125,
-      "to": 3.125,
-      "fgm": 5.75,
-      "fga": 9,
-      "ftm": 2.75,
-      "fta": 3.6875,
-      "tpa": 0.8125
-     },
-     "seasonGames": 16,
-     "games": 35,
-     "h2h": {
-      "pts": 15.6,
-      "reb": 10.9,
-      "ast": 5,
-      "n": 22
-     },
-     "recent": {
-      "lastPts": 20,
-      "lastMin": 30
-     }
-    },
-    {
-     "id": "5106058",
-     "name": "Emanuel Sharp",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 13.2,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 16.470588235294116,
-      "pts": 4.470588235294118,
-      "reb": 1.1176470588235294,
-      "ast": 0.7647058823529411,
-      "tpm": 1,
-      "stl": 0.7647058823529411,
-      "blk": 0.17647058823529413,
-      "to": 0.4117647058823529,
-      "fgm": 1.588235294117647,
-      "fga": 4.764705882352941,
-      "ftm": 0.29411764705882354,
-      "fta": 0.29411764705882354,
-      "tpa": 3.2941176470588234
-     },
-     "seasonGames": 17,
-     "games": 17,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "3907387",
-     "name": "Ben Simmons",
-     "pos": "G",
-     "status": "Out",
-     "injury": "See official report for full injury details",
-     "availability": 0,
-     "projMin": 0.39,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 0,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "3137259",
-     "name": "Gabe Vincent",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 2.9,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 3,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 2,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 1
-     },
-     "seasonGames": 1,
-     "games": 54,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 3
      }
     }
    ]
@@ -8848,15 +11439,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "San Antonio",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/sa.png",
    "prior": {
-    "ortg": 116.90433479543772,
-    "drtg": 107.02846402684128,
-    "pace": 101.35522579741807,
+    "ortg": 116.70317979499144,
+    "drtg": 107.2073093935856,
+    "pace": 101.36406616158685,
     "games": 83
    },
    "current": {
-    "ppg": 117.61111111111111,
-    "papg": 105.44444444444444,
-    "games": 18
+    "ppg": 117.26315789473684,
+    "papg": 106,
+    "games": 19
    },
    "rest": {
     "restDays": 1,
@@ -8872,45 +11463,45 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.19,
+     "projMin": 17.52,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 15.375,
-      "pts": 5.4375,
-      "reb": 1.375,
-      "ast": 0.75,
+      "min": 15.352941176470589,
+      "pts": 5.411764705882353,
+      "reb": 1.2941176470588236,
+      "ast": 0.7647058823529411,
       "tpm": 1,
-      "stl": 0.0625,
-      "blk": 0.125,
-      "to": 0.3125,
-      "fgm": 1.75,
-      "fga": 4.625,
-      "ftm": 0.9375,
-      "fta": 1.1875,
-      "tpa": 2.9375
+      "stl": 0.058823529411764705,
+      "blk": 0.11764705882352941,
+      "to": 0.29411764705882354,
+      "fgm": 1.7647058823529411,
+      "fga": 4.470588235294118,
+      "ftm": 0.8823529411764706,
+      "fta": 1.1176470588235294,
+      "tpa": 2.823529411764706
      },
-     "seasonGames": 16,
-     "games": 94,
+     "seasonGames": 17,
+     "games": 95,
      "h2h": {
-      "pts": 12.7,
-      "reb": 5.1,
-      "ast": 1.6,
-      "n": 49
+      "pts": 13.7,
+      "reb": 4.2,
+      "ast": 1.8,
+      "n": 50
      },
      "recent": {
-      "lastPts": 9,
-      "lastMin": 26
+      "lastPts": 5,
+      "lastMin": 15
      }
     },
     {
      "id": "5105337",
      "name": "Maliq Brown",
      "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.83,
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.02,
      "starter": false,
      "depthRank": 7,
      "avg": {
@@ -8940,35 +11531,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 12.6,
+     "projMin": 13.87,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 11.117647058823529,
-      "pts": 3.5294117647058822,
-      "reb": 1.1176470588235294,
-      "ast": 0.6470588235294118,
-      "tpm": 0.8823529411764706,
-      "stl": 0.17647058823529413,
-      "blk": 0.17647058823529413,
-      "to": 0.35294117647058826,
-      "fgm": 1.2352941176470589,
-      "fga": 3.6470588235294117,
-      "ftm": 0.17647058823529413,
-      "fta": 0.23529411764705882,
-      "tpa": 2.764705882352941
+      "min": 11.277777777777779,
+      "pts": 3.4444444444444446,
+      "reb": 1.3888888888888888,
+      "ast": 0.6666666666666666,
+      "tpm": 0.8333333333333334,
+      "stl": 0.16666666666666666,
+      "blk": 0.2222222222222222,
+      "to": 0.3888888888888889,
+      "fgm": 1.2222222222222223,
+      "fga": 3.611111111111111,
+      "ftm": 0.16666666666666666,
+      "fta": 0.2222222222222222,
+      "tpa": 2.7222222222222223
      },
-     "seasonGames": 17,
-     "games": 88,
+     "seasonGames": 18,
+     "games": 89,
      "h2h": {
-      "pts": 6.3,
+      "pts": 9,
       "reb": 3,
-      "ast": 1.3,
-      "n": 4
+      "ast": 1.5,
+      "n": 2
      },
      "recent": {
-      "lastPts": 0,
-      "lastMin": 12
+      "lastPts": 2,
+      "lastMin": 14
      }
     },
     {
@@ -8978,30 +11569,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 34.81,
+     "projMin": 34,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 29.88888888888889,
-      "pts": 16.555555555555557,
-      "reb": 5.277777777777778,
-      "ast": 6.166666666666667,
-      "tpm": 2.2777777777777777,
-      "stl": 1.0555555555555556,
-      "blk": 0.2222222222222222,
-      "to": 2.388888888888889,
-      "fgm": 6.055555555555555,
-      "fga": 14,
-      "ftm": 2.1666666666666665,
-      "fta": 2.6666666666666665,
-      "tpa": 5.944444444444445
+      "min": 30.105263157894736,
+      "pts": 16.736842105263158,
+      "reb": 5.315789473684211,
+      "ast": 6.315789473684211,
+      "tpm": 2.263157894736842,
+      "stl": 1,
+      "blk": 0.21052631578947367,
+      "to": 2.4210526315789473,
+      "fgm": 6.052631578947368,
+      "fga": 14.210526315789474,
+      "ftm": 2.3684210526315788,
+      "fta": 2.8421052631578947,
+      "tpa": 6
      },
-     "seasonGames": 18,
-     "games": 87,
+     "seasonGames": 19,
+     "games": 88,
      "h2h": null,
      "recent": {
-      "lastPts": 28,
-      "lastMin": 37
+      "lastPts": 20,
+      "lastMin": 34
      }
     },
     {
@@ -9011,35 +11602,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 29.2,
-     "starter": true,
+     "projMin": 33.93,
+     "starter": false,
      "depthRank": 1,
      "avg": {
-      "min": 26.555555555555557,
-      "pts": 11.055555555555555,
-      "reb": 4.277777777777778,
-      "ast": 1.5555555555555556,
-      "tpm": 2.9444444444444446,
-      "stl": 0.6666666666666666,
-      "blk": 0.6111111111111112,
-      "to": 0.6666666666666666,
-      "fgm": 3.7222222222222223,
-      "fga": 8.333333333333334,
-      "ftm": 0.6666666666666666,
-      "fta": 0.8888888888888888,
-      "tpa": 7.055555555555555
+      "min": 27.105263157894736,
+      "pts": 11.052631578947368,
+      "reb": 4.2631578947368425,
+      "ast": 1.5263157894736843,
+      "tpm": 2.8421052631578947,
+      "stl": 0.6842105263157895,
+      "blk": 0.631578947368421,
+      "to": 0.6842105263157895,
+      "fgm": 3.736842105263158,
+      "fga": 8.526315789473685,
+      "ftm": 0.7368421052631579,
+      "fta": 1,
+      "tpa": 7.052631578947368
      },
-     "seasonGames": 18,
-     "games": 101,
+     "seasonGames": 19,
+     "games": 102,
      "h2h": {
-      "pts": 11.1,
-      "reb": 4.9,
-      "ast": 1.3,
-      "n": 12
+      "pts": 8.4,
+      "reb": 4.4,
+      "ast": 1.9,
+      "n": 11
      },
      "recent": {
-      "lastPts": 22,
-      "lastMin": 30
+      "lastPts": 11,
+      "lastMin": 37
      }
     },
     {
@@ -9082,26 +11673,26 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 10.71,
+     "projMin": 6.32,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 6.333333333333333,
-      "pts": 2.6666666666666665,
-      "reb": 0.6666666666666666,
-      "ast": 1.3333333333333333,
-      "tpm": 0.6666666666666666,
-      "stl": 0.3333333333333333,
+      "min": 6.5,
+      "pts": 2,
+      "reb": 0.75,
+      "ast": 1,
+      "tpm": 0.5,
+      "stl": 0.25,
       "blk": 0,
       "to": 0,
-      "fgm": 1,
-      "fga": 2.3333333333333335,
+      "fgm": 0.75,
+      "fga": 2.25,
       "ftm": 0,
       "fta": 0,
-      "tpa": 2
+      "tpa": 1.75
      },
-     "seasonGames": 3,
-     "games": 3,
+     "seasonGames": 4,
+     "games": 4,
      "h2h": null,
      "recent": null
     },
@@ -9109,11 +11700,11 @@ const SEASON_SLATE_SNAPSHOT = {
      "id": "5037871",
      "name": "Dylan Harper",
      "pos": "G",
-     "status": "Out",
+     "status": "Questionable",
      "injury": "See official report for full injury details",
-     "availability": 0,
-     "projMin": 0.51,
-     "starter": false,
+     "availability": 0.5,
+     "projMin": 34,
+     "starter": true,
      "depthRank": 5,
      "avg": {
       "min": 31.666666666666668,
@@ -9132,12 +11723,7 @@ const SEASON_SLATE_SNAPSHOT = {
      },
      "seasonGames": 15,
      "games": 85,
-     "h2h": {
-      "pts": 9.8,
-      "reb": 4.8,
-      "ast": 3.3,
-      "n": 4
-     },
+     "h2h": null,
      "recent": {
       "lastPts": 20,
       "lastMin": null
@@ -9171,10 +11757,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 0,
      "games": 63,
      "h2h": {
-      "pts": 16.6,
-      "reb": 6.6,
-      "ast": 2.1,
-      "n": 27
+      "pts": 16.4,
+      "reb": 6.8,
+      "ast": 2.7,
+      "n": 29
      },
      "recent": null
     },
@@ -9185,35 +11771,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.61,
+     "projMin": 29.21,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 24.055555555555557,
-      "pts": 8.944444444444445,
-      "reb": 5.388888888888889,
-      "ast": 2.5555555555555554,
-      "tpm": 0.3888888888888889,
-      "stl": 0.7777777777777778,
+      "min": 24.526315789473685,
+      "pts": 8.631578947368421,
+      "reb": 5.7368421052631575,
+      "ast": 2.526315789473684,
+      "tpm": 0.3684210526315789,
+      "stl": 0.7894736842105263,
       "blk": 0,
-      "to": 1.1111111111111112,
-      "fgm": 3.3333333333333335,
-      "fga": 7.166666666666667,
-      "ftm": 1.8888888888888888,
-      "fta": 2.611111111111111,
-      "tpa": 1.7777777777777777
+      "to": 1.2105263157894737,
+      "fgm": 3.1578947368421053,
+      "fga": 6.947368421052632,
+      "ftm": 1.9473684210526316,
+      "fta": 2.6842105263157894,
+      "tpa": 1.7894736842105263
      },
-     "seasonGames": 18,
-     "games": 101,
+     "seasonGames": 19,
+     "games": 102,
      "h2h": {
-      "pts": 16,
-      "reb": 6.3,
-      "ast": 2.2,
-      "n": 21
+      "pts": 14.7,
+      "reb": 4.9,
+      "ast": 2,
+      "n": 23
      },
      "recent": {
-      "lastPts": 12,
-      "lastMin": 26
+      "lastPts": 3,
+      "lastMin": 33
      }
     },
     {
@@ -9223,7 +11809,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 1.92,
+     "projMin": 0.14,
      "starter": false,
      "depthRank": 4,
      "avg": {
@@ -9246,7 +11832,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "h2h": null,
      "recent": {
       "lastPts": 2,
-      "lastMin": 2
+      "lastMin": 0
      }
     },
     {
@@ -9256,35 +11842,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24.57,
+     "projMin": 14.84,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 15.333333333333334,
-      "pts": 4.055555555555555,
-      "reb": 4.166666666666667,
-      "ast": 1.1666666666666667,
+      "min": 15.210526315789474,
+      "pts": 4.052631578947368,
+      "reb": 4.2105263157894735,
+      "ast": 1.263157894736842,
       "tpm": 0,
-      "stl": 0.05555555555555555,
-      "blk": 0.6111111111111112,
-      "to": 0.2777777777777778,
-      "fgm": 1.5,
-      "fga": 2.7777777777777777,
-      "ftm": 1.0555555555555556,
-      "fta": 1.2777777777777777,
+      "stl": 0.05263157894736842,
+      "blk": 0.5789473684210527,
+      "to": 0.2631578947368421,
+      "fgm": 1.4736842105263157,
+      "fga": 2.6842105263157894,
+      "ftm": 1.105263157894737,
+      "fta": 1.3157894736842106,
       "tpa": 0
      },
-     "seasonGames": 18,
-     "games": 87,
-     "h2h": {
-      "pts": 7.3,
-      "reb": 4.6,
-      "ast": 2.1,
-      "n": 12
-     },
+     "seasonGames": 19,
+     "games": 88,
+     "h2h": null,
      "recent": {
-      "lastPts": 18,
-      "lastMin": 29
+      "lastPts": 4,
+      "lastMin": 13
      }
     },
     {
@@ -9294,30 +11875,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 13.67,
+     "projMin": 14.53,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 10.583333333333334,
-      "pts": 2.75,
-      "reb": 1.75,
-      "ast": 1.5833333333333333,
-      "tpm": 0.25,
-      "stl": 0.9166666666666666,
-      "blk": 0.16666666666666666,
-      "to": 0.3333333333333333,
-      "fgm": 1.0833333333333333,
-      "fga": 2.9166666666666665,
-      "ftm": 0.3333333333333333,
-      "fta": 0.3333333333333333,
-      "tpa": 1.0833333333333333
+      "min": 10.923076923076923,
+      "pts": 2.8461538461538463,
+      "reb": 1.7692307692307692,
+      "ast": 1.4615384615384615,
+      "tpm": 0.23076923076923078,
+      "stl": 0.8461538461538461,
+      "blk": 0.15384615384615385,
+      "to": 0.3076923076923077,
+      "fgm": 1.1538461538461537,
+      "fga": 2.923076923076923,
+      "ftm": 0.3076923076923077,
+      "fta": 0.3076923076923077,
+      "tpa": 1.0769230769230769
      },
-     "seasonGames": 12,
-     "games": 56,
+     "seasonGames": 13,
+     "games": 57,
      "h2h": null,
      "recent": {
-      "lastPts": 6,
-      "lastMin": 14
+      "lastPts": 4,
+      "lastMin": 15
      }
     },
     {
@@ -9357,7 +11938,7 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 11.61,
+     "projMin": 0.36,
      "starter": false,
      "depthRank": 3,
      "avg": {
@@ -9387,487 +11968,917 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 32.65,
+     "projMin": 35.45,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.3125,
-      "pts": 11.5625,
-      "reb": 4.0625,
-      "ast": 2.875,
-      "tpm": 1.5625,
-      "stl": 1.5625,
-      "blk": 0.375,
-      "to": 0.8125,
-      "fgm": 3.9375,
-      "fga": 9.8125,
-      "ftm": 2.125,
-      "fta": 2.375,
-      "tpa": 4.75
+      "min": 30.764705882352942,
+      "pts": 11.941176470588236,
+      "reb": 4,
+      "ast": 2.764705882352941,
+      "tpm": 1.6470588235294117,
+      "stl": 1.588235294117647,
+      "blk": 0.4117647058823529,
+      "to": 0.8235294117647058,
+      "fgm": 4.0588235294117645,
+      "fga": 10.176470588235293,
+      "ftm": 2.176470588235294,
+      "fta": 2.4705882352941178,
+      "tpa": 4.823529411764706
      },
-     "seasonGames": 16,
-     "games": 84,
+     "seasonGames": 17,
+     "games": 85,
      "h2h": {
-      "pts": 15.2,
-      "reb": 4.5,
-      "ast": 2.8,
-      "n": 17
+      "pts": 14.8,
+      "reb": 4.1,
+      "ast": 2.7,
+      "n": 18
      },
      "recent": {
-      "lastPts": 16,
-      "lastMin": 34
+      "lastPts": 18,
+      "lastMin": 38
      }
     },
     {
      "id": "5104157",
      "name": "Victor Wembanyama",
      "pos": "F",
-     "status": "Questionable",
-     "injury": "Injury/Illness - Low Back Tightness",
-     "availability": 0.5,
-     "projMin": 33,
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 33.38,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.294117647058822,
-      "pts": 29.88235294117647,
-      "reb": 12.294117647058824,
-      "ast": 3.176470588235294,
-      "tpm": 2.0588235294117645,
-      "stl": 1.2941176470588236,
-      "blk": 3.9411764705882355,
-      "to": 2.176470588235294,
-      "fgm": 11.235294117647058,
-      "fga": 20.764705882352942,
-      "ftm": 5.352941176470588,
-      "fta": 6.823529411764706,
-      "tpa": 6.529411764705882
+      "min": 30.555555555555557,
+      "pts": 30.666666666666668,
+      "reb": 12.5,
+      "ast": 3.1666666666666665,
+      "tpm": 2.111111111111111,
+      "stl": 1.2777777777777777,
+      "blk": 3.8333333333333335,
+      "to": 2.2222222222222223,
+      "fgm": 11.555555555555555,
+      "fga": 21.27777777777778,
+      "ftm": 5.444444444444445,
+      "fta": 7,
+      "tpa": 6.666666666666667
      },
-     "seasonGames": 17,
-     "games": 84,
-     "h2h": null,
+     "seasonGames": 18,
+     "games": 85,
+     "h2h": {
+      "pts": 24,
+      "reb": 11.6,
+      "ast": 3.8,
+      "n": 9
+     },
      "recent": {
-      "lastPts": 50,
-      "lastMin": null
+      "lastPts": 44,
+      "lastMin": 35
      }
     }
    ]
   },
-  "OKC": {
-   "abbr": "OKC",
-   "name": "Thunder",
-   "city": "Oklahoma City",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/okc.png",
+  "UTAH": {
+   "abbr": "UTAH",
+   "name": "Jazz",
+   "city": "Utah",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/utah.png",
    "prior": {
-    "ortg": 114.16120677675376,
-    "drtg": 107.0411938009092,
-    "pace": 101.88186267368421,
+    "ortg": 108.72011566677811,
+    "drtg": 116.40221077957875,
+    "pace": 103.26946239342043,
     "games": 82
    },
    "current": {
-    "ppg": 113.38888888888889,
-    "papg": 110.22222222222223,
-    "games": 18
+    "ppg": 107.84210526315789,
+    "papg": 115.36842105263158,
+    "games": 19
    },
    "rest": {
-    "restDays": 1,
+    "restDays": 3,
     "backToBack": false,
-    "threeInFour": true,
-    "schedulePoints": -0.5
+    "threeInFour": false,
+    "schedulePoints": 0
    },
    "players": [
     {
-     "id": "4684208",
-     "name": "Brooks Barnhizer",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 7.8,
+     "id": "4684682",
+     "name": "Jonas Aidoo",
+     "pos": "C",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.83,
      "starter": false,
-     "depthRank": 7,
+     "depthRank": 5,
      "avg": {
-      "min": 6.909090909090909,
-      "pts": 2.272727272727273,
-      "reb": 1.5454545454545454,
-      "ast": 0.8181818181818182,
+      "min": 1,
+      "pts": 0,
+      "reb": 1,
+      "ast": 0,
       "tpm": 0,
-      "stl": 0.2727272727272727,
-      "blk": 0.09090909090909091,
-      "to": 0.2727272727272727,
-      "fgm": 0.6363636363636364,
-      "fga": 1.0909090909090908,
-      "ftm": 1,
-      "fta": 1.2727272727272727,
-      "tpa": 0.09090909090909091
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
      },
-     "seasonGames": 11,
-     "games": 51,
+     "seasonGames": 1,
+     "games": 1,
      "h2h": null,
-     "recent": {
-      "lastPts": 7,
-      "lastMin": 9
-     }
+     "recent": null
     },
     {
-     "id": "2991350",
-     "name": "Alex Caruso",
+     "id": "4873138",
+     "name": "Ace Bailey",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 9.31,
+     "projMin": 33,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.36842105263158,
+      "pts": 13.31578947368421,
+      "reb": 6.157894736842105,
+      "ast": 2.0526315789473686,
+      "tpm": 1.5263157894736843,
+      "stl": 0.9473684210526315,
+      "blk": 1,
+      "to": 1.9473684210526316,
+      "fgm": 5.421052631578948,
+      "fga": 12.052631578947368,
+      "ftm": 0.9473684210526315,
+      "fta": 1.2105263157894737,
+      "tpa": 5.7368421052631575
+     },
+     "seasonGames": 19,
+     "games": 91,
+     "h2h": {
+      "pts": 13.8,
+      "reb": 3.8,
+      "ast": 0.8,
+      "n": 4
+     },
+     "recent": {
+      "lastPts": 18,
+      "lastMin": 33
+     }
+    },
+    {
+     "id": "4277919",
+     "name": "Mo Bamba",
+     "pos": "C",
+     "status": "Questionable",
+     "injury": "Injury/Illness - Illness",
+     "availability": 0.5,
+     "projMin": 24.6,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 19.25,
-      "pts": 7.416666666666667,
-      "reb": 3.6666666666666665,
-      "ast": 2.8333333333333335,
-      "tpm": 1.4166666666666667,
-      "stl": 1.25,
-      "blk": 0.5,
-      "to": 1.25,
-      "fgm": 2.25,
-      "fga": 5.166666666666667,
-      "ftm": 1.5,
-      "fta": 1.6666666666666667,
-      "tpa": 3.3333333333333335
+      "min": 21.533333333333335,
+      "pts": 8.533333333333333,
+      "reb": 6.866666666666666,
+      "ast": 1.0666666666666667,
+      "tpm": 0.4666666666666667,
+      "stl": 0.3333333333333333,
+      "blk": 1.6666666666666667,
+      "to": 0.8666666666666667,
+      "fgm": 3.6,
+      "fga": 5.266666666666667,
+      "ftm": 0.8666666666666667,
+      "fta": 1.5333333333333334,
+      "tpa": 0.8666666666666667
      },
-     "seasonGames": 12,
-     "games": 68,
-     "h2h": {
-      "pts": 7.5,
-      "reb": 3.6,
-      "ast": 2.2,
-      "n": 15
-     },
+     "seasonGames": 15,
+     "games": 19,
+     "h2h": null,
      "recent": {
-      "lastPts": 5,
+      "lastPts": 6,
+      "lastMin": 29
+     }
+    },
+    {
+     "id": "4065673",
+     "name": "Tony Bradley",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.25,
+     "starter": false,
+     "depthRank": 4,
+     "avg": {
+      "min": 9.333333333333334,
+      "pts": 2,
+      "reb": 3.3333333333333335,
+      "ast": 0.2222222222222222,
+      "tpm": 0,
+      "stl": 0.1111111111111111,
+      "blk": 0.1111111111111111,
+      "to": 0.4444444444444444,
+      "fgm": 0.7777777777777778,
+      "fga": 1.5555555555555556,
+      "ftm": 0.4444444444444444,
+      "fta": 0.8888888888888888,
+      "tpa": 0
+     },
+     "seasonGames": 9,
+     "games": 49,
+     "h2h": null,
+     "recent": {
+      "lastPts": 1,
       "lastMin": 0
      }
     },
     {
-     "id": "4702384",
-     "name": "Nique Clifford",
+     "id": "4683736",
+     "name": "Kobe Bufkin",
      "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 7.49,
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 1.02,
      "starter": false,
-     "depthRank": 6,
+     "depthRank": 4,
      "avg": {
-      "min": 11.375,
-      "pts": 3.3125,
-      "reb": 1.5625,
-      "ast": 0.6875,
-      "tpm": 0.25,
-      "stl": 0.375,
+      "min": 1,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
       "blk": 0,
-      "to": 0.4375,
-      "fgm": 1.375,
-      "fga": 3.25,
-      "ftm": 0.3125,
-      "fta": 0.5,
-      "tpa": 1.3125
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
      },
-     "seasonGames": 16,
-     "games": 91,
+     "seasonGames": 1,
+     "games": 17,
      "h2h": {
-      "pts": 3.3,
-      "reb": 2.8,
-      "ast": 1.8,
-      "n": 4
+      "pts": 4,
+      "reb": 2.5,
+      "ast": 1.5,
+      "n": 2
      },
      "recent": {
       "lastPts": 0,
-      "lastMin": 6
+      "lastMin": 1
      }
     },
     {
-     "id": "5105800",
-     "name": "Josh Dix",
+     "id": "4683766",
+     "name": "Isaiah Collier",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 14.49,
+     "projMin": 17.91,
      "starter": false,
-     "depthRank": 5,
+     "depthRank": 2,
      "avg": {
-      "min": 18.666666666666668,
-      "pts": 3.2222222222222223,
-      "reb": 1.8888888888888888,
-      "ast": 1.1111111111111112,
-      "tpm": 0.5555555555555556,
-      "stl": 0.3333333333333333,
-      "blk": 0.1111111111111111,
-      "to": 0.2222222222222222,
-      "fgm": 1.3333333333333333,
-      "fga": 4.222222222222222,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 2.5555555555555554
+      "min": 15.5625,
+      "pts": 6.4375,
+      "reb": 3.0625,
+      "ast": 4,
+      "tpm": 0.4375,
+      "stl": 0.375,
+      "blk": 0.0625,
+      "to": 1.8125,
+      "fgm": 2.1875,
+      "fga": 4.9375,
+      "ftm": 1.625,
+      "fta": 2.8125,
+      "tpa": 1.0625
      },
-     "seasonGames": 9,
-     "games": 9,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4278073",
-     "name": "Shai Gilgeous-Alexander",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 36.85,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 33.76470588235294,
-      "pts": 32.05882352941177,
-      "reb": 4.117647058823529,
-      "ast": 4.647058823529412,
-      "tpm": 2.4705882352941178,
-      "stl": 0.8235294117647058,
-      "blk": 0.9411764705882353,
-      "to": 2.235294117647059,
-      "fgm": 11.352941176470589,
-      "fga": 23.705882352941178,
-      "ftm": 6.882352941176471,
-      "fta": 8.352941176470589,
-      "tpa": 6.588235294117647
-     },
-     "seasonGames": 17,
-     "games": 85,
-     "h2h": null,
-     "recent": {
-      "lastPts": 38,
-      "lastMin": 38
-     }
-    },
-    {
-     "id": "4222252",
-     "name": "Isaiah Hartenstein",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 29,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 25.333333333333332,
-      "pts": 8.38888888888889,
-      "reb": 10.555555555555555,
-      "ast": 3.8333333333333335,
-      "tpm": 0,
-      "stl": 0.9444444444444444,
-      "blk": 0.4444444444444444,
-      "to": 1.7777777777777777,
-      "fgm": 3.5555555555555554,
-      "fga": 6.611111111111111,
-      "ftm": 1.2777777777777777,
-      "fta": 1.6111111111111112,
-      "tpa": 0.1111111111111111
-     },
-     "seasonGames": 18,
-     "games": 65,
-     "h2h": null,
-     "recent": {
-      "lastPts": 18,
-      "lastMin": 30
-     }
-    },
-    {
-     "id": "4433255",
-     "name": "Chet Holmgren",
-     "pos": "C",
-     "status": "Out",
-     "injury": "See official report for full injury details",
-     "availability": 0,
-     "projMin": 0.6,
-     "starter": false,
-     "depthRank": 8,
-     "avg": {
-      "min": 30,
-      "pts": 12,
-      "reb": 9.333333333333334,
-      "ast": 1.3333333333333333,
-      "tpm": 0.6666666666666666,
-      "stl": 0.6666666666666666,
-      "blk": 3,
-      "to": 1.6666666666666667,
-      "fgm": 3.6666666666666665,
-      "fga": 9,
-      "ftm": 4,
-      "fta": 4,
-      "tpa": 2
-     },
-     "seasonGames": 3,
+     "seasonGames": 16,
      "games": 75,
-     "h2h": {
-      "pts": 14.7,
-      "reb": 6.8,
-      "ast": 2.4,
-      "n": 10
-     },
+     "h2h": null,
      "recent": {
-      "lastPts": 10,
-      "lastMin": null
+      "lastPts": 4,
+      "lastMin": 18
      }
     },
     {
-     "id": "5174983",
-     "name": "Aday Mara",
-     "pos": "C",
-     "status": "Out",
-     "injury": "Injury/Illness - Right Shin Contusion",
-     "availability": 0,
-     "projMin": 16.8,
+     "id": "4684793",
+     "name": "Kyle Filipowski",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 18.64,
      "starter": false,
-     "depthRank": 1,
+     "depthRank": 3,
      "avg": {
-      "min": 22.4375,
-      "pts": 10,
-      "reb": 7.0625,
-      "ast": 1.875,
-      "tpm": 0.0625,
-      "stl": 0.0625,
-      "blk": 1.6875,
-      "to": 1.6875,
-      "fgm": 4.5,
-      "fga": 6.9375,
-      "ftm": 0.9375,
-      "fta": 1.625,
-      "tpa": 0.0625
+      "min": 9.25,
+      "pts": 4.166666666666667,
+      "reb": 2.75,
+      "ast": 0.8333333333333334,
+      "tpm": 0.25,
+      "stl": 0.3333333333333333,
+      "blk": 0,
+      "to": 0.9166666666666666,
+      "fgm": 1.6666666666666667,
+      "fga": 3.6666666666666665,
+      "ftm": 0.5833333333333334,
+      "fta": 1.4166666666666667,
+      "tpa": 1
      },
-     "seasonGames": 16,
-     "games": 16,
-     "h2h": null,
-     "recent": null
+     "seasonGames": 12,
+     "games": 89,
+     "h2h": {
+      "pts": 14.1,
+      "reb": 7.1,
+      "ast": 2.6,
+      "n": 7
+     },
+     "recent": {
+      "lastPts": 21,
+      "lastMin": 24
+     }
     },
     {
-     "id": "4683778",
-     "name": "Jared McCain",
+     "id": "4433627",
+     "name": "Keyonte George",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 33.53,
+     "projMin": 33,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 27.944444444444443,
-      "pts": 14.222222222222221,
-      "reb": 3.388888888888889,
-      "ast": 1.6666666666666667,
-      "tpm": 2.2777777777777777,
-      "stl": 0.8888888888888888,
-      "blk": 0.2777777777777778,
-      "to": 1.5555555555555556,
-      "fgm": 5.166666666666667,
-      "fga": 12.5,
-      "ftm": 1.6111111111111112,
-      "fta": 2.0555555555555554,
-      "tpa": 7
+      "min": 33.05555555555556,
+      "pts": 20.38888888888889,
+      "reb": 4,
+      "ast": 6.777777777777778,
+      "tpm": 2.111111111111111,
+      "stl": 0.8333333333333334,
+      "blk": 0.2222222222222222,
+      "to": 3.388888888888889,
+      "fgm": 6.5,
+      "fga": 15.222222222222221,
+      "ftm": 5.277777777777778,
+      "fta": 6.388888888888889,
+      "tpa": 6.555555555555555
      },
      "seasonGames": 18,
-     "games": 85,
+     "games": 72,
      "h2h": null,
      "recent": {
-      "lastPts": 13,
-      "lastMin": 36
+      "lastPts": 14,
+      "lastMin": 33
      }
     },
     {
-     "id": "4900671",
-     "name": "Ajay Mitchell",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 32.47,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 28.0625,
-      "pts": 16.6875,
-      "reb": 3.625,
-      "ast": 3.5625,
-      "tpm": 0.9375,
-      "stl": 1.0625,
-      "blk": 0.375,
-      "to": 1.5,
-      "fgm": 6.5625,
-      "fga": 13.9375,
-      "ftm": 2.625,
-      "fta": 3.1875,
-      "tpa": 3.0625
-     },
-     "seasonGames": 16,
-     "games": 73,
-     "h2h": {
-      "pts": 10.3,
-      "reb": 3,
-      "ast": 2,
-      "n": 4
-     },
-     "recent": {
-      "lastPts": 12,
-      "lastMin": 35
-     }
-    },
-    {
-     "id": "4432185",
-     "name": "Micah Peavy",
+     "id": "4432811",
+     "name": "Josh Green",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
      "projMin": 24,
      "starter": true,
-     "depthRank": 4,
+     "depthRank": 1,
      "avg": {
-      "min": 17.666666666666668,
-      "pts": 4.083333333333333,
-      "reb": 3.4166666666666665,
-      "ast": 0.4166666666666667,
-      "tpm": 0.5833333333333334,
-      "stl": 0.6666666666666666,
-      "blk": 0.16666666666666666,
-      "to": 0.16666666666666666,
-      "fgm": 1.5,
-      "fga": 4.333333333333333,
-      "ftm": 0.5,
-      "fta": 0.8333333333333334,
-      "tpa": 1.9166666666666667
+      "min": 20.058823529411764,
+      "pts": 4.705882352941177,
+      "reb": 1.7058823529411764,
+      "ast": 0.8823529411764706,
+      "tpm": 0.8823529411764706,
+      "stl": 0.5294117647058824,
+      "blk": 0.17647058823529413,
+      "to": 0.47058823529411764,
+      "fgm": 1.7058823529411764,
+      "fga": 3.764705882352941,
+      "ftm": 0.4117647058823529,
+      "fta": 0.6470588235294118,
+      "tpa": 2.2941176470588234
      },
-     "seasonGames": 12,
-     "games": 73,
+     "seasonGames": 17,
+     "games": 75,
      "h2h": {
-      "pts": 7.3,
+      "pts": 6.9,
       "reb": 2.3,
-      "ast": 1.5,
-      "n": 4
+      "ast": 1.1,
+      "n": 12
      },
      "recent": {
-      "lastPts": 7,
-      "lastMin": 24
+      "lastPts": 8,
+      "lastMin": 19
      }
     },
     {
-     "id": "5061603",
-     "name": "Thomas Sorber",
+     "id": "4397077",
+     "name": "Jaxson Hayes",
+     "pos": "C",
+     "status": "Questionable",
+     "injury": "Injury/Illness - Left Knee Strain",
+     "availability": 0.5,
+     "projMin": 25,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 23.533333333333335,
+      "pts": 9.2,
+      "reb": 6.4,
+      "ast": 1.4666666666666666,
+      "tpm": 0,
+      "stl": 0.8666666666666667,
+      "blk": 1.2,
+      "to": 1.3333333333333333,
+      "fgm": 3.533333333333333,
+      "fga": 5.466666666666667,
+      "ftm": 2.1333333333333333,
+      "fta": 3,
+      "tpa": 0.06666666666666667
+     },
+     "seasonGames": 15,
+     "games": 81,
+     "h2h": {
+      "pts": 6.9,
+      "reb": 3.9,
+      "ast": 0.6,
+      "n": 18
+     },
+     "recent": {
+      "lastPts": 8,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4433618",
+     "name": "Harrison Ingram",
+     "pos": "F",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.91,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 1,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 1,
+     "games": 8,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 1
+     }
+    },
+    {
+     "id": "4277961",
+     "name": "Jaren Jackson Jr.",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right MCL Tear",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 26,
+      "pts": 16.25,
+      "reb": 5,
+      "ast": 2,
+      "tpm": 1.25,
+      "stl": 0.25,
+      "blk": 1.25,
+      "to": 3,
+      "fgm": 5.5,
+      "fga": 11,
+      "ftm": 4,
+      "fta": 5.25,
+      "tpa": 3.5
+     },
+     "seasonGames": 4,
+     "games": 52,
+     "h2h": null,
+     "recent": {
+      "lastPts": 6,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4066336",
+     "name": "Lauri Markkanen",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Hand Fracture",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 30.875,
+      "pts": 18,
+      "reb": 6.75,
+      "ast": 2,
+      "tpm": 3.625,
+      "stl": 0.625,
+      "blk": 0.625,
+      "to": 1.5,
+      "fgm": 5.5,
+      "fga": 14.125,
+      "ftm": 3.375,
+      "fta": 4,
+      "tpa": 9.125
+     },
+     "seasonGames": 8,
+     "games": 50,
+     "h2h": {
+      "pts": 21,
+      "reb": 7.6,
+      "ast": 1.9,
+      "n": 11
+     },
+     "recent": {
+      "lastPts": 24,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "3133602",
+     "name": "Svi Mykhailiuk",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 24.59,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 19.57894736842105,
+      "pts": 6.631578947368421,
+      "reb": 2.473684210526316,
+      "ast": 1.736842105263158,
+      "tpm": 1.5263157894736843,
+      "stl": 0.5789473684210527,
+      "blk": 0,
+      "to": 1,
+      "fgm": 2.263157894736842,
+      "fga": 6.052631578947368,
+      "ftm": 0.5789473684210527,
+      "fta": 0.6842105263157895,
+      "tpa": 4.2105263157894735
+     },
+     "seasonGames": 19,
+     "games": 69,
+     "h2h": null,
+     "recent": {
+      "lastPts": 4,
+      "lastMin": 25
+     }
+    },
+    {
+     "id": "3102530",
+     "name": "Jusuf Nurkic",
+     "pos": "C",
+     "status": "Questionable",
+     "injury": "See official report for full injury details",
+     "availability": 0.5,
+     "projMin": 0.59,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0
+     },
+     "seasonGames": 0,
+     "games": 41,
+     "h2h": {
+      "pts": 14.1,
+      "reb": 9.4,
+      "ast": 3.3,
+      "n": 23
+     },
+     "recent": null
+    },
+    {
+     "id": "4065663",
+     "name": "Josh Okogie",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 11.03,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.27777777777778,
+      "pts": 4.111111111111111,
+      "reb": 2.888888888888889,
+      "ast": 1.0555555555555556,
+      "tpm": 0.6111111111111112,
+      "stl": 0.8888888888888888,
+      "blk": 0.16666666666666666,
+      "to": 0.9444444444444444,
+      "fgm": 1.1666666666666667,
+      "fga": 3.7777777777777777,
+      "ftm": 1.1666666666666667,
+      "fta": 1.5,
+      "tpa": 2.111111111111111
+     },
+     "seasonGames": 18,
+     "games": 96,
+     "h2h": {
+      "pts": 7.5,
+      "reb": 3.5,
+      "ast": 1.4,
+      "n": 21
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 9
+     }
+    },
+    {
+     "id": "5041955",
+     "name": "Darryn Peterson",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 29.19,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 30.263157894736842,
+      "pts": 15.947368421052632,
+      "reb": 4.473684210526316,
+      "ast": 4,
+      "tpm": 1.8421052631578947,
+      "stl": 1.105263157894737,
+      "blk": 0.631578947368421,
+      "to": 1.9473684210526316,
+      "fgm": 5.631578947368421,
+      "fga": 14.052631578947368,
+      "ftm": 2.8421052631578947,
+      "fta": 3.473684210526316,
+      "tpa": 5.947368421052632
+     },
+     "seasonGames": 19,
+     "games": 19,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5105839",
+     "name": "Brice Sensabaugh",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 18.25,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.157894736842106,
+      "pts": 10.526315789473685,
+      "reb": 3.6315789473684212,
+      "ast": 1.5789473684210527,
+      "tpm": 1.7894736842105263,
+      "stl": 0.42105263157894735,
+      "blk": 0.3157894736842105,
+      "to": 1.5789473684210527,
+      "fgm": 3.9473684210526314,
+      "fga": 8.421052631578947,
+      "ftm": 0.8421052631578947,
+      "fta": 1.0526315789473684,
+      "tpa": 4.157894736842105
+     },
+     "seasonGames": 19,
+     "games": 93,
+     "h2h": {
+      "pts": 11.7,
+      "reb": 3.3,
+      "ast": 2,
+      "n": 11
+     },
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 17
+     }
+    }
+   ]
+  },
+  "TOR": {
+   "abbr": "TOR",
+   "name": "Raptors",
+   "city": "Toronto",
+   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/tor.png",
+   "prior": {
+    "ortg": 112.54456803405365,
+    "drtg": 111.35342359598842,
+    "pace": 100.33142582029578,
+    "games": 82
+   },
+   "current": {
+    "ppg": 111.52941176470588,
+    "papg": 111.6470588235294,
+    "games": 17
+   },
+   "rest": {
+    "restDays": 3,
+    "backToBack": false,
+    "threeInFour": false,
+    "schedulePoints": 0
+   },
+   "players": [
+    {
+     "id": "2993874",
+     "name": "Kyle Anderson",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 0.45,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 7.3,
+      "pts": 1.4,
+      "reb": 1.1,
+      "ast": 1.4,
+      "tpm": 0,
+      "stl": 0.3,
+      "blk": 0.4,
+      "to": 0.4,
+      "fgm": 0.7,
+      "fga": 1.7,
+      "ftm": 0,
+      "fta": 0.2,
+      "tpa": 0
+     },
+     "seasonGames": 10,
+     "games": 53,
+     "h2h": {
+      "pts": 8,
+      "reb": 4.1,
+      "ast": 3.5,
+      "n": 21
+     },
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4433134",
+     "name": "Scottie Barnes",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 36.58,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 34.333333333333336,
+      "pts": 24.833333333333332,
+      "reb": 7,
+      "ast": 5,
+      "tpm": 0.9166666666666666,
+      "stl": 1.8333333333333333,
+      "blk": 1.0833333333333333,
+      "to": 3.0833333333333335,
+      "fgm": 10.083333333333334,
+      "fga": 20.416666666666668,
+      "ftm": 3.75,
+      "fta": 5.583333333333333,
+      "tpa": 3.3333333333333335
+     },
+     "seasonGames": 12,
+     "games": 95,
+     "h2h": {
+      "pts": 18.3,
+      "reb": 9.1,
+      "ast": 4.6,
+      "n": 16
+     },
+     "recent": {
+      "lastPts": 31,
+      "lastMin": 38
+     }
+    },
+    {
+     "id": "4395625",
+     "name": "RJ Barrett",
+     "pos": "F",
+     "status": "Out",
+     "injury": "Injury/Illness - Right Hamstring Strain",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 6,
+     "avg": {
+      "min": 34.07142857142857,
+      "pts": 20.857142857142858,
+      "reb": 6.428571428571429,
+      "ast": 4.285714285714286,
+      "tpm": 1.5,
+      "stl": 0.42857142857142855,
+      "blk": 0.5,
+      "to": 1.9285714285714286,
+      "fgm": 8.071428571428571,
+      "fga": 17.071428571428573,
+      "ftm": 3.2142857142857144,
+      "fta": 5.285714285714286,
+      "tpa": 5.285714285714286
+     },
+     "seasonGames": 14,
+     "games": 71,
+     "h2h": {
+      "pts": 16.1,
+      "reb": 4.4,
+      "ast": 2.8,
+      "n": 19
+     },
+     "recent": {
+      "lastPts": 22,
+      "lastMin": null
+     }
+    },
+    {
+     "id": "4431893",
+     "name": "Jamison Battle",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 14.6,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 18.41176470588235,
+      "pts": 9.294117647058824,
+      "reb": 2,
+      "ast": 0.35294117647058826,
+      "tpm": 2.1176470588235294,
+      "stl": 0.47058823529411764,
+      "blk": 0.058823529411764705,
+      "to": 0.4117647058823529,
+      "fgm": 3.235294117647059,
+      "fga": 6.647058823529412,
+      "ftm": 0.7058823529411765,
+      "fta": 0.8823529411764706,
+      "tpa": 4.823529411764706
+     },
+     "seasonGames": 17,
+     "games": 77,
+     "h2h": {
+      "pts": 5.3,
+      "reb": 2.6,
+      "ast": 0.4,
+      "n": 7
+     },
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 13
+     }
+    },
+    {
+     "id": "4432586",
+     "name": "Nate Bittle",
      "pos": "C",
      "status": "Out",
-     "injury": "Injury/Illness - Right Knee Surgery",
+     "injury": "G League - Two-Way",
      "availability": 0,
      "projMin": 0,
      "starter": false,
-     "depthRank": 4,
+     "depthRank": 5,
      "avg": {
       "min": 0,
       "pts": 0,
@@ -9889,213 +12900,410 @@ const SEASON_SLATE_SNAPSHOT = {
      "recent": null
     },
     {
-     "id": "5241364",
-     "name": "Bennett Stirtz",
+     "id": "4432737",
+     "name": "Jaden Bradley",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 19.73,
+     "projMin": 0.11,
      "starter": false,
-     "depthRank": 2,
+     "depthRank": 4,
      "avg": {
-      "min": 19.166666666666668,
-      "pts": 8.333333333333334,
-      "reb": 1.6666666666666667,
-      "ast": 1.5555555555555556,
-      "tpm": 1.8333333333333333,
-      "stl": 0.7222222222222222,
-      "blk": 0.2222222222222222,
-      "to": 0.4444444444444444,
-      "fgm": 2.888888888888889,
-      "fga": 6.055555555555555,
-      "ftm": 0.7222222222222222,
-      "fta": 0.7777777777777778,
-      "tpa": 4.055555555555555
+      "min": 4.777777777777778,
+      "pts": 1.6666666666666667,
+      "reb": 0.5555555555555556,
+      "ast": 0.8888888888888888,
+      "tpm": 0,
+      "stl": 0.4444444444444444,
+      "blk": 0,
+      "to": 0.5555555555555556,
+      "fgm": 0.3333333333333333,
+      "fga": 0.7777777777777778,
+      "ftm": 1,
+      "fta": 1.2222222222222223,
+      "tpa": 0
      },
-     "seasonGames": 18,
-     "games": 18,
+     "seasonGames": 9,
+     "games": 9,
      "h2h": null,
      "recent": null
     },
     {
-     "id": "5159925",
-     "name": "Nikola Topic",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Injury/Illness - Left Hip Strain",
-     "availability": 0,
-     "projMin": 0.36,
-     "starter": false,
-     "depthRank": 5,
+     "id": "5149115",
+     "name": "Allen Graves",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 30.53,
+     "starter": true,
+     "depthRank": 1,
      "avg": {
-      "min": 11.333333333333334,
-      "pts": 2.6666666666666665,
-      "reb": 1.3333333333333333,
-      "ast": 1.3333333333333333,
-      "tpm": 0,
-      "stl": 0.6666666666666666,
-      "blk": 0,
-      "to": 1.6666666666666667,
-      "fgm": 1.3333333333333333,
-      "fga": 3.3333333333333335,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 1
+      "min": 16.88235294117647,
+      "pts": 5.647058823529412,
+      "reb": 3.176470588235294,
+      "ast": 0.7647058823529411,
+      "tpm": 0.7647058823529411,
+      "stl": 0.6470588235294118,
+      "blk": 0.4117647058823529,
+      "to": 0.17647058823529413,
+      "fgm": 2,
+      "fga": 4.470588235294118,
+      "ftm": 0.8823529411764706,
+      "fta": 1.1764705882352942,
+      "tpa": 2.411764705882353
      },
-     "seasonGames": 3,
-     "games": 13,
+     "seasonGames": 17,
+     "games": 17,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "4431684",
+     "name": "Trayce Jackson-Davis",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 7.93,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 8.75,
+      "pts": 3.25,
+      "reb": 2.9166666666666665,
+      "ast": 0.5,
+      "tpm": 0,
+      "stl": 0.8333333333333334,
+      "blk": 0.4166666666666667,
+      "to": 0.16666666666666666,
+      "fgm": 1.4166666666666667,
+      "fga": 2.1666666666666665,
+      "ftm": 0.4166666666666667,
+      "fta": 0.5833333333333334,
+      "tpa": 0
+     },
+     "seasonGames": 12,
+     "games": 64,
      "h2h": null,
      "recent": {
       "lastPts": 0,
+      "lastMin": 5
+     }
+    },
+    {
+     "id": "6450",
+     "name": "Kawhi Leonard",
+     "pos": "F",
+     "status": "Out",
+     "injury": "See official report for full injury details",
+     "availability": 0,
+     "projMin": 0.6,
+     "starter": false,
+     "depthRank": 7,
+     "avg": {
+      "min": 26,
+      "pts": 19.5,
+      "reb": 7.5,
+      "ast": 1.5,
+      "tpm": 2,
+      "stl": 3.5,
+      "blk": 0.5,
+      "to": 2,
+      "fgm": 6,
+      "fga": 18.5,
+      "ftm": 5.5,
+      "fta": 5.5,
+      "tpa": 7
+     },
+     "seasonGames": 2,
+     "games": 70,
+     "h2h": {
+      "pts": 21.9,
+      "reb": 6.1,
+      "ast": 2.8,
+      "n": 24
+     },
+     "recent": {
+      "lastPts": 16,
       "lastMin": null
      }
     },
     {
-     "id": "4683692",
-     "name": "Cason Wallace",
+     "id": "4702656",
+     "name": "Alijah Martin",
+     "pos": "G",
+     "status": "Questionable",
+     "injury": "Injury/Illness - Left Knee Soreness",
+     "availability": 0.5,
+     "projMin": 9.93,
+     "starter": false,
+     "depthRank": 2,
+     "avg": {
+      "min": 12.25,
+      "pts": 4.6875,
+      "reb": 1.9375,
+      "ast": 0.75,
+      "tpm": 0.8125,
+      "stl": 0.4375,
+      "blk": 0.125,
+      "to": 0.9375,
+      "fgm": 1.6875,
+      "fga": 3,
+      "ftm": 0.5,
+      "fta": 0.75,
+      "tpa": 1.6875
+     },
+     "seasonGames": 16,
+     "games": 39,
+     "h2h": null,
+     "recent": {
+      "lastPts": 0,
+      "lastMin": 8
+     }
+    },
+    {
+     "id": "4411057",
+     "name": "Kevin McCullar Jr.",
      "pos": "G",
      "status": "Out",
-     "injury": "Injury/Illness - Left Shoulder Surgery",
+     "injury": "G League - Two-Way",
      "availability": 0,
-     "projMin": 0.6,
+     "projMin": 0.18,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 16.333333333333332,
-      "pts": 6.333333333333333,
-      "reb": 2.6666666666666665,
-      "ast": 1.3333333333333333,
-      "tpm": 1,
-      "stl": 2.3333333333333335,
+      "min": 0,
+      "pts": 0,
+      "reb": 0,
+      "ast": 0,
+      "tpm": 0,
+      "stl": 0,
       "blk": 0,
-      "to": 1,
-      "fgm": 2.6666666666666665,
-      "fga": 6.666666666666667,
+      "to": 0,
+      "fgm": 0,
+      "fga": 0,
       "ftm": 0,
       "fta": 0,
-      "tpa": 3.3333333333333335
+      "tpa": 0
      },
-     "seasonGames": 3,
-     "games": 80,
+     "seasonGames": 0,
+     "games": 19,
+     "h2h": null,
+     "recent": null
+    },
+    {
+     "id": "5093267",
+     "name": "Collin Murray-Boyles",
+     "pos": "F",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 24,
+     "starter": true,
+     "depthRank": 2,
+     "avg": {
+      "min": 23.6,
+      "pts": 9.066666666666666,
+      "reb": 5,
+      "ast": 1.7333333333333334,
+      "tpm": 0.4666666666666667,
+      "stl": 1.1333333333333333,
+      "blk": 1.0666666666666667,
+      "to": 1.8,
+      "fgm": 3.466666666666667,
+      "fga": 7.666666666666667,
+      "ftm": 1.6666666666666667,
+      "fta": 2.066666666666667,
+      "tpa": 1.8
+     },
+     "seasonGames": 15,
+     "games": 72,
+     "h2h": {
+      "pts": 5.3,
+      "reb": 3,
+      "ast": 1.5,
+      "n": 4
+     },
+     "recent": {
+      "lastPts": 6,
+      "lastMin": 24
+     }
+    },
+    {
+     "id": "3134908",
+     "name": "Jakob Poeltl",
+     "pos": "C",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 28.33,
+     "starter": false,
+     "depthRank": 1,
+     "avg": {
+      "min": 24.2,
+      "pts": 8.666666666666666,
+      "reb": 7,
+      "ast": 1.8,
+      "tpm": 0,
+      "stl": 0.9333333333333333,
+      "blk": 0.8,
+      "to": 1.0666666666666667,
+      "fgm": 3.7333333333333334,
+      "fga": 6.333333333333333,
+      "ftm": 1.2,
+      "fta": 1.8666666666666667,
+      "tpa": 0
+     },
+     "seasonGames": 15,
+     "games": 61,
      "h2h": {
       "pts": 6.3,
-      "reb": 2.5,
-      "ast": 2,
-      "n": 11
-     },
-     "recent": {
-      "lastPts": 4,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "4593803",
-     "name": "Jalen Williams",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Injury/Illness - Left Ankle Surgery",
-     "availability": 0,
-     "projMin": 0.6,
-     "starter": false,
-     "depthRank": 9,
-     "avg": {
-      "min": 31.666666666666668,
-      "pts": 13.666666666666666,
-      "reb": 4.666666666666667,
-      "ast": 3.3333333333333335,
-      "tpm": 1,
-      "stl": 1.3333333333333333,
-      "blk": 0.6666666666666666,
-      "to": 1.3333333333333333,
-      "fgm": 5,
-      "fga": 13,
-      "ftm": 2.6666666666666665,
-      "fta": 3.3333333333333335,
-      "tpa": 3
-     },
-     "seasonGames": 3,
-     "games": 36,
-     "h2h": null,
-     "recent": {
-      "lastPts": 8,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "4432823",
-     "name": "Jaylin Williams",
-     "pos": "F",
-     "status": "Out",
-     "injury": "Injury/Illness - Low Back Spasms",
-     "availability": 0,
-     "projMin": 1.03,
-     "starter": false,
-     "depthRank": 3,
-     "avg": {
-      "min": 17.11111111111111,
-      "pts": 2.888888888888889,
-      "reb": 3.3333333333333335,
-      "ast": 1.4444444444444444,
-      "tpm": 0.7777777777777778,
-      "stl": 0.3333333333333333,
-      "blk": 0.1111111111111111,
-      "to": 0.6666666666666666,
-      "fgm": 0.8888888888888888,
-      "fga": 4.111111111111111,
-      "ftm": 0.3333333333333333,
-      "fta": 0.5555555555555556,
-      "tpa": 3.3333333333333335
-     },
-     "seasonGames": 9,
-     "games": 74,
-     "h2h": {
-      "pts": 3.8,
-      "reb": 3.3,
+      "reb": 6.1,
       "ast": 1.5,
-      "n": 11
+      "n": 23
      },
      "recent": {
-      "lastPts": 3,
-      "lastMin": null
+      "lastPts": 15,
+      "lastMin": 28
      }
     },
     {
-     "id": "3133626",
-     "name": "Kenrich Williams",
+     "id": "4395724",
+     "name": "Immanuel Quickley",
      "pos": "G",
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 23.53,
+     "projMin": 33,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 32.06666666666667,
+      "pts": 17.466666666666665,
+      "reb": 3.466666666666667,
+      "ast": 6,
+      "tpm": 2.6,
+      "stl": 0.9333333333333333,
+      "blk": 0.06666666666666667,
+      "to": 1.3333333333333333,
+      "fgm": 5.933333333333334,
+      "fga": 14.466666666666667,
+      "ftm": 3,
+      "fta": 3.8,
+      "tpa": 7.733333333333333
+     },
+     "seasonGames": 15,
+     "games": 85,
+     "h2h": null,
+     "recent": {
+      "lastPts": 13,
+      "lastMin": 32
+     }
+    },
+    {
+     "id": "4432241",
+     "name": "Jamal Shead",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 23.76,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 21.444444444444443,
-      "pts": 8.222222222222221,
-      "reb": 3.9444444444444446,
-      "ast": 1.6111111111111112,
-      "tpm": 1.4444444444444444,
-      "stl": 0.6666666666666666,
-      "blk": 0.3333333333333333,
-      "to": 0.3333333333333333,
-      "fgm": 3.111111111111111,
-      "fga": 6.5,
-      "ftm": 0.5555555555555556,
-      "fta": 0.8333333333333334,
-      "tpa": 3.3333333333333335
+      "min": 23.41176470588235,
+      "pts": 7.882352941176471,
+      "reb": 1.8823529411764706,
+      "ast": 6.294117647058823,
+      "tpm": 1.0588235294117647,
+      "stl": 1,
+      "blk": 0.17647058823529413,
+      "to": 1.8235294117647058,
+      "fgm": 2.7058823529411766,
+      "fga": 7.117647058823529,
+      "ftm": 1.411764705882353,
+      "fta": 1.8823529411764706,
+      "tpa": 3.4705882352941178
      },
-     "seasonGames": 18,
-     "games": 74,
-     "h2h": {
-      "pts": 6.3,
-      "reb": 3.6,
+     "seasonGames": 17,
+     "games": 99,
+     "h2h": null,
+     "recent": {
+      "lastPts": 11,
+      "lastMin": 26
+     }
+    },
+    {
+     "id": "4397784",
+     "name": "Malachi Smith",
+     "pos": "G",
+     "status": "Out",
+     "injury": "G League - Two-Way",
+     "availability": 0,
+     "projMin": 0.54,
+     "starter": false,
+     "depthRank": 5,
+     "avg": {
+      "min": 4,
+      "pts": 0.5,
+      "reb": 0.25,
       "ast": 1,
-      "n": 21
+      "tpm": 0,
+      "stl": 0,
+      "blk": 0,
+      "to": 0.25,
+      "fgm": 0.25,
+      "fga": 1,
+      "ftm": 0,
+      "fta": 0,
+      "tpa": 0.5
+     },
+     "seasonGames": 4,
+     "games": 19,
+     "h2h": null,
+     "recent": {
+      "lastPts": 2,
+      "lastMin": 0
+     }
+    },
+    {
+     "id": "4684272",
+     "name": "Ja'Kobe Walter",
+     "pos": "G",
+     "status": "Available",
+     "injury": null,
+     "availability": 1,
+     "projMin": 34.33,
+     "starter": true,
+     "depthRank": 1,
+     "avg": {
+      "min": 31.705882352941178,
+      "pts": 12.117647058823529,
+      "reb": 4.0588235294117645,
+      "ast": 2.176470588235294,
+      "tpm": 2.4705882352941178,
+      "stl": 1.2352941176470589,
+      "blk": 0.29411764705882354,
+      "to": 0.9411764705882353,
+      "fgm": 4,
+      "fga": 10.235294117647058,
+      "ftm": 1.6470588235294117,
+      "fta": 2.2941176470588234,
+      "tpa": 7.176470588235294
+     },
+     "seasonGames": 17,
+     "games": 89,
+     "h2h": {
+      "pts": 9.9,
+      "reb": 2.4,
+      "ast": 1.8,
+      "n": 8
      },
      "recent": {
-      "lastPts": 20,
-      "lastMin": 26
+      "lastPts": 15,
+      "lastMin": 36
      }
     }
    ]
@@ -10106,15 +13314,15 @@ const SEASON_SLATE_SNAPSHOT = {
    "city": "Memphis",
    "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/mem.png",
    "prior": {
-    "ortg": 113.82149709459793,
-    "drtg": 112.7532873508388,
-    "pace": 102.88094277815294,
+    "ortg": 113.91989705524023,
+    "drtg": 112.40686688794906,
+    "pace": 102.74912373255927,
     "games": 82
    },
    "current": {
-    "ppg": 120.33333333333333,
-    "papg": 111.44444444444444,
-    "games": 18
+    "ppg": 120.05263157894737,
+    "papg": 110.6842105263158,
+    "games": 19
    },
    "rest": {
     "restDays": 1,
@@ -10164,64 +13372,64 @@ const SEASON_SLATE_SNAPSHOT = {
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 28.88235294117647,
-      "pts": 15.352941176470589,
-      "reb": 8.058823529411764,
-      "ast": 3.3529411764705883,
-      "tpm": 2.4705882352941178,
-      "stl": 1.588235294117647,
-      "blk": 0.35294117647058826,
-      "to": 1.8235294117647058,
-      "fgm": 5.470588235294118,
-      "fga": 11.529411764705882,
-      "ftm": 1.9411764705882353,
-      "fta": 2.411764705882353,
-      "tpa": 5.529411764705882
+      "min": 28.72222222222222,
+      "pts": 15.277777777777779,
+      "reb": 8.166666666666666,
+      "ast": 3.2222222222222223,
+      "tpm": 2.3333333333333335,
+      "stl": 1.5555555555555556,
+      "blk": 0.3888888888888889,
+      "to": 1.7222222222222223,
+      "fgm": 5.5,
+      "fga": 11.666666666666666,
+      "ftm": 1.9444444444444444,
+      "fta": 2.4444444444444446,
+      "tpa": 5.555555555555555
      },
-     "seasonGames": 17,
-     "games": 79,
+     "seasonGames": 18,
+     "games": 80,
      "h2h": {
-      "pts": 14.3,
-      "reb": 6.8,
+      "pts": 14.6,
+      "reb": 4.8,
       "ast": 2,
-      "n": 4
+      "n": 5
      },
      "recent": {
-      "lastPts": 16,
-      "lastMin": 30
+      "lastPts": 14,
+      "lastMin": 26
      }
     },
     {
      "id": "4600663",
      "name": "Zach Edey",
      "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
+     "status": "Questionable",
+     "injury": "Injury/Illness - Left Ankle Soreness",
+     "availability": 0.5,
      "projMin": 24,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 21.142857142857142,
-      "pts": 9,
-      "reb": 7.285714285714286,
-      "ast": 0.8571428571428571,
-      "tpm": 0.07142857142857142,
-      "stl": 0.35714285714285715,
-      "blk": 1.0714285714285714,
-      "to": 1.4285714285714286,
-      "fgm": 3.5,
-      "fga": 5.785714285714286,
-      "ftm": 1.9285714285714286,
-      "fta": 2.142857142857143,
-      "tpa": 0.07142857142857142
+      "min": 20.333333333333332,
+      "pts": 8.866666666666667,
+      "reb": 7.066666666666666,
+      "ast": 0.9333333333333333,
+      "tpm": 0.06666666666666667,
+      "stl": 0.3333333333333333,
+      "blk": 1.1333333333333333,
+      "to": 1.3333333333333333,
+      "fgm": 3.466666666666667,
+      "fga": 5.666666666666667,
+      "ftm": 1.8666666666666667,
+      "fta": 2.066666666666667,
+      "tpa": 0.06666666666666667
      },
-     "seasonGames": 14,
-     "games": 25,
+     "seasonGames": 15,
+     "games": 26,
      "h2h": null,
      "recent": {
-      "lastPts": 8,
-      "lastMin": 23
+      "lastPts": 7,
+      "lastMin": 9
      }
     },
     {
@@ -10252,10 +13460,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 15,
      "games": 72,
      "h2h": {
-      "pts": 12.7,
-      "reb": 4.1,
-      "ast": 1.1,
-      "n": 26
+      "pts": 12.2,
+      "reb": 3.4,
+      "ast": 1.5,
+      "n": 37
      },
      "recent": {
       "lastPts": 3,
@@ -10269,35 +13477,35 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 22.37,
+     "projMin": 23.3,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 15.692307692307692,
-      "pts": 8,
-      "reb": 3.6923076923076925,
+      "min": 16.357142857142858,
+      "pts": 7.785714285714286,
+      "reb": 3.4285714285714284,
       "ast": 1,
-      "tpm": 0.7692307692307693,
-      "stl": 0.46153846153846156,
-      "blk": 0.23076923076923078,
-      "to": 0.8461538461538461,
-      "fgm": 2.8461538461538463,
-      "fga": 5.153846153846154,
-      "ftm": 1.5384615384615385,
-      "fta": 2,
-      "tpa": 2
+      "tpm": 0.7142857142857143,
+      "stl": 0.42857142857142855,
+      "blk": 0.2857142857142857,
+      "to": 0.7857142857142857,
+      "fgm": 2.7857142857142856,
+      "fga": 5.071428571428571,
+      "ftm": 1.5,
+      "fta": 1.9285714285714286,
+      "tpa": 1.9285714285714286
      },
-     "seasonGames": 13,
-     "games": 72,
+     "seasonGames": 14,
+     "games": 73,
      "h2h": {
-      "pts": 6.9,
-      "reb": 2.9,
-      "ast": 0.7,
-      "n": 7
+      "pts": 8,
+      "reb": 5.2,
+      "ast": 1.4,
+      "n": 5
      },
      "recent": {
-      "lastPts": 3,
-      "lastMin": 24
+      "lastPts": 5,
+      "lastMin": 25
      }
     },
     {
@@ -10328,10 +13536,10 @@ const SEASON_SLATE_SNAPSHOT = {
      "seasonGames": 12,
      "games": 66,
      "h2h": {
-      "pts": 11,
-      "reb": 5.5,
-      "ast": 1.5,
-      "n": 4
+      "pts": 9.3,
+      "reb": 4.4,
+      "ast": 0.9,
+      "n": 7
      },
      "recent": {
       "lastPts": 3,
@@ -10345,59 +13553,59 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 29,
+     "projMin": 27,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 30.23076923076923,
-      "pts": 25.076923076923077,
-      "reb": 3.4615384615384617,
-      "ast": 5.153846153846154,
-      "tpm": 2.923076923076923,
-      "stl": 0.9230769230769231,
-      "blk": 0.15384615384615385,
-      "to": 2.8461538461538463,
-      "fgm": 8.846153846153847,
-      "fga": 18.46153846153846,
-      "ftm": 4.461538461538462,
-      "fta": 4.923076923076923,
-      "tpa": 7.615384615384615
+      "min": 29.857142857142858,
+      "pts": 24.5,
+      "reb": 3.5714285714285716,
+      "ast": 5.285714285714286,
+      "tpm": 2.7857142857142856,
+      "stl": 1.1428571428571428,
+      "blk": 0.21428571428571427,
+      "to": 2.642857142857143,
+      "fgm": 8.714285714285714,
+      "fga": 18.285714285714285,
+      "ftm": 4.285714285714286,
+      "fta": 4.714285714285714,
+      "tpa": 7.642857142857143
      },
-     "seasonGames": 13,
-     "games": 28,
+     "seasonGames": 14,
+     "games": 29,
      "h2h": null,
      "recent": {
-      "lastPts": 29,
-      "lastMin": 29
+      "lastPts": 17,
+      "lastMin": 25
      }
     },
     {
      "id": "5231919",
      "name": "Karim Lopez",
      "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.07,
+     "status": "Out",
+     "injury": "G League - On Assignment",
+     "availability": 0,
+     "projMin": 3.09,
      "starter": false,
      "depthRank": 6,
      "avg": {
-      "min": 3,
-      "pts": 1.1666666666666667,
-      "reb": 0.6666666666666666,
+      "min": 3.142857142857143,
+      "pts": 1.2857142857142858,
+      "reb": 0.8571428571428571,
       "ast": 0,
-      "tpm": 0.16666666666666666,
+      "tpm": 0.14285714285714285,
       "stl": 0,
-      "blk": 0.3333333333333333,
+      "blk": 0.2857142857142857,
       "to": 0,
-      "fgm": 0.3333333333333333,
-      "fga": 0.6666666666666666,
-      "ftm": 0.3333333333333333,
-      "fta": 0.3333333333333333,
-      "tpa": 0.5
+      "fgm": 0.42857142857142855,
+      "fga": 1,
+      "ftm": 0.2857142857142857,
+      "fta": 0.2857142857142857,
+      "tpa": 0.7142857142857143
      },
-     "seasonGames": 6,
-     "games": 6,
+     "seasonGames": 7,
+     "games": 7,
      "h2h": null,
      "recent": null
     },
@@ -10408,30 +13616,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 0.5,
+     "projMin": 6.54,
      "starter": false,
      "depthRank": 4,
      "avg": {
-      "min": 10.428571428571429,
-      "pts": 0.7142857142857143,
-      "reb": 1,
-      "ast": 1.5714285714285714,
-      "tpm": 0.14285714285714285,
-      "stl": 0.2857142857142857,
-      "blk": 0.2857142857142857,
-      "to": 0.42857142857142855,
-      "fgm": 0.2857142857142857,
-      "fga": 1.5714285714285714,
+      "min": 9.625,
+      "pts": 0.625,
+      "reb": 0.875,
+      "ast": 1.375,
+      "tpm": 0.125,
+      "stl": 0.25,
+      "blk": 0.25,
+      "to": 0.375,
+      "fgm": 0.25,
+      "fga": 1.375,
       "ftm": 0,
       "fta": 0,
-      "tpa": 0.7142857142857143
+      "tpa": 0.625
      },
-     "seasonGames": 7,
-     "games": 37,
+     "seasonGames": 8,
+     "games": 38,
      "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 0
+      "lastMin": 4
      }
     },
     {
@@ -10441,34 +13649,34 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 28,
+     "projMin": 32,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 11.785714285714286,
-      "pts": 2.357142857142857,
-      "reb": 1.4285714285714286,
-      "ast": 0.6428571428571429,
-      "tpm": 0.35714285714285715,
-      "stl": 0.8571428571428571,
-      "blk": 0.42857142857142855,
-      "to": 0.07142857142857142,
-      "fgm": 0.9285714285714286,
-      "fga": 2.5714285714285716,
-      "ftm": 0.14285714285714285,
-      "fta": 0.14285714285714285,
-      "tpa": 1.8571428571428572
+      "min": 13.133333333333333,
+      "pts": 2.7333333333333334,
+      "reb": 1.6,
+      "ast": 0.8,
+      "tpm": 0.3333333333333333,
+      "stl": 0.8,
+      "blk": 0.4,
+      "to": 0.13333333333333333,
+      "fgm": 1.1333333333333333,
+      "fga": 2.933333333333333,
+      "ftm": 0.13333333333333333,
+      "fta": 0.2,
+      "tpa": 1.9333333333333333
      },
-     "seasonGames": 14,
-     "games": 71,
+     "seasonGames": 15,
+     "games": 72,
      "h2h": {
-      "pts": 7.5,
-      "reb": 4.9,
-      "ast": 1.9,
-      "n": 10
+      "pts": 6.5,
+      "reb": 2.4,
+      "ast": 0.5,
+      "n": 11
      },
      "recent": {
-      "lastPts": 9,
+      "lastPts": 8,
       "lastMin": 32
      }
     },
@@ -10512,35 +13720,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 4.28,
+     "projMin": 11.41,
      "starter": false,
      "depthRank": 3,
      "avg": {
-      "min": 10.916666666666666,
-      "pts": 4.416666666666667,
-      "reb": 1.9166666666666667,
-      "ast": 0.25,
-      "tpm": 0.5,
-      "stl": 0.3333333333333333,
-      "blk": 0.16666666666666666,
-      "to": 0.6666666666666666,
-      "fgm": 1.75,
-      "fga": 3.5,
-      "ftm": 0.4166666666666667,
-      "fta": 0.5833333333333334,
-      "tpa": 1.8333333333333333
+      "min": 11.153846153846153,
+      "pts": 4.076923076923077,
+      "reb": 2.076923076923077,
+      "ast": 0.23076923076923078,
+      "tpm": 0.46153846153846156,
+      "stl": 0.38461538461538464,
+      "blk": 0.15384615384615385,
+      "to": 0.6153846153846154,
+      "fgm": 1.6153846153846154,
+      "fga": 3.4615384615384617,
+      "ftm": 0.38461538461538464,
+      "fta": 0.5384615384615384,
+      "tpa": 1.9230769230769231
      },
-     "seasonGames": 12,
-     "games": 79,
-     "h2h": {
-      "pts": 5.2,
-      "reb": 3.2,
-      "ast": 0.4,
-      "n": 5
-     },
+     "seasonGames": 13,
+     "games": 80,
+     "h2h": null,
      "recent": {
       "lastPts": 0,
-      "lastMin": 3
+      "lastMin": 14
      }
     },
     {
@@ -10550,34 +13753,29 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 19.01,
+     "projMin": 18.68,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 12.166666666666666,
-      "pts": 6.25,
-      "reb": 2.3333333333333335,
-      "ast": 0.4166666666666667,
-      "tpm": 0.3333333333333333,
-      "stl": 0.16666666666666666,
-      "blk": 0.08333333333333333,
-      "to": 0.5,
-      "fgm": 2.25,
-      "fga": 4.583333333333333,
-      "ftm": 1.4166666666666667,
-      "fta": 1.8333333333333333,
-      "tpa": 1.5
+      "min": 12.692307692307692,
+      "pts": 6.461538461538462,
+      "reb": 2.4615384615384617,
+      "ast": 0.5384615384615384,
+      "tpm": 0.38461538461538464,
+      "stl": 0.15384615384615385,
+      "blk": 0.07692307692307693,
+      "to": 0.6153846153846154,
+      "fgm": 2.230769230769231,
+      "fga": 4.615384615384615,
+      "ftm": 1.6153846153846154,
+      "fta": 2,
+      "tpa": 1.6153846153846154
      },
-     "seasonGames": 12,
-     "games": 64,
-     "h2h": {
-      "pts": 1.7,
-      "reb": 0.7,
-      "ast": 0.6,
-      "n": 7
-     },
+     "seasonGames": 13,
+     "games": 65,
+     "h2h": null,
      "recent": {
-      "lastPts": 6,
+      "lastPts": 9,
       "lastMin": 19
      }
     },
@@ -10618,30 +13816,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 19.26,
+     "projMin": 17.79,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 21.9,
-      "pts": 8.9,
-      "reb": 3.1,
-      "ast": 5.5,
-      "tpm": 1.2,
-      "stl": 0.3,
-      "blk": 0.1,
-      "to": 1.2,
-      "fgm": 3,
-      "fga": 7.7,
-      "ftm": 1.7,
+      "min": 21.454545454545453,
+      "pts": 8.818181818181818,
+      "reb": 3,
+      "ast": 5.090909090909091,
+      "tpm": 1.2727272727272727,
+      "stl": 0.2727272727272727,
+      "blk": 0.09090909090909091,
+      "to": 1.1818181818181819,
+      "fgm": 2.909090909090909,
+      "fga": 7.818181818181818,
+      "ftm": 1.7272727272727273,
       "fta": 2,
-      "tpa": 3.5
+      "tpa": 3.6363636363636362
      },
-     "seasonGames": 10,
-     "games": 50,
+     "seasonGames": 11,
+     "games": 51,
      "h2h": null,
      "recent": {
-      "lastPts": 3,
-      "lastMin": 19
+      "lastPts": 8,
+      "lastMin": 17
      }
     },
     {
@@ -10651,63 +13849,63 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 21.85,
+     "projMin": 23.45,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 22.833333333333332,
-      "pts": 11.833333333333334,
-      "reb": 3,
-      "ast": 5.722222222222222,
+      "min": 22.894736842105264,
+      "pts": 12.052631578947368,
+      "reb": 2.8421052631578947,
+      "ast": 5.631578947368421,
       "tpm": 2,
-      "stl": 0.7777777777777778,
-      "blk": 0.1111111111111111,
-      "to": 1.4444444444444444,
-      "fgm": 3.9444444444444446,
-      "fga": 7.055555555555555,
-      "ftm": 1.9444444444444444,
-      "fta": 2,
-      "tpa": 3.6666666666666665
+      "stl": 0.7368421052631579,
+      "blk": 0.10526315789473684,
+      "to": 1.4736842105263157,
+      "fgm": 4.105263157894737,
+      "fga": 7.2105263157894735,
+      "ftm": 1.8421052631578947,
+      "fta": 1.894736842105263,
+      "tpa": 3.6842105263157894
      },
-     "seasonGames": 18,
-     "games": 90,
+     "seasonGames": 19,
+     "games": 91,
      "h2h": null,
      "recent": {
-      "lastPts": 24,
-      "lastMin": 21
+      "lastPts": 16,
+      "lastMin": 24
      }
     },
     {
      "id": "4432810",
      "name": "Isaiah Stewart",
      "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 20.45,
+     "status": "Questionable",
+     "injury": "Injury/Illness - Right Hip Soreness",
+     "availability": 0.5,
+     "projMin": 15.98,
      "starter": false,
      "depthRank": 2,
      "avg": {
-      "min": 18.53846153846154,
-      "pts": 10.615384615384615,
-      "reb": 3.3076923076923075,
-      "ast": 0.8461538461538461,
-      "tpm": 0.7692307692307693,
-      "stl": 0.07692307692307693,
-      "blk": 0.9230769230769231,
+      "min": 18.214285714285715,
+      "pts": 10.571428571428571,
+      "reb": 3.2857142857142856,
+      "ast": 0.8571428571428571,
+      "tpm": 0.8571428571428571,
+      "stl": 0.14285714285714285,
+      "blk": 1,
       "to": 1,
-      "fgm": 4.3076923076923075,
-      "fga": 7.3076923076923075,
-      "ftm": 1.2307692307692308,
-      "fta": 1.3076923076923077,
-      "tpa": 2.3076923076923075
+      "fgm": 4.285714285714286,
+      "fga": 7.214285714285714,
+      "ftm": 1.1428571428571428,
+      "fta": 1.2142857142857142,
+      "tpa": 2.357142857142857
      },
-     "seasonGames": 13,
-     "games": 71,
+     "seasonGames": 14,
+     "games": 72,
      "h2h": null,
      "recent": {
-      "lastPts": 11,
-      "lastMin": 21
+      "lastPts": 10,
+      "lastMin": 14
      }
     },
     {
@@ -10717,682 +13915,30 @@ const SEASON_SLATE_SNAPSHOT = {
      "status": "Available",
      "injury": null,
      "availability": 1,
-     "projMin": 24,
+     "projMin": 26.6,
      "starter": true,
      "depthRank": 1,
      "avg": {
-      "min": 26.333333333333332,
-      "pts": 11.055555555555555,
-      "reb": 3.0555555555555554,
-      "ast": 1.2222222222222223,
-      "tpm": 2,
-      "stl": 0.7777777777777778,
-      "blk": 0.1111111111111111,
-      "to": 0.7222222222222222,
-      "fgm": 3.8333333333333335,
-      "fga": 7.722222222222222,
-      "ftm": 1.3888888888888888,
-      "fta": 1.6666666666666667,
-      "tpa": 4.722222222222222
+      "min": 26.36842105263158,
+      "pts": 11.473684210526315,
+      "reb": 3.210526315789474,
+      "ast": 1.2105263157894737,
+      "tpm": 2.0526315789473686,
+      "stl": 0.7894736842105263,
+      "blk": 0.10526315789473684,
+      "to": 0.6842105263157895,
+      "fgm": 4.052631578947368,
+      "fga": 7.947368421052632,
+      "ftm": 1.3157894736842106,
+      "fta": 1.5789473684210527,
+      "tpa": 4.684210526315789
      },
-     "seasonGames": 18,
-     "games": 87,
-     "h2h": {
-      "pts": 11.7,
-      "reb": 3.4,
-      "ast": 1.6,
-      "n": 7
-     },
-     "recent": {
-      "lastPts": 8,
-      "lastMin": 20
-     }
-    }
-   ]
-  },
-  "CHA": {
-   "abbr": "CHA",
-   "name": "Hornets",
-   "city": "Charlotte",
-   "logo": "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/cha.png",
-   "prior": {
-    "ortg": 109.61467647598066,
-    "drtg": 111.54570771617068,
-    "pace": 99.29054539245283,
-    "games": 82
-   },
-   "current": {
-    "ppg": 100.625,
-    "papg": 110.875,
-    "games": 16
-   },
-   "rest": {
-    "restDays": 1,
-    "backToBack": false,
-    "threeInFour": false,
-    "schedulePoints": 0
-   },
-   "players": [
-    {
-     "id": "5176517",
-     "name": "Michael Ajayi",
-     "pos": "F",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 0.25,
-     "starter": false,
-     "depthRank": 8,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 0,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "3135045",
-     "name": "Grayson Allen",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Concussion Protocol",
-     "availability": 0,
-     "projMin": 14.69,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 27.153846153846153,
-      "pts": 14.923076923076923,
-      "reb": 3.076923076923077,
-      "ast": 3.3076923076923075,
-      "tpm": 3.3846153846153846,
-      "stl": 0.8461538461538461,
-      "blk": 0.3076923076923077,
-      "to": 2.6153846153846154,
-      "fgm": 4.3076923076923075,
-      "fga": 9.615384615384615,
-      "ftm": 2.923076923076923,
-      "fta": 3.1538461538461537,
-      "tpa": 7.384615384615385
-     },
-     "seasonGames": 13,
-     "games": 64,
-     "h2h": {
-      "pts": 10.9,
-      "reb": 3.6,
-      "ast": 2.2,
-      "n": 17
-     },
-     "recent": {
-      "lastPts": 12,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "5060701",
-     "name": "Christian Anderson",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 20.03,
-     "starter": false,
-     "depthRank": 3,
-     "avg": {
-      "min": 14.666666666666666,
-      "pts": 6.466666666666667,
-      "reb": 1.5333333333333334,
-      "ast": 2,
-      "tpm": 1.2666666666666666,
-      "stl": 0.4666666666666667,
-      "blk": 0.26666666666666666,
-      "to": 1.6,
-      "fgm": 2.3333333333333335,
-      "fga": 5.666666666666667,
-      "ftm": 0.5333333333333333,
-      "fta": 0.5333333333333333,
-      "tpa": 3.6666666666666665
-     },
-     "seasonGames": 15,
-     "games": 15,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4684269",
-     "name": "Kylan Boswell",
-     "pos": "G",
-     "status": "Out",
-     "injury": "G League - Two-Way",
-     "availability": 0,
-     "projMin": 0,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 0,
-      "pts": 0,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 0,
-      "fgm": 0,
-      "fga": 0,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 0
-     },
-     "seasonGames": 0,
-     "games": 0,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4433249",
-     "name": "Moussa Diabate",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 34,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 30,
-      "pts": 9.642857142857142,
-      "reb": 10.571428571428571,
-      "ast": 2.0714285714285716,
-      "tpm": 0,
-      "stl": 1.2142857142857142,
-      "blk": 1.0714285714285714,
-      "to": 2.0714285714285716,
-      "fgm": 3.9285714285714284,
-      "fga": 6.142857142857143,
-      "ftm": 1.7857142857142858,
-      "fta": 2.4285714285714284,
-      "tpa": 0
-     },
-     "seasonGames": 14,
-     "games": 87,
+     "seasonGames": 19,
+     "games": 88,
      "h2h": null,
      "recent": {
-      "lastPts": 10,
-      "lastMin": 35
-     }
-    },
-    {
-     "id": "4701225",
-     "name": "PJ Hall",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 0.28,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 6,
-      "pts": 0,
-      "reb": 1,
-      "ast": 1.5,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0.5,
-      "to": 0,
-      "fgm": 0,
-      "fga": 1.5,
-      "ftm": 0,
-      "fta": 0,
-      "tpa": 1.5
-     },
-     "seasonGames": 2,
-     "games": 19,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 0
-     }
-    },
-    {
-     "id": "4602025",
-     "name": "Sion James",
-     "pos": "G",
-     "status": "Probable",
-     "injury": "Injury/Illness - Left Thigh Soreness",
-     "availability": 0.9,
-     "projMin": 30,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 27.4375,
-      "pts": 5.75,
-      "reb": 3.8125,
-      "ast": 3.0625,
-      "tpm": 1.0625,
-      "stl": 0.875,
-      "blk": 0,
-      "to": 1.375,
-      "fgm": 2.0625,
-      "fga": 6.1875,
-      "ftm": 0.5625,
-      "fta": 0.875,
-      "tpa": 4.3125
-     },
-     "seasonGames": 16,
-     "games": 98,
-     "h2h": {
-      "pts": 6.5,
-      "reb": 3.8,
-      "ast": 2.8,
-      "n": 4
-     },
-     "recent": {
-      "lastPts": 5,
-      "lastMin": 28
-     }
-    },
-    {
-     "id": "4576060",
-     "name": "Ryan Kalkbrenner",
-     "pos": "C",
-     "status": "Out",
-     "injury": "See official report for full injury details",
-     "availability": 0,
-     "projMin": 11.71,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 17.5625,
-      "pts": 4.5,
-      "reb": 5.0625,
-      "ast": 1.25,
-      "tpm": 0,
-      "stl": 0.375,
-      "blk": 1.0625,
-      "to": 1.0625,
-      "fgm": 1.625,
-      "fga": 2.375,
-      "ftm": 1.25,
-      "fta": 1.375,
-      "tpa": 0
-     },
-     "seasonGames": 16,
-     "games": 85,
-     "h2h": null,
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 9
-     }
-    },
-    {
-     "id": "5061575",
-     "name": "Kon Knueppel",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Injury/Illness - Left Hamstring Strain",
-     "availability": 0,
-     "projMin": 0.6,
-     "starter": false,
-     "depthRank": 8,
-     "avg": {
-      "min": 6,
-      "pts": 3,
-      "reb": 0,
-      "ast": 0,
-      "tpm": 0,
-      "stl": 0,
-      "blk": 0,
-      "to": 2,
-      "fgm": 0,
-      "fga": 1,
-      "ftm": 3,
-      "fta": 3,
-      "tpa": 1
-     },
-     "seasonGames": 1,
-     "games": 82,
-     "h2h": {
-      "pts": 21,
-      "reb": 4,
-      "ast": 4,
-      "n": 4
-     },
-     "recent": {
-      "lastPts": 3,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "5239590",
-     "name": "Liam McNeeley",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 6.95,
-     "starter": false,
-     "depthRank": 6,
-     "avg": {
-      "min": 8.88888888888889,
-      "pts": 3.111111111111111,
-      "reb": 1.4444444444444444,
-      "ast": 0.5555555555555556,
-      "tpm": 0.4444444444444444,
-      "stl": 0.1111111111111111,
-      "blk": 0,
-      "to": 0.5555555555555556,
-      "fgm": 1,
-      "fga": 3.4444444444444446,
-      "ftm": 0.6666666666666666,
-      "fta": 0.7777777777777778,
-      "tpa": 1.8888888888888888
-     },
-     "seasonGames": 9,
-     "games": 40,
-     "h2h": null,
-     "recent": {
-      "lastPts": 3,
-      "lastMin": 9
-     }
-    },
-    {
-     "id": "4433287",
-     "name": "Brandon Miller",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 33.73,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 31,
-      "pts": 19.857142857142858,
-      "reb": 4.642857142857143,
-      "ast": 2.7142857142857144,
-      "tpm": 3,
-      "stl": 0.9285714285714286,
-      "blk": 0.7857142857142857,
-      "to": 2.642857142857143,
-      "fgm": 6.928571428571429,
-      "fga": 19.357142857142858,
-      "ftm": 3,
-      "fta": 3.4285714285714284,
-      "tpa": 10.214285714285714
-     },
-     "seasonGames": 14,
-     "games": 79,
-     "h2h": {
-      "pts": 17.4,
-      "reb": 4.8,
-      "ast": 3,
-      "n": 9
-     },
-     "recent": {
-      "lastPts": 20,
-      "lastMin": 35
-     }
-    },
-    {
-     "id": "2583632",
-     "name": "Royce O'Neale",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 17.16,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 20,
-      "pts": 5.5625,
-      "reb": 2.9375,
-      "ast": 0.6875,
-      "tpm": 1.5,
-      "stl": 0.5,
-      "blk": 0.125,
-      "to": 0.5625,
-      "fgm": 1.8125,
-      "fga": 4.6875,
-      "ftm": 0.4375,
-      "fta": 0.5,
-      "tpa": 4.3125
-     },
-     "seasonGames": 16,
-     "games": 94,
-     "h2h": {
-      "pts": 5.6,
-      "reb": 4.6,
-      "ast": 2.6,
-      "n": 19
-     },
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 13
-     }
-    },
-    {
-     "id": "4396971",
-     "name": "Naz Reid",
-     "pos": "C",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 36.33,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 31.5625,
-      "pts": 17.6875,
-      "reb": 8.3125,
-      "ast": 2.4375,
-      "tpm": 2.5,
-      "stl": 0.9375,
-      "blk": 0.5,
-      "to": 2.5,
-      "fgm": 6.6875,
-      "fga": 17.5,
-      "ftm": 1.8125,
-      "fta": 2.75,
-      "tpa": 7.5
-     },
-     "seasonGames": 16,
-     "games": 93,
-     "h2h": {
-      "pts": 14.7,
-      "reb": 4.7,
-      "ast": 2.1,
-      "n": 13
-     },
-     "recent": {
-      "lastPts": 24,
-      "lastMin": 38
-     }
-    },
-    {
-     "id": "5211176",
-     "name": "Tidjane Salaun",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 13,
-     "starter": false,
-     "depthRank": 5,
-     "avg": {
-      "min": 13.866666666666667,
-      "pts": 5,
-      "reb": 3.2,
-      "ast": 0.2,
-      "tpm": 0.9333333333333333,
-      "stl": 0.5333333333333333,
-      "blk": 0.2,
-      "to": 0.26666666666666666,
-      "fgm": 1.7333333333333334,
-      "fga": 4.066666666666666,
-      "ftm": 0.6,
-      "fta": 0.8666666666666667,
-      "tpa": 2.8
-     },
-     "seasonGames": 15,
-     "games": 52,
-     "h2h": {
-      "pts": 5,
-      "reb": 5,
-      "ast": 2.2,
-      "n": 5
-     },
-     "recent": {
-      "lastPts": 0,
-      "lastMin": 17
-     }
-    },
-    {
-     "id": "3032979",
-     "name": "Dennis Schroder",
-     "pos": "G",
-     "status": "Out",
-     "injury": "Injury/Illness - Left Hamstring Strain",
-     "availability": 0,
-     "projMin": 12.34,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 30,
-      "pts": 10.222222222222221,
-      "reb": 3.5555555555555554,
-      "ast": 4.888888888888889,
-      "tpm": 0.7777777777777778,
-      "stl": 0.7777777777777778,
-      "blk": 0.1111111111111111,
-      "to": 3.2222222222222223,
-      "fgm": 3.5555555555555554,
-      "fga": 9.777777777777779,
-      "ftm": 2.3333333333333335,
-      "fta": 2.6666666666666665,
-      "tpa": 3.888888888888889
-     },
-     "seasonGames": 9,
-     "games": 79,
-     "h2h": null,
-     "recent": {
-      "lastPts": 5,
-      "lastMin": null
-     }
-    },
-    {
-     "id": "5281370",
-     "name": "Hannes Steinbach",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 5.67,
-     "starter": false,
-     "depthRank": 4,
-     "avg": {
-      "min": 11.166666666666666,
-      "pts": 2.8333333333333335,
-      "reb": 3.6666666666666665,
-      "ast": 0.3333333333333333,
-      "tpm": 0,
-      "stl": 0.16666666666666666,
-      "blk": 0.5,
-      "to": 0.6666666666666666,
-      "fgm": 1.3333333333333333,
-      "fga": 3,
-      "ftm": 0.16666666666666666,
-      "fta": 0.5,
-      "tpa": 0
-     },
-     "seasonGames": 6,
-     "games": 6,
-     "h2h": null,
-     "recent": null
-    },
-    {
-     "id": "4395651",
-     "name": "Coby White",
-     "pos": "G",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 27.73,
-     "starter": true,
-     "depthRank": 1,
-     "avg": {
-      "min": 21.11111111111111,
-      "pts": 13.444444444444445,
-      "reb": 2.3333333333333335,
-      "ast": 3.7777777777777777,
-      "tpm": 1.4444444444444444,
-      "stl": 0.4444444444444444,
-      "blk": 0.3333333333333333,
-      "to": 2.888888888888889,
-      "fgm": 4.666666666666667,
-      "fga": 12.666666666666666,
-      "ftm": 2.6666666666666665,
-      "fta": 3,
-      "tpa": 6.111111111111111
-     },
-     "seasonGames": 9,
-     "games": 59,
-     "h2h": null,
-     "recent": {
-      "lastPts": 21,
-      "lastMin": 28
-     }
-    },
-    {
-     "id": "4066218",
-     "name": "Grant Williams",
-     "pos": "F",
-     "status": "Available",
-     "injury": null,
-     "availability": 1,
-     "projMin": 10.1,
-     "starter": false,
-     "depthRank": 2,
-     "avg": {
-      "min": 22,
-      "pts": 11.333333333333334,
-      "reb": 2.6666666666666665,
-      "ast": 0.6666666666666666,
-      "tpm": 2.3333333333333335,
-      "stl": 0.3333333333333333,
-      "blk": 0.3333333333333333,
-      "to": 0.3333333333333333,
-      "fgm": 4,
-      "fga": 9.333333333333334,
-      "ftm": 1,
-      "fta": 1,
-      "tpa": 6.666666666666667
-     },
-     "seasonGames": 3,
-     "games": 39,
-     "h2h": {
-      "pts": 8.4,
-      "reb": 3.9,
-      "ast": 1.4,
-      "n": 14
-     },
-     "recent": {
-      "lastPts": 12,
-      "lastMin": null
+      "lastPts": 19,
+      "lastMin": 27
      }
     }
    ]
@@ -11400,173 +13946,211 @@ const SEASON_SLATE_SNAPSHOT = {
  },
  "games": [
   {
-   "id": "401909317",
-   "tip": "2026-11-25T22:00Z",
-   "venue": "Xfinity Mobile Arena",
-   "home": "PHI",
-   "away": "MIA",
-   "market": {
-    "mlHome": -119,
-    "mlAway": 101,
-    "spreadHome": -1.5,
-    "total": 237.5,
-    "book": "DraftKings"
-   },
-   "external": {
-    "nbai": {
-     "pHome": 0.4777
-    }
-   }
-  },
-  {
-   "id": "401909318",
-   "tip": "2026-11-26T00:00Z",
-   "venue": "Spectrum Center",
-   "home": "CHA",
-   "away": "CHI",
-   "market": {
-    "mlHome": -167,
-    "mlAway": 140,
-    "spreadHome": -3.5,
-    "total": 219.5,
-    "book": "DraftKings"
-   },
-   "external": {
-    "nbai": {
-     "pHome": 0.548
-    }
-   }
-  },
-  {
-   "id": "401909319",
-   "tip": "2026-11-26T00:30Z",
+   "id": "401909326",
+   "tip": "2026-11-28T00:00Z",
    "venue": "Madison Square Garden",
    "home": "NY",
-   "away": "CLE",
+   "away": "MIA",
    "market": {
-    "mlHome": -130,
-    "mlAway": 110,
-    "spreadHome": -1.5,
-    "total": 216.5,
-    "book": "DraftKings"
+    "mlHome": -155,
+    "mlAway": 130,
+    "spreadHome": -2.5,
+    "total": 222.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.4528
+     "pHome": 0.4489
     }
    }
   },
   {
-   "id": "401909320",
-   "tip": "2026-11-26T00:30Z",
-   "venue": "Paycom Center",
-   "home": "OKC",
-   "away": "MIN",
+   "id": "401909327",
+   "tip": "2026-11-28T00:30Z",
+   "venue": "Little Caesars Arena",
+   "home": "DET",
+   "away": "MIL",
    "market": {
-    "mlHome": -130,
-    "mlAway": 110,
-    "spreadHome": -1.5,
-    "total": 221.5,
-    "book": "DraftKings"
+    "mlHome": -452,
+    "mlAway": 351,
+    "spreadHome": -9.5,
+    "total": 219.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.4995
+     "pHome": 0.5258
     }
    }
   },
   {
-   "id": "401909321",
-   "tip": "2026-11-26T01:00Z",
-   "venue": "FedExForum",
-   "home": "MEM",
-   "away": "LAC",
+   "id": "401909328",
+   "tip": "2026-11-28T00:30Z",
+   "venue": "Gainbridge Fieldhouse",
+   "home": "IND",
+   "away": "PHI",
    "market": {
-    "mlHome": -269,
-    "mlAway": 220,
-    "spreadHome": -7.5,
-    "total": 227.5,
-    "book": "DraftKings"
+    "mlHome": 142,
+    "mlAway": -170,
+    "spreadHome": 3.5,
+    "total": 230.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.517
+     "pHome": 0.4531
     }
    }
   },
   {
-   "id": "401909322",
-   "tip": "2026-11-26T01:00Z",
-   "venue": "Fiserv Forum",
-   "home": "MIL",
+   "id": "401909329",
+   "tip": "2026-11-28T00:30Z",
+   "venue": "Scotiabank Arena",
+   "home": "TOR",
    "away": "BKN",
    "market": {
-    "mlHome": -117,
-    "mlAway": -101,
-    "spreadHome": -1.5,
-    "total": 234.5,
-    "book": "DraftKings"
-   },
-   "external": {
-    "nbai": {
-     "pHome": 0.5849
-    }
-   }
-  },
-  {
-   "id": "401909323",
-   "tip": "2026-11-26T01:30Z",
-   "venue": "Toyota Center (Houston)",
-   "home": "HOU",
-   "away": "PHX",
-   "market": {
-    "mlHome": -395,
-    "mlAway": 312,
+    "mlHome": -374,
+    "mlAway": 297,
     "spreadHome": -9.5,
-    "total": 222.5,
-    "book": "DraftKings"
+    "total": 219.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.5806
+     "pHome": 0.5237
     }
    }
   },
   {
-   "id": "401909324",
-   "tip": "2026-11-26T03:00Z",
-   "venue": "Chase Center",
-   "home": "GS",
-   "away": "SAC",
+   "id": "401909330",
+   "tip": "2026-11-28T01:00Z",
+   "venue": "TD Garden",
+   "home": "BOS",
+   "away": "ATL",
    "market": {
-    "mlHome": -264,
-    "mlAway": 217,
-    "spreadHome": -6.5,
-    "total": 216.5,
-    "book": "DraftKings"
+    "mlHome": -375,
+    "mlAway": 298,
+    "spreadHome": -8.5,
+    "total": 223.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.5627
+     "pHome": 0.6558
     }
    }
   },
   {
-   "id": "401909325",
-   "tip": "2026-11-26T03:00Z",
+   "id": "401909331",
+   "tip": "2026-11-28T01:30Z",
+   "venue": "Target Center",
+   "home": "MIN",
+   "away": "MEM",
+   "market": {
+    "mlHome": -155,
+    "mlAway": 130,
+    "spreadHome": -3.5,
+    "total": 219.5,
+    "book": "Draft Kings"
+   },
+   "external": {
+    "nbai": {
+     "pHome": 0.5454
+    }
+   }
+  },
+  {
+   "id": "401909332",
+   "tip": "2026-11-28T02:00Z",
+   "venue": "Mortgage Matchup Center",
+   "home": "PHX",
+   "away": "DAL",
+   "market": {
+    "mlHome": -155,
+    "mlAway": 130,
+    "spreadHome": -3.5,
+    "total": 225.5,
+    "book": "Draft Kings"
+   },
+   "external": {
+    "nbai": {
+     "pHome": 0.6057
+    }
+   }
+  },
+  {
+   "id": "401909333",
+   "tip": "2026-11-28T02:30Z",
+   "venue": "Frost Bank Center",
+   "home": "SA",
+   "away": "LAL",
+   "market": {
+    "mlHome": -237,
+    "mlAway": 196,
+    "spreadHome": -6.5,
+    "total": 226.5,
+    "book": "Draft Kings"
+   },
+   "external": {
+    "nbai": {
+     "pHome": 0.5447
+    }
+   }
+  },
+  {
+   "id": "401909334",
+   "tip": "2026-11-28T02:30Z",
+   "venue": "Delta Center",
+   "home": "UTAH",
+   "away": "DEN",
+   "market": {
+    "mlHome": 341,
+    "mlAway": -438,
+    "spreadHome": 9.5,
+    "total": 232.5,
+    "book": "Draft Kings"
+   },
+   "external": {
+    "nbai": {
+     "pHome": 0.3923
+    }
+   }
+  },
+  {
+   "id": "401909335",
+   "tip": "2026-11-28T02:30Z",
+   "venue": "Intuit Dome",
+   "home": "LAC",
+   "away": "NO",
+   "market": {
+    "mlHome": -135,
+    "mlAway": 114,
+    "spreadHome": -2.5,
+    "total": 230.5,
+    "book": "Draft Kings"
+   },
+   "external": {
+    "nbai": {
+     "pHome": 0.6138
+    }
+   }
+  },
+  {
+   "id": "401909336",
+   "tip": "2026-11-28T02:30Z",
    "venue": "Moda Center",
    "home": "POR",
-   "away": "SA",
+   "away": "GS",
    "market": {
-    "mlHome": 136,
-    "mlAway": -162,
-    "spreadHome": 3.5,
-    "total": 225.5,
-    "book": "DraftKings"
+    "mlHome": -297,
+    "mlAway": 241,
+    "spreadHome": -7.5,
+    "total": 217.5,
+    "book": "Draft Kings"
    },
    "external": {
     "nbai": {
-     "pHome": 0.487
+     "pHome": 0.5832
     }
    }
   }
@@ -13920,6 +16504,87 @@ const SEASON_SLATE_SNAPSHOT = {
    "away": "DAL",
    "homeScore": 101,
    "awayScore": 120
+  },
+  {
+   "id": "401909317",
+   "date": "2026-11-25",
+   "tip": "2026-11-25T22:00Z",
+   "home": "PHI",
+   "away": "MIA",
+   "homeScore": 111,
+   "awayScore": 104
+  },
+  {
+   "id": "401909318",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T00:00Z",
+   "home": "CHA",
+   "away": "CHI",
+   "homeScore": 105,
+   "awayScore": 107
+  },
+  {
+   "id": "401909319",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T00:30Z",
+   "home": "NY",
+   "away": "CLE",
+   "homeScore": 121,
+   "awayScore": 102
+  },
+  {
+   "id": "401909320",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T00:30Z",
+   "home": "OKC",
+   "away": "MIN",
+   "homeScore": 106,
+   "awayScore": 113
+  },
+  {
+   "id": "401909321",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T01:00Z",
+   "home": "MEM",
+   "away": "LAC",
+   "homeScore": 115,
+   "awayScore": 97
+  },
+  {
+   "id": "401909322",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T01:00Z",
+   "home": "MIL",
+   "away": "BKN",
+   "homeScore": 97,
+   "awayScore": 104
+  },
+  {
+   "id": "401909323",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T01:30Z",
+   "home": "HOU",
+   "away": "PHX",
+   "homeScore": 116,
+   "awayScore": 104
+  },
+  {
+   "id": "401909324",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T03:00Z",
+   "home": "GS",
+   "away": "SAC",
+   "homeScore": 129,
+   "awayScore": 110
+  },
+  {
+   "id": "401909325",
+   "date": "2026-11-25",
+   "tip": "2026-11-26T03:00Z",
+   "home": "POR",
+   "away": "SA",
+   "homeScore": 116,
+   "awayScore": 111
   }
  ]
 };
