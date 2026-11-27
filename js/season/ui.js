@@ -8,7 +8,8 @@
 const seasonState = {
   slate: null,
   slateOrigin: 'snapshot',
-  tab: 'tonight',
+  tab: 'today',
+  lastResearch: null,   // the Research sub-tab last opened, so the Research button returns to it
   expanded: {},
   lab: { home: null, away: null, rest: { home: {}, away: {} }, avail: {} },
   results: { mode: 'live', date: null, calOpen: false, calMonth: null },
@@ -26,7 +27,8 @@ function seasonBoot() {
   seasonState.slate = slate;
   seasonState.slateOrigin = origin;
   const parts = (typeof location !== 'undefined' ? location.hash.slice(1) : '').split('/');
-  if (SEASON_TABS.some(([id]) => id === parts[0])) seasonState.tab = parts[0];
+  if (SEASON_TABS.some(([id]) => id === parts[0]) || SEASON_MAIN_TABS.some(([id]) => id === parts[0] && id !== 'research')) seasonState.tab = parts[0];
+  else if (parts[0] === 'research') seasonState.tab = 'results';
   if (parts[0] === 'results') {
     if (parts[1] === 'replay') { seasonState.results.mode = 'replay'; parts.splice(1, 1); }
     if (/^\d{4}-\d{2}-\d{2}$/.test(parts[1] || '')) seasonState.results.date = parts[1];
@@ -44,18 +46,24 @@ function renderSeasonApp() {
   renderSeasonTabs();
   const main = document.getElementById('seasonMain');
   if (!seasonState.slate) { main.innerHTML = renderImportPanel(true); return; }
+  const sub = SEASON_TABS.some(([id]) => id === seasonState.tab) ? renderResearchNav() : '';
   switch (seasonState.tab) {
-    case 'results': main.innerHTML = renderResultsTab(); break;
-    case 'lab': main.innerHTML = renderLab(); break;
-    case 'ledger': main.innerHTML = renderLedgerTab(); break;
-    case 'parlay': main.innerHTML = renderParlayTab(); break;
-    case 'pitch': main.innerHTML = renderPitchTab(); break;
-    case 'data': main.innerHTML = renderImportPanel(false); break;
-    default: main.innerHTML = renderTonight();
+    case 'profit': main.innerHTML = renderProfitTab(); break;
+    case 'models': main.innerHTML = renderModelsTab(); break;
+    case 'tonight': main.innerHTML = sub + renderTonight(); break;
+    case 'results': main.innerHTML = sub + renderResultsTab(); break;
+    case 'lab': main.innerHTML = sub + renderLab(); break;
+    case 'ledger': main.innerHTML = sub + renderLedgerTab(); break;
+    case 'parlay': main.innerHTML = sub + renderParlayTab(); break;
+    case 'pitch': main.innerHTML = sub + renderPitchTab(); break;
+    case 'data': main.innerHTML = sub + renderImportPanel(false); break;
+    default: main.innerHTML = renderTodayTab();
   }
 }
 
 function seasonSetTab(tab) {
+  if (tab === 'research') tab = seasonState.lastResearch || 'results';
+  if (SEASON_TABS.some(([id]) => id === tab)) seasonState.lastResearch = tab;
   seasonState.tab = tab;
   seasonWriteHash();
   renderSeasonApp();
@@ -98,11 +106,21 @@ function renderSeasonStatus() {
     <span>League avg ORtg <b>${s.league.ortg.toFixed(1)}</b> pace <b>${s.league.pace.toFixed(1)}</b>${s.league.derived ? '' : ' <span class="muted">(fallback)</span>'}</span>`;
 }
 
-const SEASON_TABS = [['tonight', 'Tonight'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['parlay', 'Parlay'], ['pitch', 'Pitch'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
+// The three main views plus Research, which holds every older tab (SEASON_TABS) as a sub-tab.
+const SEASON_MAIN_TABS = [['today', 'Today'], ['profit', 'Profit'], ['models', 'Models vs market'], ['research', 'Research']];
+const SEASON_TABS = [['tonight', 'Game cards'], ['results', 'Results by Day'], ['lab', 'Matchup Lab'], ['parlay', 'Parlay'], ['pitch', 'Pitch'], ['ledger', 'Ledger & Scoring'], ['data', 'Data']];
 
 function renderSeasonTabs() {
-  document.getElementById('seasonTabs').innerHTML = SEASON_TABS.map(([id, label]) =>
-    `<button class="season-tab${seasonState.tab === id ? ' active' : ''}" onclick="seasonSetTab('${id}')">${label}</button>`).join('');
+  const inResearch = SEASON_TABS.some(([id]) => id === seasonState.tab);
+  document.getElementById('seasonTabs').innerHTML = SEASON_MAIN_TABS.map(([id, label]) => {
+    const active = id === 'research' ? inResearch : seasonState.tab === id;
+    return `<button class="season-tab${active ? ' active' : ''}" onclick="seasonSetTab('${id}')">${label}</button>`;
+  }).join('');
+}
+
+function renderResearchNav() {
+  return `<div class="pg-subnav"><span class="muted">Research:</span>${SEASON_TABS.map(([id, label]) =>
+    `<button class="pg-subtab${seasonState.tab === id ? ' active' : ''}" onclick="seasonSetTab('${id}')">${label}</button>`).join('')}</div>`;
 }
 
 // ---------- tonight ----------
@@ -675,6 +693,31 @@ function renderBackfillSummary() {
     <p class="muted">The daily run didn't record these nights. Each night's tickets were rebuilt afterwards by the same frozen rules, on the leak-free replay's slate (box scores from before the day, the official injury report 60+ minutes before tip), "recorded" an hour before the first tip and priced at DraftKings' close, then graded from the finals. Hindsight-free inputs, but not recorded before tip, so they stay out of every record above and below. Click a date for that night on Results by day.</p>
     <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Night</th><th>Floor</th><th>Edge</th><th>Favourites</th><th class="num">Edge straights (pitch-3)</th><th class="num">Flat $${stake}</th></tr>${rows}</table></div>
     <p class="muted">Totals: floor ${S.floor ? `${S.floor.won}/${S.floor.n}` : '—'} · edge ${S.edge ? `${S.edge.won}/${S.edge.n} (${S.edge.units >= 0 ? '+' : ''}${S.edge.units}u)` : '—'} · favourites ${S.favourites ? `${S.favourites.won}/${S.favourites.n} (${S.favourites.units >= 0 ? '+' : ''}${S.favourites.units}u)` : '—'} · pitch-3 straights ${rec(S.pitch3Straights)} · pairs ${rec(S.pitch3Pairs)} · flat ${rec(S.flat)}.</p>`;
+}
+// all25-1 (ALL25_SPEC.md): $25 on every parlay and leg the pitch rules produced, from the first pitched night.
+function renderAll25Section() {
+  if (typeof seasonAll25Summary !== 'function') return '';
+  const S = SEASON_ALL25_SPEC;
+  const sum = seasonAll25Summary(typeof loadSeasonLedger === 'function' ? loadSeasonLedger() : [],
+    typeof SEASON_PITCH_LEDGER !== 'undefined' ? SEASON_PITCH_LEDGER : [], typeof SEASON_PITCH2_LEDGER !== 'undefined' ? SEASON_PITCH2_LEDGER : [],
+    typeof SEASON_BACKFILL !== 'undefined' ? SEASON_BACKFILL : null);
+  const L = sum.live;
+  if (!L.nights) return '';
+  const money = (x) => `<span class="${x > 0 ? 'pos' : x < 0 ? 'neg' : ''}">${x >= 0 ? '+' : '−'}$${Math.abs(x).toFixed(2)}</span>`;
+  const roi = (t) => t.roi == null ? '—' : `${t.roi >= 0 ? '+' : '−'}${Math.abs(t.roi * 100).toFixed(1)}%`;
+  const NAME = { floor: 'Floor', edge: 'Edge', favourites: 'Favourites', 'pitch-3 pair': 'pitch-3 pair', 'pitch-3': 'pitch-3 straights' };
+  const row = (label, t, bold) => `<tr><td>${bold ? `<b>${label}</b>` : label}</td><td class="num">${t.n ? `${t.won}/${t.n}` : '—'}</td><td class="num">${t.staked ? '$' + t.staked : '—'}</td><td class="num">${t.n ? money(t.profit) : '—'}</td><td class="num">${roi(t)}</td>
+    <td class="num">${t.unpriced.n ? `${t.unpriced.won}/${t.unpriced.n} <span class="muted">${money(t.unpriced.atFair)} at our price</span>` : '—'}</td></tr>`;
+  const by = (o) => Object.entries(o).map(([k, t]) => row(`&nbsp;&nbsp;${NAME[k] || k}`, t)).join('');
+  const B = sum.backfill;
+  const nights = sum.perNight.map(n => `<tr${n.source === 'backfill' ? ' class="muted"' : ''}><td><a href="#results/${n.date}" onclick="seasonState.tab='results';seasonResultsMode('live');seasonResultsGo('${n.date}');return false;">${seasonFmtDay(n.date)}</a>${n.source === 'backfill' ? ' <span class="res-tag replay">backfilled</span>' : ''}</td>
+    <td class="num">${n.parlays.n ? `${n.parlays.won}/${n.parlays.n}` : '—'}</td><td class="num">${n.legs.n ? `${n.legs.won}/${n.legs.n}` : '—'}</td><td class="num">${money(n.profit)}</td><td class="num">${n.running == null ? '—' : money(n.running)}</td></tr>`).join('');
+  return `<h3>$${S.stake} on every parlay and leg — spec ${S.version}</h3>
+    <p class="muted">What $${S.stake} on each ticket and each distinct leg would have made since ${seasonFmtDay(S.firstNight)}, at the price each ledger recorded (DraftKings). Floor tickets and prop legs have no recorded price (FanDuel's ladder doesn't reach our floor lines), so they're shown at our own fair price for reference and kept out of the dollars; a real book would pay less. A leg on more than one ticket counts once, under the first recipe that pitched it. flat-1 and fade-1 keep their own records below. Not a recommendation and never a stake size.</p>
+    <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Recorded nights (${L.nights})</th><th class="num">Won</th><th class="num">Staked</th><th class="num">Profit</th><th class="num">ROI</th><th class="num">Unpriced floors</th></tr>
+      ${row('Parlays', L.parlays, true)}${by(L.parlaysBy)}${row('Legs', L.legs, true)}${by(L.legsBy)}${row('All', L.all, true)}</table></div>
+    ${B.nights ? `<p class="muted">Backfilled nights (${B.nights}, not in the total): ${B.all.won}/${B.all.n} priced bets, ${money(B.all.profit)} on $${B.all.staked} (${roi(B.all)}); unpriced floors ${B.all.unpriced.won}/${B.all.unpriced.n}.</p>` : ''}
+    <div style="overflow-x:auto"><table class="parlay-legs"><tr><th>Night</th><th class="num">Parlays won</th><th class="num">Legs won</th><th class="num">Night</th><th class="num">Running (recorded)</th></tr>${nights}</table></div>`;
 }
 function seasonResultsMode(mode) {
   Object.assign(seasonState.results, { mode, date: null, calOpen: false, calMonth: null });

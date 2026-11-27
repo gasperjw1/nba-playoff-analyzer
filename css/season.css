@@ -171,3 +171,39 @@ button.res-cal-day:hover { border-color:var(--accent); }
 }
 /* Parlay tab: the ticket fits a phone (styles.css gives every table a 500px minimum on small screens) */
 .ledger table.parlay-legs { min-width:0; }
+
+/* Main pages: Today, Profit, Models vs market (pages.js) and the Research sub-nav */
+.pg h2 { font-size:20px; margin:0 0 6px; }
+.pg a { color:var(--accent); }
+.pg-head { margin-bottom:14px; }
+.pg-small { font-size:11px; }
+.pg-subnav { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 16px; font-size:11px; }
+.pg-subtab { background:var(--card); color:var(--text-dim); border:1px solid var(--border); border-radius:14px; padding:5px 12px; font-size:11px; font-weight:600; cursor:pointer; }
+.pg-subtab.active { color:var(--accent); border-color:var(--accent); }
+.pg-tickets { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-bottom:18px; }
+.pg-ticket { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+.pg-ticket-h { margin-bottom:6px; }
+.pg-legs { margin:0; padding-left:18px; }
+.pg-legs li { margin:4px 0; }
+.pg-legs li .muted { display:block; font-size:11px; }
+.pg-ticket-f { margin-top:8px; font-size:12px; }
+.pg-warn { display:inline-block; font-size:10px; font-weight:700; color:var(--yellow); background:rgba(255,199,58,0.12); padding:2px 7px; border-radius:9px; }
+.pg-hero { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:12px; }
+.pg-hero-t { font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-dim); }
+.pg-hero-v { font-size:34px; font-weight:800; margin:4px 0; }
+.pg-hero-s { font-size:12px; color:var(--text-dim); }
+.pg-chart { width:100%; height:auto; max-width:760px; display:block; margin:0 0 12px; }
+.pg-chart .pg-grid { stroke:var(--border); stroke-width:1; }
+.pg-chart .pg-zero { stroke:var(--text-dim); stroke-width:1; stroke-dasharray:3 3; }
+.pg-chart .pg-line { fill:none; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; }
+.pg-chart .pg-pt circle { fill:var(--accent); stroke:var(--bg); stroke-width:2; }
+.pg-chart .pg-pt:hover circle { r:6; }
+.pg-chart .pg-axis { fill:var(--text-dim); font-size:11px; }
+.pg-note { background:rgba(255,199,58,0.08); border:1px solid rgba(255,199,58,0.3); border-radius:10px; padding:10px 14px; font-size:12px; margin:0 0 14px; }
+.pg-details { margin-top:12px; }
+.pg-details summary { cursor:pointer; color:var(--accent); font-size:12px; margin-bottom:8px; }
+@media (max-width:640px) {
+  .season-tab { padding:12px 10px; letter-spacing:0.2px; }
+  .pg-tickets { grid-template-columns:1fr; }
+  .pg-hero-v { font-size:28px; }
+}
